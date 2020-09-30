@@ -23,9 +23,9 @@ struct Profiling
     m::Double* handle;
 };
 
-void initialize_data(m::math::Vec4* a_vecs1, m::math::Vec4* a_vecs2, m::Int a_nbElements)
+void initialize_data(m::math::Vec4* a_vecs1, m::math::Vec4* a_vecs2, m::UInt a_nbElements)
 {
-    for(m::Int i = 0; i < a_nbElements; ++i)
+    for(m::UInt i = 0; i < a_nbElements; ++i)
     {
         a_vecs1[i].x = rand();
         a_vecs1[i].y = rand();
@@ -39,8 +39,22 @@ void initialize_data(m::math::Vec4* a_vecs1, m::math::Vec4* a_vecs2, m::Int a_nb
     }
 }
 
+struct SimpleVec4
+{
+    int x;
+    int y;
+    int z;
+    int w;
+};
+
+SimpleVec4 add(const SimpleVec4& a_v1, const SimpleVec4& a_v2)
+{
+    return {a_v1.x + a_v2.x, a_v1.y + a_v2.y, a_v1.z + a_v2.z, a_v1.w + a_v2.w};
+}
+
 m::Int main(m::Int argc, char *argv[])
 {
+    /*
     mHardAssert(true);
     m::math::Vec<m::Float, 4> vec1;
     vec1[0] = 1.0F;
@@ -69,8 +83,7 @@ m::Int main(m::Int argc, char *argv[])
         LOG("Success !");
 
     LOG(dot(vec1, vec3));
-
-    /*
+*/
     m::UInt nbElements = 100000; 
     m::UInt AddIterations = 100;
     if(argc > 1)
@@ -89,7 +102,7 @@ m::Int main(m::Int argc, char *argv[])
 
     m::Float result = 0.0F;
     {
-        Profiling p(&timeSimdAdd);
+        Profiling p(&timeSimpleAdd);
         m::math::Vec4 vecs1[nbElements];
         m::math::Vec4 vecs2[nbElements];
         m::math::Vec4 vec[nbElements];
@@ -97,21 +110,71 @@ m::Int main(m::Int argc, char *argv[])
 
         {
             Profiling p2(&timeSimpleOnlyAdd);
-            for(int j = 0; j<AddIterations; ++j)
+            for(m::UInt j = 0; j<AddIterations; ++j)
             {
-                for(m::Int i = 0; i < nbElements; ++i)
+                for(m::UInt i = 0; i < nbElements; ++i)
+                {
+                    vec[i] = vecs1[i] + vecs2[i];
+                }
+            }
+        }
+
+        for(m::UInt i = 0; i < nbElements; ++i)
+        {
+            result += vec[i].x + vec[i].y + vec[i].z + vec[i].w;
+        }
+    }
+    std::cout << "result : " << result << " in " << timeSimpleAdd << "ms(" << timeSimpleOnlyAdd << " just for adds)" << std::endl;
+
+
+
+
+
+
+    m::Double timeTRISTE = 0.0;
+    m::Double timeTRISTEadds = 0.0;
+    result = 0.0F;
+    {
+        Profiling p(&timeTRISTE);
+        SimpleVec4 vecs1[nbElements];
+        SimpleVec4 vecs2[nbElements];
+        SimpleVec4 vec[nbElements];
+        for(m::UInt i = 0; i < nbElements; ++i)
+        {
+            vecs1[i].x = rand();
+            vecs1[i].y = rand();
+            vecs1[i].z = rand();
+            vecs1[i].w = rand();
+
+            vecs2[i].x = -rand();
+            vecs2[i].y = -rand();
+            vecs2[i].z = -rand();
+            vecs2[i].w = -rand();
+        }
+
+        {
+            Profiling p2(&timeTRISTEadds);
+            for(m::UInt j = 0; j<AddIterations; ++j)
+            {
+                for(m::UInt i = 0; i < nbElements; ++i)
                 {
                     vec[i] = add(vecs1[i], vecs2[i]);
                 }
             }
         }
 
-        for(m::Int i = 0; i < nbElements; ++i)
+        for(m::UInt i = 0; i < nbElements; ++i)
         {
             result += vec[i].x + vec[i].y + vec[i].z + vec[i].w;
         }
     }
-    std::cout << "result : " << result << " in " << timeSimdAdd << "ms(" << timeSimpleOnlyAdd << " just for adds)" << std::endl;
+    std::cout << "result TRISTE : " << result << " in " << timeTRISTE << "ms(" << timeTRISTEadds << " just for adds)" << std::endl;
+
+
+
+
+
+
 
     result = 0.0F; 
     {
@@ -123,16 +186,16 @@ m::Int main(m::Int argc, char *argv[])
 
         {
             Profiling p2(&timeSimdOnlyAdd);
-            for(int j = 0; j<AddIterations; ++j)
+            for(m::UInt j = 0; j<AddIterations; ++j)
             {
-                for(m::Int i = 0; i < nbElements; ++i)
+                for(m::UInt i = 0; i < nbElements; ++i)
                 {
                     vec[i] = simd_add(vecs1[i], vecs2[i]);
                 }
             }
         }
 
-        for(m::Int i = 0; i < nbElements; ++i)
+        for(m::UInt i = 0; i < nbElements; ++i)
         {
             result += vec[i].x + vec[i].y + vec[i].z + vec[i].w;
         }
@@ -152,7 +215,7 @@ m::Int main(m::Int argc, char *argv[])
         {
             Profiling p(&timeArrayOnlyAdd);
 
-            for(int j = 0; j<AddIterations; ++j)
+            for(m::UInt j = 0; j<AddIterations; ++j)
             {
                 float* fvecs1 = (float*)&vecs1;
                 float* fvecs2 = (float*)&vecs2;
@@ -164,7 +227,7 @@ m::Int main(m::Int argc, char *argv[])
             }
         }
 
-        for(m::Int i = 0; i < nbElements; ++i)
+        for(m::UInt i = 0; i < nbElements; ++i)
         {
             result += vec[i].x + vec[i].y + vec[i].z + vec[i].w;
         }
@@ -182,25 +245,24 @@ m::Int main(m::Int argc, char *argv[])
         
         {
             Profiling p(&timeSimdArrayOnlyAdd);
-            for(int j = 0; j<AddIterations; ++j)
+            for(m::UInt j = 0; j<AddIterations; ++j)
             {
                 __m128* fvecs1 = (__m128*)&vecs1;
                 __m128* fvecs2 = (__m128*)&vecs2;
                 __m128* fvecs = (__m128*)&vec;
 
-                for (int i = 0; i < nbElements; ++i, ++fvecs, ++fvecs1, ++fvecs2)                                                                                                                                                                   
+                for (m::UInt i = 0; i < nbElements; ++i, ++fvecs, ++fvecs1, ++fvecs2)
                     *fvecs = _mm_add_ps(*fvecs1, *fvecs2);
             }
         }
 
-        for(m::Int i = 0; i < nbElements; ++i)
+        for(m::UInt i = 0; i < nbElements; ++i)
         {
             result += vec[i].x + vec[i].y + vec[i].z + vec[i].w;
         }
     }
 
     std::cout << "result simd array : " << result << " in " << timeSimdArrayAdd << "ms(" << timeSimdArrayOnlyAdd << " just for adds)" << std::endl;
-*/
 
     return 0;
 }
