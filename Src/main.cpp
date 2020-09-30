@@ -1,5 +1,5 @@
 #include "Math/MathTypes.hpp"
-#include "Asserts.hpp"
+#include "Kernel/Asserts.hpp"
 #include "Logger.hpp"
 
 #include <iostream>
@@ -84,8 +84,8 @@ m::Int main(m::Int argc, char *argv[])
 
     LOG(dot(vec1, vec3));
 */
-    m::UInt nbElements = 100000; 
-    m::UInt AddIterations = 100;
+    constexpr m::UInt nbElements = 1000;
+    m::UInt AddIterations = 100000;
     if(argc > 1)
     {
         AddIterations = std::stoi(argv[1]);
