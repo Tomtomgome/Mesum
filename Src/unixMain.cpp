@@ -2,6 +2,6 @@
 
 int main()
 {
-    launchTest();
+    m::launchTest();
     return 0;
 }
