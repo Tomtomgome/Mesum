@@ -11,9 +11,9 @@ set(HEADERS MathTypes.hpp
 
 add_library(${MODULE_NAME} INTERFACE)# ${SOURCES} ${HEADERS})
 
-target_link_libraries(${APP_NAME} Simd)
+target_link_libraries(${MODULE_NAME} INTERFACE Simd)
 
 #set_target_properties(${MODULE_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 #set_target_properties(${MODULE_NAME} PROPERTIES PUBLIC_HEADER HEADERS)
 
-target_include_directories(${MODULE_NAME} INTERFACE .)
+target_include_directories(${MODULE_NAME} INTERFACE  .)

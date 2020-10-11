@@ -10,9 +10,9 @@ set(HEADERS Types.hpp
 
 add_library(${MODULE_NAME} INTERFACE)
 
-target_link_libraries(${APP_NAME} Logger)
+target_link_libraries(${MODULE_NAME} INTERFACE Logger)
 
 #No version on interface set_target_properties(${MODULE_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 #No public headers on interfaces set_target_properties(${MODULE_NAME} PROPERTIES PUBLIC_HEADER HEADERS)
 
-target_include_directories(${MODULE_NAME} INTERFACE .)
+target_include_directories(${MODULE_NAME} INTERFACE  .)

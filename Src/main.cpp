@@ -1,6 +1,6 @@
 #include "Math/MathTypes.hpp"
 #include "Kernel/Asserts.hpp"
-#include "Logger.hpp"
+#include "Logger/Logger.hpp"
 
 #include <iostream>
 #include <ctime>
