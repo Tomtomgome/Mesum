@@ -1,6 +1,7 @@
 
 add_subdirectory(Logger)
 add_subdirectory(Kernel)
+add_subdirectory(Input)
 add_subdirectory(Simd)
 add_subdirectory(Math)
 

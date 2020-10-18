@@ -16,9 +16,10 @@
 
 namespace m
 {
-    logging::ChannelID ASSERT_ID = LOG_GET_ID();
+    //Not working as such, find better system to store the IDS and reference them
+    inline const logging::ChannelID ASSERT_ID = LOG_GET_ID();
 
-    void manage_simple_assert(Bool a_condition,
+    inline void manage_simple_assert(Bool a_condition,
         const Int a_lineNumber, const Char* a_file)
     {
         if(!a_condition){
@@ -28,7 +29,7 @@ namespace m
         }
     }
 
-    void manage_blocking_assert(Bool a_condition,
+    inline void manage_blocking_assert(Bool a_condition,
         const Int a_lineNumber, const Char* a_file)
     {
         if(!a_condition){

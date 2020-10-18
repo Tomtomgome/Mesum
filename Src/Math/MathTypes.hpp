@@ -3,8 +3,6 @@
 #pragma once
 
 #include "Vec.hpp"
-
-#include "emmintrin.h"
 #include <cstring>
 
 namespace m {
@@ -28,18 +26,6 @@ namespace m {
         using UIVec2 = Vec<UInt, 2>;
         using UIVec3 = Vec<UInt, 3>;
         using UIVec4 = Vec<UInt, 4>;
-
-        Vec4 simd_add(Vec4& a_v1, Vec4& a_v2)
-        {
-            Vec4 res;
-            __m128* simd_data_v1 = (__m128*)a_v1.data;
-            __m128* simd_data_v2 = (__m128*)a_v2.data;
-            __m128* simd_data_res = (__m128*)res.data;
-
-            *simd_data_res = _mm_add_ps(*simd_data_v1, *simd_data_v2);
-
-            return res;
-        }
     };
 };
 

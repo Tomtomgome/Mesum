@@ -6,6 +6,20 @@
 #include <ctime>
 #include <chrono>
 
+#include "emmintrin.h"
+
+m::math::Vec4 simd_add(m::math::Vec4& a_v1, m::math::Vec4& a_v2)
+{
+    m::math::Vec4 res;
+    __m128* simd_data_v1 = (__m128*)a_v1.data;
+    __m128* simd_data_v2 = (__m128*)a_v2.data;
+    __m128* simd_data_res = (__m128*)res.data;
+
+    *simd_data_res = _mm_add_ps(*simd_data_v1, *simd_data_v2);
+
+    return res;
+}
+
 struct Profiling
 {
     Profiling(m::Double* const a_resultHandle)
