@@ -19,8 +19,8 @@ namespace m
 		using MouseActionCallback = Callback<void, const math::DVec2&>;
 		using MouseActionSignal = Signal<const math::DVec2&>;
 
-		using MouseStateCallback = Callback<void, Bool>;
-		using MouseStateSignal = Signal<Bool>;
+		using MouseStateCallback = Callback<void, mBool>;
+		using MouseStateSignal = Signal<mBool>;
 
 		using ScrollCallback = Callback<void, const math::DVec2&>;
 		using ScrollSignal = Signal<const math::DVec2&>;

@@ -41,7 +41,7 @@ namespace m
 
 		rType call(Args...a_args)
 		{
-			mHardAssert(Bool(m_func));
+			mHardAssert(mBool(m_func));
 			return m_func(a_args...);
 		}
 
@@ -50,7 +50,7 @@ namespace m
             call(a_args...);
         }
 
-		friend bool operator==(const Callback& lhs, const Callback& rhs)
+		friend mBool operator==(const Callback& lhs, const Callback& rhs)
 		{
 			return lhs.m_func.template target<functionType>() == rhs.m_func.template target<functionType>();
 		}

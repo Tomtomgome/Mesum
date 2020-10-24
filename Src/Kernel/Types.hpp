@@ -23,8 +23,8 @@ namespace m
 
     using Double = double;
     using Float = float;
-    
-    using Bool = bool;
+
+    using mBool = bool;
 };
 
 #endif //M_TYPES

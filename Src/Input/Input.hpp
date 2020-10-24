@@ -130,9 +130,9 @@ namespace m
 			double	m_mousePosX;
 			double	m_mousePosY;
 
-			std::array<Bool, 8> m_previousMouseButtonClicked = { false };
-			std::array<Bool, 8> m_mouseButtonClicked = { false };
-			std::array<Bool, Key::KEY_LAST+1> m_keyPressed;
+			std::array<mBool, 8> m_previousMouseButtonClicked = { false };
+			std::array<mBool, 8> m_mouseButtonClicked = { false };
+			std::array<mBool, Key::KEY_LAST+1> m_keyPressed;
 
 			int m_previousMod = 0;
 			int m_currentMod = 0;

@@ -2,17 +2,10 @@
 #include <Kernel/Asserts.hpp>
 #include <Kernel/Types.hpp>
 #include <Kernel/Callbacks.hpp>
-#include <Input/Input.hpp>
 #include <Input/Keys.hpp>
 #include <UnixApp.hpp>
 
-
-#include <X11/Xlib.h>  // Every Xlib program must include this
-#include <X11/keysym.h>  // Every Xlib program must include this
 #include <unistd.h>
-
-#include <chrono>
-#include <thread>
 
 #define NIL (0)  // A name for the void pointer
 
@@ -164,118 +157,64 @@ namespace m
         return KEY_UNKNOWN;
     }
 
-    struct X11Context
+    void X11Context::init()
     {
-        void init()
-        {
-            m_dpy = XOpenDisplay(NIL);
-            mHardAssert(m_dpy != NULL);
+        m_dpy = XOpenDisplay(NIL);
+        mHardAssert(m_dpy != NULL);
 
-            init_keysLuts();
-        }
+        init_keysLuts();
+    }
 
-        void destroy()
-        {
-        }
-
-        void init_keysLuts()
-        {
-            memset(m_lut_keycodes, -1, sizeof(m_lut_keycodes));
-            memset(m_lut_scancode, -1, sizeof(m_lut_scancode));
-
-            Int scancodeMin;
-            Int scancodeMax;
-            Int scancode;
-            XDisplayKeycodes(m_dpy, &scancodeMin, &scancodeMax);
-
-            Int     width;
-            KeySym* keysyms =
-                XGetKeyboardMapping(m_dpy, scancodeMin,
-                                    scancodeMax - scancodeMin + 1, &width);
-
-            for (scancode = scancodeMin; scancode <= scancodeMax; scancode++)
-            {
-                // Translate the un-translated key codes using traditional X11
-                // KeySym lookups
-                if (m_lut_keycodes[scancode] < 0)
-                {
-                    const size_t base = (scancode - scancodeMin) * width;
-                    m_lut_keycodes[scancode] =
-                        translateKeySyms(&keysyms[base], width);
-                }
-
-                // Store the reverse translation for faster key name lookup
-                if (m_lut_keycodes[scancode] > 0)
-                    m_lut_scancode[m_lut_keycodes[scancode]] =
-                        scancode;
-            }
-
-            XFree(keysyms);
-        }
-
-        input::Key get_keyFromEvent(XKeyEvent& a_event)
-        {
-            Int scancode = a_event.keycode;
-            if (scancode < 0 || scancode > 255)
-            {
-                return input::Key::KEY_UNKNOWN;
-            }
-            return m_lut_keycodes[scancode];
-        }
-
-        Display* m_dpy;
-
-        input::Key m_lut_keycodes[256];
-        I16 m_lut_scancode[input::Key::KEY_LAST + 1];
-    };
-
-    class CubeMover
+    void X11Context::init_keysLuts()
     {
-    public:
-        void move(Float& x, Float& y)
+        memset(m_lut_keycodes, -1, sizeof(m_lut_keycodes));
+        memset(m_lut_scancode, -1, sizeof(m_lut_scancode));
+
+        Int scancodeMin;
+        Int scancodeMax;
+        Int scancode;
+        XDisplayKeycodes(m_dpy, &scancodeMin, &scancodeMax);
+
+        Int     width;
+        KeySym* keysyms = XGetKeyboardMapping(
+            m_dpy, scancodeMin, scancodeMax - scancodeMin + 1, &width);
+
+        for (scancode = scancodeMin; scancode <= scancodeMax; scancode++)
         {
-            if (m_up)
+            // Translate the un-translated key codes using traditional X11
+            // KeySym lookups
+            if (m_lut_keycodes[scancode] < 0)
             {
-                y -= speed;
+                const size_t base = (scancode - scancodeMin) * width;
+                m_lut_keycodes[scancode] =
+                    translateKeySyms(&keysyms[base], width);
             }
-            if (m_down)
-            {
-                y += speed;
-            }
-            if (m_left)
-            {
-                x -= speed;
-            }
-            if (m_right)
-            {
-                x += speed;
-            }
+
+            // Store the reverse translation for faster key name lookup
+            if (m_lut_keycodes[scancode] > 0)
+                m_lut_scancode[m_lut_keycodes[scancode]] = scancode;
         }
 
-        void set_moveUp() { m_up = true; }
-        void set_moveDown() { m_down = true; }
-        void set_moveLeft() { m_left = true; }
-        void set_moveRight() { m_right = true; }
+        XFree(keysyms);
+    }
 
-        void set_notMoveUp() { m_up = false; }
-        void set_notMoveDown() { m_down = false; }
-        void set_notMoveLeft() { m_left = false; }
-        void set_notMoveRight() { m_right = false; }
+    void X11Context::destroy() {}
 
-    private:
-        Float speed   = 0.016 * 100;
-        Bool  m_up    = false;
-        Bool  m_down  = false;
-        Bool  m_left  = false;
-        Bool  m_right = false;
-    };
+    input::Key X11Context::get_keyFromEvent(XKeyEvent& a_event)
+    {
+        Int scancode = a_event.keycode;
+        if (scancode < 0 || scancode > 255)
+        {
+            return input::Key::KEY_UNKNOWN;
+        }
+        return m_lut_keycodes[scancode];
+    }
 
-    void launchTest()
+    void UnixApp::init()
     {
         // Open the display
-        X11Context contextX11;
-        contextX11.init();
-        Display* dpy = contextX11.m_dpy;
+        m_contextX11.init();
+        Display* dpy = m_contextX11.m_dpy;
         // Get some colors
 
         int blackColor = BlackPixel(dpy, DefaultScreen(dpy));
@@ -283,24 +222,24 @@ namespace m
 
         // Create the window
 
-        Window w = XCreateSimpleWindow(dpy, DefaultRootWindow(dpy), 0, 0, 600, 400,
+        m_w = XCreateSimpleWindow(dpy, DefaultRootWindow(dpy), 0, 0, 600, 400,
                                     0, blackColor, blackColor);
 
         // We want to get MapNotify events
 
-        XSelectInput(dpy, w, StructureNotifyMask | KeyPressMask | KeyReleaseMask);
+        XSelectInput(dpy, m_w, StructureNotifyMask | KeyPressMask | KeyReleaseMask);
 
         // "Map" the window (that is, make it appear on the screen)
 
-        XMapWindow(dpy, w);
+        XMapWindow(dpy, m_w);
 
         // Create a "Graphics Context"
 
-        GC gc = XCreateGC(dpy, w, 0, NIL);
+        m_gc = XCreateGC(dpy, m_w, 0, NIL);
 
         // Tell the GC we draw using the white color
 
-        XSetForeground(dpy, gc, whiteColor);
+        XSetForeground(dpy, m_gc, whiteColor);
 
         // Wait for the MapNotify event
 
@@ -312,67 +251,57 @@ namespace m
                 break;
         }
 
-        m::Float x            = 0.0f;
-        m::Float y            = 0.0f;
-        bool     windowClosed = false;
+        m_inputManager.attachToKeyEvent(input::KeyAction::keyPressed(input::KEY_UP), input::KeyActionCallback(&m_mover, &CubeMover::set_moveUp));
+        m_inputManager.attachToKeyEvent(input::KeyAction::keyPressed(input::KEY_DOWN), input::KeyActionCallback(&m_mover, &CubeMover::set_moveDown));
+        m_inputManager.attachToKeyEvent(input::KeyAction::keyPressed(input::KEY_LEFT), input::KeyActionCallback(&m_mover, &CubeMover::set_moveLeft));
+        m_inputManager.attachToKeyEvent(input::KeyAction::keyPressed(input::KEY_RIGHT), input::KeyActionCallback(&m_mover, &CubeMover::set_moveRight));
 
-        input::InputManager inputManager;
-        CubeMover mover;
+        m_inputManager.attachToKeyEvent(input::KeyAction::keyReleased(input::KEY_UP), input::KeyActionCallback(&m_mover, &CubeMover::set_notMoveUp));
+        m_inputManager.attachToKeyEvent(input::KeyAction::keyReleased(input::KEY_DOWN), input::KeyActionCallback(&m_mover, &CubeMover::set_notMoveDown));
+        m_inputManager.attachToKeyEvent(input::KeyAction::keyReleased(input::KEY_LEFT), input::KeyActionCallback(&m_mover, &CubeMover::set_notMoveLeft));
+        m_inputManager.attachToKeyEvent(input::KeyAction::keyReleased(input::KEY_RIGHT), input::KeyActionCallback(&m_mover, &CubeMover::set_notMoveRight));
+    }
 
-        inputManager.attachToKeyEvent(input::KeyAction::keyPressed(input::KEY_UP), input::KeyActionCallback(&mover, &CubeMover::set_moveUp));
-        inputManager.attachToKeyEvent(input::KeyAction::keyPressed(input::KEY_DOWN), input::KeyActionCallback(&mover, &CubeMover::set_moveDown));
-        inputManager.attachToKeyEvent(input::KeyAction::keyPressed(input::KEY_LEFT), input::KeyActionCallback(&mover, &CubeMover::set_moveLeft));
-        inputManager.attachToKeyEvent(input::KeyAction::keyPressed(input::KEY_RIGHT), input::KeyActionCallback(&mover, &CubeMover::set_moveRight));
+    void UnixApp::destroy()
+    {
 
-        inputManager.attachToKeyEvent(input::KeyAction::keyReleased(input::KEY_UP), input::KeyActionCallback(&mover, &CubeMover::set_notMoveUp));
-        inputManager.attachToKeyEvent(input::KeyAction::keyReleased(input::KEY_DOWN), input::KeyActionCallback(&mover, &CubeMover::set_notMoveDown));
-        inputManager.attachToKeyEvent(input::KeyAction::keyReleased(input::KEY_LEFT), input::KeyActionCallback(&mover, &CubeMover::set_notMoveLeft));
-        inputManager.attachToKeyEvent(input::KeyAction::keyReleased(input::KEY_RIGHT), input::KeyActionCallback(&mover, &CubeMover::set_notMoveRight));
+    }
 
-        while (!windowClosed)
+    mBool UnixApp::step(const Double& a_deltaTime)
+    {
+        mBool     signalClosed = false;
+        Int queueLength = XQLength(m_contextX11.m_dpy);
+        for (Int i = 0; i < queueLength; ++i)
         {
-            auto start = std::chrono::high_resolution_clock::now();
-
-            m::Int queueLength = XQLength(dpy);
-            for (m::Int i = 0; i < queueLength; ++i)
+            XEvent e;
+            XNextEvent(m_contextX11.m_dpy, &e);
+            if (e.type == DestroyNotify)
             {
-                XEvent e;
-                XNextEvent(dpy, &e);
-                if (e.type == DestroyNotify)
-                {
-                    windowClosed = true;
-                }
-
-                if(e.type == KeyPress)
-                {
-                    input::Key k = contextX11.get_keyFromEvent(e.xkey);
-
-                    inputManager.processKeyEvent(k, 0, input::Action::PRESSED, input::KeyMod::NONE);
-                }
-
-                if(e.type == KeyRelease)
-                {
-                    input::Key k = contextX11.get_keyFromEvent(e.xkey);
-
-                    inputManager.processKeyEvent(k, 0, input::Action::RELEASED, input::KeyMod::NONE);
-                }
+                signalClosed = true;
             }
-            inputManager.processAndUpdateStates();
-            mover.move(x, y);
 
-            XClearWindow(dpy, w);
-            XDrawRectangle(dpy, w, gc, x, y, 5, 5);
-            XFlush(dpy);
-
-            auto      end = std::chrono::high_resolution_clock::now();
-            long long timming =
-                std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
-                    .count();
-            if (timming < 16)
+            if (e.type == KeyPress)
             {
-                std::this_thread::sleep_for(
-                    std::chrono::milliseconds(16 - timming));
+                input::Key k = m_contextX11.get_keyFromEvent(e.xkey);
+
+                m_inputManager.processKeyEvent(k, 0, input::Action::PRESSED,
+                                             input::KeyMod::NONE);
+            }
+
+            if (e.type == KeyRelease)
+            {
+                input::Key k = m_contextX11.get_keyFromEvent(e.xkey);
+
+                m_inputManager.processKeyEvent(k, 0, input::Action::RELEASED,
+                                             input::KeyMod::NONE);
             }
         }
+        m_inputManager.processAndUpdateStates();
+        m_mover.move(m_x, m_y);
+
+        XClearWindow(m_contextX11.m_dpy, m_w);
+        XDrawRectangle(m_contextX11.m_dpy, m_w, m_gc, m_x, m_y, 5, 5);
+        XFlush(m_contextX11.m_dpy);
+        return signalClosed;
     }
 };

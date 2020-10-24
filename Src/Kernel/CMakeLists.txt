@@ -7,7 +7,8 @@ project(${MODULE_NAME} VERSION 1.0.0 DESCRIPTION "Types and asserts")
 set(SOURCES )
 set(HEADERS Types.hpp
             Asserts.hpp
-            Callbacks.hpp)
+            Callbacks.hpp
+            Application.hpp)
 
 add_library(${MODULE_NAME} INTERFACE)
 

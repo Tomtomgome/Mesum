@@ -2,6 +2,8 @@
 
 int main()
 {
-    m::launchTest();
+    m::UnixApp app;
+    app.launch();
+
     return 0;
 }

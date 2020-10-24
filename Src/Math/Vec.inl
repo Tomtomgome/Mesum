@@ -124,7 +124,7 @@ namespace m::math
     }
 
     template<typename T, UInt Size>
-    Bool Vec<T, Size>::operator==(const Vec<T, Size>& a_v) const{
+    mBool Vec<T, Size>::operator==(const Vec<T, Size>& a_v) const{
         INTERNAL_VEC_FOR_EACH_MEMBER
             if(VecData<T, Size>::data[i] != a_v.data[i]) return false;
         return true;
