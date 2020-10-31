@@ -22,7 +22,7 @@ m::math::Vec4 simd_add(m::math::Vec4& a_v1, m::math::Vec4& a_v2)
 
 struct Profiling
 {
-    Profiling(m::Double* const a_resultHandle)
+    explicit Profiling(m::Double* const a_resultHandle)
     {
         handle = a_resultHandle;
         start = std::chrono::high_resolution_clock::now();
@@ -41,15 +41,15 @@ void initialize_data(m::math::Vec4* a_vecs1, m::math::Vec4* a_vecs2, m::UInt a_n
 {
     for(m::UInt i = 0; i < a_nbElements; ++i)
     {
-        a_vecs1[i].x = rand();
-        a_vecs1[i].y = rand();
-        a_vecs1[i].z = rand();
-        a_vecs1[i].w = rand();
+        a_vecs1[i].x = m::Float(rand());
+        a_vecs1[i].y = m::Float(rand());
+        a_vecs1[i].z = m::Float(rand());
+        a_vecs1[i].w = m::Float(rand());
 
-        a_vecs2[i].x = -rand();
-        a_vecs2[i].y = -rand();
-        a_vecs2[i].z = -rand();
-        a_vecs2[i].w = -rand();
+		a_vecs2[i].x = m::Float(-rand());
+		a_vecs2[i].y = m::Float(-rand());
+		a_vecs2[i].z = m::Float(-rand());
+		a_vecs2[i].w = m::Float(-rand());
     }
 }
 
@@ -227,7 +227,7 @@ m::Int main(m::Int argc, char *argv[])
         initialize_data(vecs1, vecs2, nbElements);
         
         {
-            Profiling p(&timeArrayOnlyAdd);
+            Profiling p2(&timeArrayOnlyAdd);
 
             for(m::UInt j = 0; j<AddIterations; ++j)
             {
@@ -258,7 +258,7 @@ m::Int main(m::Int argc, char *argv[])
         initialize_data(vecs1, vecs2, nbElements);
         
         {
-            Profiling p(&timeSimdArrayOnlyAdd);
+            Profiling p2(&timeSimdArrayOnlyAdd);
             for(m::UInt j = 0; j<AddIterations; ++j)
             {
                 __m128* fvecs1 = (__m128*)&vecs1;

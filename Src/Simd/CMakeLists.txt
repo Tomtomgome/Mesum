@@ -11,5 +11,6 @@ add_library(${MODULE_NAME} ${SOURCES} ${HEADERS})
 
 set_target_properties(${MODULE_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(${MODULE_NAME} PROPERTIES PUBLIC_HEADER SimdType.hpp)
+set_target_properties(${MODULE_NAME} PROPERTIES FOLDER "Kernel")
 
 target_include_directories(${MODULE_NAME} PUBLIC .)

@@ -15,5 +15,6 @@ target_link_libraries(${MODULE_NAME} PUBLIC Kernel INTERFACE Math)
 
 set_target_properties(${MODULE_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(${MODULE_NAME} PROPERTIES PUBLIC_HEADER Input.hpp)
+set_target_properties(${MODULE_NAME} PROPERTIES FOLDER "Kernel")
 
 target_include_directories(${MODULE_NAME} PUBLIC . ..)
