@@ -27,3 +27,19 @@ set_target_properties(${APP_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 target_include_directories(${APP_NAME} PRIVATE .)
 
 endif (UNIX)
+
+
+if (WIN32)
+
+add_subdirectory(PlatWindows)
+
+set(APP_NAME WindowsMain)
+project(${APP_NAME} VERSION 1.0.0 DESCRIPTION "Main application used for practicing windows functionalities")
+set(SOURCES WindowsMain.cpp)
+add_executable(${APP_NAME} WIN32 ${SOURCES})
+
+target_link_libraries(${APP_NAME} PUBLIC PlatWindows)
+set_target_properties(${APP_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
+target_include_directories(${APP_NAME} PRIVATE . )
+
+endif (WIN32)
