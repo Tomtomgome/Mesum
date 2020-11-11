@@ -17,7 +17,7 @@ namespace m
             void setup(void* a_data) { m_appData = a_data; }
             virtual void launch() = 0;
 
-        private:
+        protected:
             void* m_appData;
         };
 

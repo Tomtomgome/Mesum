@@ -9,6 +9,7 @@ add_library(${MODULE_NAME} ${SOURCES} ${HEADERS})
 
 set_target_properties(${MODULE_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(${MODULE_NAME} PROPERTIES PUBLIC_HEADER UnixApp.hpp)
+set_target_properties(${MODULE_NAME} PROPERTIES FOLDER "Platform")
 
 target_link_libraries(${MODULE_NAME} PUBLIC Logger X11 Input INTERFACE Math)
 

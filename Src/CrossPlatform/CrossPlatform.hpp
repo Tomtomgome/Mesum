@@ -1,0 +1,23 @@
+#ifndef M_CROSSPLATFORM
+#define M_CROSSPLATFORM
+#pragma once
+
+#if defined M_UNIX
+
+#elif defined M_WINDOWS
+ 
+#include <PlatWindows/WindowsApp.hpp>
+
+namespace m 
+{
+    namespace platform
+    {
+        extern const logging::ChannelID CROSSPLAT_LOG_ID;
+		using PlatformApp = platWindows::PlatformApp;
+    }
+}
+
+
+#endif
+
+#endif //M_CROSSPLATFORM

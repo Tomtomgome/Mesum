@@ -2,8 +2,8 @@
 #define M_ASSERTS
 #pragma once
 
-#include "Types.hpp"
-#include "Logger.hpp"
+#include <Types.hpp>
+#include <Logger/Logger.hpp>
 
 #include "signal.h"
 
