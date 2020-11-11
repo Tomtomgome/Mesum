@@ -9,6 +9,8 @@
 
 namespace m
 {
+    extern const logging::ChannelID PLAT_UNIX_ID;
+
     struct X11Context
     {
         void init();

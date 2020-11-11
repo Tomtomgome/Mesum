@@ -7,10 +7,10 @@
 #include <Kernel/Types.hpp>
 #include <Math/MathTypes.hpp>
 
-static const logging::ChannelID INPUT_LOG_ID = LOG_GET_ID();
-
 namespace m
 {
+	extern const logging::ChannelID INPUT_LOG_ID;
+
 	namespace input
 	{
 		using KeyActionCallback = Callback<void>;

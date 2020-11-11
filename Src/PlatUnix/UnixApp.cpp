@@ -11,7 +11,7 @@
 
 namespace m
 {
-    logging::ChannelID PLAT_UNIX_ID = LOG_GET_ID();
+    extern const logging::ChannelID PLAT_UNIX_ID = LOG_GET_ID();
 
     static input::Key translateKeySyms(const KeySym* keysyms, int width)
     {

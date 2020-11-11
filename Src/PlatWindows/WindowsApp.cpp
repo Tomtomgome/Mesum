@@ -7,7 +7,7 @@
 
 namespace m
 {
-    logging::ChannelID PLAT_WINDOWS_ID = LOG_GET_ID();
+    extern const logging::ChannelID PLAT_WINDOWS_ID = LOG_GET_ID();
 
 	LRESULT CALLBACK WindowProc(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 	{

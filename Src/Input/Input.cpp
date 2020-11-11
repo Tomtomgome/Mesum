@@ -2,6 +2,8 @@
 
 namespace m 
 {
+	extern const logging::ChannelID INPUT_LOG_ID = LOG_GET_ID();
+
 	namespace input
 	{
 		//------------------------------------------------------------

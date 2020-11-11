@@ -40,7 +40,7 @@ namespace logging {
 		logger(const std::string& name);
 
 		//! Get a new channel ID
-		ChannelID getNewChannelID();
+		const ChannelID getNewChannelID();
 
 		//! Set filters on the logger.
 		/*!
@@ -208,7 +208,7 @@ namespace logging {
 	}
 
 	template<typename log_policy>
-	ChannelID logger< log_policy >::getNewChannelID() {
+	const ChannelID logger< log_policy >::getNewChannelID() {
 		return nextChannelID <<= 1;
 	}
 

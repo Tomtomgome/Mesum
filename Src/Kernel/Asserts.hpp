@@ -17,7 +17,7 @@
 namespace m
 {
     //Not working as such, find better system to store the IDS and reference them
-    inline const logging::ChannelID ASSERT_ID = LOG_GET_ID();
+    extern const logging::ChannelID ASSERT_ID;
 
     inline void manage_simple_assert(mBool a_condition,
         const Int a_lineNumber, const Char* a_file)

@@ -12,7 +12,7 @@
 
 namespace m
 {
-    extern logging::ChannelID PLAT_WINDOWS_ID;
+    extern const logging::ChannelID PLAT_WINDOWS_ID;
 
     struct WIN32Context
     {
