@@ -1,9 +1,24 @@
+cmake_minimum_required(VERSION 3.12)
+
+set(ENGINE_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+
+if (UNIX)
+add_compile_definitions(M_UNIX)
+set(APP_DECLARE "")
+elseif(WIN32)
+add_compile_definitions(M_WINDOWS)
+set(APP_DECLARE WIN32)
+endif ()
 
 add_subdirectory(Logger)
 add_subdirectory(Kernel)
 add_subdirectory(Input)
 add_subdirectory(Simd)
 add_subdirectory(Math)
+
+add_subdirectory(Application)
+
+add_subdirectory(Apps)
 
 set(APP_NAME MesumMain)
 project(${APP_NAME} VERSION 1.0.0 DESCRIPTION "Main application used for practicing functionalities")

@@ -1,5 +1,3 @@
-cmake_minimum_required(VERSION 3.10)
-
 set(MODULE_NAME PlatWindows)
 
 project(${MODULE_NAME} VERSION 1.0.0 DESCRIPTION "Windows specific apis")
