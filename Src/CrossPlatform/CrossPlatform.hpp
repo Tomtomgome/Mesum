@@ -4,6 +4,17 @@
 
 #if defined M_UNIX
 
+#include <PlatUnix/UnixApp.hpp>
+
+namespace m
+{
+    namespace platform
+    {
+        extern const logging::ChannelID CROSSPLAT_LOG_ID;
+		using PlatformApp = platUnix::PlatformApp;
+    }
+}
+
 #elif defined M_WINDOWS
  
 #include <PlatWindows/WindowsApp.hpp>

@@ -58,6 +58,34 @@ void m_internal_run(LaunchData& a_data)
 }
 #elif defined M_UNIX
 
+struct LaunchData
+{
+    int argc;
+    char** argv;
+};
+
+template<typename AppClass>
+void m_internal_run(LaunchData& a_data)
+{
+	AppClass app;
+	app.setup(&a_data);
+	app.launch();
+}
+
+#define M_EXECUTE_CONSOLE_APP(AppClass) int main(int argc, char **argv)\
+{\
+    LaunchData data = {argc, argv};\
+    m_internal_run<AppClass>(data);\
+    return 0;\
+}
+
+#define M_EXECUTE_APP(AppClass) int main(int argc, char **argv)\
+{\
+    LaunchData data = {argc, argv};\
+    m_internal_run<AppClass>(data);\
+    return 0;\
+}
+
 #else
 
 #define EXECUTE_APP(AppClass) int main()\

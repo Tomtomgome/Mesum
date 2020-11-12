@@ -1,5 +1,6 @@
 #include <Main.hpp>
 
+#if defined M_WINDOWS
 
 bool m_init_console()
 {
@@ -13,3 +14,5 @@ bool m_init_console()
 	if (freopen_s(&g_ic_file_cin_stream, "CONIN$", "w+", stdin) != 0) { return false; } // For std::cin
 	return true;
 }
+
+#endif
