@@ -8,4 +8,16 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
 
+set(ENGINE_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Src)
+
+if (UNIX)
+add_compile_definitions(M_UNIX)
+set(APP_DECLARE "")
+elseif(WIN32)
+add_compile_definitions(M_WINDOWS)
+set(APP_DECLARE WIN32)
+endif ()
+
+
 add_subdirectory(${CMAKE_SOURCE_DIR}/Src)
+add_subdirectory(${CMAKE_SOURCE_DIR}/Apps)
