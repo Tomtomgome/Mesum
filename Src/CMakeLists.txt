@@ -12,3 +12,5 @@ add_subdirectory(PlatWindows)
 
 add_subdirectory(CrossPlatform)
 
+add_subdirectory(DX12Renderer)
+

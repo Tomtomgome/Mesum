@@ -6,6 +6,9 @@
 #include <Input/InputCommon.hpp>
 #include <CrossPlatform/CrossPlatform.hpp>
 
+
+const logging::ChannelID CUBEAPP_ID = LOG_GET_ID();
+
 class CubeMover
 {
 public:
@@ -27,7 +30,7 @@ public:
 		{
 			x += speed;
 		}
-		LOG("Se deplace : ", x, ":", y);
+		LOG_TO(CUBEAPP_ID, "Se deplace : ", x, ":", y);
 	}
 
 	void set_moveUp() { m_up = true; }
@@ -50,6 +53,11 @@ private:
 
 class CubeMoverApp : public m::platform::PlatformApp
 {
+	virtual void configure() override
+	{
+		m::platform::PlatformApp::configure();
+	}
+
     virtual void init() override
 	{
 		m::platform::PlatformApp::init();
@@ -76,7 +84,12 @@ class CubeMoverApp : public m::platform::PlatformApp
     virtual m::mBool step(const m::Double& a_deltaTime) override
     {
 		m::mBool signalKeepRunning = m::platform::PlatformApp::step(a_deltaTime);
-        LOG("Bonjour !, dt = ", a_deltaTime, "ms");
+		if (get_cmdLine().get_arg(L"-NoLog"))
+		{
+			LOG_DISABLE(CUBEAPP_ID);
+		}
+
+        LOG_TO(CUBEAPP_ID, "Bonjour !, dt = ", a_deltaTime, "ms");
 
 		m_mover.move(m_x, m_y);
 

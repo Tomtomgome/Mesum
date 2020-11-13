@@ -41,5 +41,11 @@ namespace m
 
 			destroy();
 		}
+
+
+		void IPlatformAppBase::init()
+		{
+			configure();
+		}
 	};
 };

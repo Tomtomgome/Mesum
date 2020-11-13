@@ -5,7 +5,8 @@ project(${MODULE_NAME} VERSION 1.0.0 DESCRIPTION "Types and asserts")
 set(SOURCES Kernel.cpp)
 set(HEADERS Types.hpp
             Asserts.hpp
-            Callbacks.hpp)
+            Callbacks.hpp
+            Kernel.hpp)
 
 add_library(${MODULE_NAME} ${SOURCES} ${HEADERS})
 

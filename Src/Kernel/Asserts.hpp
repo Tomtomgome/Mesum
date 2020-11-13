@@ -42,13 +42,17 @@ namespace m
 
 };
 
+#define WIDE2(x) L##x
+#define WIDE1(x) WIDE2(x)
+#define WFILE WIDE1(__FILE__)
+
 //PLATFORM_SPECIFIC
 #ifdef NDEBUG
 #define mAssert(condition) 
 #define mHardAssert(condition) 
 #else
-#define mAssert(condition) m::manage_simple_assert(condition, __LINE__, __FILE__);
-#define mHardAssert(condition) m::manage_blocking_assert(condition, __LINE__, __FILE__);
+#define mAssert(condition) m::manage_simple_assert(condition, __LINE__, WFILE);
+#define mHardAssert(condition) m::manage_blocking_assert(condition, __LINE__, WFILE);
 #endif
 
 #endif //M_ASSERTS

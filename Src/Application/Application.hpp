@@ -3,6 +3,7 @@
 #pragma once
 
 #include <Kernel/Types.hpp>
+#include <Kernel/Kernel.hpp>
 
 #include <chrono>
 #include <thread>
@@ -42,6 +43,13 @@ namespace m
             virtual mBool step() = 0;
         public:
             virtual void launch() final;
+        };
+
+        class IPlatformAppBase : public ITimedLoopApplication
+        {
+            virtual void configure() = 0;
+        protected:
+            virtual void init() override;
         };
     }
 

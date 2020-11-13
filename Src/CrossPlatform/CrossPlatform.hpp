@@ -11,7 +11,7 @@ namespace m
     namespace platform
     {
         extern const logging::ChannelID CROSSPLAT_LOG_ID;
-		using PlatformApp = platUnix::PlatformApp;
+		using namespace platUnix;
     }
 }
 
@@ -24,7 +24,7 @@ namespace m
     namespace platform
     {
         extern const logging::ChannelID CROSSPLAT_LOG_ID;
-		using PlatformApp = platWindows::PlatformApp;
+        using namespace platWindows;
     }
 }
 

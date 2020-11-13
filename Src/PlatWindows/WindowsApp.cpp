@@ -6,6 +6,9 @@
 #include <WindowsApp.hpp>
 #include <Application/Main.hpp>
 
+#include <shellapi.h>
+#include <stdlib.h>
+
 namespace m
 {
 	namespace platWindows
@@ -251,7 +254,17 @@ namespace m
 
 		void PlatformApp::init()
 		{
+			application::IPlatformAppBase::init();
 			LaunchData const& data = *(LaunchData*)m_appData;
+
+			Int argc;
+			Char** argv = CommandLineToArgvW(data.m_pCmdLine, &argc);
+			if (argv != nullptr)
+			{
+				m_cmdLineArguments.parse_cmdLineAguments(argc, argv);
+				LocalFree(argv);
+			}
+
 			// Register the window class.
 			const wchar_t CLASS_NAME[] = L"MainWindowClass";
 
