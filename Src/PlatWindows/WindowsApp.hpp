@@ -35,7 +35,10 @@ namespace m
             LRESULT process_messages(UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam);
 
             const CmdLine& get_cmdLine() const { return m_cmdLineArguments; }
-            void link_inputManager(input::InputManager* a_InputManager) { m_linkedInputManager = a_InputManager; };
+
+            void link_inputManager(input::InputManager* a_inputManager) { m_linkedInputManager = a_inputManager; };
+            void set_size(UInt a_width, UInt a_height) { m_clientWidth = a_width; m_clientHeight = a_height; }
+
         protected:
             virtual void configure() override {}
             virtual void init() override;
@@ -54,8 +57,8 @@ namespace m
 			mBool g_Fullscreen = false;
 
 
-			U32 g_ClientWidth = 1280;
-			U32 g_ClientHeight = 720;
+			U32 m_clientWidth = 1280;
+			U32 m_clientHeight = 720;
 
 
 			// Window rectangle (used to toggle fullscreen state).

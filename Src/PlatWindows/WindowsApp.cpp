@@ -254,9 +254,8 @@ namespace m
 
 		void PlatformApp::init()
 		{
-			application::IPlatformAppBase::init();
 			LaunchData const& data = *(LaunchData*)m_appData;
-
+			//Find better way to manage arguments
 			Int argc;
 			Char** argv = CommandLineToArgvW(data.m_pCmdLine, &argc);
 			if (argv != nullptr)
@@ -264,6 +263,8 @@ namespace m
 				m_cmdLineArguments.parse_cmdLineAguments(argc, argv);
 				LocalFree(argv);
 			}
+
+			application::IPlatformAppBase::init();
 
 			// Register the window class.
 			const wchar_t CLASS_NAME[] = L"MainWindowClass";
@@ -286,7 +287,7 @@ namespace m
 				WS_OVERLAPPEDWINDOW,            // Window style
 
 				// Size and position
-				CW_USEDEFAULT, CW_USEDEFAULT, 600, 400,
+				CW_USEDEFAULT, CW_USEDEFAULT, m_clientWidth, m_clientHeight,
 
 				NULL,       // Parent window
 				NULL,       // Menu

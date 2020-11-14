@@ -56,12 +56,25 @@ class CubeMoverApp : public m::platform::PlatformApp
 	virtual void configure() override
 	{
 		m::platform::PlatformApp::configure();
+		m::UInt width = 1280;
+		m::UInt height = 720;
+		if (get_cmdLine().get_parameter(L"-w", width))
+		{
+			LOG_TO(CUBEAPP_ID, "Width not overriden, use default : ", width);
+		}
+
+		if (get_cmdLine().get_parameter(L"-h", height))
+		{
+			LOG_TO(CUBEAPP_ID, "Height not overriden, use default : ", height);
+		}
+
+		set_size(width, height);
+		link_inputManager(&m_inputManager);
 	}
 
     virtual void init() override
 	{
 		m::platform::PlatformApp::init();
-		m::platform::PlatformApp::link_inputManager(&m_inputManager);
 		m_inputManager.attachToKeyEvent(m::input::KeyAction::keyPressed(m::input::KEY_UP), m::input::KeyActionCallback(&m_mover, &CubeMover::set_moveUp));
 		m_inputManager.attachToKeyEvent(m::input::KeyAction::keyPressed(m::input::KEY_DOWN), m::input::KeyActionCallback(&m_mover, &CubeMover::set_moveDown));
 		m_inputManager.attachToKeyEvent(m::input::KeyAction::keyPressed(m::input::KEY_LEFT), m::input::KeyActionCallback(&m_mover, &CubeMover::set_moveLeft));
@@ -86,7 +99,7 @@ class CubeMoverApp : public m::platform::PlatformApp
 		m::mBool signalKeepRunning = m::platform::PlatformApp::step(a_deltaTime);
 		if (get_cmdLine().get_arg(L"-NoLog"))
 		{
-			LOG_DISABLE(CUBEAPP_ID);
+			//LOG_DISABLE(CUBEAPP_ID);
 		}
 
         LOG_TO(CUBEAPP_ID, "Bonjour !, dt = ", a_deltaTime, "ms");

@@ -10,10 +10,9 @@ namespace m
         for (Int i = 0; i < argc; ++i)
         {
             std::wstring arg(argv[i]);
-            m_foundArgs.insert(arg);
-            if(m_keysParameteredArgs.find(arg) != m_keysParameteredArgs.end())
+            if (std::find(m_listArgs.begin(), m_listArgs.end(), arg) == m_listArgs.end())
             {
-                m_keysParams[arg] = std::wstring(argv[i++]);
+                m_listArgs.push_back(arg);
             }
         }
     }
