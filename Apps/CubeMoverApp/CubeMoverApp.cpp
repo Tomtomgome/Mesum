@@ -58,17 +58,18 @@ class CubeMoverApp : public m::platform::PlatformApp
 		m::platform::PlatformApp::configure();
 		m::UInt width = 1280;
 		m::UInt height = 720;
-		if (get_cmdLine().get_parameter(L"-w", width))
+		if (!get_cmdLine().get_parameter(L"-w", width))
 		{
 			LOG_TO(CUBEAPP_ID, "Width not overriden, use default : ", width);
 		}
 
-		if (get_cmdLine().get_parameter(L"-h", height))
+		if (!get_cmdLine().get_parameter(L"-h", height))
 		{
 			LOG_TO(CUBEAPP_ID, "Height not overriden, use default : ", height);
 		}
 
 		set_size(width, height);
+		set_windowName(L"Cube mover app");
 		link_inputManager(&m_inputManager);
 	}
 

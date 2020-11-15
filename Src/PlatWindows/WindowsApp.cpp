@@ -159,8 +159,9 @@ namespace m
 			return KEY_UNKNOWN;
 		}
 
-		void WIN32Context::init()
+		void WIN32Context::init(HINSTANCE& a_hInstance)
 		{
+			m_hInstance = a_hInstance;
 			init_keysLuts();
 		}
 
@@ -189,6 +190,55 @@ namespace m
 		{
 			init_keysLuts();
 		}
+
+		void WIN32Context::register_windowClass(const Char* a_className, HINSTANCE a_hInstance)
+		{
+			WNDCLASSEXW windowClass = {};
+			windowClass.cbSize = sizeof(WNDCLASSEX);
+			windowClass.style = CS_HREDRAW | CS_VREDRAW;
+			windowClass.lpfnWndProc = WindowProc;
+			windowClass.hInstance = a_hInstance;
+			windowClass.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+			windowClass.lpszClassName = a_className;
+
+			RegisterClassEx(&windowClass);
+		}
+
+		HWND WIN32Context::create_window(const Char* a_className, std::wstring a_windowName, U32 a_width, U32 a_height, HINSTANCE a_hInstance)
+		{
+			Int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+			Int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+
+			RECT windowRect = { 0, 0, a_width, a_height };
+			AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, FALSE);
+
+			Int windowWidth = windowRect.right - windowRect.left;
+			Int windowHeight = windowRect.bottom - windowRect.top;
+
+			Int windowPosX = std::max<Int>(0, (screenWidth - windowWidth)/2);
+			Int windowPosY = std::max<Int>(0, (screenHeight - windowHeight)/2);
+			// Create the window.
+
+			HWND hwnd = CreateWindowExW(
+				NULL,							// Optional window styles.
+				a_className,                    // Window class
+				a_windowName.c_str(),			// Window text
+				WS_OVERLAPPEDWINDOW,            // Window style
+
+				// Size and position
+				windowPosX, windowPosY, windowWidth, windowHeight,
+
+				NULL,							// Parent window
+				NULL,							// Menu
+				m_hInstance,					// Instance handle
+				nullptr							// Additional application data
+			);
+
+			mHardAssert(hwnd != NULL);
+
+			return hwnd;
+		}
+
 
 		input::Key WIN32Context::get_keyFromParam(WPARAM a_wParam)
 		{
@@ -254,7 +304,7 @@ namespace m
 
 		void PlatformApp::init()
 		{
-			LaunchData const& data = *(LaunchData*)m_appData;
+			LaunchData& data = *(LaunchData*)m_appData;
 			//Find better way to manage arguments
 			Int argc;
 			Char** argv = CommandLineToArgvW(data.m_pCmdLine, &argc);
@@ -266,36 +316,12 @@ namespace m
 
 			application::IPlatformAppBase::init();
 
+			m_W32Context.init(data.m_hInstance);
+
+			const Char className[] = L"MainWindowClass";
 			// Register the window class.
-			const wchar_t CLASS_NAME[] = L"MainWindowClass";
-
-			WNDCLASS wc = { };
-			wc.lpfnWndProc = WindowProc;
-			wc.hInstance = data.m_hInstance;
-			wc.lpszClassName = CLASS_NAME;
-
-			RegisterClass(&wc);
-
-			m_W32Context.init();
-
-			// Create the window.
-
-			m_hwnd = CreateWindowEx(
-				0,                              // Optional window styles.
-				CLASS_NAME,                     // Window class
-				L"Learn to Program Windows",    // Window text
-				WS_OVERLAPPEDWINDOW,            // Window style
-
-				// Size and position
-				CW_USEDEFAULT, CW_USEDEFAULT, m_clientWidth, m_clientHeight,
-
-				NULL,       // Parent window
-				NULL,       // Menu
-				data.m_hInstance,  // Instance handle
-				NULL        // Additional application data
-			);
-
-			mHardAssert(m_hwnd != NULL);
+			m_W32Context.register_windowClass(className, data.m_hInstance);
+			m_hwnd = m_W32Context.create_window(className, m_mainWindowName, m_clientWidth, m_clientHeight, data.m_hInstance);
 
 			SetWindowLongPtr(m_hwnd, GWLP_USERDATA, LONG_PTR(this));
 
