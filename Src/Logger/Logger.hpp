@@ -10,14 +10,14 @@
 
 #ifdef SAVE_LOGS
 //! The default file logger
-static logging::logger<logging::file_log_policy> log_inst("execution.log");
+static logging::logger<logging::file_log_policy> log_inst(L"execution.log");
 #else
 //! The default stream logger
-static logging::logger<logging::stdcout_log_policy> log_inst("");
+static logging::logger<logging::stdcout_log_policy> log_inst(L"");
 #endif
 
 //! Macro used to get a channel ID
-#define LOG_GET_ID log_inst.getNewChannelID
+#define LOG_GET_ID log_inst.get_newChannelID
 
 #ifdef LOGGING_LEVEL_1
 //! Macro used to log simple debug messages
@@ -28,11 +28,11 @@ static logging::logger<logging::stdcout_log_policy> log_inst("");
 #define LOG_WARN log_inst.print<logging::severity_type::warning>
 
 //! Macro used to log simple debug messages to a channel
-#define LOG_TO log_inst.printToChannel<logging::severity_type::debug>
+#define LOG_TO log_inst.print_toChannel<logging::severity_type::debug>
 //! Macro used to log simple error messages to a channel
-#define LOG_ERR_TO log_inst.printToChannel<logging::severity_type::error>
+#define LOG_ERR_TO log_inst.print_toChannel<logging::severity_type::error>
 //! Macro used to log simple warning messages to a channel
-#define LOG_WARN_TO log_inst.printToChannel<logging::severity_type::warning>
+#define LOG_WARN_TO log_inst.print_toChannel<logging::severity_type::warning>
 #else
 
 //! Macro used to log simple debug messages
@@ -59,11 +59,11 @@ static logging::logger<logging::stdcout_log_policy> log_inst("");
 //! Macro used to log verbose warning messages
 #define VLOG_WARN log_inst.print<logging::severity_type::warning>
 //! Macro used to log verbose debug messages to a channel
-#define VLOG_TO log_inst.printToChannel<logging::severity_type::debug>
+#define VLOG_TO log_inst.print_toChannel<logging::severity_type::debug>
 //! Macro used to log verbose error messages to a channel
-#define VLOG_ERR_TO log_inst.printToChannel<logging::severity_type::error>
+#define VLOG_ERR_TO log_inst.print_toChannel<logging::severity_type::error>
 //! Macro used to log verbose warning messages to a channel
-#define VLOG_WARN_TO log_inst.printToChannel<logging::severity_type::warning>
+#define VLOG_WARN_TO log_inst.print_toChannel<logging::severity_type::warning>
 
 #else
 
@@ -84,11 +84,11 @@ static logging::logger<logging::stdcout_log_policy> log_inst("");
 
 #if (defined LOGGING_LEVEL_1) || (defined LOGGING_LEVEL_2)
 //! Macro used to set filters for the logger
-#define LOG_FILTER log_inst.setFilter
+#define LOG_FILTER log_inst.set_filter
 //! Macro used to enable channels of the logger
-#define LOG_ENABLE log_inst.enableChannels
+#define LOG_ENABLE log_inst.enable_channels
 //! Macro used to disable channels the logger
-#define LOG_DISABLE log_inst.disableChannels
+#define LOG_DISABLE log_inst.disable_channels
 
 #else
 //! Macro used to set filters for the logger

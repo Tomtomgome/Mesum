@@ -37,28 +37,28 @@ namespace logging {
 		/*!
 			\param	name	the output stream name.
 		*/
-		logger(const std::string& name);
+		logger(const std::wstring& name);
 
 		//! Get a new channel ID
-		const ChannelID getNewChannelID();
+		const ChannelID get_newChannelID();
 
 		//! Set filters on the logger.
 		/*!
 			\param	filters		The channels that will be allowed.
 		*/
-		void setFilter(const ChannelFilter filters);
+		void set_filter(const ChannelFilter filters);
 
 		//! Disable channels of the logger.
 		/*!
 			\param	filters		The channels to disable if enabled.
 		*/
-		void disableChannels(const ChannelFilter filters);
+		void disable_channels(const ChannelFilter filters);
 
 		//! Enable channels of the logger.
 		/*!
 			\param	filters		The channels to enable if disabled.
 		*/
-		void enableChannels(const ChannelFilter filters);
+		void enable_channels(const ChannelFilter filters);
 
 		//! Print things in the logs using a specified channel
 		/*!
@@ -68,7 +68,7 @@ namespace logging {
 			\param	channel		the channel number to print to.
 		*/
 		template< severity_type severity, typename...Rest >
-		void printToChannel(uint64_t channel, Rest...args);
+		void print_toChannel(uint64_t channel, Rest...args);
 		//! Print things in the logs
 		/*!
 			\tparam	severity	the severity of the things to log.
@@ -82,12 +82,12 @@ namespace logging {
 		~logger();
 	private:
 		//!	Get the time of the day into a string format.
-		std::string get_time();
+		std::wstring get_time();
 		//!	Construct the header of the log line.
-		std::string get_logline_header();
+		std::wstring get_loglineHeader();
 		
 		//!	The current line to write.
-		std::stringstream log_stream;
+		std::wstringstream log_stream;
 		//!	Pointer to the logpolicy to use.
 		log_policy* policy;
 		//! Mutex preventing multiple writes to the output file.
@@ -118,7 +118,7 @@ namespace logging {
 
 	template< typename log_policy >
 	template< severity_type severity, typename...Rest >
-	void logger< log_policy >::printToChannel(uint64_t channel, Rest...args) {
+	void logger< log_policy >::print_toChannel(uint64_t channel, Rest...args) {
 		if (channel & filter) {
 			print< severity >(args...);
 		}
@@ -132,13 +132,13 @@ namespace logging {
 		switch (severity)
 		{
 		case severity_type::debug:
-			log_stream << "<DEBUG> :";
+			log_stream << L"<DEBUG> :";
 			break;
 		case severity_type::warning:
-			log_stream << "<WARNING> :";
+			log_stream << L"<WARNING> :";
 			break;
 		case severity_type::error:
-			log_stream << "<ERROR> :";
+			log_stream << L"<ERROR> :";
 			break;
 		};
 		print_impl(args...);
@@ -148,8 +148,8 @@ namespace logging {
 	template< typename log_policy >
 	void logger< log_policy >::print_impl()
 	{
-		policy->write(get_logline_header() + log_stream.str());
-		log_stream.str("");
+		policy->write(get_loglineHeader() + log_stream.str());
+		log_stream.str(L"");
 	}
 
 	template< typename log_policy >
@@ -161,32 +161,32 @@ namespace logging {
 	}
 
 	template< typename log_policy >
-	std::string logger< log_policy >::get_time()
+	std::wstring logger< log_policy >::get_time()
 	{
-		std::string time_str;
+		std::wstring time_str;
 		time_t raw_time;
 		time(&raw_time);
-		time_str = ctime(&raw_time);
+		time_str = _wctime(&raw_time);
 		//without the newline character
 		return time_str.substr(0, time_str.size() - 1);
 	}
 
 	template< typename log_policy >
-	std::string logger< log_policy >::get_logline_header()
+	std::wstring logger< log_policy >::get_loglineHeader()
 	{
-		std::stringstream header;
-		header.str("");
+		std::wstringstream header;
+		header.str(L"");
 		header.fill('0');
 		header.width(7);
-		header << log_line_number++ << " < " << get_time() << " - ";
+		header << log_line_number++ << L" < " << get_time() << L" - ";
 		header.fill('0');
 		header.width(7);
-		header << clock() << " > ~ ";
+		header << clock() << L" > ~ ";
 		return header.str();
 	}
 
 	template< typename log_policy >
-	logger< log_policy >::logger(const std::string& name)
+	logger< log_policy >::logger(const std::wstring& name)
 	{
 		log_line_number = 0;
 		policy = new log_policy;
@@ -208,22 +208,22 @@ namespace logging {
 	}
 
 	template<typename log_policy>
-	const ChannelID logger< log_policy >::getNewChannelID() {
+	const ChannelID logger< log_policy >::get_newChannelID() {
 		return nextChannelID <<= 1;
 	}
 
 	template<typename log_policy>
-	void logger< log_policy >::setFilter(const ChannelFilter filters) {
+	void logger< log_policy >::set_filter(const ChannelFilter filters) {
 		filter = filters;
 	}
 
 	template<typename log_policy>
-	void logger< log_policy >::disableChannels(const ChannelFilter filters) {
+	void logger< log_policy >::disable_channels(const ChannelFilter filters) {
 		filter = filter & ~filters;
 	}
 
 	template<typename log_policy>
-	void logger< log_policy >::enableChannels(const ChannelFilter filters) {
+	void logger< log_policy >::enable_channels(const ChannelFilter filters) {
 		filter = filter | filters;
 	}
 
