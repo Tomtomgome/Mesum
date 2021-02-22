@@ -18,7 +18,7 @@ namespace m
 
 		LRESULT CALLBACK WindowProc(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 		{
-			PlatformApp* dataApp = reinterpret_cast<PlatformApp*>(GetWindowLongPtr(a_hwnd, GWLP_USERDATA));
+			PlatformWindow* dataApp = reinterpret_cast<PlatformWindow*>(GetWindowLongPtr(a_hwnd, GWLP_USERDATA));
 			if (dataApp != NULL)
 			{
 				return dataApp->process_messages(a_uMsg, a_wParam, a_lParam);
@@ -205,7 +205,7 @@ namespace m
 			RegisterClassEx(&windowClass);
 		}
 
-		HWND WIN32Context::create_window(const Char* a_className, std::wstring a_windowName, U32 a_width, U32 a_height, HINSTANCE a_hInstance)
+		HWND WIN32Context::create_window(const Char* a_className, std::wstring a_windowName, U32 a_width, U32 a_height) const
 		{
 			Int screenWidth = GetSystemMetrics(SM_CXSCREEN);
 			Int screenHeight = GetSystemMetrics(SM_CYSCREEN);
@@ -241,7 +241,7 @@ namespace m
 		}
 
 
-		input::Key WIN32Context::get_keyFromParam(WPARAM a_wParam)
+		input::Key WIN32Context::get_keyFromParam(WPARAM a_wParam) const
 		{
 			I64 scancode = a_wParam;
 			if (scancode < 0 || scancode > 255)
@@ -251,7 +251,7 @@ namespace m
 			return m_lut_keycodes[scancode];
 		}
 
-		LRESULT PlatformApp::process_messages(UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
+		LRESULT PlatformWindow::process_messages(UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 		{
 			LRESULT result = 0;
 			switch (a_uMsg)
@@ -259,7 +259,7 @@ namespace m
 			case WM_KEYDOWN:
 			{
 				if (m_linkedInputManager != nullptr) {
-					input::Key k = m_W32Context.get_keyFromParam(a_wParam);
+					input::Key k = m_parentContext->get_keyFromParam(a_wParam);
 
 					m_linkedInputManager->processKeyEvent(k, 0, input::Action::PRESSED,
 						input::KeyMod::NONE);
@@ -270,7 +270,7 @@ namespace m
 			case WM_KEYUP:
 			{
 				if (m_linkedInputManager != nullptr) {
-					input::Key k = m_W32Context.get_keyFromParam(a_wParam);
+					input::Key k = m_parentContext->get_keyFromParam(a_wParam);
 
 					m_linkedInputManager->processKeyEvent(k, 0, input::Action::RELEASED,
 						input::KeyMod::NONE);
@@ -299,7 +299,31 @@ namespace m
 			return result;
 		}
 
-		void PlatformApp::set_fullScreen(mBool a_fullscreen)
+		void PlatformWindow::init(WIN32Context const& a_winContext)
+		{
+			const Char className[] = L"MainWindowClass";
+			m_parentContext = &a_winContext;
+			m_hwnd = a_winContext.create_window(className, m_windowName, m_clientWidth, m_clientHeight);
+			GetWindowRect(m_hwnd, &m_windowRect);
+
+			SetWindowLongPtr(m_hwnd, GWLP_USERDATA, LONG_PTR(this));
+
+			dx12::DX12Renderer::gs_dx12Renderer.init(m_hwnd, m_clientWidth, m_clientHeight);
+
+			ShowWindow(m_hwnd, SW_NORMAL);
+		}
+
+		void PlatformWindow::render()
+		{
+			dx12::DX12Renderer::gs_dx12Renderer.render();
+		}
+
+		void PlatformWindow::destroy()
+		{
+			dx12::DX12Renderer::gs_dx12Renderer.deinit();
+		}
+
+		void PlatformWindow::set_fullScreen(mBool a_fullscreen)
 		{
 			if (m_fullscreen != a_fullscreen)
 			{
@@ -307,7 +331,7 @@ namespace m
 			}
 		}
 
-		void PlatformApp::toggle_fullScreen()
+		void PlatformWindow::toggle_fullScreen()
 		{
 			m_fullscreen = !m_fullscreen;
 
@@ -350,6 +374,18 @@ namespace m
 			}
 		}
 
+		PlatformWindow* PlatformApp::add_newWindow(std::wstring a_name, U32 a_width, U32 a_height)
+		{
+			PlatformWindow* newWindow = new PlatformWindow();
+			m_windows.push_back(newWindow);
+
+			newWindow->set_size(a_width, a_height);
+			newWindow->set_windowName(a_name);
+			newWindow->init(m_W32Context);
+
+			return newWindow;
+		}
+
 		void PlatformApp::init()
 		{
 			LaunchData& data = *(LaunchData*)m_appData;
@@ -362,8 +398,6 @@ namespace m
 				LocalFree(argv);
 			}
 
-			application::IPlatformAppBase::init();
-
 			m_W32Context.init(data.m_hInstance);
 
 			// Windows 10 Creators update adds Per Monitor V2 DPI awareness context.
@@ -375,20 +409,16 @@ namespace m
 			const Char className[] = L"MainWindowClass";
 			// Register the window class.
 			m_W32Context.register_windowClass(className, data.m_hInstance);
-			m_hwnd = m_W32Context.create_window(className, m_mainWindowName, m_clientWidth, m_clientHeight, data.m_hInstance);
-			GetWindowRect(m_hwnd, &m_windowRect);
-
-			SetWindowLongPtr(m_hwnd, GWLP_USERDATA, LONG_PTR(this));
-
-			dx12::DX12Renderer::gs_dx12Renderer.init(m_hwnd, m_clientWidth, m_clientHeight);
-
-			ShowWindow(m_hwnd, data.m_nCmdShow);
-
 		}
 
 		void PlatformApp::destroy()
 		{
-			dx12::DX12Renderer::gs_dx12Renderer.deinit();
+			for (UInt i = 0; i < m_windows.size(); ++i)
+			{
+				m_windows[i]->destroy();
+				delete m_windows[i];
+			}
+			m_windows.clear();
 
 			m_W32Context.destroy();
 		}
@@ -399,12 +429,6 @@ namespace m
 
 			// Run the message loop.
 			MSG msg = { };
-
-
-			//RedrawWindow(m_hwnd, NULL, NULL, RDW_INTERNALPAINT);
-
-			dx12::DX12Renderer::gs_dx12Renderer.render();
-
 			while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 			{
 				if (msg.message == WM_QUIT)
@@ -416,7 +440,10 @@ namespace m
 				DispatchMessage(&msg);
 			}
 
-			m_linkedInputManager->processAndUpdateStates();
+			for (UInt i = 0; i < m_windows.size(); ++i)
+			{
+				m_windows[i]->render();
+			}
 
 			return signalKeepRunning;
 		}

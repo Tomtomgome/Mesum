@@ -44,13 +44,6 @@ namespace m
         public:
             virtual void launch() final;
         };
-
-        class IPlatformAppBase : public ITimedLoopApplication
-        {
-            virtual void configure() = 0;
-        protected:
-            virtual void init() override;
-        };
     }
 
 }

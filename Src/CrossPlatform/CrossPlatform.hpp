@@ -31,4 +31,13 @@ namespace m
 
 #endif
 
+namespace m
+{
+    namespace crossPlatform
+    {
+        using Window = platform::PlatformWindow;
+        using IApplication = platform::PlatformApp;
+    }
+}
+
 #endif //M_CROSSPLATFORM

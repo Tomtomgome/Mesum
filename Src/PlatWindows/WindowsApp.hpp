@@ -25,10 +25,10 @@ namespace m
 
             // Windows
 			void register_windowClass(const Char* a_className, HINSTANCE a_hInstance);
-			HWND create_window(const Char* a_className, std::wstring a_windowName, U32 a_clientWidth, U32 a_clientHeight, HINSTANCE a_hInstance);
+			HWND create_window(const Char* a_className, std::wstring a_windowName, U32 a_clientWidth, U32 a_clientHeight) const;
 
             //Keys and inputs
-            input::Key get_keyFromParam(WPARAM a_wParam);
+            input::Key get_keyFromParam(WPARAM a_wParam) const;
 
 
             //Properties
@@ -38,23 +38,49 @@ namespace m
             HINSTANCE       m_hInstance;
         };
 
-        class PlatformApp : public application::IPlatformAppBase
+        class PlatformWindow
+        {
+		public:
+			//Platform specific
+			LRESULT process_messages(UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam);
+
+			void init(WIN32Context const& a_winContext);
+            void render();
+			void destroy();
+
+			void link_inputManager(input::InputManager* a_inputManager) { m_linkedInputManager = a_inputManager; };
+			void set_size(UInt a_width, UInt a_height) { m_clientWidth = a_width; m_clientHeight = a_height; }
+			void set_windowName(std::wstring a_name) { m_windowName = a_name; }
+			void set_fullScreen(mBool a_fullscreen);
+			void toggle_fullScreen();
+		private:
+			input::InputManager* m_linkedInputManager;
+
+			HWND            m_hwnd;
+
+			// By default, use windowed mode.
+			// Can be toggled with F11
+			mBool m_fullscreen = false;
+
+			std::wstring    m_windowName;
+			U32             m_clientWidth = 1280;
+			U32             m_clientHeight = 720;
+
+			// Window rectangle (used to toggle fullscreen state).
+			RECT m_windowRect;
+
+            WIN32Context const* m_parentContext;
+        };
+
+        class PlatformApp : public application::ITimedLoopApplication
         {
         public:
-            //Platform specific
-            LRESULT process_messages(UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam);
-
             //Cross platform
             const CmdLine& get_cmdLine() const { return m_cmdLineArguments; }
 
-            void link_inputManager(input::InputManager* a_inputManager) { m_linkedInputManager = a_inputManager; };
-            void set_size(UInt a_width, UInt a_height) { m_clientWidth = a_width; m_clientHeight = a_height; }
-            void set_windowName(std::wstring a_name) { m_mainWindowName = a_name; }
-            void set_fullScreen(mBool a_fullscreen);
-            void toggle_fullScreen();
+            PlatformWindow* add_newWindow(std::wstring a_name, U32 a_width, U32 a_height);
 
         protected:
-            virtual void configure() override {}
             virtual void init() override;
             virtual void destroy() override;
             virtual mBool step(const Double& a_deltaTime) override;
@@ -62,22 +88,9 @@ namespace m
 
         private:
             CmdLine                 m_cmdLineArguments;
-            input::InputManager*    m_linkedInputManager;
-
-			HWND            m_hwnd;
             WIN32Context    m_W32Context;
 
-			// By default, use windowed mode.
-			// Can be toggled with the Alt+Enter or F11
-			mBool m_fullscreen = false;
-
-            std::wstring    m_mainWindowName;
-			U32             m_clientWidth = 1280;
-			U32             m_clientHeight = 720;
-
-
-			// Window rectangle (used to toggle fullscreen state).
-			RECT m_windowRect;
+            std::vector<PlatformWindow*> m_windows;
         };
     }
 };

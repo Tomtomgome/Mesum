@@ -51,11 +51,12 @@ private:
 	m::mBool  m_right = false;
 };
 
-class CubeMoverApp : public m::platform::PlatformApp
+class CubeMoverApp : public m::crossPlatform::IApplication
 {
-	virtual void configure() override
+    virtual void init() override
 	{
-		m::platform::PlatformApp::configure();
+		m::platform::PlatformApp::init();
+
 		m::UInt width = 1280;
 		m::UInt height = 720;
 		if (!get_cmdLine().get_parameter(L"-w", width))
@@ -68,16 +69,10 @@ class CubeMoverApp : public m::platform::PlatformApp
 			LOG_TO(CUBEAPP_ID, "Height not overriden, use default : ", height);
 		}
 
-		set_size(width, height);
-		set_windowName(L"Cube mover app");
-		link_inputManager(&m_inputManager);
-	}
+		m_mainWindow = add_newWindow(L"Cube mover app", width, height);
+		m_mainWindow->link_inputManager(&m_inputManager);
 
-    virtual void init() override
-	{
-		m::platform::PlatformApp::init();
-
-		m_inputManager.attachToKeyEvent(m::input::KeyAction::keyPressed(m::input::KEY_F11), m::input::KeyActionCallback((m::platform::PlatformApp*)this, &m::platform::PlatformApp::toggle_fullScreen));
+		m_inputManager.attachToKeyEvent(m::input::KeyAction::keyPressed(m::input::KEY_F11), m::input::KeyActionCallback(m_mainWindow, &m::platform::PlatformWindow::toggle_fullScreen));
 
 		m_inputManager.attachToKeyEvent(m::input::KeyAction::keyPressed(m::input::KEY_UP), m::input::KeyActionCallback(&m_mover, &CubeMover::set_moveUp));
 		m_inputManager.attachToKeyEvent(m::input::KeyAction::keyPressed(m::input::KEY_DOWN), m::input::KeyActionCallback(&m_mover, &CubeMover::set_moveDown));
@@ -101,6 +96,9 @@ class CubeMoverApp : public m::platform::PlatformApp
     virtual m::mBool step(const m::Double& a_deltaTime) override
     {
 		m::mBool signalKeepRunning = m::platform::PlatformApp::step(a_deltaTime);
+
+		m_inputManager.processAndUpdateStates();
+
 		if (get_cmdLine().get_arg(L"-NoLog"))
 		{
 			LOG_DISABLE(CUBEAPP_ID);
@@ -117,6 +115,7 @@ class CubeMoverApp : public m::platform::PlatformApp
 	m::Float m_y = 0.0f;
 
 	m::input::InputManager m_inputManager;
+	m::crossPlatform::Window* m_mainWindow;
 	CubeMover           m_mover;
 };
 
