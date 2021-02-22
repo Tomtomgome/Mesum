@@ -50,12 +50,15 @@ namespace m
             void link_inputManager(input::InputManager* a_inputManager) { m_linkedInputManager = a_inputManager; };
             void set_size(UInt a_width, UInt a_height) { m_clientWidth = a_width; m_clientHeight = a_height; }
             void set_windowName(std::wstring a_name) { m_mainWindowName = a_name; }
+            void set_fullScreen(mBool a_fullscreen);
+            void toggle_fullScreen();
 
         protected:
             virtual void configure() override {}
             virtual void init() override;
             virtual void destroy() override;
             virtual mBool step(const Double& a_deltaTime) override;
+
 
         private:
             CmdLine                 m_cmdLineArguments;
@@ -66,7 +69,7 @@ namespace m
 
 			// By default, use windowed mode.
 			// Can be toggled with the Alt+Enter or F11
-			mBool g_Fullscreen = false;
+			mBool m_fullscreen = false;
 
             std::wstring    m_mainWindowName;
 			U32             m_clientWidth = 1280;
@@ -74,7 +77,7 @@ namespace m
 
 
 			// Window rectangle (used to toggle fullscreen state).
-			RECT g_WindowRect;
+			RECT m_windowRect;
         };
     }
 };

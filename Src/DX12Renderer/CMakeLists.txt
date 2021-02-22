@@ -12,6 +12,6 @@ set_target_properties(${MODULE_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(${MODULE_NAME} PROPERTIES PUBLIC_HEADER DX12Renderer.hpp)
 set_target_properties(${MODULE_NAME} PROPERTIES FOLDER "Render")
 
-target_link_libraries(${MODULE_NAME} PUBLIC Logger INTERFACE Math)
+target_link_libraries(${MODULE_NAME} PUBLIC Logger Kernel d3d12.lib dxgi.lib INTERFACE Math)
 
 target_include_directories(${MODULE_NAME} PUBLIC  . ..)

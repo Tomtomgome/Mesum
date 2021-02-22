@@ -14,6 +14,12 @@
 #define mInterrupt
 #endif
 
+#if defined _DEBUG || !defined(NDEBUG)
+#define M_DEBUG
+#else
+#define M_RELEASE
+#endif
+
 namespace m
 {
     //Not working as such, find better system to store the IDS and reference them
@@ -47,7 +53,7 @@ namespace m
 #define WFILE WIDE1(__FILE__)
 
 //PLATFORM_SPECIFIC
-#ifdef NDEBUG
+#ifdef M_RELEASE
 #define mAssert(condition) 
 #define mHardAssert(condition) 
 #else

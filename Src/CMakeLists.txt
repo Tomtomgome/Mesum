@@ -8,9 +8,10 @@ add_subdirectory(Math)
 add_subdirectory(Application)
 
 add_subdirectory(PlatUnix)
+
+add_subdirectory(DX12Renderer)
 add_subdirectory(PlatWindows)
 
 add_subdirectory(CrossPlatform)
 
-add_subdirectory(DX12Renderer)
 

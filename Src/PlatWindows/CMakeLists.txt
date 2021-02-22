@@ -11,6 +11,6 @@ set_target_properties(${MODULE_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(${MODULE_NAME} PROPERTIES PUBLIC_HEADER WindowsApp.hpp)
 set_target_properties(${MODULE_NAME} PROPERTIES FOLDER "Platform")
 
-target_link_libraries(${MODULE_NAME} PUBLIC Logger Input Application INTERFACE Math)
+target_link_libraries(${MODULE_NAME} PUBLIC Logger Input Application DX12Renderer INTERFACE Math)
 
 target_include_directories(${MODULE_NAME} PUBLIC  . ..)

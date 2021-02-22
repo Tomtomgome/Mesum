@@ -44,7 +44,7 @@ public:
 	void set_notMoveRight() { m_right = false; }
 
 private:
-	m::Float speed = 0.016 * 100;
+	m::Float speed = 0.016f * 100.f;
 	m::mBool  m_up = false;
 	m::mBool  m_down = false;
 	m::mBool  m_left = false;
@@ -76,6 +76,9 @@ class CubeMoverApp : public m::platform::PlatformApp
     virtual void init() override
 	{
 		m::platform::PlatformApp::init();
+
+		m_inputManager.attachToKeyEvent(m::input::KeyAction::keyPressed(m::input::KEY_F11), m::input::KeyActionCallback((m::platform::PlatformApp*)this, &m::platform::PlatformApp::toggle_fullScreen));
+
 		m_inputManager.attachToKeyEvent(m::input::KeyAction::keyPressed(m::input::KEY_UP), m::input::KeyActionCallback(&m_mover, &CubeMover::set_moveUp));
 		m_inputManager.attachToKeyEvent(m::input::KeyAction::keyPressed(m::input::KEY_DOWN), m::input::KeyActionCallback(&m_mover, &CubeMover::set_moveDown));
 		m_inputManager.attachToKeyEvent(m::input::KeyAction::keyPressed(m::input::KEY_LEFT), m::input::KeyActionCallback(&m_mover, &CubeMover::set_moveLeft));
@@ -100,7 +103,7 @@ class CubeMoverApp : public m::platform::PlatformApp
 		m::mBool signalKeepRunning = m::platform::PlatformApp::step(a_deltaTime);
 		if (get_cmdLine().get_arg(L"-NoLog"))
 		{
-			//LOG_DISABLE(CUBEAPP_ID);
+			LOG_DISABLE(CUBEAPP_ID);
 		}
 
         LOG_TO(CUBEAPP_ID, "Bonjour !, dt = ", a_deltaTime, "ms");

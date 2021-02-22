@@ -5,6 +5,7 @@
 #include <Input/Keys.hpp>
 #include <WindowsApp.hpp>
 #include <Application/Main.hpp>
+#include <DX12Renderer/DX12Renderer.hpp>
 
 #include <shellapi.h>
 #include <stdlib.h>
@@ -209,7 +210,7 @@ namespace m
 			Int screenWidth = GetSystemMetrics(SM_CXSCREEN);
 			Int screenHeight = GetSystemMetrics(SM_CYSCREEN);
 
-			RECT windowRect = { 0, 0, a_width, a_height };
+			RECT windowRect = { 0, 0, (long)a_width, (long)a_height };
 			AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, FALSE);
 
 			Int windowWidth = windowRect.right - windowRect.left;
@@ -281,25 +282,72 @@ namespace m
 				PostQuitMessage(0);
 				break;
 
-			case WM_PAINT:
+			case WM_SIZE:
 			{
-				PAINTSTRUCT ps;
-				HDC hdc = BeginPaint(m_hwnd, &ps);
+				RECT clientRect = {};
+				::GetClientRect(m_hwnd, &clientRect);
 
+				U32 width = clientRect.right - clientRect.left;
+				U32 height = clientRect.bottom - clientRect.top;
 
-
-				FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
-				RECT cube = { 0, 0, 0 + 10, 0 + 10 };
-				FillRect(hdc, &cube, (HBRUSH)(COLOR_BACKGROUND));
-
-				EndPaint(m_hwnd, &ps);
+				dx12::DX12Renderer::gs_dx12Renderer.resize(width, height);
 			}
 			break;
-
 			default:
 				result = DefWindowProc(m_hwnd, a_uMsg, a_wParam, a_lParam);
 			}
 			return result;
+		}
+
+		void PlatformApp::set_fullScreen(mBool a_fullscreen)
+		{
+			if (m_fullscreen != a_fullscreen)
+			{
+				toggle_fullScreen();
+			}
+		}
+
+		void PlatformApp::toggle_fullScreen()
+		{
+			m_fullscreen = !m_fullscreen;
+
+			if (m_fullscreen)
+			{
+				GetWindowRect(m_hwnd, &m_windowRect);
+
+				UINT windowStyle = WS_OVERLAPPEDWINDOW & ~(WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX);
+
+				SetWindowLongW(m_hwnd, GWL_STYLE, windowStyle);
+				// Query the name of the nearest display device for the window.
+				// This is required to set the fullscreen dimensions of the window
+				// when using a multi-monitor setup.
+				HMONITOR hMonitor = ::MonitorFromWindow(m_hwnd, MONITOR_DEFAULTTONEAREST);
+				MONITORINFOEX monitorInfo = {};
+				monitorInfo.cbSize = sizeof(MONITORINFOEX);
+				GetMonitorInfo(hMonitor, &monitorInfo);
+				SetWindowPos(m_hwnd, HWND_TOP,
+					monitorInfo.rcMonitor.left,
+					monitorInfo.rcMonitor.top,
+					monitorInfo.rcMonitor.right - monitorInfo.rcMonitor.left,
+					monitorInfo.rcMonitor.bottom - monitorInfo.rcMonitor.top,
+					SWP_FRAMECHANGED | SWP_NOACTIVATE);
+
+				ShowWindow(m_hwnd, SW_MAXIMIZE);
+			}
+			else
+			{
+					// Restore all the window decorators.
+				SetWindowLong(m_hwnd, GWL_STYLE, WS_OVERLAPPEDWINDOW);
+
+				SetWindowPos(m_hwnd, HWND_NOTOPMOST,
+					m_windowRect.left,
+					m_windowRect.top,
+					m_windowRect.right - m_windowRect.left,
+					m_windowRect.bottom - m_windowRect.top,
+					SWP_FRAMECHANGED | SWP_NOACTIVATE);
+
+				ShowWindow(m_hwnd, SW_NORMAL);
+			}
 		}
 
 		void PlatformApp::init()
@@ -318,12 +366,21 @@ namespace m
 
 			m_W32Context.init(data.m_hInstance);
 
+			// Windows 10 Creators update adds Per Monitor V2 DPI awareness context.
+			// Using this awareness context allows the client area of the window
+			// to achieve 100% scaling while still allowing non-client window content to
+			// be rendered in a DPI sensitive fashion.
+			SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+
 			const Char className[] = L"MainWindowClass";
 			// Register the window class.
 			m_W32Context.register_windowClass(className, data.m_hInstance);
 			m_hwnd = m_W32Context.create_window(className, m_mainWindowName, m_clientWidth, m_clientHeight, data.m_hInstance);
+			GetWindowRect(m_hwnd, &m_windowRect);
 
 			SetWindowLongPtr(m_hwnd, GWLP_USERDATA, LONG_PTR(this));
+
+			dx12::DX12Renderer::gs_dx12Renderer.init(m_hwnd, m_clientWidth, m_clientHeight);
 
 			ShowWindow(m_hwnd, data.m_nCmdShow);
 
@@ -331,6 +388,8 @@ namespace m
 
 		void PlatformApp::destroy()
 		{
+			dx12::DX12Renderer::gs_dx12Renderer.deinit();
+
 			m_W32Context.destroy();
 		}
 
@@ -342,9 +401,9 @@ namespace m
 			MSG msg = { };
 
 
-			RedrawWindow(m_hwnd, NULL, NULL, RDW_INTERNALPAINT);
+			//RedrawWindow(m_hwnd, NULL, NULL, RDW_INTERNALPAINT);
 
-
+			dx12::DX12Renderer::gs_dx12Renderer.render();
 
 			while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 			{

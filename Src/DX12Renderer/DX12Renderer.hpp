@@ -19,12 +19,54 @@ namespace m
 {	
 	namespace dx12
 	{
+		//Based on https://www.3dgep.com/learning-directx-12-1/
 		using namespace Microsoft::WRL;
+
+		extern const logging::ChannelID DX_RENDERER_ID;
+
+		inline void check_MicrosoftHRESULT(HRESULT a_hr)
+		{
+			if (FAILED(a_hr))
+			{
+				LOG_ERR_TO(DX_RENDERER_ID, "HRESULT FAIL");
+				mHardAssert(false);
+			}
+		}
+
+		void enable_debugLayer();
+		bool check_tearingSupport();
+
+		ComPtr<IDXGIAdapter4> get_adapter(mBool a_useWarp);
+
+		ComPtr<ID3D12Device2>			create_device(ComPtr<IDXGIAdapter4> a_adapter);
+		ComPtr<ID3D12CommandQueue>		create_commandQueue(ComPtr<ID3D12Device2> a_device, D3D12_COMMAND_LIST_TYPE a_type);
+		ComPtr<IDXGISwapChain4>			create_swapChain(HWND a_hWnd, ComPtr<ID3D12CommandQueue> a_commandQueue, uint32_t a_width, uint32_t a_height, uint32_t a_bufferCount);
+		ComPtr<ID3D12DescriptorHeap>	create_descriptorHeap(ComPtr<ID3D12Device2> a_device, D3D12_DESCRIPTOR_HEAP_TYPE a_type, uint32_t a_numDescriptors);
+		ComPtr<ID3D12CommandAllocator>	create_commandAllocator(ComPtr<ID3D12Device2> a_device, D3D12_COMMAND_LIST_TYPE a_type);
+		ComPtr<ID3D12GraphicsCommandList> create_commandList(ComPtr<ID3D12Device2> a_device, ComPtr<ID3D12CommandAllocator> a_commandAllocator, D3D12_COMMAND_LIST_TYPE a_type);
+		ComPtr<ID3D12Fence>				create_fence(ComPtr<ID3D12Device2> a_device);
+		HANDLE							create_eventHandle();
+		U64								signal_fence(ComPtr<ID3D12CommandQueue> a_commandQueue, ComPtr<ID3D12Fence> a_fence, U64& a_fenceValue);
+		void							wait_fenceValue(ComPtr<ID3D12Fence> a_fence, uint64_t a_fenceValue, HANDLE a_fenceEvent, std::chrono::milliseconds a_duration = std::chrono::milliseconds::max());
+		void							flush(ComPtr<ID3D12CommandQueue> a_commandQueue, ComPtr<ID3D12Fence> a_fence, uint64_t& a_fenceValue, HANDLE a_fenceEvent);
 
 		class DX12Renderer
 		{
+		public:
+			static DX12Renderer gs_dx12Renderer;
+
+			void		init(HWND a_hwnd, U32 a_width, U32 a_height, mBool a_useWarp = false);
+			void		deinit();
+
+			void		render();
+
+			void		resize(U32 a_width, U32 a_height);
+
+		private:
+			void		update_renderTargetViews(ComPtr<ID3D12Device2> a_device, ComPtr<IDXGISwapChain4> a_swapChain, ComPtr<ID3D12DescriptorHeap> a_descriptorHeap);
+
 			// The number of swap chain back buffers.
-			static const U8 g_NumFrames = 3;
+			static const U8 scm_numFrames = 3;
 
 			// Use WARP adapter
 			mBool g_UseWarp = false;
@@ -33,27 +75,34 @@ namespace m
 			mBool g_IsInitialized = false;
 
 			// DirectX 12 Objects
-			ComPtr<ID3D12Device2> g_Device;
-			ComPtr<ID3D12CommandQueue> g_CommandQueue;
-			ComPtr<IDXGISwapChain4> g_SwapChain;
-			ComPtr<ID3D12Resource> g_BackBuffers[g_NumFrames];
-			ComPtr<ID3D12GraphicsCommandList> g_CommandList;
-			ComPtr<ID3D12CommandAllocator> g_CommandAllocators[g_NumFrames];
-			ComPtr<ID3D12DescriptorHeap> g_RTVDescriptorHeap;
-			UInt g_RTVDescriptorSize;
-			UInt g_CurrentBackBufferIndex;
+			ComPtr<ID3D12Device2> m_device;
+			ComPtr<ID3D12CommandQueue> m_commandQueue;
+			ComPtr<IDXGISwapChain4> m_swapChain;
+			ComPtr<ID3D12Resource> m_backBuffers[scm_numFrames];
+			ComPtr<ID3D12GraphicsCommandList> m_commandList;
+			ComPtr<ID3D12CommandAllocator> m_commandAllocators[scm_numFrames];
+			ComPtr<ID3D12DescriptorHeap> m_RTVDescriptorHeap;
+			UInt m_RTVDescriptorSize;
+			UInt m_currentBackBufferIndex;
 
 			// Synchronization objects
-			ComPtr<ID3D12Fence> g_Fence;
-			U64 g_FenceValue = 0;
-			U64 g_FrameFenceValues[g_NumFrames] = {};
-			HANDLE g_FenceEvent;
+			ComPtr<ID3D12Fence> m_fence;
+			U64 m_fenceValue = 0;
+			U64 m_frameFenceValues[scm_numFrames] = {};
+			HANDLE m_fenceEvent;
 
 			// By default, enable V-Sync.
 			// Can be toggled with the V key.
-			mBool g_VSync = true;
-			mBool g_TearingSupported = false;
+			mBool m_vSync = true;
+			mBool m_tearingSupported = false;
+
+			//Surface description
+			U32 m_clientWidth;
+			U32 m_clientHeight;
+
 		};
+
+		//extern DX12Renderer g_dx12Renderer;
 	}
 }
 #endif //M_DX12RENDERER
