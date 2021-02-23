@@ -50,40 +50,64 @@ namespace m
 		void							wait_fenceValue(ComPtr<ID3D12Fence> a_fence, uint64_t a_fenceValue, HANDLE a_fenceEvent, std::chrono::milliseconds a_duration = std::chrono::milliseconds::max());
 		void							flush(ComPtr<ID3D12CommandQueue> a_commandQueue, ComPtr<ID3D12Fence> a_fence, uint64_t& a_fenceValue, HANDLE a_fenceEvent);
 
-		class DX12Renderer
+		class DX12Context
 		{
 		public:
-			static DX12Renderer gs_dx12Renderer;
+			static DX12Context gs_dx12Contexte;
 
-			void		init(HWND a_hwnd, U32 a_width, U32 a_height, mBool a_useWarp = false);
+			void		init(mBool a_useWarp = false);
 			void		deinit();
 
-			void		render();
+			UInt		get_syncInterval() {
+				return m_vSync ? 1 : 0;
+			}
 
-			void		resize(U32 a_width, U32 a_height);
+			UInt		get_presentFlags() {
+				return m_tearingSupported && !m_vSync ? DXGI_PRESENT_ALLOW_TEARING : 0;
+			}
 
+			// DirectX 12 Objects
+			ComPtr<ID3D12Device2> m_device;
+			ComPtr<ID3D12CommandQueue> m_commandQueue;
 		private:
-			void		update_renderTargetViews(ComPtr<ID3D12Device2> a_device, ComPtr<IDXGISwapChain4> a_swapChain, ComPtr<ID3D12DescriptorHeap> a_descriptorHeap);
-
-			// The number of swap chain back buffers.
-			static const U8 scm_numFrames = 3;
-
 			// Use WARP adapter
 			mBool g_UseWarp = false;
 
 			// Set to true once the DX12 objects have been initialized.
 			mBool g_IsInitialized = false;
 
-			// DirectX 12 Objects
-			ComPtr<ID3D12Device2> m_device;
-			ComPtr<ID3D12CommandQueue> m_commandQueue;
+			// By default, enable V-Sync.
+			// Can be toggled with the V key.
+			mBool m_vSync = true;
+			mBool m_tearingSupported = false;
+
+		};
+
+		class DX12Window
+		{
+		public:
+			void init(HWND a_hwnd, U32 a_width, U32 a_height);
+			void destroy();
+
+			void render();
+
+			void		resize(U32 a_width, U32 a_height);
+		private:
+
+			void		update_renderTargetViews(ComPtr<ID3D12Device2> a_device, ComPtr<IDXGISwapChain4> a_swapChain, ComPtr<ID3D12DescriptorHeap> a_descriptorHeap);
+
+			// The number of swap chain back buffers.
+			static const U8 scm_numFrames = 3;
+
 			ComPtr<IDXGISwapChain4> m_swapChain;
 			ComPtr<ID3D12Resource> m_backBuffers[scm_numFrames];
-			ComPtr<ID3D12GraphicsCommandList> m_commandList;
-			ComPtr<ID3D12CommandAllocator> m_commandAllocators[scm_numFrames];
+			UInt m_currentBackBufferIndex;
+
 			ComPtr<ID3D12DescriptorHeap> m_RTVDescriptorHeap;
 			UInt m_RTVDescriptorSize;
-			UInt m_currentBackBufferIndex;
+
+			ComPtr<ID3D12GraphicsCommandList> m_commandList;
+			ComPtr<ID3D12CommandAllocator> m_commandAllocators[scm_numFrames];
 
 			// Synchronization objects
 			ComPtr<ID3D12Fence> m_fence;
@@ -91,15 +115,9 @@ namespace m
 			U64 m_frameFenceValues[scm_numFrames] = {};
 			HANDLE m_fenceEvent;
 
-			// By default, enable V-Sync.
-			// Can be toggled with the V key.
-			mBool m_vSync = true;
-			mBool m_tearingSupported = false;
-
 			//Surface description
 			U32 m_clientWidth;
 			U32 m_clientHeight;
-
 		};
 
 		//extern DX12Renderer g_dx12Renderer;

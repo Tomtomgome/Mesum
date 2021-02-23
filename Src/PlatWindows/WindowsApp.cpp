@@ -290,7 +290,7 @@ namespace m
 				U32 width = clientRect.right - clientRect.left;
 				U32 height = clientRect.bottom - clientRect.top;
 
-				dx12::DX12Renderer::gs_dx12Renderer.resize(width, height);
+				m_window.resize(width, height);
 			}
 			break;
 			default:
@@ -308,19 +308,19 @@ namespace m
 
 			SetWindowLongPtr(m_hwnd, GWLP_USERDATA, LONG_PTR(this));
 
-			dx12::DX12Renderer::gs_dx12Renderer.init(m_hwnd, m_clientWidth, m_clientHeight);
+			m_window.init(m_hwnd, m_clientWidth, m_clientHeight);
 
 			ShowWindow(m_hwnd, SW_NORMAL);
 		}
 
 		void PlatformWindow::render()
 		{
-			dx12::DX12Renderer::gs_dx12Renderer.render();
+			m_window.render();
 		}
 
 		void PlatformWindow::destroy()
 		{
-			dx12::DX12Renderer::gs_dx12Renderer.deinit();
+			m_window.destroy();
 		}
 
 		void PlatformWindow::set_fullScreen(mBool a_fullscreen)
@@ -409,6 +409,8 @@ namespace m
 			const Char className[] = L"MainWindowClass";
 			// Register the window class.
 			m_W32Context.register_windowClass(className, data.m_hInstance);
+
+			dx12::DX12Context::gs_dx12Contexte.init();
 		}
 
 		void PlatformApp::destroy()
@@ -419,6 +421,8 @@ namespace m
 				delete m_windows[i];
 			}
 			m_windows.clear();
+
+			dx12::DX12Context::gs_dx12Contexte.deinit();
 
 			m_W32Context.destroy();
 		}

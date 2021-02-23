@@ -6,7 +6,7 @@ namespace m
 	{
 		extern const logging::ChannelID DX_RENDERER_ID = LOG_GET_ID();
 		//extern DX12Renderer g_dx12Renderer;
-		DX12Renderer DX12Renderer::gs_dx12Renderer;
+		DX12Context DX12Context::gs_dx12Contexte;
 
 		void enable_debugLayer()
 		{
@@ -251,69 +251,57 @@ namespace m
 			wait_fenceValue(a_fence, fenceValueForSignal, a_fenceEvent);
 		}
 
-		void DX12Renderer::init(HWND a_hwnd, U32 a_width, U32 a_height, mBool a_useWarp)
+		void DX12Context::init(mBool a_useWarp)
 		{
 			enable_debugLayer();
 
 			m_tearingSupported = check_tearingSupport();
-
-			m_clientWidth = a_width;
-			m_clientHeight = a_height;
 
 			ComPtr<IDXGIAdapter4> dxgiAdapter4 = get_adapter(a_useWarp);
 
 			m_device = create_device(dxgiAdapter4);
 
 			m_commandQueue = create_commandQueue(m_device, D3D12_COMMAND_LIST_TYPE_DIRECT);
+		}
 
-			m_swapChain = create_swapChain(a_hwnd, m_commandQueue,
-				m_clientWidth, m_clientHeight, scm_numFrames);
+		void DX12Context::deinit()
+		{
+		}
+
+		void DX12Window::init(HWND a_hwnd, U32 a_width, U32 a_height)
+		{
+			m_clientWidth = a_width;
+			m_clientHeight = a_height;
+
+			m_swapChain = create_swapChain(a_hwnd, DX12Context::gs_dx12Contexte.m_commandQueue,
+				a_width, a_height, scm_numFrames);
 
 			m_currentBackBufferIndex = m_swapChain->GetCurrentBackBufferIndex();
 
-			m_RTVDescriptorHeap = create_descriptorHeap(m_device, D3D12_DESCRIPTOR_HEAP_TYPE_RTV, scm_numFrames);
-			m_RTVDescriptorSize = m_device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+			m_RTVDescriptorHeap = create_descriptorHeap(DX12Context::gs_dx12Contexte.m_device, D3D12_DESCRIPTOR_HEAP_TYPE_RTV, scm_numFrames);
+			m_RTVDescriptorSize = DX12Context::gs_dx12Contexte.m_device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 
-			update_renderTargetViews(m_device, m_swapChain, m_RTVDescriptorHeap);
+			update_renderTargetViews(DX12Context::gs_dx12Contexte.m_device, m_swapChain, m_RTVDescriptorHeap);
 
 			for (Int i = 0; i < scm_numFrames; ++i)
 			{
-				m_commandAllocators[i] = create_commandAllocator(m_device, D3D12_COMMAND_LIST_TYPE_DIRECT);
+				m_commandAllocators[i] = create_commandAllocator(DX12Context::gs_dx12Contexte.m_device, D3D12_COMMAND_LIST_TYPE_DIRECT);
 			}
-			m_commandList = create_commandList(m_device,
+			m_commandList = create_commandList(DX12Context::gs_dx12Contexte.m_device,
 				m_commandAllocators[m_currentBackBufferIndex], D3D12_COMMAND_LIST_TYPE_DIRECT);
 
-			m_fence = create_fence(m_device);
+			m_fence = create_fence(DX12Context::gs_dx12Contexte.m_device);
 			m_fenceEvent = create_eventHandle();
 		}
 
-		void DX12Renderer::deinit()
+		void DX12Window::destroy()
 		{
-			flush(m_commandQueue, m_fence, m_fenceValue, m_fenceEvent);
+			flush(DX12Context::gs_dx12Contexte.m_commandQueue, m_fence, m_fenceValue, m_fenceEvent);
 
 			CloseHandle(m_fenceEvent);
 		}
 
-		void DX12Renderer::update_renderTargetViews(ComPtr<ID3D12Device2> a_device, ComPtr<IDXGISwapChain4> a_swapChain, ComPtr<ID3D12DescriptorHeap> a_descriptorHeap)
-		{
-			UInt size_rtvDescriptor = a_device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
-
-			CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(a_descriptorHeap->GetCPUDescriptorHandleForHeapStart());
-
-			for (int i = 0; i < scm_numFrames; ++i)
-			{
-				ComPtr<ID3D12Resource> backBuffer;
-				check_MicrosoftHRESULT(a_swapChain->GetBuffer(i, IID_PPV_ARGS(&backBuffer)));
-
-				a_device->CreateRenderTargetView(backBuffer.Get(), nullptr, rtvHandle);
-
-				m_backBuffers[i] = backBuffer;
-
-				rtvHandle.Offset(size_rtvDescriptor);
-			}
-		}
-
-		void DX12Renderer::render()
+		void DX12Window::render()
 		{
 			auto commandAllocator = m_commandAllocators[m_currentBackBufferIndex];
 			auto backBuffer = m_backBuffers[m_currentBackBufferIndex];
@@ -345,20 +333,20 @@ namespace m
 				ID3D12CommandList* const commandLists[] = {
 					m_commandList.Get()
 				};
-				m_commandQueue->ExecuteCommandLists(_countof(commandLists), commandLists);
+				DX12Context::gs_dx12Contexte.m_commandQueue->ExecuteCommandLists(_countof(commandLists), commandLists);
 
-				UINT syncInterval = m_vSync ? 1 : 0;
-				UINT presentFlags = m_tearingSupported && !m_vSync ? DXGI_PRESENT_ALLOW_TEARING : 0;
+				UINT syncInterval = DX12Context::gs_dx12Contexte.get_syncInterval();// m_vSync ? 1 : 0;
+				UINT presentFlags = DX12Context::gs_dx12Contexte.get_presentFlags(); //m_tearingSupported && !m_vSync ? DXGI_PRESENT_ALLOW_TEARING : 0;
 				check_MicrosoftHRESULT(m_swapChain->Present(syncInterval, presentFlags));
 
-				m_frameFenceValues[m_currentBackBufferIndex] = signal_fence(m_commandQueue, m_fence, m_fenceValue);
+				m_frameFenceValues[m_currentBackBufferIndex] = signal_fence(DX12Context::gs_dx12Contexte.m_commandQueue, m_fence, m_fenceValue);
 				m_currentBackBufferIndex = m_swapChain->GetCurrentBackBufferIndex();
 
 				wait_fenceValue(m_fence, m_frameFenceValues[m_currentBackBufferIndex], m_fenceEvent);
 			}
 		}
 
-		void DX12Renderer::resize(U32 a_width, U32 a_height)
+		void DX12Window::resize(U32 a_width, U32 a_height)
 		{
 			if (m_clientWidth != a_width || m_clientHeight != a_height)
 			{
@@ -366,7 +354,7 @@ namespace m
 				m_clientWidth = std::max(1u, a_width);
 				m_clientHeight = std::max(1u, a_height);
 
-				flush(m_commandQueue, m_fence, m_fenceValue, m_fenceEvent);
+				flush(DX12Context::gs_dx12Contexte.m_commandQueue, m_fence, m_fenceValue, m_fenceEvent);
 
 				for (Int i = 0; i < scm_numFrames; ++i)
 				{
@@ -381,7 +369,26 @@ namespace m
 				check_MicrosoftHRESULT(m_swapChain->ResizeBuffers(scm_numFrames, a_width, a_height, swapChainDesc.BufferDesc.Format, swapChainDesc.Flags));
 
 				m_currentBackBufferIndex = m_swapChain->GetCurrentBackBufferIndex();
-				update_renderTargetViews(m_device, m_swapChain, m_RTVDescriptorHeap);
+				update_renderTargetViews(DX12Context::gs_dx12Contexte.m_device, m_swapChain, m_RTVDescriptorHeap);
+			}
+		}
+
+		void DX12Window::update_renderTargetViews(ComPtr<ID3D12Device2> a_device, ComPtr<IDXGISwapChain4> a_swapChain, ComPtr<ID3D12DescriptorHeap> a_descriptorHeap)
+		{
+			UInt size_rtvDescriptor = a_device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+
+			CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(a_descriptorHeap->GetCPUDescriptorHandleForHeapStart());
+
+			for (int i = 0; i < scm_numFrames; ++i)
+			{
+				ComPtr<ID3D12Resource> backBuffer;
+				check_MicrosoftHRESULT(a_swapChain->GetBuffer(i, IID_PPV_ARGS(&backBuffer)));
+
+				a_device->CreateRenderTargetView(backBuffer.Get(), nullptr, rtvHandle);
+
+				m_backBuffers[i] = backBuffer;
+
+				rtvHandle.Offset(size_rtvDescriptor);
 			}
 		}
 	};

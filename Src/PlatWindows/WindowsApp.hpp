@@ -7,6 +7,7 @@
 #include <Application/Main.hpp>
 #include <Input/Input.hpp>
 
+#include <DX12Renderer/DX12Renderer.hpp>
 
 #include <wrl.h>
 
@@ -70,6 +71,7 @@ namespace m
 			RECT m_windowRect;
 
             WIN32Context const* m_parentContext;
+            dx12::DX12Window m_window;
         };
 
         class PlatformApp : public application::ITimedLoopApplication

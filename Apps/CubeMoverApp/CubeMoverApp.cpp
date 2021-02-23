@@ -53,6 +53,12 @@ private:
 
 class CubeMoverApp : public m::crossPlatform::IApplication
 {
+	void add_applicationWindow()
+	{
+		m::crossPlatform::Window* m_secondWindow = add_newWindow(L"Test Second window", 600, 400);
+		m_secondWindow->link_inputManager(&m_inputManager);
+	}
+
     virtual void init() override
 	{
 		m::platform::PlatformApp::init();
@@ -70,9 +76,13 @@ class CubeMoverApp : public m::crossPlatform::IApplication
 		}
 
 		m_mainWindow = add_newWindow(L"Cube mover app", width, height);
+
+
 		m_mainWindow->link_inputManager(&m_inputManager);
 
 		m_inputManager.attachToKeyEvent(m::input::KeyAction::keyPressed(m::input::KEY_F11), m::input::KeyActionCallback(m_mainWindow, &m::platform::PlatformWindow::toggle_fullScreen));
+
+		m_inputManager.attachToKeyEvent(m::input::KeyAction::keyPressed(m::input::KEY_W), m::input::KeyActionCallback(this, &CubeMoverApp::add_applicationWindow));
 
 		m_inputManager.attachToKeyEvent(m::input::KeyAction::keyPressed(m::input::KEY_UP), m::input::KeyActionCallback(&m_mover, &CubeMover::set_moveUp));
 		m_inputManager.attachToKeyEvent(m::input::KeyAction::keyPressed(m::input::KEY_DOWN), m::input::KeyActionCallback(&m_mover, &CubeMover::set_moveDown));
