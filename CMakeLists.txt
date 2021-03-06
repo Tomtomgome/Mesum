@@ -21,7 +21,7 @@ endif ()
 set(BM_DYNAMIC_LINK "FALSE")
 
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/Src)
+#add_subdirectory(${CMAKE_SOURCE_DIR}/Src)
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/Engine)
 

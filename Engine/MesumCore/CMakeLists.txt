@@ -12,9 +12,9 @@ set(BM_LINK_MODE STATIC)
 endif()
 
 
-add_library(${MODULE_NAME} ${BM_LINK_MODE} includes.hpp $<TARGET_OBJECTS:Kernel2>)
+add_library(${MODULE_NAME} ${BM_LINK_MODE} includes.hpp $<TARGET_OBJECTS:Kernel>)
 
-target_link_libraries(${MODULE_NAME} Kernel2)
+target_link_libraries(${MODULE_NAME} Kernel)
 
 set_target_properties(${MODULE_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 #set_target_properties(${MODULE_NAME} PROPERTIES PUBLIC_HEADER HEADERS)

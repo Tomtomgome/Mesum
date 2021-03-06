@@ -1,4 +1,4 @@
-set(MODULE_NAME Kernel2)
+set(MODULE_NAME Kernel)
 
 project(${MODULE_NAME} VERSION 1.0.0 DESCRIPTION "Types, logs, asserts")
 
@@ -7,7 +7,9 @@ set(SOURCES Kernel.cpp
             LogPolicies.cpp
             Asserts.cpp
             Mains.cpp
-            Application.cpp)
+            Application.cpp
+            Input.cpp
+            )
 set(HEADERS Types.hpp
             Asserts.hpp
             Callbacks.hpp
@@ -21,6 +23,9 @@ set(HEADERS Types.hpp
             Mains.hpp
             Application.hpp
             Kernel_pch.hpp
+            Keys.hpp
+            Input.hpp
+            InputCommon.hpp
             ../MesumCore/Common.hpp)
 
 add_library(${MODULE_NAME} OBJECT ${SOURCES} ${HEADERS})

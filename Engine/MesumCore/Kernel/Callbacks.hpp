@@ -41,7 +41,7 @@ namespace m
 
 		rType call(Args...a_args)
 		{
-			mHardAssert(mBool(m_func));
+			mHardAssert(Bool(m_func));
 			return m_func(a_args...);
 		}
 
@@ -50,7 +50,7 @@ namespace m
             call(a_args...);
         }
 
-		friend mBool operator==(const Callback& lhs, const Callback& rhs)
+		friend Bool operator==(const Callback& lhs, const Callback& rhs)
 		{
 			return lhs.m_func.template target<functionType>() == rhs.m_func.template target<functionType>();
 		}
@@ -65,19 +65,19 @@ namespace m
 	public:
 		using handle = typename std::list<Callback<void, Args...>>::iterator;
 
-		handle attachToSignal(Callback<void, Args...> a_callback)
+		handle attach_ToSignal(Callback<void, Args...> a_callback)
 		{
 			m_callbacks.push_front(a_callback);
 			return m_callbacks.begin();
 
 		}
 
-		void detachFromSignal(Callback<void, Args...> a_callback)
+		void detach_FromSignal(Callback<void, Args...> a_callback)
 		{
 			m_callbacks.remove(a_callback);
 		}
 
-		void detachFromSignal(const handle& a_handle)
+		void detach_FromSignal(const handle& a_handle)
 		{
 			m_callbacks.erase(a_handle);
 		}
