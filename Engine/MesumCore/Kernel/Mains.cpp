@@ -1,18 +1,91 @@
 #include <Mains.hpp>
 
+#if defined M_WINDOWED_APP
 #if defined M_WINDOWS
-
-bool m_init_console()
+namespace m
 {
-    //HACK
-	static FILE* g_ic_file_cout_stream;
-	static FILE* g_ic_file_cerr_stream;
+bool init_console()
+{
+    // HACK
+    static FILE* g_ic_file_cout_stream;
+    static FILE* g_ic_file_cerr_stream;
     static FILE* g_ic_file_cin_stream;
-	if (!AllocConsole()) { return false; }
-	if (freopen_s(&g_ic_file_cout_stream, "CONOUT$", "w", stdout) != 0) { return false; } // For std::cout
-	if (freopen_s(&g_ic_file_cerr_stream, "CONERR$", "w", stderr) != 0) { return false; } // For std::cerr
-	if (freopen_s(&g_ic_file_cin_stream, "CONIN$", "w+", stdin) != 0) { return false; } // For std::cin
-	return true;
+    if (!AllocConsole())
+    {
+        return false;
+    }
+    if (freopen_s(&g_ic_file_cout_stream, "CONOUT$", "w", stdout) != 0)
+    {
+        return false;
+    }  // For std::cout
+    if (freopen_s(&g_ic_file_cerr_stream, "CONERR$", "w", stderr) != 0)
+    {
+        return false;
+    }  // For std::cerr
+    if (freopen_s(&g_ic_file_cin_stream, "CONIN$", "w+", stdin) != 0)
+    {
+        return false;
+    }  // For std::cin
+    return true;
 }
 
-#endif
+ShortChar* CommandLineToArgvA(LPWSTR lpWCmdLine, INT* pNumArgs)
+{
+    int     retval;
+    int     numArgs;
+    LPWSTR* args;
+    args = CommandLineToArgvW(lpWCmdLine, &numArgs);
+    if (args == NULL)
+        return NULL;
+
+    int storage = numArgs * sizeof(LPSTR);
+    for (int i = 0; i < numArgs; ++i)
+    {
+        BOOL lpUsedDefaultChar = FALSE;
+        retval = WideCharToMultiByte(CP_ACP, 0, args[i], -1, NULL, 0, NULL,
+                                     &lpUsedDefaultChar);
+        if (!SUCCEEDED(retval))
+        {
+            LocalFree(args);
+            return NULL;
+        }
+
+        storage += retval;
+    }
+
+    LPSTR* result = (LPSTR*)LocalAlloc(LMEM_FIXED, storage);
+    if (result == NULL)
+    {
+        LocalFree(args);
+        return NULL;
+    }
+
+    int   bufLen = storage - numArgs * sizeof(LPSTR);
+    LPSTR buffer = ((LPSTR)result) + numArgs * sizeof(LPSTR);
+    for (int i = 0; i < numArgs; ++i)
+    {
+        assert(bufLen > 0);
+        BOOL lpUsedDefaultChar = FALSE;
+        retval = WideCharToMultiByte(CP_ACP, 0, args[i], -1, buffer, bufLen,
+                                     NULL, &lpUsedDefaultChar);
+        if (!SUCCEEDED(retval))
+        {
+            LocalFree(result);
+            LocalFree(args);
+            return NULL;
+        }
+
+        result[i] = buffer;
+        buffer += retval;
+        bufLen -= retval;
+    }
+
+    LocalFree(args);
+
+    *pNumArgs = numArgs;
+    return result;
+}
+
+}  // namespace m
+#endif // M_WINDOWS
+#endif //M_WINDOWED_APP

@@ -6,7 +6,8 @@ set(SOURCES Kernel.cpp
             Log.cpp
             LogPolicies.cpp
             Asserts.cpp
-            Mains.cpp)
+            Mains.cpp
+            Application.cpp)
 set(HEADERS Types.hpp
             Asserts.hpp
             Callbacks.hpp
@@ -18,6 +19,7 @@ set(HEADERS Types.hpp
             Vec.inl
             MathTypes.hpp
             Mains.hpp
+            Application.hpp
             Kernel_pch.hpp
             ../MesumCore/Common.hpp)
 

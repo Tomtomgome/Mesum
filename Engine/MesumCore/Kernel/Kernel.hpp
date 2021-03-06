@@ -15,35 +15,56 @@
 
 namespace m
 {
-    struct CmdLine
+struct CmdLine
+{
+    void parse_cmdLineAguments(Int argc, ShortChar** argv);
+
+    template <class T>
+    const Bool get_parameter(const std::string a_key, T& a_result) const
     {
-        void parse_cmdLineAguments(Int argc, Char** argv);
-
-        template <class T>
-        const Bool get_parameter(const std::wstring a_key, T& a_result) const
+        auto found = std::find(m_listArgs.begin(), m_listArgs.end(), a_key);
+        if (found == m_listArgs.end())
         {
-
-            auto found = std::find(m_listArgs.begin(), m_listArgs.end(), a_key);
-            if(found == m_listArgs.end())
-            {
-                return false;
-            }
-
-            if (++found == m_listArgs.end())
-            {
-                return false;
-            }
-
-            std::basic_istringstream(*found) >> a_result;
-            return true;
+            return false;
         }
 
-        inline const Bool get_arg(const std::wstring a_arg) const
+        if (++found == m_listArgs.end())
         {
-            return std::find(m_listArgs.begin(), m_listArgs.end(), a_arg) != m_listArgs.end();
+            return false;
         }
 
-        std::vector<std::wstring> m_listArgs;
-    };
-}
+        std::basic_istringstream(*found) >> a_result;
+        return true;
+    }
+
+    inline const Bool get_arg(const std::string a_arg) const
+    {
+        return std::find(m_listArgs.begin(), m_listArgs.end(), a_arg) !=
+               m_listArgs.end();
+    }
+
+    std::vector<std::string> m_listArgs;
+};
+
+struct ConsoleLaunchData
+{
+    CmdLine m_cmdLine;
+};
+
+#if defined M_WINDOWED_APP
+
+#if defined M_WINDOWS
+struct WindowedLaunchData
+{
+    CmdLine m_cmdLine;
+
+    HINSTANCE m_hInstance;
+    m::Int    m_nCmdShow;
+};
+#elif defined M_UNIX
+using m::WindowedLaunchData = m::ConsoleLaunchData;
+#endif
+
+#endif
+}  // namespace m
 #endif //M_KERNEL

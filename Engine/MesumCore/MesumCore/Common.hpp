@@ -28,5 +28,8 @@
 #define M_UNIX
 #endif
 
+#if defined _M_WINDOWED
+#define M_WINDOWED_APP
+#endif //_M_WINDOWED
 
 #endif //M_CORE_COMMON

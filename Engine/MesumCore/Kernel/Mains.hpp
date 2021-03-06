@@ -4,8 +4,8 @@
 
 
 #include <MesumCore/Common.hpp>
-#include <Kernel/Types.hpp>
-#include <Kernel/Asserts.hpp>
+#include <Types.hpp>
+#include <Kernel.hpp>
 
 #if defined M_WINDOWS
 
@@ -29,84 +29,74 @@
 #include <winbase.h>
 #include <consoleapi.h>
 
-
-
-struct LaunchData
-{
-    HINSTANCE       m_hInstance;
-    PWSTR           m_pCmdLine;
-    m::Int          m_nCmdShow;
-};
-
-bool m_init_console();
-
-template<typename AppClass>
-void m_internal_console_run(LaunchData& a_data)
-{
-    m_init_console();
-    m_internal_run<AppClass>(a_data);
-	FreeConsole();
-}
-
-template<typename AppClass>
-void m_internal_run(LaunchData& a_data)
-{
-	AppClass app;
-	app.setup(&a_data);
-	app.launch();
-}
-
-#define M_EXECUTE_CONSOLE_APP(AppClass) m::Int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow)\
-{\
-    LaunchData data = {hInstance, pCmdLine, nCmdShow};\
-    m_internal_console_run<AppClass>(data);\
-    return 0;\
-}
-
-#define M_EXECUTE_APP(AppClass) m::Int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow)\
-{\
-    LaunchData data = {hInstance, pCmdLine, nCmdShow};\
-    m_internal_run<AppClass>(data);\
-    return 0;\
-}
-#elif defined M_UNIX
-
-struct LaunchData
-{
-    int argc;
-    char** argv;
-};
-
-template<typename AppClass>
-void m_internal_run(LaunchData& a_data)
-{
-	AppClass app;
-	app.setup(&a_data);
-	app.launch();
-}
-
-#define M_EXECUTE_CONSOLE_APP(AppClass) int main(int argc, char **argv)\
-{\
-    LaunchData data = {argc, argv};\
-    m_internal_run<AppClass>(data);\
-    return 0;\
-}
-
-#define M_EXECUTE_APP(AppClass) int main(int argc, char **argv)\
-{\
-    LaunchData data = {argc, argv};\
-    m_internal_run<AppClass>(data);\
-    return 0;\
-}
-
-#else
-
-#define EXECUTE_APP(AppClass) int main()\
-{\
-    mHardAssert(false)\
-    return 0;\
-}\
-
 #endif
 
+
+//*****************************************************************************
+//Console entry point
+//*****************************************************************************
+namespace m
+{
+template <typename AppClass>
+void internal_run(ConsoleLaunchData& a_data)
+{
+    AppClass app;
+    app.setup(&a_data);
+    app.launch();
+}
+}  // namespace m
+
+#define M_EXECUTE_CONSOLE_APP(AppClass)                   \
+    int main(m::Int argc, m::ShortChar** argv)            \
+    {                                                     \
+        m::ConsoleLaunchData data;                        \
+        data.m_cmdLine.parse_cmdLineAguments(argc, argv); \
+        m::internal_run<AppClass>(data);                  \
+        return 0;                                         \
+    }
+
+
+#if defined M_WINDOWED_APP
+
+//*****************************************************************************
+// Windowed entry point
+//*****************************************************************************
+#if defined M_WINDOWS
+namespace m
+{
+bool init_console();
+}  // namespace m
+#define M_EXECUTE_WINDOWED_APP(AppClass)                                   \
+    m::Int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, \
+                           int nCmdShow)                                   \
+    {                                                                      \
+        Int    argc;                                                       \
+        Char** argv = CommandLineToArgvA(pCmdLine, &argc);                 \
+        if (argv != nullptr)                                               \
+        {                                                                  \
+            m_cmdLineArguments.parse_cmdLineAguments(argc, argv);          \
+            LocalFree(argv);                                               \
+        }                                                                  \
+        m::ConsoleLaunchData data;                                         \
+        data.m_pCmdLine.parse_cmdLineAguments(argv, argv);                 \
+        data.m_hInstance = hInstance;                                      \
+        data.m_nCmdShow  = nCmdShow;                                       \
+        init_console();                                                    \
+        m_internal_run<AppClass>(data);                                    \
+        FreeConsole();                                                     \
+        return 0;                                                          \
+    }
+#elif defined M_UNIX
+
+#define M_EXECUTE_WINDOWED_APP(AppClass)                  \
+    int main(m::Int argc, m::ShortChar** argv)            \
+    {                                                     \
+        m::WindowedLaunchData data;                       \
+        data.m_cmdLine.parse_cmdLineAguments(argc, argv); \
+        m::internal_run<AppClass>(data);                  \
+        return 0;                                         \
+    }
+
+#endif
+#endif //M_WINDOWED_APP
 #endif //M_MAIN

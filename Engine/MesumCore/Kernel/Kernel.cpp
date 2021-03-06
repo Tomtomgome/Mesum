@@ -6,11 +6,11 @@ namespace m
 {
 	extern MesumCoreApi logging::Logger<m::logging::StdcoutLogPolicy> log_inst(L"");
 
-    void CmdLine::parse_cmdLineAguments(Int argc, Char** argv)
+    void CmdLine::parse_cmdLineAguments(Int argc, ShortChar** argv)
     {
         for (Int i = 0; i < argc; ++i)
         {
-            std::wstring arg(argv[i]);
+            std::string arg(argv[i]);
             if (std::find(m_listArgs.begin(), m_listArgs.end(), arg) == m_listArgs.end())
             {
                 m_listArgs.push_back(arg);
