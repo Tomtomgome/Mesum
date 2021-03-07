@@ -12,10 +12,10 @@ set(ENGINE_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Src)
 
 if (UNIX)
 add_compile_definitions(_M_UNIX)
-set(APP_DECLARE "")
+set(BM_APP_WINDOWED "")
 elseif(WIN32)
-add_compile_definitions(_M_WINDOWS)
-set(APP_DECLARE WIN32)
+add_compile_definitions(_M_WIN32)
+set(BM_APP_WINDOWED WIN32)
 endif ()
 
 set(BM_DYNAMIC_LINK "FALSE")

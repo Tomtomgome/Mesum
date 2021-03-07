@@ -5,7 +5,7 @@
 #include <Kernel/Types.hpp>
 #include <Kernel/Asserts.hpp>
 
-#if defined M_WINDOWS
+#if defined M_WIN32
 
 #ifndef UNICODE
 #define UNICODE

@@ -1,3 +1,4 @@
 #add_subdirectory(CubeMoverApp)
 #add_subdirectory(MathTest)
 add_subdirectory(ArchitectureTest)
+add_subdirectory(ArchitectureGraphicsTest)

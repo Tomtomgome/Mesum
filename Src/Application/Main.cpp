@@ -1,6 +1,6 @@
 #include <Main.hpp>
 
-#if defined M_WINDOWS
+#if defined M_WIN32
 
 bool m_init_console()
 {

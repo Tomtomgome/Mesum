@@ -2,6 +2,9 @@
 #include <MesumCore/Kernel/Application.hpp>
 #include <MesumCore/Kernel/Mains.hpp>
 
+
+const m::logging::ChannelID CUBEAPP_ID = mLOG_GET_ID();
+
 class TestBasicApp : public m::application::IBasicApplication
 {
 public:

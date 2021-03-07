@@ -2,7 +2,7 @@
 
 namespace m
 {
-    extern MesumCoreApi const logging::ChannelID ASSERT_ID = LOG_GET_ID();
+    extern MesumCoreApi const logging::ChannelID ASSERT_ID = mLOG_GET_ID();
 
 	void manage_simple_assert(Bool a_condition,
 		const Int a_lineNumber, const Char* a_file)

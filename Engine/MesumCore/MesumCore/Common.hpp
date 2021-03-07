@@ -22,8 +22,8 @@
 #define M_ENABLE_LOG
 //#define M_ENABLE_VERBOSE_LOG
 
-#if defined _M_WINDOWS
-#define M_WINDOWS
+#if defined _M_WIN32
+#define M_WIN32
 #elif defined _M_UNIX
 #define M_UNIX
 #endif

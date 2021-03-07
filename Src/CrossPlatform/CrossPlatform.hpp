@@ -15,7 +15,7 @@ namespace m
     }
 }
 
-#elif defined M_WINDOWS
+#elif defined M_WIN32
  
 #include <PlatWindows/WindowsApp.hpp>
 

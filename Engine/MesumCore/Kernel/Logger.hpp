@@ -14,7 +14,7 @@ extern MesumCoreApi logging::Logger<m::logging::StdcoutLogPolicy> log_inst;
 };
 
 //! Macro used to get a channel ID
-#define LOG_GET_ID log_inst.get_newChannelID
+#define mLOG_GET_ID m::log_inst.get_newChannelID
 
 #ifdef M_ENABLE_LOG
 //! Macro used to log simple debug messages

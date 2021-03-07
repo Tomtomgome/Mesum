@@ -1,10 +1,10 @@
-set(APP_NAME ArchitectureTest)
+set(APP_NAME ArchitectureGraphicsTest)
 
-project(${APP_NAME} VERSION 1.0.0 DESCRIPTION "Small test for Cmake")
+project(${APP_NAME} VERSION 1.0.0 DESCRIPTION "Small test for Cmake and mesum graphics")
 
-set(SOURCES BaseApps.cpp)
-add_executable(${APP_NAME} ${SOURCES})
-target_link_libraries(${APP_NAME} PUBLIC MesumCore)
+set(SOURCES WindowedApps.cpp)
+add_executable(${APP_NAME} ${BM_APP_WINDOWED} ${SOURCES})
+target_link_libraries(${APP_NAME} PUBLIC MesumCore MesumGraphics)
 set_target_properties(${APP_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 
 #add_custom_command(TARGET ${APP_NAME} POST_BUILD

@@ -2,7 +2,7 @@
 
 namespace m 
 {
-	extern const logging::ChannelID INPUT_LOG_ID = LOG_GET_ID();
+	extern const logging::ChannelID INPUT_LOG_ID = mLOG_GET_ID();
 
 	namespace input
 	{

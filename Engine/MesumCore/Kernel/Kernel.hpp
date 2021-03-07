@@ -53,7 +53,7 @@ struct ConsoleLaunchData
 
 #if defined M_WINDOWED_APP
 
-#if defined M_WINDOWS
+#if defined M_WIN32
 struct WindowedLaunchData
 {
     CmdLine m_cmdLine;
