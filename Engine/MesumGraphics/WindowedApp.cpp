@@ -1,6 +1,12 @@
 #include <WindowedApp.hpp>
-#include <shellapi.h>
 #include <MesumCore/Kernel/Asserts.hpp>
+
+#include <shellapi.h>
+#include <corecrt_io.h>
+#include <fcntl.h>
+#include <iosfwd>
+#include <winbase.h>
+
 
 #if defined M_WIN32
 namespace m

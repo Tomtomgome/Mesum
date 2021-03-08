@@ -1,6 +1,8 @@
 #include <WindowsImpl.hpp>
 #include <Win32Context.hpp>
-
+#ifndef UNICODE
+#define UNICODE
+#endif
 namespace m
 {
 namespace win32
@@ -48,7 +50,7 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
             m_window.resize(width, height);
         }
         break;
-        default: result = DefWindowProc(m_hwnd, a_uMsg, a_wParam, a_lParam);
+        default: result = DefWindowProcW(m_hwnd, a_uMsg, a_wParam, a_lParam);
     }
     return result;
 }

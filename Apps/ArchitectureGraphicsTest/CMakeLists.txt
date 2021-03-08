@@ -4,7 +4,7 @@ project(${APP_NAME} VERSION 1.0.0 DESCRIPTION "Small test for Cmake and mesum gr
 
 set(SOURCES WindowedApps.cpp)
 add_executable(${APP_NAME} ${BM_APP_WINDOWED} ${SOURCES})
-target_link_libraries(${APP_NAME} PUBLIC MesumCore MesumGraphics)
+target_link_libraries(${APP_NAME} PUBLIC MesumGraphics)
 set_target_properties(${APP_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 
 #add_custom_command(TARGET ${APP_NAME} POST_BUILD

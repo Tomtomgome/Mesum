@@ -17,7 +17,7 @@ LRESULT CALLBACK WindowProc(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam,
     }
     else
     {
-        return DefWindowProc(a_hwnd, a_uMsg, a_wParam, a_lParam);
+        return DefWindowProcW(a_hwnd, a_uMsg, a_wParam, a_lParam);
     }
 }
 

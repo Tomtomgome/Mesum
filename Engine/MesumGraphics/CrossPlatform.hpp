@@ -33,11 +33,10 @@ namespace m
 
 namespace m
 {
-    namespace crossPlatform
-    {
-        using IWindow = platform::IWindowImpl;
-        using IWindowedApplication = platform::IWindowedApplicationImpl;
-    }
-}
+namespace crossPlatform
+{
+using IWindowedApplication = platform::IWindowedApplicationImpl;
+}  // namespace crossPlatform
+}  // namespace m
 
 #endif //M_CROSSPLATFORM

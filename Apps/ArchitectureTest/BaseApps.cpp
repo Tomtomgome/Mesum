@@ -1,6 +1,7 @@
 #include <MesumCore/includes.hpp>
 #include <MesumCore/Kernel/Application.hpp>
 #include <MesumCore/Kernel/Mains.hpp>
+#include <MesumCore/Kernel/Logger.hpp>
 
 
 const m::logging::ChannelID CUBEAPP_ID = mLOG_GET_ID();
@@ -49,7 +50,7 @@ class TestTimedLoopedApp : public m::application::ITimedLoopApplication
     virtual void    destroy() { mLOG("Bye world !"); }
     virtual m::Bool step(const m::Double& a_deltaTime)
     {
-        mLOG("dt =", a_deltaTime);
+        mLOG_TO(CUBEAPP_ID, "dt =", a_deltaTime);
         if (m_MaxSteps-- > 0)
             return true;
         else
@@ -59,4 +60,4 @@ class TestTimedLoopedApp : public m::application::ITimedLoopApplication
     m::Int m_MaxSteps = 1000;
 };
 
-M_EXECUTE_CONSOLE_APP(TestBasicApp)
+M_EXECUTE_CONSOLE_APP(TestTimedLoopedApp)

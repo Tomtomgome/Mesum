@@ -18,6 +18,10 @@ add_compile_definitions(_M_WIN32)
 set(BM_APP_WINDOWED WIN32)
 endif ()
 
+
+set(BM_DX12_RENDERER "TRUE")
+set(BM_VULKAN_RENDERER "FALSE")
+
 set(BM_DYNAMIC_LINK "FALSE")
 
 

@@ -1,3 +1,11 @@
+add_subdirectory(DX12Renderer)
+
+if(BM_DX12_RENDERER)
+Set(RENDERER_MODULE_NAME DX12Renderer)
+elseif(BM_VULKAN_RENDERER)
+Set(RENDERER_MODULE_NAME VulkanRenderer)
+endif()
+
 add_subdirectory(Win32)
 
 set(MODULE_NAME MesumGraphics)
@@ -19,15 +27,14 @@ set(BM_LINK_MODE STATIC)
 endif()
 
 if(WIN32)
-set(PLATFORMEMODULENAME PlatWin32)
+set(PLATFORME_MODULE_NAME PlatWin32)
 elseif(UNIX)
-set(PLATFORMEMODULENAME PlatUnix)
+set(PLATFORME_MODULE_NAME PlatUnix)
 endif()
 
+add_library(${MODULE_NAME} ${BM_LINK_MODE} ${SOURCES} ${HEADERS} $<TARGET_OBJECTS:${PLATFORME_MODULE_NAME}>)
 
-add_library(${MODULE_NAME} ${BM_LINK_MODE} ${SOURCES} ${HEADERS} $<TARGET_OBJECTS:${PLATFORMEMODULENAME}>)
-
-target_link_libraries(${MODULE_NAME} MesumCore ${PLATFORMEMODULENAME})
+target_link_libraries(${MODULE_NAME} MesumCore ${PLATFORME_MODULE_NAME} ${RENDERER_MODULE_NAME})
 
 set_target_properties(${MODULE_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 #set_target_properties(${MODULE_NAME} PROPERTIES PUBLIC_HEADER HEADERS)

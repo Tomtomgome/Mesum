@@ -1,3 +1,5 @@
+#ifndef M_LOG_POLICIES
+#define M_LOG_POLICIES
 #pragma once
 #include <string>
 #include <memory>
@@ -100,5 +102,5 @@ namespace m
 		};
 	}
 }
-
+#endif //M_LOG_POLICIES
 /** @}*/

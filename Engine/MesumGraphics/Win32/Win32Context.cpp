@@ -1,10 +1,12 @@
 #include <Win32Context.hpp>
-
+#ifndef UNICODE
+#define UNICODE
+#endif
 namespace m
 {
 namespace win32
 {
-extern const logging::ChannelID PLATFORM_APP_ID = mLOG_GET_ID();
+const logging::ChannelID PLATFORM_APP_ID = mLOG_GET_ID();
 
 static input::Key translateKeys(Int a_keyCode)
 {
@@ -143,6 +145,7 @@ static input::Key translateKeys(Int a_keyCode)
 
 void WIN32Context::init(HINSTANCE& a_hInstance)
 {
+    mLOG_TO(PLATFORM_APP_ID, "Initializing Win32Context");
     m_hInstance = a_hInstance;
     init_keysLuts();
 }

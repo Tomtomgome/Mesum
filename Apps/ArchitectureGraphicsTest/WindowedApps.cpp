@@ -1,8 +1,6 @@
 #include <MesumGraphics/CrossPlatform.hpp>
-#include "Kernel.hpp"
+#include <MesumCore/Kernel/Kernel.hpp>
 #include <MesumGraphics/WindowedApp.hpp>
-
-const m::logging::ChannelID CUBEAPP_ID = mLOG_GET_ID();
 
 class CubeMover
 {
@@ -25,7 +23,7 @@ public:
 		{
 			x += speed;
 		}
-		mLOG_TO(CUBEAPP_ID, "Se deplace : ", x, ":", y);
+        mLOG_TO(m_CUBEMOVER_ID, "Se deplace : ", x, ":", y);
 	}
 
 	void set_moveUp() { m_up = true; }
@@ -44,6 +42,8 @@ private:
 	m::Bool  m_down = false;
 	m::Bool  m_left = false;
 	m::Bool  m_right = false;
+
+    const m::logging::ChannelID m_CUBEMOVER_ID = mLOG_GET_ID();
 };
 
 class CubeMoverApp : public m::crossPlatform::IWindowedApplication
@@ -60,15 +60,17 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m::CmdLine const& cmdLine = ((m::ConsoleLaunchData*)m_appData)->m_cmdLine;
 		m::UInt width = 1280;
 		m::UInt height = 720;
-		if (!cmdLine.get_parameter("-w", width))
-		{
-			mLOG_TO(CUBEAPP_ID, "Width not overriden, use default : ", width);
-		}
+        if (!cmdLine.get_parameter("-w", width))
+        {
+			mLOG_TO(m_CUBEAPP_ID,
+                            "Width not overriden, use default : ", width);
+        }
 
-		if (!cmdLine.get_parameter("-h", height))
-		{
-			mLOG_TO(CUBEAPP_ID, "Height not overriden, use default : ", height);
-		}
+        if (!cmdLine.get_parameter("-h", height))
+        {
+			mLOG_TO(m_CUBEAPP_ID,
+                            "Height not overriden, use default : ", height);
+        }
 
 		m_mainWindow = add_newWindow(L"Cube mover app", width, height);
 
@@ -107,10 +109,10 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m::CmdLine const& cmdLine = ((m::ConsoleLaunchData*)m_appData)->m_cmdLine;
 		if (cmdLine.get_arg("-NoLog"))
 		{
-			mLOG_DISABLE(CUBEAPP_ID);
+			mLOG_DISABLE(m_CUBEAPP_ID);
 		}
 
-        mLOG_TO(CUBEAPP_ID, "Bonjour !, dt = ", a_deltaTime, "ms");
+        mLOG_TO(m_CUBEAPP_ID, "Bonjour !, dt = ", a_deltaTime, "ms");
 
 		m_mover.move(m_x, m_y);
 
@@ -123,6 +125,8 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 	m::input::InputManager m_inputManager;
 	m::windows::IWindow* m_mainWindow;
 	CubeMover           m_mover;
+
+	const m::logging::ChannelID m_CUBEAPP_ID = mLOG_GET_ID();
 };
 
 M_EXECUTE_WINDOWED_APP(CubeMoverApp)
