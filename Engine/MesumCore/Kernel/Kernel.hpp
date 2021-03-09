@@ -46,25 +46,9 @@ struct CmdLine
     std::vector<std::string> m_listArgs;
 };
 
-struct ConsoleLaunchData
+struct BasicLaunchData
 {
-    CmdLine m_cmdLine;
 };
 
-#if defined M_WINDOWED_APP
-
-#if defined M_WIN32
-struct WindowedLaunchData
-{
-    CmdLine m_cmdLine;
-
-    HINSTANCE m_hInstance;
-    m::Int    m_nCmdShow;
-};
-#elif defined M_UNIX
-using m::WindowedLaunchData = m::ConsoleLaunchData;
-#endif
-
-#endif
 }  // namespace m
 #endif //M_KERNEL

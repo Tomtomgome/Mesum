@@ -3,6 +3,7 @@
 #pragma once
 
 #include <Types.hpp>
+#include <Kernel.hpp>
 
 namespace m
 {
@@ -14,11 +15,15 @@ namespace application
 class IBasicApplication
 {
    public:
-    void         setup(void* a_data) { m_appData = a_data; }
+    void setup(void* a_data) { m_appData = a_data; }
+    void set_cmdLineData(CmdLine const& a_cmdLine) { m_cmdLine = &a_cmdLine; }
+    CmdLine const& get_cmdLine() { return *m_cmdLine; }
+
     virtual void launch() = 0;
 
    protected:
-    void* m_appData;
+    CmdLine const* m_cmdLine;
+    void*          m_appData;
 };
 
 class ITimedLoopApplication : public IBasicApplication

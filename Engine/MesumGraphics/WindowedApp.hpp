@@ -41,7 +41,6 @@ namespace m
 {
 struct WindowedLaunchData
 {
-    CmdLine   m_cmdLine;
     HINSTANCE m_hInstance;
     m::Int    m_nCmdShow;
 };
@@ -49,34 +48,36 @@ struct WindowedLaunchData
 bool init_console();
 LPSTR* CommandLineToArgvA(LPWSTR lpWCmdLine, INT* pNumArgs);
 }  // namespace m
-#define M_EXECUTE_WINDOWED_APP(AppClass)                                    \
-    m::Int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine,  \
-                           m::Int nCmdShow)                                 \
-    {                                                                       \
-        m::WindowedLaunchData data;                                         \
-        m::Int               argc;                                          \
-        m::ShortChar**       argv = m::CommandLineToArgvA(pCmdLine, &argc); \
-        if (argv != nullptr)                                                \
-        {                                                                   \
-            data.m_cmdLine.parse_cmdLineAguments(argc, argv);               \
-            LocalFree(argv);                                                \
-        }                                                                   \
-        data.m_hInstance = hInstance;                                       \
-        data.m_nCmdShow  = nCmdShow;                                        \
-        m::init_console();                                                  \
-        m::internal_run<AppClass>(&data);                                   \
-        FreeConsole();                                                      \
-        return 0;                                                           \
+#define M_EXECUTE_WINDOWED_APP(AppClass)                                     \
+    m::Int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine,   \
+                           m::Int nCmdShow)                                  \
+    {                                                                        \
+        m::WindowedLaunchData data;                                          \
+        m::CmdLine            cmdLine;                                       \
+        m::Int                argc;                                          \
+        m::ShortChar**        argv = m::CommandLineToArgvA(pCmdLine, &argc); \
+        if (argv != nullptr)                                                 \
+        {                                                                    \
+            cmdLine.parse_cmdLineAguments(argc, argv);                       \
+            LocalFree(argv);                                                 \
+        }                                                                    \
+        data.m_hInstance = hInstance;                                        \
+        data.m_nCmdShow  = nCmdShow;                                         \
+        m::init_console();                                                   \
+        m::internal_run<AppClass>(cmdLine, &data);                           \
+        FreeConsole();                                                       \
+        return 0;                                                            \
     }
 #elif defined M_UNIX
 using m::WindowedLaunchData = m::ConsoleLaunchData;
-#define M_EXECUTE_WINDOWED_APP(AppClass)                  \
-    int main(m::Int argc, m::ShortChar** argv)            \
-    {                                                     \
-        m::WindowedLaunchData data;                       \
-        data.m_cmdLine.parse_cmdLineAguments(argc, argv); \
-        m::internal_run<AppClass>(&data);                 \
-        return 0;                                         \
+#define M_EXECUTE_WINDOWED_APP(AppClass)           \
+    int main(m::Int argc, m::ShortChar** argv)     \
+    {                                              \
+        m::WindowedLaunchData data;                \
+        m::CmdLine            cmdLine;             \
+        cmdLine.parse_cmdLineAguments(argc, argv); \
+        m::internal_run<AppClass>(cmdLine, &data); \
+        return 0;                                  \
     }
 
 #endif

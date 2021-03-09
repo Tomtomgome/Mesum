@@ -3,15 +3,12 @@
 #include <MesumCore/Kernel/Mains.hpp>
 #include <MesumCore/Kernel/Logger.hpp>
 
-
-const m::logging::ChannelID CUBEAPP_ID = mLOG_GET_ID();
-
 class TestBasicApp : public m::application::IBasicApplication
 {
 public:
     virtual void launch()
     {
-        m::CmdLine const& cmdLine = ((m::ConsoleLaunchData*)m_appData)->m_cmdLine;
+        m::CmdLine const& cmdLine = get_cmdLine();
         mAssert(false);
         if (cmdLine.get_arg("-N"))
         {
@@ -50,7 +47,7 @@ class TestTimedLoopedApp : public m::application::ITimedLoopApplication
     virtual void    destroy() { mLOG("Bye world !"); }
     virtual m::Bool step(const m::Double& a_deltaTime)
     {
-        mLOG_TO(CUBEAPP_ID, "dt =", a_deltaTime);
+        mLOG("dt =", a_deltaTime);
         if (m_MaxSteps-- > 0)
             return true;
         else

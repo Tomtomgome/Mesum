@@ -13,21 +13,23 @@
 namespace m
 {
 template <typename AppClass>
-void internal_run(void* a_data)
+void internal_run(CmdLine const& a_cmdLine, void* a_data)
 {
     AppClass app;
+    app.set_cmdLineData(a_cmdLine);
     app.setup(a_data);
     app.launch();
 }
 }  // namespace m
 
-#define M_EXECUTE_CONSOLE_APP(AppClass)                   \
-    int main(m::Int argc, m::ShortChar** argv)            \
-    {                                                     \
-        m::ConsoleLaunchData data;                        \
-        data.m_cmdLine.parse_cmdLineAguments(argc, argv); \
-        m::internal_run<AppClass>(&data);                 \
-        return 0;                                         \
+#define M_EXECUTE_CONSOLE_APP(AppClass)              \
+    int main(m::Int argc, m::ShortChar** argv)       \
+    {                                                \
+        m::BasicLaunchData data;                     \
+        m::CmdLine         cmdLine;                  \
+        cmdLine.parse_cmdLineAguments(argc, argv);   \
+        m::internal_run<AppClass>(cmdLine, &data);   \
+        return 0;                                    \
     }
 
 #endif //M_MAIN
