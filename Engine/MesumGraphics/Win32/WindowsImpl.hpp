@@ -4,7 +4,7 @@
 
 #include <MesumCore/Kernel/Types.hpp>
 #include <MesumGraphics/Windows.hpp>
-#include <MesumGraphics/DX12Renderer/DX12Renderer.hpp>
+#include <MesumGraphics/DX12Renderer/DX12Window.hpp>
 
 namespace m
 {
