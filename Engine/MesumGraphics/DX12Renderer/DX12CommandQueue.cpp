@@ -36,7 +36,7 @@ void DX12CommandQueue::destroy()
 }
 // Get an available command list from the command queue.
 Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList2>
-DX12CommandQueue::GetCommandList()
+DX12CommandQueue::get_commandList()
 {
     Microsoft::WRL::ComPtr<ID3D12CommandAllocator>     commandAllocator;
     Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList2> commandList;
@@ -57,14 +57,13 @@ DX12CommandQueue::GetCommandList()
     {
         commandList = m_commandListQueue.front();
         m_commandListQueue.pop();
-
-        check_MicrosoftHRESULT(
-            commandList->Reset(commandAllocator.Get(), nullptr));
     }
     else
     {
         commandList = create_commandList(commandAllocator);
     }
+
+    check_MicrosoftHRESULT(commandList->Reset(commandAllocator.Get(), nullptr));
 
     // Associate the command allocator with the command list so that it can be
     // retrieved when the command list is executed.
@@ -123,7 +122,7 @@ void DX12CommandQueue::flush()
 }
 
 Microsoft::WRL::ComPtr<ID3D12CommandQueue>
-DX12CommandQueue::GetD3D12CommandQueue() const
+DX12CommandQueue::get_D3D12CommandQueue() const
 {
     return m_d3d12CommandQueue;
 }

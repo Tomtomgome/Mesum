@@ -2,7 +2,7 @@
 #define M_DX12WINDOW
 #pragma once
 
-#include <MesumGraphics/DX12Renderer/DX12Renderer.hpp>
+#include <MesumGraphics/DX12Renderer/DX12RendererCommon.hpp>
 
 namespace m
 {
@@ -46,14 +46,8 @@ class DX12Window
     ComPtr<ID3D12DescriptorHeap> m_RTVDescriptorHeap;
     UInt                         m_RTVDescriptorSize;
 
-    ComPtr<ID3D12GraphicsCommandList> m_commandList;
-    ComPtr<ID3D12CommandAllocator>    m_commandAllocators[scm_numFrames];
-
     // Synchronization objects
-    ComPtr<ID3D12Fence> m_fence;
-    U64                 m_fenceValue                      = 0;
     U64                 m_frameFenceValues[scm_numFrames] = {};
-    HANDLE              m_fenceEvent;
 
     // Surface description
     U32 m_clientWidth;

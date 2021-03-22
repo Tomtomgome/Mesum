@@ -1,5 +1,6 @@
 #include <WindowedAppImpl.hpp>
 #include <WindowsImpl.hpp>
+#include <DX12Renderer.hpp>
 
 namespace m
 {

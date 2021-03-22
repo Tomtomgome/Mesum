@@ -2,7 +2,8 @@
 #define M_DX12COMMAND_QUEUE
 #pragma once
 
-#include <MesumGraphics/DX12Renderer/DX12Renderer.hpp>
+#include <DX12RendererCommon.hpp>
+
 namespace m
 {
 namespace dx12
@@ -15,7 +16,7 @@ class DX12CommandQueue
               D3D12_COMMAND_LIST_TYPE               a_type);
     void destroy();
     // Get an available command list from the command queue.
-    Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList2> GetCommandList();
+    Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList2> get_commandList();
 
     // Execute a command list.
     // Returns the fence value to wait for for this command list.
@@ -27,7 +28,7 @@ class DX12CommandQueue
     void wait_fenceValue(U64 a_fenceValue);
     void flush();
 
-    Microsoft::WRL::ComPtr<ID3D12CommandQueue> GetD3D12CommandQueue() const;
+    Microsoft::WRL::ComPtr<ID3D12CommandQueue> get_D3D12CommandQueue() const;
 
    protected:
     Microsoft::WRL::ComPtr<ID3D12CommandAllocator> create_commandAllocator();

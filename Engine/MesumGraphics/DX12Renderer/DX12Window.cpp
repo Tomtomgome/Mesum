@@ -1,4 +1,5 @@
 #include <DX12Window.hpp>
+#include <DX12Renderer.hpp>
 
 namespace m
 {
@@ -14,9 +15,10 @@ void DX12Window::init(HWND a_hwnd, U32 a_width, U32 a_height)
 
     m_tearingSupported = DX12Context::gs_dx12Contexte.get_tearingSupport();
 
-    m_swapChain =
-        create_swapChain(a_hwnd, DX12Context::gs_dx12Contexte.m_commandQueue,
-                         a_width, a_height, scm_numFrames);
+    m_swapChain = create_swapChain(
+        a_hwnd,
+        DX12Context::gs_dx12Contexte.get_commandQueue().get_D3D12CommandQueue(),
+        a_width, a_height, scm_numFrames);
 
     m_currentBackBufferIndex = m_swapChain->GetCurrentBackBufferIndex();
 
@@ -29,63 +31,41 @@ void DX12Window::init(HWND a_hwnd, U32 a_width, U32 a_height)
 
     update_renderTargetViews(DX12Context::gs_dx12Contexte.m_device, m_swapChain,
                              m_RTVDescriptorHeap);
-
-    for (Int i = 0; i < scm_numFrames; ++i)
-    {
-        m_commandAllocators[i] =
-            create_commandAllocator(DX12Context::gs_dx12Contexte.m_device,
-                                    D3D12_COMMAND_LIST_TYPE_DIRECT);
-    }
-    m_commandList =
-        create_commandList(DX12Context::gs_dx12Contexte.m_device,
-                           m_commandAllocators[m_currentBackBufferIndex],
-                           D3D12_COMMAND_LIST_TYPE_DIRECT);
-
-    m_fence      = create_fence(DX12Context::gs_dx12Contexte.m_device);
-    m_fenceEvent = create_eventHandle();
 }
 
 void DX12Window::destroy()
 {
-    flush(DX12Context::gs_dx12Contexte.m_commandQueue, m_fence, m_fenceValue,
-          m_fenceEvent);
-
-    CloseHandle(m_fenceEvent);
+    DX12Context::gs_dx12Contexte.get_commandQueue().flush();
 }
 
 void DX12Window::render()
 {
-    auto commandAllocator = m_commandAllocators[m_currentBackBufferIndex];
     auto backBuffer       = m_backBuffers[m_currentBackBufferIndex];
 
-    commandAllocator->Reset();
-    m_commandList->Reset(commandAllocator.Get(), nullptr);
+    ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =  DX12Context::gs_dx12Contexte.get_commandQueue().get_commandList();
     // Clear the render target.
     {
         CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
             backBuffer.Get(), D3D12_RESOURCE_STATE_PRESENT,
             D3D12_RESOURCE_STATE_RENDER_TARGET);
 
-        m_commandList->ResourceBarrier(1, &barrier);
+        graphicCommandList->ResourceBarrier(1, &barrier);
         Float                         clearColor[] = {0.4f, 0.6f, 0.9f, 1.0f};
         CD3DX12_CPU_DESCRIPTOR_HANDLE rtv(
             m_RTVDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
             m_currentBackBufferIndex, m_RTVDescriptorSize);
 
-        m_commandList->ClearRenderTargetView(rtv, clearColor, 0, nullptr);
+        graphicCommandList->ClearRenderTargetView(rtv, clearColor, 0, nullptr);
     }
     // Present
     {
         CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
             backBuffer.Get(), D3D12_RESOURCE_STATE_RENDER_TARGET,
             D3D12_RESOURCE_STATE_PRESENT);
-        m_commandList->ResourceBarrier(1, &barrier);
+        graphicCommandList->ResourceBarrier(1, &barrier);
 
-        check_MicrosoftHRESULT(m_commandList->Close());
-
-        ID3D12CommandList* const commandLists[] = {m_commandList.Get()};
-        DX12Context::gs_dx12Contexte.m_commandQueue->ExecuteCommandLists(
-            _countof(commandLists), commandLists);
+        DX12Context::gs_dx12Contexte.get_commandQueue().execute_commandList(
+            graphicCommandList);
 
         UINT syncInterval = get_syncInterval();  // m_vSync ? 1 : 0;
         UINT presentFlags =
@@ -94,12 +74,12 @@ void DX12Window::render()
         check_MicrosoftHRESULT(
             m_swapChain->Present(syncInterval, presentFlags));
 
-        m_frameFenceValues[m_currentBackBufferIndex] = signal_fence(
-            DX12Context::gs_dx12Contexte.m_commandQueue, m_fence, m_fenceValue);
-        m_currentBackBufferIndex = m_swapChain->GetCurrentBackBufferIndex();
+        m_frameFenceValues[m_currentBackBufferIndex] =
+            DX12Context::gs_dx12Contexte.get_commandQueue().signal_fence();
 
-        wait_fenceValue(m_fence, m_frameFenceValues[m_currentBackBufferIndex],
-                        m_fenceEvent);
+        m_currentBackBufferIndex = m_swapChain->GetCurrentBackBufferIndex();
+        DX12Context::gs_dx12Contexte.get_commandQueue().wait_fenceValue(
+            m_frameFenceValues[m_currentBackBufferIndex]);
     }
 }
 
@@ -111,8 +91,7 @@ void DX12Window::resize(U32 a_width, U32 a_height)
         m_clientWidth  = std::max(1u, a_width);
         m_clientHeight = std::max(1u, a_height);
 
-        flush(DX12Context::gs_dx12Contexte.m_commandQueue, m_fence,
-              m_fenceValue, m_fenceEvent);
+        DX12Context::gs_dx12Contexte.get_commandQueue().flush();
 
         for (Int i = 0; i < scm_numFrames; ++i)
         {
