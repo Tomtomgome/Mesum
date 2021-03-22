@@ -78,6 +78,8 @@ void IWindowImpl::render()
 void IWindowImpl::destroy()
 {
     m_window.destroy();
+    ::DestroyWindow(m_hwnd);
+    m_hwnd = NULL;
 }
 
 void IWindowImpl::set_fullScreen(Bool a_fullscreen)
