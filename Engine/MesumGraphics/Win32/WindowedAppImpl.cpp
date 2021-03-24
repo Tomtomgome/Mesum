@@ -27,7 +27,7 @@ windows::IWindow* IWindowedApplicationImpl::add_newWindow(std::wstring a_name,
                                                           U32          a_height)
 {
     IWindowImpl* newWindow = new IWindowImpl();
-    m_windows.push_back(newWindow);
+    m_windows.insert(newWindow);
 
     newWindow->set_size(a_width, a_height);
     newWindow->set_windowName(a_name);
@@ -58,10 +58,12 @@ void IWindowedApplicationImpl::init()
 
 void IWindowedApplicationImpl::destroy()
 {
-    for (UInt i = 0; i < m_windows.size(); ++i)
+    for (auto element = m_windows.begin(); element != m_windows.end();
+         ++element)
     {
-        m_windows[i]->destroy();
-        delete m_windows[i];
+        windows::IWindow* window = (*element);
+        window->destroy();
+        delete window;
     }
     m_windows.clear();
 
@@ -87,7 +89,31 @@ Bool IWindowedApplicationImpl::step(const Double& a_deltaTime)
         DispatchMessage(&msg);
     }
 
-    for (UInt i = 0; i < m_windows.size(); ++i) { m_windows[i]->render(); }
+    auto element = m_windows.begin();
+    while (element != m_windows.end())
+    {
+        windows::IWindow* window = (*element);
+        if (static_cast<IWindowImpl*>(window)->is_flaggedToBeClosed())
+        {
+            window->destroy();
+            delete window;
+
+            auto oldElem = element;
+            element++;
+            m_windows.erase(oldElem);
+        }
+        else
+        {
+            element++;
+        }
+    }
+
+    for (auto element = m_windows.begin(); element != m_windows.end();
+         ++element)
+    {
+        windows::IWindow* window = (*element);
+        window->render();
+    }
 
     return signalKeepRunning;
 }

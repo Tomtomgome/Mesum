@@ -73,7 +73,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         }
 
         m_mainWindow = add_newWindow(L"Cube mover app", width, height);
-
+        m_mainWindow->set_asMainWindow(true);
         m_mainWindow->link_inputManager(&m_inputManager);
 
         m_inputManager.attach_ToKeyEvent(

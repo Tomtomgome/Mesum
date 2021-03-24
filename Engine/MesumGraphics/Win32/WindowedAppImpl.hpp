@@ -6,6 +6,8 @@
 #include <Win32Context.hpp>
 #include <MesumGraphics/WindowedApp.hpp>
 
+#include <set>
+
 namespace m
 {
 namespace win32
@@ -24,7 +26,7 @@ class IWindowedApplicationImpl : public application::IWindowedApplicationBase
    private:
     WIN32Context m_W32Context;
 
-    std::vector<windows::IWindow*> m_windows;
+    std::set<windows::IWindow*> m_windows;
 };
 }  // namespace win32
 }  // namespace m

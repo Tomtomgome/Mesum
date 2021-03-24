@@ -32,6 +32,7 @@ class IWindowImpl : public windows::IWindow
         m_clientHeight = a_height;
     }
     virtual void set_windowName(std::wstring a_name) { m_windowName = a_name; }
+    virtual void set_asMainWindow(Bool a_flag) { m_isMainWindow = a_flag; };
     virtual void set_fullScreen(Bool a_fullscreen);
     virtual void toggle_fullScreen();
 
@@ -40,6 +41,8 @@ class IWindowImpl : public windows::IWindow
         m_parentContext = &a_winContext;
     }
 
+    Bool is_flaggedToBeClosed() { return m_flagToBeClosed; }
+
    private:
     input::InputManager* m_linkedInputManager;
 
@@ -47,9 +50,11 @@ class IWindowImpl : public windows::IWindow
 
     // By default, use windowed mode.
     // Can be toggled with F11
-    Bool m_fullscreen = false;
+    Bool m_fullscreen     = false;
+    Bool m_flagToBeClosed = false;
 
     std::wstring m_windowName;
+    Bool         m_isMainWindow = false;
     U32          m_clientWidth  = 1280;
     U32          m_clientHeight = 720;
 

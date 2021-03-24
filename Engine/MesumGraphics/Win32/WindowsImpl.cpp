@@ -37,7 +37,18 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
         }
         break;
 
-        case WM_DESTROY: PostQuitMessage(0); break;
+        case WM_DESTROY:
+        {
+            if (m_isMainWindow)
+            {
+                PostQuitMessage(0);
+            }
+            else
+            {
+                m_flagToBeClosed = true;
+            }
+        }
+        break;
 
         case WM_SIZE:
         {
