@@ -12,6 +12,7 @@ namespace dx12
 class DX12Window
 {
    public:
+    ~DX12Window() = default;
     void init(HWND a_hwnd, U32 a_width, U32 a_height);
     void destroy();
 

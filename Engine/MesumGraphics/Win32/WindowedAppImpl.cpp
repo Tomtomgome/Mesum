@@ -53,7 +53,8 @@ void IWindowedApplicationImpl::init()
     // Register the window class.
     m_W32Context.register_windowClass(className, data.m_hInstance, WindowProc);
 
-    dx12::DX12Context::gs_dx12Contexte.init();
+    dx12::DX12Context::gs_dx12Contexte = new dx12::DX12Context();
+    dx12::DX12Context::gs_dx12Contexte->init();
 }
 
 void IWindowedApplicationImpl::destroy()
@@ -65,7 +66,9 @@ void IWindowedApplicationImpl::destroy()
     }
     m_windows.clear();
 
-    dx12::DX12Context::gs_dx12Contexte.deinit();
+    dx12::DX12Context::gs_dx12Contexte->deinit();
+    delete dx12::DX12Context::gs_dx12Contexte;
+    dx12::report_liveObjects();
 
     m_W32Context.destroy();
 }

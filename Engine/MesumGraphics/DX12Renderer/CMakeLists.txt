@@ -16,7 +16,7 @@ set(HEADERS DX12RendererCommon.hpp
 
 add_library(${MODULE_NAME} OBJECT ${SOURCES} ${HEADERS})
 
-target_link_libraries(${MODULE_NAME} MesumCore d3d12.lib dxgi.lib)
+target_link_libraries(${MODULE_NAME} MesumCore d3d12.lib dxgi.lib dxguid.lib)
 
 #target_precompile_headers(${MODULE_NAME} PRIVATE Kernel_pch.hpp)
 set_target_properties(${MODULE_NAME} PROPERTIES VERSION ${PROJECT_VERSION})

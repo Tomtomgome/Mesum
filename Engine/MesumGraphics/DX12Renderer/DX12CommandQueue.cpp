@@ -7,8 +7,8 @@ namespace dx12
 //------------------------------------------------------------
 //------------------------------------------------------------
 //------------------------------------------------------------
-void DX12CommandQueue::init(Microsoft::WRL::ComPtr<ID3D12Device2> a_device,
-                            D3D12_COMMAND_LIST_TYPE               a_type)
+void DX12CommandQueue::init(ComPtr<ID3D12Device2> a_device,
+                            D3D12_COMMAND_LIST_TYPE a_type)
 {
     m_fenceValue      = 0U;
     m_commandListType = a_type;
@@ -22,8 +22,11 @@ void DX12CommandQueue::init(Microsoft::WRL::ComPtr<ID3D12Device2> a_device,
 
     check_MicrosoftHRESULT(m_d3d12Device->CreateCommandQueue(
         &desc, IID_PPV_ARGS(&m_d3d12CommandQueue)));
+    mD3D12DebugNamed(m_d3d12CommandQueue, "DX12 CommandQueue");
+
     check_MicrosoftHRESULT(m_d3d12Device->CreateFence(
         m_fenceValue, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_d3d12Fence)));
+    mD3D12DebugNamed(m_d3d12Fence, "CommandQueue Fence");
 
     m_fenceEvent = ::CreateEvent(NULL, FALSE, FALSE, NULL);
     mAssert(m_fenceEvent);
@@ -51,6 +54,7 @@ DX12CommandQueue::get_commandList()
     else
     {
         commandAllocator = create_commandAllocator();
+        mD3D12DebugNamed(commandAllocator, "Queued command allocator");
     }
 
     if (!m_commandListQueue.empty())
@@ -61,6 +65,7 @@ DX12CommandQueue::get_commandList()
     else
     {
         commandList = create_commandList(commandAllocator);
+        mD3D12DebugNamed(commandList, "Queued command list");
     }
 
     check_MicrosoftHRESULT(commandList->Reset(commandAllocator.Get(), nullptr));
@@ -69,7 +74,6 @@ DX12CommandQueue::get_commandList()
     // retrieved when the command list is executed.
     check_MicrosoftHRESULT(commandList->SetPrivateDataInterface(
         __uuidof(ID3D12CommandAllocator), commandAllocator.Get()));
-
     return commandList;
 }
 

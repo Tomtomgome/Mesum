@@ -13,7 +13,7 @@ namespace dx12
 class DX12Context
 {
    public:
-    static DX12Context gs_dx12Contexte;
+    static DX12Context* gs_dx12Contexte;
 
     void init(Bool a_useWarp = false);
     void deinit();

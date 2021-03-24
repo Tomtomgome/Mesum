@@ -44,7 +44,25 @@
         }
     }
 
+    void set_dxgiDebugName(ComPtr<IDXGIObject> a_dxgiObject,
+                            std::string a_sName, const Int a_lineNumber,
+                            const ShortChar* a_file);
+
+    void set_d3g12DebugName(ComPtr<ID3D12Object> a_d3d12Object, std::string a_sName,
+                           const Int a_lineNumber, const ShortChar* a_file);
+
+#ifdef M_DEBUG
+#define mDXGIDebugNamed(a_dxgiObject, a_name) \
+    set_dxgiDebugName(a_dxgiObject, a_name, __LINE__, __FILE__)
+#define mD3D12DebugNamed(a_d3d12Object, a_name) \
+    set_d3g12DebugName(a_d3d12Object, a_name, __LINE__, __FILE__)
+#else
+#define mDXGIDebugNamed(...)
+#define mD3D12DebugNamed(...)
+#endif
+
     void enable_debugLayer();
+    void report_liveObjects();
     bool check_tearingSupport();
 
     ComPtr<IDXGIAdapter4> get_adapter(Bool a_useWarp);

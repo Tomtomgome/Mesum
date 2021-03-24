@@ -13,36 +13,41 @@ void DX12Window::init(HWND a_hwnd, U32 a_width, U32 a_height)
     m_clientWidth  = a_width;
     m_clientHeight = a_height;
 
-    m_tearingSupported = DX12Context::gs_dx12Contexte.get_tearingSupport();
+    m_tearingSupported = DX12Context::gs_dx12Contexte->get_tearingSupport();
 
-    m_swapChain = create_swapChain(
-        a_hwnd,
-        DX12Context::gs_dx12Contexte.get_commandQueue().get_D3D12CommandQueue(),
-        a_width, a_height, scm_numFrames);
+    m_swapChain =
+        create_swapChain(a_hwnd,
+                         DX12Context::gs_dx12Contexte->get_commandQueue()
+                             .get_D3D12CommandQueue(),
+                         a_width, a_height, scm_numFrames);
+    mDXGIDebugNamed(m_swapChain, "Window SwapChain");
 
     m_currentBackBufferIndex = m_swapChain->GetCurrentBackBufferIndex();
 
     m_RTVDescriptorHeap =
-        create_descriptorHeap(DX12Context::gs_dx12Contexte.m_device,
+        create_descriptorHeap(DX12Context::gs_dx12Contexte->m_device,
                               D3D12_DESCRIPTOR_HEAP_TYPE_RTV, scm_numFrames);
     m_RTVDescriptorSize =
-        DX12Context::gs_dx12Contexte.m_device->GetDescriptorHandleIncrementSize(
+        DX12Context::gs_dx12Contexte->m_device
+            ->GetDescriptorHandleIncrementSize(
             D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 
-    update_renderTargetViews(DX12Context::gs_dx12Contexte.m_device, m_swapChain,
+    update_renderTargetViews(DX12Context::gs_dx12Contexte->m_device,
+                             m_swapChain,
                              m_RTVDescriptorHeap);
 }
 
 void DX12Window::destroy()
 {
-    DX12Context::gs_dx12Contexte.get_commandQueue().flush();
+    DX12Context::gs_dx12Contexte->get_commandQueue().flush();
 }
 
 void DX12Window::render()
 {
     auto backBuffer       = m_backBuffers[m_currentBackBufferIndex];
 
-    ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =  DX12Context::gs_dx12Contexte.get_commandQueue().get_commandList();
+    ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
+        DX12Context::gs_dx12Contexte->get_commandQueue().get_commandList();
     // Clear the render target.
     {
         CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
@@ -64,7 +69,7 @@ void DX12Window::render()
             D3D12_RESOURCE_STATE_PRESENT);
         graphicCommandList->ResourceBarrier(1, &barrier);
 
-        DX12Context::gs_dx12Contexte.get_commandQueue().execute_commandList(
+        DX12Context::gs_dx12Contexte->get_commandQueue().execute_commandList(
             graphicCommandList);
 
         UINT syncInterval = get_syncInterval();  // m_vSync ? 1 : 0;
@@ -75,10 +80,10 @@ void DX12Window::render()
             m_swapChain->Present(syncInterval, presentFlags));
 
         m_frameFenceValues[m_currentBackBufferIndex] =
-            DX12Context::gs_dx12Contexte.get_commandQueue().signal_fence();
+            DX12Context::gs_dx12Contexte->get_commandQueue().signal_fence();
 
         m_currentBackBufferIndex = m_swapChain->GetCurrentBackBufferIndex();
-        DX12Context::gs_dx12Contexte.get_commandQueue().wait_fenceValue(
+        DX12Context::gs_dx12Contexte->get_commandQueue().wait_fenceValue(
             m_frameFenceValues[m_currentBackBufferIndex]);
     }
 }
@@ -91,7 +96,7 @@ void DX12Window::resize(U32 a_width, U32 a_height)
         m_clientWidth  = std::max(1u, a_width);
         m_clientHeight = std::max(1u, a_height);
 
-        DX12Context::gs_dx12Contexte.get_commandQueue().flush();
+        DX12Context::gs_dx12Contexte->get_commandQueue().flush();
 
         for (Int i = 0; i < scm_numFrames; ++i)
         {
@@ -109,7 +114,7 @@ void DX12Window::resize(U32 a_width, U32 a_height)
             swapChainDesc.Flags));
 
         m_currentBackBufferIndex = m_swapChain->GetCurrentBackBufferIndex();
-        update_renderTargetViews(DX12Context::gs_dx12Contexte.m_device,
+        update_renderTargetViews(DX12Context::gs_dx12Contexte->m_device,
                                  m_swapChain, m_RTVDescriptorHeap);
     }
 }
