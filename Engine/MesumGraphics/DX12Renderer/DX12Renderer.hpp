@@ -13,6 +13,10 @@ namespace dx12
 class DX12Context
 {
    public:
+    DX12Context()                    = default;
+    DX12Context(DX12Context const&)  = delete;
+    DX12Context(DX12Context const&&) = delete;
+    ~DX12Context()                   = default;
     static DX12Context* gs_dx12Contexte;
 
     void init(Bool a_useWarp = false);
@@ -36,6 +40,9 @@ class DX12Context
 
     Bool m_tearingSupported = false;
 };
+
+void openRenderModule();
+void closeRenderModule();
 
 }  // namespace dx12
 }  // namespace m

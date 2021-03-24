@@ -16,8 +16,8 @@ void set_dxgiDebugName(ComPtr<IDXGIObject> a_dxgiObject, std::string a_sName,
     std::stringstream sString;
     sString << a_sName << " (" << a_lineNumber << ":" << a_file << ")";
     a_dxgiObject->SetPrivateData(WKPDID_D3DDebugObjectName,
-                                 sString.str().size(),
-                                sString.str().c_str());
+                                 UInt(sString.str().size()),
+                                 sString.str().c_str());
 }
 
 void set_d3g12DebugName(ComPtr<ID3D12Object> a_d3d12Object, std::string a_sName,
@@ -26,7 +26,8 @@ void set_d3g12DebugName(ComPtr<ID3D12Object> a_d3d12Object, std::string a_sName,
     std::stringstream sString;
     sString << a_sName << " (" << a_lineNumber << ":" << a_file << ")";
     a_d3d12Object->SetPrivateData(WKPDID_D3DDebugObjectName,
-                                 sString.str().size(), sString.str().c_str());
+                                  UInt(sString.str().size()),
+                                  sString.str().c_str());
 }
 
 void enable_debugLayer()
@@ -97,7 +98,7 @@ ComPtr<IDXGIAdapter4> get_adapter(Bool a_useWarp)
     }
     else
     {
-        UInt size_maxDedicatedVideoMemory = 0;
+        U64 size_maxDedicatedVideoMemory = 0;
         for (UInt i = 0; dxgiFactory->EnumAdapters1(i, &dxgiAdapter1) !=
                          DXGI_ERROR_NOT_FOUND;
              ++i)

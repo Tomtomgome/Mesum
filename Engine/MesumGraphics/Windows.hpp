@@ -16,6 +16,7 @@ namespace m
         class IWindow
         {
 		public:
+            virtual ~IWindow() = default;
             virtual void init() = 0;
             virtual void render() = 0;
 			virtual void destroy() = 0;

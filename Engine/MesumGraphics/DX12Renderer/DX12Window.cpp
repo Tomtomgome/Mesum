@@ -27,6 +27,8 @@ void DX12Window::init(HWND a_hwnd, U32 a_width, U32 a_height)
     m_RTVDescriptorHeap =
         create_descriptorHeap(DX12Context::gs_dx12Contexte->m_device,
                               D3D12_DESCRIPTOR_HEAP_TYPE_RTV, scm_numFrames);
+    mD3D12DebugNamed(m_RTVDescriptorHeap, "Window descriptor heap");
+
     m_RTVDescriptorSize =
         DX12Context::gs_dx12Contexte->m_device
             ->GetDescriptorHandleIncrementSize(
