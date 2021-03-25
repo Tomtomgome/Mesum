@@ -1,6 +1,7 @@
 #include <MesumCore/Kernel/Kernel.hpp>
 #include <MesumGraphics/CrossPlatform.hpp>
 #include <MesumGraphics/WindowedApp.hpp>
+#include <MesumGraphics/DearImgui/imgui.h>
 
 class CubeMover
 {
@@ -58,9 +59,10 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
     virtual void init() override
     {
         m::crossPlatform::IWindowedApplication::init();
+
         m::CmdLine const& cmdLine = get_cmdLine();
-        m::UInt width  = 1280;
-        m::UInt height = 720;
+        m::UInt           width   = 1280;
+        m::UInt           height  = 720;
         if (!cmdLine.get_parameter("-w", width))
         {
             mLOG_TO(m_CUBEAPP_ID, "Width not overriden, use default : ", width);
@@ -73,7 +75,8 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         }
 
         m_mainWindow = add_newWindow(L"Cube mover app", width, height);
-        m_mainWindow->set_asMainWindow(true);
+        m_mainWindow->set_asMainWindow();
+        m_mainWindow->set_asImGuiWindow();
         m_mainWindow->link_inputManager(&m_inputManager);
 
         m_inputManager.attach_ToKeyEvent(
@@ -124,8 +127,10 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
     virtual m::Bool step(const m::Double& a_deltaTime) override
     {
-        m::Bool signalKeepRunning =
-            m::crossPlatform::IWindowedApplication::step(a_deltaTime);
+        if (!m::crossPlatform::IWindowedApplication::step(a_deltaTime))
+        {
+            return false;
+        }
 
         m_inputManager.processAndUpdate_States();
 
@@ -139,7 +144,15 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         m_mover.move(m_x, m_y);
 
-        return signalKeepRunning;
+        m::platform::ImGui_ImplMesum_NewFrame();
+        ImGui::NewFrame();
+
+        m::Bool showDemo = true;
+        ImGui::ShowDemoWindow(&showDemo);
+        ImGui::Render();
+
+        render();
+        return true;
     }
 
     m::Float m_x = 0.0f;

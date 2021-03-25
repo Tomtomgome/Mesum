@@ -245,13 +245,14 @@ ComPtr<IDXGISwapChain4> create_swapChain(
 
 ComPtr<ID3D12DescriptorHeap> create_descriptorHeap(
     ComPtr<ID3D12Device2> a_device, D3D12_DESCRIPTOR_HEAP_TYPE a_type,
-    uint32_t a_numDescriptors)
+    uint32_t a_numDescriptors, D3D12_DESCRIPTOR_HEAP_FLAGS a_flags)
 {
     ComPtr<ID3D12DescriptorHeap> descriptorHeap;
 
     D3D12_DESCRIPTOR_HEAP_DESC desc_descriptorHeap = {};
     desc_descriptorHeap.NumDescriptors             = a_numDescriptors;
     desc_descriptorHeap.Type                       = a_type;
+    desc_descriptorHeap.Flags                      = a_flags;
 
     check_MicrosoftHRESULT(a_device->CreateDescriptorHeap(
         &desc_descriptorHeap, IID_PPV_ARGS(&descriptorHeap)));

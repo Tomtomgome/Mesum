@@ -75,7 +75,8 @@
         uint32_t a_width, uint32_t a_height, uint32_t a_bufferCount);
     ComPtr<ID3D12DescriptorHeap> create_descriptorHeap(
         ComPtr<ID3D12Device2> a_device, D3D12_DESCRIPTOR_HEAP_TYPE a_type,
-        uint32_t a_numDescriptors);
+        uint32_t                    a_numDescriptors,
+        D3D12_DESCRIPTOR_HEAP_FLAGS a_flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE);
     ComPtr<ID3D12CommandAllocator> create_commandAllocator(
         ComPtr<ID3D12Device2> a_device, D3D12_COMMAND_LIST_TYPE a_type);
     ComPtr<ID3D12GraphicsCommandList2> create_commandList(

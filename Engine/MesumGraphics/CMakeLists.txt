@@ -1,3 +1,4 @@
+add_subdirectory(DearImgui)
 add_subdirectory(DX12Renderer)
 
 if(BM_DX12_RENDERER)
@@ -34,7 +35,7 @@ endif()
 
 add_library(${MODULE_NAME} ${BM_LINK_MODE} ${SOURCES} ${HEADERS} $<TARGET_OBJECTS:${PLATFORME_MODULE_NAME}>)
 
-target_link_libraries(${MODULE_NAME} MesumCore ${PLATFORME_MODULE_NAME} ${RENDERER_MODULE_NAME})
+target_link_libraries(${MODULE_NAME} MesumCore ${PLATFORME_MODULE_NAME} ${RENDERER_MODULE_NAME} DearImguiBase)
 
 set_target_properties(${MODULE_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 #set_target_properties(${MODULE_NAME} PROPERTIES PUBLIC_HEADER HEADERS)

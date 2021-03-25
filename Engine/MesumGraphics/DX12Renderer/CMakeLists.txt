@@ -5,18 +5,20 @@ project(${MODULE_NAME} VERSION 1.0.0 DESCRIPTION "Win32 specific windows")
 set(SOURCES DX12RendererCommon.cpp
             DX12Renderer.cpp
             DX12Window.cpp
-            DX12CommandQueue.cpp)
+            DX12CommandQueue.cpp
+            imgui_impl_dx12.cpp)
 
 set(HEADERS DX12RendererCommon.hpp
             DX12Renderer.hpp
             DX12Window.hpp
             DX12CommandQueue.hpp
             d3dx12.h
+            imgui_impl_dx12.h
             ../MesumGraphics/Common.hpp)
 
-add_library(${MODULE_NAME} OBJECT ${SOURCES} ${HEADERS})
+add_library(${MODULE_NAME} OBJECT ${SOURCES} ${HEADERS} $<TARGET_OBJECTS:DearImguiBase>)
 
-target_link_libraries(${MODULE_NAME} MesumCore d3d12.lib dxgi.lib dxguid.lib)
+target_link_libraries(${MODULE_NAME} MesumCore DearImguiBase d3d12.lib dxgi.lib dxguid.lib)
 
 #target_precompile_headers(${MODULE_NAME} PRIVATE Kernel_pch.hpp)
 set_target_properties(${MODULE_NAME} PROPERTIES VERSION ${PROJECT_VERSION})

@@ -11,19 +11,21 @@
 
 namespace m
 {
-    namespace windows
-    {
-        class IWindow;
-    }
-    namespace application
-    {
-        class IWindowedApplicationBase : public ITimedLoopApplication
-        {
-        public:
-            virtual windows::IWindow* add_newWindow(std::wstring a_name, U32 a_width, U32 a_height) = 0;
-        };
-    }
+namespace windows
+{
+class IWindow;
+}
+namespace application
+{
+class IWindowedApplicationBase : public ITimedLoopApplication
+{
+   public:
+    virtual windows::IWindow* add_newWindow(std::wstring a_name, U32 a_width,
+                                            U32 a_height) = 0;
+    virtual void render() = 0;
 };
+}  // namespace application
+};  // namespace m
 
 //*****************************************************************************
 // Windowed entry point

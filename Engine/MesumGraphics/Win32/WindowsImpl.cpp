@@ -3,13 +3,28 @@
 #ifndef UNICODE
 #define UNICODE
 #endif
+
+#include <imgui.h>
+#include <imgui_impl_win32.h>
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND   hWnd,
+                                                             UINT   msg,
+                                                             WPARAM wParam,
+                                                             LPARAM lParam);
 namespace m
 {
 namespace win32
 {
+
 LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
                                          LPARAM a_lParam)
 {
+    if (m_isImGuiWindow)
+    {
+        if (ImGui_ImplWin32_WndProcHandler(m_hwnd, a_uMsg, a_wParam, a_lParam))
+            return true;
+    }
+
     LRESULT result = 0;
     switch (a_uMsg)
     {
@@ -43,10 +58,8 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
             {
                 PostQuitMessage(0);
             }
-            else
-            {
-                m_flagToBeClosed = true;
-            }
+
+            m_flagToBeClosed = true;
         }
         break;
 
@@ -89,8 +102,45 @@ void IWindowImpl::render()
 void IWindowImpl::destroy()
 {
     m_window.destroy();
+
     ::DestroyWindow(m_hwnd);
     m_hwnd = NULL;
+
+    if (m_isImGuiWindow)
+    {
+        ImGui_ImplWin32_Shutdown();
+        ImGui::DestroyContext();
+    }
+}
+
+void IWindowImpl::set_asMainWindow()
+{
+    static m::Bool s_mainWindowIsDefined = false;
+
+    //There can only be one main window
+    mAssert(s_mainWindowIsDefined == false);
+    mAssert(m_isMainWindow == false);
+    s_mainWindowIsDefined == true;
+    m_isMainWindow = true;
+}
+
+void IWindowImpl::set_asImGuiWindow()
+{
+    // There can only be one ImGui window, and it's the main one
+    mAssert(m_isMainWindow == true);
+    mAssert(m_isImGuiWindow == false);
+    m_isImGuiWindow = true;
+
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    (void)io;
+    ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+    ImGui::StyleColorsDark();
+
+    ImGui_ImplWin32_Init(m_hwnd);
+    m_window.init_dearImGui(
+        Callback<void>(this, &IWindowImpl::callback_dearImGuiNewFrame));
 }
 
 void IWindowImpl::set_fullScreen(Bool a_fullscreen)
@@ -143,5 +193,12 @@ void IWindowImpl::toggle_fullScreen()
         ShowWindow(m_hwnd, SW_NORMAL);
     }
 }
+
+
+void IWindowImpl::callback_dearImGuiNewFrame()
+{
+    ImGui_ImplWin32_NewFrame();
+}
+
 }
 }

@@ -1,9 +1,11 @@
 #include <DX12Renderer.hpp>
+#include "imgui_impl_dx12.h"
 
 namespace m
 {
 namespace dx12
 {
+
 DX12Context* DX12Context::gs_dx12Contexte;
 
 void DX12Context::init(Bool a_useWarp)
@@ -40,6 +42,12 @@ void closeRenderModule()
 #ifdef M_DEBUG
     dx12::report_liveObjects();
 #endif  // M_DEBUG
+}
+
+void ImGui_RendererNewFrame()
+{
+    ImGui_ImplDX12_NewFrame();
+    DX12Context::gs_dx12Contexte->m_dearImGuiPlatImplCallback.call();
 }
 
 }  // namespace dx12

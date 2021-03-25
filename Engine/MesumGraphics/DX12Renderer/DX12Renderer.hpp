@@ -2,6 +2,7 @@
 #define M_DX12RENDERER
 #pragma once
 
+#include <MesumCore/Kernel/Callbacks.hpp>
 #include <DX12CommandQueue.hpp>
 
 
@@ -9,6 +10,7 @@ namespace m
 {
 namespace dx12
 {
+void ImGui_RendererNewFrame();
 
 class DX12Context
 {
@@ -27,9 +29,10 @@ class DX12Context
     DX12CommandQueue& get_commandQueue() { return m_commandQueue; }
 
     // DirectX 12 Objects
-    ComPtr<ID3D12Device2>      m_device;
-    DX12CommandQueue           m_commandQueue;
+    ComPtr<ID3D12Device2> m_device;
+    DX12CommandQueue      m_commandQueue;
 
+    Callback<void> m_dearImGuiPlatImplCallback;
 
    private:
     // Use WARP adapter

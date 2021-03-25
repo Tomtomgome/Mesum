@@ -1,11 +1,17 @@
+#include <DearImgui/imgui.h>
+
+#include <DX12Renderer.hpp>
 #include <WindowedAppImpl.hpp>
 #include <WindowsImpl.hpp>
-#include <DX12Renderer.hpp>
 
 namespace m
 {
 namespace win32
 {
+void ImGui_ImplMesum_NewFrame()
+{
+    dx12::ImGui_RendererNewFrame();
+}
 
 LRESULT CALLBACK WindowProc(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam,
                             LPARAM a_lParam)
@@ -35,6 +41,22 @@ windows::IWindow* IWindowedApplicationImpl::add_newWindow(std::wstring a_name,
     newWindow->init();
 
     return newWindow;
+}
+
+void IWindowedApplicationImpl::render()
+{
+    for (auto element = m_windows.begin(); element != m_windows.end();
+         ++element)
+    {
+        windows::IWindow* window = (*element);
+        window->render();
+    }
+
+    if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        ImGui::UpdatePlatformWindows();
+        ImGui::RenderPlatformWindowsDefault();
+    }
 }
 
 void IWindowedApplicationImpl::init()
@@ -108,14 +130,12 @@ Bool IWindowedApplicationImpl::step(const Double& a_deltaTime)
         }
     }
 
-    for (auto element = m_windows.begin(); element != m_windows.end();
-         ++element)
+    if (m_windows.size() == 0)
     {
-        windows::IWindow* window = (*element);
-        window->render();
+        signalKeepRunning = false;
     }
 
     return signalKeepRunning;
 }
-}  // namespace platWindows
+}  // namespace win32
 };  // namespace m

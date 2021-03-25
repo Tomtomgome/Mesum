@@ -15,6 +15,7 @@ class DX12Window
     ~DX12Window() = default;
 
     void init(HWND a_hwnd, U32 a_width, U32 a_height);
+    void init_dearImGui(Callback<void>& a_callback);
     void destroy();
 
     void render();
@@ -40,6 +41,7 @@ class DX12Window
     // Can be toggled with the V key.
     Bool m_vSync            = true;
     Bool m_tearingSupported = false;
+    Bool m_isHoldingDearImgui = false;
 
     ComPtr<IDXGISwapChain4> m_swapChain;
     ComPtr<ID3D12Resource>  m_backBuffers[scm_numFrames];
@@ -47,6 +49,8 @@ class DX12Window
 
     ComPtr<ID3D12DescriptorHeap> m_RTVDescriptorHeap;
     UInt                         m_RTVDescriptorSize;
+
+    ComPtr<ID3D12DescriptorHeap> m_SRVDescriptorHeap;
 
     // Synchronization objects
     U64                 m_frameFenceValues[scm_numFrames] = {};

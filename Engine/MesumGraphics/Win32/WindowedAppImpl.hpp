@@ -12,11 +12,15 @@ namespace m
 {
 namespace win32
 {
+
+void ImGui_ImplMesum_NewFrame();
+
 class IWindowedApplicationImpl : public application::IWindowedApplicationBase
 {
    public:
     virtual windows::IWindow* add_newWindow(std::wstring a_name, U32 a_width,
-                                  U32 a_height);
+                                            U32 a_height);
+    virtual void              render();
 
    protected:
     virtual void init() override;

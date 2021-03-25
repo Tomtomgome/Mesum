@@ -1,6 +1,8 @@
 #include <DX12Window.hpp>
 #include <DX12Renderer.hpp>
 
+#include <imgui_impl_dx12.h>
+
 namespace m
 {
 namespace dx12
@@ -39,8 +41,29 @@ void DX12Window::init(HWND a_hwnd, U32 a_width, U32 a_height)
                              m_RTVDescriptorHeap);
 }
 
+void DX12Window::init_dearImGui(Callback<void>& a_callback)
+{
+    m_isHoldingDearImgui = true;
+    DX12Context::gs_dx12Contexte->m_dearImGuiPlatImplCallback = a_callback;
+
+    m_SRVDescriptorHeap = create_descriptorHeap(
+        DX12Context::gs_dx12Contexte->m_device,
+        D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV,
+        scm_numFrames, D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE);
+
+    ImGui_ImplDX12_Init(
+        DX12Context::gs_dx12Contexte->m_device.Get(), scm_numFrames,
+        DXGI_FORMAT_R8G8B8A8_UNORM, m_SRVDescriptorHeap.Get(),
+        m_SRVDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
+        m_SRVDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
+}
+
 void DX12Window::destroy()
 {
+    if (m_isHoldingDearImgui)
+    {
+        ImGui_ImplDX12_Shutdown();
+    }
     DX12Context::gs_dx12Contexte->get_commandQueue().flush();
 }
 
@@ -63,6 +86,14 @@ void DX12Window::render()
             m_currentBackBufferIndex, m_RTVDescriptorSize);
 
         graphicCommandList->ClearRenderTargetView(rtv, clearColor, 0, nullptr);
+
+        if (m_isHoldingDearImgui)
+        {
+            graphicCommandList->OMSetRenderTargets(1, &rtv, FALSE, NULL);
+            graphicCommandList->SetDescriptorHeaps(1, m_SRVDescriptorHeap.GetAddressOf());
+            ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(),
+                                          graphicCommandList.Get());
+        }
     }
     // Present
     {
@@ -100,6 +131,11 @@ void DX12Window::resize(U32 a_width, U32 a_height)
 
         DX12Context::gs_dx12Contexte->get_commandQueue().flush();
 
+        if (m_isHoldingDearImgui)
+        {
+            ImGui_ImplDX12_InvalidateDeviceObjects();
+        }
+
         for (Int i = 0; i < scm_numFrames; ++i)
         {
             // Any references to the back buffers must be released
@@ -118,6 +154,10 @@ void DX12Window::resize(U32 a_width, U32 a_height)
         m_currentBackBufferIndex = m_swapChain->GetCurrentBackBufferIndex();
         update_renderTargetViews(DX12Context::gs_dx12Contexte->m_device,
                                  m_swapChain, m_RTVDescriptorHeap);
+        if (m_isHoldingDearImgui)
+        {
+            ImGui_ImplDX12_CreateDeviceObjects();
+        }
     }
 }
 
