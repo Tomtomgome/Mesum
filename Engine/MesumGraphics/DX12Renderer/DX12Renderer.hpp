@@ -5,7 +5,6 @@
 #include <MesumCore/Kernel/Callbacks.hpp>
 #include <DX12CommandQueue.hpp>
 
-
 namespace m
 {
 namespace dx12

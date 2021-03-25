@@ -4,7 +4,7 @@
 
 #include <MesumCore/Kernel/Types.hpp>
 #include <MesumGraphics/Windows.hpp>
-#include <MesumGraphics/DX12Renderer/DX12Window.hpp>
+#include <MesumGraphics/CrossRenderer.hpp>
 
 namespace m
 {
@@ -66,7 +66,7 @@ class IWindowImpl : public windows::IWindow
     RECT m_windowRect;
 
     WIN32Context const* m_parentContext;
-    dx12::DX12Window    m_window;
+    renderApi::RenderSurface m_window;
 };
 
 }  // namespace win32

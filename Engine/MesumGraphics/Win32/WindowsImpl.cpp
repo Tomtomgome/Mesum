@@ -137,8 +137,9 @@ void IWindowImpl::set_asImGuiWindow(Bool a_supportMultiViewports)
     (void)io;
     if (a_supportMultiViewports)
     {
-        ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+        io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
     }
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     ImGui::StyleColorsDark();
 
     ImGui_ImplWin32_Init(m_hwnd);

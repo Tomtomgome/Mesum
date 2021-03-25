@@ -1,6 +1,6 @@
 #include <DearImgui/imgui.h>
 
-#include <DX12Renderer.hpp>
+#include <CrossRenderer.hpp>
 #include <WindowedAppImpl.hpp>
 #include <WindowsImpl.hpp>
 
@@ -10,7 +10,7 @@ namespace win32
 {
 void ImGui_ImplMesum_NewFrame()
 {
-    dx12::ImGui_RendererNewFrame();
+    renderApi::ImGui_RendererNewFrame();
 }
 
 LRESULT CALLBACK WindowProc(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam,
@@ -82,7 +82,7 @@ void IWindowedApplicationImpl::init()
     // Register the window class.
     m_W32Context.register_windowClass(className, data.m_hInstance, WindowProc);
 
-    dx12::openRenderModule();
+    renderApi::openRenderModule();
 }
 
 void IWindowedApplicationImpl::destroy()
@@ -96,7 +96,7 @@ void IWindowedApplicationImpl::destroy()
     }
     m_windows.clear();
 
-    dx12::closeRenderModule();
+    renderApi::closeRenderModule();
 
     m_W32Context.destroy();
 }

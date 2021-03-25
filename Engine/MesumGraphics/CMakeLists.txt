@@ -3,8 +3,10 @@ add_subdirectory(DX12Renderer)
 
 if(BM_DX12_RENDERER)
 Set(RENDERER_MODULE_NAME DX12Renderer)
+add_compile_definitions(_M_DX12_RENDERER)
 elseif(BM_VULKAN_RENDERER)
 Set(RENDERER_MODULE_NAME VulkanRenderer)
+add_compile_definitions(_M_VULKAN_RENDERER)
 endif()
 
 add_subdirectory(Win32)
@@ -18,6 +20,7 @@ set(SOURCES WindowedApp.cpp
 set(HEADERS Windows.hpp
             WindowedApp.hpp
             CrossPlatform.hpp
+            CrossRenderer.hpp
             MesumGraphics/Common.hpp)
 
 if(BM_DYNAMIC_LINK)

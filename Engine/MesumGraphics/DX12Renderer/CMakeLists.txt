@@ -14,6 +14,7 @@ set(HEADERS DX12RendererCommon.hpp
             DX12CommandQueue.hpp
             d3dx12.h
             imgui_impl_dx12.h
+            Includes.hpp
             ../MesumGraphics/Common.hpp)
 
 add_library(${MODULE_NAME} OBJECT ${SOURCES} ${HEADERS} $<TARGET_OBJECTS:DearImguiBase>)
