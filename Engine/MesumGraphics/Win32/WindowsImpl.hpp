@@ -33,7 +33,7 @@ class IWindowImpl : public windows::IWindow
     }
     virtual void set_windowName(std::wstring a_name) { m_windowName = a_name; }
     virtual void set_asMainWindow();
-    virtual void set_asImGuiWindow();
+    virtual void set_asImGuiWindow(Bool a_supportMultiViewports);
     virtual void set_fullScreen(Bool a_fullscreen);
     virtual void toggle_fullScreen();
 

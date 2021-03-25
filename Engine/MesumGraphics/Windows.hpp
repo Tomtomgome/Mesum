@@ -25,7 +25,7 @@ class IWindow
     virtual void set_size(UInt a_width, UInt a_height)                  = 0;
     virtual void set_windowName(std::wstring a_name)                    = 0;
     virtual void set_asMainWindow()                                     = 0;
-    virtual void set_asImGuiWindow()                                    = 0;
+    virtual void set_asImGuiWindow(Bool a_supportMultiViewports)        = 0;
 
     virtual void set_fullScreen(Bool a_fullscreen) = 0;
     virtual void toggle_fullScreen()               = 0;

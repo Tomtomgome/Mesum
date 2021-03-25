@@ -43,6 +43,12 @@ windows::IWindow* IWindowedApplicationImpl::add_newWindow(std::wstring a_name,
     return newWindow;
 }
 
+void IWindowedApplicationImpl::set_processImGuiMultiViewports(
+    Bool a_supportMultiViewPorts)
+{
+    m_supportImGuiMultiViewPorts = a_supportMultiViewPorts;
+}
+
 void IWindowedApplicationImpl::render()
 {
     for (auto element = m_windows.begin(); element != m_windows.end();
@@ -52,7 +58,8 @@ void IWindowedApplicationImpl::render()
         window->render();
     }
 
-    if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    if (m_supportImGuiMultiViewPorts &&
+        ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
         ImGui::UpdatePlatformWindows();
         ImGui::RenderPlatformWindowsDefault();

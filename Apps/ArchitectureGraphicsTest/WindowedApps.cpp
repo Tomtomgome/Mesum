@@ -76,7 +76,11 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         m_mainWindow = add_newWindow(L"Cube mover app", width, height);
         m_mainWindow->set_asMainWindow();
-        m_mainWindow->set_asImGuiWindow();
+
+        m::Bool MultiViewportsEnabled = true;
+        m_mainWindow->set_asImGuiWindow(MultiViewportsEnabled);
+        set_processImGuiMultiViewports(MultiViewportsEnabled);
+
         m_mainWindow->link_inputManager(&m_inputManager);
 
         m_inputManager.attach_ToKeyEvent(

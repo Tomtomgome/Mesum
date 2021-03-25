@@ -118,24 +118,27 @@ void IWindowImpl::set_asMainWindow()
     static m::Bool s_mainWindowIsDefined = false;
 
     //There can only be one main window
-    mAssert(s_mainWindowIsDefined == false);
-    mAssert(m_isMainWindow == false);
-    s_mainWindowIsDefined == true;
+    mHardAssert(s_mainWindowIsDefined == false);
+    mHardAssert(m_isMainWindow == false);
+    s_mainWindowIsDefined = true;
     m_isMainWindow = true;
 }
 
-void IWindowImpl::set_asImGuiWindow()
+void IWindowImpl::set_asImGuiWindow(Bool a_supportMultiViewports)
 {
     // There can only be one ImGui window, and it's the main one
-    mAssert(m_isMainWindow == true);
-    mAssert(m_isImGuiWindow == false);
+    mHardAssert(m_isMainWindow == true);
+    mHardAssert(m_isImGuiWindow == false);
     m_isImGuiWindow = true;
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
     (void)io;
-    ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+    if (a_supportMultiViewports)
+    {
+        ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+    }
     ImGui::StyleColorsDark();
 
     ImGui_ImplWin32_Init(m_hwnd);
