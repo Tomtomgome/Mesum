@@ -1,25 +1,22 @@
-set(MODULE_NAME DX12Renderer)
+set(MODULE_NAME VulkanRenderer)
 
 project(${MODULE_NAME} VERSION 1.0.0 DESCRIPTION "Win32 specific windows")
 
-set(SOURCES DX12RendererCommon.cpp
-            DX12Context.cpp
-            DX12CommandQueue.cpp
-            RendererDX12Impl.cpp
-            imgui_impl_dx12.cpp)
+set(SOURCES VulkanContext.cpp
+            VulkanRendererCommon.cpp
+            imgui_impl_vulkan.cpp)
 
-set(HEADERS DX12RendererCommon.hpp
-            DX12Context.hpp
-            DX12CommandQueue.hpp
-            RendererDX12Impl.hpp
-            d3dx12.h
-            imgui_impl_dx12.h
+set(HEADERS VulkanContext.hpp
+            VulkanRendererCommon.hpp
+            imgui_impl_vulkan.h
             Includes.hpp
             ../MesumGraphics/Common.hpp)
 
 add_library(${MODULE_NAME} OBJECT ${SOURCES} ${HEADERS} $<TARGET_OBJECTS:DearImguiBase>)
 
-target_link_libraries(${MODULE_NAME} MesumCore DearImguiBase d3d12.lib dxgi.lib dxguid.lib)
+find_package(Vulkan REQUIRED)
+
+target_link_libraries(${MODULE_NAME} MesumCore DearImguiBase Vulkan::Vulkan)
 
 #target_precompile_headers(${MODULE_NAME} PRIVATE Kernel_pch.hpp)
 set_target_properties(${MODULE_NAME} PROPERTIES VERSION ${PROJECT_VERSION})

@@ -3,8 +3,8 @@
 #pragma once
 
 #include <MesumCore/Kernel/Types.hpp>
-#include <MesumGraphics/Windows.hpp>
 #include <MesumGraphics/CrossRenderer.hpp>
+#include <MesumGraphics/Windows.hpp>
 
 namespace m
 {
@@ -32,6 +32,10 @@ class IWindowImpl : public windows::IWindow
         m_clientHeight = a_height;
     }
     virtual void set_windowName(std::wstring a_name) { m_windowName = a_name; }
+    virtual void set_renderer(render::IRenderer* a_renderer)
+    {
+        m_parentRenderer = a_renderer;
+    }
     virtual void set_asMainWindow();
     virtual void set_asImGuiWindow(Bool a_supportMultiViewports);
     virtual void set_fullScreen(Bool a_fullscreen);
@@ -65,8 +69,9 @@ class IWindowImpl : public windows::IWindow
     // Window rectangle (used to toggle fullscreen state).
     RECT m_windowRect;
 
-    WIN32Context const* m_parentContext;
-    renderApi::RenderSurface m_window;
+    WIN32Context const* m_parentContext  = nullptr;
+    render::IRenderer*  m_parentRenderer = nullptr;
+    render::ISurface*   m_renderSurface  = nullptr;
 };
 
 }  // namespace win32

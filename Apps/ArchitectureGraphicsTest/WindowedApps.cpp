@@ -60,6 +60,8 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
     {
         m::crossPlatform::IWindowedApplication::init();
 
+        init_renderer();
+
         m::CmdLine const& cmdLine = get_cmdLine();
         m::UInt           width   = 1280;
         m::UInt           height  = 720;
@@ -148,7 +150,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         m_mover.move(m_x, m_y);
 
-        m::platform::ImGui_ImplMesum_NewFrame();
+        start_dearImGuiNewFrame();
         ImGui::NewFrame();
 
         m::Bool showDemo = true;

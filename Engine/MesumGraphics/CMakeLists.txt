@@ -1,4 +1,5 @@
 add_subdirectory(DearImgui)
+add_subdirectory(VulkanRenderer)
 add_subdirectory(DX12Renderer)
 
 if(BM_DX12_RENDERER)
@@ -20,6 +21,7 @@ set(SOURCES WindowedApp.cpp
 set(HEADERS Windows.hpp
             WindowedApp.hpp
             CrossPlatform.hpp
+            Renderer.hpp
             CrossRenderer.hpp
             MesumGraphics/Common.hpp)
 

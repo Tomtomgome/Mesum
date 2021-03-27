@@ -10,25 +10,28 @@
 
 namespace m
 {
-    namespace renderApi
-    {
-		using namespace vulkan;
-    }
-}
+namespace renderApi
+{
+using namespace vulkan;
+
+using RenderSurface = VulkanWindow;
+
+}  // namespace renderApi
+}  // namespace m
 
 #elif defined M_DX12_RENDERER
  
 #include <DX12Renderer/Includes.hpp>
 
-namespace m 
+namespace m
 {
-    namespace renderApi
-    {
-        using namespace dx12;
+namespace renderApi
+{
+using namespace dx12;
 
-        using RenderSurface = DX12Window;
-    }
-}
+using DefaultRenderer = DX12Renderer;
+}  // namespace renderApi
+}  // namespace m
 
 #endif
 

@@ -71,7 +71,7 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
             U32 width  = clientRect.right - clientRect.left;
             U32 height = clientRect.bottom - clientRect.top;
 
-            m_window.resize(width, height);
+            m_renderSurface->resize(width, height);
         }
         break;
         default: result = DefWindowProcW(m_hwnd, a_uMsg, a_wParam, a_lParam);
@@ -89,20 +89,34 @@ void IWindowImpl::init()
 
     SetWindowLongPtr(m_hwnd, GWLP_USERDATA, LONG_PTR(this));
 
-    m_window.init(m_hwnd, m_clientWidth, m_clientHeight);
+    if (m_parentRenderer != nullptr)
+    {
+        m_renderSurface = m_parentRenderer->get_newSurface();
+        render::Win32SurfaceInitData surfaceData = {m_hwnd, m_clientWidth,
+                                                    m_clientHeight};
+        m_renderSurface->init_win32(surfaceData);
+    }
 
     ShowWindow(m_hwnd, SW_NORMAL);
 }
 
 void IWindowImpl::render()
 {
-    m_window.render();
+    if (m_renderSurface != nullptr)
+    {
+        m_renderSurface->render();
+    }
 }
 
 void IWindowImpl::destroy()
 {
-    m_window.destroy();
-
+    if (m_renderSurface != nullptr)
+    {
+        m_renderSurface->destroy();
+        delete m_renderSurface;
+        m_renderSurface = nullptr;
+    }
+    m_parentRenderer = nullptr;
     ::DestroyWindow(m_hwnd);
     m_hwnd = NULL;
 
@@ -143,8 +157,11 @@ void IWindowImpl::set_asImGuiWindow(Bool a_supportMultiViewports)
     ImGui::StyleColorsDark();
 
     ImGui_ImplWin32_Init(m_hwnd);
-    m_window.init_dearImGui(
-        Callback<void>(this, &IWindowImpl::callback_dearImGuiNewFrame));
+    if (m_renderSurface != nullptr)
+    {
+        m_renderSurface->init_dearImGui(
+            Callback<void>(this, &IWindowImpl::callback_dearImGuiNewFrame));
+    }
 }
 
 void IWindowImpl::set_fullScreen(Bool a_fullscreen)
@@ -197,7 +214,6 @@ void IWindowImpl::toggle_fullScreen()
         ShowWindow(m_hwnd, SW_NORMAL);
     }
 }
-
 
 void IWindowImpl::callback_dearImGuiNewFrame()
 {

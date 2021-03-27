@@ -8,11 +8,6 @@ namespace m
 {
 namespace win32
 {
-void ImGui_ImplMesum_NewFrame()
-{
-    renderApi::ImGui_RendererNewFrame();
-}
-
 LRESULT CALLBACK WindowProc(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam,
                             LPARAM a_lParam)
 {
@@ -28,6 +23,35 @@ LRESULT CALLBACK WindowProc(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam,
     }
 }
 
+void IWindowedApplicationImpl::init_renderer(render::RendererApi a_renderApi)
+{
+    switch (a_renderApi)
+    {
+        case m::render::RendererApi::Default:
+            m_renderer = new renderApi::DefaultRenderer();
+            break;
+        case m::render::RendererApi::DX12:
+#if (defined M_DX12_RENDERER) || (defined M_ALL_RENDERER)
+            m_renderer = new dx12::DX12Renderer();
+#else
+            //DX12Renderer Not Supported
+            mInterrupt;
+#endif
+            break;
+        case m::render::RendererApi::Vulkan:
+#if (defined M_VULKAN_RENDERER) || (defined M_ALL_RENDERER)
+            m_renderer = new vulkan::VulkanRenderer();
+#else
+            // VulkanRenderer Not Supported
+            mInterrupt;
+#endif
+            //m_renderer = new vulkan::VulkanContext();
+            break;
+        default: mInterrupt; break;
+    }
+    m_renderer->init();
+}
+
 windows::IWindow* IWindowedApplicationImpl::add_newWindow(std::wstring a_name,
                                                           U32          a_width,
                                                           U32          a_height)
@@ -37,6 +61,7 @@ windows::IWindow* IWindowedApplicationImpl::add_newWindow(std::wstring a_name,
 
     newWindow->set_size(a_width, a_height);
     newWindow->set_windowName(a_name);
+    newWindow->set_renderer(m_renderer);
     newWindow->set_winContext(m_W32Context);
     newWindow->init();
 
@@ -48,6 +73,12 @@ void IWindowedApplicationImpl::set_processImGuiMultiViewports(
 {
     m_supportImGuiMultiViewPorts = a_supportMultiViewPorts;
 }
+
+void IWindowedApplicationImpl::start_dearImGuiNewFrame() {
+    mHardAssert(m_renderer != nullptr);
+    m_renderer->start_dearImGuiNewFrame();
+}
+
 
 void IWindowedApplicationImpl::render()
 {
@@ -81,8 +112,6 @@ void IWindowedApplicationImpl::init()
     const Char className[] = L"MainWindowClass";
     // Register the window class.
     m_W32Context.register_windowClass(className, data.m_hInstance, WindowProc);
-
-    renderApi::openRenderModule();
 }
 
 void IWindowedApplicationImpl::destroy()
@@ -96,7 +125,11 @@ void IWindowedApplicationImpl::destroy()
     }
     m_windows.clear();
 
-    renderApi::closeRenderModule();
+    if (m_renderer != nullptr)
+    {
+        m_renderer->destroy();
+        delete m_renderer;
+    }
 
     m_W32Context.destroy();
 }

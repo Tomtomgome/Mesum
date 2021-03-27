@@ -5,6 +5,8 @@
 #include <MesumCore/kernel/Application.hpp>
 #include <MesumCore/MesumCore/Common.hpp>
 #include <MesumCore/Kernel/Mains.hpp>
+#include <MesumGraphics/Renderer.hpp>
+#include <MesumGraphics/Common.hpp>
 #include <string>
 #include <vector>
 
@@ -20,11 +22,16 @@ namespace application
 class IWindowedApplicationBase : public ITimedLoopApplication
 {
    public:
+    virtual void init_renderer(
+        render::RendererApi a_renderApi = render::RendererApi::Default) = 0;
+
     virtual windows::IWindow* add_newWindow(std::wstring a_name, U32 a_width,
                                             U32 a_height) = 0;
     virtual void              set_processImGuiMultiViewports(
                      Bool a_supportMultiViewPorts) = 0;
-    virtual void render()                          = 0;
+    virtual void start_dearImGuiNewFrame()         = 0;
+
+    virtual void render() = 0;
 };
 }  // namespace application
 };  // namespace m
@@ -33,13 +40,6 @@ class IWindowedApplicationBase : public ITimedLoopApplication
 // Windowed entry point
 //*****************************************************************************
 #if defined M_WIN32
-#ifndef UNICODE
-#define UNICODE
-#endif
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
-#include <consoleapi.h>
-
 
 namespace m
 {

@@ -12,15 +12,15 @@ namespace m
 {
 namespace win32
 {
-
-void ImGui_ImplMesum_NewFrame();
-
 class IWindowedApplicationImpl : public application::IWindowedApplicationBase
 {
    public:
+    virtual void init_renderer(
+        render::RendererApi a_renderApi = render::RendererApi::Default) override;
     virtual windows::IWindow* add_newWindow(std::wstring a_name, U32 a_width,
                                             U32 a_height);
     virtual void set_processImGuiMultiViewports(Bool a_supportMultiViewPorts);
+    virtual void start_dearImGuiNewFrame();
     virtual void render();
 
    protected:
@@ -30,6 +30,7 @@ class IWindowedApplicationImpl : public application::IWindowedApplicationBase
 
    private:
     Bool                        m_supportImGuiMultiViewPorts = false;
+    render::IRenderer*          m_renderer = nullptr;
     WIN32Context                m_W32Context;
     std::set<windows::IWindow*> m_windows;
 };

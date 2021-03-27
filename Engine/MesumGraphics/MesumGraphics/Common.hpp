@@ -18,4 +18,17 @@
 #define M_VULKAN_RENDERER
 #endif
 
+#if defined M_WIN32
+
+#ifndef UNICODE
+#define UNICODE
+#endif
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
+#include <consoleapi.h>
+
+#elif defined M_UNIX
+
+#endif
+
 #endif //M_CORE_COMMON
