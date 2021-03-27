@@ -4,29 +4,24 @@ namespace m
 {
 namespace vulkan
 {
-void ImGui_RendererNewFrame() {}
-
 VulkanContext* VulkanContext::gs_VulkanContexte;
 
 void VulkanContext::init() {
     create_instance(m_instance);
 
     setup_debugMessenger(m_instance, m_debugUtil);
+
+    select_physicalDevice(m_instance, m_physicalDevice);
+
+    create_logicalDevice(m_physicalDevice, m_logicalDevice, m_queue);
 }
 
 void VulkanContext::deinit() {
-    vkDestroyInstance(m_instance, NULL);
-}
+    vkDestroyDevice(m_logicalDevice, nullptr);
 
-void openRenderModule()
-{
-    VulkanContext::gs_VulkanContexte = new VulkanContext();
-    VulkanContext::gs_VulkanContexte->init();
-}
-void closeRenderModule()
-{
-    VulkanContext::gs_VulkanContexte->deinit();
-    delete VulkanContext::gs_VulkanContexte;
+    destroy_debugMessenger(m_instance, m_debugUtil);
+
+    vkDestroyInstance(m_instance, nullptr);
 }
 }  // namespace vulkan
 }  // namespace m

@@ -1,5 +1,6 @@
 #include <VulkanRendererCommon.hpp>
 #include <vector>
+#include <optional>
 
 namespace m
 {
@@ -58,6 +59,8 @@ std::vector<const ShortChar*> get_requiedExtensions()
         extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
     }
 
+    extensions.push_back(VK_KHR_WIN32_SURFACE_EXTENSION_NAME);
+
     return extensions;
 }
 
@@ -88,6 +91,11 @@ void create_instance(VkInstance& a_InstaceToCreate) {
         createInfo.enabledLayerCount =
             static_cast<U32>(validationLayers.size());
         createInfo.ppEnabledLayerNames = validationLayers.data();
+
+        VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo;
+        setup_debugUtilsMessengerCreateInfoExt(debugCreateInfo);
+        createInfo.pNext =
+            (VkDebugUtilsMessengerCreateInfoEXT*)&debugCreateInfo;
     }
     else
     {
@@ -120,7 +128,23 @@ VKAPI_ATTR VkBool32 VKAPI_CALL callback_logDebugMessage(
     VkDebugUtilsMessageTypeFlagsEXT             messageType,
     const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData)
 {
-    mLOG_ERR_TO(VK_RENDERER_ID, "Validation layer : ", pCallbackData->pMessage);
+    switch (messageSeverity)
+    {
+        case VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT:
+        case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:
+            mLOG_TO(VK_RENDERER_ID,
+                        "Validation layer : ", pCallbackData->pMessage);
+            break;
+        case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
+            mLOG_WARN_TO(VK_RENDERER_ID,
+                        "Validation layer : ", pCallbackData->pMessage);
+            break;
+        case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
+            mLOG_ERR_TO(VK_RENDERER_ID,
+                        "Validation layer : ", pCallbackData->pMessage);
+            break;
+        default: mInterrupt;
+    }
 
     return VK_FALSE;
 }
@@ -143,29 +167,141 @@ VkResult create_debugUtilsMessengerEXT(
     }
 }
 
-void setup_debugMessenger(VkInstance const&         a_instance,
+void setup_debugUtilsMessengerCreateInfoExt(
+    VkDebugUtilsMessengerCreateInfoEXT a_createInfo)
+{
+    a_createInfo.sType =
+        VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+    a_createInfo.messageSeverity =
+        VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT |
+        VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT |
+        VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
+    a_createInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT |
+                             VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT |
+                             VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
+    a_createInfo.pfnUserCallback = callback_logDebugMessage;
+    a_createInfo.pUserData       = nullptr;
+}
+
+void setup_debugMessenger(VkInstance         a_instance,
                           VkDebugUtilsMessengerEXT& a_debugUtil)
 {
     if (!g_enableValidationLayers)
         return;
 
     VkDebugUtilsMessengerCreateInfoEXT createInfo = {};
-    createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
-    createInfo.messageSeverity =
-        VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT |
-        VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT |
-        VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
-    createInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT |
-                             VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT |
-                             VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
-    createInfo.pfnUserCallback = callback_logDebugMessage;
-    createInfo.pUserData       = nullptr;
+    setup_debugUtilsMessengerCreateInfoExt(createInfo);
 
     if (create_debugUtilsMessengerEXT(a_instance, &createInfo, nullptr,
                                       &a_debugUtil) != VK_SUCCESS)
     {
         throw std::runtime_error("failed to set up debug messenger");
     }
+}
+
+void destroy_debugMessenger(VkInstance         a_instance,
+                            VkDebugUtilsMessengerEXT& a_debugUtil)
+{
+    if (!g_enableValidationLayers)
+        return;
+
+    auto func = (PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(
+        a_instance, "vkDestroyDebugUtilsMessengerEXT");
+    if (func != nullptr)
+    {
+        func(a_instance, a_debugUtil, nullptr);
+    }
+}
+
+bool check_deviceSuitable(VkPhysicalDevice device)
+{
+    // Will do suitability check later
+    return true;
+}
+
+void select_physicalDevice(VkInstance        a_instance,
+                        VkPhysicalDevice& a_physicalDevice)
+{
+    U32 deviceCount = 0;
+    vkEnumeratePhysicalDevices(a_instance, &deviceCount, nullptr);
+
+    if (deviceCount == 0)
+    {
+        throw std::runtime_error("failed to find GPUs with Vulkan support !");
+    }
+
+    std::vector<VkPhysicalDevice> devices(deviceCount);
+    vkEnumeratePhysicalDevices(a_instance, &deviceCount, devices.data());
+
+    for (const auto& device : devices)
+    {
+        if (check_deviceSuitable(device))
+        {
+            a_physicalDevice = device;
+            break;
+        }
+    }
+
+    if (a_physicalDevice == VK_NULL_HANDLE)
+    {
+        throw std::runtime_error("failed to find a suitable GPU !");
+    }
+}
+
+Bool find_queueFamilyIndex(VkPhysicalDevice a_physicalDevice, VkQueueFlags a_queueFamilyFilter, U32& a_queueFamilyIndex)
+{
+    U32 queueFamilyCount = 0;
+    vkGetPhysicalDeviceQueueFamilyProperties(a_physicalDevice,
+                                             &queueFamilyCount, nullptr);
+
+    std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
+    vkGetPhysicalDeviceQueueFamilyProperties(
+        a_physicalDevice, &queueFamilyCount, queueFamilies.data());
+
+    int i = 0;
+    for (const auto& queueFamily : queueFamilies)
+    {
+        if (queueFamily.queueFlags & a_queueFamilyFilter)
+        {
+            a_queueFamilyIndex = i;
+            return true;
+        }
+        i++;
+    }
+
+    return false;
+}
+
+void create_logicalDevice(VkPhysicalDevice a_physicalDevice,
+                          VkDevice& a_logicalDevice, VkQueue& a_queue)
+{
+    U32 queueFamilyIndex;
+    find_queueFamilyIndex(a_physicalDevice, VK_QUEUE_GRAPHICS_BIT,
+                          queueFamilyIndex);
+
+    float queuePriority                     = 1.0f;
+    VkDeviceQueueCreateInfo queueCreateInfo = {};
+    queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+    queueCreateInfo.queueFamilyIndex = queueFamilyIndex;
+    queueCreateInfo.queueCount       = 1;
+    queueCreateInfo.pQueuePriorities = &queuePriority;
+
+    VkPhysicalDeviceFeatures deviceFeatures = {};
+
+    VkDeviceCreateInfo createInfo{};
+    createInfo.sType                = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+    createInfo.pQueueCreateInfos    = &queueCreateInfo;
+    createInfo.queueCreateInfoCount = 1;
+    createInfo.pEnabledFeatures     = &deviceFeatures;
+
+    if (vkCreateDevice(a_physicalDevice, &createInfo, nullptr,
+                       &a_logicalDevice) !=
+        VK_SUCCESS)
+    {
+        throw std::runtime_error("failed to create logical device !");
+    }
+
+    vkGetDeviceQueue(a_logicalDevice, queueFamilyIndex, 0, &a_queue);
 }
 
 }  // namespace vulkan

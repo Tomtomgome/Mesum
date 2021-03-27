@@ -60,7 +60,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
     {
         m::crossPlatform::IWindowedApplication::init();
 
-        init_renderer();
+        init_renderer(m::render::RendererApi::Vulkan);
 
         m::CmdLine const& cmdLine = get_cmdLine();
         m::UInt           width   = 1280;
@@ -80,8 +80,8 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m_mainWindow->set_asMainWindow();
 
         m::Bool MultiViewportsEnabled = true;
-        m_mainWindow->set_asImGuiWindow(MultiViewportsEnabled);
-        set_processImGuiMultiViewports(MultiViewportsEnabled);
+//         m_mainWindow->set_asImGuiWindow(MultiViewportsEnabled);
+//         set_processImGuiMultiViewports(MultiViewportsEnabled);
 
         m_mainWindow->link_inputManager(&m_inputManager);
 
@@ -150,12 +150,12 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         m_mover.move(m_x, m_y);
 
-        start_dearImGuiNewFrame();
-        ImGui::NewFrame();
-
-        m::Bool showDemo = true;
-        ImGui::ShowDemoWindow(&showDemo);
-        ImGui::Render();
+//         start_dearImGuiNewFrame();
+//         ImGui::NewFrame();
+//
+//         m::Bool showDemo = true;
+//         ImGui::ShowDemoWindow(&showDemo);
+//         ImGui::Render();
 
         render();
         return true;

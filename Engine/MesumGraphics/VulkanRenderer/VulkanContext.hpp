@@ -7,8 +7,6 @@ namespace m
 {
 namespace vulkan
 {
-void ImGui_RendererNewFrame();
-
 class VulkanContext
 {
    public:
@@ -20,14 +18,18 @@ class VulkanContext
     void                  init();
     void                  deinit();
 
+
+    VkInstance get_instance() { return m_instance; }
    private:
-    VkInstance m_instance;
-    VkPhysicalDevice         m_physicalDevice;
+    VkInstance               m_instance       = VK_NULL_HANDLE;
+    VkPhysicalDevice         m_physicalDevice = VK_NULL_HANDLE;
+    VkDevice                 m_logicalDevice  = VK_NULL_HANDLE;
+
+    VkQueue                  m_queue = VK_NULL_HANDLE;
+
     VkDebugUtilsMessengerEXT m_debugUtil;
 };
 
-void openRenderModule();
-void closeRenderModule();
 };  // namespace vulkan
 };  // namespace m
 

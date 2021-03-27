@@ -3,7 +3,7 @@
 #pragma once
 
 #include <MesumGraphics/Renderer.hpp>
-#include <MesumGraphics/VulkanRenderer/VulkanRendererCommon.hpp>
+#include <VulkanRendererCommon.hpp>
 
 namespace m
 {
@@ -28,6 +28,8 @@ class VulkanSurface : public render::ISurface
    private:
     // The number of swap chain back buffers.
     static const U8 scm_numFrames = 3;
+
+    VkSurfaceKHR m_surface;
 
     // By default, enable V-Sync.
     // Can be toggled with the V key.
