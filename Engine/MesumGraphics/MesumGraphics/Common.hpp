@@ -12,6 +12,10 @@
 #define MesumGraphicsApi
 #endif
 
+#ifdef _M_ALL_RENDERER
+#define M_ALL_RENDERER
+#endif
+
 #if defined _M_DX12_RENDERER
 #define M_DX12_RENDERER
 #elif defined _M_VULKAN_RENDERER

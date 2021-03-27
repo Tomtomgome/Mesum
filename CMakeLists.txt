@@ -11,21 +11,28 @@ set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
 set(ENGINE_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Src)
 
 if (UNIX)
-add_compile_definitions(_M_UNIX)
-set(BM_APP_WINDOWED "")
+    add_compile_definitions(_M_UNIX)
+    set(BM_APP_WINDOWED "")
+    set(BM_UNIX "TRUE")
 elseif(WIN32)
-add_compile_definitions(_M_WIN32)
-set(BM_APP_WINDOWED WIN32)
+    add_compile_definitions(_M_WIN32)
+    set(BM_APP_WINDOWED WIN32)
+    set(BM_WIN32 "TRUE")
 endif ()
 
-
-set(BM_DX12_RENDERER "TRUE")
-set(BM_VULKAN_RENDERER "FALSE")
-
+#Build as dynamic
 set(BM_DYNAMIC_LINK "FALSE")
 
+#Are all the renderer available to the applications
+set(BM_ALL_RENDERER "TRUE")
+#Defines the default renderer (BM_DX12/BM_VULKAN) (mendatory)
+set(BM_DEFAULT_RENDERER "BM_DX12")
 
-#add_subdirectory(${CMAKE_SOURCE_DIR}/Src)
+if(BM_DEFAULT_RENDERER STREQUAL "BM_DX12")
+    set(BM_DX12_RENDERER "TRUE")
+elseif(BM_DEFAULT_RENDERER STREQUAL "BM_VULKAN")
+    set(BM_VULKAN_RENDERER "TRUE")
+endif()
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/Engine)
 

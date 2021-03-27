@@ -14,9 +14,13 @@ set(HEADERS Win32Context.hpp
             imgui_impl_win32.h
             ../MesumGraphics/Common.hpp)
 
-add_library(${MODULE_NAME} OBJECT ${SOURCES} ${HEADERS} $<TARGET_OBJECTS:${RENDERER_MODULE_NAME}> $<TARGET_OBJECTS:DearImguiBase>)
+foreach(RENDER_MODULE_NAME ${RENDERER_MODULE_NAMES})
+    list(APPEND TARGET_OBJECTS $<TARGET_OBJECTS:${RENDER_MODULE_NAME}>)
+endforeach()
 
-target_link_libraries(${MODULE_NAME} MesumCore ${RENDERER_MODULE_NAME} DearImguiBase)
+add_library(${MODULE_NAME} OBJECT ${SOURCES} ${HEADERS} ${TARGET_OBJECTS} $<TARGET_OBJECTS:DearImguiBase>)
+
+target_link_libraries(${MODULE_NAME} MesumCore ${RENDERER_MODULE_NAMES} DearImguiBase)
 
 #target_precompile_headers(${MODULE_NAME} PRIVATE Kernel_pch.hpp)
 set_target_properties(${MODULE_NAME} PROPERTIES VERSION ${PROJECT_VERSION})

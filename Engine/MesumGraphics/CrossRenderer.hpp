@@ -4,9 +4,18 @@
 
 #include <MesumGraphics/Common.hpp>
 
-#if defined M_VULKAN_RENDERER
-
+#ifdef M_ALL_RENDERER
+#include <DX12Renderer/Includes.hpp>
 #include <VulkanRenderer/Includes.hpp>
+#else
+#if defined M_VULKAN_RENDERER
+#include <VulkanRenderer/Includes.hpp>
+#elif defined M_DX12_RENDERER
+#include <DX12Renderer/Includes.hpp>
+#endif
+#endif
+
+#if defined M_VULKAN_RENDERER
 
 namespace m
 {
@@ -20,8 +29,6 @@ using RenderSurface = VulkanWindow;
 }  // namespace m
 
 #elif defined M_DX12_RENDERER
- 
-#include <DX12Renderer/Includes.hpp>
 
 namespace m
 {

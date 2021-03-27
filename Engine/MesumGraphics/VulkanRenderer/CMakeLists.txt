@@ -4,11 +4,13 @@ project(${MODULE_NAME} VERSION 1.0.0 DESCRIPTION "Win32 specific windows")
 
 set(SOURCES VulkanContext.cpp
             VulkanRendererCommon.cpp
+            RendererVulkanImpl.cpp
             imgui_impl_vulkan.cpp)
 
 set(HEADERS VulkanContext.hpp
             VulkanRendererCommon.hpp
             imgui_impl_vulkan.h
+            RendererVulkanImpl.hpp
             Includes.hpp
             ../MesumGraphics/Common.hpp)
 
