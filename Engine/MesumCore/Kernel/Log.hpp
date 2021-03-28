@@ -219,7 +219,9 @@ Logger<LogPolicy>::~Logger()
 template <typename LogPolicy>
 const ChannelID Logger<LogPolicy>::get_newChannelID()
 {
-    return m_nextChannelID <<= 1;
+    // TODO : Fix this ID generation problem
+    static ChannelID nextChannelID = 1;
+    return nextChannelID <<= 1;
 }
 
 template <typename LogPolicy>

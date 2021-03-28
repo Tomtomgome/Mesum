@@ -198,8 +198,8 @@ ComPtr<ID3D12CommandQueue> create_commandQueue(ComPtr<ID3D12Device2>   a_device,
 }
 
 ComPtr<IDXGISwapChain4> create_swapChain(
-    HWND a_hWnd, ComPtr<ID3D12CommandQueue> a_commandQueue, uint32_t a_width,
-    uint32_t a_height, uint32_t a_bufferCount)
+    HWND a_hWnd, ComPtr<ID3D12CommandQueue> a_commandQueue, U32 a_width,
+    U32 a_height, U32 a_bufferCount)
 {
     ComPtr<IDXGISwapChain4> dxgiSwapChain4;
     ComPtr<IDXGIFactory4>   dxgiFactory4;
@@ -215,7 +215,7 @@ ComPtr<IDXGISwapChain4> create_swapChain(
     DXGI_SWAP_CHAIN_DESC1 desc_SwapChain = {};
     desc_SwapChain.Width                 = a_width;
     desc_SwapChain.Height                = a_height;
-    desc_SwapChain.Format                = DXGI_FORMAT_R8G8B8A8_UNORM;
+    desc_SwapChain.Format                = DXGI_FORMAT_B8G8R8A8_UNORM;
     desc_SwapChain.Stereo                = false;
     desc_SwapChain.SampleDesc            = {1, 0};
     desc_SwapChain.BufferUsage           = DXGI_USAGE_RENDER_TARGET_OUTPUT;
@@ -245,7 +245,7 @@ ComPtr<IDXGISwapChain4> create_swapChain(
 
 ComPtr<ID3D12DescriptorHeap> create_descriptorHeap(
     ComPtr<ID3D12Device2> a_device, D3D12_DESCRIPTOR_HEAP_TYPE a_type,
-    uint32_t a_numDescriptors, D3D12_DESCRIPTOR_HEAP_FLAGS a_flags)
+    U32 a_numDescriptors, D3D12_DESCRIPTOR_HEAP_FLAGS a_flags)
 {
     ComPtr<ID3D12DescriptorHeap> descriptorHeap;
 

@@ -79,7 +79,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m_mainWindow = add_newWindow(L"Cube mover app", width, height);
         m_mainWindow->set_asMainWindow();
 
-        m::Bool MultiViewportsEnabled = true;
+//         m::Bool MultiViewportsEnabled = true;
 //         m_mainWindow->set_asImGuiWindow(MultiViewportsEnabled);
 //         set_processImGuiMultiViewports(MultiViewportsEnabled);
 

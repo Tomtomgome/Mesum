@@ -57,7 +57,7 @@ void DX12Surface::init_dearImGui(Callback<void>& a_callback)
 
     ImGui_ImplDX12_Init(
         DX12Context::gs_dx12Contexte->m_device.Get(), scm_numFrames,
-        DXGI_FORMAT_R8G8B8A8_UNORM, m_SRVDescriptorHeap.Get(),
+        DXGI_FORMAT_B8G8R8A8_UNORM, m_SRVDescriptorHeap.Get(),
         m_SRVDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
         m_SRVDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
 }

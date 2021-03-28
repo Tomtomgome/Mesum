@@ -6,7 +6,8 @@ namespace vulkan
 {
 VulkanContext* VulkanContext::gs_VulkanContexte;
 
-void VulkanContext::init() {
+void VulkanContext::init()
+{
     create_instance(m_instance);
 
     setup_debugMessenger(m_instance, m_debugUtil);
@@ -16,7 +17,8 @@ void VulkanContext::init() {
     create_logicalDevice(m_physicalDevice, m_logicalDevice, m_queue);
 }
 
-void VulkanContext::deinit() {
+void VulkanContext::deinit()
+{
     vkDestroyDevice(m_logicalDevice, nullptr);
 
     destroy_debugMessenger(m_instance, m_debugUtil);

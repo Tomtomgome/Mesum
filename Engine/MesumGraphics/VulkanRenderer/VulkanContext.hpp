@@ -18,14 +18,16 @@ class VulkanContext
     void                  init();
     void                  deinit();
 
+    VkInstance       get_instance() { return m_instance; }
+    VkPhysicalDevice get_physDevice() { return m_physicalDevice; }
+    VkDevice         get_logDevice() { return m_logicalDevice; }
 
-    VkInstance get_instance() { return m_instance; }
    private:
-    VkInstance               m_instance       = VK_NULL_HANDLE;
-    VkPhysicalDevice         m_physicalDevice = VK_NULL_HANDLE;
-    VkDevice                 m_logicalDevice  = VK_NULL_HANDLE;
+    VkInstance       m_instance       = VK_NULL_HANDLE;
+    VkPhysicalDevice m_physicalDevice = VK_NULL_HANDLE;
+    VkDevice         m_logicalDevice  = VK_NULL_HANDLE;
 
-    VkQueue                  m_queue = VK_NULL_HANDLE;
+    VkQueue m_queue = VK_NULL_HANDLE;
 
     VkDebugUtilsMessengerEXT m_debugUtil;
 };

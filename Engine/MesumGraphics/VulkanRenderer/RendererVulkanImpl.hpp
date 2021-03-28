@@ -25,11 +25,14 @@ class VulkanSurface : public render::ISurface
     virtual void destroy();
 
    private:
+    void init_internal();
+
    private:
     // The number of swap chain back buffers.
     static const U8 scm_numFrames = 3;
 
-    VkSurfaceKHR m_surface;
+    VkSurfaceKHR   m_surface   = VK_NULL_HANDLE;
+    VkSwapchainKHR m_swapChain = VK_NULL_HANDLE;
 
     // By default, enable V-Sync.
     // Can be toggled with the V key.

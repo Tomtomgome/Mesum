@@ -20,7 +20,7 @@ extern MesumGraphicsApi const logging::ChannelID VK_RENDERER_ID;
 
 void create_instance(VkInstance& a_InstaceToCreate);
 void setup_debugUtilsMessengerCreateInfoExt(
-    VkDebugUtilsMessengerCreateInfoEXT a_createInfo);
+    VkDebugUtilsMessengerCreateInfoEXT& a_createInfo);
 void setup_debugMessenger(VkInstance                a_instance,
                           VkDebugUtilsMessengerEXT& a_debugUtil);
 void destroy_debugMessenger(VkInstance                a_instance,
@@ -29,6 +29,8 @@ void destroy_debugMessenger(VkInstance                a_instance,
 void select_physicalDevice(VkInstance        a_instance,
                            VkPhysicalDevice& a_physicalDevice);
 
+Bool find_graphicQueueFamilyIndex(VkPhysicalDevice a_physicalDevice,
+                                  U32&             a_queueFamilyIndex);
 void create_logicalDevice(VkPhysicalDevice a_physicalDevice,
                           VkDevice& a_logicalDevice, VkQueue& a_queue);
 
