@@ -68,12 +68,31 @@ void VulkanSurface::init_internal()
         VulkanContext::gs_VulkanContexte->get_physDevice(), m_surface,
         &formatCount, nullptr);
 
-    if (formatCount != 0)
+    if (formatCount == 0)
     {
-        supportedFormats.resize(formatCount);
-        vkGetPhysicalDeviceSurfaceFormatsKHR(
-            VulkanContext::gs_VulkanContexte->get_physDevice(), m_surface,
-            &formatCount, supportedFormats.data());
+        throw std::runtime_error("Need to support at least some formats");
+    }
+
+    supportedFormats.resize(formatCount);
+    vkGetPhysicalDeviceSurfaceFormatsKHR(
+        VulkanContext::gs_VulkanContexte->get_physDevice(), m_surface,
+        &formatCount, supportedFormats.data());
+
+    VkFormat selectedSwapChainFormat = VK_FORMAT_B8G8R8A8_UNORM;
+    Bool     isFormatSupported       = false;
+    for (size_t i = 0; i < formatCount; i++)
+    {
+        if (supportedFormats[i].format == selectedSwapChainFormat)
+        {
+            isFormatSupported = true;
+            break;
+        }
+    }
+
+    if (!isFormatSupported)
+    {
+        throw std::runtime_error(
+            "VK_FORMAT_B8G8R8A8_UNORM Needs to be supported at the moment");
     }
 
     VkSurfaceCapabilitiesKHR surfaceCapabilities;
@@ -85,7 +104,7 @@ void VulkanSurface::init_internal()
     createInfo.sType            = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
     createInfo.surface          = m_surface;
     createInfo.minImageCount    = scm_numFrames;
-    createInfo.imageFormat      = VK_FORMAT_B8G8R8A8_UNORM;
+    createInfo.imageFormat      = selectedSwapChainFormat;
     createInfo.imageColorSpace  = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR;
     createInfo.imageExtent      = {m_clientWidth, m_clientHeight};
     createInfo.imageArrayLayers = 1;
@@ -102,6 +121,38 @@ void VulkanSurface::init_internal()
     {
         throw std::runtime_error("failed to create swap chain!");
     }
+
+    U32 imageCount;
+    vkGetSwapchainImagesKHR(VulkanContext::gs_VulkanContexte->get_logDevice(),
+                            m_swapChain, &imageCount, nullptr);
+    m_swapChainImages.resize(imageCount);
+    vkGetSwapchainImagesKHR(VulkanContext::gs_VulkanContexte->get_logDevice(),
+                            m_swapChain, &imageCount, m_swapChainImages.data());
+
+    m_swapChainImageViews.resize(imageCount);
+    for (size_t i = 0; i < imageCount; i++)
+    {
+        VkImageViewCreateInfo createInfo{};
+        createInfo.sType        = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+        createInfo.image        = m_swapChainImages[i];
+        createInfo.viewType     = VK_IMAGE_VIEW_TYPE_2D;
+        createInfo.format       = selectedSwapChainFormat;
+        createInfo.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
+        createInfo.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
+        createInfo.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
+        createInfo.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
+        createInfo.subresourceRange.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT;
+        createInfo.subresourceRange.baseMipLevel   = 0;
+        createInfo.subresourceRange.levelCount     = 1;
+        createInfo.subresourceRange.baseArrayLayer = 0;
+        createInfo.subresourceRange.layerCount     = 1;
+        if (vkCreateImageView(VulkanContext::gs_VulkanContexte->get_logDevice(),
+                              &createInfo, nullptr,
+                              &m_swapChainImageViews[i]) != VK_SUCCESS)
+        {
+            throw std::runtime_error("failed to create image views!");
+        }
+    }
 }
 
 void VulkanSurface::init_dearImGui(Callback<void>& a_callback) {}
@@ -111,6 +162,12 @@ void VulkanSurface::resize(U32 a_width, U32 a_height) {}
 
 void VulkanSurface::destroy()
 {
+    for (auto imageView : m_swapChainImageViews)
+    {
+        vkDestroyImageView(VulkanContext::gs_VulkanContexte->get_logDevice(),
+                           imageView, nullptr);
+    }
+
     vkDestroySwapchainKHR(VulkanContext::gs_VulkanContexte->get_logDevice(),
                           m_swapChain, nullptr);
     vkDestroySurfaceKHR(VulkanContext::gs_VulkanContexte->get_instance(),

@@ -96,11 +96,6 @@ void create_instance(VkInstance& a_InstaceToCreate)
         createInfo.enabledLayerCount =
             static_cast<U32>(validationLayers.size());
         createInfo.ppEnabledLayerNames = validationLayers.data();
-
-        //         VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo;
-        //         setup_debugUtilsMessengerCreateInfoExt(debugCreateInfo);
-        //         createInfo.pNext =
-        //             (VkDebugUtilsMessengerCreateInfoEXT*)&debugCreateInfo;
     }
     else
     {
