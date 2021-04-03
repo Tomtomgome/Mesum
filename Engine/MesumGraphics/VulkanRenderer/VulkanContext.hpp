@@ -21,6 +21,8 @@ class VulkanContext
     VkInstance       get_instance() { return m_instance; }
     VkPhysicalDevice get_physDevice() { return m_physicalDevice; }
     VkDevice         get_logDevice() { return m_logicalDevice; }
+    VkQueue          get_presentationQueue() { return m_queue; }
+    VkQueue          get_graphicQueue() { return m_queue; }
 
    private:
     VkInstance       m_instance       = VK_NULL_HANDLE;

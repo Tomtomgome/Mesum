@@ -31,6 +31,10 @@
 #include <Windows.h>
 #include <consoleapi.h>
 
+#ifdef max
+#undef max
+#endif
+
 #elif defined M_UNIX
 
 #endif

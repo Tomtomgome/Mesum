@@ -73,6 +73,9 @@ void DX12Surface::destroy()
 
 void DX12Surface::render()
 {
+    DX12Context::gs_dx12Contexte->get_commandQueue().wait_fenceValue(
+        m_frameFenceValues[m_currentBackBufferIndex]);
+
     auto backBuffer = m_backBuffers[m_currentBackBufferIndex];
 
     ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
@@ -84,7 +87,14 @@ void DX12Surface::render()
             D3D12_RESOURCE_STATE_RENDER_TARGET);
 
         graphicCommandList->ResourceBarrier(1, &barrier);
-        Float                         clearColor[] = {0.4f, 0.6f, 0.9f, 1.0f};
+
+        Float clearColor[] = {0.4f, 0.6f, 0.9f, 1.0f};
+        if (!m_isHoldingDearImgui)
+        {
+            clearColor[0] = 0.9f;
+            clearColor[2] = 0.4f;
+        }
+
         CD3DX12_CPU_DESCRIPTOR_HANDLE rtv(
             m_RTVDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
             m_currentBackBufferIndex, m_RTVDescriptorSize);
@@ -121,8 +131,6 @@ void DX12Surface::render()
             DX12Context::gs_dx12Contexte->get_commandQueue().signal_fence();
 
         m_currentBackBufferIndex = m_swapChain->GetCurrentBackBufferIndex();
-        DX12Context::gs_dx12Contexte->get_commandQueue().wait_fenceValue(
-            m_frameFenceValues[m_currentBackBufferIndex]);
     }
 }
 

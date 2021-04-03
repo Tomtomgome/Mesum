@@ -2,14 +2,15 @@
 
 #include <RendererVulkanImpl.hpp>
 #include <VulkanContext.hpp>
+#include <limits>
 
 namespace m
 {
 namespace vulkan
 {
-//------------------------------------------------------------
-//------------------------------------------------------------
-//------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void VulkanSurface::init_win32(render::Win32SurfaceInitData& a_data)
 {
 #ifdef M_WIN32
@@ -33,6 +34,9 @@ void VulkanSurface::init_win32(render::Win32SurfaceInitData& a_data)
     init_internal();
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void VulkanSurface::init_x11(render::X11SurfaceInitData& a_data)
 {
 #ifdef M_UNIX
@@ -45,6 +49,110 @@ void VulkanSurface::init_x11(render::X11SurfaceInitData& a_data)
     init_internal();
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void VulkanSurface::init_dearImGui(Callback<void>& a_callback) {}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void VulkanSurface::render()
+{
+    // Check oldRenderHasFinished for next frame
+
+    VkSemaphoreWaitInfo infoWaitSemaphore = {};
+    infoWaitSemaphore.sType          = VK_STRUCTURE_TYPE_SEMAPHORE_WAIT_INFO;
+    infoWaitSemaphore.semaphoreCount = 1;
+    infoWaitSemaphore.pSemaphores    = &m_timelineSemaphore;
+    infoWaitSemaphore.pValues = &m_tstpRenderFinish[m_currentBackBufferIndex];
+    if (vkWaitSemaphores(VulkanContext::gs_VulkanContexte->get_logDevice(),
+                         &infoWaitSemaphore,
+                         std::numeric_limits<U64>::max()) != VK_SUCCESS)
+    {
+        throw std::runtime_error("Wait on semaphore failled");
+    }
+    // Aquire next image
+    UInt imageIndex;
+    vkAcquireNextImageKHR(VulkanContext::gs_VulkanContexte->get_logDevice(),
+                          m_swapChain, std::numeric_limits<U64>::max(),
+                          m_semaphoresImageAcquired[m_currentBackBufferIndex],
+                          VK_NULL_HANDLE, &imageIndex);
+    m_tstpRenderFinish[m_currentBackBufferIndex] = ++m_timeline;
+
+    // Submission
+    const uint64_t signalSemaphoreValues[2] = {
+        m_timeline,  // value for "timeline"
+        0            // ignored, binary semaphore.
+    };
+
+    U64 dummyWait;
+
+    VkTimelineSemaphoreSubmitInfo timelineInfo = {};
+    timelineInfo.sType = VK_STRUCTURE_TYPE_TIMELINE_SEMAPHORE_SUBMIT_INFO;
+    timelineInfo.waitSemaphoreValueCount   = 1;
+    timelineInfo.pWaitSemaphoreValues      = &dummyWait;
+    timelineInfo.signalSemaphoreValueCount = 2;
+    timelineInfo.pSignalSemaphoreValues    = signalSemaphoreValues;
+
+    const VkSemaphore signalSemaphores[2] = {
+        m_timelineSemaphore,  // Track timeline semaphore work completion
+        m_semaphoresRenderCompleted[m_currentBackBufferIndex]  // Unblock
+                                                               // presentation
+    };
+
+    VkSubmitInfo infoSubmit           = {};
+    infoSubmit.sType                  = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+    infoSubmit.pNext                  = &timelineInfo;
+    infoSubmit.waitSemaphoreCount     = 1;
+    VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT};
+    infoSubmit.pWaitSemaphores =
+        &m_semaphoresImageAcquired[m_currentBackBufferIndex];
+    infoSubmit.pWaitDstStageMask    = waitStages;
+    infoSubmit.signalSemaphoreCount = 2;
+    infoSubmit.pSignalSemaphores    = signalSemaphores;
+    infoSubmit.commandBufferCount   = 0;
+    infoSubmit.pCommandBuffers      = nullptr;
+    if (vkQueueSubmit(VulkanContext::gs_VulkanContexte->get_graphicQueue(), 1,
+                      &infoSubmit, VK_NULL_HANDLE) != VK_SUCCESS)
+    {
+        throw std::runtime_error("failed to submit draw command buffer!");
+    }
+
+    // Presentation
+    VkPresentInfoKHR infoPresent   = {};
+    infoPresent.sType              = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+    infoPresent.waitSemaphoreCount = 1;
+    infoPresent.pWaitSemaphores =
+        &m_semaphoresRenderCompleted[m_currentBackBufferIndex];
+    infoPresent.swapchainCount = 1;
+    infoPresent.pSwapchains    = &m_swapChain;
+    infoPresent.pImageIndices  = &imageIndex;
+    vkQueuePresentKHR(VulkanContext::gs_VulkanContexte->get_presentationQueue(),
+                      &infoPresent);
+
+    m_currentBackBufferIndex = (m_currentBackBufferIndex + 1) % scm_numFrames;
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void VulkanSurface::resize(U32 a_width, U32 a_height) {}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void VulkanSurface::destroy()
+{
+    destroy_swapChain();
+
+    vkDestroySurfaceKHR(VulkanContext::gs_VulkanContexte->get_instance(),
+                        m_surface, nullptr);
+}
+
+//*****************************************************************************
+//*****************************************************************************
+//*****************************************************************************
 void VulkanSurface::init_internal()
 {
     U32 queueFamilyIndex;
@@ -153,15 +261,64 @@ void VulkanSurface::init_internal()
             throw std::runtime_error("failed to create image views!");
         }
     }
+
+    VkSemaphoreCreateInfo createSemaphore = {};
+    createSemaphore.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+    createSemaphore.flags = 0;
+
+    VkSemaphoreTypeCreateInfo createSemaphoreType = {};
+    createSemaphoreType.sType = VK_STRUCTURE_TYPE_SEMAPHORE_TYPE_CREATE_INFO;
+    createSemaphoreType.semaphoreType = VK_SEMAPHORE_TYPE_TIMELINE;
+    createSemaphoreType.initialValue  = m_timeline;
+
+    createSemaphore.pNext = &createSemaphoreType;
+
+    if (vkCreateSemaphore(VulkanContext::gs_VulkanContexte->get_logDevice(),
+                          &createSemaphore, nullptr,
+                          &m_timelineSemaphore) != VK_SUCCESS)
+    {
+        throw std::runtime_error("failed to create timeline semaphore");
+    }
+
+    m_tstpRenderFinish.resize(scm_numFrames, 0);
+
+    m_semaphoresImageAcquired.resize(scm_numFrames);
+    m_semaphoresRenderCompleted.resize(scm_numFrames);
+
+    createSemaphore       = {};
+    createSemaphore.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+
+    for (size_t i = 0; i < scm_numFrames; i++)
+    {
+        if (vkCreateSemaphore(VulkanContext::gs_VulkanContexte->get_logDevice(),
+                              &createSemaphore, nullptr,
+                              &m_semaphoresImageAcquired[i]) != VK_SUCCESS ||
+            vkCreateSemaphore(VulkanContext::gs_VulkanContexte->get_logDevice(),
+                              &createSemaphore, nullptr,
+                              &m_semaphoresRenderCompleted[i]) != VK_SUCCESS)
+        {
+            throw std::runtime_error(
+                "failed to create semaphores for a frame!");
+        }
+    }
 }
 
-void VulkanSurface::init_dearImGui(Callback<void>& a_callback) {}
-
-void VulkanSurface::render() {}
-void VulkanSurface::resize(U32 a_width, U32 a_height) {}
-
-void VulkanSurface::destroy()
+//*****************************************************************************
+//*****************************************************************************
+//*****************************************************************************
+void VulkanSurface::destroy_swapChain()
 {
+    for (size_t i = 0; i < scm_numFrames; i++)
+    {
+        vkDestroySemaphore(VulkanContext::gs_VulkanContexte->get_logDevice(),
+                           m_semaphoresImageAcquired[i], nullptr);
+        vkDestroySemaphore(VulkanContext::gs_VulkanContexte->get_logDevice(),
+                           m_semaphoresRenderCompleted[i], nullptr);
+    }
+
+    vkDestroySemaphore(VulkanContext::gs_VulkanContexte->get_logDevice(),
+                       m_timelineSemaphore, nullptr);
+
     for (auto imageView : m_swapChainImageViews)
     {
         vkDestroyImageView(VulkanContext::gs_VulkanContexte->get_logDevice(),
@@ -170,30 +327,38 @@ void VulkanSurface::destroy()
 
     vkDestroySwapchainKHR(VulkanContext::gs_VulkanContexte->get_logDevice(),
                           m_swapChain, nullptr);
-    vkDestroySurfaceKHR(VulkanContext::gs_VulkanContexte->get_instance(),
-                        m_surface, nullptr);
 }
-//------------------------------------------------------------
-//------------------------------------------------------------
-//------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void VulkanRenderer::init()
 {
     VulkanContext::gs_VulkanContexte = new VulkanContext();
     VulkanContext::gs_VulkanContexte->init();
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void VulkanRenderer::destroy()
 {
     VulkanContext::gs_VulkanContexte->deinit();
     delete VulkanContext::gs_VulkanContexte;
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void VulkanRenderer::start_dearImGuiNewFrame()
 {
     ImGui_ImplVulkan_NewFrame();
     // VulkanContext::gs_VulkanContexte->m_dearImGuiPlatImplCallback.call();
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 render::ISurface* VulkanRenderer::get_newSurface()
 {
     return new VulkanSurface();
