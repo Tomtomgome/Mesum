@@ -29,12 +29,15 @@ class VulkanSurface : public render::ISurface
 
    private:
     void init_internal();
+    void init_swapChain();
 
     void destroy_swapChain();
 
    private:
     // The number of swap chain back buffers.
-    static const U8 scm_numFrames = 3;
+    static const U8       scm_numFrames = 3;
+    static const VkFormat scm_selectedSwapChainFormat =
+        VK_FORMAT_B8G8R8A8_UNORM;
 
     VkSurfaceKHR             m_surface   = VK_NULL_HANDLE;
     VkSwapchainKHR           m_swapChain = VK_NULL_HANDLE;
