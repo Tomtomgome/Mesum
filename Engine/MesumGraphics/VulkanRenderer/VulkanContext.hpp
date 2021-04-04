@@ -18,6 +18,10 @@ class VulkanContext
     void                  init();
     void                  deinit();
 
+
+    VkCommandBuffer get_singleUseCommandBuffer();
+    void submit_signleUseCommandBuffer(VkCommandBuffer a_commandBuffer);
+
     VkInstance       get_instance() { return m_instance; }
     VkPhysicalDevice get_physDevice() { return m_physicalDevice; }
     VkDevice         get_logDevice() { return m_logicalDevice; }
@@ -30,6 +34,8 @@ class VulkanContext
     VkDevice         m_logicalDevice  = VK_NULL_HANDLE;
 
     VkQueue m_queue = VK_NULL_HANDLE;
+
+    VkCommandPool m_utilityCommandPool;
 
     VkDebugUtilsMessengerEXT m_debugUtil;
 };
