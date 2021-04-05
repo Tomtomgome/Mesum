@@ -2,6 +2,7 @@
 #define M_VulkanContext
 
 #include <VulkanRendererCommon.hpp>
+#include <vector>
 
 namespace m
 {
@@ -18,6 +19,11 @@ class VulkanContext
     void                  init();
     void                  deinit();
 
+    static void wait_onMainTimelineTstp(
+        U64 a_tstpToWaitOn, U64 a_timeout = std::numeric_limits<U64>::max());
+    static U64 submit_onMainTimeline(
+        std::vector<VkSemaphore> const& a_semaphoresToWait,
+        std::vector<VkSemaphore>        a_semaphoresToSignal);
 
     VkCommandBuffer get_singleUseCommandBuffer();
     void submit_signleUseCommandBuffer(VkCommandBuffer a_commandBuffer);
@@ -29,15 +35,22 @@ class VulkanContext
     VkQueue          get_graphicQueue() { return m_queue; }
 
    private:
+    // Instance and devices
     VkInstance       m_instance       = VK_NULL_HANDLE;
     VkPhysicalDevice m_physicalDevice = VK_NULL_HANDLE;
     VkDevice         m_logicalDevice  = VK_NULL_HANDLE;
 
+    VkDebugUtilsMessengerEXT m_debugUtil;
+
+    // queues
     VkQueue m_queue = VK_NULL_HANDLE;
 
+    // Utility
     VkCommandPool m_utilityCommandPool;
 
-    VkDebugUtilsMessengerEXT m_debugUtil;
+    // Synchronization tools
+    VkSemaphore m_timelineSemaphore;
+    U64         m_timeline = 0;
 };
 
 };  // namespace vulkan

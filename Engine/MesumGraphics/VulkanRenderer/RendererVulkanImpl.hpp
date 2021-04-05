@@ -48,9 +48,6 @@ class VulkanSurface : public render::ISurface
     std::vector<VkSemaphore> m_semaphoresImageAcquired;
     std::vector<VkSemaphore> m_semaphoresRenderCompleted;
 
-    VkSemaphore m_timelineSemaphore;
-    U64         m_timeline = 0;
-
     // By default, enable V-Sync.
     // Can be toggled with the V key.
     Bool m_vSync              = true;

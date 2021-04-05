@@ -18,7 +18,7 @@ This is a toy C++ framework to help me learn platform specifis API and crossplat
 		- Rendering surface managment [ x ]
 		- DearImGui integration [ x ]
 	- Vulkan
-		- Rendering surface managment [ - ]
+		- Rendering surface managment [ x ]
 		- DearImGui integration [ o ]
 - Unix [ - ]
 	- Base for window and input managment [ - (not in code base) ]

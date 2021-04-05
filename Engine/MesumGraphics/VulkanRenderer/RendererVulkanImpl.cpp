@@ -59,65 +59,23 @@ void VulkanSurface::init_dearImGui(Callback<void>& a_callback) {}
 //-----------------------------------------------------------------------------
 void VulkanSurface::render()
 {
-    // Check oldRenderHasFinished for next frame
+    m_currentBackBufferIndex = (m_currentBackBufferIndex + 1) % scm_numFrames;
 
-    VkSemaphoreWaitInfo infoWaitSemaphore = {};
-    infoWaitSemaphore.sType          = VK_STRUCTURE_TYPE_SEMAPHORE_WAIT_INFO;
-    infoWaitSemaphore.semaphoreCount = 1;
-    infoWaitSemaphore.pSemaphores    = &m_timelineSemaphore;
-    infoWaitSemaphore.pValues = &m_tstpRenderFinish[m_currentBackBufferIndex];
-    if (vkWaitSemaphores(VulkanContext::gs_VulkanContexte->get_logDevice(),
-                         &infoWaitSemaphore,
-                         std::numeric_limits<U64>::max()) != VK_SUCCESS)
-    {
-        throw std::runtime_error("Wait on semaphore failled");
-    }
+    // Check oldRenderHasFinished for next frame
+    VulkanContext::wait_onMainTimelineTstp(
+        m_tstpRenderFinish[m_currentBackBufferIndex]);
+
     // Aquire next image
     UInt imageIndex;
     vkAcquireNextImageKHR(VulkanContext::gs_VulkanContexte->get_logDevice(),
                           m_swapChain, std::numeric_limits<U64>::max(),
                           m_semaphoresImageAcquired[m_currentBackBufferIndex],
                           VK_NULL_HANDLE, &imageIndex);
-    m_tstpRenderFinish[m_currentBackBufferIndex] = ++m_timeline;
 
-    // Submission
-    const uint64_t signalSemaphoreValues[2] = {
-        m_timeline,  // value for "timeline"
-        0            // ignored, binary semaphore.
-    };
-
-    U64 dummyWait;
-
-    VkTimelineSemaphoreSubmitInfo timelineInfo = {};
-    timelineInfo.sType = VK_STRUCTURE_TYPE_TIMELINE_SEMAPHORE_SUBMIT_INFO;
-    timelineInfo.waitSemaphoreValueCount   = 1;
-    timelineInfo.pWaitSemaphoreValues      = &dummyWait;
-    timelineInfo.signalSemaphoreValueCount = 2;
-    timelineInfo.pSignalSemaphoreValues    = signalSemaphoreValues;
-
-    const VkSemaphore signalSemaphores[2] = {
-        m_timelineSemaphore,  // Track timeline semaphore work completion
-        m_semaphoresRenderCompleted[m_currentBackBufferIndex]  // Unblock
-                                                               // presentation
-    };
-
-    VkSubmitInfo infoSubmit           = {};
-    infoSubmit.sType                  = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-    infoSubmit.pNext                  = &timelineInfo;
-    infoSubmit.waitSemaphoreCount     = 1;
-    VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT};
-    infoSubmit.pWaitSemaphores =
-        &m_semaphoresImageAcquired[m_currentBackBufferIndex];
-    infoSubmit.pWaitDstStageMask    = waitStages;
-    infoSubmit.signalSemaphoreCount = 2;
-    infoSubmit.pSignalSemaphores    = signalSemaphores;
-    infoSubmit.commandBufferCount   = 0;
-    infoSubmit.pCommandBuffers      = nullptr;
-    if (vkQueueSubmit(VulkanContext::gs_VulkanContexte->get_graphicQueue(), 1,
-                      &infoSubmit, VK_NULL_HANDLE) != VK_SUCCESS)
-    {
-        throw std::runtime_error("failed to submit draw command buffer!");
-    }
+    m_tstpRenderFinish[m_currentBackBufferIndex] =
+        VulkanContext::submit_onMainTimeline(
+            {m_semaphoresImageAcquired[m_currentBackBufferIndex]},
+            {m_semaphoresRenderCompleted[m_currentBackBufferIndex]});
 
     // Presentation
     VkPresentInfoKHR infoPresent   = {};
@@ -130,8 +88,6 @@ void VulkanSurface::render()
     infoPresent.pImageIndices  = &imageIndex;
     vkQueuePresentKHR(VulkanContext::gs_VulkanContexte->get_presentationQueue(),
                       &infoPresent);
-
-    m_currentBackBufferIndex = (m_currentBackBufferIndex + 1) % scm_numFrames;
 }
 
 //-----------------------------------------------------------------------------
@@ -164,9 +120,6 @@ void VulkanSurface::destroy()
         vkDestroySemaphore(VulkanContext::gs_VulkanContexte->get_logDevice(),
                            m_semaphoresRenderCompleted[i], nullptr);
     }
-
-    vkDestroySemaphore(VulkanContext::gs_VulkanContexte->get_logDevice(),
-                       m_timelineSemaphore, nullptr);
 
     vkDestroySurfaceKHR(VulkanContext::gs_VulkanContexte->get_instance(),
                         m_surface, nullptr);
@@ -224,31 +177,14 @@ void VulkanSurface::init_internal()
             "VK_FORMAT_B8G8R8A8_UNORM Needs to be supported at the moment");
     }
 
-    VkSemaphoreCreateInfo createSemaphore = {};
-    createSemaphore.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-    createSemaphore.flags = 0;
-
-    VkSemaphoreTypeCreateInfo createSemaphoreType = {};
-    createSemaphoreType.sType = VK_STRUCTURE_TYPE_SEMAPHORE_TYPE_CREATE_INFO;
-    createSemaphoreType.semaphoreType = VK_SEMAPHORE_TYPE_TIMELINE;
-    createSemaphoreType.initialValue  = m_timeline;
-
-    createSemaphore.pNext = &createSemaphoreType;
-
-    if (vkCreateSemaphore(VulkanContext::gs_VulkanContexte->get_logDevice(),
-                          &createSemaphore, nullptr,
-                          &m_timelineSemaphore) != VK_SUCCESS)
-    {
-        throw std::runtime_error("failed to create timeline semaphore");
-    }
-
     m_tstpRenderFinish.resize(scm_numFrames, 0);
 
     m_semaphoresImageAcquired.resize(scm_numFrames);
     m_semaphoresRenderCompleted.resize(scm_numFrames);
 
-    createSemaphore       = {};
+    VkSemaphoreCreateInfo createSemaphore = {};
     createSemaphore.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+    createSemaphore.flags = 0;
 
     for (size_t i = 0; i < scm_numFrames; i++)
     {
@@ -329,6 +265,28 @@ void VulkanSurface::init_swapChain()
         {
             throw std::runtime_error("failed to create image views!");
         }
+
+        VkCommandBuffer commandBuffer =
+            VulkanContext::gs_VulkanContexte->get_singleUseCommandBuffer();
+
+        VkImageMemoryBarrier barrier{};
+        barrier.sType               = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+        barrier.oldLayout           = VK_IMAGE_LAYOUT_UNDEFINED;
+        barrier.newLayout           = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+        barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+        barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+        barrier.image               = m_swapChainImages[i];
+        barrier.subresourceRange.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT;
+        barrier.subresourceRange.baseMipLevel   = 0;
+        barrier.subresourceRange.levelCount     = 1;
+        barrier.subresourceRange.baseArrayLayer = 0;
+        barrier.subresourceRange.layerCount     = 1;
+        vkCmdPipelineBarrier(commandBuffer, VK_PIPELINE_STAGE_ALL_GRAPHICS_BIT,
+                             VK_PIPELINE_STAGE_ALL_GRAPHICS_BIT, 0, 0, nullptr,
+                             0, nullptr, 1, &barrier);
+
+        VulkanContext::gs_VulkanContexte->submit_signleUseCommandBuffer(
+            commandBuffer);
     }
 }
 
@@ -337,21 +295,12 @@ void VulkanSurface::init_swapChain()
 //*****************************************************************************
 void VulkanSurface::destroy_swapChain()
 {
-    VkSemaphoreWaitInfo infoWaitSemaphore = {};
-    infoWaitSemaphore.sType          = VK_STRUCTURE_TYPE_SEMAPHORE_WAIT_INFO;
-    infoWaitSemaphore.semaphoreCount = 1;
-    infoWaitSemaphore.pSemaphores    = &m_timelineSemaphore;
-    infoWaitSemaphore.pValues        = &m_timeline;
-    if (vkWaitSemaphores(VulkanContext::gs_VulkanContexte->get_logDevice(),
-                         &infoWaitSemaphore,
-                         std::numeric_limits<U64>::max()) != VK_SUCCESS)
-    {
-        throw std::runtime_error("Wait on semaphore failled");
-    }
+    VulkanContext::wait_onMainTimelineTstp(
+        m_tstpRenderFinish[m_currentBackBufferIndex]);
 
     for (Int i = 0; i < scm_numFrames; ++i)
     {
-        m_tstpRenderFinish[i] = m_timeline;
+        m_tstpRenderFinish[i] = m_tstpRenderFinish[m_currentBackBufferIndex];
     }
 
     for (auto imageView : m_swapChainImageViews)
