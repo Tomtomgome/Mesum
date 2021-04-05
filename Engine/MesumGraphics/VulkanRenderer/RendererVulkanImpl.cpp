@@ -19,9 +19,8 @@ void VulkanSurface::init_win32(render::Win32SurfaceInitData& a_data)
     createInfo.hwnd      = a_data.m_hwnd;
     createInfo.hinstance = GetModuleHandle(nullptr);
 
-    if (vkCreateWin32SurfaceKHR(
-            VulkanContext::gs_VulkanContexte->get_instance(), &createInfo,
-            nullptr, &m_surface) != VK_SUCCESS)
+    if (vkCreateWin32SurfaceKHR(VulkanContext::get_instance(), &createInfo,
+                                nullptr, &m_surface) != VK_SUCCESS)
     {
         throw std::runtime_error("failed to create window surface!");
     }
@@ -67,8 +66,8 @@ void VulkanSurface::render()
 
     // Aquire next image
     UInt imageIndex;
-    vkAcquireNextImageKHR(VulkanContext::gs_VulkanContexte->get_logDevice(),
-                          m_swapChain, std::numeric_limits<U64>::max(),
+    vkAcquireNextImageKHR(VulkanContext::get_logDevice(), m_swapChain,
+                          std::numeric_limits<U64>::max(),
                           m_semaphoresImageAcquired[m_currentBackBufferIndex],
                           VK_NULL_HANDLE, &imageIndex);
 
@@ -86,8 +85,7 @@ void VulkanSurface::render()
     infoPresent.swapchainCount = 1;
     infoPresent.pSwapchains    = &m_swapChain;
     infoPresent.pImageIndices  = &imageIndex;
-    vkQueuePresentKHR(VulkanContext::gs_VulkanContexte->get_presentationQueue(),
-                      &infoPresent);
+    VulkanContext::present(infoPresent);
 }
 
 //-----------------------------------------------------------------------------
@@ -115,14 +113,13 @@ void VulkanSurface::destroy()
 
     for (size_t i = 0; i < scm_numFrames; i++)
     {
-        vkDestroySemaphore(VulkanContext::gs_VulkanContexte->get_logDevice(),
+        vkDestroySemaphore(VulkanContext::get_logDevice(),
                            m_semaphoresImageAcquired[i], nullptr);
-        vkDestroySemaphore(VulkanContext::gs_VulkanContexte->get_logDevice(),
+        vkDestroySemaphore(VulkanContext::get_logDevice(),
                            m_semaphoresRenderCompleted[i], nullptr);
     }
 
-    vkDestroySurfaceKHR(VulkanContext::gs_VulkanContexte->get_instance(),
-                        m_surface, nullptr);
+    vkDestroySurfaceKHR(VulkanContext::get_instance(), m_surface, nullptr);
 }
 
 //*****************************************************************************
@@ -131,13 +128,13 @@ void VulkanSurface::destroy()
 void VulkanSurface::init_internal()
 {
     U32 queueFamilyIndex;
-    find_graphicQueueFamilyIndex(
-        VulkanContext::gs_VulkanContexte->get_physDevice(), queueFamilyIndex);
+    find_graphicQueueFamilyIndex(VulkanContext::get_physDevice(),
+                                 queueFamilyIndex);
 
     VkBool32 surfaceSupported;
-    vkGetPhysicalDeviceSurfaceSupportKHR(
-        VulkanContext::gs_VulkanContexte->get_physDevice(), queueFamilyIndex,
-        m_surface, &surfaceSupported);
+    vkGetPhysicalDeviceSurfaceSupportKHR(VulkanContext::get_physDevice(),
+                                         queueFamilyIndex, m_surface,
+                                         &surfaceSupported);
     if (!surfaceSupported)
     {
         throw std::runtime_error(
@@ -147,9 +144,8 @@ void VulkanSurface::init_internal()
     std::vector<VkSurfaceFormatKHR> supportedFormats;
 
     U32 formatCount;
-    vkGetPhysicalDeviceSurfaceFormatsKHR(
-        VulkanContext::gs_VulkanContexte->get_physDevice(), m_surface,
-        &formatCount, nullptr);
+    vkGetPhysicalDeviceSurfaceFormatsKHR(VulkanContext::get_physDevice(),
+                                         m_surface, &formatCount, nullptr);
 
     if (formatCount == 0)
     {
@@ -157,9 +153,9 @@ void VulkanSurface::init_internal()
     }
 
     supportedFormats.resize(formatCount);
-    vkGetPhysicalDeviceSurfaceFormatsKHR(
-        VulkanContext::gs_VulkanContexte->get_physDevice(), m_surface,
-        &formatCount, supportedFormats.data());
+    vkGetPhysicalDeviceSurfaceFormatsKHR(VulkanContext::get_physDevice(),
+                                         m_surface, &formatCount,
+                                         supportedFormats.data());
 
     Bool isFormatSupported = false;
     for (size_t i = 0; i < formatCount; i++)
@@ -188,11 +184,11 @@ void VulkanSurface::init_internal()
 
     for (size_t i = 0; i < scm_numFrames; i++)
     {
-        if (vkCreateSemaphore(VulkanContext::gs_VulkanContexte->get_logDevice(),
-                              &createSemaphore, nullptr,
+        if (vkCreateSemaphore(VulkanContext::get_logDevice(), &createSemaphore,
+                              nullptr,
                               &m_semaphoresImageAcquired[i]) != VK_SUCCESS ||
-            vkCreateSemaphore(VulkanContext::gs_VulkanContexte->get_logDevice(),
-                              &createSemaphore, nullptr,
+            vkCreateSemaphore(VulkanContext::get_logDevice(), &createSemaphore,
+                              nullptr,
                               &m_semaphoresRenderCompleted[i]) != VK_SUCCESS)
         {
             throw std::runtime_error(
@@ -209,9 +205,8 @@ void VulkanSurface::init_internal()
 void VulkanSurface::init_swapChain()
 {
     VkSurfaceCapabilitiesKHR surfaceCapabilities;
-    vkGetPhysicalDeviceSurfaceCapabilitiesKHR(
-        VulkanContext::gs_VulkanContexte->get_physDevice(), m_surface,
-        &surfaceCapabilities);
+    vkGetPhysicalDeviceSurfaceCapabilitiesKHR(VulkanContext::get_physDevice(),
+                                              m_surface, &surfaceCapabilities);
 
     VkSwapchainCreateInfoKHR createInfo{};
     createInfo.sType            = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
@@ -229,18 +224,18 @@ void VulkanSurface::init_swapChain()
     createInfo.clipped          = VK_TRUE;
     createInfo.oldSwapchain     = VK_NULL_HANDLE;
 
-    if (vkCreateSwapchainKHR(VulkanContext::gs_VulkanContexte->get_logDevice(),
-                             &createInfo, nullptr, &m_swapChain) != VK_SUCCESS)
+    if (vkCreateSwapchainKHR(VulkanContext::get_logDevice(), &createInfo,
+                             nullptr, &m_swapChain) != VK_SUCCESS)
     {
         throw std::runtime_error("failed to create swap chain!");
     }
 
     U32 imageCount;
-    vkGetSwapchainImagesKHR(VulkanContext::gs_VulkanContexte->get_logDevice(),
-                            m_swapChain, &imageCount, nullptr);
+    vkGetSwapchainImagesKHR(VulkanContext::get_logDevice(), m_swapChain,
+                            &imageCount, nullptr);
     m_swapChainImages.resize(imageCount);
-    vkGetSwapchainImagesKHR(VulkanContext::gs_VulkanContexte->get_logDevice(),
-                            m_swapChain, &imageCount, m_swapChainImages.data());
+    vkGetSwapchainImagesKHR(VulkanContext::get_logDevice(), m_swapChain,
+                            &imageCount, m_swapChainImages.data());
 
     m_swapChainImageViews.resize(imageCount);
     for (size_t i = 0; i < imageCount; i++)
@@ -259,9 +254,8 @@ void VulkanSurface::init_swapChain()
         createInfo.subresourceRange.levelCount     = 1;
         createInfo.subresourceRange.baseArrayLayer = 0;
         createInfo.subresourceRange.layerCount     = 1;
-        if (vkCreateImageView(VulkanContext::gs_VulkanContexte->get_logDevice(),
-                              &createInfo, nullptr,
-                              &m_swapChainImageViews[i]) != VK_SUCCESS)
+        if (vkCreateImageView(VulkanContext::get_logDevice(), &createInfo,
+                              nullptr, &m_swapChainImageViews[i]) != VK_SUCCESS)
         {
             throw std::runtime_error("failed to create image views!");
         }
@@ -305,12 +299,10 @@ void VulkanSurface::destroy_swapChain()
 
     for (auto imageView : m_swapChainImageViews)
     {
-        vkDestroyImageView(VulkanContext::gs_VulkanContexte->get_logDevice(),
-                           imageView, nullptr);
+        vkDestroyImageView(VulkanContext::get_logDevice(), imageView, nullptr);
     }
 
-    vkDestroySwapchainKHR(VulkanContext::gs_VulkanContexte->get_logDevice(),
-                          m_swapChain, nullptr);
+    vkDestroySwapchainKHR(VulkanContext::get_logDevice(), m_swapChain, nullptr);
 }
 
 //-----------------------------------------------------------------------------
@@ -337,7 +329,7 @@ void VulkanRenderer::destroy()
 void VulkanRenderer::start_dearImGuiNewFrame()
 {
     ImGui_ImplVulkan_NewFrame();
-    // VulkanContext::gs_VulkanContexte->m_dearImGuiPlatImplCallback.call();
+    VulkanContext::gs_VulkanContexte->m_dearImGuiPlatImplCallback.call();
 }
 
 //-----------------------------------------------------------------------------

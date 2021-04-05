@@ -1,8 +1,8 @@
 #ifndef M_VulkanContext
 #define M_VulkanContext
 
+#include <MesumCore/Kernel/Callbacks.hpp>
 #include <VulkanRendererCommon.hpp>
-#include <vector>
 
 namespace m
 {
@@ -25,14 +25,29 @@ class VulkanContext
         std::vector<VkSemaphore> const& a_semaphoresToWait,
         std::vector<VkSemaphore>        a_semaphoresToSignal);
 
+    static void present(VkPresentInfoKHR const& a_infoPresent);
+
     VkCommandBuffer get_singleUseCommandBuffer();
     void submit_signleUseCommandBuffer(VkCommandBuffer a_commandBuffer);
 
-    VkInstance       get_instance() { return m_instance; }
-    VkPhysicalDevice get_physDevice() { return m_physicalDevice; }
-    VkDevice         get_logDevice() { return m_logicalDevice; }
-    VkQueue          get_presentationQueue() { return m_queue; }
-    VkQueue          get_graphicQueue() { return m_queue; }
+    static VkInstance get_instance() { return gs_VulkanContexte->m_instance; }
+    static VkPhysicalDevice get_physDevice()
+    {
+        return gs_VulkanContexte->m_physicalDevice;
+    }
+    static VkDevice get_logDevice()
+    {
+        return gs_VulkanContexte->m_logicalDevice;
+    }
+    static VkQueue get_presentationQueue()
+    {
+        return gs_VulkanContexte->m_queue;
+    }
+    static VkQueue get_graphicQueue() { return gs_VulkanContexte->m_queue; }
+
+   public:
+    // DearImGui
+    Callback<void> m_dearImGuiPlatImplCallback;
 
    private:
     // Instance and devices

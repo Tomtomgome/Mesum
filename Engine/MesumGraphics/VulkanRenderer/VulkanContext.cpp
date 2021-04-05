@@ -128,6 +128,14 @@ U64 VulkanContext::submit_onMainTimeline(
     return finishValueOnTimeline;
 }
 
+// sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+// sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+// sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+void VulkanContext::present(VkPresentInfoKHR const& a_infoPresent)
+{
+    vkQueuePresentKHR(VulkanContext::get_presentationQueue(), &a_infoPresent);
+}
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
