@@ -21,6 +21,9 @@ const std::vector<const ShortChar*> validationLayers = {
 const std::vector<const ShortChar*> deviceExtensions = {
     VK_KHR_SWAPCHAIN_EXTENSION_NAME};
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 Bool check_validationLayerSupport()
 {
     U32 layerCount;
@@ -51,6 +54,9 @@ Bool check_validationLayerSupport()
     return true;
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 std::vector<const ShortChar*> get_requiedExtensions()
 {
     std::vector<const ShortChar*> extensions;
@@ -68,6 +74,9 @@ std::vector<const ShortChar*> get_requiedExtensions()
     return extensions;
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void create_instance(VkInstance& a_InstaceToCreate)
 {
     if (g_enableValidationLayers && !check_validationLayerSupport())
@@ -123,6 +132,9 @@ void create_instance(VkInstance& a_InstaceToCreate)
     }
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 VKAPI_ATTR VkBool32 VKAPI_CALL callback_logDebugMessage(
     VkDebugUtilsMessageSeverityFlagBitsEXT      messageSeverity,
     VkDebugUtilsMessageTypeFlagsEXT             messageType,
@@ -149,6 +161,9 @@ VKAPI_ATTR VkBool32 VKAPI_CALL callback_logDebugMessage(
     return VK_FALSE;
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 VkResult create_debugUtilsMessengerEXT(
     VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo,
     const VkAllocationCallbacks* pAllocator,
@@ -167,6 +182,9 @@ VkResult create_debugUtilsMessengerEXT(
     }
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void setup_debugUtilsMessengerCreateInfoExt(
     VkDebugUtilsMessengerCreateInfoEXT& a_createInfo)
 {
@@ -183,6 +201,9 @@ void setup_debugUtilsMessengerCreateInfoExt(
     a_createInfo.pUserData       = nullptr;
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void setup_debugMessenger(VkInstance                a_instance,
                           VkDebugUtilsMessengerEXT& a_debugUtil)
 {
@@ -199,6 +220,9 @@ void setup_debugMessenger(VkInstance                a_instance,
     }
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void destroy_debugMessenger(VkInstance                a_instance,
                             VkDebugUtilsMessengerEXT& a_debugUtil)
 {
@@ -213,6 +237,9 @@ void destroy_debugMessenger(VkInstance                a_instance,
     }
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 Bool check_deviceExtensionSupport(VkPhysicalDevice a_device)
 {
     U32 extensionCount;
@@ -234,6 +261,9 @@ Bool check_deviceExtensionSupport(VkPhysicalDevice a_device)
     return requiredExtensions.empty();
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 Bool check_deviceSuitable(VkPhysicalDevice device)
 {
     Bool extensionsSupported = check_deviceExtensionSupport(device);
@@ -242,6 +272,9 @@ Bool check_deviceSuitable(VkPhysicalDevice device)
     return extensionsSupported;
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void select_physicalDevice(VkInstance        a_instance,
                            VkPhysicalDevice& a_physicalDevice)
 {
@@ -271,6 +304,9 @@ void select_physicalDevice(VkInstance        a_instance,
     }
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 Bool find_graphicQueueFamilyIndex(VkPhysicalDevice a_physicalDevice,
                                   U32&             a_queueFamilyIndex)
 {
@@ -302,16 +338,19 @@ Bool find_graphicQueueFamilyIndex(VkPhysicalDevice a_physicalDevice,
     return false;
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void create_logicalDevice(VkPhysicalDevice a_physicalDevice,
-                          VkDevice& a_logicalDevice, VkQueue& a_queue)
+                          VkDevice& a_logicalDevice, VkQueue& a_queue,
+                          U32& a_queueFamilyIndex)
 {
-    U32 queueFamilyIndex;
-    find_graphicQueueFamilyIndex(a_physicalDevice, queueFamilyIndex);
+    find_graphicQueueFamilyIndex(a_physicalDevice, a_queueFamilyIndex);
 
     float                   queuePriority   = 1.0f;
     VkDeviceQueueCreateInfo queueCreateInfo = {};
     queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-    queueCreateInfo.queueFamilyIndex = queueFamilyIndex;
+    queueCreateInfo.queueFamilyIndex = a_queueFamilyIndex;
     queueCreateInfo.queueCount       = 1;
     queueCreateInfo.pQueuePriorities = &queuePriority;
 
@@ -332,7 +371,7 @@ void create_logicalDevice(VkPhysicalDevice a_physicalDevice,
         throw std::runtime_error("failed to create logical device !");
     }
 
-    vkGetDeviceQueue(a_logicalDevice, queueFamilyIndex, 0, &a_queue);
+    vkGetDeviceQueue(a_logicalDevice, a_queueFamilyIndex, 0, &a_queue);
 }
 
 }  // namespace vulkan

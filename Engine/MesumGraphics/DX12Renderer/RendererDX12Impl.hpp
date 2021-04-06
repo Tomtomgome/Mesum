@@ -2,14 +2,16 @@
 #define M_RendererDX12Impl
 #pragma once
 
-#include <MesumGraphics/Renderer.hpp>
 #include <MesumGraphics/DX12Renderer/DX12RendererCommon.hpp>
+#include <MesumGraphics/Renderer.hpp>
 
 namespace m
 {
 namespace dx12
 {
-
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 class DX12Surface : public render::ISurface
 {
    public:
@@ -64,18 +66,22 @@ class DX12Surface : public render::ISurface
     U32 m_clientHeight;
 };
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 class DX12Renderer : public render::IRenderer
 {
    public:
     virtual void init();
     virtual void destroy();
 
+    virtual Bool get_supportDearImGuiMultiViewports() { return true; }
     virtual void start_dearImGuiNewFrame();
 
     virtual render::ISurface* get_newSurface();
 };
 
-}  // namespace render
+}  // namespace dx12
 }  // namespace m
 
 #endif  // M_RendererDX12Impl

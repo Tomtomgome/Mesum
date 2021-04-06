@@ -17,7 +17,8 @@ void VulkanContext::init()
 
     select_physicalDevice(m_instance, m_physicalDevice);
 
-    create_logicalDevice(m_physicalDevice, m_logicalDevice, m_queue);
+    create_logicalDevice(m_physicalDevice, m_logicalDevice, m_queue,
+                         m_queueFamilyIndex);
 
     VkSemaphoreCreateInfo createSemaphore = {};
     createSemaphore.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
@@ -87,6 +88,7 @@ void VulkanContext::wait_onMainTimelineTstp(U64 a_tstpToWaitOn, U64 a_timeout)
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 U64 VulkanContext::submit_onMainTimeline(
+    VkCommandBuffer const&          a_commandBuffer,
     std::vector<VkSemaphore> const& a_semaphoresToWait,
     std::vector<VkSemaphore>        a_semaphoresToSignal)
 {
@@ -117,8 +119,8 @@ U64 VulkanContext::submit_onMainTimeline(
     infoSubmit.pWaitDstStageMask      = waitStages;
     infoSubmit.signalSemaphoreCount   = a_semaphoresToSignal.size();
     infoSubmit.pSignalSemaphores      = a_semaphoresToSignal.data();
-    infoSubmit.commandBufferCount     = 0;
-    infoSubmit.pCommandBuffers        = nullptr;
+    infoSubmit.commandBufferCount     = 1;
+    infoSubmit.pCommandBuffers        = &a_commandBuffer;
     if (vkQueueSubmit(VulkanContext::gs_VulkanContexte->get_graphicQueue(), 1,
                       &infoSubmit, VK_NULL_HANDLE) != VK_SUCCESS)
     {

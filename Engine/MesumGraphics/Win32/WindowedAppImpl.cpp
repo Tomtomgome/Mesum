@@ -71,6 +71,8 @@ windows::IWindow* IWindowedApplicationImpl::add_newWindow(std::wstring a_name,
 void IWindowedApplicationImpl::set_processImGuiMultiViewports(
     Bool a_supportMultiViewPorts)
 {
+    mHardAssert((!a_supportMultiViewPorts) ||
+                (m_renderer->get_supportDearImGuiMultiViewports() == true));
     m_supportImGuiMultiViewPorts = a_supportMultiViewPorts;
 }
 

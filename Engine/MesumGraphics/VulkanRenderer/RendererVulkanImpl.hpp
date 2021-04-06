@@ -62,6 +62,15 @@ class VulkanSurface : public render::ISurface
     // Surface description
     U32 m_clientWidth;
     U32 m_clientHeight;
+
+    // Base render objects
+    VkCommandPool              m_frameCommandPools[scm_numFrames];
+    VkCommandBuffer            m_frameMainCommandBuffers[scm_numFrames];
+    VkRenderPass               m_mainRenderPass = VK_NULL_HANDLE;
+    std::vector<VkFramebuffer> m_frameFramebuffers;
+
+    // DearImGui
+    VkDescriptorPool m_dearImGuiDescriptorPool = VK_NULL_HANDLE;
 };
 
 //-----------------------------------------------------------------------------
@@ -73,6 +82,7 @@ class VulkanRenderer : public render::IRenderer
     virtual void init();
     virtual void destroy();
 
+    virtual Bool get_supportDearImGuiMultiViewports() { return false; }
     virtual void start_dearImGuiNewFrame();
 
     virtual render::ISurface* get_newSurface();

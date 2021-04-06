@@ -65,6 +65,7 @@ class IRenderer
     virtual void init()    = 0;
     virtual void destroy() = 0;
 
+    virtual Bool get_supportDearImGuiMultiViewports() = 0;
     virtual void start_dearImGuiNewFrame() = 0;
 
     virtual ISurface* get_newSurface() = 0;

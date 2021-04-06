@@ -18,6 +18,19 @@ namespace vulkan
 {
 extern MesumGraphicsApi const logging::ChannelID VK_RENDERER_ID;
 
+inline void check_vkResult(VkResult err)
+{
+    if (err == 0)
+    {
+        return;
+    }
+    mLOG_ERR_TO(VK_RENDERER_ID, "[vulkan] Error: VkResult = ", err);
+    if (err < 0)
+    {
+        abort();
+    }
+}
+
 void create_instance(VkInstance& a_InstaceToCreate);
 void setup_debugUtilsMessengerCreateInfoExt(
     VkDebugUtilsMessengerCreateInfoEXT& a_createInfo);
@@ -32,7 +45,8 @@ void select_physicalDevice(VkInstance        a_instance,
 Bool find_graphicQueueFamilyIndex(VkPhysicalDevice a_physicalDevice,
                                   U32&             a_queueFamilyIndex);
 void create_logicalDevice(VkPhysicalDevice a_physicalDevice,
-                          VkDevice& a_logicalDevice, VkQueue& a_queue);
+                          VkDevice& a_logicalDevice, VkQueue& a_queue,
+                          U32& a_queueFamilyIndex);
 
 };  // namespace vulkan
 };  // namespace m

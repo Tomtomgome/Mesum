@@ -22,6 +22,7 @@ class VulkanContext
     static void wait_onMainTimelineTstp(
         U64 a_tstpToWaitOn, U64 a_timeout = std::numeric_limits<U64>::max());
     static U64 submit_onMainTimeline(
+        VkCommandBuffer const&          a_commandBuffer,
         std::vector<VkSemaphore> const& a_semaphoresToWait,
         std::vector<VkSemaphore>        a_semaphoresToSignal);
 
@@ -44,6 +45,10 @@ class VulkanContext
         return gs_VulkanContexte->m_queue;
     }
     static VkQueue get_graphicQueue() { return gs_VulkanContexte->m_queue; }
+    static U32     get_graphicQueueFamilyIndex()
+    {
+        return gs_VulkanContexte->m_queueFamilyIndex;
+    }
 
    public:
     // DearImGui
@@ -58,6 +63,7 @@ class VulkanContext
     VkDebugUtilsMessengerEXT m_debugUtil;
 
     // queues
+    U32     m_queueFamilyIndex;
     VkQueue m_queue = VK_NULL_HANDLE;
 
     // Utility
