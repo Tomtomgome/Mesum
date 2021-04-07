@@ -12,7 +12,7 @@ namespace m
 {
     namespace platform
     {
-		using namespace unix;
+		using namespace xcb_unix;
     }
 }
 

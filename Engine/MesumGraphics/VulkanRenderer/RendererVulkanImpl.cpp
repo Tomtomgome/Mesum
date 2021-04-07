@@ -28,7 +28,7 @@ void VulkanSurface::init_win32(render::Win32SurfaceInitData& a_data)
     m_clientHeight = a_data.m_height;
 #else
     // Wrong platform
-    mInterrupt
+    mInterrupt;
 #endif
     init_internal();
 }
@@ -43,7 +43,7 @@ void VulkanSurface::init_x11(render::X11SurfaceInitData& a_data)
     m_clientHeight = a_data.m_height;
 #else
     // Wrong platform
-    mInterrupt
+    mInterrupt;
 #endif
     init_internal();
 }

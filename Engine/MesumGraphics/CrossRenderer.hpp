@@ -23,7 +23,7 @@ namespace renderApi
 {
 using namespace vulkan;
 
-using RenderSurface = VulkanWindow;
+using DefaultRenderer = VulkanRenderer;
 
 }  // namespace renderApi
 }  // namespace m

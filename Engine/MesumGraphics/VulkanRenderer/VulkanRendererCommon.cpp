@@ -2,6 +2,7 @@
 #include <optional>
 #include <set>
 #include <vector>
+#include <cstring>
 
 namespace m
 {
@@ -70,6 +71,7 @@ std::vector<const ShortChar*> get_requiedExtensions()
 #if defined M_WIN32
     extensions.push_back(VK_KHR_WIN32_SURFACE_EXTENSION_NAME);
 #elif defined M_UNIX
+    extensions.push_back(VK_KHR_XCB_SURFACE_EXTENSION_NAME);
 #endif
     return extensions;
 }
@@ -326,6 +328,7 @@ Bool find_graphicQueueFamilyIndex(VkPhysicalDevice a_physicalDevice,
 #if defined M_WIN32
             vkGetPhysicalDeviceWin32PresentationSupportKHR(a_physicalDevice, i)
 #elif defined M_UNIX
+            vkGetPhysicalDeviceXcbPresentationSupportKHR(a_physicalDevice, i)
 #endif
         )
         {

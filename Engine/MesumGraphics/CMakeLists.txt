@@ -31,6 +31,7 @@ endif()
 
 message(STATUS "module names are ${RENDERER_MODULE_NAMES}")
 
+add_subdirectory(Unix)
 add_subdirectory(Win32)
 
 set(MODULE_NAME MesumGraphics)

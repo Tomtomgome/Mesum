@@ -1,10 +1,8 @@
-#include <Win32Context.hpp>
-#ifndef UNICODE
-#define UNICODE
-#endif
+#include <XCBContext.hpp>
+
 namespace m
 {
-namespace win32
+namespace xcb_unix
 {
 const logging::ChannelID PLATFORM_APP_ID = mLOG_GET_ID();
 
@@ -143,96 +141,21 @@ static input::Key translateKeys(Int a_keyCode)
     return KEY_UNKNOWN;
 }
 
-void WIN32Context::init(HINSTANCE& a_hInstance)
+void XCBContext::init(HINSTANCE& a_hInstance)
 {
-    mLOG_TO(PLATFORM_APP_ID, "Initializing Win32Context");
-    m_hInstance = a_hInstance;
+    mLOG_TO(PLATFORM_APP_ID, "Initializing XcbContext");
     init_keysLuts();
 }
 
-void WIN32Context::init_keysLuts()
+void XCBContext::init_keysLuts()
 {
-    memset(m_lut_keycodes, -1, sizeof(m_lut_keycodes));
-    memset(m_lut_scancode, -1, sizeof(m_lut_scancode));
 
-    for (Int scancode = 0; scancode <= 255; scancode++)
-    {
-        // Translate the un-translated key codes using traditional X11
-        // KeySym lookups
-        if (m_lut_keycodes[scancode] < 0)
-        {
-            m_lut_keycodes[scancode] = translateKeys(scancode);
-        }
-
-        // Store the reverse translation for faster key name lookup
-        if (m_lut_keycodes[scancode] > 0)
-            m_lut_scancode[m_lut_keycodes[scancode]] = scancode;
-    }
 }
 
-void WIN32Context::destroy()
+void XCBContext::destroy()
 {
+    init_keysLuts();
 }
 
-void WIN32Context::register_windowClass(const Char* a_className,
-                                        HINSTANCE a_hInstance, WNDPROC a_proc)
-{
-    WNDCLASSEXW windowClass   = {};
-    windowClass.cbSize        = sizeof(WNDCLASSEX);
-    windowClass.style         = CS_HREDRAW | CS_VREDRAW;
-    windowClass.lpfnWndProc   = a_proc;
-    windowClass.hInstance     = a_hInstance;
-    windowClass.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-    windowClass.lpszClassName = a_className;
-
-    RegisterClassExW(&windowClass);
-}
-
-HWND WIN32Context::create_window(const Char*  a_className,
-                                 std::wstring a_windowName, U32 a_width,
-                                 U32 a_height) const
-{
-    Int screenWidth  = GetSystemMetrics(SM_CXSCREEN);
-    Int screenHeight = GetSystemMetrics(SM_CYSCREEN);
-
-    RECT windowRect = {0, 0, (long)a_width, (long)a_height};
-    AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, FALSE);
-
-    Int windowWidth  = windowRect.right - windowRect.left;
-    Int windowHeight = windowRect.bottom - windowRect.top;
-
-    Int windowPosX = std::max<Int>(0, (screenWidth - windowWidth) / 2);
-    Int windowPosY = std::max<Int>(0, (screenHeight - windowHeight) / 2);
-    // Create the window.
-
-    HWND hwnd =
-        CreateWindowExW(NULL,                  // Optional window styles.
-                        a_className,           // Window class
-                        a_windowName.c_str(),  // Window text
-                        WS_OVERLAPPEDWINDOW,   // Window style
-
-                        // Size and position
-                        windowPosX, windowPosY, windowWidth, windowHeight,
-
-                        NULL,         // Parent window
-                        NULL,         // Menu
-                        m_hInstance,  // Instance handle
-                        nullptr       // Additional application data
-        );
-
-    mHardAssert(hwnd != NULL);
-
-    return hwnd;
-}
-
-input::Key WIN32Context::get_keyFromParam(WPARAM a_wParam) const
-{
-    I64 scancode = a_wParam;
-    if (scancode < 0 || scancode > 255)
-    {
-        return input::Key::KEY_UNKNOWN;
-    }
-    return m_lut_keycodes[scancode];
-}
-}
+} //xcb_unix
 }

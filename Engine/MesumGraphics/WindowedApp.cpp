@@ -1,14 +1,17 @@
 #include <WindowedApp.hpp>
 #include <MesumCore/Kernel/Asserts.hpp>
 
+
+
+
+#if defined M_WIN32
+
 #include <shellapi.h>
 #include <corecrt_io.h>
 #include <fcntl.h>
 #include <iosfwd>
 #include <winbase.h>
 
-
-#if defined M_WIN32
 namespace m
 {
 bool init_console()

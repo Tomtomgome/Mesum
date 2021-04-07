@@ -8,7 +8,7 @@ namespace m
 		//------------------------------------------------------------
 		//------------------------------------------------------------
 		//------------------------------------------------------------
-		void FileLogPolicy::open_ostream(const std::wstring& a_name) {
+		void FileLogPolicy::open_ostream(const std::string& a_name) {
 			m_outStream->open(a_name.c_str(), std::ios_base::binary | std::ios_base::out);
 			if (!m_outStream->is_open())
 			{
@@ -41,7 +41,7 @@ namespace m
 		StdcoutLogPolicy::StdcoutLogPolicy() {
 		}
 
-		void StdcoutLogPolicy::open_ostream(const std::wstring& a_name) {
+		void StdcoutLogPolicy::open_ostream(const std::string& a_name) {
 		}
 
 		void StdcoutLogPolicy::close_ostream() {

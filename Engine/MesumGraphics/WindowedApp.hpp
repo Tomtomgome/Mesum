@@ -2,7 +2,7 @@
 #define M_WINDOWEDAPP
 #pragma once
 
-#include <MesumCore/kernel/Application.hpp>
+#include <MesumCore/Kernel/Application.hpp>
 #include <MesumCore/MesumCore/Common.hpp>
 #include <MesumCore/Kernel/Mains.hpp>
 #include <MesumGraphics/Renderer.hpp>
@@ -73,7 +73,12 @@ LPSTR* CommandLineToArgvA(LPWSTR lpWCmdLine, INT* pNumArgs);
         return 0;                                                            \
     }
 #elif defined M_UNIX
-using m::WindowedLaunchData = m::ConsoleLaunchData;
+namespace m
+{
+struct WindowedLaunchData
+{
+};
+}
 #define M_EXECUTE_WINDOWED_APP(AppClass)           \
     int main(m::Int argc, m::ShortChar** argv)     \
     {                                              \

@@ -44,7 +44,7 @@ class Logger
     /*!
             \param	a_name	the output stream name.
     */
-    Logger(const std::wstring& a_name);
+    Logger(const std::string& a_name);
 
     //! Get a new channel ID
     const ChannelID get_newChannelID();
@@ -169,11 +169,16 @@ void Logger<LogPolicy>::print_impl(First a_parm1, Rest... a_parm)
 template <typename LogPolicy>
 std::wstring Logger<LogPolicy>::get_time()
 {
-    std::wstring time_str;
     time_t       raw_time;
     time(&raw_time);
-    time_str = _wctime(&raw_time);
-    // without the newline character
+
+    struct tm * timeInfo;
+    timeInfo = localtime(&raw_time);
+
+    wchar_t buffer [80];
+    wcsftime(buffer, 80, L"%d/%m/%y - %H/%M/%S", timeInfo);
+
+    std::wstring time_str(buffer);
     return time_str.substr(0, time_str.size() - 1);
 }
 
@@ -192,7 +197,7 @@ std::wstring Logger<LogPolicy>::get_loglineHeader()
 }
 
 template <typename LogPolicy>
-Logger<LogPolicy>::Logger(const std::wstring& a_name)
+Logger<LogPolicy>::Logger(const std::string& a_name)
 {
     m_nextChannelID = 1;
     m_filter        = -1;

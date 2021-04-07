@@ -4,7 +4,7 @@
 
 namespace m
 {
-	extern MesumCoreApi logging::Logger<m::logging::StdcoutLogPolicy> log_inst(L"");
+	MesumCoreApi logging::Logger<m::logging::StdcoutLogPolicy> log_inst("");
 
     void CmdLine::parse_cmdLineAguments(Int argc, ShortChar** argv)
     {

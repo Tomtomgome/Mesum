@@ -33,7 +33,7 @@ namespace m
 			/*!
 				\param	a_name	the name of the stream.
 			*/
-			virtual void	open_ostream(const std::wstring& a_name) = 0;
+			virtual void	open_ostream(const std::string& a_name) = 0;
 			//! close the output stream
 			virtual void	close_ostream() = 0;
 			//! write into the output steam
@@ -61,7 +61,7 @@ namespace m
 			/*!
 				\param	a_name	the name of the file.
 			*/
-			void	open_ostream(const std::wstring& a_name)	override;
+			void	open_ostream(const std::string& a_name)	override;
 			//! close the output file
 			void	close_ostream()							override;
 			//! write into the output file
@@ -90,7 +90,7 @@ namespace m
 			/*!
 				\param	a_name	the name of the file.
 			*/
-			void	open_ostream(const std::wstring& a_name)	override;
+			void	open_ostream(const std::string& a_name)	override;
 			//! close the output stream
 			void	close_ostream()							override;
 			//! write into the output stream

@@ -40,6 +40,8 @@ struct Win32SurfaceInitData
 
 struct X11SurfaceInitData
 {
+    U32  m_width;
+    U32  m_height;
 };
 
 #endif
