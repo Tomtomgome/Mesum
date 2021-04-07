@@ -13,7 +13,7 @@ This is a toy C++ framework to help me learn platform specifis API and crossplat
 		- Dynamic [ - ]
 	- Windows
 		- Multiple window managment [ x ]
-		- Input managment [ - ]
+		- Input managment [ x ]
 	- DirectX12
 		- Rendering surface managment [ x ]
 		- DearImGui integration [ x ]

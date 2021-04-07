@@ -1,7 +1,8 @@
+#include <MesumGraphics/DearImgui/imgui.h>
+
 #include <MesumCore/Kernel/Kernel.hpp>
 #include <MesumGraphics/CrossPlatform.hpp>
 #include <MesumGraphics/WindowedApp.hpp>
-#include <MesumGraphics/DearImgui/imgui.h>
 
 class CubeMover
 {
@@ -79,9 +80,9 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m_mainWindow = add_newWindow(L"Cube mover app", width, height);
         m_mainWindow->set_asMainWindow();
 
-//         m::Bool MultiViewportsEnabled = true;
-//         m_mainWindow->set_asImGuiWindow(MultiViewportsEnabled);
-//         set_processImGuiMultiViewports(MultiViewportsEnabled);
+        m::Bool MultiViewportsEnabled = false;
+        m_mainWindow->set_asImGuiWindow(MultiViewportsEnabled);
+        set_processImGuiMultiViewports(MultiViewportsEnabled);
 
         m_mainWindow->link_inputManager(&m_inputManager);
 
@@ -150,12 +151,12 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         m_mover.move(m_x, m_y);
 
-//         start_dearImGuiNewFrame();
-//         ImGui::NewFrame();
-//
-//         m::Bool showDemo = true;
-//         ImGui::ShowDemoWindow(&showDemo);
-//         ImGui::Render();
+        start_dearImGuiNewFrame();
+        ImGui::NewFrame();
+
+        m::Bool showDemo = true;
+        ImGui::ShowDemoWindow(&showDemo);
+        ImGui::Render();
 
         render();
         return true;

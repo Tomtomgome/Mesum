@@ -103,24 +103,27 @@ U64 VulkanContext::submit_onMainTimeline(
 
     VkTimelineSemaphoreSubmitInfo timelineInfo = {};
     timelineInfo.sType = VK_STRUCTURE_TYPE_TIMELINE_SEMAPHORE_SUBMIT_INFO;
-    timelineInfo.waitSemaphoreValueCount   = dummyWaitValues.size();
-    timelineInfo.pWaitSemaphoreValues      = dummyWaitValues.data();
-    timelineInfo.signalSemaphoreValueCount = signalValues.size();
-    timelineInfo.pSignalSemaphoreValues    = signalValues.data();
+    timelineInfo.waitSemaphoreValueCount =
+        static_cast<U32>(dummyWaitValues.size());
+    timelineInfo.pWaitSemaphoreValues = dummyWaitValues.data();
+    timelineInfo.signalSemaphoreValueCount =
+        static_cast<U32>(signalValues.size());
+    timelineInfo.pSignalSemaphoreValues = signalValues.data();
 
     a_semaphoresToSignal.push_back(gs_VulkanContexte->m_timelineSemaphore);
 
-    VkSubmitInfo infoSubmit           = {};
-    infoSubmit.sType                  = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-    infoSubmit.pNext                  = &timelineInfo;
-    infoSubmit.waitSemaphoreCount     = a_semaphoresToWait.size();
-    infoSubmit.pWaitSemaphores        = a_semaphoresToWait.data();
+    VkSubmitInfo infoSubmit       = {};
+    infoSubmit.sType              = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+    infoSubmit.pNext              = &timelineInfo;
+    infoSubmit.waitSemaphoreCount = static_cast<U32>(a_semaphoresToWait.size());
+    infoSubmit.pWaitSemaphores    = a_semaphoresToWait.data();
     VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT};
     infoSubmit.pWaitDstStageMask      = waitStages;
-    infoSubmit.signalSemaphoreCount   = a_semaphoresToSignal.size();
-    infoSubmit.pSignalSemaphores      = a_semaphoresToSignal.data();
-    infoSubmit.commandBufferCount     = 1;
-    infoSubmit.pCommandBuffers        = &a_commandBuffer;
+    infoSubmit.signalSemaphoreCount =
+        static_cast<U32>(a_semaphoresToSignal.size());
+    infoSubmit.pSignalSemaphores  = a_semaphoresToSignal.data();
+    infoSubmit.commandBufferCount = 1;
+    infoSubmit.pCommandBuffers    = &a_commandBuffer;
     if (vkQueueSubmit(VulkanContext::gs_VulkanContexte->get_graphicQueue(), 1,
                       &infoSubmit, VK_NULL_HANDLE) != VK_SUCCESS)
     {

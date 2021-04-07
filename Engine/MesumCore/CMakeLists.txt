@@ -5,7 +5,7 @@ set(MODULE_NAME MesumCore)
 project(${MODULE_NAME} VERSION 1.0.0 DESCRIPTION "MesumEngine core functionnalities")
 
 if(BM_DYNAMIC_LINK)
-set(BM_LINK_MODE DYNAMIC)
+set(BM_LINK_MODE SHARED)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS 1)
 else()
 set(BM_LINK_MODE STATIC)
@@ -23,4 +23,6 @@ set_target_properties(${MODULE_NAME} PROPERTIES FOLDER "MesumCore")
 target_include_directories(${MODULE_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(${MODULE_NAME} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/..)
 
-
+if(BM_DYNAMIC_LINK)
+target_compile_definitions(${MODULE_NAME} PRIVATE _M_CORE_EXPORT)
+endif()

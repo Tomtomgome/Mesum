@@ -3,7 +3,7 @@
 #pragma once
 
 #ifdef _M_DLL_DYNAMIC_LINK
-#ifdef _M_EXPORT
+#ifdef _M_CORE_EXPORT
 #define MesumCoreApi __declspec(dllexport)
 #else
 #define MesumCoreApi __declspec(dllimport)

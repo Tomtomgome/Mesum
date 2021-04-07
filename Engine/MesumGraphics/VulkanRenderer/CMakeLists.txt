@@ -30,6 +30,5 @@ target_include_directories(${MODULE_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/..
 target_include_directories(${MODULE_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../..)
 
 if(BM_DYNAMIC_LINK)
-target_compile_definitions(${MODULE_NAME} PRIVATE _M_DLL_DYNAMIC_LINK)
-target_compile_definitions(${MODULE_NAME} PRIVATE _M_EXPORT)
+target_compile_definitions(${MODULE_NAME} PRIVATE _M_GRAPHICS_EXPORT)
 endif()

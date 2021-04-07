@@ -34,6 +34,10 @@ elseif(BM_DEFAULT_RENDERER STREQUAL "BM_VULKAN")
     set(BM_VULKAN_RENDERER "TRUE")
 endif()
 
+if(BM_DYNAMIC_LINK)
+    add_compile_definitions(_M_DLL_DYNAMIC_LINK)
+endif()
+
 add_subdirectory(${CMAKE_SOURCE_DIR}/Engine)
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/Apps)
