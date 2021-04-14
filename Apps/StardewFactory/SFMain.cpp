@@ -11,8 +11,15 @@ using namespace m;
 
 #define INVENTORY_SIZE 5
 
-static const Float s_matureAge = 3.0f;
-static const Float s_seedPrice = 150.0f;
+static const Float s_matureAge                   = 3.0f;
+static const Float s_seedPrice                   = 150.0f;
+static const Float s_plantDeathRateWhenHarvested = 5.0f;
+static const Float s_plantDeathRateWhenGrounded  = 10.0f;
+static const Float s_plantBaseConsumptionRate    = 1.0f;
+static const Float s_plantBaseHealth             = 100.0f;
+
+static const Float s_fieldRegenerationRate = 0.3f;
+static const Float s_fieldMaxNutiments     = 10.0f;
 
 static ImVec4 colField = {0.284, 0.159, 0.0f, 1.0f};
 
@@ -23,6 +30,8 @@ const static Float agentSizeSmall = 2;
 const static Float agentSizeBig   = 10;
 
 const static Float heroSize = 4;
+
+static Float s_machineRefreshTime = 1.0f;
 
 //*****************************************************************************
 // Basic field
@@ -83,7 +92,8 @@ struct AgentPlant : public IAgent
     {
         if (m_isHarvested)
         {
-            m_health = std::max(m_health - 5.0f * a_deltaTime, 0.0);
+            m_health = std::max(
+                m_health - s_plantDeathRateWhenHarvested * a_deltaTime, 0.0);
             return;
         }
 
@@ -98,16 +108,17 @@ struct AgentPlant : public IAgent
         }
         else
         {
-            m_health = std::max(m_health - 10.0f * a_deltaTime, 0.0);
+            m_health = std::max(
+                m_health - s_plantDeathRateWhenGrounded * a_deltaTime, 0.0);
         }
     }
 
     void harvest() { m_isHarvested = true; }
 
     Bool  m_isHarvested = false;
-    Float m_consumption = 1.0f;
+    Float m_consumption = s_plantBaseConsumptionRate;
     Float m_age         = 0.0f;
-    Float m_health      = 100.0f;
+    Float m_health      = s_plantBaseHealth;
 };
 
 //*****************************************************************************
@@ -171,8 +182,6 @@ struct ICommand
 {
     virtual Bool execute() = 0;
 };
-
-static Float s_machineRefreshTime = 1.0f;
 
 //*****************************************************************************
 // Orientables
@@ -532,8 +541,10 @@ void update_field(Field& a_field, Double a_deltaTime)
     {
         for (Int j = 0; j < FIELD_SIZE; ++j)
         {
-            a_field.m_nutrients[i][j] =
-                std::min(a_field.m_nutrients[i][j] + 0.3 * a_deltaTime, 10.0);
+            a_field.m_nutrients[i][j] = std::min(
+                a_field.m_nutrients[i][j] +
+                    s_fieldRegenerationRate * static_cast<Float>(a_deltaTime),
+                s_fieldMaxNutiments);
         }
     }
 }
@@ -928,7 +939,7 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         {
             for (Int j = 0; j < FIELD_SIZE; ++j)
             {
-                m_field.m_nutrients[i][j] = 10.0f;
+                m_field.m_nutrients[i][j] = s_fieldMaxNutiments;
             }
         }
 
