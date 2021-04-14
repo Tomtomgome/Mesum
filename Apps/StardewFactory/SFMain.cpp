@@ -14,28 +14,30 @@ using namespace m;
 static const Float s_matureAge = 3.0f;
 static const Float s_seedPrice = 150.0f;
 
-struct Agent;
+struct IAgent;
 
 struct Field
 {
-    std::set<Agent*> m_cells[FIELD_SIZE][FIELD_SIZE];
-    Float            m_nutrients[FIELD_SIZE][FIELD_SIZE];
+    std::set<IAgent*> m_cells[FIELD_SIZE][FIELD_SIZE];
+    Float             m_nutrients[FIELD_SIZE][FIELD_SIZE];
 };
 
 enum AgentType
 {
-    Plant  = 0,
-    Player = 1
+    Plant   = 0,
+    Player  = 1,
+    Machine = 2
 };
 
-struct Agent
+struct IAgent
 {
-    Agent(AgentType a_type)
+    IAgent(AgentType a_type)
     {
         m_type       = a_type;
         m_position.x = 0;
         m_position.y = 0;
     }
+    virtual ~IAgent() {}
 
     virtual void update(Field& a_field, Double a_deltaTime) = 0;
 
@@ -43,9 +45,20 @@ struct Agent
     AgentType   m_type;
 };
 
-struct AgentPlant : public Agent
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void place_agent(Field& a_field, IAgent* a_agent, Int a_x, Int a_y)
 {
-    AgentPlant() : Agent(AgentType::Plant) {}
+    a_agent->m_position.x = a_x;
+    a_agent->m_position.y = a_y;
+
+    a_field.m_cells[a_x][a_y].insert(a_agent);
+}
+
+struct AgentPlant : public IAgent
+{
+    AgentPlant() : IAgent(AgentType::Plant) {}
 
     virtual void update(Field& a_field, Double a_deltaTime) override
     {
@@ -103,13 +116,18 @@ struct Inventory
     std::map<ObjectType, Slot>           m_slots;
 };
 
-struct AgentCharacter : public Agent
+struct IAgentWithInventory : public IAgent
 {
-    AgentCharacter() : Agent(AgentType::Player) {}
+    IAgentWithInventory(AgentType a_type) : IAgent(a_type) {}
+    Inventory m_inventory;
+};
+
+struct AgentCharacter : public IAgentWithInventory
+{
+    AgentCharacter() : IAgentWithInventory(AgentType::Player) {}
 
     virtual void update(Field& a_field, Double a_deltaTime) override {}
-    Float        m_money;
-    Inventory    m_inventory;
+    Float        m_money = 0.0f;
 };
 
 //-----------------------------------------------------------------------------
@@ -122,19 +140,55 @@ void add_objectToInventory(Inventory& a_inventory, Object a_object)
 
 struct ICommand
 {
-    virtual void execute() = 0;
+    virtual Bool execute() = 0;
 };
 
-struct CommandMoveUp : public ICommand
+static Float s_machineRefreshTime = 1.0f;
+
+struct AgentMachine : public IAgentWithInventory
 {
-    virtual void execute() override
+    AgentMachine() : IAgentWithInventory(AgentType::Machine) {}
+    virtual ~AgentMachine()
     {
-        if (m_agentToMove->m_position.y <= 0)
+        for (auto command : m_instructions) { delete command; }
+        m_instructions.clear();
+    }
+
+    virtual void update(Field& a_field, Double a_deltaTime) override
+    {
+        if (m_instructions.size() == 0)
         {
             return;
         }
 
-        std::set<Agent*> cellContent =
+        m_timeBeforeNextStep -= a_deltaTime;
+        if (m_timeBeforeNextStep > 0)
+        {
+            return;
+        }
+
+        m_timeBeforeNextStep = s_machineRefreshTime;
+
+        m_instructions[m_instructionToExecute]->execute();
+        m_instructionToExecute =
+            (m_instructionToExecute + 1U) % m_instructions.size();
+    }
+
+    Float                  m_timeBeforeNextStep   = s_machineRefreshTime;
+    U64                    m_instructionToExecute = 0;
+    std::vector<ICommand*> m_instructions;
+};
+
+struct CommandMoveUp : public ICommand
+{
+    virtual Bool execute() override
+    {
+        if (m_agentToMove->m_position.y <= 0)
+        {
+            return false;
+        }
+
+        std::set<IAgent*> cellContent =
             m_field->m_cells[m_agentToMove->m_position.x]
                             [m_agentToMove->m_position.y];
         auto agent = cellContent.find(m_agentToMove);
@@ -147,22 +201,24 @@ struct CommandMoveUp : public ICommand
         m_field
             ->m_cells[m_agentToMove->m_position.x][m_agentToMove->m_position.y]
             .insert(m_agentToMove);
+
+        return true;
     }
 
-    Agent* m_agentToMove;
-    Field* m_field;
+    IAgent* m_agentToMove;
+    Field*  m_field;
 };
 
 struct CommandMoveDown : public ICommand
 {
-    virtual void execute() override
+    virtual Bool execute() override
     {
         if (m_agentToMove->m_position.y >= FIELD_SIZE - 1)
         {
-            return;
+            return false;
         }
 
-        std::set<Agent*> cellContent =
+        std::set<IAgent*> cellContent =
             m_field->m_cells[m_agentToMove->m_position.x]
                             [m_agentToMove->m_position.y];
         auto agent = cellContent.find(m_agentToMove);
@@ -175,22 +231,24 @@ struct CommandMoveDown : public ICommand
         m_field
             ->m_cells[m_agentToMove->m_position.x][m_agentToMove->m_position.y]
             .insert(m_agentToMove);
+
+        return true;
     }
 
-    Agent* m_agentToMove;
-    Field* m_field;
+    IAgent* m_agentToMove;
+    Field*  m_field;
 };
 
 struct CommandMoveLeft : public ICommand
 {
-    virtual void execute() override
+    virtual Bool execute() override
     {
         if (m_agentToMove->m_position.x <= 0)
         {
-            return;
+            return false;
         }
 
-        std::set<Agent*> cellContent =
+        std::set<IAgent*> cellContent =
             m_field->m_cells[m_agentToMove->m_position.x]
                             [m_agentToMove->m_position.y];
         auto agent = cellContent.find(m_agentToMove);
@@ -203,22 +261,24 @@ struct CommandMoveLeft : public ICommand
         m_field
             ->m_cells[m_agentToMove->m_position.x][m_agentToMove->m_position.y]
             .insert(m_agentToMove);
+
+        return true;
     }
 
-    Agent* m_agentToMove;
-    Field* m_field;
+    IAgent* m_agentToMove;
+    Field*  m_field;
 };
 
 struct CommandMoveRight : public ICommand
 {
-    virtual void execute() override
+    virtual Bool execute() override
     {
         if (m_agentToMove->m_position.x >= FIELD_SIZE - 1)
         {
-            return;
+            return false;
         }
 
-        std::set<Agent*> cellContent =
+        std::set<IAgent*> cellContent =
             m_field->m_cells[m_agentToMove->m_position.x]
                             [m_agentToMove->m_position.y];
         auto agent = cellContent.find(m_agentToMove);
@@ -231,10 +291,96 @@ struct CommandMoveRight : public ICommand
         m_field
             ->m_cells[m_agentToMove->m_position.x][m_agentToMove->m_position.y]
             .insert(m_agentToMove);
+
+        return true;
     }
 
-    Agent* m_agentToMove;
-    Field* m_field;
+    IAgent* m_agentToMove;
+    Field*  m_field;
+};
+
+struct CommandPlantCrop : public ICommand
+{
+    virtual Bool execute() override
+    {
+        mAssert(m_agent != nullptr);
+        mAssert(m_field != nullptr);
+        IAgentWithInventory& agent = *m_agent;
+        Field&               field = *m_field;
+
+        std::set<IAgent*>& cell =
+            field.m_cells[agent.m_position.x][agent.m_position.y];
+
+        for (auto agent : cell)
+        {
+            if (agent->m_type == AgentType::Plant)
+            {
+                return false;
+            }
+        }
+
+        auto seedSlot = agent.m_inventory.m_slots.find(ObjectType::Seed);
+
+        if (seedSlot == agent.m_inventory.m_slots.end() ||
+            seedSlot->second.m_objects.size() == 0)
+        {
+            return false;
+        }
+
+        IAgent* newAgent = new AgentPlant();
+        m_agents->insert(newAgent);
+        place_agent(field, newAgent, agent.m_position.x, agent.m_position.y);
+        seedSlot->second.m_objects.erase(--seedSlot->second.m_objects.end());
+        return true;
+    }
+
+    IAgentWithInventory* m_agent;
+    Field*               m_field;
+    std::set<IAgent*>*   m_agents;
+};
+
+struct CommandHarvestCrop : public ICommand
+{
+    virtual Bool execute() override
+    {
+        mAssert(m_agent != nullptr);
+        mAssert(m_field != nullptr);
+        IAgentWithInventory& agent = *m_agent;
+        Field&               field = *m_field;
+
+        std::set<IAgent*>& cell =
+            field.m_cells[agent.m_position.x][agent.m_position.y];
+
+        Bool                        hasAPlant  = false;
+        std::set<IAgent*>::iterator plantAgent = cell.begin();
+        while (plantAgent != cell.end())
+        {
+            if ((*plantAgent)->m_type == AgentType::Plant)
+            {
+                hasAPlant = true;
+                break;
+            }
+            ++plantAgent;
+        }
+
+        if (!hasAPlant)
+        {
+            return false;
+        }
+
+        static_cast<AgentPlant*>(*plantAgent)->harvest();
+
+        add_objectToInventory(agent.m_inventory,
+                              {ObjectType::Fruit, *plantAgent});
+
+        cell.erase(plantAgent);
+
+        return true;
+    }
+
+    IAgentWithInventory* m_agent;
+    Field*               m_field;
+    std::set<IAgent*>*   m_agents;
 };
 
 //-----------------------------------------------------------------------------
@@ -270,84 +416,6 @@ void initialize_hero(AgentCharacter& a_hero)
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void place_agent(Field& a_field, Agent* a_agent, Int a_x, Int a_y)
-{
-    a_agent->m_position.x = a_x;
-    a_agent->m_position.y = a_y;
-
-    a_field.m_cells[a_x][a_y].insert(a_agent);
-}
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-Bool try_plant(Field& a_field, std::set<Agent*>& a_agents,
-               AgentCharacter& a_hero)
-{
-    std::set<Agent*>& cell =
-        a_field.m_cells[a_hero.m_position.x][a_hero.m_position.y];
-
-    for (auto agent : cell)
-    {
-        if (agent->m_type == AgentType::Plant)
-        {
-            return false;
-        }
-    }
-
-    auto seedSlot = a_hero.m_inventory.m_slots.find(ObjectType::Seed);
-
-    if (seedSlot == a_hero.m_inventory.m_slots.end() ||
-        seedSlot->second.m_objects.size() == 0)
-    {
-        return false;
-    }
-
-    Agent* newAgent = new AgentPlant();
-    a_agents.insert(newAgent);
-    place_agent(a_field, newAgent, a_hero.m_position.x, a_hero.m_position.y);
-    seedSlot->second.m_objects.erase(--seedSlot->second.m_objects.end());
-    return true;
-}
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-Bool try_harvest(Field& a_field, std::set<Agent*>& a_agents,
-                 AgentCharacter& a_hero)
-{
-    std::set<Agent*>& cell =
-        a_field.m_cells[a_hero.m_position.x][a_hero.m_position.y];
-
-    Bool                       hasAPlant  = false;
-    std::set<Agent*>::iterator plantAgent = cell.begin();
-    while (plantAgent != cell.end())
-    {
-        if ((*plantAgent)->m_type == AgentType::Plant)
-        {
-            hasAPlant = true;
-            break;
-        }
-        ++plantAgent;
-    }
-
-    if (!hasAPlant)
-    {
-        return false;
-    }
-
-    static_cast<AgentPlant*>(*plantAgent)->harvest();
-
-    add_objectToInventory(a_hero.m_inventory, {ObjectType::Fruit, *plantAgent});
-
-    cell.erase(plantAgent);
-
-    return true;
-}
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
 void update_field(Field& a_field, Double a_deltaTime)
 {
     for (Int i = 0; i < FIELD_SIZE; ++i)
@@ -363,7 +431,7 @@ void update_field(Field& a_field, Double a_deltaTime)
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void update_agents(std::set<Agent*>& a_agentsToUpdate, Field& a_field,
+void update_agents(std::set<IAgent*>& a_agentsToUpdate, Field& a_field,
                    Double a_deltaTime)
 {
     for (auto& agent : a_agentsToUpdate)
@@ -477,7 +545,32 @@ void display_player(AgentCharacter& a_player)
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void display_agents(std::set<Agent*> const& a_agents)
+void display_machine(AgentMachine& a_machine)
+{
+    const ImVec2 p         = ImGui::GetCursorScreenPos();
+    Float        cx        = p.x + 5.0f;
+    Float        cy        = p.y + 5.0f;
+    ImDrawList*  draw_list = ImGui::GetWindowDrawList();
+
+    static Float innerCellPadding = -1;
+    static Float machineSize      = parcelSize - 2 * innerCellPadding;
+
+    Float x = cx + (parcelSize + parcelPadding) * a_machine.m_position.x +
+              innerCellPadding;
+    Float y = cy + (parcelSize + parcelPadding) * a_machine.m_position.y +
+              innerCellPadding;
+
+    ImVec4      colf = ImVec4(5.0f, 5.0f, 5.0f, 1.0f);
+    const ImU32 col  = ImColor(colf);
+
+    draw_list->AddRect(ImVec2(x, y), ImVec2(x + machineSize, y + machineSize),
+                       col);
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void display_agents(std::set<IAgent*> const& a_agents)
 {
     const ImVec2 p         = ImGui::GetCursorScreenPos();
     Float        cx        = p.x + 5.0f;
@@ -496,6 +589,11 @@ void display_agents(std::set<Agent*> const& a_agents)
             case AgentType::Player:
             {
                 display_player(*static_cast<AgentCharacter*>(agent));
+            }
+            break;
+            case AgentType::Machine:
+            {
+                display_machine(*static_cast<AgentMachine*>(agent));
             }
             break;
             default: break;
@@ -574,20 +672,37 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
             {
                 case ObjectType::Seed:
                 {
-                    if (!try_plant(m_field, m_agents, *m_player))
+                    CommandPlantCrop commandPlant;
+                    commandPlant.m_agent  = m_player;
+                    commandPlant.m_field  = &m_field;
+                    commandPlant.m_agents = &m_agents;
+
+                    if (!commandPlant.execute())
                     {
-                        try_harvest(m_field, m_agents, *m_player);
+                        CommandHarvestCrop commandHarvest;
+                        commandHarvest.m_agent  = m_player;
+                        commandHarvest.m_field  = &m_field;
+                        commandHarvest.m_agents = &m_agents;
+                        commandHarvest.execute();
                     }
                 }
                 break;
                 case ObjectType::Fruit:
                 {
-                    try_harvest(m_field, m_agents, *m_player);
+                    CommandHarvestCrop commandHarvest;
+                    commandHarvest.m_agent  = m_player;
+                    commandHarvest.m_field  = &m_field;
+                    commandHarvest.m_agents = &m_agents;
+                    commandHarvest.execute();
                 }
                 break;
                 default:
                 {
-                    try_harvest(m_field, m_agents, *m_player);
+                    CommandHarvestCrop commandHarvest;
+                    commandHarvest.m_agent  = m_player;
+                    commandHarvest.m_field  = &m_field;
+                    commandHarvest.m_agents = &m_agents;
+                    commandHarvest.execute();
                 }
                 break;
             }
@@ -665,6 +780,14 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         initialize_hero(*m_player);
         place_agent(m_field, m_player, 0, 0);
         m_agents.insert(m_player);
+
+        m_machine                 = new AgentMachine();
+        CommandMoveRight* command = new CommandMoveRight();
+        command->m_agentToMove    = m_machine;
+        command->m_field          = &m_field;
+        m_machine->m_instructions.push_back(command);
+        place_agent(m_field, m_machine, 0, 0);
+        m_agents.insert(m_machine);
     }
 
     virtual void destroy() override
@@ -702,6 +825,8 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
             ImGui::ColorEdit4("Color", &colField.x, ImGuiColorEditFlags_Float);
             ImGui::Text("frame time : %f", a_deltaTime);
             ImGui::Text("total time : %f", s_time);
+            ImGui::DragFloat("Machine refresh time", &s_machineRefreshTime,
+                             0.01f, 0.0f);
         }
         ImGui::End();
 
@@ -739,9 +864,10 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         return true;
     }
 
-    Field            m_field;
-    AgentCharacter*  m_player;
-    std::set<Agent*> m_agents;
+    Field             m_field;
+    AgentCharacter*   m_player;
+    AgentMachine*     m_machine;
+    std::set<IAgent*> m_agents;
 
     m::input::InputManager m_inputManager;
     m::windows::IWindow*   m_mainWindow;
