@@ -14,6 +14,19 @@ using namespace m;
 static const Float s_matureAge = 3.0f;
 static const Float s_seedPrice = 150.0f;
 
+static ImVec4 colField = {0.284, 0.159, 0.0f, 1.0f};
+
+const static Float parcelSize    = 40;
+const static Float parcelPadding = 3;
+
+const static Float agentSizeSmall = 2;
+const static Float agentSizeBig   = 10;
+
+const static Float heroSize = 4;
+
+//*****************************************************************************
+// Basic field
+//*****************************************************************************
 struct IAgent;
 
 struct Field
@@ -22,6 +35,9 @@ struct Field
     Float             m_nutrients[FIELD_SIZE][FIELD_SIZE];
 };
 
+//*****************************************************************************
+// Basic agent
+//*****************************************************************************
 enum AgentType
 {
     Plant   = 0,
@@ -56,6 +72,9 @@ void place_agent(Field& a_field, IAgent* a_agent, Int a_x, Int a_y)
     a_field.m_cells[a_x][a_y].insert(a_agent);
 }
 
+//*****************************************************************************
+// Crop agent
+//*****************************************************************************
 struct AgentPlant : public IAgent
 {
     AgentPlant() : IAgent(AgentType::Plant) {}
@@ -91,6 +110,10 @@ struct AgentPlant : public IAgent
     Float m_health      = 100.0f;
 };
 
+//*****************************************************************************
+// Inventory basics
+//*****************************************************************************
+
 enum ObjectType
 {
     Seed  = 0,
@@ -122,14 +145,6 @@ struct IAgentWithInventory : public IAgent
     Inventory m_inventory;
 };
 
-struct AgentCharacter : public IAgentWithInventory
-{
-    AgentCharacter() : IAgentWithInventory(AgentType::Player) {}
-
-    virtual void update(Field& a_field, Double a_deltaTime) override {}
-    Float        m_money = 0.0f;
-};
-
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -138,6 +153,20 @@ void add_objectToInventory(Inventory& a_inventory, Object a_object)
     a_inventory.m_slots[a_object.m_type].m_objects.push_back(a_object);
 }
 
+//*****************************************************************************
+// Character agent
+//*****************************************************************************
+struct AgentCharacter : public IAgentWithInventory
+{
+    AgentCharacter() : IAgentWithInventory(AgentType::Player) {}
+
+    virtual void update(Field& a_field, Double a_deltaTime) override {}
+    Float        m_money = 0.0f;
+};
+
+//*****************************************************************************
+// Basic Command
+//*****************************************************************************
 struct ICommand
 {
     virtual Bool execute() = 0;
@@ -145,6 +174,9 @@ struct ICommand
 
 static Float s_machineRefreshTime = 1.0f;
 
+//*****************************************************************************
+// Orientables
+//*****************************************************************************
 struct IOrientable
 {
     enum Orientation
@@ -171,6 +203,9 @@ struct IOrientable
     Orientation m_orientation = Orientation::Up;
 };
 
+//*****************************************************************************
+// Machines
+//*****************************************************************************
 struct AgentMachine : public IAgentWithInventory, public IOrientable
 {
     AgentMachine() : IAgentWithInventory(AgentType::Machine) {}
@@ -204,6 +239,10 @@ struct AgentMachine : public IAgentWithInventory, public IOrientable
     U64                    m_instructionToExecute = 0;
     std::vector<ICommand*> m_instructions;
 };
+
+//*****************************************************************************
+// Movement related commands
+//*****************************************************************************
 
 struct CommandMoveUp : public ICommand
 {
@@ -325,6 +364,10 @@ struct CommandMoveRight : public ICommand
     Field*  m_field;
 };
 
+//*****************************************************************************
+// Orientation related commands
+//*****************************************************************************
+
 struct CommandMoveForward : public ICommand
 {
     virtual Bool execute() override
@@ -389,6 +432,9 @@ struct CommandRotateCounterClockWise : public ICommand
     IOrientable* m_orientable;
 };
 
+//*****************************************************************************
+// Crop related commands
+//*****************************************************************************
 struct CommandPlantCrop : public ICommand
 {
     virtual Bool execute() override
@@ -473,35 +519,9 @@ struct CommandHarvestCrop : public ICommand
     std::set<IAgent*>*   m_agents;
 };
 
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-void initialize_field(Field& a_field)
-{
-    for (Int i = 0; i < FIELD_SIZE; ++i)
-    {
-        for (Int j = 0; j < FIELD_SIZE; ++j)
-        {
-            a_field.m_nutrients[i][j] = 10.0f;
-        }
-    }
-}
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-void initialize_hero(AgentCharacter& a_hero)
-{
-    a_hero.m_position.x = 0;
-    a_hero.m_position.y = 0;
-    a_hero.m_money      = 0.0f;
-
-    for (Int i = 0; i < 10; ++i)
-    {
-        add_objectToInventory(a_hero.m_inventory, {ObjectType::Seed, nullptr});
-    }
-    a_hero.m_inventory.m_selectedSlot = a_hero.m_inventory.m_slots.end();
-}
+//*****************************************************************************
+// Basic Updates
+//*****************************************************************************
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -530,16 +550,9 @@ void update_agents(std::set<IAgent*>& a_agentsToUpdate, Field& a_field,
     }
 }
 
-static ImVec4 colField = {0.284, 0.159, 0.0f, 1.0f};
-
-const static Float parcelSize    = 40;
-const static Float parcelPadding = 3;
-
-const static Float agentSizeSmall = 2;
-const static Float agentSizeBig   = 10;
-
-const static Float heroSize = 4;
-
+//*****************************************************************************
+// Displays
+//*****************************************************************************
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -758,9 +771,9 @@ void display_heroInventory(Inventory& a_inventory)
     }
 }
 
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
+//*****************************************************************************
+// App
+//*****************************************************************************
 class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
 {
     void move_up()
@@ -910,13 +923,33 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
 
         set_microSecondsLimit(16000);
 
-        initialize_field(m_field);
+        // Initialize Field
+        for (Int i = 0; i < FIELD_SIZE; ++i)
+        {
+            for (Int j = 0; j < FIELD_SIZE; ++j)
+            {
+                m_field.m_nutrients[i][j] = 10.0f;
+            }
+        }
 
-        m_player = new AgentCharacter();
-        initialize_hero(*m_player);
+        // Initialize Player
+        m_player               = new AgentCharacter();
+        m_player->m_position.x = 0;
+        m_player->m_position.y = 0;
+        m_player->m_money      = 0.0f;
+
+        for (Int i = 0; i < 10; ++i)
+        {
+            add_objectToInventory(m_player->m_inventory,
+                                  {ObjectType::Seed, nullptr});
+        }
+        m_player->m_inventory.m_selectedSlot =
+            m_player->m_inventory.m_slots.end();
+
         place_agent(m_field, m_player, 0, 0);
         m_agents.insert(m_player);
 
+        // Initialize Machine
         m_machine = new AgentMachine();
         for (Int i = 0; i < 100; ++i)
         {
