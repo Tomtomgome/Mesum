@@ -1,6 +1,7 @@
 #include <MesumGraphics/DearImgui/imgui.h>
 
 #include <MesumCore/Kernel/Kernel.hpp>
+#include <MesumCore/Kernel/Math.hpp>
 #include <MesumGraphics/CrossPlatform.hpp>
 #include <MesumGraphics/WindowedApp.hpp>
 
@@ -13,24 +14,26 @@ using namespace m;
 static const Float s_matureAge = 3.0f;
 static const Float s_seedPrice = 150.0f;
 
-
 struct Agent
 {
     m::math::IVec2 m_position;
     m::Float       m_consumption = 0;
-    m::Float       m_age = 0.0f;
-    m::Float       m_health = 100.0f;
+    m::Float       m_age         = 0.0f;
+    m::Float       m_health      = 100.0f;
 };
 
 enum ObjectType
 {
-    Seed = 0,
+    Seed  = 0,
     Fruit = 1,
 };
+
+static std::string ObjectTypeNames[] = {"Seeds", "Fruits"};
 
 struct Object
 {
     ObjectType m_type;
+    void*      m_data;
 };
 
 struct Slot
@@ -41,26 +44,28 @@ struct Slot
 struct Inventory
 {
     std::map<ObjectType, Slot>::iterator m_selectedSlot;
-    std::map<ObjectType, Slot> m_slots;
+    std::map<ObjectType, Slot>           m_slots;
 };
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void add_objectToInventory(Inventory& a_inventory, Object& a_object)
+void add_objectToInventory(Inventory& a_inventory, Object a_object)
 {
-    a_inventory.m_slots.at(a_object.m_type).m_objects.push_back(a_object);
+    a_inventory.m_slots[a_object.m_type].m_objects.push_back(a_object);
 }
 
 struct Character
 {
-    m::math::IVec2 m_position;
+    math::IVec2 m_position;
+    Float       m_money;
+    Inventory   m_inventory;
 };
 
 struct Field
 {
-    Agent*   m_agents[FIELD_SIZE][FIELD_SIZE];
-    m::Float m_nutrients[FIELD_SIZE][FIELD_SIZE];
+    Agent* m_agents[FIELD_SIZE][FIELD_SIZE];
+    Float  m_nutrients[FIELD_SIZE][FIELD_SIZE];
 };
 
 //-----------------------------------------------------------------------------
@@ -73,7 +78,7 @@ void initialize_field(Field& a_field)
         for (Int j = 0; j < FIELD_SIZE; ++j)
         {
             a_field.m_nutrients[i][j] = 10.0f;
-            a_field.m_agents[i][j] = nullptr;
+            a_field.m_agents[i][j]    = nullptr;
         }
     }
 }
@@ -85,18 +90,73 @@ void initialize_hero(Character& a_hero)
 {
     a_hero.m_position.x = 0;
     a_hero.m_position.y = 0;
+    a_hero.m_money      = 0.0f;
+
+    for (Int i = 0; i < 10; ++i)
+    {
+        add_objectToInventory(a_hero.m_inventory, {ObjectType::Seed, nullptr});
+    }
+    a_hero.m_inventory.m_selectedSlot = a_hero.m_inventory.m_slots.end();
 }
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void place_agent(Field& a_field, Agent* a_agent, Int a_x, Int a_y) {
-    a_agent->m_position.x   = a_x;
-    a_agent->m_position.y   = a_y;
-    a_agent->m_consumption  = 1.0f;
+void place_agent(Field& a_field, Agent* a_agent, Int a_x, Int a_y)
+{
+    a_agent->m_position.x  = a_x;
+    a_agent->m_position.y  = a_y;
+    a_agent->m_consumption = 1.0f;
 
     mAssert(a_field.m_agents[a_x][a_y] == nullptr);
     a_field.m_agents[a_x][a_y] = a_agent;
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+Bool try_plant(Field& a_field, std::set<Agent*>& a_agents, Character& a_hero)
+{
+    Agent* currentAgent =
+        a_field.m_agents[a_hero.m_position.x][a_hero.m_position.y];
+    if (currentAgent == nullptr)
+    {
+        auto seedSlot = a_hero.m_inventory.m_slots.find(ObjectType::Seed);
+
+        if (seedSlot != a_hero.m_inventory.m_slots.end() &&
+            seedSlot->second.m_objects.size() > 0)
+        {
+            Agent* newAgent = new Agent();
+            a_agents.insert(newAgent);
+            place_agent(a_field, newAgent, a_hero.m_position.x,
+                        a_hero.m_position.y);
+            seedSlot->second.m_objects.erase(
+                --seedSlot->second.m_objects.end());
+            return true;
+        }
+    }
+
+    return false;
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+Bool try_harvest(Field& a_field, std::set<Agent*>& a_agents, Character& a_hero)
+{
+    Agent* currentAgent =
+        a_field.m_agents[a_hero.m_position.x][a_hero.m_position.y];
+    if (currentAgent != nullptr)
+    {
+        a_agents.erase(currentAgent);
+
+        add_objectToInventory(a_hero.m_inventory,
+                              {ObjectType::Fruit, currentAgent});
+
+        a_field.m_agents[a_hero.m_position.x][a_hero.m_position.y] = nullptr;
+        return true;
+    }
+    return false;
 }
 
 //-----------------------------------------------------------------------------
@@ -119,32 +179,30 @@ void update_agents(std::set<Agent*>& a_agentsToUpdate, Field& a_field,
         }
         else
         {
-            agent->m_health -= 10.0f*a_deltaTime;
+            agent->m_health -= 10.0f * a_deltaTime;
         }
     }
 }
 
 static ImVec4 colField = {0.284, 0.159, 0.0f, 1.0f};
 
-
 const static Float parcelSize    = 40;
 const static Float parcelPadding = 3;
 
 const static Float agentSizeSmall = 2;
-const static Float agentSizeBig = 10;
+const static Float agentSizeBig   = 10;
 
 const static Float heroSize = 4;
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void display_field(Field& a_field)
+void display_field(Field const& a_field)
 {
     const ImVec2 p         = ImGui::GetCursorScreenPos();
     Float        cx        = p.x + 5.0f;
     Float        cy        = p.y + 5.0f;
     ImDrawList*  draw_list = ImGui::GetWindowDrawList();
-
 
     for (Int i = 0; i < FIELD_SIZE; ++i)
     {
@@ -162,27 +220,20 @@ void display_field(Field& a_field)
     }
 }
 
-template <typename T>
-T lerp(T const& a_a1, T const& a_a2, Float a_ratio)
-{
-    return (1.0f - a_ratio) * a_a1 + a_ratio * a_a2;
-}
-
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void display_agents(std::set<Agent*>& a_agents)
+void display_agents(std::set<Agent*> const& a_agents)
 {
     const ImVec2 p         = ImGui::GetCursorScreenPos();
     Float        cx        = p.x + 5.0f;
     Float        cy        = p.y + 5.0f;
     ImDrawList*  draw_list = ImGui::GetWindowDrawList();
 
-    //static Float innerCellPadding = parcelSize / 2.0f - agentSize / 2.0f;
     for (auto agent : a_agents)
     {
-        Float agentSize =
-            lerp(agentSizeSmall, agentSizeBig, agent->m_age / s_matureAge);
+        Float agentSize = math::lerp(agentSizeSmall, agentSizeBig,
+                                     agent->m_age / s_matureAge);
 
         Float innerCellPadding = parcelSize / 2.0f - agentSize / 2.0f;
 
@@ -191,7 +242,7 @@ void display_agents(std::set<Agent*>& a_agents)
         Float y = cy + (parcelSize + parcelPadding) * agent->m_position.y +
                   innerCellPadding;
 
-        Float       death = 1.0f - agent->m_health / 100.0f;
+        Float death = 1.0f - agent->m_health / 100.0f;
 
         ImVec4 colf;
         if (agent->m_age < s_matureAge)
@@ -200,7 +251,7 @@ void display_agents(std::set<Agent*>& a_agents)
         }
         else
         {
-            colf = ImVec4(death, 1.0f - death, 0.0f, 1.0f);        
+            colf = ImVec4(death, 1.0f - death, 0.0f, 1.0f);
         }
         const ImU32 col = ImColor(colf);
 
@@ -212,7 +263,7 @@ void display_agents(std::set<Agent*>& a_agents)
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void display_character(Character& a_hero)
+void display_character(Character const& a_hero)
 {
     const ImVec2 p         = ImGui::GetCursorScreenPos();
     Float        cx        = p.x + 5.0f;
@@ -226,11 +277,39 @@ void display_character(Character& a_hero)
     Float y = cy + (parcelSize + parcelPadding) * a_hero.m_position.y +
               innerCellPadding;
 
-    ImVec4      colf  = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
-    const ImU32 col   = ImColor(colf);
+    ImVec4      colf = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+    const ImU32 col  = ImColor(colf);
 
     draw_list->AddRectFilled(ImVec2(x, y), ImVec2(x + heroSize, y + heroSize),
                              col);
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void display_heroInventory(Character& a_hero)
+{
+    for (auto slot = a_hero.m_inventory.m_slots.begin();
+         slot != a_hero.m_inventory.m_slots.end(); ++slot)
+    {
+        std::stringstream slotName;
+        slotName << ObjectTypeNames[slot->first] << " : "
+                 << slot->second.m_objects.size();
+        if (slot == a_hero.m_inventory.m_selectedSlot)
+        {
+            ImGui::PushStyleColor(ImGuiCol_Text,
+                                  ImVec4(1.0f, 0.9f, 1.0f, 1.0f));
+            ImGui::Text("%s", slotName.str().c_str());
+            ImGui::PopStyleColor();
+        }
+        else
+        {
+            if (ImGui::Button(slotName.str().c_str()))
+            {
+                a_hero.m_inventory.m_selectedSlot = slot;
+            }
+        }
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -245,7 +324,7 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
     }
     void move_down()
     {
-        if (m_hero.m_position.y < FIELD_SIZE-1)
+        if (m_hero.m_position.y < FIELD_SIZE - 1)
             m_hero.m_position.y++;
     }
     void move_left()
@@ -261,37 +340,55 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
 
     void player_action()
     {
-        Agent* currentAgent =
-            m_field.m_agents[m_hero.m_position.x][m_hero.m_position.y];
-        if (currentAgent == nullptr)
+        if (m_hero.m_inventory.m_selectedSlot !=
+            m_hero.m_inventory.m_slots.end())
         {
-            if (m_seeds > 0)
+            switch (m_hero.m_inventory.m_selectedSlot->first)
             {
-                Agent* newAgent = new Agent();
-                m_agents.insert(newAgent);
-                place_agent(m_field, newAgent, m_hero.m_position.x,
-                            m_hero.m_position.y);
-                m_seeds--;
+                case ObjectType::Seed:
+                {
+                    if (!try_plant(m_field, m_agents, m_hero))
+                    {
+                        try_harvest(m_field, m_agents, m_hero);
+                    }
+                }
+                break;
+                case ObjectType::Fruit:
+                {
+                    try_harvest(m_field, m_agents, m_hero);
+                }
+                break;
+                default:
+                {
+                    try_harvest(m_field, m_agents, m_hero);
+                }
+                break;
             }
-        }
-        else
-        {
-            m_agents.erase(currentAgent);
-            m_money += currentAgent->m_age * currentAgent->m_health;
-            delete currentAgent;
-            m_field.m_agents[m_hero.m_position.x][m_hero.m_position.y] =
-                nullptr;
-            // gather agent
         }
     }
 
     void player_buySeed()
     {
-        //m_seeds++;
-        if (m_money >= s_seedPrice)
+        // m_seeds++;
+        if (m_hero.m_money >= s_seedPrice)
         {
-            m_money -= s_seedPrice;
-            add_objectToInventory(m_inventory, {ObjectType::Seed});
+            m_hero.m_money -= s_seedPrice;
+            add_objectToInventory(m_hero.m_inventory, {ObjectType::Seed});
+        }
+    }
+
+    void player_sellFruits()
+    {
+        auto fruits = m_hero.m_inventory.m_slots.find(ObjectType::Fruit);
+        if (fruits != m_hero.m_inventory.m_slots.end())
+        {
+            for (auto fruit : fruits->second.m_objects)
+            {
+                Agent* fruitAgent = static_cast<Agent*>(fruit.m_data);
+                m_hero.m_money += fruitAgent->m_age * fruitAgent->m_health;
+                delete fruitAgent;
+            }
+            fruits->second.m_objects.clear();
         }
     }
 
@@ -333,19 +430,10 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
             m::input::KeyActionCallback(this,
                                         &StardewFactoryApp::player_action));
 
-
         set_microSecondsLimit(16000);
 
         initialize_field(m_field);
         initialize_hero(m_hero);
-        m_money = 0.0f;
-
-        for (Int i = 0; i < 10 ; ++i)
-        {
-            add_objectToInventory(m_inventory, {ObjectType::Seed});
-        }
-
-        //m_seeds = 10;
     }
 
     virtual void destroy() override
@@ -378,34 +466,40 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 
         ImGui::Begin("Engine");
-
-        ImGui::ColorEdit4("Color", &colField.x, ImGuiColorEditFlags_Float);
-        ImGui::Text("frame time : %f", a_deltaTime);
-        ImGui::Text("total time : %f", s_time);
-
+        {
+            ImGui::ColorEdit4("Color", &colField.x, ImGuiColorEditFlags_Float);
+            ImGui::Text("frame time : %f", a_deltaTime);
+            ImGui::Text("total time : %f", s_time);
+        }
         ImGui::End();
 
+        ImGui::Begin("Inventory");
+        {
+            display_heroInventory(m_hero);
+        }
+        ImGui::End();
 
         ImGui::Begin("Stats");
-
-        ImGui::Text("Money : %f", m_money);
-        ImGui::Text("Seeds : %d", m_seeds);
-
-        if (ImGui::Button("Buy seed")) 
         {
-            player_buySeed();
-        }
+            ImGui::Text("Money : %f", m_hero.m_money);
 
+            if (ImGui::Button("Buy seed"))
+            {
+                player_buySeed();
+            }
+            if (ImGui::Button("Sell Fruits"))
+            {
+                player_sellFruits();
+            }
+        }
         ImGui::End();
 
-
-
         ImGui::Begin("Field window");
-
-        display_field(m_field);
-        display_agents(m_agents);
-        display_character(m_hero);
-
+        {
+            display_field(m_field);
+            display_agents(m_agents);
+            display_character(m_hero);
+        }
         ImGui::End();
 
         ImGui::Render();
@@ -414,12 +508,9 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         return true;
     }
 
-    Field m_field;
-    Character          m_hero;
-    Inventory          m_inventory;
-    Float              m_money;
-    //Int                m_seeds;
-    std::set<Agent*>   m_agents;
+    Field            m_field;
+    Character        m_hero;
+    std::set<Agent*> m_agents;
 
     m::input::InputManager m_inputManager;
     m::windows::IWindow*   m_mainWindow;

@@ -20,6 +20,7 @@ set(HEADERS Types.hpp
             Vec.hpp
             Vec.inl
             MathTypes.hpp
+            Math.hpp
             Mains.hpp
             Application.hpp
             Kernel_pch.hpp
