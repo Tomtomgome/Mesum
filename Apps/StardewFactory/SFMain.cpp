@@ -49,6 +49,12 @@ struct AgentPlant : public Agent
 
     virtual void update(Field& a_field, Double a_deltaTime) override
     {
+        if (m_isHarvested)
+        {
+            m_health = std::max(m_health - 5.0f * a_deltaTime, 0.0);
+            return;
+        }
+
         m::Float& cell = a_field.m_nutrients[m_position.x][m_position.y];
         if (cell - m_consumption >= 0)
         {
@@ -64,6 +70,9 @@ struct AgentPlant : public Agent
         }
     }
 
+    void harvest() { m_isHarvested = true; }
+
+    Bool  m_isHarvested = false;
     Float m_consumption = 1.0f;
     Float m_age         = 0.0f;
     Float m_health      = 100.0f;
@@ -327,7 +336,7 @@ Bool try_harvest(Field& a_field, std::set<Agent*>& a_agents,
         return false;
     }
 
-    a_agents.erase(*plantAgent);
+    static_cast<AgentPlant*>(*plantAgent)->harvest();
 
     add_objectToInventory(a_hero.m_inventory, {ObjectType::Fruit, *plantAgent});
 
@@ -404,6 +413,11 @@ void display_field(Field const& a_field)
 //-----------------------------------------------------------------------------
 void display_plant(AgentPlant const& a_agent)
 {
+    if (a_agent.m_isHarvested)
+    {
+        return;
+    }
+
     const ImVec2 p         = ImGui::GetCursorScreenPos();
     Float        cx        = p.x + 5.0f;
     Float        cy        = p.y + 5.0f;
@@ -598,6 +612,7 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
             {
                 AgentPlant* fruitAgent = static_cast<AgentPlant*>(fruit.m_data);
                 m_player->m_money += fruitAgent->m_age * fruitAgent->m_health;
+                m_agents.erase(fruitAgent);
                 delete fruitAgent;
             }
             fruits->second.m_objects.clear();
@@ -715,7 +730,6 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         {
             display_field(m_field);
             display_agents(m_agents);
-            // display_character(m_hero);
         }
         ImGui::End();
 
@@ -725,8 +739,7 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         return true;
     }
 
-    Field m_field;
-    // Character        m_hero;
+    Field            m_field;
     AgentCharacter*  m_player;
     std::set<Agent*> m_agents;
 
