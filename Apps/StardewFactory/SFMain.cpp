@@ -145,7 +145,33 @@ struct ICommand
 
 static Float s_machineRefreshTime = 1.0f;
 
-struct AgentMachine : public IAgentWithInventory
+struct IOrientable
+{
+    enum Orientation
+    {
+        Up = 0,
+        Right,
+        Down,
+        Left,
+        _count
+    };
+
+    void rotation_clockwise()
+    {
+        m_orientation =
+            static_cast<Orientation>((m_orientation + 1) % Orientation::_count);
+    }
+
+    void rotation_counterClockwise()
+    {
+        m_orientation = static_cast<Orientation>(
+            (m_orientation + Orientation::_count - 1) % Orientation::_count);
+    }
+
+    Orientation m_orientation = Orientation::Up;
+};
+
+struct AgentMachine : public IAgentWithInventory, public IOrientable
 {
     AgentMachine() : IAgentWithInventory(AgentType::Machine) {}
     virtual ~AgentMachine()
@@ -297,6 +323,70 @@ struct CommandMoveRight : public ICommand
 
     IAgent* m_agentToMove;
     Field*  m_field;
+};
+
+struct CommandMoveForward : public ICommand
+{
+    virtual Bool execute() override
+    {
+        switch (m_orientable->m_orientation)
+        {
+            case IOrientable::Orientation::Up:
+            {
+                CommandMoveUp command;
+                command.m_agentToMove = m_agentToMove;
+                command.m_field       = m_field;
+                return command.execute();
+            }
+            case IOrientable::Orientation::Right:
+            {
+                CommandMoveRight command;
+                command.m_agentToMove = m_agentToMove;
+                command.m_field       = m_field;
+                return command.execute();
+            }
+            case IOrientable::Orientation::Down:
+            {
+                CommandMoveDown command;
+                command.m_agentToMove = m_agentToMove;
+                command.m_field       = m_field;
+                return command.execute();
+            }
+            case IOrientable::Orientation::Left:
+            {
+                CommandMoveLeft command;
+                command.m_agentToMove = m_agentToMove;
+                command.m_field       = m_field;
+                return command.execute();
+            }
+        }
+    }
+
+    IOrientable* m_orientable;
+    IAgent*      m_agentToMove;
+    Field*       m_field;
+};
+
+struct CommandRotateClockWise : public ICommand
+{
+    virtual Bool execute() override
+    {
+        m_orientable->rotation_clockwise();
+        return true;
+    }
+
+    IOrientable* m_orientable;
+};
+
+struct CommandRotateCounterClockWise : public ICommand
+{
+    virtual Bool execute() override
+    {
+        m_orientable->rotation_counterClockwise();
+        return true;
+    }
+
+    IOrientable* m_orientable;
 };
 
 struct CommandPlantCrop : public ICommand
@@ -560,11 +650,50 @@ void display_machine(AgentMachine& a_machine)
     Float y = cy + (parcelSize + parcelPadding) * a_machine.m_position.y +
               innerCellPadding;
 
-    ImVec4      colf = ImVec4(5.0f, 5.0f, 5.0f, 1.0f);
+    ImVec4      colf = ImVec4(0.5f, 0.5f, 0.5f, 1.0f);
     const ImU32 col  = ImColor(colf);
 
     draw_list->AddRect(ImVec2(x, y), ImVec2(x + machineSize, y + machineSize),
                        col);
+
+    ImVec2       p1;
+    ImVec2       p2;
+    ImVec2       p3;
+    Float        midPoint     = machineSize / 2.0f;
+    static Float trinagleSize = 8.0f;
+    switch (a_machine.m_orientation)
+    {
+        case IOrientable::Up:
+        {
+            p1 = ImVec2(x + midPoint + trinagleSize / 2.0f, y);
+            p2 = ImVec2(x + midPoint - trinagleSize / 2.0f, y);
+            p3 = ImVec2(x + midPoint, y + trinagleSize);
+        }
+        break;
+        case IOrientable::Down:
+        {
+            p1 = ImVec2(x + midPoint - trinagleSize / 2.0f, y + machineSize);
+            p2 = ImVec2(x + midPoint + trinagleSize / 2.0f, y + machineSize);
+            p3 = ImVec2(x + midPoint, y + machineSize - trinagleSize);
+        }
+        break;
+        case IOrientable::Left:
+        {
+            p1 = ImVec2(x, y + midPoint - trinagleSize / 2.0f);
+            p2 = ImVec2(x, y + midPoint + trinagleSize / 2.0f);
+            p3 = ImVec2(x + trinagleSize, y + midPoint);
+        }
+        break;
+        case IOrientable::Right:
+        {
+            p1 = ImVec2(x + machineSize, y + midPoint - trinagleSize / 2.0f);
+            p2 = ImVec2(x + machineSize, y + midPoint + trinagleSize / 2.0f);
+            p3 = ImVec2(x + machineSize - trinagleSize, y + midPoint);
+        }
+        break;
+        default: break;
+    }
+    draw_list->AddTriangleFilled(p1, p2, p3, col);
 }
 
 //-----------------------------------------------------------------------------
@@ -665,29 +794,27 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
 
     void player_action()
     {
-        if (m_player->m_inventory.m_selectedSlot !=
+        if (m_player->m_inventory.m_selectedSlot ==
             m_player->m_inventory.m_slots.end())
         {
-            switch (m_player->m_inventory.m_selectedSlot->first)
-            {
-                case ObjectType::Seed:
-                {
-                    CommandPlantCrop commandPlant;
-                    commandPlant.m_agent  = m_player;
-                    commandPlant.m_field  = &m_field;
-                    commandPlant.m_agents = &m_agents;
+            CommandHarvestCrop commandHarvest;
+            commandHarvest.m_agent  = m_player;
+            commandHarvest.m_field  = &m_field;
+            commandHarvest.m_agents = &m_agents;
+            commandHarvest.execute();
+            return;
+        }
 
-                    if (!commandPlant.execute())
-                    {
-                        CommandHarvestCrop commandHarvest;
-                        commandHarvest.m_agent  = m_player;
-                        commandHarvest.m_field  = &m_field;
-                        commandHarvest.m_agents = &m_agents;
-                        commandHarvest.execute();
-                    }
-                }
-                break;
-                case ObjectType::Fruit:
+        switch (m_player->m_inventory.m_selectedSlot->first)
+        {
+            case ObjectType::Seed:
+            {
+                CommandPlantCrop commandPlant;
+                commandPlant.m_agent  = m_player;
+                commandPlant.m_field  = &m_field;
+                commandPlant.m_agents = &m_agents;
+
+                if (!commandPlant.execute())
                 {
                     CommandHarvestCrop commandHarvest;
                     commandHarvest.m_agent  = m_player;
@@ -695,17 +822,26 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
                     commandHarvest.m_agents = &m_agents;
                     commandHarvest.execute();
                 }
-                break;
-                default:
-                {
-                    CommandHarvestCrop commandHarvest;
-                    commandHarvest.m_agent  = m_player;
-                    commandHarvest.m_field  = &m_field;
-                    commandHarvest.m_agents = &m_agents;
-                    commandHarvest.execute();
-                }
-                break;
             }
+            break;
+            case ObjectType::Fruit:
+            {
+                CommandHarvestCrop commandHarvest;
+                commandHarvest.m_agent  = m_player;
+                commandHarvest.m_field  = &m_field;
+                commandHarvest.m_agents = &m_agents;
+                commandHarvest.execute();
+            }
+            break;
+            default:
+            {
+                CommandHarvestCrop commandHarvest;
+                commandHarvest.m_agent  = m_player;
+                commandHarvest.m_field  = &m_field;
+                commandHarvest.m_agents = &m_agents;
+                commandHarvest.execute();
+            }
+            break;
         }
     }
 
@@ -781,10 +917,22 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         place_agent(m_field, m_player, 0, 0);
         m_agents.insert(m_player);
 
-        m_machine                 = new AgentMachine();
-        CommandMoveRight* command = new CommandMoveRight();
-        command->m_agentToMove    = m_machine;
-        command->m_field          = &m_field;
+        m_machine = new AgentMachine();
+        for (Int i = 0; i < 100; ++i)
+        {
+            add_objectToInventory(m_machine->m_inventory,
+                                  {ObjectType::Seed, nullptr});
+        }
+        m_machine->m_orientation       = IOrientable::Right;
+        CommandPlantCrop* commandPlant = new CommandPlantCrop();
+        commandPlant->m_agent          = m_machine;
+        commandPlant->m_field          = &m_field;
+        commandPlant->m_agents         = &m_agents;
+        m_machine->m_instructions.push_back(commandPlant);
+        CommandMoveForward* command = new CommandMoveForward();
+        command->m_orientable       = m_machine;
+        command->m_agentToMove      = m_machine;
+        command->m_field            = &m_field;
         m_machine->m_instructions.push_back(command);
         place_agent(m_field, m_machine, 0, 0);
         m_agents.insert(m_machine);
@@ -827,6 +975,10 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
             ImGui::Text("total time : %f", s_time);
             ImGui::DragFloat("Machine refresh time", &s_machineRefreshTime,
                              0.01f, 0.0f);
+            if (ImGui::Button("Turn clock"))
+            {
+                m_machine->rotation_clockwise();
+            }
         }
         ImGui::End();
 
