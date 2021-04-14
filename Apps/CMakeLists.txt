@@ -1,2 +1,3 @@
 add_subdirectory(ArchitectureTest)
 add_subdirectory(ArchitectureGraphicsTest)
+add_subdirectory(StardewFactory)
