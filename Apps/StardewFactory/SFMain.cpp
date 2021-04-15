@@ -87,7 +87,7 @@ class Agent
 
         virtual void update(Field& a_field, Double a_deltaTime) override
         {
-            m_data.update(a_field, a_deltaTime);
+            m_data->update(a_field, a_deltaTime);
         }
 
         virtual void display() override { display(m_data); }
@@ -223,6 +223,26 @@ struct AgentCharacter : public IAgentWithInventory
 struct ICommand
 {
     virtual Bool execute() = 0;
+};
+
+//*****************************************************************************
+// Positionable
+//*****************************************************************************
+struct IPositionable
+{
+    void rotation_clockwise()
+    {
+        m_orientation =
+            static_cast<Orientation>((m_orientation + 1) % Orientation::_count);
+    }
+
+    void rotation_counterClockwise()
+    {
+        m_orientation = static_cast<Orientation>(
+            (m_orientation + Orientation::_count - 1) % Orientation::_count);
+    }
+
+    Orientation m_orientation = Orientation::Up;
 };
 
 //*****************************************************************************
@@ -642,12 +662,146 @@ void display_field(Field const& a_field)
     }
 }
 
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// void display_plant(AgentPlant const& a_agent)
+// {
+//     if (a_agent.m_isHarvested)
+//     {
+//         return;
+//     }
+//
+//     const ImVec2 p         = ImGui::GetCursorScreenPos();
+//     Float        cx        = p.x + 5.0f;
+//     Float        cy        = p.y + 5.0f;
+//     ImDrawList*  draw_list = ImGui::GetWindowDrawList();
+//
+//     Float agentSize =
+//         math::lerp(agentSizeSmall, agentSizeBig, a_agent.m_age /
+//         s_matureAge);
+//
+//     Float innerCellPadding = parcelSize / 2.0f - agentSize / 2.0f;
+//
+//     Float x = cx + (parcelSize + parcelPadding) * a_agent.m_position.x +
+//               innerCellPadding;
+//     Float y = cy + (parcelSize + parcelPadding) * a_agent.m_position.y +
+//               innerCellPadding;
+//
+//     Float death = 1.0f - a_agent.m_health / 100.0f;
+//
+//     ImVec4 colf;
+//     if (a_agent.m_age < s_matureAge)
+//     {
+//         colf = ImVec4(death, 0.0f, 1.0f - death, 1.0f);
+//     }
+//     else
+//     {
+//         colf = ImVec4(death, 1.0f - death, 0.0f, 1.0f);
+//     }
+//     const ImU32 col = ImColor(colf);
+//
+//     draw_list->AddRectFilled(ImVec2(x, y), ImVec2(x + agentSize, y +
+//     agentSize),
+//                              col);
+// }
+//
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// void display_player(AgentCharacter& a_player)
+// {
+//     const ImVec2 p         = ImGui::GetCursorScreenPos();
+//     Float        cx        = p.x + 5.0f;
+//     Float        cy        = p.y + 5.0f;
+//     ImDrawList*  draw_list = ImGui::GetWindowDrawList();
+//
+//     static Float innerCellPadding = 3;
+//
+//     Float x = cx + (parcelSize + parcelPadding) * a_player.m_position.x +
+//               innerCellPadding;
+//     Float y = cy + (parcelSize + parcelPadding) * a_player.m_position.y +
+//               innerCellPadding;
+//
+//     ImVec4      colf = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+//     const ImU32 col  = ImColor(colf);
+//
+//     draw_list->AddRectFilled(ImVec2(x, y), ImVec2(x + heroSize, y +
+//     heroSize),
+//                              col);
+// }
+//
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// void display_machine(AgentMachine& a_machine)
+// {
+//     const ImVec2 p         = ImGui::GetCursorScreenPos();
+//     Float        cx        = p.x + 5.0f;
+//     Float        cy        = p.y + 5.0f;
+//     ImDrawList*  draw_list = ImGui::GetWindowDrawList();
+//
+//     static Float innerCellPadding = -1;
+//     static Float machineSize      = parcelSize - 2 * innerCellPadding;
+//
+//     Float x = cx + (parcelSize + parcelPadding) * a_machine.m_position.x +
+//               innerCellPadding;
+//     Float y = cy + (parcelSize + parcelPadding) * a_machine.m_position.y +
+//               innerCellPadding;
+//
+//     ImVec4      colf = ImVec4(0.5f, 0.5f, 0.5f, 1.0f);
+//     const ImU32 col  = ImColor(colf);
+//
+//     draw_list->AddRect(ImVec2(x, y), ImVec2(x + machineSize, y +
+//     machineSize),
+//                        col);
+//
+//     ImVec2       p1;
+//     ImVec2       p2;
+//     ImVec2       p3;
+//     Float        midPoint     = machineSize / 2.0f;
+//     static Float trinagleSize = 8.0f;
+//     switch (a_machine.m_orientation)
+//     {
+//         case IOrientable::Up:
+//         {
+//             p1 = ImVec2(x + midPoint + trinagleSize / 2.0f, y);
+//             p2 = ImVec2(x + midPoint - trinagleSize / 2.0f, y);
+//             p3 = ImVec2(x + midPoint, y + trinagleSize);
+//         }
+//         break;
+//         case IOrientable::Down:
+//         {
+//             p1 = ImVec2(x + midPoint - trinagleSize / 2.0f, y + machineSize);
+//             p2 = ImVec2(x + midPoint + trinagleSize / 2.0f, y + machineSize);
+//             p3 = ImVec2(x + midPoint, y + machineSize - trinagleSize);
+//         }
+//         break;
+//         case IOrientable::Left:
+//         {
+//             p1 = ImVec2(x, y + midPoint - trinagleSize / 2.0f);
+//             p2 = ImVec2(x, y + midPoint + trinagleSize / 2.0f);
+//             p3 = ImVec2(x + trinagleSize, y + midPoint);
+//         }
+//         break;
+//         case IOrientable::Right:
+//         {
+//             p1 = ImVec2(x + machineSize, y + midPoint - trinagleSize / 2.0f);
+//             p2 = ImVec2(x + machineSize, y + midPoint + trinagleSize / 2.0f);
+//             p3 = ImVec2(x + machineSize - trinagleSize, y + midPoint);
+//         }
+//         break;
+//         default: break;
+//     }
+//     draw_list->AddTriangleFilled(p1, p2, p3, col);
+// }
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void display_plant(AgentPlant const& a_agent)
+void display(AgentPlant const* a_agent)
 {
-    if (a_agent.m_isHarvested)
+    if (a_agent->m_isHarvested)
     {
         return;
     }
@@ -658,19 +812,19 @@ void display_plant(AgentPlant const& a_agent)
     ImDrawList*  draw_list = ImGui::GetWindowDrawList();
 
     Float agentSize =
-        math::lerp(agentSizeSmall, agentSizeBig, a_agent.m_age / s_matureAge);
+        math::lerp(agentSizeSmall, agentSizeBig, a_agent->m_age / s_matureAge);
 
     Float innerCellPadding = parcelSize / 2.0f - agentSize / 2.0f;
 
-    Float x = cx + (parcelSize + parcelPadding) * a_agent.m_position.x +
+    Float x = cx + (parcelSize + parcelPadding) * a_agent->m_position.x +
               innerCellPadding;
-    Float y = cy + (parcelSize + parcelPadding) * a_agent.m_position.y +
+    Float y = cy + (parcelSize + parcelPadding) * a_agent->m_position.y +
               innerCellPadding;
 
-    Float death = 1.0f - a_agent.m_health / 100.0f;
+    Float death = 1.0f - a_agent->m_health / 100.0f;
 
     ImVec4 colf;
-    if (a_agent.m_age < s_matureAge)
+    if (a_agent->m_age < s_matureAge)
     {
         colf = ImVec4(death, 0.0f, 1.0f - death, 1.0f);
     }
@@ -687,7 +841,7 @@ void display_plant(AgentPlant const& a_agent)
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void display_player(AgentCharacter& a_player)
+void display(AgentCharacter const* a_player)
 {
     const ImVec2 p         = ImGui::GetCursorScreenPos();
     Float        cx        = p.x + 5.0f;
@@ -696,9 +850,9 @@ void display_player(AgentCharacter& a_player)
 
     static Float innerCellPadding = 3;
 
-    Float x = cx + (parcelSize + parcelPadding) * a_player.m_position.x +
+    Float x = cx + (parcelSize + parcelPadding) * a_player->m_position.x +
               innerCellPadding;
-    Float y = cy + (parcelSize + parcelPadding) * a_player.m_position.y +
+    Float y = cy + (parcelSize + parcelPadding) * a_player->m_position.y +
               innerCellPadding;
 
     ImVec4      colf = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -711,7 +865,7 @@ void display_player(AgentCharacter& a_player)
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void display_machine(AgentMachine& a_machine)
+void display(AgentMachine const* a_machine)
 {
     const ImVec2 p         = ImGui::GetCursorScreenPos();
     Float        cx        = p.x + 5.0f;
@@ -721,9 +875,9 @@ void display_machine(AgentMachine& a_machine)
     static Float innerCellPadding = -1;
     static Float machineSize      = parcelSize - 2 * innerCellPadding;
 
-    Float x = cx + (parcelSize + parcelPadding) * a_machine.m_position.x +
+    Float x = cx + (parcelSize + parcelPadding) * a_machine->m_position.x +
               innerCellPadding;
-    Float y = cy + (parcelSize + parcelPadding) * a_machine.m_position.y +
+    Float y = cy + (parcelSize + parcelPadding) * a_machine->m_position.y +
               innerCellPadding;
 
     ImVec4      colf = ImVec4(0.5f, 0.5f, 0.5f, 1.0f);
@@ -737,7 +891,7 @@ void display_machine(AgentMachine& a_machine)
     ImVec2       p3;
     Float        midPoint     = machineSize / 2.0f;
     static Float trinagleSize = 8.0f;
-    switch (a_machine.m_orientation)
+    switch (a_machine->m_orientation)
     {
         case IOrientable::Up:
         {
@@ -1023,7 +1177,7 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         m_newAgents.insert(m_newPlayer);
 
         // Initialize Machine
-        m_machine = new AgentMachine();
+        AgentMachine* m_machine = new AgentMachine();
         for (Int i = 0; i < 100; ++i)
         {
             add_objectToInventory(m_machine->m_inventory,
@@ -1041,12 +1195,14 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         command->m_field            = &m_field;
         m_machine->m_instructions.push_back(command);
         place_agent(m_field, m_machine, 0, 0);
-        m_agents.insert(m_machine);
+
+        m_newMachine = new Agent(m_machine);
+        m_newAgents.insert(m_newMachine);
     }
 
     virtual void destroy() override
     {
-        //         for (auto agent : m_agents) { delete agent; }
+        for (auto agent : m_newAgents) { delete agent; }
         //         m_agents.clear();
 
         m_newAgents.clear();
@@ -1126,9 +1282,10 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
 
     Field m_field;
     // AgentCharacter*   m_player;
-    AgentMachine* m_machine;
+    // AgentMachine* m_machine;
     // std::set<IAgent*> m_agents;
     Agent*           m_newPlayer;
+    Agent*           m_newMachine;
     std::set<Agent*> m_newAgents;
 
     m::input::InputManager m_inputManager;
