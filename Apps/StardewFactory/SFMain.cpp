@@ -70,6 +70,48 @@ struct IAgent
     AgentType   m_type;
 };
 
+class Agent
+{
+   private:
+    class IAgentConcept
+    {
+       public:
+        virtual void update(Field& a_field, Double a_deltaTime) = 0;
+        virtual void display()                                  = 0;
+    };
+    template <typename T>
+    class AgentImpl : public IAgentConcept
+    {
+        AgentImpl(T* a_data) { m_data = a_data; }
+        ~AgentImpl() { delete m_data; }
+
+        virtual void update(Field& a_field, Double a_deltaTime) override
+        {
+            m_data.update(a_field, a_deltaTime);
+        }
+
+        virtual void display() override { display(m_data); }
+
+        T* m_data;
+    };
+
+    IAgentConcept* m_agent;
+
+   public:
+    template <typename T>
+    Agent(T* a_data)
+    {
+        m_agent = new AgentImpl<T>(a_data);
+    }
+    ~Agent() { delete m_agent; }
+
+    void update(Field& a_field, Double a_deltaTime)
+    {
+        m_agent->update(a_field, a_deltaTime);
+    }
+    void display() { m_agent->display(); }
+};
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -411,6 +453,7 @@ struct CommandMoveForward : public ICommand
                 command.m_field       = m_field;
                 return command.execute();
             }
+            default: return false;
         }
     }
 
@@ -552,13 +595,22 @@ void update_field(Field& a_field, Double a_deltaTime)
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void update_agents(std::set<IAgent*>& a_agentsToUpdate, Field& a_field,
+// void update_agents(std::set<IAgent*>& a_agentsToUpdate, Field& a_field,
+//                    Double a_deltaTime)
+// {
+//     for (auto& agent : a_agentsToUpdate)
+//     {
+//         agent->update(a_field, a_deltaTime);
+//     }
+// }
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void update_agents(std::set<Agent*>& a_agentsToUpdate, Field& a_field,
                    Double a_deltaTime)
 {
-    for (auto& agent : a_agentsToUpdate)
-    {
-        agent->update(a_field, a_deltaTime);
-    }
+    for (auto agent : a_agentsToUpdate) { agent->update(a_field, a_deltaTime); }
 }
 
 //*****************************************************************************
@@ -723,35 +775,43 @@ void display_machine(AgentMachine& a_machine)
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void display_agents(std::set<IAgent*> const& a_agents)
-{
-    const ImVec2 p         = ImGui::GetCursorScreenPos();
-    Float        cx        = p.x + 5.0f;
-    Float        cy        = p.y + 5.0f;
-    ImDrawList*  draw_list = ImGui::GetWindowDrawList();
+// void display_agents(std::set<IAgent*> const& a_agents)
+// {
+//     const ImVec2 p         = ImGui::GetCursorScreenPos();
+//     Float        cx        = p.x + 5.0f;
+//     Float        cy        = p.y + 5.0f;
+//     ImDrawList*  draw_list = ImGui::GetWindowDrawList();
+//
+//     for (auto agent : a_agents)
+//     {
+//         switch (agent->m_type)
+//         {
+//             case AgentType::Plant:
+//             {
+//                 display_plant(*static_cast<AgentPlant*>(agent));
+//             }
+//             break;
+//             case AgentType::Player:
+//             {
+//                 display_player(*static_cast<AgentCharacter*>(agent));
+//             }
+//             break;
+//             case AgentType::Machine:
+//             {
+//                 display_machine(*static_cast<AgentMachine*>(agent));
+//             }
+//             break;
+//             default: break;
+//         }
+//     }
+// }
 
-    for (auto agent : a_agents)
-    {
-        switch (agent->m_type)
-        {
-            case AgentType::Plant:
-            {
-                display_plant(*static_cast<AgentPlant*>(agent));
-            }
-            break;
-            case AgentType::Player:
-            {
-                display_player(*static_cast<AgentCharacter*>(agent));
-            }
-            break;
-            case AgentType::Machine:
-            {
-                display_machine(*static_cast<AgentMachine*>(agent));
-            }
-            break;
-            default: break;
-        }
-    }
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void display_agents(std::set<Agent*> const& a_agents)
+{
+    for (auto agent : a_agents) { agent->display(); }
 }
 
 //-----------------------------------------------------------------------------
@@ -944,11 +1004,11 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         }
 
         // Initialize Player
-        m_player               = new AgentCharacter();
-        m_player->m_position.x = 0;
-        m_player->m_position.y = 0;
-        m_player->m_money      = 0.0f;
 
+        AgentCharacter* m_player = new AgentCharacter();
+        m_player->m_position.x   = 0;
+        m_player->m_position.y   = 0;
+        m_player->m_money        = 0.0f;
         for (Int i = 0; i < 10; ++i)
         {
             add_objectToInventory(m_player->m_inventory,
@@ -958,7 +1018,9 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
             m_player->m_inventory.m_slots.end();
 
         place_agent(m_field, m_player, 0, 0);
-        m_agents.insert(m_player);
+
+        m_newPlayer = new Agent(m_player);
+        m_newAgents.insert(m_newPlayer);
 
         // Initialize Machine
         m_machine = new AgentMachine();
@@ -984,8 +1046,10 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
 
     virtual void destroy() override
     {
-        for (auto agent : m_agents) { delete agent; }
-        m_agents.clear();
+        //         for (auto agent : m_agents) { delete agent; }
+        //         m_agents.clear();
+
+        m_newAgents.clear();
 
         m::crossPlatform::IWindowedApplication::destroy();
         // Nothing to destroy
@@ -1004,7 +1068,7 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         m_inputManager.processAndUpdate_States();
 
         update_field(m_field, a_deltaTime);
-        update_agents(m_agents, m_field, a_deltaTime);
+        update_agents(m_newAgents, m_field, a_deltaTime);
 
         start_dearImGuiNewFrame();
 
@@ -1050,7 +1114,7 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         ImGui::Begin("Field window");
         {
             display_field(m_field);
-            display_agents(m_agents);
+            display_agents(m_newAgents);
         }
         ImGui::End();
 
@@ -1060,10 +1124,12 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         return true;
     }
 
-    Field             m_field;
-    AgentCharacter*   m_player;
-    AgentMachine*     m_machine;
-    std::set<IAgent*> m_agents;
+    Field m_field;
+    // AgentCharacter*   m_player;
+    AgentMachine* m_machine;
+    // std::set<IAgent*> m_agents;
+    Agent*           m_newPlayer;
+    std::set<Agent*> m_newAgents;
 
     m::input::InputManager m_inputManager;
     m::windows::IWindow*   m_mainWindow;
