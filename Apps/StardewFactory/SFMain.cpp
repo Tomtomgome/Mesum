@@ -34,63 +34,30 @@ const static Float heroSize = 4;
 static Float s_machineRefreshTime = 1.0f;
 
 //*****************************************************************************
-// Basic field
-//*****************************************************************************
-struct IAgent;
-
-struct Field
-{
-    std::set<IAgent*> m_cells[FIELD_SIZE][FIELD_SIZE];
-    Float             m_nutrients[FIELD_SIZE][FIELD_SIZE];
-};
-
-//*****************************************************************************
 // Basic agent
 //*****************************************************************************
-enum AgentType
-{
-    Plant   = 0,
-    Player  = 1,
-    Machine = 2
-};
-
-struct IAgent
-{
-    IAgent(AgentType a_type)
-    {
-        m_type       = a_type;
-        m_position.x = 0;
-        m_position.y = 0;
-    }
-    virtual ~IAgent() {}
-
-    virtual void update(Field& a_field, Double a_deltaTime) = 0;
-
-    math::IVec2 m_position;
-    AgentType   m_type;
-};
-
 class Agent
 {
    private:
     class IAgentConcept
     {
        public:
-        virtual void update(Field& a_field, Double a_deltaTime) = 0;
-        virtual void display()                                  = 0;
+        virtual void update(Double a_deltaTime) = 0;
+        virtual void display()                  = 0;
     };
     template <typename T>
     class AgentImpl : public IAgentConcept
     {
+       public:
         AgentImpl(T* a_data) { m_data = a_data; }
         ~AgentImpl() { delete m_data; }
 
-        virtual void update(Field& a_field, Double a_deltaTime) override
+        virtual void update(Double a_deltaTime) override
         {
-            m_data->update(a_field, a_deltaTime);
+            m_data->update(a_deltaTime);
         }
 
-        virtual void display() override { display(m_data); }
+        virtual void display() override { display_agent(m_data); }
 
         T* m_data;
     };
@@ -105,116 +72,36 @@ class Agent
     }
     ~Agent() { delete m_agent; }
 
-    void update(Field& a_field, Double a_deltaTime)
-    {
-        m_agent->update(a_field, a_deltaTime);
-    }
+    void update(Double a_deltaTime) { m_agent->update(a_deltaTime); }
     void display() { m_agent->display(); }
 };
 
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-void place_agent(Field& a_field, IAgent* a_agent, Int a_x, Int a_y)
+struct AgentManager
 {
-    a_agent->m_position.x = a_x;
-    a_agent->m_position.y = a_y;
-
-    a_field.m_cells[a_x][a_y].insert(a_agent);
-}
-
-//*****************************************************************************
-// Crop agent
-//*****************************************************************************
-struct AgentPlant : public IAgent
-{
-    AgentPlant() : IAgent(AgentType::Plant) {}
-
-    virtual void update(Field& a_field, Double a_deltaTime) override
+    template <typename T>
+    void add_agent(T* a_agentToAdd)
     {
-        if (m_isHarvested)
-        {
-            m_health = std::max(
-                m_health - s_plantDeathRateWhenHarvested * a_deltaTime, 0.0);
-            return;
-        }
-
-        m::Float& cell = a_field.m_nutrients[m_position.x][m_position.y];
-        if (cell - m_consumption >= 0)
-        {
-            cell -= m_consumption * a_deltaTime;
-            if (m_age < s_matureAge)
-            {
-                m_age += a_deltaTime;
-            }
-        }
-        else
-        {
-            m_health = std::max(
-                m_health - s_plantDeathRateWhenGrounded * a_deltaTime, 0.0);
-        }
+        Agent* newAgent = new Agent(a_agentToAdd);
+        m_agents.insert(newAgent);
     }
 
-    void harvest() { m_isHarvested = true; }
+    void update_agents(Double a_deltaTime)
+    {
+        for (auto agent : m_agents) { agent->update(a_deltaTime); }
+    }
 
-    Bool  m_isHarvested = false;
-    Float m_consumption = s_plantBaseConsumptionRate;
-    Float m_age         = 0.0f;
-    Float m_health      = s_plantBaseHealth;
-};
+    void display_agents()
+    {
+        for (auto agent : m_agents) { agent->display(); }
+    }
 
-//*****************************************************************************
-// Inventory basics
-//*****************************************************************************
+    void clear()
+    {
+        for (auto agent : m_agents) { delete agent; }
+        m_agents.clear();
+    }
 
-enum ObjectType
-{
-    Seed  = 0,
-    Fruit = 1,
-};
-
-static std::string ObjectTypeNames[] = {"Seeds", "Fruits"};
-
-struct Object
-{
-    ObjectType m_type;
-    void*      m_data;
-};
-
-struct Slot
-{
-    std::vector<Object> m_objects;
-};
-
-struct Inventory
-{
-    std::map<ObjectType, Slot>::iterator m_selectedSlot;
-    std::map<ObjectType, Slot>           m_slots;
-};
-
-struct IAgentWithInventory : public IAgent
-{
-    IAgentWithInventory(AgentType a_type) : IAgent(a_type) {}
-    Inventory m_inventory;
-};
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-void add_objectToInventory(Inventory& a_inventory, Object a_object)
-{
-    a_inventory.m_slots[a_object.m_type].m_objects.push_back(a_object);
-}
-
-//*****************************************************************************
-// Character agent
-//*****************************************************************************
-struct AgentCharacter : public IAgentWithInventory
-{
-    AgentCharacter() : IAgentWithInventory(AgentType::Player) {}
-
-    virtual void update(Field& a_field, Double a_deltaTime) override {}
-    Float        m_money = 0.0f;
+    std::set<Agent*> m_agents;
 };
 
 //*****************************************************************************
@@ -230,19 +117,71 @@ struct ICommand
 //*****************************************************************************
 struct IPositionable
 {
-    void rotation_clockwise()
+    math::IVec2 m_position;
+};
+
+struct CommandMoveUp : public ICommand
+{
+    virtual Bool execute() override
     {
-        m_orientation =
-            static_cast<Orientation>((m_orientation + 1) % Orientation::_count);
+        if (m_positionableToMove->m_position.y <= 0)
+        {
+            return false;
+        }
+
+        m_positionableToMove->m_position.y--;
+        return true;
     }
 
-    void rotation_counterClockwise()
+    IPositionable* m_positionableToMove;
+};
+
+struct CommandMoveDown : public ICommand
+{
+    virtual Bool execute() override
     {
-        m_orientation = static_cast<Orientation>(
-            (m_orientation + Orientation::_count - 1) % Orientation::_count);
+        if (m_positionableToMove->m_position.y >= FIELD_SIZE - 1)
+        {
+            return false;
+        }
+
+        m_positionableToMove->m_position.y++;
+        return true;
     }
 
-    Orientation m_orientation = Orientation::Up;
+    IPositionable* m_positionableToMove;
+};
+
+struct CommandMoveLeft : public ICommand
+{
+    virtual Bool execute() override
+    {
+        if (m_positionableToMove->m_position.x <= 0)
+        {
+            return false;
+        }
+
+        m_positionableToMove->m_position.x--;
+        return true;
+    }
+
+    IPositionable* m_positionableToMove;
+};
+
+struct CommandMoveRight : public ICommand
+{
+    virtual Bool execute() override
+    {
+        if (m_positionableToMove->m_position.x >= FIELD_SIZE - 1)
+        {
+            return false;
+        }
+
+        m_positionableToMove->m_position.x++;
+        return true;
+    }
+
+    IPositionable* m_positionableToMove;
 };
 
 //*****************************************************************************
@@ -274,19 +213,308 @@ struct IOrientable
     Orientation m_orientation = Orientation::Up;
 };
 
+struct CommandRotateClockWise : public ICommand
+{
+    virtual Bool execute() override
+    {
+        m_orientable->rotation_clockwise();
+        return true;
+    }
+
+    IOrientable* m_orientable;
+};
+
+struct CommandRotateCounterClockWise : public ICommand
+{
+    virtual Bool execute() override
+    {
+        m_orientable->rotation_counterClockwise();
+        return true;
+    }
+
+    IOrientable* m_orientable;
+};
+
+struct CommandMoveForward : public ICommand
+{
+    virtual Bool execute() override
+    {
+        switch (m_orientable->m_orientation)
+        {
+            case IOrientable::Orientation::Up:
+            {
+                CommandMoveUp command;
+                command.m_positionableToMove = m_positionableToMove;
+                return command.execute();
+            }
+            case IOrientable::Orientation::Right:
+            {
+                CommandMoveRight command;
+                command.m_positionableToMove = m_positionableToMove;
+                return command.execute();
+            }
+            case IOrientable::Orientation::Down:
+            {
+                CommandMoveDown command;
+                command.m_positionableToMove = m_positionableToMove;
+                return command.execute();
+            }
+            case IOrientable::Orientation::Left:
+            {
+                CommandMoveLeft command;
+                command.m_positionableToMove = m_positionableToMove;
+                return command.execute();
+            }
+            default: return false;
+        }
+    }
+
+    IOrientable*   m_orientable;
+    IPositionable* m_positionableToMove;
+};
+
+//*****************************************************************************
+// Fields
+//*****************************************************************************
+struct Field
+{
+    using Cell = std::set<IPositionable*>;
+    Cell m_cells[FIELD_SIZE][FIELD_SIZE];
+};
+
+struct CommandPlaceOnField : public ICommand
+{
+    virtual Bool execute() override
+    {
+        Int x = m_positionableToPlace->m_position.x;
+        Int y = m_positionableToPlace->m_position.y;
+        m_field->m_cells[x][y].insert(m_positionableToPlace);
+
+        return true;
+    }
+
+    IPositionable* m_positionableToPlace;
+    Field*         m_field;
+};
+
+struct CommandRemoveFromField : public ICommand
+{
+    virtual Bool execute() override
+    {
+        Int x = m_positionableToRemoveMove->m_position.x;
+        Int y = m_positionableToRemoveMove->m_position.y;
+        m_field->m_cells[x][y].erase(m_positionableToRemoveMove);
+
+        return true;
+    }
+
+    IPositionable* m_positionableToRemoveMove;
+    Field*         m_field;
+};
+
+//*****************************************************************************
+// Inventory basics
+//*****************************************************************************
+enum ObjectType
+{
+    Seed  = 0,
+    Fruit = 1,
+};
+
+static std::string ObjectTypeNames[] = {"Seeds", "Fruits"};
+
+struct Object
+{
+    ObjectType m_type;
+    void*      m_data;
+};
+
+struct Slot
+{
+    std::vector<Object> m_objects;
+};
+
+struct IInventory
+{
+    std::map<ObjectType, Slot>::iterator m_selectedSlot;
+    std::map<ObjectType, Slot>           m_slots;
+};
+
+struct CommandAddObjectToInventory : ICommand
+{
+    Bool execute()
+    {
+        m_inventory->m_slots[m_objectToAdd.m_type].m_objects.push_back(
+            m_objectToAdd);
+        return true;
+    }
+
+    IInventory* m_inventory;
+    Object      m_objectToAdd;
+};
+
+//*****************************************************************************
+// Crops
+//*****************************************************************************
+struct AgentNutriment : public IPositionable
+{
+    void update(Double a_deltaTime)
+    {
+        m_nutrientQuantity +=
+            std::min(s_fieldRegenerationRate * static_cast<Float>(a_deltaTime),
+                     s_fieldMaxNutiments);
+    }
+
+    Float m_nutrientQuantity = s_fieldMaxNutiments;
+};
+
+struct AgentPlant : public IPositionable
+{
+    void update(Double a_deltaTime)
+    {
+        if (m_isHarvested)
+        {
+            m_health = std::max(
+                m_health - s_plantDeathRateWhenHarvested * a_deltaTime, 0.0);
+            return;
+        }
+
+        Field::Cell& cellContent =
+            m_fieldOfNutriment->m_cells[m_position.x][m_position.y];
+        AgentNutriment* nutriment =
+            static_cast<AgentNutriment*>(*cellContent.begin());
+
+        if (nutriment->m_nutrientQuantity - m_consumption >= 0)
+        {
+            nutriment->m_nutrientQuantity -= m_consumption * a_deltaTime;
+            if (m_age < s_matureAge)
+            {
+                m_age += a_deltaTime;
+            }
+        }
+        else
+        {
+            m_health = std::max(
+                m_health - s_plantDeathRateWhenGrounded * a_deltaTime, 0.0);
+        }
+    }
+
+    void harvest() { m_isHarvested = true; }
+
+    Field* m_fieldOfNutriment = nullptr;
+    Bool   m_isHarvested      = false;
+    Float  m_consumption      = s_plantBaseConsumptionRate;
+    Float  m_age              = 0.0f;
+    Float  m_health           = s_plantBaseHealth;
+};
+
+//*****************************************************************************
+// Crop related commands
+//*****************************************************************************
+struct CommandPlantCrop : public ICommand
+{
+    virtual Bool execute() override
+    {
+        // Look if there is already a plant
+        Field::Cell& cellContent =
+            m_fieldOfPlants->m_cells[m_position->x][m_position->y];
+
+        // Look if there is already a plant
+        if (cellContent.begin() != cellContent.end())
+        {
+            return false;
+        }
+
+        auto seedSlot =
+            m_inventoryToTakeSeedFrom->m_slots.find(ObjectType::Seed);
+
+        if (seedSlot == m_inventoryToTakeSeedFrom->m_slots.end() ||
+            seedSlot->second.m_objects.size() == 0)
+        {
+            return false;
+        }
+
+        // create a plant agent
+        AgentPlant* newPlant = new AgentPlant();
+        m_agentManager->add_agent(newPlant);
+
+        newPlant->m_fieldOfNutriment = m_fieldOfNutriments;
+        newPlant->m_position         = *m_position;
+
+        CommandPlaceOnField placeOnField;
+        placeOnField.m_field               = m_fieldOfPlants;
+        placeOnField.m_positionableToPlace = newPlant;
+        placeOnField.execute();
+
+        seedSlot->second.m_objects.erase(--seedSlot->second.m_objects.end());
+        return true;
+    }
+
+    AgentManager* m_agentManager;
+    Field*        m_fieldOfPlants;
+    Field*        m_fieldOfNutriments;
+    IInventory*   m_inventoryToTakeSeedFrom;
+    math::IVec2*  m_position;
+};
+
+struct CommandHarvestCrop : public ICommand
+{
+    virtual Bool execute() override
+    {
+        // Look if there is allready a plant
+        Field::Cell& cellContent =
+            m_fieldOfPlants->m_cells[m_position->x][m_position->y];
+
+        // Look if there is no plant
+        if (cellContent.begin() == cellContent.end())
+        {
+            return false;
+        }
+
+        AgentPlant* plantToHarvest =
+            static_cast<AgentPlant*>(*cellContent.begin());
+        // Harvest the plant
+        plantToHarvest->harvest();
+
+        CommandAddObjectToInventory commandAddObject;
+        commandAddObject.m_inventory   = m_inventoryToAddFruitTo;
+        commandAddObject.m_objectToAdd = {ObjectType::Fruit, plantToHarvest};
+        commandAddObject.execute();
+
+        cellContent.erase(plantToHarvest);
+
+        return true;
+    }
+
+    Field*       m_fieldOfPlants;
+    IInventory*  m_inventoryToAddFruitTo;
+    math::IVec2* m_position;
+};
+
+//*****************************************************************************
+// Character agent
+//*****************************************************************************
+struct AgentCharacter : public IPositionable, public IInventory
+{
+    void update(Double a_deltaTime) {}
+
+    Float m_money = 0.0f;
+};
+
 //*****************************************************************************
 // Machines
 //*****************************************************************************
-struct AgentMachine : public IAgentWithInventory, public IOrientable
+struct AgentMachine : public IPositionable,
+                      public IInventory,
+                      public IOrientable
 {
-    AgentMachine() : IAgentWithInventory(AgentType::Machine) {}
     virtual ~AgentMachine()
     {
         for (auto command : m_instructions) { delete command; }
         m_instructions.clear();
     }
 
-    virtual void update(Field& a_field, Double a_deltaTime) override
+    void update(Double a_deltaTime)
     {
         if (m_instructions.size() == 0)
         {
@@ -312,494 +540,32 @@ struct AgentMachine : public IAgentWithInventory, public IOrientable
 };
 
 //*****************************************************************************
-// Movement related commands
-//*****************************************************************************
-
-struct CommandMoveUp : public ICommand
-{
-    virtual Bool execute() override
-    {
-        if (m_agentToMove->m_position.y <= 0)
-        {
-            return false;
-        }
-
-        std::set<IAgent*> cellContent =
-            m_field->m_cells[m_agentToMove->m_position.x]
-                            [m_agentToMove->m_position.y];
-        auto agent = cellContent.find(m_agentToMove);
-        mAssert(agent != cellContent.end());
-
-        cellContent.erase(agent);
-
-        m_agentToMove->m_position.y--;
-
-        m_field
-            ->m_cells[m_agentToMove->m_position.x][m_agentToMove->m_position.y]
-            .insert(m_agentToMove);
-
-        return true;
-    }
-
-    IAgent* m_agentToMove;
-    Field*  m_field;
-};
-
-struct CommandMoveDown : public ICommand
-{
-    virtual Bool execute() override
-    {
-        if (m_agentToMove->m_position.y >= FIELD_SIZE - 1)
-        {
-            return false;
-        }
-
-        std::set<IAgent*> cellContent =
-            m_field->m_cells[m_agentToMove->m_position.x]
-                            [m_agentToMove->m_position.y];
-        auto agent = cellContent.find(m_agentToMove);
-        mAssert(agent != cellContent.end());
-
-        cellContent.erase(agent);
-
-        m_agentToMove->m_position.y++;
-
-        m_field
-            ->m_cells[m_agentToMove->m_position.x][m_agentToMove->m_position.y]
-            .insert(m_agentToMove);
-
-        return true;
-    }
-
-    IAgent* m_agentToMove;
-    Field*  m_field;
-};
-
-struct CommandMoveLeft : public ICommand
-{
-    virtual Bool execute() override
-    {
-        if (m_agentToMove->m_position.x <= 0)
-        {
-            return false;
-        }
-
-        std::set<IAgent*> cellContent =
-            m_field->m_cells[m_agentToMove->m_position.x]
-                            [m_agentToMove->m_position.y];
-        auto agent = cellContent.find(m_agentToMove);
-        mAssert(agent != cellContent.end());
-
-        cellContent.erase(agent);
-
-        m_agentToMove->m_position.x--;
-
-        m_field
-            ->m_cells[m_agentToMove->m_position.x][m_agentToMove->m_position.y]
-            .insert(m_agentToMove);
-
-        return true;
-    }
-
-    IAgent* m_agentToMove;
-    Field*  m_field;
-};
-
-struct CommandMoveRight : public ICommand
-{
-    virtual Bool execute() override
-    {
-        if (m_agentToMove->m_position.x >= FIELD_SIZE - 1)
-        {
-            return false;
-        }
-
-        std::set<IAgent*> cellContent =
-            m_field->m_cells[m_agentToMove->m_position.x]
-                            [m_agentToMove->m_position.y];
-        auto agent = cellContent.find(m_agentToMove);
-        mAssert(agent != cellContent.end());
-
-        cellContent.erase(agent);
-
-        m_agentToMove->m_position.x++;
-
-        m_field
-            ->m_cells[m_agentToMove->m_position.x][m_agentToMove->m_position.y]
-            .insert(m_agentToMove);
-
-        return true;
-    }
-
-    IAgent* m_agentToMove;
-    Field*  m_field;
-};
-
-//*****************************************************************************
-// Orientation related commands
-//*****************************************************************************
-
-struct CommandMoveForward : public ICommand
-{
-    virtual Bool execute() override
-    {
-        switch (m_orientable->m_orientation)
-        {
-            case IOrientable::Orientation::Up:
-            {
-                CommandMoveUp command;
-                command.m_agentToMove = m_agentToMove;
-                command.m_field       = m_field;
-                return command.execute();
-            }
-            case IOrientable::Orientation::Right:
-            {
-                CommandMoveRight command;
-                command.m_agentToMove = m_agentToMove;
-                command.m_field       = m_field;
-                return command.execute();
-            }
-            case IOrientable::Orientation::Down:
-            {
-                CommandMoveDown command;
-                command.m_agentToMove = m_agentToMove;
-                command.m_field       = m_field;
-                return command.execute();
-            }
-            case IOrientable::Orientation::Left:
-            {
-                CommandMoveLeft command;
-                command.m_agentToMove = m_agentToMove;
-                command.m_field       = m_field;
-                return command.execute();
-            }
-            default: return false;
-        }
-    }
-
-    IOrientable* m_orientable;
-    IAgent*      m_agentToMove;
-    Field*       m_field;
-};
-
-struct CommandRotateClockWise : public ICommand
-{
-    virtual Bool execute() override
-    {
-        m_orientable->rotation_clockwise();
-        return true;
-    }
-
-    IOrientable* m_orientable;
-};
-
-struct CommandRotateCounterClockWise : public ICommand
-{
-    virtual Bool execute() override
-    {
-        m_orientable->rotation_counterClockwise();
-        return true;
-    }
-
-    IOrientable* m_orientable;
-};
-
-//*****************************************************************************
-// Crop related commands
-//*****************************************************************************
-struct CommandPlantCrop : public ICommand
-{
-    virtual Bool execute() override
-    {
-        mAssert(m_agent != nullptr);
-        mAssert(m_field != nullptr);
-        IAgentWithInventory& agent = *m_agent;
-        Field&               field = *m_field;
-
-        std::set<IAgent*>& cell =
-            field.m_cells[agent.m_position.x][agent.m_position.y];
-
-        for (auto agent : cell)
-        {
-            if (agent->m_type == AgentType::Plant)
-            {
-                return false;
-            }
-        }
-
-        auto seedSlot = agent.m_inventory.m_slots.find(ObjectType::Seed);
-
-        if (seedSlot == agent.m_inventory.m_slots.end() ||
-            seedSlot->second.m_objects.size() == 0)
-        {
-            return false;
-        }
-
-        IAgent* newAgent = new AgentPlant();
-        m_agents->insert(newAgent);
-        place_agent(field, newAgent, agent.m_position.x, agent.m_position.y);
-        seedSlot->second.m_objects.erase(--seedSlot->second.m_objects.end());
-        return true;
-    }
-
-    IAgentWithInventory* m_agent;
-    Field*               m_field;
-    std::set<IAgent*>*   m_agents;
-};
-
-struct CommandHarvestCrop : public ICommand
-{
-    virtual Bool execute() override
-    {
-        mAssert(m_agent != nullptr);
-        mAssert(m_field != nullptr);
-        IAgentWithInventory& agent = *m_agent;
-        Field&               field = *m_field;
-
-        std::set<IAgent*>& cell =
-            field.m_cells[agent.m_position.x][agent.m_position.y];
-
-        Bool                        hasAPlant  = false;
-        std::set<IAgent*>::iterator plantAgent = cell.begin();
-        while (plantAgent != cell.end())
-        {
-            if ((*plantAgent)->m_type == AgentType::Plant)
-            {
-                hasAPlant = true;
-                break;
-            }
-            ++plantAgent;
-        }
-
-        if (!hasAPlant)
-        {
-            return false;
-        }
-
-        static_cast<AgentPlant*>(*plantAgent)->harvest();
-
-        add_objectToInventory(agent.m_inventory,
-                              {ObjectType::Fruit, *plantAgent});
-
-        cell.erase(plantAgent);
-
-        return true;
-    }
-
-    IAgentWithInventory* m_agent;
-    Field*               m_field;
-    std::set<IAgent*>*   m_agents;
-};
-
-//*****************************************************************************
-// Basic Updates
-//*****************************************************************************
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-void update_field(Field& a_field, Double a_deltaTime)
-{
-    for (Int i = 0; i < FIELD_SIZE; ++i)
-    {
-        for (Int j = 0; j < FIELD_SIZE; ++j)
-        {
-            a_field.m_nutrients[i][j] = std::min(
-                a_field.m_nutrients[i][j] +
-                    s_fieldRegenerationRate * static_cast<Float>(a_deltaTime),
-                s_fieldMaxNutiments);
-        }
-    }
-}
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-// void update_agents(std::set<IAgent*>& a_agentsToUpdate, Field& a_field,
-//                    Double a_deltaTime)
-// {
-//     for (auto& agent : a_agentsToUpdate)
-//     {
-//         agent->update(a_field, a_deltaTime);
-//     }
-// }
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-void update_agents(std::set<Agent*>& a_agentsToUpdate, Field& a_field,
-                   Double a_deltaTime)
-{
-    for (auto agent : a_agentsToUpdate) { agent->update(a_field, a_deltaTime); }
-}
-
-//*****************************************************************************
 // Displays
 //*****************************************************************************
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void display_field(Field const& a_field)
+void display_agent(AgentNutriment* a_nutriment)
 {
     const ImVec2 p         = ImGui::GetCursorScreenPos();
     Float        cx        = p.x + 5.0f;
     Float        cy        = p.y + 5.0f;
     ImDrawList*  draw_list = ImGui::GetWindowDrawList();
 
-    for (Int i = 0; i < FIELD_SIZE; ++i)
-    {
-        Float x = cx + (parcelSize + parcelPadding) * i;
-        for (Int j = 0; j < FIELD_SIZE; ++j)
-        {
-            Float       y    = cy + (parcelSize + parcelPadding) * j;
-            ImVec4      colf = ImVec4(colField.x, colField.y, colField.z,
-                                 a_field.m_nutrients[i][j] / 10.0f);
-            const ImU32 col  = ImColor(colf);
+    Float  x    = cx + (parcelSize + parcelPadding) * a_nutriment->m_position.x;
+    Float  y    = cy + (parcelSize + parcelPadding) * a_nutriment->m_position.y;
+    ImVec4 colf = ImVec4(colField.x, colField.y, colField.z,
+                         a_nutriment->m_nutrientQuantity / s_fieldMaxNutiments);
+    const ImU32 col = ImColor(colf);
 
-            draw_list->AddRectFilled(
-                ImVec2(x, y), ImVec2(x + parcelSize, y + parcelSize), col);
-        }
-    }
+    draw_list->AddRectFilled(ImVec2(x, y),
+                             ImVec2(x + parcelSize, y + parcelSize), col);
 }
 
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-// void display_plant(AgentPlant const& a_agent)
-// {
-//     if (a_agent.m_isHarvested)
-//     {
-//         return;
-//     }
-//
-//     const ImVec2 p         = ImGui::GetCursorScreenPos();
-//     Float        cx        = p.x + 5.0f;
-//     Float        cy        = p.y + 5.0f;
-//     ImDrawList*  draw_list = ImGui::GetWindowDrawList();
-//
-//     Float agentSize =
-//         math::lerp(agentSizeSmall, agentSizeBig, a_agent.m_age /
-//         s_matureAge);
-//
-//     Float innerCellPadding = parcelSize / 2.0f - agentSize / 2.0f;
-//
-//     Float x = cx + (parcelSize + parcelPadding) * a_agent.m_position.x +
-//               innerCellPadding;
-//     Float y = cy + (parcelSize + parcelPadding) * a_agent.m_position.y +
-//               innerCellPadding;
-//
-//     Float death = 1.0f - a_agent.m_health / 100.0f;
-//
-//     ImVec4 colf;
-//     if (a_agent.m_age < s_matureAge)
-//     {
-//         colf = ImVec4(death, 0.0f, 1.0f - death, 1.0f);
-//     }
-//     else
-//     {
-//         colf = ImVec4(death, 1.0f - death, 0.0f, 1.0f);
-//     }
-//     const ImU32 col = ImColor(colf);
-//
-//     draw_list->AddRectFilled(ImVec2(x, y), ImVec2(x + agentSize, y +
-//     agentSize),
-//                              col);
-// }
-//
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-// void display_player(AgentCharacter& a_player)
-// {
-//     const ImVec2 p         = ImGui::GetCursorScreenPos();
-//     Float        cx        = p.x + 5.0f;
-//     Float        cy        = p.y + 5.0f;
-//     ImDrawList*  draw_list = ImGui::GetWindowDrawList();
-//
-//     static Float innerCellPadding = 3;
-//
-//     Float x = cx + (parcelSize + parcelPadding) * a_player.m_position.x +
-//               innerCellPadding;
-//     Float y = cy + (parcelSize + parcelPadding) * a_player.m_position.y +
-//               innerCellPadding;
-//
-//     ImVec4      colf = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
-//     const ImU32 col  = ImColor(colf);
-//
-//     draw_list->AddRectFilled(ImVec2(x, y), ImVec2(x + heroSize, y +
-//     heroSize),
-//                              col);
-// }
-//
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-// void display_machine(AgentMachine& a_machine)
-// {
-//     const ImVec2 p         = ImGui::GetCursorScreenPos();
-//     Float        cx        = p.x + 5.0f;
-//     Float        cy        = p.y + 5.0f;
-//     ImDrawList*  draw_list = ImGui::GetWindowDrawList();
-//
-//     static Float innerCellPadding = -1;
-//     static Float machineSize      = parcelSize - 2 * innerCellPadding;
-//
-//     Float x = cx + (parcelSize + parcelPadding) * a_machine.m_position.x +
-//               innerCellPadding;
-//     Float y = cy + (parcelSize + parcelPadding) * a_machine.m_position.y +
-//               innerCellPadding;
-//
-//     ImVec4      colf = ImVec4(0.5f, 0.5f, 0.5f, 1.0f);
-//     const ImU32 col  = ImColor(colf);
-//
-//     draw_list->AddRect(ImVec2(x, y), ImVec2(x + machineSize, y +
-//     machineSize),
-//                        col);
-//
-//     ImVec2       p1;
-//     ImVec2       p2;
-//     ImVec2       p3;
-//     Float        midPoint     = machineSize / 2.0f;
-//     static Float trinagleSize = 8.0f;
-//     switch (a_machine.m_orientation)
-//     {
-//         case IOrientable::Up:
-//         {
-//             p1 = ImVec2(x + midPoint + trinagleSize / 2.0f, y);
-//             p2 = ImVec2(x + midPoint - trinagleSize / 2.0f, y);
-//             p3 = ImVec2(x + midPoint, y + trinagleSize);
-//         }
-//         break;
-//         case IOrientable::Down:
-//         {
-//             p1 = ImVec2(x + midPoint - trinagleSize / 2.0f, y + machineSize);
-//             p2 = ImVec2(x + midPoint + trinagleSize / 2.0f, y + machineSize);
-//             p3 = ImVec2(x + midPoint, y + machineSize - trinagleSize);
-//         }
-//         break;
-//         case IOrientable::Left:
-//         {
-//             p1 = ImVec2(x, y + midPoint - trinagleSize / 2.0f);
-//             p2 = ImVec2(x, y + midPoint + trinagleSize / 2.0f);
-//             p3 = ImVec2(x + trinagleSize, y + midPoint);
-//         }
-//         break;
-//         case IOrientable::Right:
-//         {
-//             p1 = ImVec2(x + machineSize, y + midPoint - trinagleSize / 2.0f);
-//             p2 = ImVec2(x + machineSize, y + midPoint + trinagleSize / 2.0f);
-//             p3 = ImVec2(x + machineSize - trinagleSize, y + midPoint);
-//         }
-//         break;
-//         default: break;
-//     }
-//     draw_list->AddTriangleFilled(p1, p2, p3, col);
-// }
-
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void display(AgentPlant const* a_agent)
+void display_agent(AgentPlant const* a_agent)
 {
     if (a_agent->m_isHarvested)
     {
@@ -841,7 +607,7 @@ void display(AgentPlant const* a_agent)
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void display(AgentCharacter const* a_player)
+void display_agent(AgentCharacter const* a_player)
 {
     const ImVec2 p         = ImGui::GetCursorScreenPos();
     Float        cx        = p.x + 5.0f;
@@ -865,7 +631,7 @@ void display(AgentCharacter const* a_player)
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void display(AgentMachine const* a_machine)
+void display_agent(AgentMachine const* a_machine)
 {
     const ImVec2 p         = ImGui::GetCursorScreenPos();
     Float        cx        = p.x + 5.0f;
@@ -929,57 +695,15 @@ void display(AgentMachine const* a_machine)
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-// void display_agents(std::set<IAgent*> const& a_agents)
-// {
-//     const ImVec2 p         = ImGui::GetCursorScreenPos();
-//     Float        cx        = p.x + 5.0f;
-//     Float        cy        = p.y + 5.0f;
-//     ImDrawList*  draw_list = ImGui::GetWindowDrawList();
-//
-//     for (auto agent : a_agents)
-//     {
-//         switch (agent->m_type)
-//         {
-//             case AgentType::Plant:
-//             {
-//                 display_plant(*static_cast<AgentPlant*>(agent));
-//             }
-//             break;
-//             case AgentType::Player:
-//             {
-//                 display_player(*static_cast<AgentCharacter*>(agent));
-//             }
-//             break;
-//             case AgentType::Machine:
-//             {
-//                 display_machine(*static_cast<AgentMachine*>(agent));
-//             }
-//             break;
-//             default: break;
-//         }
-//     }
-// }
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-void display_agents(std::set<Agent*> const& a_agents)
+void display_heroInventory(IInventory* a_inventory)
 {
-    for (auto agent : a_agents) { agent->display(); }
-}
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-void display_heroInventory(Inventory& a_inventory)
-{
-    for (auto slot = a_inventory.m_slots.begin();
-         slot != a_inventory.m_slots.end(); ++slot)
+    for (auto slot = a_inventory->m_slots.begin();
+         slot != a_inventory->m_slots.end(); ++slot)
     {
         std::stringstream slotName;
         slotName << ObjectTypeNames[slot->first] << " : "
                  << slot->second.m_objects.size();
-        if (slot == a_inventory.m_selectedSlot)
+        if (slot == a_inventory->m_selectedSlot)
         {
             ImGui::PushStyleColor(ImGuiCol_Text,
                                   ImVec4(1.0f, 0.9f, 1.0f, 1.0f));
@@ -990,7 +714,7 @@ void display_heroInventory(Inventory& a_inventory)
         {
             if (ImGui::Button(slotName.str().c_str()))
             {
-                a_inventory.m_selectedSlot = slot;
+                a_inventory->m_selectedSlot = slot;
             }
         }
     }
@@ -1004,60 +728,56 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
     void move_up()
     {
         CommandMoveUp command;
-        command.m_agentToMove = m_player;
-        command.m_field       = &m_field;
+        command.m_positionableToMove = m_player;
         command.execute();
     }
     void move_down()
     {
         CommandMoveDown command;
-        command.m_agentToMove = m_player;
-        command.m_field       = &m_field;
+        command.m_positionableToMove = m_player;
         command.execute();
     }
     void move_left()
     {
         CommandMoveLeft command;
-        command.m_agentToMove = m_player;
-        command.m_field       = &m_field;
+        command.m_positionableToMove = m_player;
         command.execute();
     }
     void move_right()
     {
         CommandMoveRight command;
-        command.m_agentToMove = m_player;
-        command.m_field       = &m_field;
+        command.m_positionableToMove = m_player;
         command.execute();
     }
 
     void player_action()
     {
-        if (m_player->m_inventory.m_selectedSlot ==
-            m_player->m_inventory.m_slots.end())
+        if (m_player->m_selectedSlot == m_player->m_slots.end())
         {
             CommandHarvestCrop commandHarvest;
-            commandHarvest.m_agent  = m_player;
-            commandHarvest.m_field  = &m_field;
-            commandHarvest.m_agents = &m_agents;
+            commandHarvest.m_inventoryToAddFruitTo = m_player;
+            commandHarvest.m_fieldOfPlants         = &m_fieldOfPlants;
+            commandHarvest.m_position              = &m_player->m_position;
             commandHarvest.execute();
             return;
         }
 
-        switch (m_player->m_inventory.m_selectedSlot->first)
+        switch (m_player->m_selectedSlot->first)
         {
             case ObjectType::Seed:
             {
                 CommandPlantCrop commandPlant;
-                commandPlant.m_agent  = m_player;
-                commandPlant.m_field  = &m_field;
-                commandPlant.m_agents = &m_agents;
-
+                commandPlant.m_agentManager            = &m_agentManager;
+                commandPlant.m_fieldOfPlants           = &m_fieldOfPlants;
+                commandPlant.m_fieldOfNutriments       = &m_fieldOfNutriments;
+                commandPlant.m_inventoryToTakeSeedFrom = m_player;
+                commandPlant.m_position                = &m_player->m_position;
                 if (!commandPlant.execute())
                 {
                     CommandHarvestCrop commandHarvest;
-                    commandHarvest.m_agent  = m_player;
-                    commandHarvest.m_field  = &m_field;
-                    commandHarvest.m_agents = &m_agents;
+                    commandHarvest.m_inventoryToAddFruitTo = m_player;
+                    commandHarvest.m_fieldOfPlants         = &m_fieldOfPlants;
+                    commandHarvest.m_position = &m_player->m_position;
                     commandHarvest.execute();
                 }
             }
@@ -1065,18 +785,18 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
             case ObjectType::Fruit:
             {
                 CommandHarvestCrop commandHarvest;
-                commandHarvest.m_agent  = m_player;
-                commandHarvest.m_field  = &m_field;
-                commandHarvest.m_agents = &m_agents;
+                commandHarvest.m_inventoryToAddFruitTo = m_player;
+                commandHarvest.m_fieldOfPlants         = &m_fieldOfPlants;
+                commandHarvest.m_position              = &m_player->m_position;
                 commandHarvest.execute();
             }
             break;
             default:
             {
                 CommandHarvestCrop commandHarvest;
-                commandHarvest.m_agent  = m_player;
-                commandHarvest.m_field  = &m_field;
-                commandHarvest.m_agents = &m_agents;
+                commandHarvest.m_inventoryToAddFruitTo = m_player;
+                commandHarvest.m_fieldOfPlants         = &m_fieldOfPlants;
+                commandHarvest.m_position              = &m_player->m_position;
                 commandHarvest.execute();
             }
             break;
@@ -1088,20 +808,23 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         if (m_player->m_money >= s_seedPrice)
         {
             m_player->m_money -= s_seedPrice;
-            add_objectToInventory(m_player->m_inventory, {ObjectType::Seed});
+            CommandAddObjectToInventory command;
+            command.m_inventory   = m_player;
+            command.m_objectToAdd = {ObjectType::Seed};
         }
     }
 
     void player_sellFruits()
     {
-        auto fruits = m_player->m_inventory.m_slots.find(ObjectType::Fruit);
-        if (fruits != m_player->m_inventory.m_slots.end())
+        auto fruits = m_player->m_slots.find(ObjectType::Fruit);
+        if (fruits != m_player->m_slots.end())
         {
             for (auto fruit : fruits->second.m_objects)
             {
                 AgentPlant* fruitAgent = static_cast<AgentPlant*>(fruit.m_data);
                 m_player->m_money += fruitAgent->m_age * fruitAgent->m_health;
-                m_agents.erase(fruitAgent);
+                // TODO delete agent from agentList
+                // m_agents.erase(fruitAgent);
                 delete fruitAgent;
             }
             fruits->second.m_objects.clear();
@@ -1148,64 +871,58 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
 
         set_microSecondsLimit(16000);
 
-        // Initialize Field
         for (Int i = 0; i < FIELD_SIZE; ++i)
         {
             for (Int j = 0; j < FIELD_SIZE; ++j)
             {
-                m_field.m_nutrients[i][j] = s_fieldMaxNutiments;
+                AgentNutriment* nutriment = new AgentNutriment();
+                m_agentManager.add_agent(nutriment);
+                nutriment->m_position.x       = i;
+                nutriment->m_position.y       = j;
+                nutriment->m_nutrientQuantity = s_fieldMaxNutiments;
+                CommandPlaceOnField commandPlaceOnField;
+                commandPlaceOnField.m_field = &m_fieldOfNutriments;
+                commandPlaceOnField.m_positionableToPlace = nutriment;
+                commandPlaceOnField.execute();
             }
         }
 
         // Initialize Player
+        m_player = new AgentCharacter();
+        m_agentManager.add_agent(m_player);
+        m_player->m_position.x = 0;
+        m_player->m_position.y = 0;
+        m_player->m_money      = 0.0f;
 
-        AgentCharacter* m_player = new AgentCharacter();
-        m_player->m_position.x   = 0;
-        m_player->m_position.y   = 0;
-        m_player->m_money        = 0.0f;
-        for (Int i = 0; i < 10; ++i)
-        {
-            add_objectToInventory(m_player->m_inventory,
-                                  {ObjectType::Seed, nullptr});
-        }
-        m_player->m_inventory.m_selectedSlot =
-            m_player->m_inventory.m_slots.end();
-
-        place_agent(m_field, m_player, 0, 0);
-
-        m_newPlayer = new Agent(m_player);
-        m_newAgents.insert(m_newPlayer);
+        CommandAddObjectToInventory command;
+        command.m_inventory   = m_player;
+        command.m_objectToAdd = {ObjectType::Seed};
+        for (Int i = 0; i < 10; ++i) { command.execute(); }
+        m_player->m_selectedSlot = m_player->m_slots.end();
 
         // Initialize Machine
-        AgentMachine* m_machine = new AgentMachine();
-        for (Int i = 0; i < 100; ++i)
-        {
-            add_objectToInventory(m_machine->m_inventory,
-                                  {ObjectType::Seed, nullptr});
-        }
-        m_machine->m_orientation       = IOrientable::Right;
-        CommandPlantCrop* commandPlant = new CommandPlantCrop();
-        commandPlant->m_agent          = m_machine;
-        commandPlant->m_field          = &m_field;
-        commandPlant->m_agents         = &m_agents;
-        m_machine->m_instructions.push_back(commandPlant);
-        CommandMoveForward* command = new CommandMoveForward();
-        command->m_orientable       = m_machine;
-        command->m_agentToMove      = m_machine;
-        command->m_field            = &m_field;
-        m_machine->m_instructions.push_back(command);
-        place_agent(m_field, m_machine, 0, 0);
+        m_machine = new AgentMachine();
+        m_agentManager.add_agent(m_machine);
 
-        m_newMachine = new Agent(m_machine);
-        m_newAgents.insert(m_newMachine);
+        command.m_inventory = m_machine;
+        for (Int i = 0; i < 100; ++i) { command.execute(); }
+        m_machine->m_orientation                = IOrientable::Right;
+        CommandPlantCrop* commandPlant          = new CommandPlantCrop();
+        commandPlant->m_agentManager            = &m_agentManager;
+        commandPlant->m_fieldOfNutriments       = &m_fieldOfNutriments;
+        commandPlant->m_fieldOfPlants           = &m_fieldOfPlants;
+        commandPlant->m_inventoryToTakeSeedFrom = m_machine;
+        commandPlant->m_position                = &m_machine->m_position;
+        m_machine->m_instructions.push_back(commandPlant);
+        CommandMoveForward* commandMove   = new CommandMoveForward();
+        commandMove->m_orientable         = m_machine;
+        commandMove->m_positionableToMove = m_machine;
+        m_machine->m_instructions.push_back(commandMove);
     }
 
     virtual void destroy() override
     {
-        for (auto agent : m_newAgents) { delete agent; }
-        //         m_agents.clear();
-
-        m_newAgents.clear();
+        m_agentManager.clear();
 
         m::crossPlatform::IWindowedApplication::destroy();
         // Nothing to destroy
@@ -1223,8 +940,7 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
 
         m_inputManager.processAndUpdate_States();
 
-        update_field(m_field, a_deltaTime);
-        update_agents(m_newAgents, m_field, a_deltaTime);
+        m_agentManager.update_agents(a_deltaTime);
 
         start_dearImGuiNewFrame();
 
@@ -1248,7 +964,7 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
 
         ImGui::Begin("Inventory");
         {
-            display_heroInventory(m_player->m_inventory);
+            display_heroInventory(m_player);
         }
         ImGui::End();
 
@@ -1269,8 +985,7 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
 
         ImGui::Begin("Field window");
         {
-            display_field(m_field);
-            display_agents(m_newAgents);
+            m_agentManager.display_agents();
         }
         ImGui::End();
 
@@ -1280,13 +995,11 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         return true;
     }
 
-    Field m_field;
-    // AgentCharacter*   m_player;
-    // AgentMachine* m_machine;
-    // std::set<IAgent*> m_agents;
-    Agent*           m_newPlayer;
-    Agent*           m_newMachine;
-    std::set<Agent*> m_newAgents;
+    AgentCharacter* m_player;
+    AgentMachine*   m_machine;
+    Field           m_fieldOfPlants;
+    Field           m_fieldOfNutriments;
+    AgentManager    m_agentManager;
 
     m::input::InputManager m_inputManager;
     m::windows::IWindow*   m_mainWindow;
