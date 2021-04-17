@@ -43,7 +43,7 @@ class Agent
     {
        public:
         virtual void update(Double a_deltaTime) = 0;
-        virtual void display()                  = 0;
+        virtual void render()                   = 0;
         virtual bool request_deletion()         = 0;
     };
     template <typename T>
@@ -58,7 +58,7 @@ class Agent
             m_data->update(a_deltaTime);
         }
 
-        virtual void display() override { display_agent(m_data); }
+        virtual void render() override { render_agent(m_data); }
 
         virtual Bool request_deletion() override
         {
@@ -79,7 +79,7 @@ class Agent
     ~Agent() { delete m_agent; }
 
     void update(Double a_deltaTime) { m_agent->update(a_deltaTime); }
-    void display() { m_agent->display(); }
+    void render() { m_agent->render(); }
     Bool request_suppression() { return m_agent->request_deletion(); }
 };
 
@@ -105,9 +105,9 @@ struct AgentManager
         }
     }
 
-    void display_agents()
+    void render_agents()
     {
-        for (auto agent : m_agents) { agent->display(); }
+        for (auto agent : m_agents) { agent->render(); }
     }
 
     void clear()
@@ -579,154 +579,195 @@ struct AgentMachine : public IPositionable,
 //*****************************************************************************
 // Displays
 //*****************************************************************************
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-void display_agent(AgentNutriment* a_nutriment)
+struct DrawData
 {
-    const ImVec2 p         = ImGui::GetCursorScreenPos();
-    Float        cx        = p.x + 5.0f;
-    Float        cy        = p.y + 5.0f;
-    ImDrawList*  draw_list = ImGui::GetWindowDrawList();
+    math::Vec2 m_position;
+    math::Vec2 m_size;
+    math::Vec4 m_color;
+    Bool       m_filled = true;
+};
 
-    Float  x    = cx + (parcelSize + parcelPadding) * a_nutriment->m_position.x;
-    Float  y    = cy + (parcelSize + parcelPadding) * a_nutriment->m_position.y;
-    ImVec4 colf = ImVec4(colField.x, colField.y, colField.z,
-                         a_nutriment->m_nutrientQuantity / s_fieldMaxNutiments);
-    const ImU32 col = ImColor(colf);
+struct WorldToDisplay
+{
+    void display_layer(std::vector<DrawData>& a_layer)
+    {
+        const ImVec2 p         = ImGui::GetCursorScreenPos();
+        Float        cx        = p.x + 5.0f;
+        Float        cy        = p.y + 5.0f;
+        ImDrawList*  draw_list = ImGui::GetWindowDrawList();
 
-    draw_list->AddRectFilled(ImVec2(x, y),
-                             ImVec2(x + parcelSize, y + parcelSize), col);
+        for (auto drawData : a_layer)
+        {
+            Float       tX  = cx + drawData.m_position.x;
+            Float       tY  = cy + drawData.m_position.y;
+            const ImU32 col = ImColor(drawData.m_color.x, drawData.m_color.y,
+                                      drawData.m_color.z, drawData.m_color.w);
+            if (drawData.m_filled)
+            {
+                draw_list->AddRectFilled(
+                    ImVec2(tX, tY),
+                    ImVec2(tX + drawData.m_size.x, tY + drawData.m_size.y),
+                    col);
+            }
+            else
+            {
+                draw_list->AddRect(
+                    ImVec2(tX, tY),
+                    ImVec2(tX + drawData.m_size.x, tY + drawData.m_size.y),
+                    col);
+            }
+        }
+
+        U64 cap = a_layer.capacity();
+        a_layer.clear();
+        a_layer.reserve(cap);
+    }
+
+    void display()
+    {
+        display_layer(m_backLayer);
+        display_layer(m_middleLayer);
+        display_layer(m_frontLayer);
+    }
+
+    std::vector<DrawData> m_backLayer;
+    std::vector<DrawData> m_middleLayer;
+    std::vector<DrawData> m_frontLayer;
+};
+
+WorldToDisplay g_world;
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void render_agent(AgentNutriment* a_nutriment)
+{
+    g_world.m_backLayer.emplace_back();
+    DrawData& data = g_world.m_backLayer.back();
+
+    data.m_position.x =
+        (parcelSize + parcelPadding) * a_nutriment->m_position.x;
+    data.m_position.y =
+        (parcelSize + parcelPadding) * a_nutriment->m_position.y;
+
+    data.m_size  = {parcelSize, parcelSize};
+    data.m_color = {colField.x, colField.y, colField.z,
+                    a_nutriment->m_nutrientQuantity / s_fieldMaxNutiments};
 }
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void display_agent(AgentPlant const* a_agent)
+void render_agent(AgentPlant const* a_agent)
 {
     if (a_agent->m_isHarvested)
     {
         return;
     }
 
-    const ImVec2 p         = ImGui::GetCursorScreenPos();
-    Float        cx        = p.x + 5.0f;
-    Float        cy        = p.y + 5.0f;
-    ImDrawList*  draw_list = ImGui::GetWindowDrawList();
-
-    Float agentSize =
+    g_world.m_middleLayer.emplace_back();
+    DrawData& data = g_world.m_middleLayer.back();
+    Float     agentSize =
         math::lerp(agentSizeSmall, agentSizeBig, a_agent->m_age / s_matureAge);
-
     Float innerCellPadding = parcelSize / 2.0f - agentSize / 2.0f;
+    data.m_position.x =
+        (parcelSize + parcelPadding) * a_agent->m_position.x + innerCellPadding;
+    data.m_position.y =
+        (parcelSize + parcelPadding) * a_agent->m_position.y + innerCellPadding;
 
-    Float x = cx + (parcelSize + parcelPadding) * a_agent->m_position.x +
-              innerCellPadding;
-    Float y = cy + (parcelSize + parcelPadding) * a_agent->m_position.y +
-              innerCellPadding;
+    data.m_size = {agentSize, agentSize};
 
-    Float death = 1.0f - a_agent->m_health / 100.0f;
-
+    Float  death = 1.0f - a_agent->m_health / 100.0f;
     ImVec4 colf;
     if (a_agent->m_age < s_matureAge)
     {
-        colf = ImVec4(death, 0.0f, 1.0f - death, 1.0f);
+        data.m_color = {death, 0.0f, 1.0f - death, 1.0f};
     }
     else
     {
-        colf = ImVec4(death, 1.0f - death, 0.0f, 1.0f);
+        data.m_color = {death, 1.0f - death, 0.0f, 1.0f};
     }
-    const ImU32 col = ImColor(colf);
-
-    draw_list->AddRectFilled(ImVec2(x, y), ImVec2(x + agentSize, y + agentSize),
-                             col);
 }
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void display_agent(AgentCharacter const* a_player)
+void render_agent(AgentCharacter const* a_player)
 {
-    const ImVec2 p         = ImGui::GetCursorScreenPos();
-    Float        cx        = p.x + 5.0f;
-    Float        cy        = p.y + 5.0f;
-    ImDrawList*  draw_list = ImGui::GetWindowDrawList();
+    g_world.m_middleLayer.emplace_back();
+    DrawData& data = g_world.m_middleLayer.back();
 
     static Float innerCellPadding = 3;
+    data.m_position = {(parcelSize + parcelPadding) * a_player->m_position.x +
+                           innerCellPadding,
+                       (parcelSize + parcelPadding) * a_player->m_position.y +
+                           innerCellPadding};
 
-    Float x = cx + (parcelSize + parcelPadding) * a_player->m_position.x +
-              innerCellPadding;
-    Float y = cy + (parcelSize + parcelPadding) * a_player->m_position.y +
-              innerCellPadding;
-
-    ImVec4      colf = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
-    const ImU32 col  = ImColor(colf);
-
-    draw_list->AddRectFilled(ImVec2(x, y), ImVec2(x + heroSize, y + heroSize),
-                             col);
+    data.m_size  = {heroSize, heroSize};
+    data.m_color = {1.0f, 1.0f, 1.0f, 1.0f};
 }
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void display_agent(AgentMachine const* a_machine)
+void render_agent(AgentMachine const* a_machine)
 {
-    const ImVec2 p         = ImGui::GetCursorScreenPos();
-    Float        cx        = p.x + 5.0f;
-    Float        cy        = p.y + 5.0f;
-    ImDrawList*  draw_list = ImGui::GetWindowDrawList();
+    g_world.m_frontLayer.emplace_back();
+    DrawData& data = g_world.m_frontLayer.back();
 
     static Float innerCellPadding = -1;
     static Float machineSize      = parcelSize - 2 * innerCellPadding;
 
-    Float x = cx + (parcelSize + parcelPadding) * a_machine->m_position.x +
-              innerCellPadding;
-    Float y = cy + (parcelSize + parcelPadding) * a_machine->m_position.y +
-              innerCellPadding;
+    data.m_position = {(parcelSize + parcelPadding) * a_machine->m_position.x +
+                           innerCellPadding,
+                       (parcelSize + parcelPadding) * a_machine->m_position.y +
+                           innerCellPadding};
 
-    ImVec4      colf = ImVec4(0.5f, 0.5f, 0.5f, 1.0f);
-    const ImU32 col  = ImColor(colf);
+    data.m_size   = {machineSize, machineSize};
+    data.m_color  = {0.5f, 0.5f, 0.5f, 1.0f};
+    data.m_filled = false;
 
-    draw_list->AddRect(ImVec2(x, y), ImVec2(x + machineSize, y + machineSize),
-                       col);
+    g_world.m_frontLayer.emplace_back();
+    DrawData& dataSmall = g_world.m_frontLayer.back();
 
-    ImVec2       p1;
-    ImVec2       p2;
-    ImVec2       p3;
-    Float        midPoint     = machineSize / 2.0f;
-    static Float trinagleSize = 8.0f;
+    Float        midPoint  = machineSize / 2.0f;
+    static Float smallSize = 8.0f;
+
+    dataSmall.m_size  = {smallSize, smallSize};
+    dataSmall.m_color = {0.5f, 0.5f, 0.5f, 1.0f};
+
     switch (a_machine->m_orientation)
     {
         case IOrientable::Up:
         {
-            p1 = ImVec2(x + midPoint + trinagleSize / 2.0f, y);
-            p2 = ImVec2(x + midPoint - trinagleSize / 2.0f, y);
-            p3 = ImVec2(x + midPoint, y + trinagleSize);
+            dataSmall.m_position = {
+                data.m_position.x + midPoint - smallSize / 2.0f,
+                data.m_position.y};
         }
         break;
         case IOrientable::Down:
         {
-            p1 = ImVec2(x + midPoint - trinagleSize / 2.0f, y + machineSize);
-            p2 = ImVec2(x + midPoint + trinagleSize / 2.0f, y + machineSize);
-            p3 = ImVec2(x + midPoint, y + machineSize - trinagleSize);
+            dataSmall.m_position = {
+                data.m_position.x + midPoint - smallSize / 2.0f,
+                data.m_position.y + machineSize - smallSize};
         }
         break;
         case IOrientable::Left:
         {
-            p1 = ImVec2(x, y + midPoint - trinagleSize / 2.0f);
-            p2 = ImVec2(x, y + midPoint + trinagleSize / 2.0f);
-            p3 = ImVec2(x + trinagleSize, y + midPoint);
+            dataSmall.m_position = {
+                data.m_position.x,
+                data.m_position.y + midPoint - smallSize / 2.0f};
         }
         break;
         case IOrientable::Right:
         {
-            p1 = ImVec2(x + machineSize, y + midPoint - trinagleSize / 2.0f);
-            p2 = ImVec2(x + machineSize, y + midPoint + trinagleSize / 2.0f);
-            p3 = ImVec2(x + machineSize - trinagleSize, y + midPoint);
+            dataSmall.m_position = {
+                data.m_position.x + machineSize - smallSize,
+                data.m_position.y + midPoint - smallSize / 2.0f};
         }
         break;
         default: break;
     }
-    draw_list->AddTriangleFilled(p1, p2, p3, col);
 }
 
 //-----------------------------------------------------------------------------
@@ -989,6 +1030,7 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         {
             ImGui::ColorEdit4("Color", &colField.x, ImGuiColorEditFlags_Float);
             ImGui::Text("frame time : %f", a_deltaTime);
+            ImGui::Text("frame FPS : %f", 1.0 / a_deltaTime);
             ImGui::Text("total time : %f", s_time);
             ImGui::DragFloat("Machine refresh time", &s_machineRefreshTime,
                              0.01f, 0.0f);
@@ -1022,7 +1064,8 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
 
         ImGui::Begin("Field window");
         {
-            m_agentManager.display_agents();
+            m_agentManager.render_agents();
+            g_world.display();
         }
         ImGui::End();
 
