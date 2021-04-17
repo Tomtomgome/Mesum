@@ -44,6 +44,7 @@ class Agent
        public:
         virtual void update(Double a_deltaTime) = 0;
         virtual void display()                  = 0;
+        virtual bool request_deletion()         = 0;
     };
     template <typename T>
     class AgentImpl : public IAgentConcept
@@ -58,6 +59,11 @@ class Agent
         }
 
         virtual void display() override { display_agent(m_data); }
+
+        virtual Bool request_deletion() override
+        {
+            return m_data->request_deletion();
+        }
 
         T* m_data;
     };
@@ -74,6 +80,7 @@ class Agent
 
     void update(Double a_deltaTime) { m_agent->update(a_deltaTime); }
     void display() { m_agent->display(); }
+    Bool request_suppression() { return m_agent->request_deletion(); }
 };
 
 struct AgentManager
@@ -87,7 +94,15 @@ struct AgentManager
 
     void update_agents(Double a_deltaTime)
     {
-        for (auto agent : m_agents) { agent->update(a_deltaTime); }
+        for (auto agent : m_agents)
+        {
+            if (agent->request_suppression())
+            {
+                m_agents.erase(agent);
+                return;
+            }
+            agent->update(a_deltaTime);
+        }
     }
 
     void display_agents()
@@ -102,6 +117,23 @@ struct AgentManager
     }
 
     std::set<Agent*> m_agents;
+};
+
+//*****************************************************************************
+// Basic supression managers
+//*****************************************************************************
+struct IVolatile
+{
+    Bool request_deletion() { return m_requestDeletion; }
+
+    void ask_deletion() { m_requestDeletion = true; }
+
+    Bool m_requestDeletion = false;
+};
+
+struct IPermanent
+{
+    Bool request_deletion() { return false; }
 };
 
 //*****************************************************************************
@@ -356,7 +388,7 @@ struct CommandAddObjectToInventory : ICommand
 //*****************************************************************************
 // Crops
 //*****************************************************************************
-struct AgentNutriment : public IPositionable
+struct AgentNutriment : public IPositionable, public IPermanent
 {
     void update(Double a_deltaTime)
     {
@@ -368,7 +400,7 @@ struct AgentNutriment : public IPositionable
     Float m_nutrientQuantity = s_fieldMaxNutiments;
 };
 
-struct AgentPlant : public IPositionable
+struct AgentPlant : public IPositionable, public IVolatile
 {
     void update(Double a_deltaTime)
     {
@@ -417,7 +449,8 @@ struct CommandPlantCrop : public ICommand
     {
         // Look if there is already a plant
         Field::Cell& cellContent =
-            m_fieldOfPlants->m_cells[m_position->x][m_position->y];
+            m_fieldOfPlants->m_cells[m_positionToPlant->m_position.x]
+                                    [m_positionToPlant->m_position.y];
 
         // Look if there is already a plant
         if (cellContent.begin() != cellContent.end())
@@ -439,7 +472,7 @@ struct CommandPlantCrop : public ICommand
         m_agentManager->add_agent(newPlant);
 
         newPlant->m_fieldOfNutriment = m_fieldOfNutriments;
-        newPlant->m_position         = *m_position;
+        newPlant->m_position         = m_positionToPlant->m_position;
 
         CommandPlaceOnField placeOnField;
         placeOnField.m_field               = m_fieldOfPlants;
@@ -450,11 +483,11 @@ struct CommandPlantCrop : public ICommand
         return true;
     }
 
-    AgentManager* m_agentManager;
-    Field*        m_fieldOfPlants;
-    Field*        m_fieldOfNutriments;
-    IInventory*   m_inventoryToTakeSeedFrom;
-    math::IVec2*  m_position;
+    AgentManager*  m_agentManager;
+    Field*         m_fieldOfPlants;
+    Field*         m_fieldOfNutriments;
+    IInventory*    m_inventoryToTakeSeedFrom;
+    IPositionable* m_positionToPlant;
 };
 
 struct CommandHarvestCrop : public ICommand
@@ -463,7 +496,8 @@ struct CommandHarvestCrop : public ICommand
     {
         // Look if there is allready a plant
         Field::Cell& cellContent =
-            m_fieldOfPlants->m_cells[m_position->x][m_position->y];
+            m_fieldOfPlants->m_cells[m_positionToHarvest->m_position.x]
+                                    [m_positionToHarvest->m_position.y];
 
         // Look if there is no plant
         if (cellContent.begin() == cellContent.end())
@@ -486,15 +520,17 @@ struct CommandHarvestCrop : public ICommand
         return true;
     }
 
-    Field*       m_fieldOfPlants;
-    IInventory*  m_inventoryToAddFruitTo;
-    math::IVec2* m_position;
+    Field*         m_fieldOfPlants;
+    IInventory*    m_inventoryToAddFruitTo;
+    IPositionable* m_positionToHarvest;
 };
 
 //*****************************************************************************
 // Character agent
 //*****************************************************************************
-struct AgentCharacter : public IPositionable, public IInventory
+struct AgentCharacter : public IPositionable,
+                        public IInventory,
+                        public IPermanent
 {
     void update(Double a_deltaTime) {}
 
@@ -506,7 +542,8 @@ struct AgentCharacter : public IPositionable, public IInventory
 //*****************************************************************************
 struct AgentMachine : public IPositionable,
                       public IInventory,
-                      public IOrientable
+                      public IOrientable,
+                      public IPermanent
 {
     virtual ~AgentMachine()
     {
@@ -757,7 +794,7 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
             CommandHarvestCrop commandHarvest;
             commandHarvest.m_inventoryToAddFruitTo = m_player;
             commandHarvest.m_fieldOfPlants         = &m_fieldOfPlants;
-            commandHarvest.m_position              = &m_player->m_position;
+            commandHarvest.m_positionToHarvest     = m_player;
             commandHarvest.execute();
             return;
         }
@@ -771,13 +808,13 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
                 commandPlant.m_fieldOfPlants           = &m_fieldOfPlants;
                 commandPlant.m_fieldOfNutriments       = &m_fieldOfNutriments;
                 commandPlant.m_inventoryToTakeSeedFrom = m_player;
-                commandPlant.m_position                = &m_player->m_position;
+                commandPlant.m_positionToPlant         = m_player;
                 if (!commandPlant.execute())
                 {
                     CommandHarvestCrop commandHarvest;
                     commandHarvest.m_inventoryToAddFruitTo = m_player;
                     commandHarvest.m_fieldOfPlants         = &m_fieldOfPlants;
-                    commandHarvest.m_position = &m_player->m_position;
+                    commandHarvest.m_positionToHarvest     = m_player;
                     commandHarvest.execute();
                 }
             }
@@ -787,7 +824,7 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
                 CommandHarvestCrop commandHarvest;
                 commandHarvest.m_inventoryToAddFruitTo = m_player;
                 commandHarvest.m_fieldOfPlants         = &m_fieldOfPlants;
-                commandHarvest.m_position              = &m_player->m_position;
+                commandHarvest.m_positionToHarvest     = m_player;
                 commandHarvest.execute();
             }
             break;
@@ -796,7 +833,7 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
                 CommandHarvestCrop commandHarvest;
                 commandHarvest.m_inventoryToAddFruitTo = m_player;
                 commandHarvest.m_fieldOfPlants         = &m_fieldOfPlants;
-                commandHarvest.m_position              = &m_player->m_position;
+                commandHarvest.m_positionToHarvest     = m_player;
                 commandHarvest.execute();
             }
             break;
@@ -811,6 +848,7 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
             CommandAddObjectToInventory command;
             command.m_inventory   = m_player;
             command.m_objectToAdd = {ObjectType::Seed};
+            command.execute();
         }
     }
 
@@ -823,8 +861,7 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
             {
                 AgentPlant* fruitAgent = static_cast<AgentPlant*>(fruit.m_data);
                 m_player->m_money += fruitAgent->m_age * fruitAgent->m_health;
-                // TODO delete agent from agentList
-                // m_agents.erase(fruitAgent);
+                fruitAgent->ask_deletion();
                 delete fruitAgent;
             }
             fruits->second.m_objects.clear();
@@ -912,7 +949,7 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         commandPlant->m_fieldOfNutriments       = &m_fieldOfNutriments;
         commandPlant->m_fieldOfPlants           = &m_fieldOfPlants;
         commandPlant->m_inventoryToTakeSeedFrom = m_machine;
-        commandPlant->m_position                = &m_machine->m_position;
+        commandPlant->m_positionToPlant         = m_machine;
         m_machine->m_instructions.push_back(commandPlant);
         CommandMoveForward* commandMove   = new CommandMoveForward();
         commandMove->m_orientable         = m_machine;
