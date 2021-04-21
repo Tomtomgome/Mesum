@@ -7,6 +7,7 @@ set(SOURCES Kernel.cpp
             LogPolicies.cpp
             Asserts.cpp
             Mains.cpp
+            Math.cpp
             Application.cpp
             Input.cpp
             )

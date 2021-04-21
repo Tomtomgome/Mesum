@@ -17,6 +17,12 @@ namespace m::math
         *this = a_data;
     }
 
+    template <typename T, UInt Size>
+    Vec<T, Size>::Vec(const VecData<T, Size>&& a_data)
+    {
+        *this = a_data;
+    }
+
     template<typename T, UInt Size>
     Vec<T, Size>& Vec<T, Size>::operator=(const VecData<T, Size>& a_data)
     {

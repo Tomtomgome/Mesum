@@ -173,8 +173,11 @@ std::wstring Logger<LogPolicy>::get_time()
     time(&raw_time);
 
     struct tm * timeInfo;
+    #ifdef M_WIN32
     timeInfo = localtime(&raw_time);
-
+    #else
+    timeInfo = localtime(&raw_time);
+    #endif
     wchar_t buffer [80];
     wcsftime(buffer, 80, L"%d/%m/%y - %H/%M/%S", timeInfo);
 

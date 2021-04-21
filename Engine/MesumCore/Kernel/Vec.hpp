@@ -64,6 +64,7 @@ namespace m
         {
             Vec();
             Vec(const VecData<T, Size>& a_data);
+            Vec(const VecData<T, Size>&& a_data);
 
             Vec<T, Size>& operator=(const VecData<T, Size>& a_data);
 
