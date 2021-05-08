@@ -4,7 +4,9 @@ This is a toy C++ framework to help me learn platform specifis API and crossplat
 
 ## Status
 [ x ] : functionnal
+
 [ - ] : work in progress
+
 [ o ] : unimplemented
 
 - Win32 [ - ]

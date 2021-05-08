@@ -16,8 +16,8 @@ namespace m
     using I32 = int32_t;
     using I64 = int64_t;
 
-    using ShortChar = char;
-    using Char = wchar_t;
+    using Char      = char;
+    using WideChar  = wchar_t;
 
     using Int = int32_t;
     using UInt = uint32_t;

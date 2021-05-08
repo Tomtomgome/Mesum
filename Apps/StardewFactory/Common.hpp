@@ -2,6 +2,8 @@
 #define sf_Common_hpp
 #pragma once
 
+#include <Math.hpp>
+
 using namespace m;
 
 extern math::RandomGenerator g_numberGenerator;

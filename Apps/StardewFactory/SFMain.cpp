@@ -1,19 +1,15 @@
 #include <MesumGraphics/DearImgui/imgui.h>
 
+#include <Agents.hpp>
 #include <MesumCore/Kernel/Kernel.hpp>
 #include <MesumCore/Kernel/Math.hpp>
 #include <MesumGraphics/CrossPlatform.hpp>
 #include <MesumGraphics/WindowedApp.hpp>
-
-#include <Agents.hpp>
 #include <Rendering.hpp>
 
 using namespace m;
 
-
-
 math::RandomGenerator g_numberGenerator;
-
 
 // enum ObjectType
 // {
@@ -22,20 +18,21 @@ math::RandomGenerator g_numberGenerator;
 //     Seed,
 //     Fruit,
 // };
-// 
-// static std::string ObjectTypeNames[] = {"Hoe", "Watering Can", "Seeds", "Fruits"};
-// 
+//
+// static std::string ObjectTypeNames[] = {"Hoe", "Watering Can", "Seeds",
+// "Fruits"};
+//
 // struct Object
 // {
 //     ObjectType m_type;
 //     void*      m_data;
 // };
-// 
+//
 // struct Slot
 // {
 //     std::vector<Object> m_objects;
 // };
-// 
+//
 // struct IInventory
 // {
 //     std::map<ObjectType, Slot>::iterator m_selectedSlot;
@@ -50,7 +47,7 @@ math::RandomGenerator g_numberGenerator;
 //             m_objectToAdd);
 //         return true;
 //     }
-// 
+//
 //     IInventory* m_inventory;
 //     Object      m_objectToAdd;
 // };
@@ -63,13 +60,13 @@ math::RandomGenerator g_numberGenerator;
 //     void update(Double a_deltaTime)
 //     {
 //         m_nutrientQuantity +=
-//             std::min(s_fieldRegenerationRate * static_cast<Float>(a_deltaTime),
+//             std::min(s_fieldRegenerationRate *
+//             static_cast<Float>(a_deltaTime),
 //                      s_fieldMaxNutiments);
 //     }
-// 
+//
 //     Float m_nutrientQuantity = s_fieldMaxNutiments;
 // };
-
 
 // struct AgentPlant : public IPositionable, public IVolatile
 // {
@@ -81,12 +78,12 @@ math::RandomGenerator g_numberGenerator;
 //                 m_health - s_plantDeathRateWhenHarvested * a_deltaTime, 0.0);
 //             return;
 //         }
-// 
+//
 //         Field::Cell& cellContent =
 //             m_fieldOfNutriment->m_cells[m_position.x][m_position.y];
 //         AgentNutriment* nutriment =
 //             static_cast<AgentNutriment*>(*cellContent.begin());
-// 
+//
 //         if (nutriment->m_nutrientQuantity - m_consumption >= 0)
 //         {
 //             nutriment->m_nutrientQuantity -= m_consumption * a_deltaTime;
@@ -101,9 +98,9 @@ math::RandomGenerator g_numberGenerator;
 //                 m_health - s_plantDeathRateWhenGrounded * a_deltaTime, 0.0);
 //         }
 //     }
-// 
+//
 //     void harvest() { m_isHarvested = true; }
-// 
+//
 //     Field* m_fieldOfNutriment = nullptr;
 //     Bool   m_isHarvested      = false;
 //     Float  m_consumption      = s_plantBaseConsumptionRate;
@@ -122,45 +119,45 @@ math::RandomGenerator g_numberGenerator;
 //         Field::Cell& cellContent =
 //             m_fieldOfPlants->m_cells[m_positionToPlant->m_position.x]
 //                                     [m_positionToPlant->m_position.y];
-// 
+//
 //         // Look if there is already a plant
 //         if (cellContent.begin() != cellContent.end())
 //         {
 //             return false;
 //         }
-// 
+//
 //         auto seedSlot =
 //             m_inventoryToTakeSeedFrom->m_slots.find(ObjectType::Seed);
-// 
+//
 //         if (seedSlot == m_inventoryToTakeSeedFrom->m_slots.end() ||
 //             seedSlot->second.m_objects.size() == 0)
 //         {
 //             return false;
 //         }
-// 
+//
 //         // create a plant agent
 //         AgentPlant* newPlant = new AgentPlant();
 //         m_agentManager->add_agent(newPlant);
-// 
+//
 //         newPlant->m_fieldOfNutriment = m_fieldOfNutriments;
 //         newPlant->m_position         = m_positionToPlant->m_position;
-// 
+//
 //         CommandPlaceOnField placeOnField;
 //         placeOnField.m_field               = m_fieldOfPlants;
 //         placeOnField.m_positionableToPlace = newPlant;
 //         placeOnField.execute();
-// 
+//
 //         seedSlot->second.m_objects.erase(--seedSlot->second.m_objects.end());
 //         return true;
 //     }
-// 
+//
 //     AgentManager*  m_agentManager;
 //     Field*         m_fieldOfPlants;
 //     Field*         m_fieldOfNutriments;
 //     IInventory*    m_inventoryToTakeSeedFrom;
 //     IPositionable* m_positionToPlant;
 // };
-// 
+//
 // struct CommandHarvestCrop : public ICommand
 // {
 //     virtual Bool execute() override
@@ -169,28 +166,28 @@ math::RandomGenerator g_numberGenerator;
 //         Field::Cell& cellContent =
 //             m_fieldOfPlants->m_cells[m_positionToHarvest->m_position.x]
 //                                     [m_positionToHarvest->m_position.y];
-// 
+//
 //         // Look if there is no plant
 //         if (cellContent.begin() == cellContent.end())
 //         {
 //             return false;
 //         }
-// 
+//
 //         AgentPlant* plantToHarvest =
 //             static_cast<AgentPlant*>(*cellContent.begin());
 //         // Harvest the plant
 //         plantToHarvest->harvest();
-// 
+//
 //         CommandAddObjectToInventory commandAddObject;
 //         commandAddObject.m_inventory   = m_inventoryToAddFruitTo;
 //         commandAddObject.m_objectToAdd = {ObjectType::Fruit, plantToHarvest};
 //         commandAddObject.execute();
-// 
+//
 //         cellContent.erase(plantToHarvest);
-// 
+//
 //         return true;
 //     }
-// 
+//
 //     Field*         m_fieldOfPlants;
 //     IInventory*    m_inventoryToAddFruitTo;
 //     IPositionable* m_positionToHarvest;
@@ -209,27 +206,27 @@ math::RandomGenerator g_numberGenerator;
 //         for (auto command : m_instructions) { delete command; }
 //         m_instructions.clear();
 //     }
-// 
+//
 //     void update(Double a_deltaTime)
 //     {
 //         if (m_instructions.size() == 0)
 //         {
 //             return;
 //         }
-// 
+//
 //         m_timeBeforeNextStep -= a_deltaTime;
 //         if (m_timeBeforeNextStep > 0)
 //         {
 //             return;
 //         }
-// 
+//
 //         m_timeBeforeNextStep = s_machineRefreshTime;
-// 
+//
 //         m_instructions[m_instructionToExecute]->execute();
 //         m_instructionToExecute =
 //             (m_instructionToExecute + 1U) % m_instructions.size();
 //     }
-// 
+//
 //     Float                  m_timeBeforeNextStep   = s_machineRefreshTime;
 //     U64                    m_instructionToExecute = 0;
 //     std::vector<ICommand*> m_instructions;
@@ -243,8 +240,6 @@ struct LogicalWorld
     Field m_fieldOfPlants;
     Field m_fieldOfSoil;
 };
-
-
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -310,92 +305,94 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
             return;
 
         m_player->m_selectedSlot->second.m_items.back()->use();
-//         if (m_player->m_selectedSlot == m_player->m_slots.end())
-//         {
-//             CommandHarvestCrop commandHarvest;
-//             commandHarvest.m_inventoryToAddFruitTo = m_player;
-//             commandHarvest.m_fieldOfPlants         = &m_fieldOfPlants;
-//             commandHarvest.m_positionToHarvest     = m_player;
-//             commandHarvest.execute();
-//             return;
-//         }
-// 
-//         switch (m_player->m_selectedSlot->first)
-//         {
-//             case ObjectType::Seed:
-//             {
-//                 CommandPlantCrop commandPlant;
-//                 commandPlant.m_agentManager            = &m_agentManager;
-//                 commandPlant.m_fieldOfPlants           = &m_fieldOfPlants;
-//                 commandPlant.m_fieldOfNutriments       = &m_fieldOfSoil;
-//                 commandPlant.m_inventoryToTakeSeedFrom = m_player;
-//                 commandPlant.m_positionToPlant         = m_player;
-//                 if (!commandPlant.execute())
-//                 {
-//                     CommandHarvestCrop commandHarvest;
-//                     commandHarvest.m_inventoryToAddFruitTo = m_player;
-//                     commandHarvest.m_fieldOfPlants         = &m_fieldOfPlants;
-//                     commandHarvest.m_positionToHarvest     = m_player;
-//                     commandHarvest.execute();
-//                 }
-//             }
-//             break;
-//             case ObjectType::Fruit:
-//             {
-//                 CommandHarvestCrop commandHarvest;
-//                 commandHarvest.m_inventoryToAddFruitTo = m_player;
-//                 commandHarvest.m_fieldOfPlants         = &m_fieldOfPlants;
-//                 commandHarvest.m_positionToHarvest     = m_player;
-//                 commandHarvest.execute();
-//             }
-//             break;
-//             default:
-//             {
-//                 CommandHarvestCrop commandHarvest;
-//                 commandHarvest.m_inventoryToAddFruitTo = m_player;
-//                 commandHarvest.m_fieldOfPlants         = &m_fieldOfPlants;
-//                 commandHarvest.m_positionToHarvest     = m_player;
-//                 commandHarvest.execute();
-//             }
-//             break;
-//         }
+        //         if (m_player->m_selectedSlot == m_player->m_slots.end())
+        //         {
+        //             CommandHarvestCrop commandHarvest;
+        //             commandHarvest.m_inventoryToAddFruitTo = m_player;
+        //             commandHarvest.m_fieldOfPlants         =
+        //             &m_fieldOfPlants; commandHarvest.m_positionToHarvest =
+        //             m_player; commandHarvest.execute(); return;
+        //         }
+        //
+        //         switch (m_player->m_selectedSlot->first)
+        //         {
+        //             case ObjectType::Seed:
+        //             {
+        //                 CommandPlantCrop commandPlant;
+        //                 commandPlant.m_agentManager            =
+        //                 &m_agentManager; commandPlant.m_fieldOfPlants =
+        //                 &m_fieldOfPlants; commandPlant.m_fieldOfNutriments =
+        //                 &m_fieldOfSoil;
+        //                 commandPlant.m_inventoryToTakeSeedFrom = m_player;
+        //                 commandPlant.m_positionToPlant         = m_player;
+        //                 if (!commandPlant.execute())
+        //                 {
+        //                     CommandHarvestCrop commandHarvest;
+        //                     commandHarvest.m_inventoryToAddFruitTo =
+        //                     m_player; commandHarvest.m_fieldOfPlants =
+        //                     &m_fieldOfPlants;
+        //                     commandHarvest.m_positionToHarvest     =
+        //                     m_player; commandHarvest.execute();
+        //                 }
+        //             }
+        //             break;
+        //             case ObjectType::Fruit:
+        //             {
+        //                 CommandHarvestCrop commandHarvest;
+        //                 commandHarvest.m_inventoryToAddFruitTo = m_player;
+        //                 commandHarvest.m_fieldOfPlants         =
+        //                 &m_fieldOfPlants; commandHarvest.m_positionToHarvest
+        //                 = m_player; commandHarvest.execute();
+        //             }
+        //             break;
+        //             default:
+        //             {
+        //                 CommandHarvestCrop commandHarvest;
+        //                 commandHarvest.m_inventoryToAddFruitTo = m_player;
+        //                 commandHarvest.m_fieldOfPlants         =
+        //                 &m_fieldOfPlants; commandHarvest.m_positionToHarvest
+        //                 = m_player; commandHarvest.execute();
+        //             }
+        //             break;
+        //         }
     }
 
     void player_buySeed()
     {
-//         if (m_player->m_money >= s_seedPrice)
-//         {
-//             m_player->m_money -= s_seedPrice;
-//             CommandAddObjectToInventory command;
-//             command.m_inventory   = m_player;
-//             command.m_objectToAdd = {ObjectType::Seed};
-//             command.execute();
-//         }
+        //         if (m_player->m_money >= s_seedPrice)
+        //         {
+        //             m_player->m_money -= s_seedPrice;
+        //             CommandAddObjectToInventory command;
+        //             command.m_inventory   = m_player;
+        //             command.m_objectToAdd = {ObjectType::Seed};
+        //             command.execute();
+        //         }
     }
 
     void player_sellFruits()
     {
-//         auto fruits = m_player->m_slots.find(ObjectType::Fruit);
-//         if (fruits != m_player->m_slots.end())
-//         {
-//             for (auto fruit : fruits->second.m_objects)
-//             {
-//                 AgentPlant* fruitAgent = static_cast<AgentPlant*>(fruit.m_data);
-//                 m_player->m_money += fruitAgent->m_age * fruitAgent->m_health;
-//                 fruitAgent->ask_deletion();
-//                 delete fruitAgent;
-//             }
-//             fruits->second.m_objects.clear();
-//         }
+        //         auto fruits = m_player->m_slots.find(ObjectType::Fruit);
+        //         if (fruits != m_player->m_slots.end())
+        //         {
+        //             for (auto fruit : fruits->second.m_objects)
+        //             {
+        //                 AgentPlant* fruitAgent =
+        //                 static_cast<AgentPlant*>(fruit.m_data);
+        //                 m_player->m_money += fruitAgent->m_age *
+        //                 fruitAgent->m_health; fruitAgent->ask_deletion();
+        //                 delete fruitAgent;
+        //             }
+        //             fruits->second.m_objects.clear();
+        //         }
     }
 
     virtual void init() override
     {
         m::crossPlatform::IWindowedApplication::init();
 
-        init_renderer(m::render::RendererApi::Vulkan);
+        init_renderer(m::render::RendererApi::DX12);
 
-        m_mainWindow = add_newWindow(L"Stardew Factory", 1280, 720);
+        m_mainWindow = add_newWindow("Stardew Factory", 1280, 720);
         m_mainWindow->set_asMainWindow();
 
         m::Bool MultiViewportsEnabled = false;
@@ -435,15 +432,17 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         {
             for (Int j = 0; j < FIELD_SIZE; ++j)
             {
-//                 AgentNutriment* nutriment = new AgentNutriment();
-//                 m_agentManager.add_agent(nutriment);
-//                 nutriment->m_position.x       = i;
-//                 nutriment->m_position.y       = j;
-//                 nutriment->m_nutrientQuantity = s_fieldMaxNutiments;
-//                 CommandPlaceOnField commandPlaceOnField;
-//                 commandPlaceOnField.m_field = &m_fieldOfSoil;
-//                 commandPlaceOnField.m_positionableToPlace = nutriment;
-//                 commandPlaceOnField.execute();
+                //                 AgentNutriment* nutriment = new
+                //                 AgentNutriment();
+                //                 m_agentManager.add_agent(nutriment);
+                //                 nutriment->m_position.x       = i;
+                //                 nutriment->m_position.y       = j;
+                //                 nutriment->m_nutrientQuantity =
+                //                 s_fieldMaxNutiments; CommandPlaceOnField
+                //                 commandPlaceOnField;
+                //                 commandPlaceOnField.m_field = &m_fieldOfSoil;
+                //                 commandPlaceOnField.m_positionableToPlace =
+                //                 nutriment; commandPlaceOnField.execute();
 
                 AgentSoil* soil = new AgentSoil();
                 m_agentManager.add_agent(soil);
@@ -460,18 +459,19 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
             }
         }
 
-//         static_cast<AgentSoil*>(*(m_fieldOfSoil.m_cells[0][0].begin()))->m_type =
-//             AgentSoil::Grass;
+        //         static_cast<AgentSoil*>(*(m_fieldOfSoil.m_cells[0][0].begin()))->m_type
+        //         =
+        //             AgentSoil::Grass;
 
         // Initialize Player
         m_player = new AgentCharacter();
         m_agentManager.add_agent(m_player);
-        m_player->m_position.x = 0;
-        m_player->m_position.y = 0;
-        m_player->m_money      = 1000.0f;
+        m_player->m_position.x   = 0;
+        m_player->m_position.y   = 0;
+        m_player->m_money        = 1000.0f;
         m_player->m_selectedSlot = m_player->m_slots.end();
-        
-        ItemHoe* hoe = new ItemHoe();
+
+        ItemHoe* hoe        = new ItemHoe();
         hoe->m_fieldOfSoil  = &m_logicalWorld.m_fieldOfSoil;
         hoe->m_positionable = m_player;
         CommandAddObjectToInventory commandInventory;
@@ -485,23 +485,23 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         commandInventory.execute();
 
         // Initialize Machine
-//         m_machine = new AgentMachine();
-//         m_agentManager.add_agent(m_machine);
-// 
-//         command.m_inventory = m_machine;
-//         for (Int i = 0; i < 100; ++i) { command.execute(); }
-//         m_machine->m_orientation                = IOrientable::Right;
-//         CommandPlantCrop* commandPlant          = new CommandPlantCrop();
-//         commandPlant->m_agentManager            = &m_agentManager;
-//         commandPlant->m_fieldOfNutriments       = &m_fieldOfNutriments;
-//         commandPlant->m_fieldOfPlants           = &m_fieldOfPlants;
-//         commandPlant->m_inventoryToTakeSeedFrom = m_machine;
-//         commandPlant->m_positionToPlant         = m_machine;
-//         m_machine->m_instructions.push_back(commandPlant);
-//         CommandMoveForward* commandMove   = new CommandMoveForward();
-//         commandMove->m_orientable         = m_machine;
-//         commandMove->m_positionableToMove = m_machine;
-//         m_machine->m_instructions.push_back(commandMove);
+        //         m_machine = new AgentMachine();
+        //         m_agentManager.add_agent(m_machine);
+        //
+        //         command.m_inventory = m_machine;
+        //         for (Int i = 0; i < 100; ++i) { command.execute(); }
+        //         m_machine->m_orientation                = IOrientable::Right;
+        //         CommandPlantCrop* commandPlant          = new
+        //         CommandPlantCrop(); commandPlant->m_agentManager            =
+        //         &m_agentManager; commandPlant->m_fieldOfNutriments       =
+        //         &m_fieldOfNutriments; commandPlant->m_fieldOfPlants =
+        //         &m_fieldOfPlants; commandPlant->m_inventoryToTakeSeedFrom =
+        //         m_machine; commandPlant->m_positionToPlant         =
+        //         m_machine; m_machine->m_instructions.push_back(commandPlant);
+        //         CommandMoveForward* commandMove   = new CommandMoveForward();
+        //         commandMove->m_orientable         = m_machine;
+        //         commandMove->m_positionableToMove = m_machine;
+        //         m_machine->m_instructions.push_back(commandMove);
     }
 
     virtual void destroy() override
@@ -534,7 +534,8 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
 
         ImGui::Begin("Engine");
         {
-            //ImGui::ColorEdit4("Color", &colField.x, ImGuiColorEditFlags_Float);
+            // ImGui::ColorEdit4("Color", &colField.x,
+            // ImGuiColorEditFlags_Float);
             ImGui::Text("frame time : %f", a_deltaTime);
             ImGui::Text("frame FPS : %f", 1.0 / a_deltaTime);
             ImGui::Text("total time : %f", s_time);
@@ -542,7 +543,7 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
                              0.01f, 0.0f);
             if (ImGui::Button("Turn clock"))
             {
-                //m_machine->rotation_clockwise();
+                // m_machine->rotation_clockwise();
             }
         }
         ImGui::End();
@@ -582,9 +583,9 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
     }
 
     AgentCharacter* m_player;
-    //AgentMachine*   m_machine;
-    LogicalWorld    m_logicalWorld;
-    AgentManager    m_agentManager;
+    // AgentMachine*   m_machine;
+    LogicalWorld m_logicalWorld;
+    AgentManager m_agentManager;
 
     m::input::InputManager m_inputManager;
     m::windows::IWindow*   m_mainWindow;

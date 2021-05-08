@@ -16,10 +16,10 @@ const Bool g_enableValidationLayers = true;
 const Bool g_enableValidationLayers = false;
 #endif
 
-const std::vector<const ShortChar*> validationLayers = {
+const std::vector<const Char*> validationLayers = {
     "VK_LAYER_KHRONOS_validation"};
 
-const std::vector<const ShortChar*> deviceExtensions = {
+const std::vector<const Char*> deviceExtensions = {
     VK_KHR_SWAPCHAIN_EXTENSION_NAME};
 
 //-----------------------------------------------------------------------------
@@ -33,7 +33,7 @@ Bool check_validationLayerSupport()
     std::vector<VkLayerProperties> availableLayers(layerCount);
     vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
 
-    for (const ShortChar* layerName : validationLayers)
+    for (const Char* layerName : validationLayers)
     {
         Bool layerFound = false;
 
@@ -58,9 +58,9 @@ Bool check_validationLayerSupport()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-std::vector<const ShortChar*> get_requiedExtensions()
+std::vector<const Char*> get_requiedExtensions()
 {
-    std::vector<const ShortChar*> extensions;
+    std::vector<const Char*> extensions;
 
     if (g_enableValidationLayers)
     {

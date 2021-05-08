@@ -93,12 +93,12 @@ class Logger
 
    private:
     //!	Get the time of the day into a string format.
-    std::wstring get_time();
+    std::string get_time();
     //!	Construct the header of the log line.
-    std::wstring get_loglineHeader();
+    std::string get_loglineHeader();
 
     //!	The current line to write.
-    std::wstringstream m_logStream;
+    std::stringstream m_logStream;
     //!	Pointer to the logpolicy to use.
     LogPolicy* m_policy;
     //! Mutex preventing multiple writes to the output file.
@@ -143,9 +143,9 @@ void Logger<LogPolicy>::print(Args... a_args)
     m_mutexWrite.lock();
     switch (severity)
     {
-        case SeverityType::debug: m_logStream << L"<DEBUG> :"; break;
-        case SeverityType::warning: m_logStream << L"<WARNING> :"; break;
-        case SeverityType::error: m_logStream << L"<ERROR> :"; break;
+        case SeverityType::debug: m_logStream << "<DEBUG> :"; break;
+        case SeverityType::warning: m_logStream << "<WARNING> :"; break;
+        case SeverityType::error: m_logStream << "<ERROR> :"; break;
     };
     print_impl(a_args...);
     m_mutexWrite.unlock();
@@ -155,7 +155,7 @@ template <typename LogPolicy>
 void Logger<LogPolicy>::print_impl()
 {
     m_policy->write(get_loglineHeader() + m_logStream.str());
-    m_logStream.str(L"");
+    m_logStream.str("");
 }
 
 template <typename LogPolicy>
@@ -167,7 +167,7 @@ void Logger<LogPolicy>::print_impl(First a_parm1, Rest... a_parm)
 }
 
 template <typename LogPolicy>
-std::wstring Logger<LogPolicy>::get_time()
+std::string Logger<LogPolicy>::get_time()
 {
     time_t       raw_time;
     time(&raw_time);
@@ -178,24 +178,24 @@ std::wstring Logger<LogPolicy>::get_time()
     #else
     timeInfo = localtime(&raw_time);
     #endif
-    wchar_t buffer [80];
-    wcsftime(buffer, 80, L"%d/%m/%y - %H/%M/%S", timeInfo);
+    Char buffer [80];
+    strftime(buffer, 80, "%d/%m/%y - %H/%M/%S", timeInfo);
 
-    std::wstring time_str(buffer);
+    std::string time_str(buffer);
     return time_str.substr(0, time_str.size() - 1);
 }
 
 template <typename LogPolicy>
-std::wstring Logger<LogPolicy>::get_loglineHeader()
+std::string Logger<LogPolicy>::get_loglineHeader()
 {
-    std::wstringstream header;
-    header.str(L"");
+    std::stringstream header;
+    header.str("");
     header.fill('0');
     header.width(7);
-    header << m_lineNumber++ << L" < " << get_time() << L" - ";
+    header << m_lineNumber++ << " < " << get_time() << " - ";
     header.fill('0');
     header.width(7);
-    header << clock() << L" > ~ ";
+    header << clock() << " > ~ ";
     return header.str();
 }
 

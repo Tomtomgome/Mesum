@@ -46,10 +46,10 @@
 
     void set_dxgiDebugName(ComPtr<IDXGIObject> a_dxgiObject,
                             std::string a_sName, const Int a_lineNumber,
-                            const ShortChar* a_file);
+                            const Char* a_file);
 
     void set_d3g12DebugName(ComPtr<ID3D12Object> a_d3d12Object, std::string a_sName,
-                           const Int a_lineNumber, const ShortChar* a_file);
+                           const Int a_lineNumber, const Char* a_file);
 
 #ifdef M_DEBUG
 #define mDXGIDebugNamed(a_dxgiObject, a_name) \

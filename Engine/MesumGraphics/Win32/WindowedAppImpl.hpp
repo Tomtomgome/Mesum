@@ -17,7 +17,7 @@ class IWindowedApplicationImpl : public application::IWindowedApplicationBase
    public:
     virtual void init_renderer(
         render::RendererApi a_renderApi = render::RendererApi::Default) override;
-    virtual windows::IWindow* add_newWindow(std::wstring a_name, U32 a_width,
+    virtual windows::IWindow* add_newWindow(std::string a_name, U32 a_width,
                                             U32 a_height);
     virtual void set_processImGuiMultiViewports(Bool a_supportMultiViewPorts);
     virtual void start_dearImGuiNewFrame();

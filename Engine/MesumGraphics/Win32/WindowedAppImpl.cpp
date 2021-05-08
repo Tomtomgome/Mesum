@@ -52,7 +52,7 @@ void IWindowedApplicationImpl::init_renderer(render::RendererApi a_renderApi)
     m_renderer->init();
 }
 
-windows::IWindow* IWindowedApplicationImpl::add_newWindow(std::wstring a_name,
+windows::IWindow* IWindowedApplicationImpl::add_newWindow(std::string a_name,
                                                           U32          a_width,
                                                           U32          a_height)
 {
@@ -111,7 +111,7 @@ void IWindowedApplicationImpl::init()
     // be rendered in a DPI sensitive fashion.
     SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
 
-    const Char className[] = L"MainWindowClass";
+    const WideChar className[] = L"MainWindowClass";
     // Register the window class.
     m_W32Context.register_windowClass(className, data.m_hInstance, WindowProc);
 }

@@ -53,7 +53,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
     void add_applicationWindow()
     {
         m::windows::IWindow* m_secondWindow =
-            add_newWindow(L"Test Second window", 600, 400);
+            add_newWindow("Test Second window", 600, 400);
         m_secondWindow->link_inputManager(&m_inputManager);
     }
 
@@ -77,7 +77,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
                     "Height not overriden, use default : ", height);
         }
 
-        m_mainWindow = add_newWindow(L"Cube mover app", width, height);
+        m_mainWindow = add_newWindow("Cube mover app", width, height);
         m_mainWindow->set_asMainWindow();
 
         m::Bool MultiViewportsEnabled = false;

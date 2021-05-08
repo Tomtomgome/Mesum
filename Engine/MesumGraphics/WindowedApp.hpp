@@ -3,13 +3,12 @@
 #pragma once
 
 #include <MesumCore/Kernel/Application.hpp>
-#include <MesumCore/MesumCore/Common.hpp>
 #include <MesumCore/Kernel/Mains.hpp>
-#include <MesumGraphics/Renderer.hpp>
+#include <MesumCore/MesumCore/Common.hpp>
 #include <MesumGraphics/Common.hpp>
+#include <MesumGraphics/Renderer.hpp>
 #include <string>
 #include <vector>
-
 
 namespace m
 {
@@ -25,7 +24,7 @@ class IWindowedApplicationBase : public ITimedLoopApplication
     virtual void init_renderer(
         render::RendererApi a_renderApi = render::RendererApi::Default) = 0;
 
-    virtual windows::IWindow* add_newWindow(std::wstring a_name, U32 a_width,
+    virtual windows::IWindow* add_newWindow(std::string a_name, U32 a_width,
                                             U32 a_height) = 0;
     virtual void              set_processImGuiMultiViewports(
                      Bool a_supportMultiViewPorts) = 0;
@@ -50,6 +49,7 @@ struct WindowedLaunchData
 };
 
 bool init_console();
+
 LPSTR* CommandLineToArgvA(LPWSTR lpWCmdLine, INT* pNumArgs);
 }  // namespace m
 #define M_EXECUTE_WINDOWED_APP(AppClass)                                     \
@@ -59,7 +59,7 @@ LPSTR* CommandLineToArgvA(LPWSTR lpWCmdLine, INT* pNumArgs);
         m::WindowedLaunchData data;                                          \
         m::CmdLine            cmdLine;                                       \
         m::Int                argc;                                          \
-        m::ShortChar**        argv = m::CommandLineToArgvA(pCmdLine, &argc); \
+        m::Char**             argv = m::CommandLineToArgvA(pCmdLine, &argc); \
         if (argv != nullptr)                                                 \
         {                                                                    \
             cmdLine.parse_cmdLineAguments(argc, argv);                       \
@@ -78,9 +78,9 @@ namespace m
 struct WindowedLaunchData
 {
 };
-}
+}  // namespace m
 #define M_EXECUTE_WINDOWED_APP(AppClass)           \
-    int main(m::Int argc, m::ShortChar** argv)     \
+    int main(m::Int argc, m::Char** argv)          \
     {                                              \
         m::WindowedLaunchData data;                \
         m::CmdLine            cmdLine;             \
@@ -91,4 +91,4 @@ struct WindowedLaunchData
 
 #endif
 
-#endif // M_WINDOWEDAPP
+#endif  // M_WINDOWEDAPP

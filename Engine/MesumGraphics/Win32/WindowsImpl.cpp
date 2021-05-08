@@ -81,7 +81,7 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
 
 void IWindowImpl::init()
 {
-    const Char className[] = L"MainWindowClass";
+    const WideChar className[] = L"MainWindowClass";
     m_hwnd = m_parentContext->create_window(className, m_windowName,
                                            m_clientWidth,
                                         m_clientHeight);

@@ -2,25 +2,22 @@
 #define M_KERNEL
 #pragma once
 
-#include <MesumCore/Common.hpp>
-
-#include <Types.hpp>
 #include <Asserts.hpp>
-
-#include <string>
-#include <sstream>
-#include <vector>
+#include <MesumCore/Common.hpp>
+#include <Types.hpp>
 #include <algorithm>
-
+#include <sstream>
+#include <string>
+#include <vector>
 
 namespace m
 {
 struct CmdLine
 {
-    void parse_cmdLineAguments(Int argc, ShortChar** argv);
+    void parse_cmdLineAguments(Int argc, Char** argv);
 
     template <class T>
-    const Bool get_parameter(const std::string a_key, T& a_result) const
+    Bool get_parameter(const std::string a_key, T& a_result) const
     {
         auto found = std::find(m_listArgs.begin(), m_listArgs.end(), a_key);
         if (found == m_listArgs.end())
@@ -51,4 +48,4 @@ struct BasicLaunchData
 };
 
 }  // namespace m
-#endif //M_KERNEL
+#endif  // M_KERNEL

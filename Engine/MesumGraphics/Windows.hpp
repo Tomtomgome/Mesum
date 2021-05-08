@@ -28,7 +28,7 @@ class IWindow
 
     virtual void link_inputManager(input::InputManager* a_inputManager) = 0;
     virtual void set_size(UInt a_width, UInt a_height)                  = 0;
-    virtual void set_windowName(std::wstring a_name)                    = 0;
+    virtual void set_windowName(std::string a_name)                    = 0;
     virtual void set_renderer(render::IRenderer* a_renderer)            = 0;
     virtual void set_asMainWindow()                                     = 0;
     virtual void set_asImGuiWindow(Bool a_supportMultiViewports)        = 0;

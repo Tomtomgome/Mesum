@@ -23,7 +23,7 @@ void internal_run(CmdLine const& a_cmdLine, void* a_data)
 }  // namespace m
 
 #define M_EXECUTE_CONSOLE_APP(AppClass)              \
-    int main(m::Int argc, m::ShortChar** argv)       \
+    int main(m::Int argc, m::Char** argv)       \
     {                                                \
         m::BasicLaunchData data;                     \
         m::CmdLine         cmdLine;                  \

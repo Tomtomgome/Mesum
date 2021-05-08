@@ -11,7 +11,7 @@ namespace dx12
 extern const logging::ChannelID DX_RENDERER_ID = mLOG_GET_ID();
 
 void set_dxgiDebugName(ComPtr<IDXGIObject> a_dxgiObject, std::string a_sName,
-                       const Int a_lineNumber, const ShortChar* a_file)
+                       const Int a_lineNumber, const Char* a_file)
 {
     std::stringstream sString;
     sString << a_sName << " (" << a_lineNumber << ":" << a_file << ")";
@@ -21,7 +21,7 @@ void set_dxgiDebugName(ComPtr<IDXGIObject> a_dxgiObject, std::string a_sName,
 }
 
 void set_d3g12DebugName(ComPtr<ID3D12Object> a_d3d12Object, std::string a_sName,
-                        const Int a_lineNumber, const ShortChar* a_file)
+                        const Int a_lineNumber, const Char* a_file)
 {
     std::stringstream sString;
     sString << a_sName << " (" << a_lineNumber << ":" << a_file << ")";

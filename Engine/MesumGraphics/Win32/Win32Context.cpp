@@ -2,9 +2,7 @@
 #ifndef UNICODE
 #define UNICODE
 #endif
-namespace m
-{
-namespace win32
+namespace m::win32
 {
 const logging::ChannelID PLATFORM_APP_ID = mLOG_GET_ID();
 
@@ -170,11 +168,9 @@ void WIN32Context::init_keysLuts()
     }
 }
 
-void WIN32Context::destroy()
-{
-}
+void WIN32Context::destroy() {}
 
-void WIN32Context::register_windowClass(const Char* a_className,
+void WIN32Context::register_windowClass(const WideChar* a_className,
                                         HINSTANCE a_hInstance, WNDPROC a_proc)
 {
     WNDCLASSEXW windowClass   = {};
@@ -188,8 +184,8 @@ void WIN32Context::register_windowClass(const Char* a_className,
     RegisterClassExW(&windowClass);
 }
 
-HWND WIN32Context::create_window(const Char*  a_className,
-                                 std::wstring a_windowName, U32 a_width,
+HWND WIN32Context::create_window(const WideChar* a_className,
+                                 std::string a_windowName, U32 a_width,
                                  U32 a_height) const
 {
     Int screenWidth  = GetSystemMetrics(SM_CXSCREEN);
@@ -206,10 +202,10 @@ HWND WIN32Context::create_window(const Char*  a_className,
     // Create the window.
 
     HWND hwnd =
-        CreateWindowExW(NULL,                  // Optional window styles.
-                        a_className,           // Window class
-                        a_windowName.c_str(),  // Window text
-                        WS_OVERLAPPEDWINDOW,   // Window style
+        CreateWindowExW(NULL,         // Optional window styles.
+                        a_className,  // Window class
+                        convert_string(a_windowName).c_str(),  // Window text
+                        WS_OVERLAPPEDWINDOW,                   // Window style
 
                         // Size and position
                         windowPosX, windowPosY, windowWidth, windowHeight,
@@ -234,5 +230,26 @@ input::Key WIN32Context::get_keyFromParam(WPARAM a_wParam) const
     }
     return m_lut_keycodes[scancode];
 }
+
+std::wstring convert_string(const std::string& a_as)
+{
+    // deal with trivial case of empty string
+    if (a_as.empty())
+        return std::wstring();
+
+    // determine required length of new string
+    size_t reqLength =
+        MultiByteToWideChar(CP_UTF8, 0, a_as.c_str(), (int)a_as.length(), 0, 0);
+
+    // construct new string of required length
+    std::wstring ret(reqLength, L'\0');
+
+    // convert old string to new string
+    MultiByteToWideChar(CP_UTF8, 0, a_as.c_str(), (int)a_as.length(), &ret[0],
+                        (int)ret.length());
+
+    // return new string ( compiler should optimize this away )
+    return ret;
 }
-}
+
+}  // namespace m::win32
