@@ -6,11 +6,13 @@
 #include <MesumCore/Common.hpp>
 #include <Types.hpp>
 
-#include "signal.h"
+#include <csignal>
 
 // PLATFORM_SPECIFIC
 #if defined(SIGTRAP)
 #define mInterrupt raise(SIGTRAP)
+#elif defined _MSC_VER
+#define mInterrupt __debugbreak();
 #else
 #define mInterrupt
 #endif

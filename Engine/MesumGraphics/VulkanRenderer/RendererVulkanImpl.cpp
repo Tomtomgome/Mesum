@@ -4,9 +4,7 @@
 #include <VulkanContext.hpp>
 #include <limits>
 
-namespace m
-{
-namespace vulkan
+namespace m::vulkan
 {
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -51,7 +49,7 @@ void VulkanSurface::init_x11(render::X11SurfaceInitData& a_data)
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void VulkanSurface::init_dearImGui(Callback<void>& a_callback)
+void VulkanSurface::init_dearImGui(Callback<void> const& a_callback)
 {
     m_isHoldingDearImgui                                          = true;
     VulkanContext::gs_VulkanContexte->m_dearImGuiPlatImplCallback = a_callback;
@@ -221,10 +219,10 @@ void VulkanSurface::destroy()
                                 m_dearImGuiDescriptorPool, nullptr);
     }
 
-    for (int i = 0; i < scm_numFrames; i++)
+    for (auto& m_frameCommandPool : m_frameCommandPools)
     {
-        vkDestroyCommandPool(VulkanContext::get_logDevice(),
-                             m_frameCommandPools[i], nullptr);
+        vkDestroyCommandPool(VulkanContext::get_logDevice(), m_frameCommandPool,
+                             nullptr);
     }
 
     destroy_swapChain();
@@ -419,22 +417,24 @@ void VulkanSurface::init_swapChain()
     m_swapChainImageViews.resize(imageCount);
     for (size_t i = 0; i < imageCount; i++)
     {
-        VkImageViewCreateInfo createInfo{};
-        createInfo.sType        = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-        createInfo.image        = m_swapChainImages[i];
-        createInfo.viewType     = VK_IMAGE_VIEW_TYPE_2D;
-        createInfo.format       = scm_selectedSwapChainFormat;
-        createInfo.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
-        createInfo.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
-        createInfo.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
-        createInfo.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
-        createInfo.subresourceRange.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT;
-        createInfo.subresourceRange.baseMipLevel   = 0;
-        createInfo.subresourceRange.levelCount     = 1;
-        createInfo.subresourceRange.baseArrayLayer = 0;
-        createInfo.subresourceRange.layerCount     = 1;
-        if (vkCreateImageView(VulkanContext::get_logDevice(), &createInfo,
-                              nullptr, &m_swapChainImageViews[i]) != VK_SUCCESS)
+        VkImageViewCreateInfo createInfoImageViews{};
+        createInfoImageViews.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+        createInfoImageViews.image = m_swapChainImages[i];
+        createInfoImageViews.viewType     = VK_IMAGE_VIEW_TYPE_2D;
+        createInfoImageViews.format       = scm_selectedSwapChainFormat;
+        createInfoImageViews.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
+        createInfoImageViews.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
+        createInfoImageViews.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
+        createInfoImageViews.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
+        createInfoImageViews.subresourceRange.aspectMask =
+            VK_IMAGE_ASPECT_COLOR_BIT;
+        createInfoImageViews.subresourceRange.baseMipLevel   = 0;
+        createInfoImageViews.subresourceRange.levelCount     = 1;
+        createInfoImageViews.subresourceRange.baseArrayLayer = 0;
+        createInfoImageViews.subresourceRange.layerCount     = 1;
+        if (vkCreateImageView(VulkanContext::get_logDevice(),
+                              &createInfoImageViews, nullptr,
+                              &m_swapChainImageViews[i]) != VK_SUCCESS)
         {
             throw std::runtime_error("failed to create image views!");
         }
@@ -543,5 +543,4 @@ render::ISurface* VulkanRenderer::get_newSurface()
 {
     return new VulkanSurface();
 }
-}  // namespace vulkan
-}  // namespace m
+}  // namespace m::vulkan

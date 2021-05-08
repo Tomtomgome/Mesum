@@ -5,9 +5,7 @@
 #include <MesumGraphics/Renderer.hpp>
 #include <VulkanRendererCommon.hpp>
 
-namespace m
-{
-namespace vulkan
+namespace m::vulkan
 {
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -15,17 +13,17 @@ namespace vulkan
 class VulkanSurface : public render::ISurface
 {
    public:
-    virtual ~VulkanSurface() = default;
+    ~VulkanSurface() override = default;
 
-    virtual void init_win32(render::Win32SurfaceInitData& a_data);
-    virtual void init_x11(render::X11SurfaceInitData& a_data);
+    void init_win32(render::Win32SurfaceInitData& a_data) override;
+    void init_x11(render::X11SurfaceInitData& a_data) override;
 
-    virtual void init_dearImGui(Callback<void>& a_callback);
+    void init_dearImGui(Callback<void> const& a_callback) override;
 
-    virtual void render();
-    virtual void resize(U32 a_width, U32 a_height);
+    void render() override;
+    void resize(U32 a_width, U32 a_height) override;
 
-    virtual void destroy();
+    void destroy() override;
 
    private:
     void init_internal();
@@ -79,16 +77,15 @@ class VulkanSurface : public render::ISurface
 class VulkanRenderer : public render::IRenderer
 {
    public:
-    virtual void init();
-    virtual void destroy();
+    void init() override;
+    void destroy() override;
 
-    virtual Bool get_supportDearImGuiMultiViewports() { return false; }
-    virtual void start_dearImGuiNewFrame();
+    Bool get_supportDearImGuiMultiViewports() override { return false; }
+    void start_dearImGuiNewFrame() override;
 
-    virtual render::ISurface* get_newSurface();
+    render::ISurface* get_newSurface() override;
 };
 
-}  // namespace vulkan
-}  // namespace m
+}  // namespace m::vulkan
 
 #endif  // M_RendererVulkanImpl

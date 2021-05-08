@@ -5,9 +5,7 @@
 #include <MesumGraphics/DX12Renderer/DX12RendererCommon.hpp>
 #include <MesumGraphics/Renderer.hpp>
 
-namespace m
-{
-namespace dx12
+namespace m::dx12
 {
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -15,22 +13,22 @@ namespace dx12
 class DX12Surface : public render::ISurface
 {
    public:
-    virtual ~DX12Surface() = default;
+    ~DX12Surface() override = default;
 
-    virtual void init_win32(render::Win32SurfaceInitData& a_data);
-    virtual void init_x11(render::X11SurfaceInitData& a_data);
+    void init_win32(render::Win32SurfaceInitData& a_data) override;
+    void init_x11(render::X11SurfaceInitData& a_data) override;
 
-    virtual void init_dearImGui(Callback<void>& a_callback);
+    void init_dearImGui(const Callback<void>& a_callback) override;
 
-    virtual void render();
-    virtual void resize(U32 a_width, U32 a_height);
+    void render() override;
+    void resize(U32 a_width, U32 a_height) override;
 
-    virtual void destroy();
+    void destroy() override;
 
    private:
-    UInt get_syncInterval() { return m_vSync ? 1 : 0; }
+    [[nodiscard]] UInt get_syncInterval() const { return m_vSync ? 1 : 0; }
 
-    UInt get_presentFlags()
+    [[nodiscard]] UInt get_presentFlags() const
     {
         return m_tearingSupported && !m_vSync ? DXGI_PRESENT_ALLOW_TEARING : 0;
     }
@@ -72,16 +70,15 @@ class DX12Surface : public render::ISurface
 class DX12Renderer : public render::IRenderer
 {
    public:
-    virtual void init();
-    virtual void destroy();
+    void init() override;
+    void destroy() override;
 
-    virtual Bool get_supportDearImGuiMultiViewports() { return true; }
-    virtual void start_dearImGuiNewFrame();
+    Bool get_supportDearImGuiMultiViewports() override { return true; }
+    void start_dearImGuiNewFrame() override;
 
-    virtual render::ISurface* get_newSurface();
+    render::ISurface* get_newSurface() override;
 };
 
-}  // namespace dx12
 }  // namespace m
 
 #endif  // M_RendererDX12Impl

@@ -1,11 +1,9 @@
-#include <RendererDX12Impl.hpp>
-
-#include <DX12Context.hpp>
 #include <imgui_impl_dx12.h>
 
-namespace m
-{
-namespace dx12
+#include <DX12Context.hpp>
+#include <RendererDX12Impl.hpp>
+
+namespace m::dx12
 {
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -51,7 +49,7 @@ void DX12Surface::init_x11(render::X11SurfaceInitData& a_data)
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void DX12Surface::init_dearImGui(Callback<void>& a_callback)
+void DX12Surface::init_dearImGui(const Callback<void>& a_callback)
 {
     m_isHoldingDearImgui                                      = true;
     DX12Context::gs_dx12Contexte->m_dearImGuiPlatImplCallback = a_callback;
@@ -216,7 +214,6 @@ void DX12Surface::update_renderTargetViews(
     }
 }
 
-
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -255,5 +252,4 @@ render::ISurface* DX12Renderer::get_newSurface()
     return new DX12Surface();
 }
 
-}
-}  // namespace m
+}  // namespace m::dx12
