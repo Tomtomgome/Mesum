@@ -1,3 +1,4 @@
+#include <Kernel.hpp>
 #include <Win32Context.hpp>
 #ifndef UNICODE
 #define UNICODE
@@ -229,27 +230,6 @@ input::Key WIN32Context::get_keyFromParam(WPARAM a_wParam) const
         return input::Key::KEY_UNKNOWN;
     }
     return m_lut_keycodes[scancode];
-}
-
-std::wstring convert_string(const std::string& a_as)
-{
-    // deal with trivial case of empty string
-    if (a_as.empty())
-        return std::wstring();
-
-    // determine required length of new string
-    size_t reqLength =
-        MultiByteToWideChar(CP_UTF8, 0, a_as.c_str(), (int)a_as.length(), 0, 0);
-
-    // construct new string of required length
-    std::wstring ret(reqLength, L'\0');
-
-    // convert old string to new string
-    MultiByteToWideChar(CP_UTF8, 0, a_as.c_str(), (int)a_as.length(), &ret[0],
-                        (int)ret.length());
-
-    // return new string ( compiler should optimize this away )
-    return ret;
 }
 
 }  // namespace m::win32

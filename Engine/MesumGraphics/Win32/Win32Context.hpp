@@ -34,7 +34,5 @@ struct WIN32Context
     HINSTANCE m_hInstance;
 };
 
-std::wstring convert_string(const std::string& a_as);
-
 }  // namespace m::win32
 #endif  // M_WIN32CONTEXT

@@ -9,6 +9,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
 
 set(ENGINE_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Src)
+set(EXTERNALS_SRC_DIR ${CMAKE_SOURCE_DIR}/Externals)
 
 if (UNIX)
     add_compile_definitions(_M_UNIX)

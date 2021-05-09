@@ -19,7 +19,7 @@ set(HEADERS DX12RendererCommon.hpp
 
 add_library(${MODULE_NAME} OBJECT ${SOURCES} ${HEADERS} $<TARGET_OBJECTS:DearImguiBase>)
 
-target_link_libraries(${MODULE_NAME} MesumCore DearImguiBase d3d12.lib dxgi.lib dxguid.lib)
+target_link_libraries(${MODULE_NAME} MesumCore DearImguiBase d3d12.lib dxgi.lib dxguid.lib ${EXTERNALS_SRC_DIR}/dxc_2021_04-20/lib/x64/dxcompiler.lib)
 
 #target_precompile_headers(${MODULE_NAME} PRIVATE Kernel_pch.hpp)
 set_target_properties(${MODULE_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
@@ -27,6 +27,8 @@ set_target_properties(${MODULE_NAME} PROPERTIES FOLDER "MesumGraphics")
 set_target_properties(${MODULE_NAME} PROPERTIES UNITY_BUILD ON)
 
 target_include_directories(${MODULE_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(${MODULE_NAME} PUBLIC ${EXTERNALS_SRC_DIR}/dxc_2021_04-20/inc)
+
 target_include_directories(${MODULE_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/..)
 target_include_directories(${MODULE_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../..)
 

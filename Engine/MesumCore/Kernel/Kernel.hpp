@@ -46,6 +46,9 @@ struct CmdLine
 struct BasicLaunchData
 {
 };
+#ifdef M_WIN32
+std::wstring convert_string(const std::string& a_as);
+#endif
 
 }  // namespace m
 #endif  // M_KERNEL
