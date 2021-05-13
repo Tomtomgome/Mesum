@@ -2,14 +2,11 @@
 #define M_DX12Context
 #pragma once
 
-#include <MesumCore/Kernel/Callbacks.hpp>
 #include <DX12CommandQueue.hpp>
+#include <MesumCore/Kernel/Callbacks.hpp>
 
-namespace m
+namespace m::dx12
 {
-namespace dx12
-{
-
 class DX12Context
 {
    public:
@@ -22,7 +19,7 @@ class DX12Context
     void init(Bool a_useWarp = false);
     void deinit();
 
-    Bool get_tearingSupport() { return m_tearingSupported; }
+    Bool get_tearingSupport() const { return m_tearingSupported; }
 
     DX12CommandQueue& get_commandQueue() { return m_commandQueue; }
 
@@ -41,6 +38,6 @@ class DX12Context
 
     Bool m_tearingSupported = false;
 };
-}  // namespace dx12
-}  // namespace m
-#endif //M_DX12Context
+
+}  // namespace m::dx12
+#endif  // M_DX12Context
