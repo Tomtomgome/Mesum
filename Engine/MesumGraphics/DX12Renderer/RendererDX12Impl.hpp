@@ -25,6 +25,9 @@ class DX12Surface : public render::ISurface
 
     void destroy() override;
 
+    // The number of swap chain back buffers.
+    static const U8 scm_numFrames = 3;
+
    private:
     [[nodiscard]] UInt get_syncInterval() const { return m_vSync ? 1 : 0; }
 
@@ -38,8 +41,6 @@ class DX12Surface : public render::ISurface
         ComPtr<ID3D12DescriptorHeap> a_descriptorHeap);
 
    private:
-    // The number of swap chain back buffers.
-    static const U8 scm_numFrames = 3;
 
     // By default, enable V-Sync.
     // Can be toggled with the V key.
