@@ -41,6 +41,8 @@ class Callback
         return m_func(a_args...);
     }
 
+    explicit operator bool() const { return Bool(m_func); }
+
     rType operator()(Args... a_args) { call(a_args...); }
 
     friend Bool operator==(const Callback& lhs, const Callback& rhs)

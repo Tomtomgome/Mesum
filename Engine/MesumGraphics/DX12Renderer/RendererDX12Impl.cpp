@@ -81,11 +81,27 @@ void DX12Surface::destroy()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
+D3D12_CPU_DESCRIPTOR_HANDLE DX12Surface::get_currentRtvDesc()
+{
+    CD3DX12_CPU_DESCRIPTOR_HANDLE rtv(
+        m_RTVDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
+        m_currentBackBufferIndex, m_RTVDescriptorSize);
+    return rtv;
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void DX12Surface::add_commandListToExecute(ComPtr<ID3D12GraphicsCommandList2> a_commandListToAdd)
+{
+    m_commandsToExecute.push_back(a_commandListToAdd);
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void DX12Surface::render()
 {
-    DX12Context::gs_dx12Contexte->get_commandQueue().wait_fenceValue(
-        m_frameFenceValues[m_currentBackBufferIndex]);
-
     auto backBuffer = m_backBuffers[m_currentBackBufferIndex];
 
     ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
@@ -110,6 +126,18 @@ void DX12Surface::render()
             m_currentBackBufferIndex, m_RTVDescriptorSize);
 
         graphicCommandList->ClearRenderTargetView(rtv, clearColor, 0, nullptr);
+
+        DX12Context::gs_dx12Contexte->get_commandQueue().execute_commandList(
+            graphicCommandList);
+
+        for(auto command : m_commandsToExecute)
+        {
+            DX12Context::gs_dx12Contexte->get_commandQueue().execute_commandList(
+                command.Get());
+        }
+
+        graphicCommandList =
+            DX12Context::gs_dx12Contexte->get_commandQueue().get_commandList();
 
         if (m_isHoldingDearImgui)
         {
@@ -142,6 +170,11 @@ void DX12Surface::render()
 
         m_currentBackBufferIndex = m_swapChain->GetCurrentBackBufferIndex();
     }
+
+    DX12Context::gs_dx12Contexte->get_commandQueue().wait_fenceValue(
+        m_frameFenceValues[m_currentBackBufferIndex]);
+
+    m_commandsToExecute.clear();
 }
 
 //-----------------------------------------------------------------------------

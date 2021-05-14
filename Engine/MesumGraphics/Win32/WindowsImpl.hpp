@@ -20,6 +20,8 @@ class IWindowImpl : public windows::IWindow
     void render() override;
     void destroy() override;
 
+    render::ISurface* get_renderSurface() override { return m_renderSurface; }
+
     void link_inputManager(input::InputManager* a_inputManager) override
     {
         m_linkedInputManager = a_inputManager;

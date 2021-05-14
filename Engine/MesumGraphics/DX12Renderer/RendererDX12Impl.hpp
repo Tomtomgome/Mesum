@@ -25,6 +25,9 @@ class DX12Surface : public render::ISurface
 
     void destroy() override;
 
+    D3D12_CPU_DESCRIPTOR_HANDLE get_currentRtvDesc();
+    void add_commandListToExecute(ComPtr<ID3D12GraphicsCommandList2> a_commandListToAdd);
+
     // The number of swap chain back buffers.
     static const U8 scm_numFrames = 3;
 
@@ -56,6 +59,8 @@ class DX12Surface : public render::ISurface
     UInt                         m_RTVDescriptorSize;
 
     ComPtr<ID3D12DescriptorHeap> m_SRVDescriptorHeap;
+
+    std::vector<ComPtr<ID3D12GraphicsCommandList2>> m_commandsToExecute;
 
     // Synchronization objects
     U64 m_frameFenceValues[scm_numFrames] = {};

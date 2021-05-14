@@ -45,9 +45,10 @@ ComPtr<ID3DBlob> compile_shader(std::string const& a_shaderPath,
 
     std::wstring lFilePath   = convert_string(a_shaderPath);
     std::wstring lTarget     = convert_string(a_target);
-    std::wstring pdbFilePath = lFilePath;
-    pdbFilePath.replace(pdbFilePath.end() - 4, pdbFilePath.end(), L"pdb");
     std::wstring lentryPoint = convert_string(a_entryPoint);
+    std::wstring pdbBase = lFilePath;
+    std::wstring pdbFilePath = pdbBase + L"." + lentryPoint + L".pdb";
+
 
     LPCWSTR pszArgs[] = {
         lFilePath.c_str(),  // Optional shader source file name for error
@@ -96,6 +97,21 @@ ComPtr<ID3DBlob> compile_shader(std::string const& a_shaderPath,
     if (pErrors != nullptr && pErrors->GetStringLength() != 0)
         mLOG_WARN_TO(DX_RENDERER_ID, "Shader ", a_shaderPath,
                      " : warnings and errors : ", pErrors->GetStringPointer());
+
+    //
+    // Save pdb.
+    //
+    ComPtr<IDxcBlob> pPDB = nullptr;
+    ComPtr<IDxcBlobUtf16> pPDBName = nullptr;
+    pResults->GetOutput(DXC_OUT_PDB, IID_PPV_ARGS(&pPDB), &pPDBName);
+    {
+        FILE* fp = NULL;
+
+        // Note that if you don't specify -Fd, a pdb name will be automatically generated. Use this file name to save the pdb so that PIX can find it quickly.
+        _wfopen_s(&fp, pPDBName->GetStringPointer(), L"wb");
+        fwrite(pPDB->GetBufferPointer(), pPDB->GetBufferSize(), 1, fp);
+        fclose(fp);
+    }
 
     HRESULT hrStatus;
     pResults->GetStatus(&hrStatus);
