@@ -56,11 +56,18 @@ class ISurface
     virtual void resize(U32 a_width, U32 a_height) = 0;
 
     virtual void destroy() = 0;
+
+    struct Handle
+    {
+        const ISurface* m_surface;
+    };
 };
 
 class IRenderer
 {
    public:
+    virtual ~IRenderer() = default;
+
     virtual void init()    = 0;
     virtual void destroy() = 0;
 

@@ -61,8 +61,6 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
     {
         m::crossPlatform::IWindowedApplication::init();
 
-        init_renderer(m::render::RendererApi::Vulkan);
-
         m::CmdLine const& cmdLine = get_cmdLine();
         m::UInt           width   = 1280;
         m::UInt           height  = 720;
@@ -80,9 +78,13 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m_mainWindow = add_newWindow("Cube mover app", width, height);
         m_mainWindow->set_asMainWindow();
 
+        m_iRenderer = new m::dx12::DX12Renderer();
+        m_iRenderer->init();
+
+        m_mainWindow->link_renderer(m_iRenderer, m_hdlSurface);
+
         m::Bool MultiViewportsEnabled = false;
         m_mainWindow->set_asImGuiWindow(MultiViewportsEnabled);
-        set_processImGuiMultiViewports(MultiViewportsEnabled);
 
         m_mainWindow->link_inputManager(&m_inputManager);
 
@@ -129,7 +131,9 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
     virtual void destroy() override
     {
         m::crossPlatform::IWindowedApplication::destroy();
-        // Nothing to destroy
+
+        m_iRenderer->destroy();
+        delete m_iRenderer;
     }
 
     virtual m::Bool step(const m::Double& a_deltaTime) override
@@ -138,6 +142,8 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         {
             return false;
         }
+
+        //m_iRenderer.prepare_render(&m_hdlSurface, 1);
 
         m_inputManager.processAndUpdate_States();
 
@@ -151,7 +157,8 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         m_mover.move(m_x, m_y);
 
-        start_dearImGuiNewFrame();
+        m_iRenderer->start_dearImGuiNewFrame();
+
         ImGui::NewFrame();
 
         m::Bool showDemo = true;
@@ -159,12 +166,24 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         ImGui::Render();
 
         render();
+
+        if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+        {
+            ImGui::UpdatePlatformWindows();
+            ImGui::RenderPlatformWindowsDefault();
+        }
+
+        //m_iRender.finish_render(&m_hdlSurface, 1);
+
         return true;
     }
 
     m::Float m_x = 0.0f;
     m::Float m_y = 0.0f;
 
+    m::render::IRenderer* m_iRenderer;
+    m::render::ISurface*  m_iSurface;
+    m::render::ISurface::Handle      m_hdlSurface;
     m::input::InputManager m_inputManager;
     m::windows::IWindow*   m_mainWindow;
     CubeMover              m_mover;

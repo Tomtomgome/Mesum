@@ -170,24 +170,29 @@ struct Drawer_2Dprimitives
         pipelineDesc.RTVFormats[0]    = DXGI_FORMAT_B8G8R8A8_UNORM;
         pipelineDesc.BlendState       = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
         pipelineDesc.BlendState.RenderTarget[0].BlendEnable = 1;
-        pipelineDesc.BlendState.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
-        pipelineDesc.BlendState.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
-        pipelineDesc.BlendState.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_SRC_ALPHA;
-        pipelineDesc.BlendState.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_INV_SRC_ALPHA;
+        pipelineDesc.BlendState.RenderTarget[0].SrcBlend =
+            D3D12_BLEND_SRC_ALPHA;
+        pipelineDesc.BlendState.RenderTarget[0].DestBlend =
+            D3D12_BLEND_INV_SRC_ALPHA;
+        pipelineDesc.BlendState.RenderTarget[0].SrcBlendAlpha =
+            D3D12_BLEND_SRC_ALPHA;
+        pipelineDesc.BlendState.RenderTarget[0].DestBlendAlpha =
+            D3D12_BLEND_INV_SRC_ALPHA;
         pipelineDesc.BlendState.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
-        pipelineDesc.BlendState.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
+        pipelineDesc.BlendState.RenderTarget[0].BlendOpAlpha =
+            D3D12_BLEND_OP_ADD;
 
         pipelineDesc.SampleMask = 0xFFFFFFFF;
 
-        pipelineDesc.RasterizerState.SlopeScaledDepthBias = 0;
-        pipelineDesc.RasterizerState.DepthClipEnable = false;
-        pipelineDesc.RasterizerState.MultisampleEnable = false;
+        pipelineDesc.RasterizerState.SlopeScaledDepthBias  = 0;
+        pipelineDesc.RasterizerState.DepthClipEnable       = false;
+        pipelineDesc.RasterizerState.MultisampleEnable     = false;
         pipelineDesc.RasterizerState.AntialiasedLineEnable = false;
         pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
         pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
         pipelineDesc.RasterizerState.FrontCounterClockwise = true;
-        pipelineDesc.RasterizerState.DepthBias = 0;
-        pipelineDesc.RasterizerState.DepthBiasClamp = 0.0;
+        pipelineDesc.RasterizerState.DepthBias             = 0;
+        pipelineDesc.RasterizerState.DepthBiasClamp        = 0.0;
 
         pipelineDesc.PrimitiveTopologyType =
             D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
@@ -256,12 +261,12 @@ struct Drawer_2Dprimitives
     void draw(ID3D12GraphicsCommandList* a_commandList)
     {
         D3D12_VIEWPORT viewport = {};
-        viewport.MaxDepth = 1.0f;
-        viewport.Width = 1280;
-        viewport.Height = 720;
-        D3D12_RECT scissorRect = {};
-        scissorRect.right = 1280;
-        scissorRect.bottom = 720;
+        viewport.MaxDepth       = 1.0f;
+        viewport.Width          = 1280;
+        viewport.Height         = 720;
+        D3D12_RECT scissorRect  = {};
+        scissorRect.right       = 1280;
+        scissorRect.bottom      = 720;
 
         a_commandList->RSSetViewports(1, &viewport);
         a_commandList->RSSetScissorRects(1, &scissorRect);
@@ -307,8 +312,8 @@ struct BunchOfSquares
         time += Float(a_deltaTime);
         for (auto& position : m_squarePositions)
         {
-            position.x += std::sin(time*10.0) * 0.001f;
-            position.y += std::cos(time*10.0) * 0.001f;
+            position.x += std::sin(time * 10.0) * 0.001f;
+            position.y += std::cos(time * 10.0) * 0.001f;
         }
     }
 
@@ -397,17 +402,18 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     void init() override
     {
         crossPlatform::IWindowedApplication::init();
-        init_renderer(render::RendererApi::DX12);
+        m_iRenderer = new dx12::DX12Renderer();
+        m_iRenderer->init();
 
         g_randomGenerator.init(0);
 
         m_mainWindow = add_newWindow("Test 2d Renderer", 1280, 720);
         m_mainWindow->link_inputManager(&m_inputManager);
+        m_mainWindow->link_renderer(m_iRenderer, m_hdlSurface);
 
         m_mainWindow->set_asMainWindow();
         m::Bool MultiViewportsEnabled = false;
         m_mainWindow->set_asImGuiWindow(MultiViewportsEnabled);
-        set_processImGuiMultiViewports(MultiViewportsEnabled);
 
         m_outputNode.window = m_mainWindow;
         m_outputNode.output(m_drawerNode);
@@ -421,7 +427,13 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_drawer.init();
     }
 
-    void destroy() override { crossPlatform::IWindowedApplication::destroy(); }
+    void destroy() override
+    {
+        crossPlatform::IWindowedApplication::destroy();
+
+        m_iRenderer->destroy();
+        delete m_iRenderer;
+    }
 
     Bool step(const Double& a_deltaTime) override
     {
@@ -441,19 +453,21 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         m_startNode.execute();
 
-        start_dearImGuiNewFrame();
+        m_iRenderer->start_dearImGuiNewFrame();
 
         ImGui::NewFrame();
         ImGui::Begin("Engine");
         {
             ImGui::Text("frame time : %f", a_deltaTime);
             ImGui::Text("frame FPS : %f", 1.0 / a_deltaTime);
-            ImGui::Text("nbSuqares : %llu", m_bunchOfSquares.m_squarePositions.size());
+            ImGui::Text("nbSuqares : %llu",
+                        m_bunchOfSquares.m_squarePositions.size());
         }
         ImGui::End();
         ImGui::Render();
 
         render();
+
         return true;
     }
 
@@ -461,10 +475,12 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     Node2dDrawer     m_drawerNode;
     NodeStart        m_startNode;
 
-    Drawer_2Dprimitives m_drawer;
-    BunchOfSquares      m_bunchOfSquares;
-    windows::IWindow*   m_mainWindow = nullptr;
-    input::InputManager m_inputManager;
+    m::render::IRenderer*       m_iRenderer;
+    m::render::ISurface::Handle m_hdlSurface;
+    Drawer_2Dprimitives         m_drawer;
+    BunchOfSquares              m_bunchOfSquares;
+    windows::IWindow*           m_mainWindow = nullptr;
+    input::InputManager         m_inputManager;
 };
 
 M_EXECUTE_WINDOWED_APP(RendererTestApp)

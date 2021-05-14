@@ -1,5 +1,5 @@
-#include <WindowsImpl.hpp>
 #include <Win32Context.hpp>
+#include <WindowsImpl.hpp>
 #ifndef UNICODE
 #define UNICODE
 #endif
@@ -11,13 +11,13 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND   hWnd,
                                                              UINT   msg,
                                                              WPARAM wParam,
                                                              LPARAM lParam);
-namespace m
+namespace m::win32
 {
-namespace win32
-{
-
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
-                                         LPARAM a_lParam)
+                                      LPARAM a_lParam)
 {
     if (m_isImGuiWindow)
     {
@@ -71,7 +71,10 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
             U32 width  = clientRect.right - clientRect.left;
             U32 height = clientRect.bottom - clientRect.top;
 
-            m_renderSurface->resize(width, height);
+            if (m_renderSurface != nullptr)
+            {
+                m_renderSurface->resize(width, height);
+            }
         }
         break;
         default: result = DefWindowProcW(m_hwnd, a_uMsg, a_wParam, a_lParam);
@@ -79,27 +82,24 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
     return result;
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void IWindowImpl::init()
 {
     const WideChar className[] = L"MainWindowClass";
     m_hwnd = m_parentContext->create_window(className, m_windowName,
-                                           m_clientWidth,
-                                        m_clientHeight);
+                                            m_clientWidth, m_clientHeight);
     GetWindowRect(m_hwnd, &m_windowRect);
 
     SetWindowLongPtr(m_hwnd, GWLP_USERDATA, LONG_PTR(this));
 
-    if (m_parentRenderer != nullptr)
-    {
-        m_renderSurface = m_parentRenderer->get_newSurface();
-        render::Win32SurfaceInitData surfaceData = {m_hwnd, m_clientWidth,
-                                                    m_clientHeight};
-        m_renderSurface->init_win32(surfaceData);
-    }
-
     ShowWindow(m_hwnd, SW_NORMAL);
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void IWindowImpl::render()
 {
     if (m_renderSurface != nullptr)
@@ -108,6 +108,9 @@ void IWindowImpl::render()
     }
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void IWindowImpl::destroy()
 {
     if (m_renderSurface != nullptr)
@@ -127,17 +130,40 @@ void IWindowImpl::destroy()
     }
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void IWindowImpl::link_renderer(render::IRenderer*        a_renderer,
+                                render::ISurface::Handle& a_outputHandle)
+{
+    m_parentRenderer = a_renderer;
+
+    if (m_parentRenderer != nullptr)
+    {
+        m_renderSurface = m_parentRenderer->get_newSurface();
+        render::Win32SurfaceInitData surfaceData = {m_hwnd, m_clientWidth,
+                                                    m_clientHeight};
+        m_renderSurface->init_win32(surfaceData);
+    }
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void IWindowImpl::set_asMainWindow()
 {
     static m::Bool s_mainWindowIsDefined = false;
 
-    //There can only be one main window
+    // There can only be one main window
     mHardAssert(s_mainWindowIsDefined == false);
     mHardAssert(m_isMainWindow == false);
     s_mainWindowIsDefined = true;
-    m_isMainWindow = true;
+    m_isMainWindow        = true;
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void IWindowImpl::set_asImGuiWindow(Bool a_supportMultiViewports)
 {
     // There can only be one ImGui window, and it's the main one
@@ -164,6 +190,9 @@ void IWindowImpl::set_asImGuiWindow(Bool a_supportMultiViewports)
     }
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void IWindowImpl::set_fullScreen(Bool a_fullscreen)
 {
     if (m_fullscreen != a_fullscreen)
@@ -172,6 +201,9 @@ void IWindowImpl::set_fullScreen(Bool a_fullscreen)
     }
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void IWindowImpl::toggle_fullScreen()
 {
     m_fullscreen = !m_fullscreen;
@@ -215,10 +247,12 @@ void IWindowImpl::toggle_fullScreen()
     }
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void IWindowImpl::callback_dearImGuiNewFrame()
 {
     ImGui_ImplWin32_NewFrame();
 }
 
-}
-}
+}  // namespace m::win32

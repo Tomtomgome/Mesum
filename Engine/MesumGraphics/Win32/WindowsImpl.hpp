@@ -26,16 +26,14 @@ class IWindowImpl : public windows::IWindow
     {
         m_linkedInputManager = a_inputManager;
     };
+    void link_renderer(render::IRenderer*        a_renderer,
+                       render::ISurface::Handle& a_outputHandle) override;
     void set_size(UInt a_width, UInt a_height) override
     {
         m_clientWidth  = a_width;
         m_clientHeight = a_height;
     }
     void set_windowName(std::string a_name) override { m_windowName = a_name; }
-    void set_renderer(render::IRenderer* a_renderer) override
-    {
-        m_parentRenderer = a_renderer;
-    }
     void set_asMainWindow() override;
     void set_asImGuiWindow(Bool a_supportMultiViewports) override;
     void set_fullScreen(Bool a_fullscreen) override;

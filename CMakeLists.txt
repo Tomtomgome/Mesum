@@ -21,6 +21,9 @@ elseif(WIN32)
     set(BM_WIN32 "TRUE")
 endif ()
 
+#------------------------------------------------------------------------------
+#User configuration
+#------------------------------------------------------------------------------
 #Build as dynamic
 set(BM_DYNAMIC_LINK "FALSE")
 
@@ -29,12 +32,32 @@ set(BM_ALL_RENDERER "TRUE")
 #Defines the default renderer (BM_DX12/BM_VULKAN) (mendatory)
 set(BM_DEFAULT_RENDERER "BM_DX12")
 
+
+
+#------------------------------------------------------------------------------
+#Implementation
+#------------------------------------------------------------------------------
+#renderer defines
 if(BM_DEFAULT_RENDERER STREQUAL "BM_DX12")
     set(BM_DX12_RENDERER "TRUE")
 elseif(BM_DEFAULT_RENDERER STREQUAL "BM_VULKAN")
     set(BM_VULKAN_RENDERER "TRUE")
 endif()
 
+if(BM_ALL_RENDERER)
+    add_compile_definitions(_M_ALL_RENDERER)
+endif()
+
+if(BM_DX12_RENDERER)
+    if(BM_UNIX)
+        message(FATAL_ERROR "There is no support for DX12 on unix platforms")
+    endif()
+    add_compile_definitions(_M_DX12_RENDERER)
+elseif(BM_VULKAN_RENDERER)
+    add_compile_definitions(_M_VULKAN_RENDERER)
+endif()
+
+#Build defines
 if(BM_DYNAMIC_LINK)
     add_compile_definitions(_M_DLL_DYNAMIC_LINK)
 endif()

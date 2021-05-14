@@ -2,12 +2,6 @@ set(APP_NAME ArchitectureGraphicsTest)
 
 project(${APP_NAME} VERSION 1.0.0 DESCRIPTION "Small test for Cmake and mesum graphics")
 
-if(BM_DX12_RENDERER)
-add_compile_definitions(_M_DX12_RENDERER)
-elseif(BM_VULKAN_RENDERER)
-add_compile_definitions(_M_VULKAN_RENDERER)
-endif()
-
 set(SOURCES WindowedApps.cpp)
 add_executable(${APP_NAME} ${BM_APP_WINDOWED} ${SOURCES})
 target_link_libraries(${APP_NAME} PUBLIC MesumGraphics)

@@ -21,14 +21,8 @@ namespace application
 class IWindowedApplicationBase : public ITimedLoopApplication
 {
    public:
-    virtual void init_renderer(
-        render::RendererApi a_renderApi = render::RendererApi::Default) = 0;
-
     virtual windows::IWindow* add_newWindow(std::string a_name, U32 a_width,
                                             U32 a_height) = 0;
-    virtual void              set_processImGuiMultiViewports(
-                     Bool a_supportMultiViewPorts) = 0;
-    virtual void start_dearImGuiNewFrame()         = 0;
 
     virtual void render() = 0;
 };
