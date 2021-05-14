@@ -78,13 +78,14 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m_mainWindow = add_newWindow("Cube mover app", width, height);
         m_mainWindow->set_asMainWindow();
 
-        m_iRenderer = new m::dx12::DX12Renderer();
+        m_iRenderer = new m::vulkan::VulkanRenderer();
         m_iRenderer->init();
 
         m_hdlSurface = m_mainWindow->link_renderer(m_iRenderer);
 
         m::Bool MultiViewportsEnabled = false;
         m_mainWindow->set_asImGuiWindow(MultiViewportsEnabled);
+        m_hdlSurface->surface->set_asDearImGuiSurface();
 
         m_mainWindow->link_inputManager(&m_inputManager);
 
@@ -157,7 +158,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         m_mover.move(m_x, m_y);
 
-        m_iRenderer->start_dearImGuiNewFrame();
+        start_dearImGuiNewFrame(m_iRenderer);
 
         ImGui::NewFrame();
 

@@ -45,8 +45,6 @@ class IWindowImpl : public windows::IWindow
 
     [[nodiscard]] Bool is_flaggedToBeClosed() const { return m_flagToBeClosed; }
 
-    void callback_dearImGuiNewFrame();
-
    private:
     input::InputManager* m_linkedInputManager;
 

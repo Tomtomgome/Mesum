@@ -414,6 +414,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_mainWindow->set_asMainWindow();
         m::Bool MultiViewportsEnabled = false;
         m_mainWindow->set_asImGuiWindow(MultiViewportsEnabled);
+        m_hdlSurface->surface->set_asDearImGuiSurface();
 
         m_outputNode.window = m_mainWindow;
         m_outputNode.output(m_drawerNode);
@@ -453,7 +454,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         m_startNode.execute();
 
-        m_iRenderer->start_dearImGuiNewFrame();
+        start_dearImGuiNewFrame(m_iRenderer);
 
         ImGui::NewFrame();
         ImGui::Begin("Engine");

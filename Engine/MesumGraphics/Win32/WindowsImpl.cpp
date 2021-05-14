@@ -174,11 +174,6 @@ void IWindowImpl::set_asImGuiWindow(Bool a_supportMultiViewports)
     ImGui::StyleColorsDark();
 
     ImGui_ImplWin32_Init(m_hwnd);
-    if (m_surfaceHandle != nullptr)
-    {
-        m_surfaceHandle->surface->init_dearImGui(
-            Callback<void>(this, &IWindowImpl::callback_dearImGuiNewFrame));
-    }
 }
 
 //-----------------------------------------------------------------------------
@@ -236,14 +231,6 @@ void IWindowImpl::toggle_fullScreen()
 
         ShowWindow(m_hwnd, SW_NORMAL);
     }
-}
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-void IWindowImpl::callback_dearImGuiNewFrame()
-{
-    ImGui_ImplWin32_NewFrame();
 }
 
 }  // namespace m::win32

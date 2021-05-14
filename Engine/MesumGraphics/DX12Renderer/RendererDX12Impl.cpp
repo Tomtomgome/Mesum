@@ -49,10 +49,9 @@ void DX12Surface::init_x11(render::X11SurfaceInitData& a_data)
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void DX12Surface::init_dearImGui(const Callback<void>& a_callback)
+void DX12Surface::set_asDearImGuiSurface()
 {
-    m_isHoldingDearImgui                                      = true;
-    DX12Context::gs_dx12Contexte->m_dearImGuiPlatImplCallback = a_callback;
+    m_isHoldingDearImgui = true;
 
     m_SRVDescriptorHeap = create_descriptorHeap(
         DX12Context::gs_dx12Contexte->m_device,
@@ -92,7 +91,8 @@ D3D12_CPU_DESCRIPTOR_HANDLE DX12Surface::get_currentRtvDesc()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void DX12Surface::add_commandListToExecute(ComPtr<ID3D12GraphicsCommandList2> a_commandListToAdd)
+void DX12Surface::add_commandListToExecute(
+    ComPtr<ID3D12GraphicsCommandList2> a_commandListToAdd)
 {
     m_commandsToExecute.push_back(a_commandListToAdd);
 }
@@ -130,10 +130,10 @@ void DX12Surface::render()
         DX12Context::gs_dx12Contexte->get_commandQueue().execute_commandList(
             graphicCommandList);
 
-        for(auto command : m_commandsToExecute)
+        for (auto command : m_commandsToExecute)
         {
-            DX12Context::gs_dx12Contexte->get_commandQueue().execute_commandList(
-                command.Get());
+            DX12Context::gs_dx12Contexte->get_commandQueue()
+                .execute_commandList(command.Get());
         }
 
         graphicCommandList =
@@ -271,10 +271,9 @@ void DX12Renderer::destroy()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void DX12Renderer::start_dearImGuiNewFrame()
+void DX12Renderer::start_dearImGuiNewFrameRenderer() const
 {
     ImGui_ImplDX12_NewFrame();
-    DX12Context::gs_dx12Contexte->m_dearImGuiPlatImplCallback.call();
 }
 
 //-----------------------------------------------------------------------------

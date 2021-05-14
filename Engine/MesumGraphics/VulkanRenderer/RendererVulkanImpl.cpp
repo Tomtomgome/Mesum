@@ -49,10 +49,9 @@ void VulkanSurface::init_x11(render::X11SurfaceInitData& a_data)
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void VulkanSurface::init_dearImGui(Callback<void> const& a_callback)
+void VulkanSurface::set_asDearImGuiSurface()
 {
-    m_isHoldingDearImgui                                          = true;
-    VulkanContext::gs_VulkanContexte->m_dearImGuiPlatImplCallback = a_callback;
+    m_isHoldingDearImgui = true;
 
     {
         VkDescriptorPoolSize pool_sizes[] = {
@@ -530,10 +529,9 @@ void VulkanRenderer::destroy()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void VulkanRenderer::start_dearImGuiNewFrame()
+void VulkanRenderer::start_dearImGuiNewFrameRenderer() const
 {
     ImGui_ImplVulkan_NewFrame();
-    VulkanContext::gs_VulkanContexte->m_dearImGuiPlatImplCallback.call();
 }
 
 //-----------------------------------------------------------------------------

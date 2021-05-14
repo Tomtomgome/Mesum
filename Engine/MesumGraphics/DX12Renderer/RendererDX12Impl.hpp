@@ -18,7 +18,7 @@ class DX12Surface : public render::ISurface
     void init_win32(render::Win32SurfaceInitData& a_data) override;
     void init_x11(render::X11SurfaceInitData& a_data) override;
 
-    void init_dearImGui(const Callback<void>& a_callback) override;
+    void set_asDearImGuiSurface() override;
 
     void render() override;
     void resize(U32 a_width, U32 a_height) override;
@@ -26,7 +26,8 @@ class DX12Surface : public render::ISurface
     void destroy() override;
 
     D3D12_CPU_DESCRIPTOR_HANDLE get_currentRtvDesc();
-    void add_commandListToExecute(ComPtr<ID3D12GraphicsCommandList2> a_commandListToAdd);
+    void                        add_commandListToExecute(
+                               ComPtr<ID3D12GraphicsCommandList2> a_commandListToAdd);
 
     // The number of swap chain back buffers.
     static const U8 scm_numFrames = 3;
@@ -44,7 +45,6 @@ class DX12Surface : public render::ISurface
         ComPtr<ID3D12DescriptorHeap> a_descriptorHeap);
 
    private:
-
     // By default, enable V-Sync.
     // Can be toggled with the V key.
     Bool m_vSync              = true;
@@ -80,11 +80,11 @@ class DX12Renderer : public render::IRenderer
     void destroy() override;
 
     Bool get_supportDearImGuiMultiViewports() override { return true; }
-    void start_dearImGuiNewFrame() override;
+    void start_dearImGuiNewFrameRenderer() const override;
 
     render::ISurface* get_newSurface() override;
 };
 
-}  // namespace m
+}  // namespace m::dx12
 
 #endif  // M_RendererDX12Impl

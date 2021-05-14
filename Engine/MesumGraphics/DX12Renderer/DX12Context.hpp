@@ -27,8 +27,6 @@ class DX12Context
     ComPtr<ID3D12Device2> m_device;
     DX12CommandQueue      m_commandQueue;
 
-    Callback<void> m_dearImGuiPlatImplCallback;
-
    private:
     // Use WARP adapter
     Bool g_UseWarp = false;

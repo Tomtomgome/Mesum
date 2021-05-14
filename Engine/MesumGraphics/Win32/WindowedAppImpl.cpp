@@ -4,6 +4,8 @@
 #include <WindowedAppImpl.hpp>
 #include <WindowsImpl.hpp>
 
+#include "imgui_impl_win32.h"
+
 namespace m::win32
 {
 //-----------------------------------------------------------------------------
@@ -39,6 +41,16 @@ windows::IWindow* IWindowedApplicationImpl::add_newWindow(std::string a_name,
     newWindow->init();
 
     return newWindow;
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void IWindowedApplicationImpl::start_dearImGuiNewFrame(
+    render::IRenderer const* a_renderer) const
+{
+    a_renderer->start_dearImGuiNewFrameRenderer();
+    ImGui_ImplWin32_NewFrame();
 }
 
 //-----------------------------------------------------------------------------

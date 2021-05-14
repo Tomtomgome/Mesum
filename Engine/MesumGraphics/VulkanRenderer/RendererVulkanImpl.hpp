@@ -18,7 +18,7 @@ class VulkanSurface : public render::ISurface
     void init_win32(render::Win32SurfaceInitData& a_data) override;
     void init_x11(render::X11SurfaceInitData& a_data) override;
 
-    void init_dearImGui(Callback<void> const& a_callback) override;
+    void set_asDearImGuiSurface() override;
 
     void render() override;
     void resize(U32 a_width, U32 a_height) override;
@@ -81,7 +81,7 @@ class VulkanRenderer : public render::IRenderer
     void destroy() override;
 
     Bool get_supportDearImGuiMultiViewports() override { return false; }
-    void start_dearImGuiNewFrame() override;
+    void start_dearImGuiNewFrameRenderer() const override;
 
     render::ISurface* get_newSurface() override;
 };

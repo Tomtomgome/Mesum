@@ -23,6 +23,9 @@ class IWindowedApplicationBase : public ITimedLoopApplication
    public:
     virtual windows::IWindow* add_newWindow(std::string a_name, U32 a_width,
                                             U32 a_height) = 0;
+
+    virtual void start_dearImGuiNewFrame(
+        render::IRenderer const* a_renderer) const = 0;
 };
 }  // namespace application
 };  // namespace m

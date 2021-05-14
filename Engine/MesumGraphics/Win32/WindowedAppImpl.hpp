@@ -15,6 +15,9 @@ class IWindowedApplicationImpl : public application::IWindowedApplicationBase
     windows::IWindow* add_newWindow(std::string a_name, U32 a_width,
                                     U32 a_height) override;
 
+    void start_dearImGuiNewFrame(
+        render::IRenderer const* a_renderer) const override;
+
    protected:
     void init() override;
     void destroy() override;

@@ -50,10 +50,6 @@ class VulkanContext
         return gs_VulkanContexte->m_queueFamilyIndex;
     }
 
-   public:
-    // DearImGui
-    Callback<void> m_dearImGuiPlatImplCallback;
-
    private:
     // Instance and devices
     VkInstance       m_instance       = VK_NULL_HANDLE;

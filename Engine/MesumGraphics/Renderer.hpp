@@ -50,7 +50,7 @@ class ISurface
     virtual void init_win32(Win32SurfaceInitData& a_data) = 0;
     virtual void init_x11(X11SurfaceInitData& a_data)     = 0;
 
-    virtual void init_dearImGui(Callback<void> const& a_callback) = 0;
+    virtual void set_asDearImGuiSurface() = 0;
 
     virtual void render()                          = 0;
     virtual void resize(U32 a_width, U32 a_height) = 0;
@@ -60,7 +60,7 @@ class ISurface
     struct Handle
     {
         ISurface* surface;
-        Bool isValid;
+        Bool      isValid;
     };
 
     using HdlPtr = std::shared_ptr<Handle>;
@@ -74,8 +74,8 @@ class IRenderer
     virtual void init()    = 0;
     virtual void destroy() = 0;
 
-    virtual Bool get_supportDearImGuiMultiViewports() = 0;
-    virtual void start_dearImGuiNewFrame()            = 0;
+    virtual Bool get_supportDearImGuiMultiViewports()    = 0;
+    virtual void start_dearImGuiNewFrameRenderer() const = 0;
 
     virtual ISurface* get_newSurface() = 0;
 };
