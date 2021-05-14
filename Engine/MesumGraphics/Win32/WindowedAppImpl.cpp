@@ -44,19 +44,6 @@ windows::IWindow* IWindowedApplicationImpl::add_newWindow(std::string a_name,
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void IWindowedApplicationImpl::render()
-{
-    for (auto element = m_windows.begin(); element != m_windows.end();
-         ++element)
-    {
-        windows::IWindow* window = (*element);
-        window->render();
-    }
-}
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
 void IWindowedApplicationImpl::init()
 {
     WindowedLaunchData& data = *(WindowedLaunchData*)m_appData;

@@ -409,7 +409,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         m_mainWindow = add_newWindow("Test 2d Renderer", 1280, 720);
         m_mainWindow->link_inputManager(&m_inputManager);
-        m_mainWindow->link_renderer(m_iRenderer, m_hdlSurface);
+        m_hdlSurface = m_mainWindow->link_renderer(m_iRenderer);
 
         m_mainWindow->set_asMainWindow();
         m::Bool MultiViewportsEnabled = false;
@@ -466,7 +466,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         ImGui::End();
         ImGui::Render();
 
-        render();
+        m_hdlSurface->surface->render();
 
         return true;
     }
@@ -476,7 +476,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     NodeStart        m_startNode;
 
     m::render::IRenderer*       m_iRenderer;
-    m::render::ISurface::Handle m_hdlSurface;
+    m::render::ISurface::HdlPtr m_hdlSurface;
     Drawer_2Dprimitives         m_drawer;
     BunchOfSquares              m_bunchOfSquares;
     windows::IWindow*           m_mainWindow = nullptr;

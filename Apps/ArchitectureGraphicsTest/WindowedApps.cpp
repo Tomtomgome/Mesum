@@ -57,7 +57,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m_secondWindow->link_inputManager(&m_inputManager);
     }
 
-    virtual void init() override
+    void init() override
     {
         m::crossPlatform::IWindowedApplication::init();
 
@@ -81,7 +81,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m_iRenderer = new m::dx12::DX12Renderer();
         m_iRenderer->init();
 
-        m_mainWindow->link_renderer(m_iRenderer, m_hdlSurface);
+        m_hdlSurface = m_mainWindow->link_renderer(m_iRenderer);
 
         m::Bool MultiViewportsEnabled = false;
         m_mainWindow->set_asImGuiWindow(MultiViewportsEnabled);
@@ -128,7 +128,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         set_microSecondsLimit(16000);
     }
 
-    virtual void destroy() override
+    void destroy() override
     {
         m::crossPlatform::IWindowedApplication::destroy();
 
@@ -136,7 +136,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         delete m_iRenderer;
     }
 
-    virtual m::Bool step(const m::Double& a_deltaTime) override
+    m::Bool step(const m::Double& a_deltaTime) override
     {
         if (!m::crossPlatform::IWindowedApplication::step(a_deltaTime))
         {
@@ -165,7 +165,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         ImGui::ShowDemoWindow(&showDemo);
         ImGui::Render();
 
-        render();
+        m_hdlSurface->surface->render();
 
         if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
         {
@@ -181,12 +181,12 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
     m::Float m_x = 0.0f;
     m::Float m_y = 0.0f;
 
-    m::render::IRenderer* m_iRenderer;
-    m::render::ISurface*  m_iSurface;
-    m::render::ISurface::Handle      m_hdlSurface;
-    m::input::InputManager m_inputManager;
-    m::windows::IWindow*   m_mainWindow;
-    CubeMover              m_mover;
+    m::render::IRenderer*       m_iRenderer;
+    m::render::ISurface*        m_iSurface;
+    m::render::ISurface::HdlPtr m_hdlSurface;
+    m::input::InputManager      m_inputManager;
+    m::windows::IWindow*        m_mainWindow;
+    CubeMover                   m_mover;
 
     const m::logging::ChannelID m_CUBEAPP_ID = mLOG_GET_ID();
 };

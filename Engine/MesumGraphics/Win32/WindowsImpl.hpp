@@ -17,17 +17,16 @@ class IWindowImpl : public windows::IWindow
     LRESULT process_messages(UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam);
 
     void init() override;
-    void render() override;
     void destroy() override;
 
-    render::ISurface* get_renderSurface() override { return m_renderSurface; }
+    render::ISurface* get_renderSurface() override { return m_surfaceHandle->surface; }
 
     void link_inputManager(input::InputManager* a_inputManager) override
     {
         m_linkedInputManager = a_inputManager;
     };
-    void link_renderer(render::IRenderer*        a_renderer,
-                       render::ISurface::Handle& a_outputHandle) override;
+    render::ISurface::HdlPtr link_renderer(
+        render::IRenderer* a_renderer) override;
     void set_size(UInt a_width, UInt a_height) override
     {
         m_clientWidth  = a_width;
@@ -67,9 +66,10 @@ class IWindowImpl : public windows::IWindow
     // Window rectangle (used to toggle fullscreen state).
     RECT m_windowRect;
 
-    WIN32Context const* m_parentContext  = nullptr;
-    render::IRenderer*  m_parentRenderer = nullptr;
-    render::ISurface*   m_renderSurface  = nullptr;
+    WIN32Context const*      m_parentContext = nullptr;
+    render::ISurface::HdlPtr m_surfaceHandle = nullptr;
+
+    Signal<U32, U32> m_resizeSignal;
 };
 
 }  // namespace m::win32

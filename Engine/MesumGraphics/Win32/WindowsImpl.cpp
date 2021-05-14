@@ -71,10 +71,7 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
             U32 width  = clientRect.right - clientRect.left;
             U32 height = clientRect.bottom - clientRect.top;
 
-            if (m_renderSurface != nullptr)
-            {
-                m_renderSurface->resize(width, height);
-            }
+            m_resizeSignal.call(width, height);
         }
         break;
         default: result = DefWindowProcW(m_hwnd, a_uMsg, a_wParam, a_lParam);
@@ -100,26 +97,16 @@ void IWindowImpl::init()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void IWindowImpl::render()
-{
-    if (m_renderSurface != nullptr)
-    {
-        m_renderSurface->render();
-    }
-}
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
 void IWindowImpl::destroy()
 {
-    if (m_renderSurface != nullptr)
+    if (m_surfaceHandle != nullptr)
     {
-        m_renderSurface->destroy();
-        delete m_renderSurface;
-        m_renderSurface = nullptr;
+        m_surfaceHandle->isValid = false;
+        m_surfaceHandle->surface->destroy();
+        delete m_surfaceHandle->surface;
+        m_surfaceHandle = nullptr;
     }
-    m_parentRenderer = nullptr;
+
     ::DestroyWindow(m_hwnd);
     m_hwnd = NULL;
 
@@ -133,18 +120,22 @@ void IWindowImpl::destroy()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void IWindowImpl::link_renderer(render::IRenderer*        a_renderer,
-                                render::ISurface::Handle& a_outputHandle)
+render::ISurface::HdlPtr IWindowImpl::link_renderer(
+    render::IRenderer* a_renderer)
 {
-    m_parentRenderer = a_renderer;
+    mHardAssert(a_renderer != nullptr);
+    render::ISurface::HdlPtr surfaceHandle =
+        std::make_shared<render::ISurface::Handle>();
+    surfaceHandle->surface                   = a_renderer->get_newSurface();
+    render::Win32SurfaceInitData surfaceData = {m_hwnd, m_clientWidth,
+                                                m_clientHeight};
+    surfaceHandle->surface->init_win32(surfaceData);
 
-    if (m_parentRenderer != nullptr)
-    {
-        m_renderSurface = m_parentRenderer->get_newSurface();
-        render::Win32SurfaceInitData surfaceData = {m_hwnd, m_clientWidth,
-                                                    m_clientHeight};
-        m_renderSurface->init_win32(surfaceData);
-    }
+    m_resizeSignal.attach_ToSignal(Callback<void, U32, U32>(
+        surfaceHandle->surface, &render::ISurface::resize));
+
+    m_surfaceHandle = surfaceHandle;
+    return surfaceHandle;
 }
 
 //-----------------------------------------------------------------------------
@@ -183,9 +174,9 @@ void IWindowImpl::set_asImGuiWindow(Bool a_supportMultiViewports)
     ImGui::StyleColorsDark();
 
     ImGui_ImplWin32_Init(m_hwnd);
-    if (m_renderSurface != nullptr)
+    if (m_surfaceHandle != nullptr)
     {
-        m_renderSurface->init_dearImGui(
+        m_surfaceHandle->surface->init_dearImGui(
             Callback<void>(this, &IWindowImpl::callback_dearImGuiNewFrame));
     }
 }

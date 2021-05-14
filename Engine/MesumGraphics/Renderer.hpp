@@ -59,8 +59,11 @@ class ISurface
 
     struct Handle
     {
-        const ISurface* m_surface;
+        ISurface* surface;
+        Bool isValid;
     };
+
+    using HdlPtr = std::shared_ptr<Handle>;
 };
 
 class IRenderer

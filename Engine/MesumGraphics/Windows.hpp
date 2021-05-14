@@ -24,18 +24,17 @@ class IWindow
    public:
     virtual ~IWindow()     = default;
     virtual void init()    = 0;
-    virtual void render()  = 0;
     virtual void destroy() = 0;
 
     virtual render::ISurface* get_renderSurface() = 0;
 
-    virtual void link_inputManager(input::InputManager* a_inputManager)  = 0;
-    virtual void link_renderer(render::IRenderer*        a_renderer,
-                               render::ISurface::Handle& a_outputHandle) = 0;
-    virtual void set_size(UInt a_width, UInt a_height)                   = 0;
-    virtual void set_windowName(std::string a_name)                      = 0;
-    virtual void set_asMainWindow()                                      = 0;
-    virtual void set_asImGuiWindow(Bool a_supportMultiViewports)         = 0;
+    virtual void link_inputManager(input::InputManager* a_inputManager) = 0;
+    virtual render::ISurface::HdlPtr link_renderer(
+        render::IRenderer* a_renderer)                           = 0;
+    virtual void set_size(UInt a_width, UInt a_height)           = 0;
+    virtual void set_windowName(std::string a_name)              = 0;
+    virtual void set_asMainWindow()                              = 0;
+    virtual void set_asImGuiWindow(Bool a_supportMultiViewports) = 0;
 
     virtual void set_fullScreen(Bool a_fullscreen) = 0;
     virtual void toggle_fullScreen()               = 0;
