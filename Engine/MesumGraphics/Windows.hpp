@@ -26,8 +26,6 @@ class IWindow
     virtual void init()    = 0;
     virtual void destroy() = 0;
 
-    virtual render::ISurface* get_renderSurface() = 0;
-
     virtual void link_inputManager(input::InputManager* a_inputManager) = 0;
     virtual render::ISurface::HdlPtr link_renderer(
         render::IRenderer* a_renderer)                           = 0;

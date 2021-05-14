@@ -333,8 +333,7 @@ struct NodeOutputWindow
 
     void record(dx12::ComPtr<ID3D12GraphicsCommandList2> const& a_commandList)
     {
-        auto currentSurface =
-            static_cast<dx12::DX12Surface*>(window->get_renderSurface());
+        auto currentSurface = static_cast<dx12::DX12Surface*>(surfaceHandle->surface);
 
         D3D12_CPU_DESCRIPTOR_HANDLE rtv;
         rtv = currentSurface->get_currentRtvDesc();
@@ -347,7 +346,7 @@ struct NodeOutputWindow
         }
     }
 
-    windows::IWindow* window;
+    render::ISurface::HdlPtr surfaceHandle;
     CallbackRecord    nextInstruction;
 };
 
@@ -416,7 +415,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_mainWindow->set_asImGuiWindow(MultiViewportsEnabled);
         m_hdlSurface->surface->set_asDearImGuiSurface();
 
-        m_outputNode.window = m_mainWindow;
+        m_outputNode.surfaceHandle = m_hdlSurface;
         m_outputNode.output(m_drawerNode);
         m_drawerNode.m_drawer = &m_drawer;
         m_startNode.output(m_outputNode);
