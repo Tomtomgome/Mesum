@@ -1,10 +1,10 @@
-#include <imgui.h>
 #include <imgui_impl_dx12.h>
 #include <imgui_impl_win32.h>
 
 #include <Math.hpp>
 #include <MesumGraphics/CrossPlatform.hpp>
 #include <MesumGraphics/DX12Renderer/DX12Context.hpp>
+#include <MesumGraphics/DearImGui/MesumDearImGui.hpp>
 
 using namespace m;
 
@@ -332,14 +332,15 @@ struct Node
         nextInstruction = CallbackRecord(&a_output, &tt_Output::record);
     }
 
-    CallbackRecord    nextInstruction;
+    CallbackRecord nextInstruction;
 };
 
 struct NodeOutputSetter : public Node
 {
     void record(dx12::ComPtr<ID3D12GraphicsCommandList2> const& a_commandList)
     {
-        auto currentSurface = static_cast<dx12::DX12Surface*>(surfaceHandle->surface);
+        auto currentSurface =
+            static_cast<dx12::DX12Surface*>(surfaceHandle->surface);
 
         D3D12_CPU_DESCRIPTOR_HANDLE rtv;
         rtv = currentSurface->get_currentRtvDesc();
@@ -377,26 +378,25 @@ struct NodeDearImGui : public Node
     {
         m_SRVDescriptorHeap = dx12::create_descriptorHeap(
             dx12::DX12Context::gs_dx12Contexte->m_device,
-            D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, dx12::DX12Surface::scm_numFrames,
+            D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV,
+            dx12::DX12Surface::scm_numFrames,
             D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE);
 
         ImGui_ImplDX12_Init(
-            dx12::DX12Context::gs_dx12Contexte->m_device.Get(), dx12::DX12Surface::scm_numFrames,
-            DXGI_FORMAT_B8G8R8A8_UNORM, m_SRVDescriptorHeap.Get(),
+            dx12::DX12Context::gs_dx12Contexte->m_device.Get(),
+            dx12::DX12Surface::scm_numFrames, DXGI_FORMAT_B8G8R8A8_UNORM,
+            m_SRVDescriptorHeap.Get(),
             m_SRVDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
             m_SRVDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
     }
 
-    void destroy()
-    {
-        ImGui_ImplDX12_Shutdown();
-    }
+    void destroy() { ImGui_ImplDX12_Shutdown(); }
 
     void record(dx12::ComPtr<ID3D12GraphicsCommandList2> const& a_commandList)
     {
-        //a_commandList->OMSetRenderTargets(1, &rtv, FALSE, NULL);
-        a_commandList->SetDescriptorHeaps(
-            1, m_SRVDescriptorHeap.GetAddressOf());
+        // a_commandList->OMSetRenderTargets(1, &rtv, FALSE, NULL);
+        a_commandList->SetDescriptorHeaps(1,
+                                          m_SRVDescriptorHeap.GetAddressOf());
         ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(),
                                       a_commandList.Get());
     }
@@ -406,7 +406,7 @@ struct NodeDearImGui : public Node
 
 struct IDearImGuiNode : public Node
 {
-    virtual void init() = 0;
+    virtual void init()    = 0;
     virtual void destroy() = 0;
 };
 
@@ -416,26 +416,25 @@ struct DearImGuiDX12Node : public IDearImGuiNode
     {
         m_SRVDescriptorHeap = dx12::create_descriptorHeap(
             dx12::DX12Context::gs_dx12Contexte->m_device,
-            D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, dx12::DX12Surface::scm_numFrames,
+            D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV,
+            dx12::DX12Surface::scm_numFrames,
             D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE);
 
         ImGui_ImplDX12_Init(
-            dx12::DX12Context::gs_dx12Contexte->m_device.Get(), dx12::DX12Surface::scm_numFrames,
-            DXGI_FORMAT_B8G8R8A8_UNORM, m_SRVDescriptorHeap.Get(),
+            dx12::DX12Context::gs_dx12Contexte->m_device.Get(),
+            dx12::DX12Surface::scm_numFrames, DXGI_FORMAT_B8G8R8A8_UNORM,
+            m_SRVDescriptorHeap.Get(),
             m_SRVDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
             m_SRVDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
     }
 
-    void destroy() override
-    {
-        ImGui_ImplDX12_Shutdown();
-    }
+    void destroy() override { ImGui_ImplDX12_Shutdown(); }
 
     void record(dx12::ComPtr<ID3D12GraphicsCommandList2> const& a_commandList)
     {
-        //a_commandList->OMSetRenderTargets(1, &rtv, FALSE, NULL);
-        a_commandList->SetDescriptorHeaps(
-            1, m_SRVDescriptorHeap.GetAddressOf());
+        // a_commandList->OMSetRenderTargets(1, &rtv, FALSE, NULL);
+        a_commandList->SetDescriptorHeaps(1,
+                                          m_SRVDescriptorHeap.GetAddressOf());
         ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(),
                                       a_commandList.Get());
     }
@@ -458,32 +457,6 @@ struct NodeStart : public Node
     }
 };
 
-namespace DearImGuiContext
-{
-    static void init(windows::IWindow* a_mainWindow)
-    {
-        mAssert(a_mainWindow != nullptr);
-
-        IMGUI_CHECKVERSION();
-        ImGui::CreateContext();
-        ImGuiIO& io = ImGui::GetIO();
-        (void)io;
-//        if (a_supportMultiViewports)
-//        {
-//            io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-//        }
-        io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-        ImGui::StyleColorsDark();
-
-        a_mainWindow->set_asImGuiWindow();
-    }
-
-    static void destroy()
-    {
-        ImGui::DestroyContext();
-    }
-};
-
 class RendererTestApp : public m::crossPlatform::IWindowedApplication
 {
     void init() override
@@ -499,12 +472,8 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_hdlSurface = m_mainWindow->link_renderer(m_iRenderer);
 
         m_mainWindow->set_asMainWindow();
-        m::Bool MultiViewportsEnabled = false;
 
-        DearImGuiContext::init(m_mainWindow);
-
-        //m_mainWindow->set_asImGuiWindow(MultiViewportsEnabled);
-        //m_hdlSurface->surface->set_asDearImGuiSurface();
+        m::dearImGui::init(m_mainWindow);
 
         m_outputSetterNode.surfaceHandle = m_hdlSurface;
         m_outputSetterNode.output_to(m_drawerNode);
@@ -530,7 +499,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         m_imGuiNode.destroy();
 
-        DearImGuiContext::destroy();
+        m::dearImGui::destroy();
     }
 
     Bool step(const Double& a_deltaTime) override
@@ -548,7 +517,6 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         {
             m_drawer.add_cube(position);
         }
-
 
         start_dearImGuiNewFrame(m_iRenderer);
 

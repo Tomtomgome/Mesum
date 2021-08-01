@@ -13,16 +13,20 @@ set(SOURCES imgui_demo.cpp
             imgui_draw.cpp
             imgui_tables.cpp
             imgui_widgets.cpp
-            imgui.cpp)
+            imgui.cpp
+            MesumDearImGui.cpp)
 
 set(HEADERS imconfig.h
             imgui_internal.h
             imgui.h
             imstb_rectpack.h
             imstb_textedit.h
-            imstb_truetype.h)
+            imstb_truetype.h
+            MesumDearImGui.hpp)
 
 add_library(${MODULE_NAME} OBJECT ${SOURCES} ${HEADERS})
+
+target_link_libraries(${MODULE_NAME} MesumCore)
 
 set_target_properties(${MODULE_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(${MODULE_NAME} PROPERTIES FOLDER "MesumGraphics")

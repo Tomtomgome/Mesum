@@ -3,6 +3,7 @@
 #pragma once
 
 #include <MesumCore/Kernel/Types.hpp>
+#include <Renderer.hpp>
 #include <string>
 
 namespace m
@@ -11,18 +12,13 @@ namespace input
 {
 class InputManager;
 }
-namespace render
-{
-class IRenderer;
-class ISurface;
-}  // namespace render
 
 namespace windows
 {
 class IWindow
 {
    public:
-    virtual ~IWindow() = default;
+    virtual ~IWindow()     = default;
     virtual void init()    = 0;
     virtual void destroy() = 0;
 
