@@ -1,4 +1,6 @@
 #include <imgui.h>
+#include <imgui_impl_dx12.h>
+#include <imgui_impl_win32.h>
 
 #include <Math.hpp>
 #include <MesumGraphics/CrossPlatform.hpp>
@@ -322,14 +324,19 @@ struct BunchOfSquares
 using CallbackRecord =
     Callback<void, dx12::ComPtr<ID3D12GraphicsCommandList2> const&>;
 
-struct NodeOutputWindow
+struct Node
 {
     template <typename tt_Output>
-    void output(tt_Output& a_output)
+    void output_to(tt_Output& a_output)
     {
         nextInstruction = CallbackRecord(&a_output, &tt_Output::record);
     }
 
+    CallbackRecord    nextInstruction;
+};
+
+struct NodeOutputSetter : public Node
+{
     void record(dx12::ComPtr<ID3D12GraphicsCommandList2> const& a_commandList)
     {
         auto currentSurface = static_cast<dx12::DX12Surface*>(surfaceHandle->surface);
@@ -346,17 +353,10 @@ struct NodeOutputWindow
     }
 
     render::ISurface::HdlPtr surfaceHandle;
-    CallbackRecord    nextInstruction;
 };
 
-struct Node2dDrawer
+struct Node2dDrawer : public Node
 {
-    template <typename tt_Output>
-    void output(tt_Output& a_output)
-    {
-        nextInstruction = CallbackRecord(&a_output, &tt_Output::record);
-    }
-
     void record(dx12::ComPtr<ID3D12GraphicsCommandList2> const& a_commandList)
     {
         mHardAssert(m_drawer != nullptr);
@@ -369,17 +369,82 @@ struct Node2dDrawer
     }
 
     Drawer_2Dprimitives* m_drawer;
-    CallbackRecord       nextInstruction;
 };
 
-struct NodeStart
+struct NodeDearImGui : public Node
 {
-    template <typename tt_Output>
-    void output(tt_Output& a_output)
+    void init()
     {
-        nextInstruction = CallbackRecord(&a_output, &tt_Output::record);
+        m_SRVDescriptorHeap = dx12::create_descriptorHeap(
+            dx12::DX12Context::gs_dx12Contexte->m_device,
+            D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, dx12::DX12Surface::scm_numFrames,
+            D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE);
+
+        ImGui_ImplDX12_Init(
+            dx12::DX12Context::gs_dx12Contexte->m_device.Get(), dx12::DX12Surface::scm_numFrames,
+            DXGI_FORMAT_B8G8R8A8_UNORM, m_SRVDescriptorHeap.Get(),
+            m_SRVDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
+            m_SRVDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
     }
 
+    void destroy()
+    {
+        ImGui_ImplDX12_Shutdown();
+    }
+
+    void record(dx12::ComPtr<ID3D12GraphicsCommandList2> const& a_commandList)
+    {
+        //a_commandList->OMSetRenderTargets(1, &rtv, FALSE, NULL);
+        a_commandList->SetDescriptorHeaps(
+            1, m_SRVDescriptorHeap.GetAddressOf());
+        ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(),
+                                      a_commandList.Get());
+    }
+
+    dx12::ComPtr<ID3D12DescriptorHeap> m_SRVDescriptorHeap;
+};
+
+struct IDearImGuiNode : public Node
+{
+    virtual void init() = 0;
+    virtual void destroy() = 0;
+};
+
+struct DearImGuiDX12Node : public IDearImGuiNode
+{
+    void init() override
+    {
+        m_SRVDescriptorHeap = dx12::create_descriptorHeap(
+            dx12::DX12Context::gs_dx12Contexte->m_device,
+            D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, dx12::DX12Surface::scm_numFrames,
+            D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE);
+
+        ImGui_ImplDX12_Init(
+            dx12::DX12Context::gs_dx12Contexte->m_device.Get(), dx12::DX12Surface::scm_numFrames,
+            DXGI_FORMAT_B8G8R8A8_UNORM, m_SRVDescriptorHeap.Get(),
+            m_SRVDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
+            m_SRVDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
+    }
+
+    void destroy() override
+    {
+        ImGui_ImplDX12_Shutdown();
+    }
+
+    void record(dx12::ComPtr<ID3D12GraphicsCommandList2> const& a_commandList)
+    {
+        //a_commandList->OMSetRenderTargets(1, &rtv, FALSE, NULL);
+        a_commandList->SetDescriptorHeaps(
+            1, m_SRVDescriptorHeap.GetAddressOf());
+        ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(),
+                                      a_commandList.Get());
+    }
+
+    dx12::ComPtr<ID3D12DescriptorHeap> m_SRVDescriptorHeap;
+};
+
+struct NodeStart : public Node
+{
     void execute()
     {
         dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
@@ -391,8 +456,32 @@ struct NodeStart
             nextInstruction(graphicCommandList);
         }
     }
+};
 
-    CallbackRecord nextInstruction;
+namespace DearImGuiContext
+{
+    static void init(windows::IWindow* a_mainWindow)
+    {
+        mAssert(a_mainWindow != nullptr);
+
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        ImGuiIO& io = ImGui::GetIO();
+        (void)io;
+//        if (a_supportMultiViewports)
+//        {
+//            io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+//        }
+        io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+        ImGui::StyleColorsDark();
+
+        a_mainWindow->set_asImGuiWindow();
+    }
+
+    static void destroy()
+    {
+        ImGui::DestroyContext();
+    }
 };
 
 class RendererTestApp : public m::crossPlatform::IWindowedApplication
@@ -411,13 +500,19 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         m_mainWindow->set_asMainWindow();
         m::Bool MultiViewportsEnabled = false;
-        m_mainWindow->set_asImGuiWindow(MultiViewportsEnabled);
-        m_hdlSurface->surface->set_asDearImGuiSurface();
 
-        m_outputNode.surfaceHandle = m_hdlSurface;
-        m_outputNode.output(m_drawerNode);
+        DearImGuiContext::init(m_mainWindow);
+
+        //m_mainWindow->set_asImGuiWindow(MultiViewportsEnabled);
+        //m_hdlSurface->surface->set_asDearImGuiSurface();
+
+        m_outputSetterNode.surfaceHandle = m_hdlSurface;
+        m_outputSetterNode.output_to(m_drawerNode);
         m_drawerNode.m_drawer = &m_drawer;
-        m_startNode.output(m_outputNode);
+        m_drawerNode.output_to(m_imGuiNode);
+        m_imGuiNode.init();
+
+        m_startNode.output_to(m_outputSetterNode);
 
         m_inputManager.attach_ToKeyEvent(
             input::KeyAction::keyPressed(input::KEY_N),
@@ -432,6 +527,10 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         m_iRenderer->destroy();
         delete m_iRenderer;
+
+        m_imGuiNode.destroy();
+
+        DearImGuiContext::destroy();
     }
 
     Bool step(const Double& a_deltaTime) override
@@ -450,7 +549,6 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             m_drawer.add_cube(position);
         }
 
-        m_startNode.execute();
 
         start_dearImGuiNewFrame(m_iRenderer);
 
@@ -465,12 +563,15 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         ImGui::End();
         ImGui::Render();
 
+        m_startNode.execute();
+
         m_hdlSurface->surface->render();
 
         return true;
     }
 
-    NodeOutputWindow m_outputNode;
+    NodeOutputSetter m_outputSetterNode;
+    NodeDearImGui    m_imGuiNode;
     Node2dDrawer     m_drawerNode;
     NodeStart        m_startNode;
 

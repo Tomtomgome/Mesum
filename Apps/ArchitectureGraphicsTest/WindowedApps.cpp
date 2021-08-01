@@ -83,8 +83,8 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         m_hdlSurface = m_mainWindow->link_renderer(m_iRenderer);
 
-        m::Bool MultiViewportsEnabled = false;
-        m_mainWindow->set_asImGuiWindow(MultiViewportsEnabled);
+        //m::Bool MultiViewportsEnabled = false;
+        m_mainWindow->set_asImGuiWindow();
         m_hdlSurface->surface->set_asDearImGuiSurface();
 
         m_mainWindow->link_inputManager(&m_inputManager);
