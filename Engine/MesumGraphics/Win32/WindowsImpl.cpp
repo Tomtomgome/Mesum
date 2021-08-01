@@ -19,10 +19,12 @@ namespace m::win32
 LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
                                       LPARAM a_lParam)
 {
-    if (m_isImGuiWindow)
+    bool interrupt = false;
+    m_signalOverrideInputProcessing.call(&interrupt, m_hwnd, a_uMsg, a_wParam,
+                                         a_lParam);
+    if (interrupt)
     {
-        if (ImGui_ImplWin32_WndProcHandler(m_hwnd, a_uMsg, a_wParam, a_lParam))
-            return true;
+        return true;
     }
 
     LRESULT result = 0;
@@ -99,22 +101,10 @@ void IWindowImpl::init()
 //-----------------------------------------------------------------------------
 void IWindowImpl::destroy()
 {
-    if (m_surfaceHandle != nullptr)
-    {
-        m_surfaceHandle->isValid = false;
-        m_surfaceHandle->surface->destroy();
-        delete m_surfaceHandle->surface;
-        m_surfaceHandle = nullptr;
-    }
+    m_signalWindowDestroyed.call();
 
     ::DestroyWindow(m_hwnd);
     m_hwnd = NULL;
-
-    if (m_isImGuiWindow)
-    {
-        ImGui_ImplWin32_Shutdown();
-        ImGui::DestroyContext();
-    }
 }
 
 //-----------------------------------------------------------------------------
@@ -134,7 +124,15 @@ render::ISurface::HdlPtr IWindowImpl::link_renderer(
     m_resizeSignal.attach_ToSignal(Callback<void, U32, U32>(
         surfaceHandle->surface, &render::ISurface::resize));
 
-    m_surfaceHandle = surfaceHandle;
+    // TODO : Manage this from the renderer
+    m_signalWindowDestroyed.attach_ToSignal(Callback<void>(
+        [surfaceHandle]()
+        {
+            surfaceHandle->isValid = false;
+            surfaceHandle->surface->destroy();
+            delete surfaceHandle->surface;
+        }));
+
     return surfaceHandle;
 }
 
@@ -155,25 +153,26 @@ void IWindowImpl::set_asMainWindow()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void IWindowImpl::set_asImGuiWindow(Bool a_supportMultiViewports)
+void IWindowImpl::set_asImGuiWindow()
 {
     // There can only be one ImGui window, and it's the main one
     mHardAssert(m_isMainWindow == true);
-    mHardAssert(m_isImGuiWindow == false);
-    m_isImGuiWindow = true;
-
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO();
-    (void)io;
-    if (a_supportMultiViewports)
-    {
-        io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-    }
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    ImGui::StyleColorsDark();
 
     ImGui_ImplWin32_Init(m_hwnd);
+
+    m_signalWindowDestroyed.attach_ToSignal(
+        Callback<void>([]() { ImGui_ImplWin32_Shutdown(); }));
+
+    m_signalOverrideInputProcessing.attach_ToSignal(CallbackInputProcessing(
+        [](Bool* a_interrupt, HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam,
+           LPARAM a_lParam)
+        {
+            if (!(*a_interrupt))
+            {
+                *a_interrupt = ImGui_ImplWin32_WndProcHandler(
+                    a_hwnd, a_uMsg, a_wParam, a_lParam);
+            }
+        }));
 }
 
 //-----------------------------------------------------------------------------
@@ -231,6 +230,13 @@ void IWindowImpl::toggle_fullScreen()
 
         ShowWindow(m_hwnd, SW_NORMAL);
     }
+}
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void IWindowImpl::attach_toDestroy(Callback<void>& a_onDestroyCallback)
+{
+    m_signalWindowDestroyed.attach_ToSignal(a_onDestroyCallback);
 }
 
 }  // namespace m::win32

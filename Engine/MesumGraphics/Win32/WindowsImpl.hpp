@@ -32,9 +32,11 @@ class IWindowImpl : public windows::IWindow
     }
     void set_windowName(std::string a_name) override { m_windowName = a_name; }
     void set_asMainWindow() override;
-    void set_asImGuiWindow(Bool a_supportMultiViewports) override;
+    void set_asImGuiWindow() override;
     void set_fullScreen(Bool a_fullscreen) override;
     void toggle_fullScreen() override;
+
+    void attach_toDestroy(Callback<void>& a_onDestroyCallback) override;
 
     void set_winContext(WIN32Context const& a_winContext)
     {
@@ -55,17 +57,21 @@ class IWindowImpl : public windows::IWindow
 
     std::string m_windowName;
     Bool        m_isMainWindow  = false;
-    Bool        m_isImGuiWindow = false;
     U32         m_clientWidth   = 1280;
     U32         m_clientHeight  = 720;
 
     // Window rectangle (used to toggle fullscreen state).
     RECT m_windowRect;
 
-    WIN32Context const*      m_parentContext = nullptr;
-    render::ISurface::HdlPtr m_surfaceHandle = nullptr;
+    WIN32Context const* m_parentContext = nullptr;
 
-    Signal<U32, U32> m_resizeSignal;
+    using CallbackResize        = Callback<void, U32, U32>;
+    using CallbackWindowDestroy = Callback<void>;
+    using CallbackInputProcessing =
+        Callback<void, Bool*, HWND, UINT, WPARAM, LPARAM>;
+    Signal<U32, U32>                          m_resizeSignal;
+    Signal<>                                  m_signalWindowDestroyed;
+    Signal<Bool*, HWND, UINT, WPARAM, LPARAM> m_signalOverrideInputProcessing;
 };
 
 }  // namespace m::win32
