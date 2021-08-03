@@ -34,6 +34,7 @@ set(HEADERS Windows.hpp
             CrossPlatform.hpp
             Renderer.hpp
             CrossRenderer.hpp
+            RenderTask.hpp
             MesumGraphics/Common.hpp)
 
 if(BM_DYNAMIC_LINK)

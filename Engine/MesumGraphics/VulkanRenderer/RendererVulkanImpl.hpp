@@ -10,6 +10,17 @@ namespace m::vulkan
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
+struct VulkanRenderTaskset : public render::Taskset
+{
+    std::vector<render::Task*> m_set_tasks;
+
+    render::Task* add_task(render::TaskData* a_data) override;
+    void clear() override;
+};
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 class VulkanSurface : public render::ISurface
 {
    public:
@@ -19,6 +30,8 @@ class VulkanSurface : public render::ISurface
     void init_x11(render::X11SurfaceInitData& a_data) override;
 
     void set_asDearImGuiSurface() override;
+
+    render::Taskset* addNew_renderTaskset() override;
 
     void render() override;
     void resize(U32 a_width, U32 a_height) override;

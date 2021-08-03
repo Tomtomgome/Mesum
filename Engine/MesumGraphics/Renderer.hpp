@@ -5,6 +5,7 @@
 #include <MesumCore/Kernel/Callbacks.hpp>
 #include <MesumCore/Kernel/Types.hpp>
 #include <MesumGraphics/Common.hpp>
+#include <MesumGraphics/RenderTask.hpp>
 
 namespace m::render
 {
@@ -51,6 +52,8 @@ class ISurface
     virtual void init_x11(X11SurfaceInitData& a_data)     = 0;
 
     virtual void set_asDearImGuiSurface() = 0;
+
+    virtual render::Taskset* addNew_renderTaskset() = 0;
 
     virtual void render()                          = 0;
     virtual void resize(U32 a_width, U32 a_height) = 0;

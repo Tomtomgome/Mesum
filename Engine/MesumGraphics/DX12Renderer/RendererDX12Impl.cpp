@@ -8,6 +8,25 @@ namespace m::dx12
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
+render::Task* DX12RenderTaskset::add_task(render::TaskData* a_data)
+{
+    auto task = a_data->GetDX12Implementation(a_data);
+    m_set_tasks.push_back(task);
+    return task;
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void DX12RenderTaskset::clear()
+{
+    for (auto task : m_set_tasks) { delete task; }
+    m_set_tasks.clear();
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void DX12Surface::init_win32(render::Win32SurfaceInitData& a_data)
 {
     m_clientWidth  = a_data.m_width;
@@ -74,6 +93,13 @@ void DX12Surface::destroy()
     {
         ImGui_ImplDX12_Shutdown();
     }
+
+    for (auto taskset : m_renderTasksets)
+    {
+        taskset->clear();
+        delete taskset;
+    }
+
     DX12Context::gs_dx12Contexte->get_commandQueue().flush();
 }
 
@@ -95,6 +121,15 @@ void DX12Surface::add_commandListToExecute(
     ComPtr<ID3D12GraphicsCommandList2> a_commandListToAdd)
 {
     m_commandsToExecute.push_back(a_commandListToAdd);
+}
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+render::Taskset* DX12Surface::addNew_renderTaskset()
+{
+    auto taskset = new DX12RenderTaskset();
+    m_renderTasksets.push_back(taskset);
+    return taskset;
 }
 
 //-----------------------------------------------------------------------------
@@ -134,6 +169,11 @@ void DX12Surface::render()
         {
             DX12Context::gs_dx12Contexte->get_commandQueue()
                 .execute_commandList(command.Get());
+        }
+
+        for (auto taskset : m_renderTasksets)
+        {
+            for (const auto task : taskset->m_set_tasks) { task->execute(); }
         }
 
         graphicCommandList =

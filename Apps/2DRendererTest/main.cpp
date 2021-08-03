@@ -321,207 +321,41 @@ struct BunchOfSquares
     std::vector<math::Vec2> m_squarePositions;
 };
 
-using CallbackRecord =
-    Callback<void, dx12::ComPtr<ID3D12GraphicsCommandList2> const&>;
+// struct Node2dDrawer : public Node
+//{
+//     void record(dx12::ComPtr<ID3D12GraphicsCommandList2> const&
+//     a_commandList)
+//     {
+//         mHardAssert(m_drawer != nullptr);
+//         m_drawer->draw(a_commandList.Get());
+//
+//         if (Bool(nextInstruction))
+//         {
+//             nextInstruction(a_commandList);
+//         }
+//     }
+//
+//     Drawer_2Dprimitives* m_drawer;
+// };
 
-struct Node
-{
-    template <typename tt_Output>
-    void output_to(tt_Output& a_output)
-    {
-        nextInstruction = CallbackRecord(&a_output, &tt_Output::record);
-    }
-
-    CallbackRecord nextInstruction;
-};
-
-struct NodeOutputSetter : public Node
-{
-    void record(dx12::ComPtr<ID3D12GraphicsCommandList2> const& a_commandList)
-    {
-        auto currentSurface =
-            static_cast<dx12::DX12Surface*>(surfaceHandle->surface);
-
-        D3D12_CPU_DESCRIPTOR_HANDLE rtv;
-        rtv = currentSurface->get_currentRtvDesc();
-        a_commandList->OMSetRenderTargets(1, &rtv, FALSE, nullptr);
-        currentSurface->add_commandListToExecute(a_commandList);
-
-        if (Bool(nextInstruction))
-        {
-            nextInstruction(a_commandList);
-        }
-    }
-
-    render::ISurface::HdlPtr surfaceHandle;
-};
-
-struct Node2dDrawer : public Node
-{
-    void record(dx12::ComPtr<ID3D12GraphicsCommandList2> const& a_commandList)
-    {
-        mHardAssert(m_drawer != nullptr);
-        m_drawer->draw(a_commandList.Get());
-
-        if (Bool(nextInstruction))
-        {
-            nextInstruction(a_commandList);
-        }
-    }
-
-    Drawer_2Dprimitives* m_drawer;
-};
-
-struct NodeDearImGui : public Node
-{
-    void init()
-    {
-        m_SRVDescriptorHeap = dx12::create_descriptorHeap(
-            dx12::DX12Context::gs_dx12Contexte->m_device,
-            D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV,
-            dx12::DX12Surface::scm_numFrames,
-            D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE);
-
-        ImGui_ImplDX12_Init(
-            dx12::DX12Context::gs_dx12Contexte->m_device.Get(),
-            dx12::DX12Surface::scm_numFrames, DXGI_FORMAT_B8G8R8A8_UNORM,
-            m_SRVDescriptorHeap.Get(),
-            m_SRVDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
-            m_SRVDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
-    }
-
-    void destroy() { ImGui_ImplDX12_Shutdown(); }
-
-    void record(dx12::ComPtr<ID3D12GraphicsCommandList2> const& a_commandList)
-    {
-        // a_commandList->OMSetRenderTargets(1, &rtv, FALSE, NULL);
-        a_commandList->SetDescriptorHeaps(1,
-                                          m_SRVDescriptorHeap.GetAddressOf());
-        ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(),
-                                      a_commandList.Get());
-    }
-
-    dx12::ComPtr<ID3D12DescriptorHeap> m_SRVDescriptorHeap;
-};
-
-struct IDearImGuiNode : public Node
-{
-    virtual void init()    = 0;
-    virtual void destroy() = 0;
-};
-
-struct DearImGuiDX12Node : public IDearImGuiNode
-{
-    void init() override
-    {
-        m_SRVDescriptorHeap = dx12::create_descriptorHeap(
-            dx12::DX12Context::gs_dx12Contexte->m_device,
-            D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV,
-            dx12::DX12Surface::scm_numFrames,
-            D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE);
-
-        ImGui_ImplDX12_Init(
-            dx12::DX12Context::gs_dx12Contexte->m_device.Get(),
-            dx12::DX12Surface::scm_numFrames, DXGI_FORMAT_B8G8R8A8_UNORM,
-            m_SRVDescriptorHeap.Get(),
-            m_SRVDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
-            m_SRVDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
-    }
-
-    void destroy() override { ImGui_ImplDX12_Shutdown(); }
-
-    void record(dx12::ComPtr<ID3D12GraphicsCommandList2> const& a_commandList)
-    {
-        // a_commandList->OMSetRenderTargets(1, &rtv, FALSE, NULL);
-        a_commandList->SetDescriptorHeaps(1,
-                                          m_SRVDescriptorHeap.GetAddressOf());
-        ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(),
-                                      a_commandList.Get());
-    }
-
-    dx12::ComPtr<ID3D12DescriptorHeap> m_SRVDescriptorHeap;
-};
-
-struct NodeStart : public Node
-{
-    void execute()
-    {
-        dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
-            dx12::DX12Context::gs_dx12Contexte->get_commandQueue()
-                .get_commandList();
-
-        if (Bool(nextInstruction))
-        {
-            nextInstruction(graphicCommandList);
-        }
-    }
-};
-
-struct TaskSet;
-
-struct Task
-{
-    virtual void execute() const = 0;
-};
-
-struct TaskData
-{
-    Task*         add_toTaskSet(TaskSet* a_taskset);
-    virtual Task* GetDX12Implementation(TaskData* a_data)   { mNotImplemented }
-    virtual Task* GetVulkanImplementation(TaskData* a_data) { mNotImplemented }
-};
-
-struct TaskSet
-{
-    std::vector<Task*> m_set_tasks;
-
-    virtual Task* add_task(TaskData* a_data) = 0;
-};
-
-Task* TaskData::add_toTaskSet(TaskSet* a_taskset)
-{
-    return a_taskset->add_task(this);
-}
-
-struct DX12TaskSet : public TaskSet
-{
-    Task* add_task(TaskData* a_data) override
-    {
-        auto task = a_data->GetDX12Implementation(a_data);
-        m_set_tasks.push_back(task);
-        return task;
-    }
-};
-
-struct VulkanTaskSet : public TaskSet
-{
-    Task* add_task(TaskData* a_data) override
-    {
-        auto task = a_data->GetVulkanImplementation(a_data);
-        m_set_tasks.push_back(task);
-        return task;
-    }
-};
-
-struct TaskDataDrawDearImGui : public TaskData
+struct TaskDataDrawDearImGui : public m::render::TaskData
 {
     render::ISurface::HdlPtr m_hdlOutput;
 
-    Task* GetDX12Implementation(TaskData* a_data) override;
-    Task* GetVulkanImplementation(TaskData* a_data) override;
+    m::render::Task* GetDX12Implementation(
+        m::render::TaskData* a_data) override;
+    m::render::Task* GetVulkanImplementation(
+        m::render::TaskData* a_data) override;
 };
 
-struct TaskDrawDearImGui : public Task
+struct TaskDrawDearImGui : public m::render::Task
 {
-    virtual void init()    = 0;
-    virtual void destroy() = 0;
-
     TaskDataDrawDearImGui m_taskData;
 };
 
 struct Dx12TaskDrawDearImGui : public TaskDrawDearImGui
 {
-    void init() override
+    Dx12TaskDrawDearImGui()
     {
         m_SRVDescriptorHeap = dx12::create_descriptorHeap(
             dx12::DX12Context::gs_dx12Contexte->m_device,
@@ -537,32 +371,35 @@ struct Dx12TaskDrawDearImGui : public TaskDrawDearImGui
             m_SRVDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
     }
 
-    virtual void destroy() override { ImGui_ImplDX12_Shutdown(); }
+    ~Dx12TaskDrawDearImGui() override { ImGui_ImplDX12_Shutdown(); }
 
-    virtual void execute() const override
+    void execute() const override
     {
-        // GetCommandList
+        dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
+            dx12::DX12Context::gs_dx12Contexte->get_commandQueue()
+                .get_commandList();
 
         auto currentSurface =
             static_cast<dx12::DX12Surface*>(m_taskData.m_hdlOutput->surface);
 
         D3D12_CPU_DESCRIPTOR_HANDLE rtv;
         rtv = currentSurface->get_currentRtvDesc();
-        a_commandList->OMSetRenderTargets(1, &rtv, FALSE, nullptr);
+        graphicCommandList->OMSetRenderTargets(1, &rtv, FALSE, nullptr);
 
-        a_commandList->SetDescriptorHeaps(1,
-                                          m_SRVDescriptorHeap.GetAddressOf());
+        graphicCommandList->SetDescriptorHeaps(
+            1, m_SRVDescriptorHeap.GetAddressOf());
         ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(),
-                                      a_commandList.Get());
+                                      graphicCommandList.Get());
 
-        // ExecuteCommandList
+        dx12::DX12Context::gs_dx12Contexte->get_commandQueue()
+            .execute_commandList(graphicCommandList.Get());
     }
 
    private:
     dx12::ComPtr<ID3D12DescriptorHeap> m_SRVDescriptorHeap;
 };
 
-Task* TaskDataDrawDearImGui::GetDX12Implementation(TaskData* a_data)
+m::render::Task* TaskDataDrawDearImGui::GetDX12Implementation(TaskData* a_data)
 {
     auto task        = new Dx12TaskDrawDearImGui();
     task->m_taskData = *static_cast<TaskDataDrawDearImGui*>(a_data);
@@ -571,25 +408,16 @@ Task* TaskDataDrawDearImGui::GetDX12Implementation(TaskData* a_data)
 
 struct VulkanTaskDrawDearImGui : public TaskDrawDearImGui
 {
-    void init() override {}
-    void destroy() override {}
     void execute() const override {}
 };
 
-Task* TaskDataDrawDearImGui::GetVulkanImplementation(TaskData* a_data)
+m::render::Task* TaskDataDrawDearImGui::GetVulkanImplementation(
+    TaskData* a_data)
 {
     auto task        = new VulkanTaskDrawDearImGui();
     task->m_taskData = *static_cast<TaskDataDrawDearImGui*>(a_data);
     return task;
 }
-
-class DX12GraphicTaskSetExecutor
-{
-    void execute(TaskSet const* a_taskset)
-    {
-        for (const auto task : a_taskset->m_set_tasks) { task->execute(); }
-    }
-};
 
 class RendererTestApp : public m::crossPlatform::IWindowedApplication
 {
@@ -609,23 +437,13 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         m::dearImGui::init(m_mainWindow);
 
-        TaskSet* taskset_renderPipeline =
-            m_hdlSurface->surface.add_newTaskSet();
+        render::Taskset* taskset_renderPipeline =
+            m_hdlSurface->surface->addNew_renderTaskset();
 
         TaskDataDrawDearImGui taskData_drawDearImGui;
         taskData_drawDearImGui.m_hdlOutput = m_hdlSurface;
         auto task_drawDearImGui            = static_cast<TaskDrawDearImGui*>(
             taskData_drawDearImGui.add_toTaskSet(taskset_renderPipeline));
-        task_drawDearImGui->init();
-        //
-        //        task_draw2DRenderer =
-        //            taskset_renderPipeline.add_task<TaskDraw2DRenderer>(
-        //                task_draw2DRenderer);
-        //        task_draw2DRenderer.m_hdlOutput = m_HdlSurface;
-        //        task_drawDearImGui =
-        //            taskset_renderPipeline.add_task<ITaskDrawDearImGui>(
-        //                task_draw2DRenderer);
-        //        task_drawDearImGui.m_hdlOutput = m_HdlSurface;
 
         //        m_outputSetterNode.surfaceHandle = m_hdlSurface;
         //        m_outputSetterNode.output_to(m_drawerNode);
@@ -648,9 +466,6 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         m_iRenderer->destroy();
         delete m_iRenderer;
-
-        // m_imGuiNode.destroy();
-        // m_tasksetRenderPipeline.clear();
 
         m::dearImGui::destroy();
     }
@@ -684,18 +499,10 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         ImGui::End();
         ImGui::Render();
 
-        // m_startNode.execute();
-        // m_tasksetRenderPipeline.execute();
-
         m_hdlSurface->surface->render();
 
         return true;
     }
-
-    //    NodeOutputSetter m_outputSetterNode;
-    //    NodeDearImGui    m_imGuiNode;
-    //    Node2dDrawer     m_drawerNode;
-    //    NodeStart        m_startNode;
 
     m::render::IRenderer*       m_iRenderer;
     m::render::ISurface::HdlPtr m_hdlSurface;

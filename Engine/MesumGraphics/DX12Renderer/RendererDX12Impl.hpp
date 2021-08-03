@@ -10,6 +10,17 @@ namespace m::dx12
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
+struct DX12RenderTaskset : public render::Taskset
+{
+    std::vector<render::Task*> m_set_tasks;
+
+    render::Task* add_task(render::TaskData* a_data) override;
+    void          clear() override;
+};
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 class DX12Surface : public render::ISurface
 {
    public:
@@ -19,6 +30,8 @@ class DX12Surface : public render::ISurface
     void init_x11(render::X11SurfaceInitData& a_data) override;
 
     void set_asDearImGuiSurface() override;
+
+    render::Taskset* addNew_renderTaskset() override;
 
     void render() override;
     void resize(U32 a_width, U32 a_height) override;
@@ -61,6 +74,7 @@ class DX12Surface : public render::ISurface
     ComPtr<ID3D12DescriptorHeap> m_SRVDescriptorHeap;
 
     std::vector<ComPtr<ID3D12GraphicsCommandList2>> m_commandsToExecute;
+    std::vector<DX12RenderTaskset*>                 m_renderTasksets;
 
     // Synchronization objects
     U64 m_frameFenceValues[scm_numFrames] = {};
