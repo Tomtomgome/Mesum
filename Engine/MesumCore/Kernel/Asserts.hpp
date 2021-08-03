@@ -17,6 +17,8 @@
 #define mInterrupt
 #endif
 
+#define mNotImplemented mInterrupt
+
 namespace m
 {
 extern MesumCoreApi const logging::ChannelID ASSERT_ID;
