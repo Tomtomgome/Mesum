@@ -11,7 +11,7 @@ namespace m::vulkan
 //-----------------------------------------------------------------------------
 render::Task* VulkanRenderTaskset::add_task(render::TaskData* a_data)
 {
-    auto task = a_data->GetVulkanImplementation(a_data);
+    auto task = a_data->getNew_vulkanImplementation(a_data);
     m_set_tasks.push_back(task);
     return task;
 }
@@ -68,64 +68,11 @@ void VulkanSurface::init_x11(render::X11SurfaceInitData& a_data)
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void VulkanSurface::set_asDearImGuiSurface()
+render::Taskset* VulkanSurface::addNew_renderTaskset()
 {
-    m_isHoldingDearImgui = true;
-
-    {
-        VkDescriptorPoolSize pool_sizes[] = {
-            {VK_DESCRIPTOR_TYPE_SAMPLER, 1000},
-            {VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1000},
-            {VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, 1000},
-            {VK_DESCRIPTOR_TYPE_STORAGE_IMAGE, 1000},
-            {VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER, 1000},
-            {VK_DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER, 1000},
-            {VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1000},
-            {VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 1000},
-            {VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, 1000},
-            {VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, 1000},
-            {VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT, 1000}};
-        VkDescriptorPoolCreateInfo pool_info = {};
-        pool_info.sType   = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-        pool_info.flags   = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
-        pool_info.maxSets = 1000 * IM_ARRAYSIZE(pool_sizes);
-        pool_info.poolSizeCount = (uint32_t)IM_ARRAYSIZE(pool_sizes);
-        pool_info.pPoolSizes    = pool_sizes;
-        vkCreateDescriptorPool(VulkanContext::get_logDevice(), &pool_info,
-                               nullptr, &m_dearImGuiDescriptorPool);
-    }
-
-    ImGui_ImplVulkan_InitInfo init_info = {};
-    init_info.Instance                  = VulkanContext::get_instance();
-    init_info.PhysicalDevice            = VulkanContext::get_physDevice();
-    init_info.Device                    = VulkanContext::get_logDevice();
-    init_info.QueueFamily     = VulkanContext::get_graphicQueueFamilyIndex();
-    init_info.Queue           = VulkanContext::get_graphicQueue();
-    init_info.PipelineCache   = VK_NULL_HANDLE;
-    init_info.DescriptorPool  = m_dearImGuiDescriptorPool;
-    init_info.Allocator       = nullptr;
-    init_info.MinImageCount   = scm_numFrames;
-    init_info.ImageCount      = scm_numFrames;
-    init_info.CheckVkResultFn = check_vkResult;
-    ImGui_ImplVulkan_Init(&init_info, m_mainRenderPass);
-
-    VkCommandBuffer command_buffer =
-        VulkanContext::gs_VulkanContexte->get_singleUseCommandBuffer();
-
-    ImGui_ImplVulkan_CreateFontsTexture(command_buffer);
-
-    VulkanContext::gs_VulkanContexte->submit_signleUseCommandBuffer(
-        command_buffer);
-
-    ImGui_ImplVulkan_DestroyFontUploadObjects();
-}
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-render::Taskset* addNew_renderTaskset()
-{
-    return nullptr;
+    auto taskset = new VulkanRenderTaskset();
+    m_renderTasksets.push_back(taskset);
+    return taskset;
 }
 
 //-----------------------------------------------------------------------------
@@ -140,11 +87,10 @@ void VulkanSurface::render()
         m_tstpRenderFinish[m_currentBackBufferIndex]);
 
     // Aquire next image
-    UInt imageIndex;
     vkAcquireNextImageKHR(VulkanContext::get_logDevice(), m_swapChain,
                           std::numeric_limits<U64>::max(),
                           m_semaphoresImageAcquired[m_currentBackBufferIndex],
-                          VK_NULL_HANDLE, &imageIndex);
+                          VK_NULL_HANDLE, &m_currentImageIndex);
 
     {
         check_vkResult(vkResetCommandPool(
@@ -157,36 +103,10 @@ void VulkanSurface::render()
             m_frameMainCommandBuffers[m_currentBackBufferIndex], &info));
     }
 
+    for (auto taskset : m_renderTasksets)
     {
-        VkRenderPassBeginInfo info   = {};
-        info.sType                   = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-        info.renderPass              = m_mainRenderPass;
-        info.framebuffer             = m_frameFramebuffers[imageIndex];
-        info.renderArea.extent.width = m_clientWidth;
-        info.renderArea.extent.height = m_clientHeight;
-        VkClearValue clearValues[1]   = {};
-        clearValues[0].color          = {0.4f, 0.6f, 0.9f, 1.0f};
-        if (!m_isHoldingDearImgui)
-        {
-            clearValues[0].color.float32[0] = 0.9f;
-            clearValues[0].color.float32[2] = 0.4f;
-        }
-        info.clearValueCount = 1;
-        info.pClearValues    = clearValues;
-        vkCmdBeginRenderPass(
-            m_frameMainCommandBuffers[m_currentBackBufferIndex], &info,
-            VK_SUBPASS_CONTENTS_INLINE);
+        for (const auto task : taskset->m_set_tasks) { task->execute(); }
     }
-
-    if (m_isHoldingDearImgui)
-    {
-        // Record Imgui Draw Data and draw funcs into command buffer
-        ImGui_ImplVulkan_RenderDrawData(
-            ImGui::GetDrawData(),
-            m_frameMainCommandBuffers[m_currentBackBufferIndex]);
-    }
-    // Submit command buffer
-    vkCmdEndRenderPass(m_frameMainCommandBuffers[m_currentBackBufferIndex]);
 
     check_vkResult(vkEndCommandBuffer(
         m_frameMainCommandBuffers[m_currentBackBufferIndex]));
@@ -205,7 +125,7 @@ void VulkanSurface::render()
         &m_semaphoresRenderCompleted[m_currentBackBufferIndex];
     infoPresent.swapchainCount = 1;
     infoPresent.pSwapchains    = &m_swapChain;
-    infoPresent.pImageIndices  = &imageIndex;
+    infoPresent.pImageIndices  = &m_currentImageIndex;
     VulkanContext::present(infoPresent);
 }
 
@@ -234,15 +154,10 @@ void VulkanSurface::destroy()
     VulkanContext::wait_onMainTimelineTstp(
         m_tstpRenderFinish[m_currentBackBufferIndex]);
 
-    if (m_isHoldingDearImgui)
+    for (auto taskset : m_renderTasksets)
     {
-        ImGui_ImplVulkan_Shutdown();
-    }
-
-    if (m_isHoldingDearImgui)
-    {
-        vkDestroyDescriptorPool(VulkanContext::get_logDevice(),
-                                m_dearImGuiDescriptorPool, nullptr);
+        taskset->clear();
+        delete taskset;
     }
 
     for (auto& m_frameCommandPool : m_frameCommandPools)

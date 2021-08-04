@@ -17,11 +17,11 @@ struct TaskData
 {
     Task* add_toTaskSet(Taskset* a_taskset);
 
-    virtual Task* GetDX12Implementation(TaskData* a_data)
+    virtual Task* getNew_dx12Implementation(TaskData* a_data)
     {
         mNotImplemented return nullptr;
     }
-    virtual Task* GetVulkanImplementation(TaskData* a_data)
+    virtual Task* getNew_vulkanImplementation(TaskData* a_data)
     {
         mNotImplemented return nullptr;
     }

@@ -51,8 +51,6 @@ class ISurface
     virtual void init_win32(Win32SurfaceInitData& a_data) = 0;
     virtual void init_x11(X11SurfaceInitData& a_data)     = 0;
 
-    virtual void set_asDearImGuiSurface() = 0;
-
     virtual render::Taskset* addNew_renderTaskset() = 0;
 
     virtual void render()                          = 0;

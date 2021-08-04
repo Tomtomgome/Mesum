@@ -10,7 +10,7 @@ namespace m::dx12
 //-----------------------------------------------------------------------------
 render::Task* DX12RenderTaskset::add_task(render::TaskData* a_data)
 {
-    auto task = a_data->GetDX12Implementation(a_data);
+    auto task = a_data->getNew_dx12Implementation(a_data);
     m_set_tasks.push_back(task);
     return task;
 }
@@ -68,32 +68,8 @@ void DX12Surface::init_x11(render::X11SurfaceInitData& a_data)
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void DX12Surface::set_asDearImGuiSurface()
-{
-    m_isHoldingDearImgui = true;
-
-    m_SRVDescriptorHeap = create_descriptorHeap(
-        DX12Context::gs_dx12Contexte->m_device,
-        D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, scm_numFrames,
-        D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE);
-
-    ImGui_ImplDX12_Init(
-        DX12Context::gs_dx12Contexte->m_device.Get(), scm_numFrames,
-        DXGI_FORMAT_B8G8R8A8_UNORM, m_SRVDescriptorHeap.Get(),
-        m_SRVDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
-        m_SRVDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
-}
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
 void DX12Surface::destroy()
 {
-    if (m_isHoldingDearImgui)
-    {
-        ImGui_ImplDX12_Shutdown();
-    }
-
     for (auto taskset : m_renderTasksets)
     {
         taskset->clear();
@@ -114,14 +90,6 @@ D3D12_CPU_DESCRIPTOR_HANDLE DX12Surface::get_currentRtvDesc()
     return rtv;
 }
 
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-void DX12Surface::add_commandListToExecute(
-    ComPtr<ID3D12GraphicsCommandList2> a_commandListToAdd)
-{
-    m_commandsToExecute.push_back(a_commandListToAdd);
-}
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -150,11 +118,6 @@ void DX12Surface::render()
         graphicCommandList->ResourceBarrier(1, &barrier);
 
         Float clearColor[] = {0.4f, 0.6f, 0.9f, 1.0f};
-        if (!m_isHoldingDearImgui)
-        {
-            clearColor[0] = 0.9f;
-            clearColor[2] = 0.4f;
-        }
 
         CD3DX12_CPU_DESCRIPTOR_HANDLE rtv(
             m_RTVDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
@@ -165,12 +128,6 @@ void DX12Surface::render()
         DX12Context::gs_dx12Contexte->get_commandQueue().execute_commandList(
             graphicCommandList);
 
-        for (auto command : m_commandsToExecute)
-        {
-            DX12Context::gs_dx12Contexte->get_commandQueue()
-                .execute_commandList(command.Get());
-        }
-
         for (auto taskset : m_renderTasksets)
         {
             for (const auto task : taskset->m_set_tasks) { task->execute(); }
@@ -178,15 +135,6 @@ void DX12Surface::render()
 
         graphicCommandList =
             DX12Context::gs_dx12Contexte->get_commandQueue().get_commandList();
-
-        if (m_isHoldingDearImgui)
-        {
-            graphicCommandList->OMSetRenderTargets(1, &rtv, FALSE, NULL);
-            graphicCommandList->SetDescriptorHeaps(
-                1, m_SRVDescriptorHeap.GetAddressOf());
-            ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(),
-                                          graphicCommandList.Get());
-        }
     }
     // Present
     {
@@ -213,8 +161,6 @@ void DX12Surface::render()
 
     DX12Context::gs_dx12Contexte->get_commandQueue().wait_fenceValue(
         m_frameFenceValues[m_currentBackBufferIndex]);
-
-    m_commandsToExecute.clear();
 }
 
 //-----------------------------------------------------------------------------
@@ -229,11 +175,6 @@ void DX12Surface::resize(U32 a_width, U32 a_height)
         m_clientHeight = std::max(1u, a_height);
 
         DX12Context::gs_dx12Contexte->get_commandQueue().flush();
-
-        if (m_isHoldingDearImgui)
-        {
-            ImGui_ImplDX12_InvalidateDeviceObjects();
-        }
 
         for (Int i = 0; i < scm_numFrames; ++i)
         {
@@ -253,10 +194,6 @@ void DX12Surface::resize(U32 a_width, U32 a_height)
         m_currentBackBufferIndex = m_swapChain->GetCurrentBackBufferIndex();
         update_renderTargetViews(DX12Context::gs_dx12Contexte->m_device,
                                  m_swapChain, m_RTVDescriptorHeap);
-        if (m_isHoldingDearImgui)
-        {
-            ImGui_ImplDX12_CreateDeviceObjects();
-        }
     }
 }
 

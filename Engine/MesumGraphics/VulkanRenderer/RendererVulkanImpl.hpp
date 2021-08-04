@@ -15,7 +15,7 @@ struct VulkanRenderTaskset : public render::Taskset
     std::vector<render::Task*> m_set_tasks;
 
     render::Task* add_task(render::TaskData* a_data) override;
-    void clear() override;
+    void          clear() override;
 };
 
 //-----------------------------------------------------------------------------
@@ -29,14 +29,28 @@ class VulkanSurface : public render::ISurface
     void init_win32(render::Win32SurfaceInitData& a_data) override;
     void init_x11(render::X11SurfaceInitData& a_data) override;
 
-    void set_asDearImGuiSurface() override;
-
     render::Taskset* addNew_renderTaskset() override;
 
     void render() override;
     void resize(U32 a_width, U32 a_height) override;
 
     void destroy() override;
+
+    VkCommandBuffer get_currentCommandBuffer()
+    {
+        return m_frameMainCommandBuffers[m_currentBackBufferIndex];
+    }
+    VkFramebuffer get_currentFramebuffer()
+    {
+        return m_frameFramebuffers[m_currentImageIndex];
+    }
+    VkRenderPass get_mainRenderPass() { return m_mainRenderPass; }
+    U32          get_width() const { return m_clientWidth; }
+    U32          get_height() const { return m_clientHeight; }
+
+   public:
+    // The number of swap chain back buffers.
+    static const U8 scm_numFrames = 3;
 
    private:
     void init_internal();
@@ -45,8 +59,6 @@ class VulkanSurface : public render::ISurface
     void destroy_swapChain();
 
    private:
-    // The number of swap chain back buffers.
-    static const U8       scm_numFrames = 3;
     static const VkFormat scm_selectedSwapChainFormat =
         VK_FORMAT_B8G8R8A8_UNORM;
 
@@ -61,11 +73,11 @@ class VulkanSurface : public render::ISurface
 
     // By default, enable V-Sync.
     // Can be toggled with the V key.
-    Bool m_vSync              = true;
-    Bool m_tearingSupported   = false;
-    Bool m_isHoldingDearImgui = false;
+    Bool m_vSync            = true;
+    Bool m_tearingSupported = false;
 
     UInt m_currentBackBufferIndex = 0;
+    UInt m_currentImageIndex      = 0;
 
     // Synchronization objects
     U64 m_frameFenceValues[scm_numFrames] = {};
@@ -80,8 +92,7 @@ class VulkanSurface : public render::ISurface
     VkRenderPass               m_mainRenderPass = VK_NULL_HANDLE;
     std::vector<VkFramebuffer> m_frameFramebuffers;
 
-    // DearImGui
-    VkDescriptorPool m_dearImGuiDescriptorPool = VK_NULL_HANDLE;
+    std::vector<VulkanRenderTaskset*> m_renderTasksets;
 };
 
 //-----------------------------------------------------------------------------

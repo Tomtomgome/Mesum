@@ -29,8 +29,6 @@ class DX12Surface : public render::ISurface
     void init_win32(render::Win32SurfaceInitData& a_data) override;
     void init_x11(render::X11SurfaceInitData& a_data) override;
 
-    void set_asDearImGuiSurface() override;
-
     render::Taskset* addNew_renderTaskset() override;
 
     void render() override;
@@ -39,9 +37,8 @@ class DX12Surface : public render::ISurface
     void destroy() override;
 
     D3D12_CPU_DESCRIPTOR_HANDLE get_currentRtvDesc();
-    void                        add_commandListToExecute(
-                               ComPtr<ID3D12GraphicsCommandList2> a_commandListToAdd);
 
+   public:
     // The number of swap chain back buffers.
     static const U8 scm_numFrames = 3;
 
@@ -62,7 +59,6 @@ class DX12Surface : public render::ISurface
     // Can be toggled with the V key.
     Bool m_vSync              = true;
     Bool m_tearingSupported   = false;
-    Bool m_isHoldingDearImgui = false;
 
     ComPtr<IDXGISwapChain4> m_swapChain;
     ComPtr<ID3D12Resource>  m_backBuffers[scm_numFrames];
@@ -73,7 +69,6 @@ class DX12Surface : public render::ISurface
 
     ComPtr<ID3D12DescriptorHeap> m_SRVDescriptorHeap;
 
-    std::vector<ComPtr<ID3D12GraphicsCommandList2>> m_commandsToExecute;
     std::vector<DX12RenderTaskset*>                 m_renderTasksets;
 
     // Synchronization objects
