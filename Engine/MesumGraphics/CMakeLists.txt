@@ -23,6 +23,8 @@ message(STATUS "module names are ${RENDERER_MODULE_NAMES}")
 add_subdirectory(Unix)
 add_subdirectory(Win32)
 
+add_subdirectory(RenderTasks)
+
 set(MODULE_NAME MesumGraphics)
 
 project(${MODULE_NAME} VERSION 1.0.0 DESCRIPTION "MesumEngine core functionnalities")
@@ -50,9 +52,9 @@ elseif(UNIX)
 set(PLATFORME_MODULE_NAME PlatUnix)
 endif()
 
-add_library(${MODULE_NAME} ${BM_LINK_MODE} ${SOURCES} ${HEADERS} $<TARGET_OBJECTS:${PLATFORME_MODULE_NAME}>)
+add_library(${MODULE_NAME} ${BM_LINK_MODE} ${SOURCES} ${HEADERS} $<TARGET_OBJECTS:${PLATFORME_MODULE_NAME}> $<TARGET_OBJECTS:RenderTasks>)
 
-target_link_libraries(${MODULE_NAME} MesumCore ${PLATFORME_MODULE_NAME} ${RENDERER_MODULE_NAMES} DearImguiBase)
+target_link_libraries(${MODULE_NAME} MesumCore ${PLATFORME_MODULE_NAME} ${RENDERER_MODULE_NAMES} RenderTasks DearImguiBase )
 
 set_target_properties(${MODULE_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 #set_target_properties(${MODULE_NAME} PROPERTIES PUBLIC_HEADER HEADERS)

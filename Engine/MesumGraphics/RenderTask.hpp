@@ -2,6 +2,8 @@
 #define M_RENDERTASK
 #pragma once
 
+#include <MesumCore/Kernel/Asserts.hpp>
+
 namespace m::render
 {
 struct Taskset;

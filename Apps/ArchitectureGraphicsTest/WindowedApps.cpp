@@ -1,7 +1,7 @@
-#include <MesumGraphics/DearImgui/imgui.h>
-
 #include <MesumCore/Kernel/Kernel.hpp>
 #include <MesumGraphics/CrossPlatform.hpp>
+#include <MesumGraphics/DearImgui/MesumDearImGui.hpp>
+#include <MesumGraphics/RenderTasks/RenderTaskDearImGui.hpp>
 #include <MesumGraphics/WindowedApp.hpp>
 
 class CubeMover
@@ -75,17 +75,22 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
                     "Height not overriden, use default : ", height);
         }
 
+        m_iRenderer = new m::dx12::DX12Renderer();
+        m_iRenderer->init();
+
         m_mainWindow = add_newWindow("Cube mover app", width, height);
         m_mainWindow->set_asMainWindow();
 
-        m_iRenderer = new m::vulkan::VulkanRenderer();
-        m_iRenderer->init();
-
         m_hdlSurface = m_mainWindow->link_renderer(m_iRenderer);
 
-        //m::Bool MultiViewportsEnabled = false;
-        m_mainWindow->set_asImGuiWindow();
-        m_hdlSurface->surface->set_asDearImGuiSurface();
+        m::dearImGui::init(m_mainWindow);
+
+        m::render::Taskset* taskset_renderPipeline =
+            m_hdlSurface->surface->addNew_renderTaskset();
+
+        m::render::TaskDataDrawDearImGui taskData_drawDearImGui;
+        taskData_drawDearImGui.m_hdlOutput = m_hdlSurface;
+        taskData_drawDearImGui.add_toTaskSet(taskset_renderPipeline);
 
         m_mainWindow->link_inputManager(&m_inputManager);
 
@@ -135,6 +140,8 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         m_iRenderer->destroy();
         delete m_iRenderer;
+
+        m::dearImGui::destroy();
     }
 
     m::Bool step(const m::Double& a_deltaTime) override
@@ -143,8 +150,6 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         {
             return false;
         }
-
-        //m_iRenderer.prepare_render(&m_hdlSurface, 1);
 
         m_inputManager.processAndUpdate_States();
 
@@ -167,14 +172,6 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         ImGui::Render();
 
         m_hdlSurface->surface->render();
-
-        if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-        {
-            ImGui::UpdatePlatformWindows();
-            ImGui::RenderPlatformWindowsDefault();
-        }
-
-        //m_iRender.finish_render(&m_hdlSurface, 1);
 
         return true;
     }
