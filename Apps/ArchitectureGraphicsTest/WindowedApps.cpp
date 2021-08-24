@@ -180,7 +180,6 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
     m::Float m_y = 0.0f;
 
     m::render::IRenderer*       m_iRenderer;
-    m::render::ISurface*        m_iSurface;
     m::render::ISurface::HdlPtr m_hdlSurface;
     m::input::InputManager      m_inputManager;
     m::windows::IWindow*        m_mainWindow;

@@ -1,4 +1,5 @@
-#include <MesumGraphics/DearImgui/imgui.h>
+#include <MesumGraphics/DearImgui/MesumDearImGui.hpp>
+#include <MesumGraphics/RenderTasks/RenderTaskDearImGui.hpp>
 
 #include <Agents.hpp>
 #include <MesumCore/Kernel/Kernel.hpp>
@@ -390,14 +391,20 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
     {
         m::crossPlatform::IWindowedApplication::init();
 
-        init_renderer(m::render::RendererApi::DX12);
+        m_iRenderer = new m::dx12::DX12Renderer();
+        m_iRenderer->init();
 
         m_mainWindow = add_newWindow("Stardew Factory", 1280, 720);
         m_mainWindow->set_asMainWindow();
+        m_hdlSurface = m_mainWindow->link_renderer(m_iRenderer);
+        m::dearImGui::init(m_mainWindow);
 
-        m::Bool MultiViewportsEnabled = false;
-        m_mainWindow->set_asImGuiWindow(MultiViewportsEnabled);
-        set_processImGuiMultiViewports(MultiViewportsEnabled);
+        m::render::Taskset* taskset_renderPipeline =
+            m_hdlSurface->surface->addNew_renderTaskset();
+
+        m::render::TaskDataDrawDearImGui taskData_drawDearImGui;
+        taskData_drawDearImGui.m_hdlOutput = m_hdlSurface;
+        taskData_drawDearImGui.add_toTaskSet(taskset_renderPipeline);
 
         m_mainWindow->link_inputManager(&m_inputManager);
 
@@ -509,7 +516,11 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         m_agentManager.clear();
 
         m::crossPlatform::IWindowedApplication::destroy();
-        // Nothing to destroy
+
+        m_iRenderer->destroy();
+        delete m_iRenderer;
+
+        m::dearImGui::destroy();
     }
 
     virtual m::Bool step(const m::Double& a_deltaTime) override
@@ -526,7 +537,7 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
 
         m_agentManager.update_agents(a_deltaTime);
 
-        start_dearImGuiNewFrame();
+        start_dearImGuiNewFrame(m_iRenderer);
 
         ImGui::NewFrame();
 
@@ -578,7 +589,8 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
 
         ImGui::Render();
 
-        render();
+        m_hdlSurface->surface->render();
+
         return true;
     }
 
@@ -587,6 +599,8 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
     LogicalWorld m_logicalWorld;
     AgentManager m_agentManager;
 
+    m::render::IRenderer*       m_iRenderer;
+    m::render::ISurface::HdlPtr m_hdlSurface;
     m::input::InputManager m_inputManager;
     m::windows::IWindow*   m_mainWindow;
 
