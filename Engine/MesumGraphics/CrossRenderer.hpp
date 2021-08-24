@@ -15,7 +15,7 @@
 #endif
 #endif
 
-#if defined M_VULKAN_RENDERER
+#if defined M_VULKAN_DEFAULT_RENDERER
 
 namespace m
 {
@@ -28,7 +28,7 @@ using DefaultRenderer = VulkanRenderer;
 }  // namespace renderApi
 }  // namespace m
 
-#elif defined M_DX12_RENDERER
+#elif defined M_DX12_DEFAULT_RENDERER
 
 namespace m
 {

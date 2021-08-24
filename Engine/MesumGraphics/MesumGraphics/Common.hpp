@@ -13,14 +13,24 @@
 #endif
 
 #ifdef _M_ALL_RENDERER
-#define M_ALL_RENDERER
+    #define M_ALL_RENDERER
 #endif
 
-#if defined _M_DX12_RENDERER
-#define M_DX12_RENDERER
-#elif defined _M_VULKAN_RENDERER
-#define M_VULKAN_RENDERER
-#endif
+#ifdef _M_DX12_RENDERER
+    #define M_DX12_RENDERER
+#endif // _M_DX12_RENDERER
+
+#ifdef _M_VULKAN_RENDERER
+    #define M_VULKAN_RENDERER
+#endif // _M_VULKAN_RENDERER
+
+#ifdef _M_DX12_DEFAULT_RENDERER
+    #define M_DX12_DEFAULT_RENDERER
+#endif // _M_DX12_DEFAULT_RENDERER
+
+#ifdef _M_VULKAN_DEFAULT_RENDERER
+    #define M_VULKAN_DEFAULT_RENDERER
+#endif // _M_DX12_DEFAULT_RENDERER
 
 #if defined M_WIN32
 

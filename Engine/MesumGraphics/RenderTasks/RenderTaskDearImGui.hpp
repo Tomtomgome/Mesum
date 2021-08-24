@@ -2,10 +2,15 @@
 #define M_RenderTaskDearImGui
 #pragma once
 
-#include <MesumGraphics/DX12Renderer/DX12Context.hpp>
 #include <MesumGraphics/RenderTask.hpp>
 #include <MesumGraphics/Renderer.hpp>
+
+#ifdef M_DX12_RENDERER
+#include <MesumGraphics/DX12Renderer/DX12Context.hpp>
+#endif // M_DX12_RENDERER
+#ifdef M_VULKAN_RENDERER
 #include <MesumGraphics/VulkanRenderer/VulkanContext.hpp>
+#endif // M_VULKAN_RENDERER
 
 namespace m::render
 {
@@ -13,8 +18,9 @@ struct TaskDataDrawDearImGui : public TaskData
 {
     ISurface::HdlPtr m_hdlOutput;
 
-    Task* getNew_dx12Implementation(TaskData* a_data) override;
-    Task* getNew_vulkanImplementation(TaskData* a_data) override;
+    mIfDx12Enabled(Task* getNew_dx12Implementation(TaskData* a_data) override);
+    mIfVulkanEnabled(Task* getNew_vulkanImplementation(TaskData* a_data)
+                         override);
 };
 
 struct TaskDrawDearImGui : public Task
@@ -24,7 +30,7 @@ struct TaskDrawDearImGui : public Task
     TaskDataDrawDearImGui m_taskData;
 };
 
-struct Dx12TaskDrawDearImGui : public TaskDrawDearImGui
+mIfDx12Enabled(struct Dx12TaskDrawDearImGui : public TaskDrawDearImGui
 {
     explicit Dx12TaskDrawDearImGui(TaskDataDrawDearImGui* a_data);
     ~Dx12TaskDrawDearImGui() override;
@@ -33,9 +39,9 @@ struct Dx12TaskDrawDearImGui : public TaskDrawDearImGui
 
    private:
     dx12::ComPtr<ID3D12DescriptorHeap> m_SRVDescriptorHeap;
-};
+};)
 
-struct VulkanTaskDrawDearImGui : public TaskDrawDearImGui
+mIfVulkanEnabled(struct VulkanTaskDrawDearImGui : public TaskDrawDearImGui
 {
     explicit VulkanTaskDrawDearImGui(TaskDataDrawDearImGui* a_data);
     ~VulkanTaskDrawDearImGui() override;
@@ -44,7 +50,7 @@ struct VulkanTaskDrawDearImGui : public TaskDrawDearImGui
 
    private:
     VkDescriptorPool m_dearImGuiDescriptorPool = VK_NULL_HANDLE;
-};
+};)
 
 }  // namespace m::render
 

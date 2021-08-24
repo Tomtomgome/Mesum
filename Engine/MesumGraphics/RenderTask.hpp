@@ -3,6 +3,20 @@
 #pragma once
 
 #include <MesumCore/Kernel/Asserts.hpp>
+#include <MesumGraphics/Common.hpp>
+
+#ifdef M_DX12_RENDERER
+#define mIfDx12Enabled(a_something) a_something
+#else
+#define mIfDx12Enabled(a_something)
+#endif // M_DX12_RENDERER
+
+#ifdef M_VULKAN_RENDERER
+#define mIfVulkanEnabled(a_something) a_something
+#else
+#define mIfVulkanEnabled(a_something)
+#endif // M_VULKAN_RENDERER
+
 
 namespace m::render
 {

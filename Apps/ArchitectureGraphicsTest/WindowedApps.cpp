@@ -75,7 +75,9 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
                     "Height not overriden, use default : ", height);
         }
 
-        m_iRenderer = new m::dx12::DX12Renderer();
+        //m_iRenderer = new m::dx12::DX12Renderer();
+        //m_iRenderer = new m::vulkan::VulkanRenderer();
+        m_iRenderer = new m::renderApi::DefaultRenderer();
         m_iRenderer->init();
 
         m_mainWindow = add_newWindow("Cube mover app", width, height);

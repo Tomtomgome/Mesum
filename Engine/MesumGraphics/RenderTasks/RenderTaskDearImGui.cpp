@@ -1,9 +1,14 @@
-#include <imgui_impl_dx12.h>
-#include <imgui_impl_vulkan.h>
-
-#include <MesumGraphics/DX12Renderer/RendererDX12Impl.hpp>
-#include <MesumGraphics/VulkanRenderer/RendererVulkanImpl.hpp>
 #include <RenderTaskDearImGui.hpp>
+
+#ifdef M_DX12_RENDERER
+#include <imgui_impl_dx12.h>
+#include <MesumGraphics/DX12Renderer/RendererDX12Impl.hpp>
+#endif  // M_DX12_RENDERER
+
+#ifdef M_VULKAN_RENDERER
+#include <imgui_impl_vulkan.h>
+#include <MesumGraphics/VulkanRenderer/RendererVulkanImpl.hpp>
+#endif  // M_VULKAN_RENDERER
 
 namespace m::render
 {
@@ -12,7 +17,7 @@ TaskDrawDearImGui::TaskDrawDearImGui(TaskDataDrawDearImGui* a_data)
     mAssert(a_data != nullptr);
     m_taskData = *a_data;
 }
-
+#ifdef M_DX12_RENDERER
 Dx12TaskDrawDearImGui::Dx12TaskDrawDearImGui(TaskDataDrawDearImGui* a_data)
     : TaskDrawDearImGui(a_data)
 {
@@ -62,7 +67,9 @@ Task* TaskDataDrawDearImGui::getNew_dx12Implementation(TaskData* a_data)
     return new Dx12TaskDrawDearImGui(
         static_cast<TaskDataDrawDearImGui*>(a_data));
 }
+#endif  // M_DX12_RENDERER
 
+#ifdef M_VULKAN_RENDERER
 VulkanTaskDrawDearImGui::VulkanTaskDrawDearImGui(TaskDataDrawDearImGui* a_data)
     : TaskDrawDearImGui(a_data)
 {
@@ -156,4 +163,5 @@ Task* TaskDataDrawDearImGui::getNew_vulkanImplementation(TaskData* a_data)
     return new VulkanTaskDrawDearImGui(
         static_cast<TaskDataDrawDearImGui*>(a_data));
 }
+#endif  // M_VULKAN_RENDERER
 }  // namespace m::render
