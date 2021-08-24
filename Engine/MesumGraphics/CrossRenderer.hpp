@@ -42,4 +42,4 @@ using DefaultRenderer = DX12Renderer;
 
 #endif
 
-#endif //M_CrossRenderer
+#endif  // M_CrossRenderer

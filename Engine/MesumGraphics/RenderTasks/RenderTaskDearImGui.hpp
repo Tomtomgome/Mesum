@@ -7,10 +7,10 @@
 
 #ifdef M_DX12_RENDERER
 #include <MesumGraphics/DX12Renderer/DX12Context.hpp>
-#endif // M_DX12_RENDERER
+#endif  // M_DX12_RENDERER
 #ifdef M_VULKAN_RENDERER
 #include <MesumGraphics/VulkanRenderer/VulkanContext.hpp>
-#endif // M_VULKAN_RENDERER
+#endif  // M_VULKAN_RENDERER
 
 namespace m::render
 {
