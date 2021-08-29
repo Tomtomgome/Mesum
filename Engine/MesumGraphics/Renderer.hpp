@@ -60,8 +60,8 @@ class ISurface
 
     struct Handle
     {
-        ISurface* surface;
-        Bool      isValid;
+        ISurface* surface = nullptr;
+        Bool      isValid = true;
     };
 
     using HdlPtr = std::shared_ptr<Handle>;

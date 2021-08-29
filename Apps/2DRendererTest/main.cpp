@@ -116,8 +116,9 @@ void uploadData(bufferBase<tt_Vertex, tt_Index>& a_buffer,
 }
 
 template <typename tt_Vertex, typename tt_Index>
-void record_bind(bufferBase<tt_Vertex, tt_Index> const& a_buffer,
-                 ID3D12GraphicsCommandList*             a_commandList)
+void record_bind(
+    bufferBase<tt_Vertex, tt_Index> const&             a_buffer,
+    Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList2> a_commandList)
 {
     D3D12_VERTEX_BUFFER_VIEW vbv;
     memset(&vbv, 0, sizeof(D3D12_VERTEX_BUFFER_VIEW));
@@ -137,9 +138,84 @@ void record_bind(bufferBase<tt_Vertex, tt_Index> const& a_buffer,
 using uploadBuffers =
     bufferBase<BasicVertex, U16>[dx12::DX12Surface::scm_numFrames];
 
-struct Drawer_2Dprimitives
+template <typename tt_Vertex, typename tt_Index>
+struct DataMeshBuffer
 {
-    void init()
+    std::vector<tt_Vertex> m_vertices;
+    std::vector<tt_Index>  m_indices;
+
+    void clear()
+    {
+        m_vertices.clear();
+        m_indices.clear();
+    }
+};
+
+void add_square(DataMeshBuffer<BasicVertex, U16>* a_meshBuffer,
+                math::Vec2 const                  a_position)
+{
+    mAssert(a_meshBuffer != nullptr);
+
+    UInt        index = a_meshBuffer->m_vertices.size();
+    Float       size  = 0.01;
+    BasicVertex vertex;
+    vertex.color    = {1.0f, 1.0f, 1.0f, 1.0f};
+    vertex.position = {a_position.x - size, a_position.y - size, 0.5f};
+    a_meshBuffer->m_vertices.push_back(vertex);
+    vertex.position = {a_position.x - size, a_position.y + size, 0.5f};
+    a_meshBuffer->m_vertices.push_back(vertex);
+    vertex.position = {a_position.x + size, a_position.y - size, 0.5f};
+    a_meshBuffer->m_vertices.push_back(vertex);
+    vertex.position = {a_position.x + size, a_position.y + size, 0.5f};
+    a_meshBuffer->m_vertices.push_back(vertex);
+
+    a_meshBuffer->m_indices.push_back(index);
+    a_meshBuffer->m_indices.push_back(index + 1);
+    a_meshBuffer->m_indices.push_back(index + 2);
+    a_meshBuffer->m_indices.push_back(index + 3);
+    a_meshBuffer->m_indices.push_back(0xFFFF);
+}
+
+struct Drawer_2D
+{
+    void add_square(math::Vec2 const a_position)
+    {
+        ::add_square(&m_meshBuffer, a_position);
+    }
+
+    void reset() { m_meshBuffer.clear(); }
+
+    DataMeshBuffer<BasicVertex, U16> m_meshBuffer;
+};
+
+struct TaskData2dRender : public render::TaskData
+{
+    DataMeshBuffer<BasicVertex, U16>* m_pMeshBuffer;
+    render::ISurface::HdlPtr          m_hdlOutput;
+
+    mIfDx12Enabled(render::Task* getNew_dx12Implementation(
+        render::TaskData* a_data) override);
+    // mIfVulkanEnabled(render::Task* getNew_vulkanImplementation(
+    //     render::TaskData* a_data) override);
+};
+
+struct Task2dRender : public render::Task
+{
+    explicit Task2dRender(TaskData2dRender* a_data)
+    {
+        mAssert(a_data != nullptr);
+        m_taskData = *a_data;
+    }
+
+    virtual void upload_data() = 0;
+
+    TaskData2dRender m_taskData;
+};
+
+#ifdef M_DX12_RENDERER
+struct Dx12Task2dRender : public Task2dRender
+{
+    explicit Dx12Task2dRender(TaskData2dRender* a_data) : Task2dRender(a_data)
     {
         D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
 
@@ -230,36 +306,27 @@ struct Drawer_2Dprimitives
             &pipelineDesc, IID_PPV_ARGS(&m_pso)));
     }
 
-    void reset()
+    void upload_data() override
     {
-        m_vertices.clear();
-        m_indices.clear();
+        DataMeshBuffer meshBuffer = *m_taskData.m_pMeshBuffer;
+
+        auto& buffer = m_buffers[(++m_i) % dx12::DX12Surface::scm_numFrames];
+        uploadData(buffer, meshBuffer.m_vertices, meshBuffer.m_indices);
     }
 
-    void add_cube(math::Vec2 const a_position)
+    void execute() const override
     {
-        UInt        index = m_vertices.size();
-        Float       size  = 0.01;
-        BasicVertex vertex;
-        vertex.color    = {1.0f, 1.0f, 1.0f, 1.0f};
-        vertex.position = {a_position.x - size, a_position.y - size, 0.5f};
-        m_vertices.push_back(vertex);
-        vertex.position = {a_position.x - size, a_position.y + size, 0.5f};
-        m_vertices.push_back(vertex);
-        vertex.position = {a_position.x + size, a_position.y - size, 0.5f};
-        m_vertices.push_back(vertex);
-        vertex.position = {a_position.x + size, a_position.y + size, 0.5f};
-        m_vertices.push_back(vertex);
+        dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
+            dx12::DX12Context::gs_dx12Contexte->get_commandQueue()
+                .get_commandList();
 
-        m_indices.push_back(index);
-        m_indices.push_back(index + 1);
-        m_indices.push_back(index + 2);
-        m_indices.push_back(index + 3);
-        m_indices.push_back(0xFFFF);
-    }
+        auto currentSurface =
+            static_cast<dx12::DX12Surface*>(m_taskData.m_hdlOutput->surface);
 
-    void draw(ID3D12GraphicsCommandList* a_commandList)
-    {
+        D3D12_CPU_DESCRIPTOR_HANDLE rtv;
+        rtv = currentSurface->get_currentRtvDesc();
+        graphicCommandList->OMSetRenderTargets(1, &rtv, FALSE, nullptr);
+
         D3D12_VIEWPORT viewport = {};
         viewport.MaxDepth       = 1.0f;
         viewport.Width          = 1280;
@@ -268,33 +335,43 @@ struct Drawer_2Dprimitives
         scissorRect.right       = 1280;
         scissorRect.bottom      = 720;
 
-        a_commandList->RSSetViewports(1, &viewport);
-        a_commandList->RSSetScissorRects(1, &scissorRect);
+        graphicCommandList->RSSetViewports(1, &viewport);
+        graphicCommandList->RSSetScissorRects(1, &scissorRect);
 
-        a_commandList->SetPipelineState(m_pso.Get());
-        a_commandList->SetGraphicsRootSignature(m_rootSignature.Get());
+        graphicCommandList->SetPipelineState(m_pso.Get());
+        graphicCommandList->SetGraphicsRootSignature(m_rootSignature.Get());
 
         dx12::ComPtr<ID3D12Device> device =
             dx12::DX12Context::gs_dx12Contexte->m_device;
 
-        a_commandList->IASetPrimitiveTopology(
+        graphicCommandList->IASetPrimitiveTopology(
             D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-        static UInt i = 0;
-        auto& buffer  = m_buffers[(i++) % dx12::DX12Surface::scm_numFrames];
-        uploadData(buffer, m_vertices, m_indices);
-        record_bind(buffer, a_commandList);
-        a_commandList->DrawIndexedInstanced(m_indices.size(), 1, 0, 0, 0);
+        DataMeshBuffer meshBuffer = *m_taskData.m_pMeshBuffer;
+
+        auto& buffer = m_buffers[(m_i) % dx12::DX12Surface::scm_numFrames];
+        record_bind(buffer, graphicCommandList);
+        graphicCommandList->DrawIndexedInstanced(meshBuffer.m_indices.size(), 1,
+                                                 0, 0, 0);
+
+        dx12::DX12Context::gs_dx12Contexte->get_commandQueue()
+            .execute_commandList(graphicCommandList.Get());
     }
 
-    std::vector<BasicVertex> m_vertices;
-    std::vector<U16>         m_indices;
-
+   private:
+    UInt          m_i = 0;
     uploadBuffers m_buffers;
 
     dx12::ComPtr<ID3D12RootSignature> m_rootSignature = nullptr;
     dx12::ComPtr<ID3D12PipelineState> m_pso           = nullptr;
 };
+
+render::Task* TaskData2dRender::getNew_dx12Implementation(
+    render::TaskData* a_data)
+{
+    return new Dx12Task2dRender(static_cast<TaskData2dRender*>(a_data));
+}
+#endif  // M_DX12_RENDERER
 
 struct BunchOfSquares
 {
@@ -320,23 +397,6 @@ struct BunchOfSquares
     std::vector<math::Vec2> m_squarePositions;
 };
 
-// struct Node2dDrawer : public Node
-//{
-//     void record(dx12::ComPtr<ID3D12GraphicsCommandList2> const&
-//     a_commandList)
-//     {
-//         mHardAssert(m_drawer != nullptr);
-//         m_drawer->draw(a_commandList.Get());
-//
-//         if (Bool(nextInstruction))
-//         {
-//             nextInstruction(a_commandList);
-//         }
-//     }
-//
-//     Drawer_2Dprimitives* m_drawer;
-// };
-
 class RendererTestApp : public m::crossPlatform::IWindowedApplication
 {
     void init() override
@@ -359,23 +419,19 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         render::Taskset* taskset_renderPipeline =
             m_hdlSurface->surface->addNew_renderTaskset();
 
+        TaskData2dRender taskData_2dRender;
+        taskData_2dRender.m_hdlOutput   = m_hdlSurface;
+        taskData_2dRender.m_pMeshBuffer = &m_drawer2d.m_meshBuffer;
+        m_pTask_2dRender                = static_cast<Task2dRender*>(
+            taskData_2dRender.add_toTaskSet(taskset_renderPipeline));
+
         render::TaskDataDrawDearImGui taskData_drawDearImGui;
         taskData_drawDearImGui.m_hdlOutput = m_hdlSurface;
         taskData_drawDearImGui.add_toTaskSet(taskset_renderPipeline);
 
-        //        m_outputSetterNode.surfaceHandle = m_hdlSurface;
-        //        m_outputSetterNode.output_to(m_drawerNode);
-        //        m_drawerNode.m_drawer = &m_drawer;
-        //        m_drawerNode.output_to(m_imGuiNode);
-        //        m_imGuiNode.init();
-        //
-        //        m_startNode.output_to(m_outputSetterNode);
-
         m_inputManager.attach_ToKeyEvent(
             input::KeyAction::keyPressed(input::KEY_N),
             Callback<void>(&m_bunchOfSquares, &BunchOfSquares::add_newSquare));
-
-        // m_drawer.init();
     }
 
     void destroy() override
@@ -397,11 +453,11 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         m_bunchOfSquares.update(a_deltaTime);
 
-        m_drawer.reset();
+        m_drawer2d.reset();
 
         for (auto position : m_bunchOfSquares.m_squarePositions)
         {
-            m_drawer.add_cube(position);
+            m_drawer2d.add_square(position);
         }
 
         start_dearImGuiNewFrame(m_iRenderer);
@@ -417,6 +473,8 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         ImGui::End();
         ImGui::Render();
 
+        m_pTask_2dRender->upload_data();
+
         m_hdlSurface->surface->render();
 
         return true;
@@ -424,10 +482,13 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
     m::render::IRenderer*       m_iRenderer;
     m::render::ISurface::HdlPtr m_hdlSurface;
-    Drawer_2Dprimitives         m_drawer;
-    BunchOfSquares              m_bunchOfSquares;
-    windows::IWindow*           m_mainWindow = nullptr;
-    input::InputManager         m_inputManager;
+
+    Drawer_2D     m_drawer2d;
+    Task2dRender* m_pTask_2dRender;
+
+    BunchOfSquares      m_bunchOfSquares;
+    windows::IWindow*   m_mainWindow = nullptr;
+    input::InputManager m_inputManager;
 };
 
 M_EXECUTE_WINDOWED_APP(RendererTestApp)

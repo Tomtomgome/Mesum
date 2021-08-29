@@ -77,29 +77,34 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         //m_iRenderer = new m::dx12::DX12Renderer();
         //m_iRenderer = new m::vulkan::VulkanRenderer();
-        m_iRenderer = new m::renderApi::DefaultRenderer();
-        m_iRenderer->init();
+        m_iDx12Renderer = new m::dx12::DX12Renderer();
+        m_iDx12Renderer->init();
+        m_iVulkanRenderer = new m::vulkan::VulkanRenderer();
+        m_iVulkanRenderer->init();
 
-        m_mainWindow = add_newWindow("Cube mover app", width, height);
-        m_mainWindow->set_asMainWindow();
+        m_mainDx12Window = add_newWindow("Cube mover app", width, height);
+        m_mainDx12Window->set_asMainWindow();
 
-        m_hdlSurface = m_mainWindow->link_renderer(m_iRenderer);
+        m_mainVulkanWindow = add_newWindow("Cube mover app", width, height);
 
-        m::dearImGui::init(m_mainWindow);
+        m_hdlDx12Surface = m_mainDx12Window->link_renderer(m_iDx12Renderer);
+        m_hdlVulkanSurface = m_mainVulkanWindow->link_renderer(m_iVulkanRenderer);
+
+        m::dearImGui::init(m_mainDx12Window);
 
         m::render::Taskset* taskset_renderPipeline =
-            m_hdlSurface->surface->addNew_renderTaskset();
+            m_hdlDx12Surface->surface->addNew_renderTaskset();
 
         m::render::TaskDataDrawDearImGui taskData_drawDearImGui;
-        taskData_drawDearImGui.m_hdlOutput = m_hdlSurface;
+        taskData_drawDearImGui.m_hdlOutput = m_hdlDx12Surface;
         taskData_drawDearImGui.add_toTaskSet(taskset_renderPipeline);
 
-        m_mainWindow->link_inputManager(&m_inputManager);
+        m_mainDx12Window->link_inputManager(&m_inputManager);
 
         m_inputManager.attach_ToKeyEvent(
             m::input::KeyAction::keyPressed(m::input::KEY_F11),
             m::input::KeyActionCallback(
-                m_mainWindow, &m::windows::IWindow::toggle_fullScreen));
+                m_mainDx12Window, &m::windows::IWindow::toggle_fullScreen));
 
         m_inputManager.attach_ToKeyEvent(
             m::input::KeyAction::keyPressed(m::input::KEY_W),
@@ -140,8 +145,11 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
     {
         m::crossPlatform::IWindowedApplication::destroy();
 
-        m_iRenderer->destroy();
-        delete m_iRenderer;
+        m_iDx12Renderer->destroy();
+        delete m_iDx12Renderer;
+
+        m_iVulkanRenderer->destroy();
+        delete m_iVulkanRenderer;
 
         m::dearImGui::destroy();
     }
@@ -165,7 +173,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         m_mover.move(m_x, m_y);
 
-        start_dearImGuiNewFrame(m_iRenderer);
+        start_dearImGuiNewFrame(m_iDx12Renderer);
 
         ImGui::NewFrame();
 
@@ -173,7 +181,11 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         ImGui::ShowDemoWindow(&showDemo);
         ImGui::Render();
 
-        m_hdlSurface->surface->render();
+        m_hdlDx12Surface->surface->render();
+        if(m_hdlVulkanSurface->isValid)
+        {
+            m_hdlVulkanSurface->surface->render();
+        }
 
         return true;
     }
@@ -181,10 +193,13 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
     m::Float m_x = 0.0f;
     m::Float m_y = 0.0f;
 
-    m::render::IRenderer*       m_iRenderer;
-    m::render::ISurface::HdlPtr m_hdlSurface;
+    m::render::IRenderer*       m_iDx12Renderer;
+    m::render::IRenderer*       m_iVulkanRenderer;
+    m::render::ISurface::HdlPtr m_hdlDx12Surface;
+    m::render::ISurface::HdlPtr m_hdlVulkanSurface;
     m::input::InputManager      m_inputManager;
-    m::windows::IWindow*        m_mainWindow;
+    m::windows::IWindow*        m_mainDx12Window;
+    m::windows::IWindow*        m_mainVulkanWindow;
     CubeMover                   m_mover;
 
     const m::logging::ChannelID m_CUBEAPP_ID = mLOG_GET_ID();
