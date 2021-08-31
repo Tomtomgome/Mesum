@@ -50,8 +50,9 @@ class VulkanContext
         return gs_VulkanContexte->m_queueFamilyIndex;
     }
 
-    static U32 get_memoryTypeIndex(U32                    a_typeFilter,
-                                   VkMemoryPropertyFlags a_properties);
+    static U32            get_memoryTypeIndex(U32                   a_typeFilter,
+                                              VkMemoryPropertyFlags a_properties);
+    static VkShaderModule create_shaderModule(std::string const& a_shaderPath);
 
    private:
     // Instance and devices

@@ -10,6 +10,7 @@ set(SOURCES Kernel.cpp
             Math.cpp
             Application.cpp
             Input.cpp
+            File.cpp
             )
 set(HEADERS Types.hpp
             Asserts.hpp
@@ -27,6 +28,7 @@ set(HEADERS Types.hpp
             Kernel_pch.hpp
             Keys.hpp
             Input.hpp
+            File.hpp
             InputCommon.hpp
             ../MesumCore/Common.hpp)
 

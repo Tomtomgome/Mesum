@@ -1,3 +1,4 @@
+#include <File.hpp>
 #include <Math.hpp>
 #include <MesumGraphics/CrossPlatform.hpp>
 #include <MesumGraphics/DX12Renderer/DX12Context.hpp>
@@ -18,10 +19,10 @@ struct BasicVertex
 template <typename tt_Vertex, typename tt_Index>
 struct BufferBase
 {
-    UInt       vertexBufferSize = 0;
-    const UInt vertexSize       = sizeof(tt_Vertex);
-    UInt       indexBufferSize  = 0;
-    const UInt indexSize        = sizeof(tt_Index);
+    UInt                  vertexBufferSize = 0;
+    static constexpr UInt vertexSize       = sizeof(tt_Vertex);
+    UInt                  indexBufferSize  = 0;
+    static constexpr UInt indexSize        = sizeof(tt_Index);
 };
 
 template <typename tt_Vertex, typename tt_Index>
@@ -41,19 +42,37 @@ struct VulkanBufferBase : public BufferBase<tt_Vertex, tt_Index>
 };
 
 template <typename tt_Vertex, typename tt_Index>
-void initBuffer(VulkanBufferBase<tt_Vertex, tt_Index>& a_buffer)
+void init_buffer(VulkanBufferBase<tt_Vertex, tt_Index>& a_buffer)
 {
     std::vector<tt_Vertex> vertices;
     std::vector<tt_Index>  indices;
-    uploadData(a_buffer, vertices, indices);
+    upload_data(a_buffer, vertices, indices);
 }
 
 template <typename tt_Vertex, typename tt_Index>
-void uploadData(VulkanBufferBase<tt_Vertex, tt_Index>& a_buffer,
-                std::vector<tt_Vertex> const&          a_vertices,
-                std::vector<tt_Index> const&           a_indices)
+void destroy_buffer(VulkanBufferBase<tt_Vertex, tt_Index>& a_buffer)
 {
-    if(a_vertices.size() == 0 || a_indices.size() == 0)
+    VkDevice device = vulkan::VulkanContext::get_logDevice();
+
+    if (a_buffer.vertexBuffer != VK_NULL_HANDLE)
+    {
+        vkDestroyBuffer(device, a_buffer.vertexBuffer, nullptr);
+        vkFreeMemory(device, a_buffer.vertexBufferDeviceMemory, nullptr);
+    }
+
+    if (a_buffer.indexBuffer != VK_NULL_HANDLE)
+    {
+        vkDestroyBuffer(device, a_buffer.indexBuffer, nullptr);
+        vkFreeMemory(device, a_buffer.indexBufferDeviceMemory, nullptr);
+    }
+}
+
+template <typename tt_Vertex, typename tt_Index>
+void upload_data(VulkanBufferBase<tt_Vertex, tt_Index>& a_buffer,
+                 std::vector<tt_Vertex> const&          a_vertices,
+                 std::vector<tt_Index> const&           a_indices)
+{
+    if (a_vertices.size() == 0 || a_indices.size() == 0)
     {
         return;
     }
@@ -70,9 +89,9 @@ void uploadData(VulkanBufferBase<tt_Vertex, tt_Index>& a_buffer,
         a_buffer.vertexBufferSize = a_vertices.size() + 5;
 
         VkBufferCreateInfo bufferInfo{};
-        bufferInfo.sType       = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-        bufferInfo.size        = sizeof(tt_Vertex) * a_vertices.size();
-        bufferInfo.usage       = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
+        bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+        bufferInfo.size  = a_buffer.vertexSize * a_buffer.vertexBufferSize;
+        bufferInfo.usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
         bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
         if (vkCreateBuffer(device, &bufferInfo, nullptr,
                            &a_buffer.vertexBuffer) != VK_SUCCESS)
@@ -114,7 +133,7 @@ void uploadData(VulkanBufferBase<tt_Vertex, tt_Index>& a_buffer,
 
         VkBufferCreateInfo bufferInfo{};
         bufferInfo.sType       = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-        bufferInfo.size        = sizeof(tt_Index) * a_indices.size();
+        bufferInfo.size        = a_buffer.indexSize * a_buffer.indexBufferSize;
         bufferInfo.usage       = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
         bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
         if (vkCreateBuffer(device, &bufferInfo, nullptr,
@@ -159,9 +178,6 @@ void uploadData(VulkanBufferBase<tt_Vertex, tt_Index>& a_buffer,
     memcpy(vtxDest, a_vertices.data(), a_vertices.size() * a_buffer.vertexSize);
     memcpy(idxDest, a_indices.data(), a_indices.size() * a_buffer.indexSize);
 
-    vkUnmapMemory(device, a_buffer.vertexBufferDeviceMemory);
-    vkUnmapMemory(device, a_buffer.indexBufferDeviceMemory);
-
     VkMappedMemoryRange ranges[2];
     ranges[0]        = {};
     ranges[0].sType  = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
@@ -169,15 +185,18 @@ void uploadData(VulkanBufferBase<tt_Vertex, tt_Index>& a_buffer,
     ranges[0].size   = VK_WHOLE_SIZE;
     ranges[1]        = {};
     ranges[1].sType  = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
-    ranges[1].memory = a_buffer.vertexBufferDeviceMemory;
+    ranges[1].memory = a_buffer.indexBufferDeviceMemory;
     ranges[1].size   = VK_WHOLE_SIZE;
     vkFlushMappedMemoryRanges(device, 2, ranges);
+
+    vkUnmapMemory(device, a_buffer.vertexBufferDeviceMemory);
+    vkUnmapMemory(device, a_buffer.indexBufferDeviceMemory);
 }
 
 template <typename tt_Vertex, typename tt_Index>
-void uploadData(Dx12BufferBase<tt_Vertex, tt_Index>& a_buffer,
-                std::vector<tt_Vertex> const&        a_vertices,
-                std::vector<tt_Index> const&         a_indices)
+void upload_data(Dx12BufferBase<tt_Vertex, tt_Index>& a_buffer,
+                 std::vector<tt_Vertex> const&        a_vertices,
+                 std::vector<tt_Index> const&         a_indices)
 {
     dx12::ComPtr<ID3D12Device> device =
         dx12::DX12Context::gs_dx12Contexte->m_device;
@@ -462,7 +481,7 @@ struct Dx12Task2dRender : public Task2dRender
         DataMeshBuffer meshBuffer = *m_taskData.m_pMeshBuffer;
 
         auto& buffer = m_buffers[(++m_i) % dx12::DX12Surface::scm_numFrames];
-        uploadData(buffer, meshBuffer.m_vertices, meshBuffer.m_indices);
+        ::upload_data(buffer, meshBuffer.m_vertices, meshBuffer.m_indices);
     }
 
     void execute() const override
@@ -529,18 +548,56 @@ struct VulkanTask2dRender : public Task2dRender
 {
     explicit VulkanTask2dRender(TaskData2dRender* a_data) : Task2dRender(a_data)
     {
-        for (int i = 0; i < vulkan::VulkanSurface::scm_numFrames; i++)
-        {
-            initBuffer(buffers[i]);
-        }
+        for (auto& buffer : m_buffers) { init_buffer(buffer); }
+
+        m_vertShaderModule = vulkan::VulkanContext::create_shaderModule(
+            "data/squareShader.vs.spv");
+        m_fragShaderModule = vulkan::VulkanContext::create_shaderModule(
+            "data/squareShader.fs.spv");
+
+        VkPipelineShaderStageCreateInfo vertShaderStageInfo{};
+        vertShaderStageInfo.sType =
+            VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+        vertShaderStageInfo.stage  = VK_SHADER_STAGE_VERTEX_BIT;
+        vertShaderStageInfo.module = m_vertShaderModule;
+        vertShaderStageInfo.pName  = "main";
+
+        VkPipelineShaderStageCreateInfo fragShaderStageInfo{};
+        fragShaderStageInfo.sType =
+            VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+        fragShaderStageInfo.stage  = VK_SHADER_STAGE_FRAGMENT_BIT;
+        fragShaderStageInfo.module = m_fragShaderModule;
+        fragShaderStageInfo.pName  = "main";
+
+        VkPipelineShaderStageCreateInfo shaderStages[] = {vertShaderStageInfo,
+                                                          fragShaderStageInfo};
+    }
+    ~VulkanTask2dRender() override
+    {
+        for (auto& buffer : m_buffers) { destroy_buffer(buffer); }
+
+        VkDevice device = vulkan::VulkanContext::get_logDevice();
+
+        vkDestroyShaderModule(device, m_vertShaderModule, nullptr);
+        vkDestroyShaderModule(device, m_fragShaderModule, nullptr);
     }
 
-    void upload_data() override {}
+    void upload_data() override
+    {
+        DataMeshBuffer meshBuffer = *m_taskData.m_pMeshBuffer;
+
+        auto& buffer = m_buffers[(++m_i) % dx12::DX12Surface::scm_numFrames];
+        ::upload_data(buffer, meshBuffer.m_vertices, meshBuffer.m_indices);
+    }
 
     void execute() const override {}
 
    private:
-    vulkanUploadBuffers buffers;
+    UInt                m_i = 0;
+    vulkanUploadBuffers m_buffers;
+
+    VkShaderModule m_vertShaderModule;
+    VkShaderModule m_fragShaderModule;
 };
 
 render::Task* TaskData2dRender::getNew_vulkanImplementation(

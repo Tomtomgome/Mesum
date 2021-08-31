@@ -1,8 +1,8 @@
 #include <VulkanRendererCommon.hpp>
+#include <cstring>
 #include <optional>
 #include <set>
 #include <vector>
-#include <cstring>
 
 namespace m
 {

@@ -1,3 +1,4 @@
+#include <MesumCore/Kernel/File.hpp>
 #include <VulkanContext.hpp>
 
 namespace m
@@ -162,6 +163,31 @@ U32 VulkanContext::get_memoryTypeIndex(U32                   a_typeFilter,
     }
 
     throw std::runtime_error("failed to find suitable memory type!");
+}
+
+// sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+// sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+// sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+VkShaderModule VulkanContext::create_shaderModule(
+    std::string const& a_shaderPath)
+{
+    std::vector<char> binary;
+    files::open_fileToBinary(a_shaderPath, binary);
+
+    mHardAssert(a_shaderPath.size() > 0);
+
+    VkShaderModuleCreateInfo createInfo{};
+    createInfo.sType    = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+    createInfo.codeSize = binary.size();
+    createInfo.pCode    = reinterpret_cast<const uint32_t*>(binary.data());
+
+    VkShaderModule shaderModule;
+    if (vkCreateShaderModule(gs_VulkanContexte->get_logDevice(), &createInfo,
+                             nullptr, &shaderModule) != VK_SUCCESS)
+    {
+        throw std::runtime_error("failed to create shader module!");
+    }
+    return shaderModule;
 }
 
 //-----------------------------------------------------------------------------
