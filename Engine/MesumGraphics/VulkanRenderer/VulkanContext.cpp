@@ -141,6 +141,29 @@ void VulkanContext::present(VkPresentInfoKHR const& a_infoPresent)
     vkQueuePresentKHR(VulkanContext::get_presentationQueue(), &a_infoPresent);
 }
 
+// sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+// sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+// sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+U32 VulkanContext::get_memoryTypeIndex(U32                   a_typeFilter,
+                                       VkMemoryPropertyFlags a_properties)
+{
+    VkPhysicalDeviceMemoryProperties memProperties;
+    vkGetPhysicalDeviceMemoryProperties(gs_VulkanContexte->get_physDevice(),
+                                        &memProperties);
+
+    for (uint32_t i = 0; i < memProperties.memoryTypeCount; i++)
+    {
+        if ((a_typeFilter & (1 << i)) &&
+            (memProperties.memoryTypes[i].propertyFlags & a_properties) ==
+                a_properties)
+        {
+            return i;
+        }
+    }
+
+    throw std::runtime_error("failed to find suitable memory type!");
+}
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

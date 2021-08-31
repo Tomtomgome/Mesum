@@ -50,6 +50,9 @@ class VulkanContext
         return gs_VulkanContexte->m_queueFamilyIndex;
     }
 
+    static U32 get_memoryTypeIndex(U32                    a_typeFilter,
+                                   VkMemoryPropertyFlags a_properties);
+
    private:
     // Instance and devices
     VkInstance       m_instance       = VK_NULL_HANDLE;
