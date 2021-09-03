@@ -27,6 +27,8 @@ struct TaskDrawDearImGui : public Task
 {
     explicit TaskDrawDearImGui(TaskDataDrawDearImGui* a_data);
 
+    void prepare() override {}
+
     TaskDataDrawDearImGui m_taskData;
 };
 

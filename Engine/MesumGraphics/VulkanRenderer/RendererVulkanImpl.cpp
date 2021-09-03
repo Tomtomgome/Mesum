@@ -105,6 +105,7 @@ void VulkanSurface::render()
 
     for (auto taskset : m_renderTasksets)
     {
+        for (const auto task : taskset->m_set_tasks) { task->prepare(); }
         for (const auto task : taskset->m_set_tasks) { task->execute(); }
     }
 
@@ -261,7 +262,7 @@ void VulkanSurface::init_internal()
     VkAttachmentDescription attachment     = {};
     attachment.format                      = scm_selectedSwapChainFormat;
     attachment.samples                     = VK_SAMPLE_COUNT_1_BIT;
-    attachment.loadOp                      = VK_ATTACHMENT_LOAD_OP_CLEAR;
+    attachment.loadOp                      = VK_ATTACHMENT_LOAD_OP_LOAD;
     attachment.storeOp                     = VK_ATTACHMENT_STORE_OP_STORE;
     attachment.stencilLoadOp               = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
     attachment.stencilStoreOp              = VK_ATTACHMENT_STORE_OP_DONT_CARE;

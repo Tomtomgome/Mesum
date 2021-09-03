@@ -73,7 +73,7 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
             U32 width  = clientRect.right - clientRect.left;
             U32 height = clientRect.bottom - clientRect.top;
 
-            m_resizeSignal.call(width, height);
+            m_signalResize.call(width, height);
         }
         break;
         default: result = DefWindowProcW(m_hwnd, a_uMsg, a_wParam, a_lParam);
@@ -121,7 +121,7 @@ render::ISurface::HdlPtr IWindowImpl::link_renderer(
                                                 m_clientHeight};
     surfaceHandle->surface->init_win32(surfaceData);
 
-    m_resizeSignal.attach_ToSignal(Callback<void, U32, U32>(
+    m_signalResize.attach_ToSignal(Callback<void, U32, U32>(
         surfaceHandle->surface, &render::ISurface::resize));
 
     // TODO : Manage this from the renderer
@@ -234,9 +234,18 @@ void IWindowImpl::toggle_fullScreen()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void IWindowImpl::attach_toDestroy(Callback<void>& a_onDestroyCallback)
+void IWindowImpl::attach_toDestroy(Callback<void> const& a_onDestroyCallback)
 {
     m_signalWindowDestroyed.attach_ToSignal(a_onDestroyCallback);
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void IWindowImpl::attach_toResize(
+    Callback<void, U32, U32> const& a_onResizeCallback)
+{
+    m_signalResize.attach_ToSignal(a_onResizeCallback);
 }
 
 }  // namespace m::win32

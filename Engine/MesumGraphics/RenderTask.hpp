@@ -25,6 +25,7 @@ struct Task
 {
     virtual ~Task() = default;
 
+    virtual void prepare() = 0;
     virtual void execute() const = 0;
 };
 

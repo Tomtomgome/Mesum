@@ -36,7 +36,9 @@ class IWindowImpl : public windows::IWindow
     void set_fullScreen(Bool a_fullscreen) override;
     void toggle_fullScreen() override;
 
-    void attach_toDestroy(Callback<void>& a_onDestroyCallback) override;
+    void attach_toDestroy(Callback<void> const& a_onDestroyCallback) override;
+    void attach_toResize(
+        Callback<void, U32, U32> const& a_onResizeCallback) override;
 
     void set_winContext(WIN32Context const& a_winContext)
     {
@@ -56,9 +58,9 @@ class IWindowImpl : public windows::IWindow
     Bool m_flagToBeClosed = false;
 
     std::string m_windowName;
-    Bool        m_isMainWindow  = false;
-    U32         m_clientWidth   = 1280;
-    U32         m_clientHeight  = 720;
+    Bool        m_isMainWindow = false;
+    U32         m_clientWidth  = 1280;
+    U32         m_clientHeight = 720;
 
     // Window rectangle (used to toggle fullscreen state).
     RECT m_windowRect;
@@ -69,7 +71,7 @@ class IWindowImpl : public windows::IWindow
     using CallbackWindowDestroy = Callback<void>;
     using CallbackInputProcessing =
         Callback<void, Bool*, HWND, UINT, WPARAM, LPARAM>;
-    Signal<U32, U32>                          m_resizeSignal;
+    Signal<U32, U32>                          m_signalResize;
     Signal<>                                  m_signalWindowDestroyed;
     Signal<Bool*, HWND, UINT, WPARAM, LPARAM> m_signalOverrideInputProcessing;
 };

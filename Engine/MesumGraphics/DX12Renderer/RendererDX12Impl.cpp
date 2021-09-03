@@ -130,6 +130,7 @@ void DX12Surface::render()
 
         for (auto taskset : m_renderTasksets)
         {
+            for (const auto task : taskset->m_set_tasks) { task->prepare(); }
             for (const auto task : taskset->m_set_tasks) { task->execute(); }
         }
 
