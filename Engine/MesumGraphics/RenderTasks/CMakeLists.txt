@@ -2,9 +2,11 @@ set(MODULE_NAME RenderTasks)
 
 project(${MODULE_NAME} VERSION 1.0.0 DESCRIPTION "MesumEngine Basic graphic tasks")
 
-set(SOURCES RenderTaskDearImGui.cpp)
+set(SOURCES RenderTaskDearImGui.cpp
+        RenderTask2DRender.cpp)
 
-set(HEADERS RenderTaskDearImGui.hpp)
+set(HEADERS RenderTaskDearImGui.hpp
+        RenderTask2DRender.hpp)
 
 foreach(RENDER_MODULE_NAME ${RENDERER_MODULE_NAMES})
     list(APPEND TARGET_OBJECTS $<TARGET_OBJECTS:${RENDER_MODULE_NAME}>)

@@ -14,12 +14,19 @@
 
 namespace m::render
 {
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 TaskDrawDearImGui::TaskDrawDearImGui(TaskDataDrawDearImGui* a_data)
 {
     mAssert(a_data != nullptr);
     m_taskData = *a_data;
 }
+
 #ifdef M_DX12_RENDERER
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 Dx12TaskDrawDearImGui::Dx12TaskDrawDearImGui(TaskDataDrawDearImGui* a_data)
     : TaskDrawDearImGui(a_data)
 {
@@ -37,11 +44,17 @@ Dx12TaskDrawDearImGui::Dx12TaskDrawDearImGui(TaskDataDrawDearImGui* a_data)
         m_SRVDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 Dx12TaskDrawDearImGui::~Dx12TaskDrawDearImGui()
 {
     ImGui_ImplDX12_Shutdown();
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void Dx12TaskDrawDearImGui::execute() const
 {
     dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
@@ -64,6 +77,9 @@ void Dx12TaskDrawDearImGui::execute() const
         graphicCommandList.Get());
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 Task* TaskDataDrawDearImGui::getNew_dx12Implementation(TaskData* a_data)
 {
     return new Dx12TaskDrawDearImGui(
@@ -72,6 +88,9 @@ Task* TaskDataDrawDearImGui::getNew_dx12Implementation(TaskData* a_data)
 #endif  // M_DX12_RENDERER
 
 #ifdef M_VULKAN_RENDERER
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 VulkanTaskDrawDearImGui::VulkanTaskDrawDearImGui(TaskDataDrawDearImGui* a_data)
     : TaskDrawDearImGui(a_data)
 {
@@ -125,6 +144,9 @@ VulkanTaskDrawDearImGui::VulkanTaskDrawDearImGui(TaskDataDrawDearImGui* a_data)
     ImGui_ImplVulkan_DestroyFontUploadObjects();
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 VulkanTaskDrawDearImGui::~VulkanTaskDrawDearImGui()
 {
     ImGui_ImplVulkan_Shutdown();
@@ -133,6 +155,9 @@ VulkanTaskDrawDearImGui::~VulkanTaskDrawDearImGui()
                             m_dearImGuiDescriptorPool, nullptr);
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void VulkanTaskDrawDearImGui::execute() const
 {
     auto currentSurface =
@@ -160,6 +185,9 @@ void VulkanTaskDrawDearImGui::execute() const
     vkCmdEndRenderPass(commandBuffer);
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 Task* TaskDataDrawDearImGui::getNew_vulkanImplementation(TaskData* a_data)
 {
     return new VulkanTaskDrawDearImGui(

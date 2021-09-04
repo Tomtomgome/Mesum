@@ -14,6 +14,9 @@
 
 namespace m::render
 {
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 struct TaskDataDrawDearImGui : public TaskData
 {
     ISurface::HdlPtr m_hdlOutput;
@@ -23,6 +26,9 @@ struct TaskDataDrawDearImGui : public TaskData
                          override);
 };
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 struct TaskDrawDearImGui : public Task
 {
     explicit TaskDrawDearImGui(TaskDataDrawDearImGui* a_data);
@@ -32,6 +38,9 @@ struct TaskDrawDearImGui : public Task
     TaskDataDrawDearImGui m_taskData;
 };
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 mIfDx12Enabled(struct Dx12TaskDrawDearImGui : public TaskDrawDearImGui
 {
     explicit Dx12TaskDrawDearImGui(TaskDataDrawDearImGui* a_data);
@@ -43,6 +52,9 @@ mIfDx12Enabled(struct Dx12TaskDrawDearImGui : public TaskDrawDearImGui
     dx12::ComPtr<ID3D12DescriptorHeap> m_SRVDescriptorHeap;
 };)
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 mIfVulkanEnabled(struct VulkanTaskDrawDearImGui : public TaskDrawDearImGui
 {
     explicit VulkanTaskDrawDearImGui(TaskDataDrawDearImGui* a_data);
