@@ -1,2 +1,14 @@
 build/
 .vscode/
+
+# Build files
+*.pdb
+*.exe
+*.ilk
+
+# Mesum
+*CONERR$
+
+# Clion
+.idea/
+cmake-build-debug/

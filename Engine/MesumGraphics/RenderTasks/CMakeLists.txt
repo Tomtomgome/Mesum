@@ -3,10 +3,12 @@ set(MODULE_NAME RenderTasks)
 project(${MODULE_NAME} VERSION 1.0.0 DESCRIPTION "MesumEngine Basic graphic tasks")
 
 set(SOURCES RenderTaskDearImGui.cpp
-        RenderTask2DRender.cpp)
+        RenderTask2DRender.cpp
+        RenderTask3dRender.cpp)
 
 set(HEADERS RenderTaskDearImGui.hpp
-        RenderTask2DRender.hpp)
+        RenderTask2DRender.hpp
+        RenderTask3dRender.h)
 
 foreach(RENDER_MODULE_NAME ${RENDERER_MODULE_NAMES})
     list(APPEND TARGET_OBJECTS $<TARGET_OBJECTS:${RENDER_MODULE_NAME}>)

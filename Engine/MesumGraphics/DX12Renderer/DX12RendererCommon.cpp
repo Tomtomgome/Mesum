@@ -309,6 +309,7 @@ ComPtr<IDXGISwapChain4> create_swapChain(
         CreateDXGIFactory2(flags_createFactory, IID_PPV_ARGS(&dxgiFactory4)));
     mDXGIDebugNamed(dxgiFactory4, "SwapChain Factory");
 
+	// Create a descriptor for the swap chain.
     DXGI_SWAP_CHAIN_DESC1 desc_SwapChain = {};
     desc_SwapChain.Width                 = a_width;
     desc_SwapChain.Height                = a_height;
@@ -321,8 +322,9 @@ ComPtr<IDXGISwapChain4> create_swapChain(
     desc_SwapChain.SwapEffect            = DXGI_SWAP_EFFECT_FLIP_DISCARD;
     desc_SwapChain.AlphaMode             = DXGI_ALPHA_MODE_UNSPECIFIED;
     desc_SwapChain.Flags =
-        check_tearingSupport() ? DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING : 0;
+        check_tearingSupport() ? DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING : 0u;
 
+	// Create a swap chain for the window.
     ComPtr<IDXGISwapChain1> swapChain1;
     check_MicrosoftHRESULT(dxgiFactory4->CreateSwapChainForHwnd(
         a_commandQueue.Get(), a_hWnd, &desc_SwapChain, nullptr, nullptr,
