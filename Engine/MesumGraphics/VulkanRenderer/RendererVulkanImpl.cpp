@@ -208,11 +208,6 @@ void VulkanSurface::init_internal()
     vkGetPhysicalDeviceSurfaceFormatsKHR(VulkanContext::get_physDevice(),
                                          m_surface, &formatCount, nullptr);
 
-    if (formatCount == 0)
-    {
-        throw std::runtime_error("Need to support at least some formats");
-    }
-
     supportedFormats.resize(formatCount);
     vkGetPhysicalDeviceSurfaceFormatsKHR(VulkanContext::get_physDevice(),
                                          m_surface, &formatCount,
