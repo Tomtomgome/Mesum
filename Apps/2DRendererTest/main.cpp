@@ -1,18 +1,21 @@
 #include <File.hpp>
 #include <Math.hpp>
+#include <MesumCore/Kernel/Image.hpp>
 #include <MesumGraphics/CrossPlatform.hpp>
 #include <MesumGraphics/DX12Renderer/DX12Context.hpp>
 #include <MesumGraphics/DearImgui/MesumDearImGui.hpp>
 #include <MesumGraphics/RenderTasks/RenderTask2DRender.hpp>
 #include <MesumGraphics/RenderTasks/RenderTaskDearImGui.hpp>
+#include <MesumGraphics/Resources/Texture.hpp>
 #include <MesumGraphics/VulkanRenderer/VulkanContext.hpp>
 
 using namespace m;
 
 math::RandomGenerator g_randomGenerator;
 
-void add_square(render::DataMeshBuffer<render::BasicVertex, U16>* a_meshBuffer,
-                math::Vec2 const                                  a_position)
+void add_squareToMesh(
+    render::DataMeshBuffer<render::BasicVertex, U16>* a_meshBuffer,
+    math::Vec2 const                                  a_position)
 {
     mAssert(a_meshBuffer != nullptr);
 
@@ -40,7 +43,7 @@ struct Drawer_2D
 {
     void add_square(math::Vec2 const a_position)
     {
-        ::add_square(&m_meshBuffer, a_position);
+        add_squareToMesh(&m_meshBuffer, a_position);
     }
 
     void reset() { m_meshBuffer.clear(); }
@@ -121,6 +124,19 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         taskData_2dRender.m_hdlOutput   = m_hdlSurfaceVulkan;
         taskData_2dRender.m_pMeshBuffer = &m_drawer2d.m_meshBuffer;
         taskData_2dRender.add_toTaskSet(taskset_renderPipelineVulkan);
+
+        //        render::ManagerTexture managerTexture;
+        //        GpuTextureBank TextureBankDx12 =
+        //        managerTexture.link_renderer(rendererDx12); GpuTextureBank
+        //        TextureBankVulkan =
+        //        managerTexture.link_renderer(rendererVulkan);
+        //
+        //        HdlTexture hdl = managerTexture.create_handle();
+        //
+        //        managerTexture.install_metaData(hdl, image);
+        //
+        //        TextureBankDx12.upload(hdl);
+        //        TextureBankVulkan.upload(hdl);
 
         m_inputManager.attach_ToKeyEvent(
             input::KeyAction::keyPressed(input::KEY_N),
