@@ -475,8 +475,18 @@ void VulkanRenderer::start_dearImGuiNewFrameRenderer() const
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-render::ISurface* VulkanRenderer::get_newSurface()
+render::ISurface* VulkanRenderer::getNew_surface()
 {
     return new VulkanSurface();
 }
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+render::IResource* VulkanRenderer::getNew_texture()
+{
+    return nullptr;//new VulkanTexture();
+}
+
+
 }  // namespace m::vulkan

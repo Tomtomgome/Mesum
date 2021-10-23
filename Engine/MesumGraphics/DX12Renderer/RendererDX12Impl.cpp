@@ -62,7 +62,7 @@ void DX12Surface::init_win32(render::Win32SurfaceInitData& a_data)
 void DX12Surface::init_x11(render::X11SurfaceInitData& a_data)
 {
     // X11 not supported with DX12
-    mHardAssert(false);
+    mAssert(false);
 }
 
 //-----------------------------------------------------------------------------
@@ -257,9 +257,17 @@ void DX12Renderer::start_dearImGuiNewFrameRenderer() const
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-render::ISurface* DX12Renderer::get_newSurface()
+render::ISurface* DX12Renderer::getNew_surface()
 {
     return new DX12Surface();
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+render::IResource* DX12Renderer::getNew_texture()
+{
+    return nullptr;//new DX12Texture();
 }
 
 }  // namespace m::dx12

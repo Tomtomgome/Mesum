@@ -10,6 +10,7 @@ message(STATUS "module names are ${RENDERER_MODULE_NAMES}")
 add_subdirectory(Unix)
 add_subdirectory(Win32)
 
+#add_subdirectory(Resources)
 add_subdirectory(RenderTasks)
 
 set(MODULE_NAME MesumGraphics)

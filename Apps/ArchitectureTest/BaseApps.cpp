@@ -9,7 +9,7 @@ public:
     virtual void launch()
     {
         m::CmdLine const& cmdLine = get_cmdLine();
-        mAssert(false);
+        mSoftAssert(false);
         if (cmdLine.get_arg("-N"))
         {
             mLOG("Not Hello world !");

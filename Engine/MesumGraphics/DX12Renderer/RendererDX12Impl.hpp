@@ -91,7 +91,8 @@ class DX12Renderer : public render::IRenderer
     Bool get_supportDearImGuiMultiViewports() override { return true; }
     void start_dearImGuiNewFrameRenderer() const override;
 
-    render::ISurface* get_newSurface() override;
+    render::ISurface* getNew_surface() override;
+    render::IResource* getNew_texture() override;
 };
 
 }  // namespace m::dx12

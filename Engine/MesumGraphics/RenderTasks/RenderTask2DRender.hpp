@@ -2,10 +2,9 @@
 #define M_RenderTask2DRender
 #pragma once
 
+#include <MesumCore/Kernel/MathTypes.hpp>
 #include <MesumGraphics/RenderTask.hpp>
 #include <MesumGraphics/Renderer.hpp>
-
-#include <MesumCore/Kernel/MathTypes.hpp>
 
 #ifdef M_DX12_RENDERER
 #include <MesumGraphics/DX12Renderer/DX12Context.hpp>

@@ -74,7 +74,7 @@ LPSTR* CommandLineToArgvA(LPWSTR lpWCmdLine, INT* pNumArgs)
     LPSTR buffer = ((LPSTR)result) + numArgs * sizeof(LPSTR);
     for (int i = 0; i < numArgs; ++i)
     {
-        mAssert(bufLen > 0);
+        mSoftAssert(bufLen > 0);
         BOOL lpUsedDefaultChar = FALSE;
         retval = WideCharToMultiByte(CP_ACP, 0, args[i], -1, buffer, bufLen,
                                      NULL, &lpUsedDefaultChar);

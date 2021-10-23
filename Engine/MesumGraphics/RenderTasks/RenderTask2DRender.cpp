@@ -9,7 +9,7 @@ namespace m::render
 //-----------------------------------------------------------------------------
 Task2dRender::Task2dRender(TaskData2dRender* a_data)
 {
-    mAssert(a_data != nullptr);
+    mSoftAssert(a_data != nullptr);
     m_taskData = *a_data;
 }
 

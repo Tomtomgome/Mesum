@@ -38,7 +38,7 @@ inline void check_MicrosoftHRESULT(HRESULT a_hr)
     if (FAILED(a_hr))
     {
         mLOG_ERR_TO(DX_RENDERER_ID, "HRESULT FAIL");
-        mHardAssert(false);
+        mAssert(false);
     }
 }
 

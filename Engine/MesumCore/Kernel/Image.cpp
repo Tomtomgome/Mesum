@@ -14,6 +14,8 @@ const logging::ChannelID LOG_ID_IMAGE = mLOG_GET_ID();
 //-----------------------------------------------------------------------------
 Image load_image(RequestImage const& a_request)
 {
+    mExpect(!a_request.path.empty());
+
     Image    result;
     Int      texChannels;
     stbi_uc* pPixels =
@@ -26,12 +28,11 @@ Image load_image(RequestImage const& a_request)
         return result;
     }
 
-    mHardAssert(result.m_width * result.m_height > 0);
+    mAssert(result.m_width * result.m_height > 0);
 
     result.m_data.clear();
     result.m_data.insert(result.m_data.begin(), &pPixels[0],
                          &pPixels[result.m_width * result.m_height * 4]);
-
     return result;
 }
 }  // namespace m::resource
