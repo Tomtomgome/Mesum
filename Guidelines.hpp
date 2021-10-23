@@ -1,6 +1,6 @@
 #pragma once
 
-#define ARE_IN_SCREAMING_SNAKE_CASE 5
+#define M_ARE_IN_SCREAMING_SNAKE_CASE 5
 
 namespace m::guidelines  // namespaces are lower case, one word only
 {
