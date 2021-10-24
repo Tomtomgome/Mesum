@@ -1,0 +1,47 @@
+\hypertarget{classm_1_1dx12_1_1_d_x12_command_queue}{}\doxysection{m\+::dx12\+::DX12\+Command\+Queue Class Reference}
+\label{classm_1_1dx12_1_1_d_x12_command_queue}\index{m::dx12::DX12CommandQueue@{m::dx12::DX12CommandQueue}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_command_queue_aa86a106576859e193c5033c9cf45c964}\label{classm_1_1dx12_1_1_d_x12_command_queue_aa86a106576859e193c5033c9cf45c964}} 
+void {\bfseries init} (Microsoft\+::\+WRL\+::\+Com\+Ptr$<$ ID3\+D12\+Device2 $>$ a\+\_\+device, D3\+D12\+\_\+\+COMMAND\+\_\+\+LIST\+\_\+\+TYPE a\+\_\+type)
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_command_queue_a3c14bf412f7f7d97cfb3812b5496cead}\label{classm_1_1dx12_1_1_d_x12_command_queue_a3c14bf412f7f7d97cfb3812b5496cead}} 
+void {\bfseries destroy} ()
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_command_queue_a0b558158574e69a19c070f6401e0986f}\label{classm_1_1dx12_1_1_d_x12_command_queue_a0b558158574e69a19c070f6401e0986f}} 
+Microsoft\+::\+WRL\+::\+Com\+Ptr$<$ ID3\+D12\+Graphics\+Command\+List2 $>$ {\bfseries get\+\_\+command\+List} ()
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_command_queue_ac950adfc399c60ab60af5caab2c6780f}\label{classm_1_1dx12_1_1_d_x12_command_queue_ac950adfc399c60ab60af5caab2c6780f}} 
+U64 {\bfseries execute\+\_\+command\+List} (Microsoft\+::\+WRL\+::\+Com\+Ptr$<$ ID3\+D12\+Graphics\+Command\+List2 $>$ a\+\_\+command\+List)
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_command_queue_a2d925ba8f31b87909770fd8d3310b062}\label{classm_1_1dx12_1_1_d_x12_command_queue_a2d925ba8f31b87909770fd8d3310b062}} 
+U64 {\bfseries signal\+\_\+fence} ()
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_command_queue_af67f0f1a20b32d5afa50188d44265573}\label{classm_1_1dx12_1_1_d_x12_command_queue_af67f0f1a20b32d5afa50188d44265573}} 
+Bool {\bfseries is\+\_\+fence\+Complete} (U64 a\+\_\+fence\+Value)
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_command_queue_abdf1db3eadd602bcf34dd883e1efdf95}\label{classm_1_1dx12_1_1_d_x12_command_queue_abdf1db3eadd602bcf34dd883e1efdf95}} 
+void {\bfseries wait\+\_\+fence\+Value} (U64 a\+\_\+fence\+Value)
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_command_queue_ab6899c87d6c39f6db75397ddbc7605bd}\label{classm_1_1dx12_1_1_d_x12_command_queue_ab6899c87d6c39f6db75397ddbc7605bd}} 
+void {\bfseries flush} ()
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_command_queue_aa7e0860cc8e6c010eb1f4a65c1b66477}\label{classm_1_1dx12_1_1_d_x12_command_queue_aa7e0860cc8e6c010eb1f4a65c1b66477}} 
+Microsoft\+::\+WRL\+::\+Com\+Ptr$<$ ID3\+D12\+Command\+Queue $>$ {\bfseries get\+\_\+\+D3\+D12\+Command\+Queue} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_command_queue_aad4f190a9a7ca8ba587982b401ba3add}\label{classm_1_1dx12_1_1_d_x12_command_queue_aad4f190a9a7ca8ba587982b401ba3add}} 
+Microsoft\+::\+WRL\+::\+Com\+Ptr$<$ ID3\+D12\+Command\+Allocator $>$ {\bfseries create\+\_\+command\+Allocator} ()
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_command_queue_aba4420c0a148eaaaf4083980777aff3d}\label{classm_1_1dx12_1_1_d_x12_command_queue_aba4420c0a148eaaaf4083980777aff3d}} 
+Microsoft\+::\+WRL\+::\+Com\+Ptr$<$ ID3\+D12\+Graphics\+Command\+List2 $>$ {\bfseries create\+\_\+command\+List} (Microsoft\+::\+WRL\+::\+Com\+Ptr$<$ ID3\+D12\+Command\+Allocator $>$ a\+\_\+allocator)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Graphics/\+DX12\+Renderer/DX12\+Command\+Queue.\+hpp\item 
+Mesum\+Graphics/\+DX12\+Renderer/DX12\+Command\+Queue.\+cpp\end{DoxyCompactItemize}

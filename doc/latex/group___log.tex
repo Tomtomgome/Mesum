@@ -1,0 +1,240 @@
+\hypertarget{group___log}{}\doxysection{Log}
+\label{group___log}\index{Log@{Log}}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacem_1_1logging}{m\+::logging}}
+\begin{DoxyCompactList}\small\item\em Namespace grouping all logging tools. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classm_1_1logging_1_1_logger}{m\+::logging\+::\+Logger$<$ Log\+Policy $>$}}
+\begin{DoxyCompactList}\small\item\em Thread safe logger class used to write logs. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{group___log_ga00d616bed392a84de406ffb39ff122dc}\label{group___log_ga00d616bed392a84de406ffb39ff122dc}} 
+\#define {\bfseries m\+LOG\+\_\+\+GET\+\_\+\+ID}~m\+::log\+\_\+inst.\+get\+\_\+new\+Channel\+ID
+\begin{DoxyCompactList}\small\item\em Macro used to get a channel ID. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_ga5ca6b2c42f77b4b566f72914c4afa513}\label{group___log_ga5ca6b2c42f77b4b566f72914c4afa513}} 
+\#define {\bfseries m\+LOG}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to log simple debug messages. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_ga1a75a36cf9898f4f84c202a94109d606}\label{group___log_ga1a75a36cf9898f4f84c202a94109d606}} 
+\#define {\bfseries m\+LOG\+\_\+\+ERR}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to log simple error messages. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_gacb6e6e88af76d59c28919f2954303cf9}\label{group___log_gacb6e6e88af76d59c28919f2954303cf9}} 
+\#define {\bfseries m\+LOG\+\_\+\+WARN}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to log simple warning messages. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_gab775568c9e778ccbb1921e69dee6fc9d}\label{group___log_gab775568c9e778ccbb1921e69dee6fc9d}} 
+\#define {\bfseries m\+LOG\+\_\+\+TO}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to log simple debug messages to a channel. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_ga7a7702749ea8787667bc29f82220fea7}\label{group___log_ga7a7702749ea8787667bc29f82220fea7}} 
+\#define {\bfseries m\+LOG\+\_\+\+ERR\+\_\+\+TO}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to log simple error messages to a channel. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_ga8978a1a5adaa60da52bb535fbb70047d}\label{group___log_ga8978a1a5adaa60da52bb535fbb70047d}} 
+\#define {\bfseries m\+LOG\+\_\+\+WARN\+\_\+\+TO}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to log simple warning messages to a channel. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_ga6bd5e4c59125a41d0b470b50900df0b4}\label{group___log_ga6bd5e4c59125a41d0b470b50900df0b4}} 
+\#define {\bfseries m\+VLOG}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to log verbose debug messages. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_ga91a8b43a484fd42c212d694880e29473}\label{group___log_ga91a8b43a484fd42c212d694880e29473}} 
+\#define {\bfseries m\+VLOG\+\_\+\+ERR}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to log verbose error messages. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_gab0e0ee708465db8d767861a17b6f0671}\label{group___log_gab0e0ee708465db8d767861a17b6f0671}} 
+\#define {\bfseries m\+VLOG\+\_\+\+WARN}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to log verbose warning messages. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_gad864d0984910940acb471b63c312567e}\label{group___log_gad864d0984910940acb471b63c312567e}} 
+\#define {\bfseries m\+VLOG\+\_\+\+TO}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to log verbose debug messages to a channel. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_ga28ac0eef5101ae19a6d7e23857c56db9}\label{group___log_ga28ac0eef5101ae19a6d7e23857c56db9}} 
+\#define {\bfseries m\+VLOG\+\_\+\+ERR\+\_\+\+TO}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to log verbose error messages to a channel. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_ga64d5533c26d2d204e05f699c1aff5d53}\label{group___log_ga64d5533c26d2d204e05f699c1aff5d53}} 
+\#define {\bfseries m\+VLOG\+\_\+\+WARN\+\_\+\+TO}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to log verbose warning messages to a channel. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_ga8c2d13f4d6ce1e8518e3dec55c0eec39}\label{group___log_ga8c2d13f4d6ce1e8518e3dec55c0eec39}} 
+\#define {\bfseries m\+LOG\+\_\+\+FILTER}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to set filters for the logger. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_ga15274b6732ed9dce1f11780f75d586c0}\label{group___log_ga15274b6732ed9dce1f11780f75d586c0}} 
+\#define {\bfseries m\+LOG\+\_\+\+ENABLE}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to enable channels of the logger. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_gafeb1d615e5045b523d026bf8c646d434}\label{group___log_gafeb1d615e5045b523d026bf8c646d434}} 
+\#define {\bfseries m\+LOG\+\_\+\+DISABLE}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to disable channels the logger. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{group___log_ga13f51627936471940ede5666fd047313}\label{group___log_ga13f51627936471940ede5666fd047313}} 
+using {\bfseries m\+::logging\+::\+Channel\+ID} = uint64\+\_\+t
+\begin{DoxyCompactList}\small\item\em Defining what a Channel\+ID is. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_ga16bb065e762d9d22730e02ef41a8165f}\label{group___log_ga16bb065e762d9d22730e02ef41a8165f}} 
+using {\bfseries m\+::logging\+::\+Channel\+Filter} = uint64\+\_\+t
+\begin{DoxyCompactList}\small\item\em Defining what a Channel\+Filter is. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{group___log_gaf620be757be465af66aa69d08a4f5c8e}{m\+::logging\+::\+Severity\+Type}} \{ \mbox{\hyperlink{group___log_ggaf620be757be465af66aa69d08a4f5c8eabfecbf648c2deaa801f62e8dad71e361}{m\+::logging\+::debug}} = 1
+, \mbox{\hyperlink{group___log_ggaf620be757be465af66aa69d08a4f5c8ead564300fbfad44fd5b83f8ba9441ba5d}{m\+::logging\+::error}}
+, \mbox{\hyperlink{group___log_ggaf620be757be465af66aa69d08a4f5c8ea52b9f3af43a3f80e4a62548382b2c04b}{m\+::logging\+::warning}}
+ \}
+\begin{DoxyCompactList}\small\item\em Enumeration of the logginh severity levels. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{group___log_ga5dfda4dcd8b2bea3fc48a8852eb7edf8}{m\+::logging\+::\+Logger$<$ Log\+Policy $>$\+::\+Logger}} (const std\+::string \&a\+\_\+name)
+\begin{DoxyCompactList}\small\item\em Construct a logger. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_ga47287bdcab12bc333f8e978be79c0c75}\label{group___log_ga47287bdcab12bc333f8e978be79c0c75}} 
+const \mbox{\hyperlink{group___log_ga13f51627936471940ede5666fd047313}{Channel\+ID}} {\bfseries m\+::logging\+::\+Logger$<$ Log\+Policy $>$\+::get\+\_\+new\+Channel\+ID} ()
+\begin{DoxyCompactList}\small\item\em Get a new channel ID. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group___log_gaddcfb00131aac4b1706bdd3b509353bb}{m\+::logging\+::\+Logger$<$ Log\+Policy $>$\+::set\+\_\+filter}} (const \mbox{\hyperlink{group___log_ga16bb065e762d9d22730e02ef41a8165f}{Channel\+Filter}} a\+\_\+filters)
+\begin{DoxyCompactList}\small\item\em Set filters on the logger. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group___log_ga63b74328f6c81f7ee28958fad4bc874b}{m\+::logging\+::\+Logger$<$ Log\+Policy $>$\+::disable\+\_\+channels}} (const \mbox{\hyperlink{group___log_ga16bb065e762d9d22730e02ef41a8165f}{Channel\+Filter}} a\+\_\+filters)
+\begin{DoxyCompactList}\small\item\em Disable channels of the logger. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group___log_gaf8b43c36de390d048e69e3a7f9391ab0}{m\+::logging\+::\+Logger$<$ Log\+Policy $>$\+::enable\+\_\+channels}} (const \mbox{\hyperlink{group___log_ga16bb065e762d9d22730e02ef41a8165f}{Channel\+Filter}} a\+\_\+filters)
+\begin{DoxyCompactList}\small\item\em Enable channels of the logger. \end{DoxyCompactList}\item 
+{\footnotesize template$<$\mbox{\hyperlink{group___log_gaf620be757be465af66aa69d08a4f5c8e}{Severity\+Type}} severity, typename... Rest$>$ }\\void \mbox{\hyperlink{group___log_gab06c4b9527f8da19747c470798fdd124}{m\+::logging\+::\+Logger$<$ Log\+Policy $>$\+::print\+\_\+to\+Channel}} (uint64\+\_\+t a\+\_\+channel, Rest... a\+\_\+args)
+\begin{DoxyCompactList}\small\item\em Print things in the logs using a specified channel. \end{DoxyCompactList}\item 
+{\footnotesize template$<$\mbox{\hyperlink{group___log_gaf620be757be465af66aa69d08a4f5c8e}{Severity\+Type}} severity, typename... Args$>$ }\\void \mbox{\hyperlink{group___log_gac2c5d26d3b5edd3941f1c6930072a109}{m\+::logging\+::\+Logger$<$ Log\+Policy $>$\+::print}} (Args... a\+\_\+args)
+\begin{DoxyCompactList}\small\item\em Print things in the logs. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_ga65bf48423557daf6361e9273fa3cedcc}\label{group___log_ga65bf48423557daf6361e9273fa3cedcc}} 
+{\bfseries m\+::logging\+::\+Logger$<$ Log\+Policy $>$\+::$\sim$\+Logger} ()
+\begin{DoxyCompactList}\small\item\em Destroy a logger. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{group___log_gaf620be757be465af66aa69d08a4f5c8e}\label{group___log_gaf620be757be465af66aa69d08a4f5c8e}} 
+\index{Log@{Log}!SeverityType@{SeverityType}}
+\index{SeverityType@{SeverityType}!Log@{Log}}
+\doxysubsubsection{\texorpdfstring{SeverityType}{SeverityType}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{group___log_gaf620be757be465af66aa69d08a4f5c8e}{m\+::logging\+::\+Severity\+Type}}}
+
+
+
+Enumeration of the logginh severity levels. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{debug@{debug}!Log@{Log}}\index{Log@{Log}!debug@{debug}}}\mbox{\Hypertarget{group___log_ggaf620be757be465af66aa69d08a4f5c8eabfecbf648c2deaa801f62e8dad71e361}\label{group___log_ggaf620be757be465af66aa69d08a4f5c8eabfecbf648c2deaa801f62e8dad71e361}} 
+debug&sets a debug severity level. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{error@{error}!Log@{Log}}\index{Log@{Log}!error@{error}}}\mbox{\Hypertarget{group___log_ggaf620be757be465af66aa69d08a4f5c8ead564300fbfad44fd5b83f8ba9441ba5d}\label{group___log_ggaf620be757be465af66aa69d08a4f5c8ead564300fbfad44fd5b83f8ba9441ba5d}} 
+error&sets a error severity level. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{warning@{warning}!Log@{Log}}\index{Log@{Log}!warning@{warning}}}\mbox{\Hypertarget{group___log_ggaf620be757be465af66aa69d08a4f5c8ea52b9f3af43a3f80e4a62548382b2c04b}\label{group___log_ggaf620be757be465af66aa69d08a4f5c8ea52b9f3af43a3f80e4a62548382b2c04b}} 
+warning&sets a warning severity level. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{group___log_ga63b74328f6c81f7ee28958fad4bc874b}\label{group___log_ga63b74328f6c81f7ee28958fad4bc874b}} 
+\index{Log@{Log}!disable\_channels@{disable\_channels}}
+\index{disable\_channels@{disable\_channels}!Log@{Log}}
+\doxysubsubsection{\texorpdfstring{disable\_channels()}{disable\_channels()}}
+{\footnotesize\ttfamily template$<$typename Log\+Policy $>$ \\
+void \mbox{\hyperlink{classm_1_1logging_1_1_logger}{m\+::logging\+::\+Logger}}$<$ Log\+Policy $>$\+::disable\+\_\+channels (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{group___log_ga16bb065e762d9d22730e02ef41a8165f}{Channel\+Filter}}}]{a\+\_\+filters }\end{DoxyParamCaption})}
+
+
+
+Disable channels of the logger. 
+
+\begin{DoxyVerb} \param a_filters       The channels to disable if
+\end{DoxyVerb}
+ enabled. \mbox{\Hypertarget{group___log_gaf8b43c36de390d048e69e3a7f9391ab0}\label{group___log_gaf8b43c36de390d048e69e3a7f9391ab0}} 
+\index{Log@{Log}!enable\_channels@{enable\_channels}}
+\index{enable\_channels@{enable\_channels}!Log@{Log}}
+\doxysubsubsection{\texorpdfstring{enable\_channels()}{enable\_channels()}}
+{\footnotesize\ttfamily template$<$typename Log\+Policy $>$ \\
+void \mbox{\hyperlink{classm_1_1logging_1_1_logger}{m\+::logging\+::\+Logger}}$<$ Log\+Policy $>$\+::enable\+\_\+channels (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{group___log_ga16bb065e762d9d22730e02ef41a8165f}{Channel\+Filter}}}]{a\+\_\+filters }\end{DoxyParamCaption})}
+
+
+
+Enable channels of the logger. 
+
+\begin{DoxyVerb} \param a_filters       The channels to enable if
+\end{DoxyVerb}
+ disabled. \mbox{\Hypertarget{group___log_ga5dfda4dcd8b2bea3fc48a8852eb7edf8}\label{group___log_ga5dfda4dcd8b2bea3fc48a8852eb7edf8}} 
+\index{Log@{Log}!Logger@{Logger}}
+\index{Logger@{Logger}!Log@{Log}}
+\doxysubsubsection{\texorpdfstring{Logger()}{Logger()}}
+{\footnotesize\ttfamily template$<$typename Log\+Policy $>$ \\
+\mbox{\hyperlink{classm_1_1logging_1_1_logger}{m\+::logging\+::\+Logger}}$<$ Log\+Policy $>$\+::\mbox{\hyperlink{classm_1_1logging_1_1_logger}{Logger}} (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{a\+\_\+name }\end{DoxyParamCaption})}
+
+
+
+Construct a logger. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+name} & the output stream name. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group___log_gac2c5d26d3b5edd3941f1c6930072a109}\label{group___log_gac2c5d26d3b5edd3941f1c6930072a109}} 
+\index{Log@{Log}!print@{print}}
+\index{print@{print}!Log@{Log}}
+\doxysubsubsection{\texorpdfstring{print()}{print()}}
+{\footnotesize\ttfamily template$<$typename Log\+Policy $>$ \\
+template$<$\mbox{\hyperlink{group___log_gaf620be757be465af66aa69d08a4f5c8e}{Severity\+Type}} severity, typename... Args$>$ \\
+void \mbox{\hyperlink{classm_1_1logging_1_1_logger}{m\+::logging\+::\+Logger}}$<$ Log\+Policy $>$\+::print (\begin{DoxyParamCaption}\item[{Args...}]{a\+\_\+args }\end{DoxyParamCaption})}
+
+
+
+Print things in the logs. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em severity} & the severity of the things to log. \\
+\hline
+{\em Args} & the list of things to log. \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+args} & the things to log. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group___log_gab06c4b9527f8da19747c470798fdd124}\label{group___log_gab06c4b9527f8da19747c470798fdd124}} 
+\index{Log@{Log}!print\_toChannel@{print\_toChannel}}
+\index{print\_toChannel@{print\_toChannel}!Log@{Log}}
+\doxysubsubsection{\texorpdfstring{print\_toChannel()}{print\_toChannel()}}
+{\footnotesize\ttfamily template$<$typename Log\+Policy $>$ \\
+template$<$\mbox{\hyperlink{group___log_gaf620be757be465af66aa69d08a4f5c8e}{Severity\+Type}} severity, typename... Rest$>$ \\
+void \mbox{\hyperlink{classm_1_1logging_1_1_logger}{m\+::logging\+::\+Logger}}$<$ Log\+Policy $>$\+::print\+\_\+to\+Channel (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{a\+\_\+channel,  }\item[{Rest...}]{a\+\_\+args }\end{DoxyParamCaption})}
+
+
+
+Print things in the logs using a specified channel. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em severity} & the severity of the things to log. \\
+\hline
+{\em Args} & the list of things to log. \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+args} & the things to log. \\
+\hline
+{\em a\+\_\+channel} & the channel number to print to. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group___log_gaddcfb00131aac4b1706bdd3b509353bb}\label{group___log_gaddcfb00131aac4b1706bdd3b509353bb}} 
+\index{Log@{Log}!set\_filter@{set\_filter}}
+\index{set\_filter@{set\_filter}!Log@{Log}}
+\doxysubsubsection{\texorpdfstring{set\_filter()}{set\_filter()}}
+{\footnotesize\ttfamily template$<$typename Log\+Policy $>$ \\
+void \mbox{\hyperlink{classm_1_1logging_1_1_logger}{m\+::logging\+::\+Logger}}$<$ Log\+Policy $>$\+::set\+\_\+filter (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{group___log_ga16bb065e762d9d22730e02ef41a8165f}{Channel\+Filter}}}]{a\+\_\+filters }\end{DoxyParamCaption})}
+
+
+
+Set filters on the logger. 
+
+\begin{DoxyVerb} \param a_filters       The channels that will be
+\end{DoxyVerb}
+ allowed. 

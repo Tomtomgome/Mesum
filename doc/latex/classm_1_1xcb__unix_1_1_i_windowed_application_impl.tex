@@ -1,0 +1,75 @@
+\hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl}{}\doxysection{m\+::xcb\+\_\+unix\+::IWindowed\+Application\+Impl Class Reference}
+\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl}\index{m::xcb\_unix::IWindowedApplicationImpl@{m::xcb\_unix::IWindowedApplicationImpl}}
+Inheritance diagram for m\+::xcb\+\_\+unix\+::IWindowed\+Application\+Impl\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{classm_1_1xcb__unix_1_1_i_windowed_application_impl}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a06b89ebe1ae34a51595c596e3b502076}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a06b89ebe1ae34a51595c596e3b502076}} 
+virtual void {\bfseries init\+\_\+renderer} (render\+::\+Renderer\+Api a\+\_\+render\+Api=render\+::\+Renderer\+Api\+::\+Default) override
+\item 
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_afe4c54872b75a84b9c99c75baf88d0ed}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_afe4c54872b75a84b9c99c75baf88d0ed}} 
+virtual \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{windows\+::\+IWindow}} $\ast$ {\bfseries add\+\_\+new\+Window} (std\+::wstring a\+\_\+name, U32 a\+\_\+width, U32 a\+\_\+height)
+\item 
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a2cca829e6f2c9da072322b0f0053dc43}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a2cca829e6f2c9da072322b0f0053dc43}} 
+virtual void {\bfseries set\+\_\+process\+Im\+Gui\+Multi\+Viewports} (Bool a\+\_\+support\+Multi\+View\+Ports)
+\item 
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a6c7fbc62423cdbeeb54b85e6b8ed137d}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a6c7fbc62423cdbeeb54b85e6b8ed137d}} 
+virtual void {\bfseries start\+\_\+dear\+Im\+Gui\+New\+Frame} ()
+\item 
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a107ed61e227cd3038eeb7459dd710435}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a107ed61e227cd3038eeb7459dd710435}} 
+virtual void {\bfseries render} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_windowed_application_impl_ac8bd99881aa9f207c0d803af7b335b50}{init}} () override
+\item 
+virtual void \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a8baef1bc4148d903512c731ab3121da5}{destroy}} () override
+\item 
+virtual Bool \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a01f89017869d852ec6b711ab1a3ba9ad}{step}} (const Double \&a\+\_\+delta\+Time) override
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a8baef1bc4148d903512c731ab3121da5}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a8baef1bc4148d903512c731ab3121da5}} 
+\index{m::xcb\_unix::IWindowedApplicationImpl@{m::xcb\_unix::IWindowedApplicationImpl}!destroy@{destroy}}
+\index{destroy@{destroy}!m::xcb\_unix::IWindowedApplicationImpl@{m::xcb\_unix::IWindowedApplicationImpl}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily void m\+::xcb\+\_\+unix\+::\+IWindowed\+Application\+Impl\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1application_1_1_i_timed_loop_application}{m\+::application\+::\+ITimed\+Loop\+Application}}.
+
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_ac8bd99881aa9f207c0d803af7b335b50}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_ac8bd99881aa9f207c0d803af7b335b50}} 
+\index{m::xcb\_unix::IWindowedApplicationImpl@{m::xcb\_unix::IWindowedApplicationImpl}!init@{init}}
+\index{init@{init}!m::xcb\_unix::IWindowedApplicationImpl@{m::xcb\_unix::IWindowedApplicationImpl}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily void m\+::xcb\+\_\+unix\+::\+IWindowed\+Application\+Impl\+::init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1application_1_1_i_timed_loop_application}{m\+::application\+::\+ITimed\+Loop\+Application}}.
+
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a01f89017869d852ec6b711ab1a3ba9ad}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a01f89017869d852ec6b711ab1a3ba9ad}} 
+\index{m::xcb\_unix::IWindowedApplicationImpl@{m::xcb\_unix::IWindowedApplicationImpl}!step@{step}}
+\index{step@{step}!m::xcb\_unix::IWindowedApplicationImpl@{m::xcb\_unix::IWindowedApplicationImpl}}
+\doxysubsubsection{\texorpdfstring{step()}{step()}}
+{\footnotesize\ttfamily Bool m\+::xcb\+\_\+unix\+::\+IWindowed\+Application\+Impl\+::step (\begin{DoxyParamCaption}\item[{const Double \&}]{a\+\_\+delta\+Time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1application_1_1_i_timed_loop_application}{m\+::application\+::\+ITimed\+Loop\+Application}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Graphics/\+Unix/Windowed\+App\+Impl\+XCB.\+hpp\item 
+Mesum\+Graphics/\+Unix/Windowed\+App\+Impl\+XCB.\+cpp\end{DoxyCompactItemize}

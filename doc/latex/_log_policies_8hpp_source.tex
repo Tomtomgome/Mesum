@@ -1,0 +1,65 @@
+\hypertarget{_log_policies_8hpp_source}{}\doxysection{Log\+Policies.\+hpp}
+\label{_log_policies_8hpp_source}\index{MesumCore/Kernel/LogPolicies.hpp@{MesumCore/Kernel/LogPolicies.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_LOG\_POLICIES}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_LOG\_POLICIES}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <fstream>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <memory>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <mutex>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <sstream>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{14 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacem_1_1logging}{m::logging}}}
+\DoxyCodeLine{15 \{}
+\DoxyCodeLine{16 \textcolor{comment}{//*****************************************************************************}}
+\DoxyCodeLine{17 \textcolor{comment}{//*****************************************************************************}}
+\DoxyCodeLine{18 \textcolor{comment}{//*****************************************************************************}}
+\DoxyCodeLine{20 \textcolor{comment}{}}
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1logging_1_1_i_log_policy}{ILogPolicy}}}
+\DoxyCodeLine{24 \{}
+\DoxyCodeLine{25    \textcolor{keyword}{public}:}
+\DoxyCodeLine{26     \textcolor{keyword}{virtual} \mbox{\hyperlink{classm_1_1logging_1_1_i_log_policy}{\string~ILogPolicy}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{29 }
+\DoxyCodeLine{32     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1logging_1_1_i_log_policy_a3025648b5054e9230a2f55373358d61a}{open\_ostream}}(\textcolor{keyword}{const} std::string\& a\_name) = 0;}
+\DoxyCodeLine{34     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1logging_1_1_i_log_policy_a1e20ba94f4b934f93c2ab0bc5da0cbc2}{close\_ostream}}() = 0;}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{39     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1logging_1_1_i_log_policy_aef8601067385aaee19cac6e991b66378}{write}}(\textcolor{keyword}{const} std::string\& a\_msg) = 0;}
+\DoxyCodeLine{40 \};}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{43 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1logging_1_1_file_log_policy}{FileLogPolicy}} final : \textcolor{keyword}{public} \mbox{\hyperlink{classm_1_1logging_1_1_i_log_policy}{ILogPolicy}}}
+\DoxyCodeLine{44 \{}
+\DoxyCodeLine{45    \textcolor{keyword}{public}:}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{50     \mbox{\hyperlink{classm_1_1logging_1_1_file_log_policy_a6c43c4d1957e1b308ae57c74a1edc056}{FileLogPolicy}}() : m\_outStream(new std::ofstream) \{\}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{55     \mbox{\hyperlink{classm_1_1logging_1_1_file_log_policy_ade158755d2d9b7bbdf7274736904eff6}{\string~FileLogPolicy}}() final;}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{60     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1logging_1_1_file_log_policy_a660971d89cd25b7a11ca2002208f9106}{open\_ostream}}(const std::\textcolor{keywordtype}{string}\& a\_name) override;}
+\DoxyCodeLine{62     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1logging_1_1_file_log_policy_a5f185d7a0c25907f1e036089c867246e}{close\_ostream}}() override;}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{67     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1logging_1_1_file_log_policy_a62d5f803225bd3e6d2aa356cd0be3d86}{write}}(const std::\textcolor{keywordtype}{string}\& a\_msg) override;}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69    private:}
+\DoxyCodeLine{71     std::unique\_ptr<std::ofstream> m\_outStream;}
+\DoxyCodeLine{72 \};}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{75 class \mbox{\hyperlink{classm_1_1logging_1_1_stdcout_log_policy}{StdcoutLogPolicy}} final : public \mbox{\hyperlink{classm_1_1logging_1_1_i_log_policy}{ILogPolicy}}}
+\DoxyCodeLine{76 \{}
+\DoxyCodeLine{77    \textcolor{keyword}{public}:}
+\DoxyCodeLine{79     \mbox{\hyperlink{classm_1_1logging_1_1_stdcout_log_policy}{StdcoutLogPolicy}}();}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{84     \mbox{\hyperlink{classm_1_1logging_1_1_stdcout_log_policy}{\string~StdcoutLogPolicy}}() \textcolor{keyword}{final};}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{89     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1logging_1_1_file_log_policy_a660971d89cd25b7a11ca2002208f9106}{open\_ostream}}(\textcolor{keyword}{const} std::string\& a\_name) \textcolor{keyword}{override};}
+\DoxyCodeLine{91     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1logging_1_1_file_log_policy_a5f185d7a0c25907f1e036089c867246e}{close\_ostream}}() \textcolor{keyword}{override};}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{96     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1logging_1_1_file_log_policy_a62d5f803225bd3e6d2aa356cd0be3d86}{write}}(\textcolor{keyword}{const} std::string\& a\_msg) \textcolor{keyword}{override};}
+\DoxyCodeLine{97 \};}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 \}  \textcolor{comment}{// namespace m::logging}}
+\DoxyCodeLine{100 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_LOG\_POLICIES}}
+
+\end{DoxyCode}

@@ -1,0 +1,117 @@
+\hypertarget{classm_1_1logging_1_1_file_log_policy}{}\doxysection{m\+::logging\+::File\+Log\+Policy Class Reference}
+\label{classm_1_1logging_1_1_file_log_policy}\index{m::logging::FileLogPolicy@{m::logging::FileLogPolicy}}
+
+
+Log policy outputing into a file.  
+
+
+
+
+{\ttfamily \#include $<$Log\+Policies.\+hpp$>$}
+
+Inheritance diagram for m\+::logging\+::File\+Log\+Policy\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classm_1_1logging_1_1_file_log_policy}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classm_1_1logging_1_1_file_log_policy_a6c43c4d1957e1b308ae57c74a1edc056}{File\+Log\+Policy}} ()
+\begin{DoxyCompactList}\small\item\em Construct a file logging policy. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classm_1_1logging_1_1_file_log_policy_ade158755d2d9b7bbdf7274736904eff6}{$\sim$\+File\+Log\+Policy}} () final
+\begin{DoxyCompactList}\small\item\em Destroy a file logging policy. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classm_1_1logging_1_1_file_log_policy_a660971d89cd25b7a11ca2002208f9106}{open\+\_\+ostream}} (const std\+::string \&a\+\_\+name) override
+\begin{DoxyCompactList}\small\item\em Open the output file. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classm_1_1logging_1_1_file_log_policy_a5f185d7a0c25907f1e036089c867246e}{close\+\_\+ostream}} () override
+\begin{DoxyCompactList}\small\item\em close the output file \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classm_1_1logging_1_1_file_log_policy_a62d5f803225bd3e6d2aa356cd0be3d86}{write}} (const std\+::string \&a\+\_\+msg) override
+\begin{DoxyCompactList}\small\item\em write into the output file \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Log policy outputing into a file. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classm_1_1logging_1_1_file_log_policy_a6c43c4d1957e1b308ae57c74a1edc056}\label{classm_1_1logging_1_1_file_log_policy_a6c43c4d1957e1b308ae57c74a1edc056}} 
+\index{m::logging::FileLogPolicy@{m::logging::FileLogPolicy}!FileLogPolicy@{FileLogPolicy}}
+\index{FileLogPolicy@{FileLogPolicy}!m::logging::FileLogPolicy@{m::logging::FileLogPolicy}}
+\doxysubsubsection{\texorpdfstring{FileLogPolicy()}{FileLogPolicy()}}
+{\footnotesize\ttfamily m\+::logging\+::\+File\+Log\+Policy\+::\+File\+Log\+Policy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Construct a file logging policy. 
+
+This creates a new ofstream object. \mbox{\Hypertarget{classm_1_1logging_1_1_file_log_policy_ade158755d2d9b7bbdf7274736904eff6}\label{classm_1_1logging_1_1_file_log_policy_ade158755d2d9b7bbdf7274736904eff6}} 
+\index{m::logging::FileLogPolicy@{m::logging::FileLogPolicy}!````~FileLogPolicy@{$\sim$FileLogPolicy}}
+\index{````~FileLogPolicy@{$\sim$FileLogPolicy}!m::logging::FileLogPolicy@{m::logging::FileLogPolicy}}
+\doxysubsubsection{\texorpdfstring{$\sim$FileLogPolicy()}{~FileLogPolicy()}}
+{\footnotesize\ttfamily m\+::logging\+::\+File\+Log\+Policy\+::$\sim$\+File\+Log\+Policy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [final]}}
+
+
+
+Destroy a file logging policy. 
+
+This destroy the ofstream object. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classm_1_1logging_1_1_file_log_policy_a5f185d7a0c25907f1e036089c867246e}\label{classm_1_1logging_1_1_file_log_policy_a5f185d7a0c25907f1e036089c867246e}} 
+\index{m::logging::FileLogPolicy@{m::logging::FileLogPolicy}!close\_ostream@{close\_ostream}}
+\index{close\_ostream@{close\_ostream}!m::logging::FileLogPolicy@{m::logging::FileLogPolicy}}
+\doxysubsubsection{\texorpdfstring{close\_ostream()}{close\_ostream()}}
+{\footnotesize\ttfamily void m\+::logging\+::\+File\+Log\+Policy\+::close\+\_\+ostream (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+close the output file 
+
+
+
+Implements \mbox{\hyperlink{classm_1_1logging_1_1_i_log_policy_a1e20ba94f4b934f93c2ab0bc5da0cbc2}{m\+::logging\+::\+ILog\+Policy}}.
+
+\mbox{\Hypertarget{classm_1_1logging_1_1_file_log_policy_a660971d89cd25b7a11ca2002208f9106}\label{classm_1_1logging_1_1_file_log_policy_a660971d89cd25b7a11ca2002208f9106}} 
+\index{m::logging::FileLogPolicy@{m::logging::FileLogPolicy}!open\_ostream@{open\_ostream}}
+\index{open\_ostream@{open\_ostream}!m::logging::FileLogPolicy@{m::logging::FileLogPolicy}}
+\doxysubsubsection{\texorpdfstring{open\_ostream()}{open\_ostream()}}
+{\footnotesize\ttfamily void m\+::logging\+::\+File\+Log\+Policy\+::open\+\_\+ostream (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{a\+\_\+name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Open the output file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+name} & the name of the file. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classm_1_1logging_1_1_i_log_policy_a3025648b5054e9230a2f55373358d61a}{m\+::logging\+::\+ILog\+Policy}}.
+
+\mbox{\Hypertarget{classm_1_1logging_1_1_file_log_policy_a62d5f803225bd3e6d2aa356cd0be3d86}\label{classm_1_1logging_1_1_file_log_policy_a62d5f803225bd3e6d2aa356cd0be3d86}} 
+\index{m::logging::FileLogPolicy@{m::logging::FileLogPolicy}!write@{write}}
+\index{write@{write}!m::logging::FileLogPolicy@{m::logging::FileLogPolicy}}
+\doxysubsubsection{\texorpdfstring{write()}{write()}}
+{\footnotesize\ttfamily void m\+::logging\+::\+File\+Log\+Policy\+::write (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{a\+\_\+msg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+write into the output file 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+msg} & the message to output. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classm_1_1logging_1_1_i_log_policy_aef8601067385aaee19cac6e991b66378}{m\+::logging\+::\+ILog\+Policy}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Core/\+Kernel/Log\+Policies.\+hpp\item 
+Mesum\+Core/\+Kernel/Log\+Policies.\+cpp\end{DoxyCompactItemize}

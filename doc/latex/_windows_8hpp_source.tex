@@ -1,0 +1,49 @@
+\hypertarget{_windows_8hpp_source}{}\doxysection{Windows.\+hpp}
+\label{_windows_8hpp_source}\index{MesumGraphics/Windows.hpp@{MesumGraphics/Windows.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_WINDOWS}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_WINDOWS}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <MesumCore/Kernel/Types.hpp>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <Renderer.hpp>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{keyword}{namespace }m}
+\DoxyCodeLine{10 \{}
+\DoxyCodeLine{11 \textcolor{keyword}{namespace }input}
+\DoxyCodeLine{12 \{}
+\DoxyCodeLine{13 \textcolor{keyword}{class }InputManager;}
+\DoxyCodeLine{14 \}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{namespace }windows}
+\DoxyCodeLine{17 \{}
+\DoxyCodeLine{18 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1windows_1_1_i_window}{IWindow}}}
+\DoxyCodeLine{19 \{}
+\DoxyCodeLine{20    \textcolor{keyword}{public}:}
+\DoxyCodeLine{21     \textcolor{keyword}{virtual} \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{\string~IWindow}}()     = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{22     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} init()    = 0;}
+\DoxyCodeLine{23     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} destroy() = 0;}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} link\_inputManager(\mbox{\hyperlink{classm_1_1input_1_1_input_manager}{input::InputManager}}* a\_inputManager) = 0;}
+\DoxyCodeLine{26     \textcolor{keyword}{virtual} render::ISurface::HdlPtr link\_renderer(}
+\DoxyCodeLine{27         \mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{render::IRenderer}}* a\_renderer)                 = 0;}
+\DoxyCodeLine{28     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_size(UInt a\_width, UInt a\_height) = 0;}
+\DoxyCodeLine{29     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_windowName(std::string a\_name)    = 0;}
+\DoxyCodeLine{30     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_asMainWindow()                    = 0;}
+\DoxyCodeLine{31     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_asImGuiWindow()                   = 0;}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_fullScreen(Bool a\_fullscreen) = 0;}
+\DoxyCodeLine{34     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} toggle\_fullScreen()               = 0;}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} attach\_toDestroy(}
+\DoxyCodeLine{37         \mbox{\hyperlink{classm_1_1_callback}{Callback<void>}} \textcolor{keyword}{const}\& a\_onDestroyCallback) = 0;}
+\DoxyCodeLine{38     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} attach\_toResize(}
+\DoxyCodeLine{39         \mbox{\hyperlink{classm_1_1_callback}{Callback<void, U32, U32>}} \textcolor{keyword}{const}\& a\_onResizeCallback) = 0;}
+\DoxyCodeLine{40 \};}
+\DoxyCodeLine{41 \}  \textcolor{comment}{// namespace windows}}
+\DoxyCodeLine{42 \}  \textcolor{comment}{// namespace m}}
+\DoxyCodeLine{43 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_WINDOWS}}
+
+\end{DoxyCode}

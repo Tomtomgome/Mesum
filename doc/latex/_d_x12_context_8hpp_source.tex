@@ -1,0 +1,47 @@
+\hypertarget{_d_x12_context_8hpp_source}{}\doxysection{DX12\+Context.\+hpp}
+\label{_d_x12_context_8hpp_source}\index{MesumGraphics/DX12Renderer/DX12Context.hpp@{MesumGraphics/DX12Renderer/DX12Context.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_DX12Context}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_DX12Context}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <DX12CommandQueue.hpp>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <MesumCore/Kernel/Callbacks.hpp>}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{keyword}{namespace }m::dx12}
+\DoxyCodeLine{9 \{}
+\DoxyCodeLine{10 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_context}{DX12Context}}}
+\DoxyCodeLine{11 \{}
+\DoxyCodeLine{12    \textcolor{keyword}{public}:}
+\DoxyCodeLine{13     \mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_context}{DX12Context}}()                    = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{14     \mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_context}{DX12Context}}(\mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_context}{DX12Context}} \textcolor{keyword}{const}\&)  = \textcolor{keyword}{delete};}
+\DoxyCodeLine{15     \mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_context}{DX12Context}}(\mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_context}{DX12Context}} \textcolor{keyword}{const}\&\&) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{16     \mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_context}{\string~DX12Context}}()                   = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{17     \textcolor{keyword}{static} \mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_context}{DX12Context}}* gs\_dx12Contexte;}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19     \textcolor{keywordtype}{void} init(Bool a\_useWarp = \textcolor{keyword}{false});}
+\DoxyCodeLine{20     \textcolor{keywordtype}{void} deinit();}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22     Bool get\_tearingSupport()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_tearingSupported; \}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24     \mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_command_queue}{DX12CommandQueue}}\& get\_commandQueue() \{ \textcolor{keywordflow}{return} m\_commandQueue; \}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26     \textcolor{comment}{// DirectX 12 Objects}}
+\DoxyCodeLine{27     ComPtr<ID3D12Device2> m\_device;}
+\DoxyCodeLine{28     \mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_command_queue}{DX12CommandQueue}}      m\_commandQueue;}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30    \textcolor{keyword}{private}:}
+\DoxyCodeLine{31     \textcolor{comment}{// Use WARP adapter}}
+\DoxyCodeLine{32     Bool g\_UseWarp = \textcolor{keyword}{false};}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34     \textcolor{comment}{// Set to true once the DX12 objects have been initialized.}}
+\DoxyCodeLine{35     Bool g\_IsInitialized = \textcolor{keyword}{false};}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37     Bool m\_tearingSupported = \textcolor{keyword}{false};}
+\DoxyCodeLine{38 \};}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \}  \textcolor{comment}{// namespace m::dx12}}
+\DoxyCodeLine{41 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_DX12Context}}
+
+\end{DoxyCode}

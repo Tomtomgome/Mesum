@@ -1,0 +1,148 @@
+\hypertarget{_keys_8hpp_source}{}\doxysection{Keys.\+hpp}
+\label{_keys_8hpp_source}\index{MesumCore/Kernel/Keys.hpp@{MesumCore/Kernel/Keys.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_KEYS }}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_KEYS}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <InputCommon.hpp>}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{keyword}{namespace }m}
+\DoxyCodeLine{8 \{}
+\DoxyCodeLine{9 \textcolor{comment}{//*****************************************************************************}}
+\DoxyCodeLine{10 \textcolor{comment}{//*****************************************************************************}}
+\DoxyCodeLine{11 \textcolor{comment}{//*****************************************************************************}}
+\DoxyCodeLine{12 \textcolor{keyword}{namespace }input}
+\DoxyCodeLine{13 \{}
+\DoxyCodeLine{14 \textcolor{keyword}{enum} Key}
+\DoxyCodeLine{15 \{}
+\DoxyCodeLine{16     KEY\_UNKNOWN       = -\/1,}
+\DoxyCodeLine{17     KEY\_SPACE         = 32,}
+\DoxyCodeLine{18     KEY\_APOSTROPHE    = 39 \textcolor{comment}{/* ' */},}
+\DoxyCodeLine{19     KEY\_COMMA         = 44 \textcolor{comment}{/* , */},}
+\DoxyCodeLine{20     KEY\_MINUS         = 45 \textcolor{comment}{/* -\/ */},}
+\DoxyCodeLine{21     KEY\_PERIOD        = 46 \textcolor{comment}{/* . */},}
+\DoxyCodeLine{22     KEY\_SLASH         = 47 \textcolor{comment}{/* / */},}
+\DoxyCodeLine{23     KEY\_0             = 48,}
+\DoxyCodeLine{24     KEY\_1             = 49,}
+\DoxyCodeLine{25     KEY\_2             = 50,}
+\DoxyCodeLine{26     KEY\_3             = 51,}
+\DoxyCodeLine{27     KEY\_4             = 52,}
+\DoxyCodeLine{28     KEY\_5             = 53,}
+\DoxyCodeLine{29     KEY\_6             = 54,}
+\DoxyCodeLine{30     KEY\_7             = 55,}
+\DoxyCodeLine{31     KEY\_8             = 56,}
+\DoxyCodeLine{32     KEY\_9             = 57,}
+\DoxyCodeLine{33     KEY\_SEMICOLON     = 59 \textcolor{comment}{/* ; */},}
+\DoxyCodeLine{34     KEY\_EQUAL         = 61 \textcolor{comment}{/* = */},}
+\DoxyCodeLine{35     KEY\_A             = 65,}
+\DoxyCodeLine{36     KEY\_B             = 66,}
+\DoxyCodeLine{37     KEY\_C             = 67,}
+\DoxyCodeLine{38     KEY\_D             = 68,}
+\DoxyCodeLine{39     KEY\_E             = 69,}
+\DoxyCodeLine{40     KEY\_F             = 70,}
+\DoxyCodeLine{41     KEY\_G             = 71,}
+\DoxyCodeLine{42     KEY\_H             = 72,}
+\DoxyCodeLine{43     KEY\_I             = 73,}
+\DoxyCodeLine{44     KEY\_J             = 74,}
+\DoxyCodeLine{45     KEY\_K             = 75,}
+\DoxyCodeLine{46     KEY\_L             = 76,}
+\DoxyCodeLine{47     KEY\_M             = 77,}
+\DoxyCodeLine{48     KEY\_N             = 78,}
+\DoxyCodeLine{49     KEY\_O             = 79,}
+\DoxyCodeLine{50     KEY\_P             = 80,}
+\DoxyCodeLine{51     KEY\_Q             = 81,}
+\DoxyCodeLine{52     KEY\_R             = 82,}
+\DoxyCodeLine{53     KEY\_S             = 83,}
+\DoxyCodeLine{54     KEY\_T             = 84,}
+\DoxyCodeLine{55     KEY\_U             = 85,}
+\DoxyCodeLine{56     KEY\_V             = 86,}
+\DoxyCodeLine{57     KEY\_W             = 87,}
+\DoxyCodeLine{58     KEY\_X             = 88,}
+\DoxyCodeLine{59     KEY\_Y             = 89,}
+\DoxyCodeLine{60     KEY\_Z             = 90,}
+\DoxyCodeLine{61     KEY\_LEFT\_BRACKET  = 91 \textcolor{comment}{/* [ */},}
+\DoxyCodeLine{62     KEY\_BACKSLASH     = 92 \textcolor{comment}{/* \(\backslash\) */},}
+\DoxyCodeLine{63     KEY\_RIGHT\_BRACKET = 93 \textcolor{comment}{/* ] */},}
+\DoxyCodeLine{64     KEY\_GRAVE\_ACCENT  = 96 \textcolor{comment}{/* ` */},}
+\DoxyCodeLine{65     KEY\_WORLD\_1       = 161 \textcolor{comment}{/* non-\/US \#1 */},}
+\DoxyCodeLine{66     KEY\_WORLD\_2       = 162 \textcolor{comment}{/* non-\/US \#2 */},}
+\DoxyCodeLine{67     KEY\_ESCAPE        = 256,}
+\DoxyCodeLine{68     KEY\_ENTER         = 257,}
+\DoxyCodeLine{69     KEY\_TAB           = 258,}
+\DoxyCodeLine{70     KEY\_BACKSPACE     = 259,}
+\DoxyCodeLine{71     KEY\_INSERT        = 260,}
+\DoxyCodeLine{72     KEY\_DELETE        = 261,}
+\DoxyCodeLine{73     KEY\_RIGHT         = 262,}
+\DoxyCodeLine{74     KEY\_LEFT          = 263,}
+\DoxyCodeLine{75     KEY\_DOWN          = 264,}
+\DoxyCodeLine{76     KEY\_UP            = 265,}
+\DoxyCodeLine{77     KEY\_PAGE\_UP       = 266,}
+\DoxyCodeLine{78     KEY\_PAGE\_DOWN     = 267,}
+\DoxyCodeLine{79     KEY\_HOME          = 268,}
+\DoxyCodeLine{80     KEY\_END           = 269,}
+\DoxyCodeLine{81     KEY\_CAPS\_LOCK     = 280,}
+\DoxyCodeLine{82     KEY\_SCROLL\_LOCK   = 281,}
+\DoxyCodeLine{83     KEY\_NUM\_LOCK      = 282,}
+\DoxyCodeLine{84     KEY\_PRINT\_SCREEN  = 283,}
+\DoxyCodeLine{85     KEY\_PAUSE         = 284,}
+\DoxyCodeLine{86     KEY\_F1            = 290,}
+\DoxyCodeLine{87     KEY\_F2            = 291,}
+\DoxyCodeLine{88     KEY\_F3            = 292,}
+\DoxyCodeLine{89     KEY\_F4            = 293,}
+\DoxyCodeLine{90     KEY\_F5            = 294,}
+\DoxyCodeLine{91     KEY\_F6            = 295,}
+\DoxyCodeLine{92     KEY\_F7            = 296,}
+\DoxyCodeLine{93     KEY\_F8            = 297,}
+\DoxyCodeLine{94     KEY\_F9            = 298,}
+\DoxyCodeLine{95     KEY\_F10           = 299,}
+\DoxyCodeLine{96     KEY\_F11           = 300,}
+\DoxyCodeLine{97     KEY\_F12           = 301,}
+\DoxyCodeLine{98     KEY\_F13           = 302,}
+\DoxyCodeLine{99     KEY\_F14           = 303,}
+\DoxyCodeLine{100     KEY\_F15           = 304,}
+\DoxyCodeLine{101     KEY\_F16           = 305,}
+\DoxyCodeLine{102     KEY\_F17           = 306,}
+\DoxyCodeLine{103     KEY\_F18           = 307,}
+\DoxyCodeLine{104     KEY\_F19           = 308,}
+\DoxyCodeLine{105     KEY\_F20           = 309,}
+\DoxyCodeLine{106     KEY\_F21           = 310,}
+\DoxyCodeLine{107     KEY\_F22           = 311,}
+\DoxyCodeLine{108     KEY\_F23           = 312,}
+\DoxyCodeLine{109     KEY\_F24           = 313,}
+\DoxyCodeLine{110     KEY\_F25           = 314,}
+\DoxyCodeLine{111     KEY\_KP\_0          = 320,}
+\DoxyCodeLine{112     KEY\_KP\_1          = 321,}
+\DoxyCodeLine{113     KEY\_KP\_2          = 322,}
+\DoxyCodeLine{114     KEY\_KP\_3          = 323,}
+\DoxyCodeLine{115     KEY\_KP\_4          = 324,}
+\DoxyCodeLine{116     KEY\_KP\_5          = 325,}
+\DoxyCodeLine{117     KEY\_KP\_6          = 326,}
+\DoxyCodeLine{118     KEY\_KP\_7          = 327,}
+\DoxyCodeLine{119     KEY\_KP\_8          = 328,}
+\DoxyCodeLine{120     KEY\_KP\_9          = 329,}
+\DoxyCodeLine{121     KEY\_KP\_DECIMAL    = 330,}
+\DoxyCodeLine{122     KEY\_KP\_DIVIDE     = 331,}
+\DoxyCodeLine{123     KEY\_KP\_MULTIPLY   = 332,}
+\DoxyCodeLine{124     KEY\_KP\_SUBTRACT   = 333,}
+\DoxyCodeLine{125     KEY\_KP\_ADD        = 334,}
+\DoxyCodeLine{126     KEY\_KP\_ENTER      = 335,}
+\DoxyCodeLine{127     KEY\_KP\_EQUAL      = 336,}
+\DoxyCodeLine{128     KEY\_LEFT\_SHIFT    = 340,}
+\DoxyCodeLine{129     KEY\_LEFT\_CONTROL  = 341,}
+\DoxyCodeLine{130     KEY\_LEFT\_ALT      = 342,}
+\DoxyCodeLine{131     KEY\_LEFT\_SUPER    = 343,}
+\DoxyCodeLine{132     KEY\_RIGHT\_SHIFT   = 344,}
+\DoxyCodeLine{133     KEY\_RIGHT\_CONTROL = 345,}
+\DoxyCodeLine{134     KEY\_RIGHT\_ALT     = 346,}
+\DoxyCodeLine{135     KEY\_RIGHT\_SUPER   = 347,}
+\DoxyCodeLine{136     KEY\_MENU          = 348,}
+\DoxyCodeLine{137     KEY\_LAST          = KEY\_MENU,}
+\DoxyCodeLine{138 \};}
+\DoxyCodeLine{139 \}}
+\DoxyCodeLine{140 \}  \textcolor{comment}{// namespace m}}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//M\_KEYS}}
+
+\end{DoxyCode}

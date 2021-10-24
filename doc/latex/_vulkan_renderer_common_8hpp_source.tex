@@ -1,0 +1,60 @@
+\hypertarget{_vulkan_renderer_common_8hpp_source}{}\doxysection{Vulkan\+Renderer\+Common.\+hpp}
+\label{_vulkan_renderer_common_8hpp_source}\index{MesumGraphics/VulkanRenderer/VulkanRendererCommon.hpp@{MesumGraphics/VulkanRenderer/VulkanRendererCommon.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_VulkanRendererCommon}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_VulkanRendererCommon}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <MesumCore/Kernel/Asserts.hpp>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <MesumGraphics/Common.hpp>}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#if defined M\_WIN32}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define VK\_USE\_PLATFORM\_WIN32\_KHR}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#elif defined M\_UNIX}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define VK\_USE\_PLATFORM\_XCB\_KHR}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include <vulkan/vulkan.h>}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{namespace }m}
+\DoxyCodeLine{16 \{}
+\DoxyCodeLine{17 \textcolor{keyword}{namespace }vulkan}
+\DoxyCodeLine{18 \{}
+\DoxyCodeLine{19 \textcolor{keyword}{extern} MesumGraphicsApi \textcolor{keyword}{const} \mbox{\hyperlink{group___log_ga13f51627936471940ede5666fd047313}{logging::ChannelID}} VK\_RENDERER\_ID;}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{inline} \textcolor{keywordtype}{void} check\_vkResult(VkResult err)}
+\DoxyCodeLine{22 \{}
+\DoxyCodeLine{23     \textcolor{keywordflow}{if} (err == 0)}
+\DoxyCodeLine{24     \{}
+\DoxyCodeLine{25         \textcolor{keywordflow}{return};}
+\DoxyCodeLine{26     \}}
+\DoxyCodeLine{27     \mbox{\hyperlink{group___log_ga7a7702749ea8787667bc29f82220fea7}{mLOG\_ERR\_TO}}(VK\_RENDERER\_ID, \textcolor{stringliteral}{"{}[vulkan] Error: VkResult = "{}}, err);}
+\DoxyCodeLine{28     \textcolor{keywordflow}{if} (err < 0)}
+\DoxyCodeLine{29     \{}
+\DoxyCodeLine{30         abort();}
+\DoxyCodeLine{31     \}}
+\DoxyCodeLine{32 \}}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{keywordtype}{void} create\_instance(VkInstance\& a\_InstaceToCreate);}
+\DoxyCodeLine{35 \textcolor{keywordtype}{void} setup\_debugUtilsMessengerCreateInfoExt(}
+\DoxyCodeLine{36     VkDebugUtilsMessengerCreateInfoEXT\& a\_createInfo);}
+\DoxyCodeLine{37 \textcolor{keywordtype}{void} setup\_debugMessenger(VkInstance                a\_instance,}
+\DoxyCodeLine{38                           VkDebugUtilsMessengerEXT\& a\_debugUtil);}
+\DoxyCodeLine{39 \textcolor{keywordtype}{void} destroy\_debugMessenger(VkInstance                a\_instance,}
+\DoxyCodeLine{40                             VkDebugUtilsMessengerEXT\& a\_debugUtil);}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{keywordtype}{void} select\_physicalDevice(VkInstance        a\_instance,}
+\DoxyCodeLine{43                            VkPhysicalDevice\& a\_physicalDevice);}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 Bool find\_graphicQueueFamilyIndex(VkPhysicalDevice a\_physicalDevice,}
+\DoxyCodeLine{46                                   U32\&             a\_queueFamilyIndex);}
+\DoxyCodeLine{47 \textcolor{keywordtype}{void} create\_logicalDevice(VkPhysicalDevice a\_physicalDevice,}
+\DoxyCodeLine{48                           VkDevice\& a\_logicalDevice, VkQueue\& a\_queue,}
+\DoxyCodeLine{49                           U32\& a\_queueFamilyIndex);}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 \};  \textcolor{comment}{// namespace vulkan}}
+\DoxyCodeLine{52 \};  \textcolor{comment}{// namespace m}}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_VulkanRendererCommon}}
+
+\end{DoxyCode}

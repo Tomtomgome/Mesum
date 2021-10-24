@@ -1,0 +1,60 @@
+\hypertarget{_kernel_8hpp_source}{}\doxysection{Kernel.\+hpp}
+\label{_kernel_8hpp_source}\index{MesumCore/Kernel/Kernel.hpp@{MesumCore/Kernel/Kernel.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_KERNEL}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_KERNEL}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <Asserts.hpp>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <MesumCore/Common.hpp>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <Types.hpp>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <sstream>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{keyword}{namespace }m}
+\DoxyCodeLine{14 \{}
+\DoxyCodeLine{15 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1_cmd_line}{CmdLine}}}
+\DoxyCodeLine{16 \{}
+\DoxyCodeLine{17     \textcolor{keywordtype}{void} parse\_cmdLineAguments(Int argc, Char** argv);}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19     \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{20     Bool get\_parameter(\textcolor{keyword}{const} std::string a\_key, T\& a\_result)\textcolor{keyword}{ const}}
+\DoxyCodeLine{21 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{22         \textcolor{keyword}{auto} found = std::find(m\_listArgs.begin(), m\_listArgs.end(), a\_key);}
+\DoxyCodeLine{23         \textcolor{keywordflow}{if} (found == m\_listArgs.end())}
+\DoxyCodeLine{24         \{}
+\DoxyCodeLine{25             \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{26         \}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28         \textcolor{keywordflow}{if} (++found == m\_listArgs.end())}
+\DoxyCodeLine{29         \{}
+\DoxyCodeLine{30             \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{31         \}}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33         std::basic\_istringstream(*found) >> a\_result;}
+\DoxyCodeLine{34         \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{35     \}}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37     \textcolor{keyword}{inline} \textcolor{keyword}{const} Bool get\_arg(\textcolor{keyword}{const} std::string a\_arg)\textcolor{keyword}{ const}}
+\DoxyCodeLine{38 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{39         \textcolor{keywordflow}{return} std::find(m\_listArgs.begin(), m\_listArgs.end(), a\_arg) !=}
+\DoxyCodeLine{40                m\_listArgs.end();}
+\DoxyCodeLine{41     \}}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43     std::vector<std::string> m\_listArgs;}
+\DoxyCodeLine{44 \};}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1_basic_launch_data}{BasicLaunchData}}}
+\DoxyCodeLine{47 \{}
+\DoxyCodeLine{48 \};}
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#ifdef M\_WIN32}}
+\DoxyCodeLine{50 std::wstring convert\_string(\textcolor{keyword}{const} std::string\& a\_as);}
+\DoxyCodeLine{51 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \}  \textcolor{comment}{// namespace m}}
+\DoxyCodeLine{54 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_KERNEL}}
+
+\end{DoxyCode}

@@ -1,0 +1,86 @@
+\hypertarget{_vulkan_context_8hpp_source}{}\doxysection{Vulkan\+Context.\+hpp}
+\label{_vulkan_context_8hpp_source}\index{MesumGraphics/VulkanRenderer/VulkanContext.hpp@{MesumGraphics/VulkanRenderer/VulkanContext.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_VulkanContext}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_VulkanContext}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <MesumCore/Kernel/Callbacks.hpp>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <VulkanRendererCommon.hpp>}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{keyword}{namespace }m}
+\DoxyCodeLine{8 \{}
+\DoxyCodeLine{9 \textcolor{keyword}{namespace }vulkan}
+\DoxyCodeLine{10 \{}
+\DoxyCodeLine{11 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1vulkan_1_1_vulkan_context}{VulkanContext}}}
+\DoxyCodeLine{12 \{}
+\DoxyCodeLine{13    \textcolor{keyword}{public}:}
+\DoxyCodeLine{14     \mbox{\hyperlink{classm_1_1vulkan_1_1_vulkan_context}{VulkanContext}}()                      = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{15     \mbox{\hyperlink{classm_1_1vulkan_1_1_vulkan_context}{VulkanContext}}(\mbox{\hyperlink{classm_1_1vulkan_1_1_vulkan_context}{VulkanContext}} \textcolor{keyword}{const}\&)  = \textcolor{keyword}{delete};}
+\DoxyCodeLine{16     \mbox{\hyperlink{classm_1_1vulkan_1_1_vulkan_context}{VulkanContext}}(\mbox{\hyperlink{classm_1_1vulkan_1_1_vulkan_context}{VulkanContext}} \textcolor{keyword}{const}\&\&) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{17     \mbox{\hyperlink{classm_1_1vulkan_1_1_vulkan_context}{\string~VulkanContext}}()                     = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{18     \textcolor{keyword}{static} \mbox{\hyperlink{classm_1_1vulkan_1_1_vulkan_context}{VulkanContext}}* gs\_VulkanContexte;}
+\DoxyCodeLine{19     \textcolor{keywordtype}{void}                  init();}
+\DoxyCodeLine{20     \textcolor{keywordtype}{void}                  deinit();}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22     \textcolor{keyword}{static} \textcolor{keywordtype}{void} wait\_onMainTimelineTstp(}
+\DoxyCodeLine{23         U64 a\_tstpToWaitOn, U64 a\_timeout = std::numeric\_limits<U64>::max());}
+\DoxyCodeLine{24     \textcolor{keyword}{static} U64 submit\_onMainTimeline(}
+\DoxyCodeLine{25         VkCommandBuffer \textcolor{keyword}{const}\&          a\_commandBuffer,}
+\DoxyCodeLine{26         std::vector<VkSemaphore> \textcolor{keyword}{const}\& a\_semaphoresToWait,}
+\DoxyCodeLine{27         std::vector<VkSemaphore>        a\_semaphoresToSignal);}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29     \textcolor{keyword}{static} \textcolor{keywordtype}{void} present(VkPresentInfoKHR \textcolor{keyword}{const}\& a\_infoPresent);}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31     VkCommandBuffer get\_singleUseCommandBuffer();}
+\DoxyCodeLine{32     \textcolor{keywordtype}{void} submit\_signleUseCommandBuffer(VkCommandBuffer a\_commandBuffer);}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34     \textcolor{keyword}{static} VkInstance get\_instance() \{ \textcolor{keywordflow}{return} gs\_VulkanContexte-\/>m\_instance; \}}
+\DoxyCodeLine{35     \textcolor{keyword}{static} VkPhysicalDevice get\_physDevice()}
+\DoxyCodeLine{36     \{}
+\DoxyCodeLine{37         \textcolor{keywordflow}{return} gs\_VulkanContexte-\/>m\_physicalDevice;}
+\DoxyCodeLine{38     \}}
+\DoxyCodeLine{39     \textcolor{keyword}{static} VkDevice get\_logDevice()}
+\DoxyCodeLine{40     \{}
+\DoxyCodeLine{41         \textcolor{keywordflow}{return} gs\_VulkanContexte-\/>m\_logicalDevice;}
+\DoxyCodeLine{42     \}}
+\DoxyCodeLine{43     \textcolor{keyword}{static} VkQueue get\_presentationQueue()}
+\DoxyCodeLine{44     \{}
+\DoxyCodeLine{45         \textcolor{keywordflow}{return} gs\_VulkanContexte-\/>m\_queue;}
+\DoxyCodeLine{46     \}}
+\DoxyCodeLine{47     \textcolor{keyword}{static} VkQueue get\_graphicQueue() \{ \textcolor{keywordflow}{return} gs\_VulkanContexte-\/>m\_queue; \}}
+\DoxyCodeLine{48     \textcolor{keyword}{static} U32     get\_graphicQueueFamilyIndex()}
+\DoxyCodeLine{49     \{}
+\DoxyCodeLine{50         \textcolor{keywordflow}{return} gs\_VulkanContexte-\/>m\_queueFamilyIndex;}
+\DoxyCodeLine{51     \}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53     \textcolor{keyword}{static} U32            get\_memoryTypeIndex(U32                   a\_typeFilter,}
+\DoxyCodeLine{54                                               VkMemoryPropertyFlags a\_properties);}
+\DoxyCodeLine{55     \textcolor{keyword}{static} VkShaderModule create\_shaderModule(std::string \textcolor{keyword}{const}\& a\_shaderPath);}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57    \textcolor{keyword}{private}:}
+\DoxyCodeLine{58     \textcolor{comment}{// Instance and devices}}
+\DoxyCodeLine{59     VkInstance       m\_instance       = VK\_NULL\_HANDLE;}
+\DoxyCodeLine{60     VkPhysicalDevice m\_physicalDevice = VK\_NULL\_HANDLE;}
+\DoxyCodeLine{61     VkDevice         m\_logicalDevice  = VK\_NULL\_HANDLE;}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63     VkDebugUtilsMessengerEXT m\_debugUtil;}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65     \textcolor{comment}{// queues}}
+\DoxyCodeLine{66     U32     m\_queueFamilyIndex;}
+\DoxyCodeLine{67     VkQueue m\_queue = VK\_NULL\_HANDLE;}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69     \textcolor{comment}{// Utility}}
+\DoxyCodeLine{70     VkCommandPool m\_utilityCommandPool;}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72     \textcolor{comment}{// Synchronization tools}}
+\DoxyCodeLine{73     VkSemaphore m\_timelineSemaphore;}
+\DoxyCodeLine{74     U64         m\_timeline = 0;}
+\DoxyCodeLine{75 \};}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 \};  \textcolor{comment}{// namespace vulkan}}
+\DoxyCodeLine{78 \};  \textcolor{comment}{// namespace m}}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_VulkanContext}}
+
+\end{DoxyCode}

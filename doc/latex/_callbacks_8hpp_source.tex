@@ -1,0 +1,98 @@
+\hypertarget{_callbacks_8hpp_source}{}\doxysection{Callbacks.\+hpp}
+\label{_callbacks_8hpp_source}\index{MesumCore/Kernel/Callbacks.hpp@{MesumCore/Kernel/Callbacks.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_CALLBACKS}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_CALLBACKS}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <Asserts.hpp>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <Types.hpp>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <functional>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <list>}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{keyword}{namespace }m}
+\DoxyCodeLine{11 \{}
+\DoxyCodeLine{12 \textcolor{keyword}{template} <\textcolor{keyword}{typename} rType, \textcolor{keyword}{typename}... Args>}
+\DoxyCodeLine{13 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1_callback}{Callback}}}
+\DoxyCodeLine{14 \{}
+\DoxyCodeLine{15    \textcolor{keyword}{public}:}
+\DoxyCodeLine{16     \textcolor{keyword}{using} functionType = rType(Args...);}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18     \mbox{\hyperlink{classm_1_1_callback}{Callback}}() \{\}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20     \textcolor{keyword}{template} <\textcolor{keyword}{typename} CArgs>}
+\DoxyCodeLine{21     \mbox{\hyperlink{classm_1_1_callback}{Callback}}(CArgs* a\_owner, rType (CArgs::*a\_func)(Args...))}
+\DoxyCodeLine{22     \{}
+\DoxyCodeLine{23         m\_func = [a\_owner, a\_func](Args... a\_args) -\/> rType}
+\DoxyCodeLine{24         \{ \textcolor{keywordflow}{return} (a\_owner-\/>*a\_func)(a\_args...); \};}
+\DoxyCodeLine{25     \}}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27     \mbox{\hyperlink{classm_1_1_callback}{Callback}}(std::function<functionType> a\_func) \{ m\_func = a\_func; \}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29     \textcolor{keyword}{template} <\textcolor{keyword}{typename} CArgs>}
+\DoxyCodeLine{30     \textcolor{keywordtype}{void} set(CArgs* a\_owner, rType (CArgs::*a\_func)(Args...))}
+\DoxyCodeLine{31     \{}
+\DoxyCodeLine{32         m\_func = [a\_owner, a\_func](Args... a\_args) -\/> rType}
+\DoxyCodeLine{33         \{ \textcolor{keywordflow}{return} (a\_owner-\/>*a\_func)(a\_args...); \};}
+\DoxyCodeLine{34     \}}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36     \textcolor{keywordtype}{void} set(std::function<functionType> a\_func) \{ m\_func = a\_func; \}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38     rType call(Args... a\_args)}
+\DoxyCodeLine{39     \{}
+\DoxyCodeLine{40         mHardAssert(Bool(m\_func));}
+\DoxyCodeLine{41         \textcolor{keywordflow}{return} m\_func(a\_args...);}
+\DoxyCodeLine{42     \}}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44     \textcolor{keyword}{explicit} \textcolor{keyword}{operator} bool()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Bool(m\_func); \}}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46     rType operator()(Args... a\_args) \{ call(a\_args...); \}}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48     \textcolor{keyword}{friend} Bool operator==(\textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1_callback}{Callback}}\& lhs, \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1_callback}{Callback}}\& rhs)}
+\DoxyCodeLine{49     \{}
+\DoxyCodeLine{50         \textcolor{keywordflow}{return} lhs.m\_func.template target<functionType>() ==}
+\DoxyCodeLine{51                rhs.m\_func.template target<functionType>();}
+\DoxyCodeLine{52     \}}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54    \textcolor{keyword}{private}:}
+\DoxyCodeLine{55     std::function<functionType> m\_func;}
+\DoxyCodeLine{56 \};}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 \textcolor{keyword}{template} <\textcolor{keyword}{typename}... Args>}
+\DoxyCodeLine{59 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1_signal}{Signal}}}
+\DoxyCodeLine{60 \{}
+\DoxyCodeLine{61    \textcolor{keyword}{public}:}
+\DoxyCodeLine{62     \textcolor{keyword}{using} handle = \textcolor{keyword}{typename} std::list<\mbox{\hyperlink{classm_1_1_callback}{Callback}}<void, Args...>>::iterator;}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64     handle attach\_ToSignal(\mbox{\hyperlink{classm_1_1_callback}{Callback<void, Args...>}} a\_callback)}
+\DoxyCodeLine{65     \{}
+\DoxyCodeLine{66         m\_callbacks.push\_front(a\_callback);}
+\DoxyCodeLine{67         \textcolor{keywordflow}{return} m\_callbacks.begin();}
+\DoxyCodeLine{68     \}}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70     \textcolor{keywordtype}{void} detach\_FromSignal(\mbox{\hyperlink{classm_1_1_callback}{Callback<void, Args...>}} a\_callback)}
+\DoxyCodeLine{71     \{}
+\DoxyCodeLine{72         m\_callbacks.remove(a\_callback);}
+\DoxyCodeLine{73     \}}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75     \textcolor{keywordtype}{void} detach\_FromSignal(\textcolor{keyword}{const} handle\& a\_handle)}
+\DoxyCodeLine{76     \{}
+\DoxyCodeLine{77         m\_callbacks.erase(a\_handle);}
+\DoxyCodeLine{78     \}}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80     \textcolor{keywordtype}{void} call(Args... a\_args)}
+\DoxyCodeLine{81     \{}
+\DoxyCodeLine{82         \textcolor{keywordflow}{for} (\mbox{\hyperlink{classm_1_1_callback}{Callback<void, Args...>}} cbs : m\_callbacks) \{ cbs.call(a\_args...); \}}
+\DoxyCodeLine{83     \}}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85     \textcolor{keywordtype}{void} clear() \{ m\_callbacks.clear(); \}}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87    \textcolor{keyword}{private}:}
+\DoxyCodeLine{88     std::list<\mbox{\hyperlink{classm_1_1_callback}{Callback}}<void, Args...>> m\_callbacks;}
+\DoxyCodeLine{89 \};}
+\DoxyCodeLine{90 \};  \textcolor{comment}{// namespace m}}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_CALLBACKS}}
+
+\end{DoxyCode}

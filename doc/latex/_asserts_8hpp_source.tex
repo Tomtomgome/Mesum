@@ -1,0 +1,55 @@
+\hypertarget{_asserts_8hpp_source}{}\doxysection{Asserts.\+hpp}
+\label{_asserts_8hpp_source}\index{MesumCore/Kernel/Asserts.hpp@{MesumCore/Kernel/Asserts.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_ASSERTS}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_ASSERTS}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <Logger.hpp>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <MesumCore/Common.hpp>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <Types.hpp>}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <csignal>}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{comment}{// PLATFORM\_SPECIFIC}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#if defined(SIGTRAP)}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define mInterrupt raise(SIGTRAP)}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#elif defined \_MSC\_VER}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define mInterrupt \_\_debugbreak();}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#define mInterrupt}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#define mNotImplemented mInterrupt}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{namespace }m}
+\DoxyCodeLine{23 \{}
+\DoxyCodeLine{24 \textcolor{keyword}{extern} MesumCoreApi \textcolor{keyword}{const} \mbox{\hyperlink{group___log_ga13f51627936471940ede5666fd047313}{logging::ChannelID}} ASSERT\_ID;}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keywordtype}{void} manage\_simple\_assert(Bool a\_condition, \textcolor{keyword}{const} Int a\_lineNumber,}
+\DoxyCodeLine{27                           \textcolor{keyword}{const} Char* a\_file);}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keywordtype}{void} manage\_blocking\_assert(Bool a\_condition, \textcolor{keyword}{const} Int a\_lineNumber,}
+\DoxyCodeLine{30                             \textcolor{keyword}{const} Char* a\_file);}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \};  \textcolor{comment}{// namespace m}}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#define WIDE2(x) L\#\#x}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#define WIDE1(x) WIDE2(x)}}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#define WFILE WIDE1(\_\_FILE\_\_)}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \textcolor{comment}{// PLATFORM\_SPECIFIC}}
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#ifdef M\_RELEASE}}
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#define mAssert(condition)}}
+\DoxyCodeLine{41 \textcolor{preprocessor}{\#define mHardAssert(condition)}}
+\DoxyCodeLine{42 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{43 \textcolor{preprocessor}{\#define mAssert(condition) \(\backslash\)}}
+\DoxyCodeLine{44 \textcolor{preprocessor}{    m::manage\_simple\_assert(condition, \_\_LINE\_\_, \_\_FILE\_\_);}}
+\DoxyCodeLine{45 \textcolor{preprocessor}{\#define mHardAssert(condition) \(\backslash\)}}
+\DoxyCodeLine{46 \textcolor{preprocessor}{    m::manage\_blocking\_assert(condition, \_\_LINE\_\_, \_\_FILE\_\_);}}
+\DoxyCodeLine{47 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_ASSERTS}}
+
+\end{DoxyCode}

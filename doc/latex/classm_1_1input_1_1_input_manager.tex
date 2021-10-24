@@ -1,0 +1,74 @@
+\hypertarget{classm_1_1input_1_1_input_manager}{}\doxysection{m\+::input\+::Input\+Manager Class Reference}
+\label{classm_1_1input_1_1_input_manager}\index{m::input::InputManager@{m::input::InputManager}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_a316697171a36c5e139898f2c1124af08}\label{classm_1_1input_1_1_input_manager_a316697171a36c5e139898f2c1124af08}} 
+void {\bfseries update\+\_\+\+Key\+Mods} (Key\+Mod a\+\_\+mod, Action a\+\_\+action)
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_a0b8761af3359e05f779fa426250003f0}\label{classm_1_1input_1_1_input_manager_a0b8761af3359e05f779fa426250003f0}} 
+void {\bfseries process\+\_\+\+Mouse\+Event} (Mouse\+Button a\+\_\+button, Action a\+\_\+action, Key\+Mod a\+\_\+mods)
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_ae8b401cda32edecdb9f416ba36244182}\label{classm_1_1input_1_1_input_manager_ae8b401cda32edecdb9f416ba36244182}} 
+void {\bfseries process\+\_\+\+Key\+Event} (Key a\+\_\+key, int a\+\_\+scancode, Action a\+\_\+action, Key\+Mod a\+\_\+mods)
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_aba12e3abf0c2f1f084cb313b0d26296a}\label{classm_1_1input_1_1_input_manager_aba12e3abf0c2f1f084cb313b0d26296a}} 
+void {\bfseries process\+\_\+\+Scroll\+Event} (double a\+\_\+xoffset, double a\+\_\+yoffset)
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_acda747dacb93f6e7535f58e4c6d4825a}\label{classm_1_1input_1_1_input_manager_acda747dacb93f6e7535f58e4c6d4825a}} 
+void {\bfseries process\+\_\+\+Cursor\+Position} (double a\+\_\+xpos, double a\+\_\+ypos)
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_ab89c104aeeaf7768528216029d6ee4f8}\label{classm_1_1input_1_1_input_manager_ab89c104aeeaf7768528216029d6ee4f8}} 
+void {\bfseries process\+And\+Update\+\_\+\+States} ()
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_a294651fd2e46aab11a8019485048f7ee}\label{classm_1_1input_1_1_input_manager_a294651fd2e46aab11a8019485048f7ee}} 
+Key\+Action\+Signal\+::handle {\bfseries attach\+\_\+\+To\+Key\+Event} (\mbox{\hyperlink{structm_1_1input_1_1_key_action}{Key\+Action}} a\+\_\+key\+Action, const \mbox{\hyperlink{classm_1_1_callback}{Key\+Action\+Callback}} \&a\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_a624107a795a0aa09544d7d8e745fa2ab}\label{classm_1_1input_1_1_input_manager_a624107a795a0aa09544d7d8e745fa2ab}} 
+Mouse\+Action\+Signal\+::handle {\bfseries attach\+\_\+\+To\+Mouse\+Event} (\mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{Mouse\+Action}} a\+\_\+mouse\+Action, const \mbox{\hyperlink{classm_1_1_callback}{Mouse\+Action\+Callback}} \&a\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_a613e6f2218ca12205862ebb9fe3067f1}\label{classm_1_1input_1_1_input_manager_a613e6f2218ca12205862ebb9fe3067f1}} 
+Scroll\+Signal\+::handle {\bfseries attach\+\_\+\+To\+Scroll\+Event} (const \mbox{\hyperlink{classm_1_1_callback}{Scroll\+Callback}} \&a\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_a29ff2ee0f67574f3f2d031acb2d9ccbc}\label{classm_1_1input_1_1_input_manager_a29ff2ee0f67574f3f2d031acb2d9ccbc}} 
+Mouse\+Move\+Signal\+::handle {\bfseries attach\+\_\+\+To\+Move\+Event} (const \mbox{\hyperlink{classm_1_1_callback}{Mouse\+Move\+Callback}} \&a\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_a9a42f3f9d0255db5aaccc2722575720b}\label{classm_1_1input_1_1_input_manager_a9a42f3f9d0255db5aaccc2722575720b}} 
+void {\bfseries detach\+\_\+\+From\+Key\+Event} (\mbox{\hyperlink{structm_1_1input_1_1_key_action}{Key\+Action}} a\+\_\+key\+Action, const \mbox{\hyperlink{classm_1_1_callback}{Key\+Action\+Callback}} \&a\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_a760eb5898db872df2f5e0584865e89e4}\label{classm_1_1input_1_1_input_manager_a760eb5898db872df2f5e0584865e89e4}} 
+void {\bfseries detach\+\_\+\+From\+Key\+Event} (\mbox{\hyperlink{structm_1_1input_1_1_key_action}{Key\+Action}} a\+\_\+key\+Action, const Key\+Action\+Signal\+::handle \&a\+\_\+handle)
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_a1222063eb4f7ef564c550ccd28f98251}\label{classm_1_1input_1_1_input_manager_a1222063eb4f7ef564c550ccd28f98251}} 
+void {\bfseries detach\+\_\+\+From\+Mouse\+Event} (\mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{Mouse\+Action}} a\+\_\+mouse\+Action, const \mbox{\hyperlink{classm_1_1_callback}{Mouse\+Action\+Callback}} \&a\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_a599e19d57e9479641c5a7a9c972b7fab}\label{classm_1_1input_1_1_input_manager_a599e19d57e9479641c5a7a9c972b7fab}} 
+void {\bfseries detach\+\_\+\+From\+Mouse\+Event} (\mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{Mouse\+Action}} a\+\_\+mouse\+Action, const Mouse\+Action\+Signal\+::handle \&a\+\_\+handle)
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_af8eeb5ad5046f8d34aac38b16af574db}\label{classm_1_1input_1_1_input_manager_af8eeb5ad5046f8d34aac38b16af574db}} 
+void {\bfseries detach\+\_\+\+From\+Scroll\+Event} (const \mbox{\hyperlink{classm_1_1_callback}{Scroll\+Callback}} \&a\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_aa194babdb2c38318517ed84590c0dff2}\label{classm_1_1input_1_1_input_manager_aa194babdb2c38318517ed84590c0dff2}} 
+void {\bfseries detach\+\_\+\+From\+Scroll\+Event} (const Scroll\+Signal\+::handle \&a\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_a9b1305fafe7476e2e026fc3b6a3d2560}\label{classm_1_1input_1_1_input_manager_a9b1305fafe7476e2e026fc3b6a3d2560}} 
+void {\bfseries detach\+\_\+\+From\+Move\+Event} (const \mbox{\hyperlink{classm_1_1_callback}{Mouse\+Move\+Callback}} \&a\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_a805bc11e458e7c2ebee1b18b1ca45593}\label{classm_1_1input_1_1_input_manager_a805bc11e458e7c2ebee1b18b1ca45593}} 
+void {\bfseries detach\+\_\+\+From\+Move\+Event} (const Mouse\+Move\+Signal\+::handle \&a\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_a16f4a21653224cfc5467714e38bc4ed3}\label{classm_1_1input_1_1_input_manager_a16f4a21653224cfc5467714e38bc4ed3}} 
+Mouse\+State\+Signal\+::handle {\bfseries attach\+\_\+\+To\+Mouse\+State} (\mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{Mouse\+State}} a\+\_\+mouse\+State, const \mbox{\hyperlink{classm_1_1_callback}{Mouse\+State\+Callback}} \&a\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_a2f789017316e25c8314f28a9591485d0}\label{classm_1_1input_1_1_input_manager_a2f789017316e25c8314f28a9591485d0}} 
+void {\bfseries detach\+\_\+\+From\+Mouse\+State} (\mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{Mouse\+State}} a\+\_\+mouse\+State, const \mbox{\hyperlink{classm_1_1_callback}{Mouse\+State\+Callback}} \&a\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_a4343f58edf8ac8ab1eb1912f1baae23e}\label{classm_1_1input_1_1_input_manager_a4343f58edf8ac8ab1eb1912f1baae23e}} 
+void {\bfseries detach\+\_\+\+From\+Mouse\+State} (\mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{Mouse\+State}} a\+\_\+mouse\+State, const Mouse\+State\+Signal\+::handle \&a\+\_\+handle)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Core/\+Kernel/Input.\+hpp\item 
+Mesum\+Core/\+Kernel/Input.\+cpp\end{DoxyCompactItemize}

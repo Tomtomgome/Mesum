@@ -1,0 +1,44 @@
+\hypertarget{_win32_context_8hpp_source}{}\doxysection{Win32\+Context.\+hpp}
+\label{_win32_context_8hpp_source}\index{MesumGraphics/Win32/Win32Context.hpp@{MesumGraphics/Win32/Win32Context.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_WIN32CONTEXT}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_WIN32CONTEXT}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <wrl.h>}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <MesumCore/Kernel/Input.hpp>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <MesumCore/Kernel/Logger.hpp>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <MesumCore/Kernel/Types.hpp>}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{keyword}{namespace }m::win32}
+\DoxyCodeLine{11 \{}
+\DoxyCodeLine{12 \textcolor{keyword}{extern} \textcolor{keyword}{const} \mbox{\hyperlink{group___log_ga13f51627936471940ede5666fd047313}{logging::ChannelID}} PLATFORM\_APP\_ID;}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1win32_1_1_w_i_n32_context}{WIN32Context}}}
+\DoxyCodeLine{15 \{}
+\DoxyCodeLine{16     \textcolor{keywordtype}{void} init(HINSTANCE\& a\_hInstance);}
+\DoxyCodeLine{17     \textcolor{keywordtype}{void} init\_keysLuts();}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19     \textcolor{keywordtype}{void} destroy();}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21     \textcolor{comment}{// Windows}}
+\DoxyCodeLine{22     \textcolor{keywordtype}{void} register\_windowClass(\textcolor{keyword}{const} WideChar* a\_className, HINSTANCE a\_hInstance,}
+\DoxyCodeLine{23                               WNDPROC a\_proc);}
+\DoxyCodeLine{24     HWND create\_window(\textcolor{keyword}{const} WideChar* a\_className, std::string a\_windowName,}
+\DoxyCodeLine{25                        U32 a\_clientWidth, U32 a\_clientHeight) \textcolor{keyword}{const};}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27     \textcolor{comment}{// Keys and inputs}}
+\DoxyCodeLine{28     [[nodiscard]] input::Key get\_keyFromParam(WPARAM a\_wParam) \textcolor{keyword}{const};}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30     \textcolor{comment}{// Properties}}
+\DoxyCodeLine{31     input::Key m\_lut\_keycodes[256];}
+\DoxyCodeLine{32     I16        m\_lut\_scancode[input::Key::KEY\_LAST + 1];}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34     HINSTANCE m\_hInstance;}
+\DoxyCodeLine{35 \};}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \}  \textcolor{comment}{// namespace m::win32}}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_WIN32CONTEXT}}
+
+\end{DoxyCode}

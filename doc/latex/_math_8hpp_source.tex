@@ -1,0 +1,46 @@
+\hypertarget{_math_8hpp_source}{}\doxysection{Math.\+hpp}
+\label{_math_8hpp_source}\index{MesumCore/Kernel/Math.hpp@{MesumCore/Kernel/Math.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_Math}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_MATH}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <Types.hpp>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <MathTypes.hpp>}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{keyword}{namespace }m}
+\DoxyCodeLine{9 \{}
+\DoxyCodeLine{10 \textcolor{keyword}{namespace }math}
+\DoxyCodeLine{11 \{}
+\DoxyCodeLine{12 \textcolor{keyword}{template} <\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{13 T lerp(T \textcolor{keyword}{const}\& a\_a1, T \textcolor{keyword}{const}\& a\_a2, Float a\_ratio)}
+\DoxyCodeLine{14 \{}
+\DoxyCodeLine{15     \textcolor{keywordflow}{return} (1.0f -\/ a\_ratio) * a\_a1 + a\_ratio * a\_a2;}
+\DoxyCodeLine{16 \}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1math_1_1_random_generator}{RandomGenerator}}}
+\DoxyCodeLine{19 \{}
+\DoxyCodeLine{20    \textcolor{keyword}{public}:}
+\DoxyCodeLine{21     \textcolor{keywordtype}{void} init(U64 a\_seed);}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23     U64 get\_nextU64();}
+\DoxyCodeLine{24     U32 get\_nextU32();}
+\DoxyCodeLine{25     Double get\_nextDouble();}
+\DoxyCodeLine{26     Float  get\_nextFloat();}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keyword}{private}:}
+\DoxyCodeLine{29     \textcolor{keyword}{struct }xoshiro256ssState}
+\DoxyCodeLine{30     \{}
+\DoxyCodeLine{31         U64 s[4];}
+\DoxyCodeLine{32     \};}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34     xoshiro256ssState m\_state;}
+\DoxyCodeLine{35 \};}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \}}
+\DoxyCodeLine{38 \}  \textcolor{comment}{// namespace m}}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//M\_Math}}
+
+\end{DoxyCode}

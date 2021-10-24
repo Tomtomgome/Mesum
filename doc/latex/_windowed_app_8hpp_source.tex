@@ -1,0 +1,95 @@
+\hypertarget{_windowed_app_8hpp_source}{}\doxysection{Windowed\+App.\+hpp}
+\label{_windowed_app_8hpp_source}\index{MesumGraphics/WindowedApp.hpp@{MesumGraphics/WindowedApp.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_WINDOWEDAPP}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_WINDOWEDAPP}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <MesumCore/Kernel/Application.hpp>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <MesumCore/Kernel/Mains.hpp>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <MesumCore/MesumCore/Common.hpp>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <MesumGraphics/Common.hpp>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <MesumGraphics/Renderer.hpp>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{keyword}{namespace }m}
+\DoxyCodeLine{14 \{}
+\DoxyCodeLine{15 \textcolor{keyword}{namespace }windows}
+\DoxyCodeLine{16 \{}
+\DoxyCodeLine{17 \textcolor{keyword}{class }IWindow;}
+\DoxyCodeLine{18 \}}
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }application}
+\DoxyCodeLine{20 \{}
+\DoxyCodeLine{21 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1application_1_1_i_windowed_application_base}{IWindowedApplicationBase}} : \textcolor{keyword}{public} \mbox{\hyperlink{classm_1_1application_1_1_i_timed_loop_application}{ITimedLoopApplication}}}
+\DoxyCodeLine{22 \{}
+\DoxyCodeLine{23    \textcolor{keyword}{public}:}
+\DoxyCodeLine{24     \textcolor{keyword}{virtual} \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{windows::IWindow}}* add\_newWindow(std::string a\_name, U32 a\_width,}
+\DoxyCodeLine{25                                             U32 a\_height) = 0;}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} start\_dearImGuiNewFrame(}
+\DoxyCodeLine{28         \mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{render::IRenderer}} \textcolor{keyword}{const}* a\_renderer) \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{29 \};}
+\DoxyCodeLine{30 \}  \textcolor{comment}{// namespace application}}
+\DoxyCodeLine{31 \};  \textcolor{comment}{// namespace m}}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{comment}{//*****************************************************************************}}
+\DoxyCodeLine{34 \textcolor{comment}{// Windowed entry point}}
+\DoxyCodeLine{35 \textcolor{comment}{//*****************************************************************************}}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#if defined M\_WIN32}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \textcolor{keyword}{namespace }m}
+\DoxyCodeLine{39 \{}
+\DoxyCodeLine{40 \textcolor{keyword}{struct }WindowedLaunchData}
+\DoxyCodeLine{41 \{}
+\DoxyCodeLine{42     HINSTANCE m\_hInstance;}
+\DoxyCodeLine{43     m::Int    m\_nCmdShow;}
+\DoxyCodeLine{44 \};}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{keywordtype}{bool} init\_console();}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 LPSTR* CommandLineToArgvA(LPWSTR lpWCmdLine, INT* pNumArgs);}
+\DoxyCodeLine{49 \}  \textcolor{comment}{// namespace m}}
+\DoxyCodeLine{50 \textcolor{preprocessor}{\#define M\_EXECUTE\_WINDOWED\_APP(AppClass)                                     \(\backslash\)}}
+\DoxyCodeLine{51 \textcolor{preprocessor}{    m::Int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine,   \(\backslash\)}}
+\DoxyCodeLine{52 \textcolor{preprocessor}{                           m::Int nCmdShow)                                  \(\backslash\)}}
+\DoxyCodeLine{53 \textcolor{preprocessor}{    \{                                                                        \(\backslash\)}}
+\DoxyCodeLine{54 \textcolor{preprocessor}{        m::WindowedLaunchData data;                                          \(\backslash\)}}
+\DoxyCodeLine{55 \textcolor{preprocessor}{        m::CmdLine            cmdLine;                                       \(\backslash\)}}
+\DoxyCodeLine{56 \textcolor{preprocessor}{        m::Int                argc;                                          \(\backslash\)}}
+\DoxyCodeLine{57 \textcolor{preprocessor}{        m::Char**             argv = m::CommandLineToArgvA(pCmdLine, \&argc); \(\backslash\)}}
+\DoxyCodeLine{58 \textcolor{preprocessor}{        if (argv != nullptr)                                                 \(\backslash\)}}
+\DoxyCodeLine{59 \textcolor{preprocessor}{        \{                                                                    \(\backslash\)}}
+\DoxyCodeLine{60 \textcolor{preprocessor}{            cmdLine.parse\_cmdLineAguments(argc, argv);                       \(\backslash\)}}
+\DoxyCodeLine{61 \textcolor{preprocessor}{            LocalFree(argv);                                                 \(\backslash\)}}
+\DoxyCodeLine{62 \textcolor{preprocessor}{        \}                                                                    \(\backslash\)}}
+\DoxyCodeLine{63 \textcolor{preprocessor}{        data.m\_hInstance = hInstance;                                        \(\backslash\)}}
+\DoxyCodeLine{64 \textcolor{preprocessor}{        data.m\_nCmdShow  = nCmdShow;                                         \(\backslash\)}}
+\DoxyCodeLine{65 \textcolor{preprocessor}{        m::init\_console();                                                   \(\backslash\)}}
+\DoxyCodeLine{66 \textcolor{preprocessor}{        m::internal\_run<AppClass>(cmdLine, \&data);                           \(\backslash\)}}
+\DoxyCodeLine{67 \textcolor{preprocessor}{        FreeConsole();                                                       \(\backslash\)}}
+\DoxyCodeLine{68 \textcolor{preprocessor}{        return 0;                                                            \(\backslash\)}}
+\DoxyCodeLine{69 \textcolor{preprocessor}{    \}}}
+\DoxyCodeLine{70 \textcolor{preprocessor}{\#elif defined M\_UNIX}}
+\DoxyCodeLine{71 \textcolor{keyword}{namespace }m}
+\DoxyCodeLine{72 \{}
+\DoxyCodeLine{73 \textcolor{keyword}{struct }WindowedLaunchData}
+\DoxyCodeLine{74 \{}
+\DoxyCodeLine{75 \};}
+\DoxyCodeLine{76 \}  \textcolor{comment}{// namespace m}}
+\DoxyCodeLine{77 \textcolor{preprocessor}{\#define M\_EXECUTE\_WINDOWED\_APP(AppClass)           \(\backslash\)}}
+\DoxyCodeLine{78 \textcolor{preprocessor}{    int main(m::Int argc, m::Char** argv)          \(\backslash\)}}
+\DoxyCodeLine{79 \textcolor{preprocessor}{    \{                                              \(\backslash\)}}
+\DoxyCodeLine{80 \textcolor{preprocessor}{        m::WindowedLaunchData data;                \(\backslash\)}}
+\DoxyCodeLine{81 \textcolor{preprocessor}{        m::CmdLine            cmdLine;             \(\backslash\)}}
+\DoxyCodeLine{82 \textcolor{preprocessor}{        cmdLine.parse\_cmdLineAguments(argc, argv); \(\backslash\)}}
+\DoxyCodeLine{83 \textcolor{preprocessor}{        m::internal\_run<AppClass>(cmdLine, \&data); \(\backslash\)}}
+\DoxyCodeLine{84 \textcolor{preprocessor}{        return 0;                                  \(\backslash\)}}
+\DoxyCodeLine{85 \textcolor{preprocessor}{    \}}}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_WINDOWEDAPP}}
+
+\end{DoxyCode}

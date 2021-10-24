@@ -1,0 +1,113 @@
+\hypertarget{classm_1_1vulkan_1_1_vulkan_surface}{}\doxysection{m\+::vulkan\+::Vulkan\+Surface Class Reference}
+\label{classm_1_1vulkan_1_1_vulkan_surface}\index{m::vulkan::VulkanSurface@{m::vulkan::VulkanSurface}}
+Inheritance diagram for m\+::vulkan\+::Vulkan\+Surface\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classm_1_1vulkan_1_1_vulkan_surface}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_a594cd8b71e3c883e4d6c57ef53f7fb21}\label{classm_1_1vulkan_1_1_vulkan_surface_a594cd8b71e3c883e4d6c57ef53f7fb21}} 
+void {\bfseries init\+\_\+win32} (render\+::\+Win32\+Surface\+Init\+Data \&a\+\_\+data) override
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_a65aee892f1ae23f5e2b039f6c1162d5c}\label{classm_1_1vulkan_1_1_vulkan_surface_a65aee892f1ae23f5e2b039f6c1162d5c}} 
+void {\bfseries init\+\_\+x11} (render\+::\+X11\+Surface\+Init\+Data \&a\+\_\+data) override
+\item 
+\mbox{\hyperlink{structm_1_1render_1_1_taskset}{render\+::\+Taskset}} $\ast$ \mbox{\hyperlink{classm_1_1vulkan_1_1_vulkan_surface_a10ec0d099f07a6cb2b6794adb59d39b1}{add\+New\+\_\+render\+Taskset}} () override
+\item 
+void \mbox{\hyperlink{classm_1_1vulkan_1_1_vulkan_surface_ae76600ea42e6327e86ca6dedc8faa4b1}{render}} () override
+\item 
+void \mbox{\hyperlink{classm_1_1vulkan_1_1_vulkan_surface_af5d9fbd83ae4c20797fabc242a76c14e}{resize}} (U32 a\+\_\+width, U32 a\+\_\+height) override
+\item 
+void \mbox{\hyperlink{classm_1_1vulkan_1_1_vulkan_surface_aa9c813f5b84a43e8aee1a8c7b538e6b0}{destroy}} () override
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_a4baadbbc16de2c12dd8e308be0d534d8}\label{classm_1_1vulkan_1_1_vulkan_surface_a4baadbbc16de2c12dd8e308be0d534d8}} 
+Vk\+Command\+Buffer {\bfseries get\+\_\+current\+Command\+Buffer} ()
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_af9264274b4fa1e445100b5bdcd62580d}\label{classm_1_1vulkan_1_1_vulkan_surface_af9264274b4fa1e445100b5bdcd62580d}} 
+Vk\+Framebuffer {\bfseries get\+\_\+current\+Framebuffer} ()
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_afbb526f8e33628362d8f8e683772263a}\label{classm_1_1vulkan_1_1_vulkan_surface_afbb526f8e33628362d8f8e683772263a}} 
+Vk\+Render\+Pass {\bfseries get\+\_\+main\+Render\+Pass} ()
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_a57bee93bb2758c105cb964c09e46c0f8}\label{classm_1_1vulkan_1_1_vulkan_surface_a57bee93bb2758c105cb964c09e46c0f8}} 
+U32 {\bfseries get\+\_\+width} () const
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_ac31b59a363201c0ae3044ea8417eec7d}\label{classm_1_1vulkan_1_1_vulkan_surface_ac31b59a363201c0ae3044ea8417eec7d}} 
+U32 {\bfseries get\+\_\+height} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_ac91caefe12d11b2a92948f45c5187f52}\label{classm_1_1vulkan_1_1_vulkan_surface_ac91caefe12d11b2a92948f45c5187f52}} 
+static const U8 {\bfseries scm\+\_\+num\+Frames} = 3
+\item 
+static const Vk\+Format \mbox{\hyperlink{classm_1_1vulkan_1_1_vulkan_surface_ac754663bb5e8c9d37c5bd1153f26ebd7}{scm\+\_\+selected\+Swap\+Chain\+Format}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_a10ec0d099f07a6cb2b6794adb59d39b1}\label{classm_1_1vulkan_1_1_vulkan_surface_a10ec0d099f07a6cb2b6794adb59d39b1}} 
+\index{m::vulkan::VulkanSurface@{m::vulkan::VulkanSurface}!addNew\_renderTaskset@{addNew\_renderTaskset}}
+\index{addNew\_renderTaskset@{addNew\_renderTaskset}!m::vulkan::VulkanSurface@{m::vulkan::VulkanSurface}}
+\doxysubsubsection{\texorpdfstring{addNew\_renderTaskset()}{addNew\_renderTaskset()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structm_1_1render_1_1_taskset}{render\+::\+Taskset}} $\ast$ m\+::vulkan\+::\+Vulkan\+Surface\+::add\+New\+\_\+render\+Taskset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{m\+::render\+::\+ISurface}}.
+
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_aa9c813f5b84a43e8aee1a8c7b538e6b0}\label{classm_1_1vulkan_1_1_vulkan_surface_aa9c813f5b84a43e8aee1a8c7b538e6b0}} 
+\index{m::vulkan::VulkanSurface@{m::vulkan::VulkanSurface}!destroy@{destroy}}
+\index{destroy@{destroy}!m::vulkan::VulkanSurface@{m::vulkan::VulkanSurface}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily void m\+::vulkan\+::\+Vulkan\+Surface\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{m\+::render\+::\+ISurface}}.
+
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_ae76600ea42e6327e86ca6dedc8faa4b1}\label{classm_1_1vulkan_1_1_vulkan_surface_ae76600ea42e6327e86ca6dedc8faa4b1}} 
+\index{m::vulkan::VulkanSurface@{m::vulkan::VulkanSurface}!render@{render}}
+\index{render@{render}!m::vulkan::VulkanSurface@{m::vulkan::VulkanSurface}}
+\doxysubsubsection{\texorpdfstring{render()}{render()}}
+{\footnotesize\ttfamily void m\+::vulkan\+::\+Vulkan\+Surface\+::render (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{m\+::render\+::\+ISurface}}.
+
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_af5d9fbd83ae4c20797fabc242a76c14e}\label{classm_1_1vulkan_1_1_vulkan_surface_af5d9fbd83ae4c20797fabc242a76c14e}} 
+\index{m::vulkan::VulkanSurface@{m::vulkan::VulkanSurface}!resize@{resize}}
+\index{resize@{resize}!m::vulkan::VulkanSurface@{m::vulkan::VulkanSurface}}
+\doxysubsubsection{\texorpdfstring{resize()}{resize()}}
+{\footnotesize\ttfamily void m\+::vulkan\+::\+Vulkan\+Surface\+::resize (\begin{DoxyParamCaption}\item[{U32}]{a\+\_\+width,  }\item[{U32}]{a\+\_\+height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{m\+::render\+::\+ISurface}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_ac754663bb5e8c9d37c5bd1153f26ebd7}\label{classm_1_1vulkan_1_1_vulkan_surface_ac754663bb5e8c9d37c5bd1153f26ebd7}} 
+\index{m::vulkan::VulkanSurface@{m::vulkan::VulkanSurface}!scm\_selectedSwapChainFormat@{scm\_selectedSwapChainFormat}}
+\index{scm\_selectedSwapChainFormat@{scm\_selectedSwapChainFormat}!m::vulkan::VulkanSurface@{m::vulkan::VulkanSurface}}
+\doxysubsubsection{\texorpdfstring{scm\_selectedSwapChainFormat}{scm\_selectedSwapChainFormat}}
+{\footnotesize\ttfamily const Vk\+Format m\+::vulkan\+::\+Vulkan\+Surface\+::scm\+\_\+selected\+Swap\+Chain\+Format\hspace{0.3cm}{\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{        VK\_FORMAT\_B8G8R8A8\_UNORM}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Graphics/\+Vulkan\+Renderer/Renderer\+Vulkan\+Impl.\+hpp\item 
+Mesum\+Graphics/\+Vulkan\+Renderer/Renderer\+Vulkan\+Impl.\+cpp\end{DoxyCompactItemize}

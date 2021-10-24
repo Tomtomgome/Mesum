@@ -1,0 +1,31 @@
+\hypertarget{classm_1_1_signal}{}\doxysection{m\+::Signal\texorpdfstring{$<$}{<} Args \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classm_1_1_signal}\index{m::Signal$<$ Args $>$@{m::Signal$<$ Args $>$}}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1_signal_a8ab6dd8ac69900478c4e45511c53fcf9}\label{classm_1_1_signal_a8ab6dd8ac69900478c4e45511c53fcf9}} 
+using {\bfseries handle} = typename std\+::list$<$ \mbox{\hyperlink{classm_1_1_callback}{Callback}}$<$ void, Args... $>$ $>$\+::iterator
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1_signal_a04142da7d815670aac6c00eb127020d4}\label{classm_1_1_signal_a04142da7d815670aac6c00eb127020d4}} 
+handle {\bfseries attach\+\_\+\+To\+Signal} (\mbox{\hyperlink{classm_1_1_callback}{Callback}}$<$ void, Args... $>$ a\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classm_1_1_signal_a79c9fe5e10034e5735035a69ba39200f}\label{classm_1_1_signal_a79c9fe5e10034e5735035a69ba39200f}} 
+void {\bfseries detach\+\_\+\+From\+Signal} (\mbox{\hyperlink{classm_1_1_callback}{Callback}}$<$ void, Args... $>$ a\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classm_1_1_signal_ae86e357e1f17be5f4994f2fcc54aca72}\label{classm_1_1_signal_ae86e357e1f17be5f4994f2fcc54aca72}} 
+void {\bfseries detach\+\_\+\+From\+Signal} (const handle \&a\+\_\+handle)
+\item 
+\mbox{\Hypertarget{classm_1_1_signal_a9746c6e15df520a5d4d5243d220f1bb7}\label{classm_1_1_signal_a9746c6e15df520a5d4d5243d220f1bb7}} 
+void {\bfseries call} (Args... a\+\_\+args)
+\item 
+\mbox{\Hypertarget{classm_1_1_signal_a04f8f00ba40bf06ba812f116fa37b952}\label{classm_1_1_signal_a04f8f00ba40bf06ba812f116fa37b952}} 
+void {\bfseries clear} ()
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Core/\+Kernel/Callbacks.\+hpp\end{DoxyCompactItemize}

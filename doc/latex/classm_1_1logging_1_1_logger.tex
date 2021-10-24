@@ -1,0 +1,47 @@
+\hypertarget{classm_1_1logging_1_1_logger}{}\doxysection{m\+::logging\+::Logger\texorpdfstring{$<$}{<} Log\+Policy \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classm_1_1logging_1_1_logger}\index{m::logging::Logger$<$ LogPolicy $>$@{m::logging::Logger$<$ LogPolicy $>$}}
+
+
+Thread safe logger class used to write logs.  
+
+
+
+
+{\ttfamily \#include $<$Log.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{group___log_ga5dfda4dcd8b2bea3fc48a8852eb7edf8}{Logger}} (const std\+::string \&a\+\_\+name)
+\begin{DoxyCompactList}\small\item\em Construct a logger. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{group___log_ga13f51627936471940ede5666fd047313}{Channel\+ID}} {\bfseries get\+\_\+new\+Channel\+ID} ()
+\begin{DoxyCompactList}\small\item\em Get a new channel ID. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group___log_gaddcfb00131aac4b1706bdd3b509353bb}{set\+\_\+filter}} (const \mbox{\hyperlink{group___log_ga16bb065e762d9d22730e02ef41a8165f}{Channel\+Filter}} a\+\_\+filters)
+\begin{DoxyCompactList}\small\item\em Set filters on the logger. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group___log_ga63b74328f6c81f7ee28958fad4bc874b}{disable\+\_\+channels}} (const \mbox{\hyperlink{group___log_ga16bb065e762d9d22730e02ef41a8165f}{Channel\+Filter}} a\+\_\+filters)
+\begin{DoxyCompactList}\small\item\em Disable channels of the logger. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group___log_gaf8b43c36de390d048e69e3a7f9391ab0}{enable\+\_\+channels}} (const \mbox{\hyperlink{group___log_ga16bb065e762d9d22730e02ef41a8165f}{Channel\+Filter}} a\+\_\+filters)
+\begin{DoxyCompactList}\small\item\em Enable channels of the logger. \end{DoxyCompactList}\item 
+{\footnotesize template$<$\mbox{\hyperlink{group___log_gaf620be757be465af66aa69d08a4f5c8e}{Severity\+Type}} severity, typename... Rest$>$ }\\void \mbox{\hyperlink{group___log_gab06c4b9527f8da19747c470798fdd124}{print\+\_\+to\+Channel}} (uint64\+\_\+t a\+\_\+channel, Rest... a\+\_\+args)
+\begin{DoxyCompactList}\small\item\em Print things in the logs using a specified channel. \end{DoxyCompactList}\item 
+{\footnotesize template$<$\mbox{\hyperlink{group___log_gaf620be757be465af66aa69d08a4f5c8e}{Severity\+Type}} severity, typename... Args$>$ }\\void \mbox{\hyperlink{group___log_gac2c5d26d3b5edd3941f1c6930072a109}{print}} (Args... a\+\_\+args)
+\begin{DoxyCompactList}\small\item\em Print things in the logs. \end{DoxyCompactList}\item 
+{\bfseries $\sim$\+Logger} ()
+\begin{DoxyCompactList}\small\item\em Destroy a logger. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename Log\+Policy$>$\newline
+class m\+::logging\+::\+Logger$<$ Log\+Policy $>$}
+Thread safe logger class used to write logs. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Log\+Policy} & the logging policy used by the logger. \\
+\hline
+\end{DoxyTemplParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Core/\+Kernel/Log.\+hpp\end{DoxyCompactItemize}

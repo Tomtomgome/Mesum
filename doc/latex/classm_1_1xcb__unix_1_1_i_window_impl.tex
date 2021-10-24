@@ -1,0 +1,125 @@
+\hypertarget{classm_1_1xcb__unix_1_1_i_window_impl}{}\doxysection{m\+::xcb\+\_\+unix\+::IWindow\+Impl Class Reference}
+\label{classm_1_1xcb__unix_1_1_i_window_impl}\index{m::xcb\_unix::IWindowImpl@{m::xcb\_unix::IWindowImpl}}
+Inheritance diagram for m\+::xcb\+\_\+unix\+::IWindow\+Impl\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classm_1_1xcb__unix_1_1_i_window_impl}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_window_impl_a9961347c8c6042204eb2465242a3d541}{init}} () override
+\item 
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_window_impl_a180d99252f9501fc82968d68b72132fe}\label{classm_1_1xcb__unix_1_1_i_window_impl_a180d99252f9501fc82968d68b72132fe}} 
+virtual void {\bfseries render} () override
+\item 
+virtual void \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_window_impl_a1b8ae947d2408e93b4419f6a1001405d}{destroy}} () override
+\item 
+virtual void \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_window_impl_a8b29cc25452b836333695a7beee63d05}{link\+\_\+input\+Manager}} (\mbox{\hyperlink{classm_1_1input_1_1_input_manager}{input\+::\+Input\+Manager}} $\ast$a\+\_\+input\+Manager)
+\item 
+virtual void \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_window_impl_a3f78ec3aa32b8ed3819cde30b1dc8335}{set\+\_\+size}} (UInt a\+\_\+width, UInt a\+\_\+height)
+\item 
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_window_impl_afd57f91eea468dcc2b7a63d701f4fe4f}\label{classm_1_1xcb__unix_1_1_i_window_impl_afd57f91eea468dcc2b7a63d701f4fe4f}} 
+virtual void {\bfseries set\+\_\+window\+Name} (std\+::wstring a\+\_\+name)
+\item 
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_window_impl_a4daf17d8f6aa002e45e9a766837660e6}\label{classm_1_1xcb__unix_1_1_i_window_impl_a4daf17d8f6aa002e45e9a766837660e6}} 
+virtual void {\bfseries set\+\_\+renderer} (\mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{render\+::\+IRenderer}} $\ast$a\+\_\+renderer)
+\item 
+virtual void \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_window_impl_a24a320d91232589df01289fee0eace4e}{set\+\_\+as\+Main\+Window}} ()
+\item 
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_window_impl_a3944f39ef64523cc423b9acf5fedee66}\label{classm_1_1xcb__unix_1_1_i_window_impl_a3944f39ef64523cc423b9acf5fedee66}} 
+virtual void {\bfseries set\+\_\+as\+Im\+Gui\+Window} (Bool a\+\_\+support\+Multi\+Viewports)
+\item 
+virtual void \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_window_impl_a184a34a1525f7f9d3b783a17929fac0a}{set\+\_\+full\+Screen}} (Bool a\+\_\+fullscreen)
+\item 
+virtual void \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_window_impl_aed30ce4c065a6c7226094412ab87c690}{toggle\+\_\+full\+Screen}} ()
+\item 
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_window_impl_af8c14af6f74ad419ec798211348b0cc6}\label{classm_1_1xcb__unix_1_1_i_window_impl_af8c14af6f74ad419ec798211348b0cc6}} 
+void {\bfseries set\+\_\+win\+Context} (\mbox{\hyperlink{structm_1_1xcb__unix_1_1_x_c_b_context}{XCBContext}} const \&a\+\_\+xcb\+Context)
+\item 
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_window_impl_ab6137975f368144786b2e1ff9dca54be}\label{classm_1_1xcb__unix_1_1_i_window_impl_ab6137975f368144786b2e1ff9dca54be}} 
+Bool {\bfseries is\+\_\+flagged\+To\+Be\+Closed} ()
+\item 
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_window_impl_ab0b842c9fa5b4cc563065efc04935ca3}\label{classm_1_1xcb__unix_1_1_i_window_impl_ab0b842c9fa5b4cc563065efc04935ca3}} 
+void {\bfseries callback\+\_\+dear\+Im\+Gui\+New\+Frame} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_window_impl_a1b8ae947d2408e93b4419f6a1001405d}\label{classm_1_1xcb__unix_1_1_i_window_impl_a1b8ae947d2408e93b4419f6a1001405d}} 
+\index{m::xcb\_unix::IWindowImpl@{m::xcb\_unix::IWindowImpl}!destroy@{destroy}}
+\index{destroy@{destroy}!m::xcb\_unix::IWindowImpl@{m::xcb\_unix::IWindowImpl}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily void m\+::xcb\+\_\+unix\+::\+IWindow\+Impl\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_window_impl_a9961347c8c6042204eb2465242a3d541}\label{classm_1_1xcb__unix_1_1_i_window_impl_a9961347c8c6042204eb2465242a3d541}} 
+\index{m::xcb\_unix::IWindowImpl@{m::xcb\_unix::IWindowImpl}!init@{init}}
+\index{init@{init}!m::xcb\_unix::IWindowImpl@{m::xcb\_unix::IWindowImpl}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily void m\+::xcb\+\_\+unix\+::\+IWindow\+Impl\+::init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_window_impl_a8b29cc25452b836333695a7beee63d05}\label{classm_1_1xcb__unix_1_1_i_window_impl_a8b29cc25452b836333695a7beee63d05}} 
+\index{m::xcb\_unix::IWindowImpl@{m::xcb\_unix::IWindowImpl}!link\_inputManager@{link\_inputManager}}
+\index{link\_inputManager@{link\_inputManager}!m::xcb\_unix::IWindowImpl@{m::xcb\_unix::IWindowImpl}}
+\doxysubsubsection{\texorpdfstring{link\_inputManager()}{link\_inputManager()}}
+{\footnotesize\ttfamily virtual void m\+::xcb\+\_\+unix\+::\+IWindow\+Impl\+::link\+\_\+input\+Manager (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classm_1_1input_1_1_input_manager}{input\+::\+Input\+Manager}} $\ast$}]{a\+\_\+input\+Manager }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_window_impl_a24a320d91232589df01289fee0eace4e}\label{classm_1_1xcb__unix_1_1_i_window_impl_a24a320d91232589df01289fee0eace4e}} 
+\index{m::xcb\_unix::IWindowImpl@{m::xcb\_unix::IWindowImpl}!set\_asMainWindow@{set\_asMainWindow}}
+\index{set\_asMainWindow@{set\_asMainWindow}!m::xcb\_unix::IWindowImpl@{m::xcb\_unix::IWindowImpl}}
+\doxysubsubsection{\texorpdfstring{set\_asMainWindow()}{set\_asMainWindow()}}
+{\footnotesize\ttfamily void m\+::xcb\+\_\+unix\+::\+IWindow\+Impl\+::set\+\_\+as\+Main\+Window (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_window_impl_a184a34a1525f7f9d3b783a17929fac0a}\label{classm_1_1xcb__unix_1_1_i_window_impl_a184a34a1525f7f9d3b783a17929fac0a}} 
+\index{m::xcb\_unix::IWindowImpl@{m::xcb\_unix::IWindowImpl}!set\_fullScreen@{set\_fullScreen}}
+\index{set\_fullScreen@{set\_fullScreen}!m::xcb\_unix::IWindowImpl@{m::xcb\_unix::IWindowImpl}}
+\doxysubsubsection{\texorpdfstring{set\_fullScreen()}{set\_fullScreen()}}
+{\footnotesize\ttfamily void m\+::xcb\+\_\+unix\+::\+IWindow\+Impl\+::set\+\_\+full\+Screen (\begin{DoxyParamCaption}\item[{Bool}]{a\+\_\+fullscreen }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_window_impl_a3f78ec3aa32b8ed3819cde30b1dc8335}\label{classm_1_1xcb__unix_1_1_i_window_impl_a3f78ec3aa32b8ed3819cde30b1dc8335}} 
+\index{m::xcb\_unix::IWindowImpl@{m::xcb\_unix::IWindowImpl}!set\_size@{set\_size}}
+\index{set\_size@{set\_size}!m::xcb\_unix::IWindowImpl@{m::xcb\_unix::IWindowImpl}}
+\doxysubsubsection{\texorpdfstring{set\_size()}{set\_size()}}
+{\footnotesize\ttfamily virtual void m\+::xcb\+\_\+unix\+::\+IWindow\+Impl\+::set\+\_\+size (\begin{DoxyParamCaption}\item[{UInt}]{a\+\_\+width,  }\item[{UInt}]{a\+\_\+height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_window_impl_aed30ce4c065a6c7226094412ab87c690}\label{classm_1_1xcb__unix_1_1_i_window_impl_aed30ce4c065a6c7226094412ab87c690}} 
+\index{m::xcb\_unix::IWindowImpl@{m::xcb\_unix::IWindowImpl}!toggle\_fullScreen@{toggle\_fullScreen}}
+\index{toggle\_fullScreen@{toggle\_fullScreen}!m::xcb\_unix::IWindowImpl@{m::xcb\_unix::IWindowImpl}}
+\doxysubsubsection{\texorpdfstring{toggle\_fullScreen()}{toggle\_fullScreen()}}
+{\footnotesize\ttfamily void m\+::xcb\+\_\+unix\+::\+IWindow\+Impl\+::toggle\+\_\+full\+Screen (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Graphics/\+Unix/Windows\+Impl\+XCB.\+hpp\item 
+Mesum\+Graphics/\+Unix/Windows\+Impl\+XCB.\+cpp\end{DoxyCompactItemize}

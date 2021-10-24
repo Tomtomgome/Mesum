@@ -1,0 +1,70 @@
+\hypertarget{_render_task3d_render_8h_source}{}\doxysection{Render\+Task3d\+Render.\+h}
+\label{_render_task3d_render_8h_source}\index{MesumGraphics/RenderTasks/RenderTask3dRender.h@{MesumGraphics/RenderTasks/RenderTask3dRender.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_RenderTask3DRender}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_RenderTask3DRender}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <MesumGraphics/RenderTask.hpp>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <MesumGraphics/Renderer.hpp>}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <RenderTasks/RenderTask2DRender.hpp>} \textcolor{comment}{// temp}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <MesumCore/Kernel/MathTypes.hpp>}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifdef M\_DX12\_RENDERER}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include <MesumGraphics/DX12Renderer/DX12Context.hpp>}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_DX12\_RENDERER}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{namespace }m::render}
+\DoxyCodeLine{17 \{}
+\DoxyCodeLine{18 \textcolor{keyword}{using} uploadBuffers =}
+\DoxyCodeLine{19     Dx12BufferBase<BasicVertex, U16>[dx12::DX12Surface::scm\_numFrames];}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{22 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{23 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{24 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_task_data3d_render}{TaskData3dRender}} : \textcolor{keyword}{public} \mbox{\hyperlink{structm_1_1render_1_1_task_data}{TaskData}}}
+\DoxyCodeLine{25 \{}
+\DoxyCodeLine{26     \mbox{\hyperlink{structm_1_1render_1_1_data_mesh_buffer}{DataMeshBuffer<BasicVertex, U16>}}*   m\_pMeshBuffer;}
+\DoxyCodeLine{27     ISurface::HdlPtr                    m\_hdlOutput;}
+\DoxyCodeLine{28     DirectX::XMMATRIX*                  m\_matrix;}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30     mIfDx12Enabled(\mbox{\hyperlink{structm_1_1render_1_1_task}{Task}}* getNew\_dx12Implementation(\mbox{\hyperlink{structm_1_1render_1_1_task_data}{TaskData}}* a\_data) \textcolor{keyword}{override});}
+\DoxyCodeLine{31 \};}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{34 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{35 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{36 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_task3d_render}{Task3dRender}} : \textcolor{keyword}{public} \mbox{\hyperlink{structm_1_1render_1_1_task}{Task}}}
+\DoxyCodeLine{37 \{}
+\DoxyCodeLine{38     \textcolor{keyword}{explicit} \mbox{\hyperlink{structm_1_1render_1_1_task3d_render}{Task3dRender}}(\mbox{\hyperlink{structm_1_1render_1_1_task_data3d_render}{TaskData3dRender}}* a\_data);}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40     \mbox{\hyperlink{structm_1_1render_1_1_task_data3d_render}{TaskData3dRender}} m\_taskData;}
+\DoxyCodeLine{41 \};}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{44 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{45 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{46 mIfDx12Enabled(\textcolor{keyword}{struct} Dx12Task3dRender : \textcolor{keyword}{public} \mbox{\hyperlink{structm_1_1render_1_1_task3d_render}{Task3dRender}}}
+\DoxyCodeLine{47 \{}
+\DoxyCodeLine{48     \textcolor{keyword}{explicit} Dx12Task3dRender(\mbox{\hyperlink{structm_1_1render_1_1_task_data3d_render}{TaskData3dRender}}* a\_data);}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50     \textcolor{keywordtype}{void} prepare() \textcolor{keyword}{override};}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52     \textcolor{keywordtype}{void} execute() \textcolor{keyword}{const override};}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 \textcolor{keyword}{private}:}
+\DoxyCodeLine{55     UInt          m\_i = 0;}
+\DoxyCodeLine{56     uploadBuffers m\_buffers;}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58     dx12::ComPtr<ID3D12RootSignature> m\_rootSignature = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{59     dx12::ComPtr<ID3D12PipelineState> m\_pso           = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{60 \};)}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 \}  \textcolor{comment}{// namespace m::render}}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_RenderTask3DRender}}
+
+\end{DoxyCode}

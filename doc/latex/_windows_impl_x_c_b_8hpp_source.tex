@@ -1,0 +1,80 @@
+\hypertarget{_windows_impl_x_c_b_8hpp_source}{}\doxysection{Windows\+Impl\+XCB.\+hpp}
+\label{_windows_impl_x_c_b_8hpp_source}\index{MesumGraphics/Unix/WindowsImplXCB.hpp@{MesumGraphics/Unix/WindowsImplXCB.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_WINDOWSIMPLXCB}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_WINDOWSIMPLXCB}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <MesumCore/Kernel/Types.hpp>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <MesumGraphics/CrossRenderer.hpp>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <MesumGraphics/Windows.hpp>}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{keyword}{namespace }m}
+\DoxyCodeLine{10 \{}
+\DoxyCodeLine{11 \textcolor{keyword}{namespace }xcb\_unix}
+\DoxyCodeLine{12 \{}
+\DoxyCodeLine{13 \textcolor{keyword}{class }XCBContext;}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_window_impl}{IWindowImpl}} : \textcolor{keyword}{public} \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{windows::IWindow}}}
+\DoxyCodeLine{16 \{}
+\DoxyCodeLine{17    \textcolor{keyword}{public}:}
+\DoxyCodeLine{18     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} init() \textcolor{keyword}{override};}
+\DoxyCodeLine{19     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} render() \textcolor{keyword}{override};}
+\DoxyCodeLine{20     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} destroy() \textcolor{keyword}{override};}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} link\_inputManager(\mbox{\hyperlink{classm_1_1input_1_1_input_manager}{input::InputManager}}* a\_inputManager)}
+\DoxyCodeLine{23     \{}
+\DoxyCodeLine{24         m\_linkedInputManager = a\_inputManager;}
+\DoxyCodeLine{25     \};}
+\DoxyCodeLine{26     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_size(UInt a\_width, UInt a\_height)}
+\DoxyCodeLine{27     \{}
+\DoxyCodeLine{28         m\_clientWidth  = a\_width;}
+\DoxyCodeLine{29         m\_clientHeight = a\_height;}
+\DoxyCodeLine{30     \}}
+\DoxyCodeLine{31     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_windowName(std::wstring a\_name) \{ m\_windowName = a\_name; \}}
+\DoxyCodeLine{32     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_renderer(\mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{render::IRenderer}}* a\_renderer)}
+\DoxyCodeLine{33     \{}
+\DoxyCodeLine{34         m\_parentRenderer = a\_renderer;}
+\DoxyCodeLine{35     \}}
+\DoxyCodeLine{36     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_asMainWindow();}
+\DoxyCodeLine{37     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_asImGuiWindow(Bool a\_supportMultiViewports);}
+\DoxyCodeLine{38     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_fullScreen(Bool a\_fullscreen);}
+\DoxyCodeLine{39     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} toggle\_fullScreen();}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41     \textcolor{keywordtype}{void} set\_winContext(\mbox{\hyperlink{structm_1_1xcb__unix_1_1_x_c_b_context}{XCBContext}} \textcolor{keyword}{const}\& a\_xcbContext)}
+\DoxyCodeLine{42     \{}
+\DoxyCodeLine{43         m\_parentContext = \&a\_xcbContext;}
+\DoxyCodeLine{44     \}}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46     Bool is\_flaggedToBeClosed() \{ \textcolor{keywordflow}{return} m\_flagToBeClosed; \}}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48     \textcolor{keywordtype}{void} callback\_dearImGuiNewFrame();}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50    \textcolor{keyword}{private}:}
+\DoxyCodeLine{51     \mbox{\hyperlink{classm_1_1input_1_1_input_manager}{input::InputManager}}* m\_linkedInputManager;}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53     \textcolor{comment}{// By default, use windowed mode.}}
+\DoxyCodeLine{54     \textcolor{comment}{// Can be toggled with F11}}
+\DoxyCodeLine{55     Bool m\_fullscreen     = \textcolor{keyword}{false};}
+\DoxyCodeLine{56     Bool m\_flagToBeClosed = \textcolor{keyword}{false};}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58     std::wstring m\_windowName;}
+\DoxyCodeLine{59     Bool         m\_isMainWindow  = \textcolor{keyword}{false};}
+\DoxyCodeLine{60     Bool         m\_isImGuiWindow = \textcolor{keyword}{false};}
+\DoxyCodeLine{61     U32          m\_clientWidth   = 1280;}
+\DoxyCodeLine{62     U32          m\_clientHeight  = 720;}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64     \textcolor{comment}{// Window rectangle (used to toggle fullscreen state).}}
+\DoxyCodeLine{65     \mbox{\hyperlink{structm_1_1math_1_1_vec}{m::math::UIVec4}} m\_windowRect;}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67     \mbox{\hyperlink{structm_1_1xcb__unix_1_1_x_c_b_context}{XCBContext}} \textcolor{keyword}{const}* m\_parentContext  = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{68     \mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{render::IRenderer}}*  m\_parentRenderer = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{69     \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{render::ISurface}}*   m\_renderSurface  = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{70 \};}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 \}  \textcolor{comment}{// namespace xcb\_unix}}
+\DoxyCodeLine{73 \}  \textcolor{comment}{// namespace m}}
+\DoxyCodeLine{74 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_WINDOWSIMPLXCB}}
+
+\end{DoxyCode}
