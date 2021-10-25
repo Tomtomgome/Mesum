@@ -17,7 +17,7 @@ Task* TaskData3dRender::getNew_dx12Implementation(TaskData* a_data)
 //-----------------------------------------------------------------------------
 Task3dRender::Task3dRender(TaskData3dRender* a_data)
 {
-    mAssert(a_data != nullptr);
+    mSoftAssert(a_data != nullptr);
     m_taskData = *a_data;
 }
 

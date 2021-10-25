@@ -217,7 +217,7 @@ HWND WIN32Context::create_window(const WideChar* a_className,
                         nullptr       // Additional application data
         );
 
-    mHardAssert(hwnd != NULL);
+    mAssert(hwnd != NULL);
 
     return hwnd;
 }

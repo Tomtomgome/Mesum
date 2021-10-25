@@ -19,7 +19,7 @@ namespace m::render
 //-----------------------------------------------------------------------------
 TaskDrawDearImGui::TaskDrawDearImGui(TaskDataDrawDearImGui* a_data)
 {
-    mAssert(a_data != nullptr);
+    mSoftAssert(a_data != nullptr);
     m_taskData = *a_data;
 }
 

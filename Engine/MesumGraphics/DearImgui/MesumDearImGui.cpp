@@ -5,7 +5,7 @@ namespace m::dearImGui
 {
 void init(windows::IWindow* a_mainWindow)
 {
-    mAssert(a_mainWindow != nullptr);
+    mSoftAssert(a_mainWindow != nullptr);
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();

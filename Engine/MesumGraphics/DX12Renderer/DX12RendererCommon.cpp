@@ -403,7 +403,7 @@ HANDLE create_eventHandle()
     HANDLE fenceEvent;
 
     fenceEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
-    mHardAssert(fenceEvent != NULL);
+    mAssert(fenceEvent != NULL);
 
     return fenceEvent;
 }

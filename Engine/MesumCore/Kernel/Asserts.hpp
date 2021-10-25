@@ -5,29 +5,40 @@
 #include <Logger.hpp>
 #include <MesumCore/Common.hpp>
 #include <Types.hpp>
-
 #include <csignal>
 
+/*! \addtogroup Core
+ *@{
+ */
 // PLATFORM_SPECIFIC
 #if defined(SIGTRAP)
+//! Stop the program
 #define mInterrupt raise(SIGTRAP)
 #elif defined _MSC_VER
+//! Stop the program
 #define mInterrupt __debugbreak();
 #else
+//! Stop the program
 #define mInterrupt
 #endif
 
+//! Indicates that this code path is not yet implementer but should
 #define mNotImplemented mInterrupt
 
 namespace m
 {
 extern MesumCoreApi const logging::ChannelID ASSERT_ID;
 
-void manage_simple_assert(Bool a_condition, const Int a_lineNumber,
-                          const Char* a_file);
-
-void manage_blocking_assert(Bool a_condition, const Int a_lineNumber,
-                            const Char* a_file);
+//! Managing asserts
+/*!
+ * \param a_condition The condition to check
+ * \param a_lineNumber Indicates the line of code where the assert failed
+ * \param a_file Indicates the file where the assert failed
+ * \param a_message The message to log in the terminal
+ * \param a_interrupt If the assert blocks the execution
+ */
+void manage_assert(Bool a_condition, Int a_lineNumber, const Char* a_file,
+                   const Char* a_message, Bool a_interrupt = true);
 
 };  // namespace m
 
@@ -37,13 +48,32 @@ void manage_blocking_assert(Bool a_condition, const Int a_lineNumber,
 
 // PLATFORM_SPECIFIC
 #ifdef M_RELEASE
+#define mSoftAssert(condition)
 #define mAssert(condition)
-#define mHardAssert(condition)
 #else
-#define mAssert(condition) \
-    m::manage_simple_assert(condition, __LINE__, __FILE__);
-#define mHardAssert(condition) \
-    m::manage_blocking_assert(condition, __LINE__, __FILE__);
+//! A soft assert is non blocking
+/*!
+ * \param a_condition The condition to check
+ */
+#define mSoftAssert(condition)                      \
+    m::manage_assert(condition, __LINE__, __FILE__, \
+                     "Triggered soft assertion from file : ", false);
+//! A basic assert interrupting execution
+/*!
+ * \param a_condition The condition to check
+ */
+#define mAssert(condition)                          \
+    m::manage_assert(condition, __LINE__, __FILE__, \
+                     "Triggered soft assertion from file : ");
+
+//! Blocking assert reserved to check function preconditions
+/*!
+ * \param a_condition The condition to check
+ */
+#define mExpect(condition)                          \
+    m::manage_assert(condition, __LINE__, __FILE__, \
+                     "Precondition not matched : ");
 #endif
 
+/*! @} */
 #endif  // M_ASSERTS

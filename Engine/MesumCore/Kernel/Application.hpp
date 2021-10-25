@@ -16,13 +16,13 @@ class IBasicApplication
 {
    public:
     void setup(void* a_data) { m_appData = a_data; }
-    void set_cmdLineData(CmdLine const& a_cmdLine) { m_cmdLine = &a_cmdLine; }
-    CmdLine const& get_cmdLine() { return *m_cmdLine; }
+    void set_cmdLineData(mCmdLine const& a_cmdLine) { m_cmdLine = &a_cmdLine; }
+    mCmdLine const& get_cmdLine() { return *m_cmdLine; }
 
     virtual void launch() = 0;
 
    protected:
-    CmdLine const* m_cmdLine;
+    mCmdLine const* m_cmdLine;
     void*          m_appData;
 };
 

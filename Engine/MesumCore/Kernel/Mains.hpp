@@ -13,7 +13,7 @@
 namespace m
 {
 template <typename AppClass>
-void internal_run(CmdLine const& a_cmdLine, void* a_data)
+void internal_run(mCmdLine const& a_cmdLine, void* a_data)
 {
     AppClass app;
     app.set_cmdLineData(a_cmdLine);
@@ -26,7 +26,7 @@ void internal_run(CmdLine const& a_cmdLine, void* a_data)
     int main(m::Int argc, m::Char** argv)       \
     {                                                \
         m::BasicLaunchData data;                     \
-        m::CmdLine         cmdLine;                  \
+        m::mCmdLine        cmdLine;                  \
         cmdLine.parse_cmdLineAguments(argc, argv);   \
         m::internal_run<AppClass>(cmdLine, &data);   \
         return 0;                                    \

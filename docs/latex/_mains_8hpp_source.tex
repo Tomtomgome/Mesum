@@ -17,7 +17,7 @@
 \DoxyCodeLine{13 \textcolor{keyword}{namespace }m}
 \DoxyCodeLine{14 \{}
 \DoxyCodeLine{15 \textcolor{keyword}{template} <\textcolor{keyword}{typename} AppClass>}
-\DoxyCodeLine{16 \textcolor{keywordtype}{void} internal\_run(CmdLine \textcolor{keyword}{const}\& a\_cmdLine, \textcolor{keywordtype}{void}* a\_data)}
+\DoxyCodeLine{16 \textcolor{keywordtype}{void} internal\_run(mCmdLine \textcolor{keyword}{const}\& a\_cmdLine, \textcolor{keywordtype}{void}* a\_data)}
 \DoxyCodeLine{17 \{}
 \DoxyCodeLine{18     AppClass app;}
 \DoxyCodeLine{19     app.set\_cmdLineData(a\_cmdLine);}
@@ -30,7 +30,7 @@
 \DoxyCodeLine{26 \textcolor{preprocessor}{    int main(m::Int argc, m::Char** argv)       \(\backslash\)}}
 \DoxyCodeLine{27 \textcolor{preprocessor}{    \{                                                \(\backslash\)}}
 \DoxyCodeLine{28 \textcolor{preprocessor}{        m::BasicLaunchData data;                     \(\backslash\)}}
-\DoxyCodeLine{29 \textcolor{preprocessor}{        m::CmdLine         cmdLine;                  \(\backslash\)}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{        m::mCmdLine        cmdLine;                  \(\backslash\)}}
 \DoxyCodeLine{30 \textcolor{preprocessor}{        cmdLine.parse\_cmdLineAguments(argc, argv);   \(\backslash\)}}
 \DoxyCodeLine{31 \textcolor{preprocessor}{        m::internal\_run<AppClass>(cmdLine, \&data);   \(\backslash\)}}
 \DoxyCodeLine{32 \textcolor{preprocessor}{        return 0;                                    \(\backslash\)}}

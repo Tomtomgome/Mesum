@@ -61,7 +61,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
     {
         m::crossPlatform::IWindowedApplication::init();
 
-        m::CmdLine const& cmdLine = get_cmdLine();
+        m::mCmdLine const& cmdLine = get_cmdLine();
         m::UInt           width   = 1280;
         m::UInt           height  = 720;
         if (!cmdLine.get_parameter("-w", width))
@@ -163,7 +163,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         m_inputManager.processAndUpdate_States();
 
-        m::CmdLine const& cmdLine = get_cmdLine();
+        m::mCmdLine const& cmdLine = get_cmdLine();
         if (cmdLine.get_arg("-NoLog"))
         {
             mLOG_DISABLE(m_CUBEAPP_ID);

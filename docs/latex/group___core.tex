@@ -1,0 +1,102 @@
+\hypertarget{group___core}{}\doxysection{Core}
+\label{group___core}\index{Core@{Core}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structm_1_1m_cmd_line}{m\+::m\+Cmd\+Line}}
+\begin{DoxyCompactList}\small\item\em Structure holding a list of command line arguments. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structm_1_1_basic_launch_data}{m\+::\+Basic\+Launch\+Data}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{group___core_ga5123b201bc1b15852430f15fd0a495d6}\label{group___core_ga5123b201bc1b15852430f15fd0a495d6}} 
+\#define {\bfseries m\+Interrupt}
+\begin{DoxyCompactList}\small\item\em Stop the program. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_ga546b07714c544247ba947aab1bdec5b8}\label{group___core_ga546b07714c544247ba947aab1bdec5b8}} 
+\#define {\bfseries m\+Not\+Implemented}~\mbox{\hyperlink{group___core_ga5123b201bc1b15852430f15fd0a495d6}{m\+Interrupt}}
+\begin{DoxyCompactList}\small\item\em Indicates that this code path is not yet implementer but should. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_ga8f37c3ef5ebeb9372484022797e78b67}\label{group___core_ga8f37c3ef5ebeb9372484022797e78b67}} 
+\#define {\bfseries WIDE2}(x)~L\#\#x
+\item 
+\mbox{\Hypertarget{group___core_ga4f7fa22a26cbb6cb6082a4f849501c25}\label{group___core_ga4f7fa22a26cbb6cb6082a4f849501c25}} 
+\#define {\bfseries WIDE1}(x)~WIDE2(x)
+\item 
+\mbox{\Hypertarget{group___core_gaa46368d8dc5683fc05fde329f4c69532}\label{group___core_gaa46368d8dc5683fc05fde329f4c69532}} 
+\#define {\bfseries WFILE}~WIDE1(\+\_\+\+\_\+\+FILE\+\_\+\+\_\+)
+\item 
+\#define \mbox{\hyperlink{group___core_ga130ddba9a4e2dc6e95a6797c0f448243}{m\+Soft\+Assert}}(condition)
+\begin{DoxyCompactList}\small\item\em A soft assert is non blocking. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group___core_ga5cbca1ff1eb730a016c7c63f94afa154}{m\+Assert}}(condition)
+\begin{DoxyCompactList}\small\item\em A basic assert interrupting execution. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group___core_ga375da2becf883550c0e1293307b02c9a}{m\+Expect}}(condition)
+\begin{DoxyCompactList}\small\item\em Blocking assert reserved to check function preconditions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{group___core_ga5cbca1ff1eb730a016c7c63f94afa154}\label{group___core_ga5cbca1ff1eb730a016c7c63f94afa154}} 
+\index{Core@{Core}!mAssert@{mAssert}}
+\index{mAssert@{mAssert}!Core@{Core}}
+\doxysubsubsection{\texorpdfstring{mAssert}{mAssert}}
+{\footnotesize\ttfamily \#define m\+Assert(\begin{DoxyParamCaption}\item[{}]{condition }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{    m::manage\_assert(condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}
+\DoxyCodeLine{                     \textcolor{stringliteral}{"{}Triggered soft assertion from file : "{}});}
+
+\end{DoxyCode}
+
+
+A basic assert interrupting execution. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+condition} & The condition to check \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group___core_ga375da2becf883550c0e1293307b02c9a}\label{group___core_ga375da2becf883550c0e1293307b02c9a}} 
+\index{Core@{Core}!mExpect@{mExpect}}
+\index{mExpect@{mExpect}!Core@{Core}}
+\doxysubsubsection{\texorpdfstring{mExpect}{mExpect}}
+{\footnotesize\ttfamily \#define m\+Expect(\begin{DoxyParamCaption}\item[{}]{condition }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{    m::manage\_assert(condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}
+\DoxyCodeLine{                     \textcolor{stringliteral}{"{}Precondition not matched : "{}});}
+
+\end{DoxyCode}
+
+
+Blocking assert reserved to check function preconditions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+condition} & The condition to check \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group___core_ga130ddba9a4e2dc6e95a6797c0f448243}\label{group___core_ga130ddba9a4e2dc6e95a6797c0f448243}} 
+\index{Core@{Core}!mSoftAssert@{mSoftAssert}}
+\index{mSoftAssert@{mSoftAssert}!Core@{Core}}
+\doxysubsubsection{\texorpdfstring{mSoftAssert}{mSoftAssert}}
+{\footnotesize\ttfamily \#define m\+Soft\+Assert(\begin{DoxyParamCaption}\item[{}]{condition }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{    m::manage\_assert(condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}
+\DoxyCodeLine{                     \textcolor{stringliteral}{"{}Triggered soft assertion from file : "{}}, \textcolor{keyword}{false});}
+
+\end{DoxyCode}
+
+
+A soft assert is non blocking. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+condition} & The condition to check \\
+\hline
+\end{DoxyParams}

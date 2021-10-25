@@ -37,7 +37,7 @@ class Callback
 
     rType call(Args... a_args)
     {
-        mHardAssert(Bool(m_func));
+        mAssert(Bool(m_func));
         return m_func(a_args...);
     }
 

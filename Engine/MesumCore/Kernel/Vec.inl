@@ -32,13 +32,13 @@ namespace m::math
 
     template<typename T, UInt Size>
     T& Vec<T, Size>::operator[](const UInt a_index){
-        mAssert(a_index < Size);
+        mSoftAssert(a_index < Size);
         return VecData<T, Size>::data[a_index];
     }
 
     template<typename T, UInt Size>
     T Vec<T, Size>::operator[](const UInt a_index) const{
-        mAssert(a_index < Size);
+        mSoftAssert(a_index < Size);
         return VecData<T, Size>::data[a_index];
     }
 

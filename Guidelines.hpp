@@ -2,6 +2,8 @@
 
 #define M_ARE_IN_SCREAMING_SNAKE_CASE 5
 
+#defined mFunctions_inMacros(a_arg) should_lookLikeThis(a_arg)
+
 namespace m::guidelines  // namespaces are lower case, one word only
 {
 //*****************************************************************************

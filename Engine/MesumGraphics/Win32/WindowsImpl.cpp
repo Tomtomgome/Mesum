@@ -113,7 +113,7 @@ void IWindowImpl::destroy()
 render::ISurface::HdlPtr IWindowImpl::link_renderer(
     render::IRenderer* a_renderer)
 {
-    mHardAssert(a_renderer != nullptr);
+    mAssert(a_renderer != nullptr);
     render::ISurface::HdlPtr surfaceHandle =
         std::make_shared<render::ISurface::Handle>();
     surfaceHandle->surface                   = a_renderer->get_newSurface();
@@ -144,8 +144,8 @@ void IWindowImpl::set_asMainWindow()
     static m::Bool s_mainWindowIsDefined = false;
 
     // There can only be one main window
-    mHardAssert(s_mainWindowIsDefined == false);
-    mHardAssert(m_isMainWindow == false);
+    mAssert(s_mainWindowIsDefined == false);
+    mAssert(m_isMainWindow == false);
     s_mainWindowIsDefined = true;
     m_isMainWindow        = true;
 }
@@ -156,7 +156,7 @@ void IWindowImpl::set_asMainWindow()
 void IWindowImpl::set_asImGuiWindow()
 {
     // There can only be one ImGui window, and it's the main one
-    mHardAssert(m_isMainWindow == true);
+    mAssert(m_isMainWindow == true);
 
     ImGui_ImplWin32_Init(m_hwnd);
 

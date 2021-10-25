@@ -78,7 +78,7 @@ struct WindowedLaunchData
     int main(m::Int argc, m::Char** argv)          \
     {                                              \
         m::WindowedLaunchData data;                \
-        m::CmdLine            cmdLine;             \
+        m::mCmdLine            cmdLine;             \
         cmdLine.parse_cmdLineAguments(argc, argv); \
         m::internal_run<AppClass>(cmdLine, &data); \
         return 0;                                  \

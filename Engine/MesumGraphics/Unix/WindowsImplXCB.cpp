@@ -128,8 +128,8 @@ void IWindowImpl::set_asMainWindow()
     static m::Bool s_mainWindowIsDefined = false;
 
     //There can only be one main window
-    mHardAssert(s_mainWindowIsDefined == false);
-    mHardAssert(m_isMainWindow == false);
+    mAssert(s_mainWindowIsDefined == false);
+    mAssert(m_isMainWindow == false);
     s_mainWindowIsDefined = true;
     m_isMainWindow = true;
 }
@@ -137,8 +137,8 @@ void IWindowImpl::set_asMainWindow()
 void IWindowImpl::set_asImGuiWindow(Bool a_supportMultiViewports)
 {
     // There can only be one ImGui window, and it's the main one
-    mHardAssert(m_isMainWindow == true);
-    mHardAssert(m_isImGuiWindow == false);
+    mAssert(m_isMainWindow == true);
+    mAssert(m_isImGuiWindow == false);
     m_isImGuiWindow = true;
 
     IMGUI_CHECKVERSION();

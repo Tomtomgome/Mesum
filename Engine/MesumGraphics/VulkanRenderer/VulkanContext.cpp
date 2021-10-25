@@ -174,7 +174,7 @@ VkShaderModule VulkanContext::create_shaderModule(
     std::vector<char> binary;
     files::open_fileToBinary(a_shaderPath, binary);
 
-    mHardAssert(a_shaderPath.size() > 0);
+    mAssert(a_shaderPath.size() > 0);
 
     VkShaderModuleCreateInfo createInfo{};
     createInfo.sType    = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;

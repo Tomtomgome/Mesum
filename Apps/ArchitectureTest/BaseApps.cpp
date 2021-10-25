@@ -8,8 +8,8 @@ class TestBasicApp : public m::application::IBasicApplication
 public:
     virtual void launch()
     {
-        m::CmdLine const& cmdLine = get_cmdLine();
-        mAssert(false);
+        m::mCmdLine const& cmdLine = get_cmdLine();
+        mSoftAssert(false);
         if (cmdLine.get_arg("-N"))
         {
             mLOG("Not Hello world !");

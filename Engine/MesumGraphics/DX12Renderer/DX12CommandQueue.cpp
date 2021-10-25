@@ -29,7 +29,7 @@ void DX12CommandQueue::init(ComPtr<ID3D12Device2> a_device,
     mD3D12DebugNamed(m_d3d12Fence, "CommandQueue Fence");
 
     m_fenceEvent = ::CreateEvent(NULL, FALSE, FALSE, NULL);
-    mAssert(m_fenceEvent);
+    mSoftAssert(m_fenceEvent);
 }
 
 void DX12CommandQueue::destroy()

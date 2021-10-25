@@ -2,19 +2,25 @@
 #include <Logger.hpp>
 
 #ifdef M_WIN32
-#include <windows.h>
 #include <stringapiset.h>
+#include <windows.h>
 #endif
 
 namespace m
 {
 MesumCoreApi logging::Logger<m::logging::StdcoutLogPolicy> log_inst("");
 
-void CmdLine::parse_cmdLineAguments(Int argc, Char** argv)
+//*****************************************************************************
+//*****************************************************************************
+//*****************************************************************************
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void mCmdLine::parse_cmdLineAguments(Int a_argc, Char** a_argv)
 {
-    for (Int i = 0; i < argc; ++i)
+    for (Int i = 0; i < a_argc; ++i)
     {
-        std::string arg(argv[i]);
+        std::string arg(a_argv[i]);
         if (std::find(m_listArgs.begin(), m_listArgs.end(), arg) ==
             m_listArgs.end())
         {
@@ -22,7 +28,14 @@ void CmdLine::parse_cmdLineAguments(Int argc, Char** argv)
         }
     }
 }
+
 #if defined M_WIN32
+//*****************************************************************************
+//*****************************************************************************
+//*****************************************************************************
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
 std::wstring convert_string(const std::string& a_as)
 {
     // deal with trivial case of empty string

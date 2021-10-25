@@ -62,7 +62,7 @@ void DX12Surface::init_win32(render::Win32SurfaceInitData& a_data)
 void DX12Surface::init_x11(render::X11SurfaceInitData& a_data)
 {
     // X11 not supported with DX12
-    mHardAssert(false);
+    mAssert(false);
 }
 
 //-----------------------------------------------------------------------------

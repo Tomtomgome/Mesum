@@ -14,7 +14,7 @@ math::RandomGenerator g_randomGenerator;
 void add_square(render::DataMeshBuffer<render::BasicVertex, U16>* a_meshBuffer,
                 math::Vec2 const                                  a_position)
 {
-    mAssert(a_meshBuffer != nullptr);
+    mSoftAssert(a_meshBuffer != nullptr);
 
     UInt                index = a_meshBuffer->m_vertices.size();
     Float               size  = 0.01;
