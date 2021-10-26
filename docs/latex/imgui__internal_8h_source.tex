@@ -1876,7 +1876,7 @@
 \DoxyCodeLine{1872 }
 \DoxyCodeLine{1873 \textcolor{comment}{// Transient per-\/window data, reset at the beginning of the frame. This used to be called ImGuiDrawContext, hence the DC variable name in ImGuiWindow.}}
 \DoxyCodeLine{1874 \textcolor{comment}{// (That's theory, in practice the delimitation between ImGuiWindow and ImGuiWindowTempData is quite tenuous and could be reconsidered..)}}
-\DoxyCodeLine{1875 \textcolor{comment}{// (This doesn't need a constructor because we zero-\/clear it as part of ImGuiWindow and all frame-\/temporary data are setup on Begin)}}
+\DoxyCodeLine{1875 \textcolor{comment}{// (This doesn't need a constructor because we zero-\/clear it as part of ImGuiWindow and all frame-\/temporary data are set\_appData on Begin)}}
 \DoxyCodeLine{1876 \textcolor{keyword}{struct }IMGUI\_API \mbox{\hyperlink{struct_im_gui_window_temp_data}{ImGuiWindowTempData}}}
 \DoxyCodeLine{1877 \{}
 \DoxyCodeLine{1878     \textcolor{comment}{// Layout}}
@@ -1998,7 +1998,7 @@
 \DoxyCodeLine{1994 }
 \DoxyCodeLine{1995     \textcolor{comment}{// The best way to understand what those rectangles are is to use the 'Metrics-\/>Tools-\/>Show Windows Rectangles' viewer.}}
 \DoxyCodeLine{1996     \textcolor{comment}{// The main 'OuterRect', omitted as a field, is window-\/>Rect().}}
-\DoxyCodeLine{1997     \mbox{\hyperlink{struct_im_rect}{ImRect}}                  OuterRectClipped;                   \textcolor{comment}{// == Window-\/>Rect() just after setup in Begin(). == window-\/>Rect() for root window.}}
+\DoxyCodeLine{1997     \mbox{\hyperlink{struct_im_rect}{ImRect}}                  OuterRectClipped;                   \textcolor{comment}{// == Window-\/>Rect() just after set\_appData in Begin(). == window-\/>Rect() for root window.}}
 \DoxyCodeLine{1998     \mbox{\hyperlink{struct_im_rect}{ImRect}}                  InnerRect;                          \textcolor{comment}{// Inner rectangle (omit title bar, menu bar, scroll bar)}}
 \DoxyCodeLine{1999     \mbox{\hyperlink{struct_im_rect}{ImRect}}                  InnerClipRect;                      \textcolor{comment}{// == InnerRect shrunk by WindowPadding*0.5f on each side, clipped within viewport or parent clip rect.}}
 \DoxyCodeLine{2000     \mbox{\hyperlink{struct_im_rect}{ImRect}}                  WorkRect;                           \textcolor{comment}{// Initially covers the whole scrolling region. Reduced by containers e.g columns/tables when active. Shrunk by WindowPadding*1.0f on each side. This is meant to replace ContentRegionRect over time (from 1.71+ onward).}}
@@ -2624,7 +2624,7 @@
 \DoxyCodeLine{2620 }
 \DoxyCodeLine{2621     \textcolor{comment}{// Internal Columns API (this is not exposed because we will encourage transitioning to the Tables API)}}
 \DoxyCodeLine{2622     IMGUI\_API \textcolor{keywordtype}{void}          SetWindowClipRectBeforeSetChannel(\mbox{\hyperlink{struct_im_gui_window}{ImGuiWindow}}* window, \textcolor{keyword}{const} \mbox{\hyperlink{struct_im_rect}{ImRect}}\& clip\_rect);}
-\DoxyCodeLine{2623     IMGUI\_API \textcolor{keywordtype}{void}          BeginColumns(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* str\_id, \textcolor{keywordtype}{int} count, ImGuiOldColumnFlags flags = 0); \textcolor{comment}{// setup number of columns. use an identifier to distinguish multiple column sets. close with EndColumns().}}
+\DoxyCodeLine{2623     IMGUI\_API \textcolor{keywordtype}{void}          BeginColumns(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* str\_id, \textcolor{keywordtype}{int} count, ImGuiOldColumnFlags flags = 0); \textcolor{comment}{// set\_appData number of columns. use an identifier to distinguish multiple column sets. close with EndColumns().}}
 \DoxyCodeLine{2624     IMGUI\_API \textcolor{keywordtype}{void}          EndColumns();                                                               \textcolor{comment}{// close columns}}
 \DoxyCodeLine{2625     IMGUI\_API \textcolor{keywordtype}{void}          PushColumnClipRect(\textcolor{keywordtype}{int} column\_index);}
 \DoxyCodeLine{2626     IMGUI\_API \textcolor{keywordtype}{void}          PushColumnsBackground();}

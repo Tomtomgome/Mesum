@@ -174,8 +174,8 @@
 boxfont setfont
 1 boundaspect scale
 (m::application::IWindowedApplicationBase) cw
-(m::application::ITimedLoopApplication) cw
-(m::application::IBasicApplication) cw
+(m::application::mITimedLoopApplication) cw
+(m::application::mIBasicApplication) cw
 (m::win32::IWindowedApplicationImpl) cw
 (m::xcb_unix::IWindowedApplicationImpl) cw
 /boxwidth boxwidth marginwidth 2 mul add def
@@ -190,8 +190,8 @@ boundx scalefactor div boundy scalefactor div scale
 % ----- classes -----
 
  (m::application::IWindowedApplicationBase) 0.500000 1.000000 box
- (m::application::ITimedLoopApplication) 0.500000 2.000000 box
- (m::application::IBasicApplication) 0.500000 3.000000 box
+ (m::application::mITimedLoopApplication) 0.500000 2.000000 box
+ (m::application::mIBasicApplication) 0.500000 3.000000 box
  (m::win32::IWindowedApplicationImpl) 0.000000 0.000000 box
  (m::xcb_unix::IWindowedApplicationImpl) 1.000000 0.000000 box
 

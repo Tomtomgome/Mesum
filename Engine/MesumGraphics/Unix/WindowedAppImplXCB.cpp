@@ -99,11 +99,11 @@ void IWindowedApplicationImpl::render()
     }
 }
 
-void IWindowedApplicationImpl::init()
+void IWindowedApplicationImpl::init(mCmdLine const& a_cmdLine, void* a_appData)
 {
-    WindowedLaunchData& data = *(WindowedLaunchData*)m_appData;
+    WindowedLaunchData& data = *(WindowedLaunchData*)a_appData;
 
-    m_W32Context.init(data.m_hInstance);
+    m_W32Context.init(<#initializer #>, nullptr);
 
     // Windows 10 Creators update adds Per Monitor V2 DPI awareness context.
     // Using this awareness context allows the client area of the window
@@ -136,7 +136,8 @@ void IWindowedApplicationImpl::destroy()
     m_W32Context.destroy();
 }
 
-Bool IWindowedApplicationImpl::step(const Double& a_deltaTime)
+Bool IWindowedApplicationImpl::step(
+    const std::chrono::duration<long long int, std::nano>& a_deltaTime)
 {
     Bool signalKeepRunning = true;
 

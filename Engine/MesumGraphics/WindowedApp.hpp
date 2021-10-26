@@ -18,7 +18,7 @@ class IWindow;
 }
 namespace application
 {
-class IWindowedApplicationBase : public ITimedLoopApplication
+class IWindowedApplicationBase : public mITimedLoopApplication
 {
    public:
     virtual windows::IWindow* add_newWindow(std::string a_name, U32 a_width,
@@ -52,7 +52,7 @@ LPSTR* CommandLineToArgvA(LPWSTR lpWCmdLine, INT* pNumArgs);
                            m::Int nCmdShow)                                  \
     {                                                                        \
         m::WindowedLaunchData data;                                          \
-        m::CmdLine            cmdLine;                                       \
+        m::mCmdLine           cmdLine;                                       \
         m::Int                argc;                                          \
         m::Char**             argv = m::CommandLineToArgvA(pCmdLine, &argc); \
         if (argv != nullptr)                                                 \

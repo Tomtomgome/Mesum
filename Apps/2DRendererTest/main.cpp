@@ -77,9 +77,9 @@ struct BunchOfSquares
 
 class RendererTestApp : public m::crossPlatform::IWindowedApplication
 {
-    void init() override
+    void init(mCmdLine const& a_cmdLine, void* a_appData) override
     {
-        crossPlatform::IWindowedApplication::init();
+        crossPlatform::IWindowedApplication::init(a_cmdLine, a_appData);
         m_iRendererDx12   = new dx12::DX12Renderer();
         m_iRendererVulkan = new vulkan::VulkanRenderer();
         m_iRendererDx12->init();
@@ -140,14 +140,15 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         dearImGui::destroy();
     }
 
-    Bool step(const Double& a_deltaTime) override
+    Bool step(std::chrono::steady_clock::duration const& a_deltaTime) override
     {
         if (!m::crossPlatform::IWindowedApplication::step(a_deltaTime))
         {
             return false;
         }
 
-        m_bunchOfSquares.update(a_deltaTime);
+        Double deltaTime = std::chrono::duration<Double>(a_deltaTime).count();
+        m_bunchOfSquares.update(deltaTime);
 
         m_drawer2d.reset();
 
@@ -161,8 +162,8 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         ImGui::NewFrame();
         ImGui::Begin("Engine");
         {
-            ImGui::Text("frame time : %f", a_deltaTime);
-            ImGui::Text("frame FPS : %f", 1.0 / a_deltaTime);
+            ImGui::Text("frame time : %f", deltaTime);
+            ImGui::Text("frame FPS : %f", 1.0 / deltaTime);
             ImGui::Text("nbSuqares : %llu",
                         m_bunchOfSquares.m_squarePositions.size());
         }

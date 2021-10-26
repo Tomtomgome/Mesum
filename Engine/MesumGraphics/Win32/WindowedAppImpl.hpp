@@ -19,9 +19,9 @@ class IWindowedApplicationImpl : public application::IWindowedApplicationBase
         render::IRenderer const* a_renderer) const override;
 
    protected:
-    void init() override;
+    void init(mCmdLine const& a_cmdLine, void* a_appData) override;
     void destroy() override;
-    Bool step(const Double& a_deltaTime) override;
+    Bool step(std::chrono::steady_clock::duration const& a_deltaTime) override;
 
    private:
     WIN32Context                m_W32Context;

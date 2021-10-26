@@ -3,11 +3,11 @@
 #include <MesumCore/Kernel/Mains.hpp>
 #include <MesumCore/Kernel/Logger.hpp>
 
-class TestBasicApp : public m::application::IBasicApplication
+class TestBasicApp : public m::application::mIBasicApplication
 {
 public:
-    virtual void launch()
-    {
+    virtual void launch(const m::mCmdLine& a_cmdLine, void* a_appData)
+ {
         m::mCmdLine const& cmdLine = get_cmdLine();
         mSoftAssert(false);
         if (cmdLine.get_arg("-N"))
@@ -21,9 +21,10 @@ public:
     }
 };
 
-class TestLoopedApp : public m::application::ILoopApplication
+class TestLoopedApp : public m::application::mILoopApplication
 {
-    virtual void    init() { mLOG("Hello world !"); }
+    virtual void init(const m::mCmdLine& a_cmdLine, void* a_appData)
+    { mLOG("Hello world !"); }
     virtual void    destroy() { mLOG("Bye world !"); }
     virtual m::Bool step()
     {
@@ -37,15 +38,16 @@ class TestLoopedApp : public m::application::ILoopApplication
     m::Int m_MaxSteps = 1000;
 };
 
-class TestTimedLoopedApp : public m::application::ITimedLoopApplication
+class TestTimedLoopedApp : public m::application::mITimedLoopApplication
 {
-    virtual void init()
+    virtual void init(const m::mCmdLine& a_cmdLine, void* a_appData)
     {
         set_microSecondsLimit(16000);
         mLOG("Hello world !");
     }
     virtual void    destroy() { mLOG("Bye world !"); }
-    virtual m::Bool step(const m::Double& a_deltaTime)
+    virtual m::Bool step(
+        const std::chrono::duration<long long int, std::nano>& a_deltaTime)
     {
         mLOG("dt =", a_deltaTime);
         if (m_MaxSteps-- > 0)

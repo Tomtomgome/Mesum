@@ -1,5 +1,3 @@
-#ifndef M_KERNEL
-#define M_KERNEL
 #pragma once
 
 #include <Asserts.hpp>
@@ -20,7 +18,7 @@ namespace m
 //*****************************************************************************
 //! Structure holding a list of command line arguments
 /*!
- * \brief for exemple holds the line executable -w 1080 -h 720 -fullScreen
+ * \brief For exemple holds the line executable -w 1080 -h 720 -fullScreen
  *      will hold an array of strings with {-w, 1080, -h, 720, -fullScreen}
  */
 struct mCmdLine
@@ -70,7 +68,7 @@ struct mCmdLine
                m_listArgs.end();
     }
 
-    std::vector<std::string> m_listArgs; //! Holds the list of arguments
+    std::vector<std::string> m_listArgs; /*! Holds the list of arguments*/
 };
 
 struct BasicLaunchData
@@ -90,5 +88,3 @@ std::wstring convert_string(std::string const& a_as);
 /*!
  * @}
  * */
-
-#endif  // M_KERNEL

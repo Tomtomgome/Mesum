@@ -2,8 +2,8 @@
 #include <Logger.hpp>
 
 #ifdef M_WIN32
-#include <stringapiset.h>
 #include <windows.h>
+#include <stringapiset.h>
 #endif
 
 namespace m

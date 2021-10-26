@@ -59,7 +59,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
     void init() override
     {
-        m::crossPlatform::IWindowedApplication::init();
+        m::crossPlatform::IWindowedApplication::init(<#initializer #>, nullptr);
 
         m::mCmdLine const& cmdLine = get_cmdLine();
         m::UInt           width   = 1280;

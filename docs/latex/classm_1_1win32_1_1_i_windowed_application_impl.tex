@@ -16,13 +16,12 @@ void \mbox{\hyperlink{classm_1_1win32_1_1_i_windowed_application_impl_abeabe866f
 \doxysubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{classm_1_1win32_1_1_i_windowed_application_impl_a3d72e10a7c7c0ad5d3facaa767fa98be}{init}} () override
-\item 
+void \mbox{\hyperlink{classm_1_1win32_1_1_i_windowed_application_impl_aab2f38772a89c69b29f02e3620c850bf}{init}} (\mbox{\hyperlink{structm_1_1m_cmd_line}{m\+Cmd\+Line}} const \&a\+\_\+cmd\+Line, void $\ast$a\+\_\+app\+Data) override
+\begin{DoxyCompactList}\small\item\em Virtual that should implement initialization. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classm_1_1win32_1_1_i_windowed_application_impl_ade7cd05678503ae2990cbb224af7e29e}{destroy}} () override
-\item 
-Bool \mbox{\hyperlink{classm_1_1win32_1_1_i_windowed_application_impl_a24573169d436742496dbd28a9143a101}{step}} (const Double \&a\+\_\+delta\+Time) override
-\end{DoxyCompactItemize}
-\doxysubsection*{Additional Inherited Members}
+\begin{DoxyCompactList}\small\item\em Virtual that should implement the application exits. \end{DoxyCompactList}\item 
+Bool \mbox{\hyperlink{classm_1_1win32_1_1_i_windowed_application_impl_ac8a2628a86f944333e8668bd3b46e599}{step}} (std\+::chrono\+::steady\+\_\+clock\+::duration const \&a\+\_\+delta\+Time) override
+\begin{DoxyCompactList}\small\item\em Virtual that should implement each step. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Member Function Documentation}
@@ -44,17 +43,32 @@ Implements \mbox{\hyperlink{classm_1_1application_1_1_i_windowed_application_bas
 
 
 
-Implements \mbox{\hyperlink{classm_1_1application_1_1_i_timed_loop_application}{m\+::application\+::\+ITimed\+Loop\+Application}}.
+Virtual that should implement the application exits. 
 
-\mbox{\Hypertarget{classm_1_1win32_1_1_i_windowed_application_impl_a3d72e10a7c7c0ad5d3facaa767fa98be}\label{classm_1_1win32_1_1_i_windowed_application_impl_a3d72e10a7c7c0ad5d3facaa767fa98be}} 
+
+
+Implements \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application}{m\+::application\+::m\+ITimed\+Loop\+Application}}.
+
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_windowed_application_impl_aab2f38772a89c69b29f02e3620c850bf}\label{classm_1_1win32_1_1_i_windowed_application_impl_aab2f38772a89c69b29f02e3620c850bf}} 
 \index{m::win32::IWindowedApplicationImpl@{m::win32::IWindowedApplicationImpl}!init@{init}}
 \index{init@{init}!m::win32::IWindowedApplicationImpl@{m::win32::IWindowedApplicationImpl}}
 \doxysubsubsection{\texorpdfstring{init()}{init()}}
-{\footnotesize\ttfamily void m\+::win32\+::\+IWindowed\+Application\+Impl\+::init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily void m\+::win32\+::\+IWindowed\+Application\+Impl\+::init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structm_1_1m_cmd_line}{m\+Cmd\+Line}} const \&}]{a\+\_\+cmd\+Line,  }\item[{void $\ast$}]{a\+\_\+app\+Data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
 
 
 
-Implements \mbox{\hyperlink{classm_1_1application_1_1_i_timed_loop_application}{m\+::application\+::\+ITimed\+Loop\+Application}}.
+Virtual that should implement initialization. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+cmd\+Line} & A reference to a parsed cmd\+Line \\
+\hline
+{\em a\+\_\+app\+Data} & A pointer to a nameless structure containing application data (might be nullptr) \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application}{m\+::application\+::m\+ITimed\+Loop\+Application}}.
 
 \mbox{\Hypertarget{classm_1_1win32_1_1_i_windowed_application_impl_abeabe866f4b32bd15192922eb682181e}\label{classm_1_1win32_1_1_i_windowed_application_impl_abeabe866f4b32bd15192922eb682181e}} 
 \index{m::win32::IWindowedApplicationImpl@{m::win32::IWindowedApplicationImpl}!start\_dearImGuiNewFrame@{start\_dearImGuiNewFrame}}
@@ -66,15 +80,27 @@ Implements \mbox{\hyperlink{classm_1_1application_1_1_i_timed_loop_application}{
 
 Implements \mbox{\hyperlink{classm_1_1application_1_1_i_windowed_application_base}{m\+::application\+::\+IWindowed\+Application\+Base}}.
 
-\mbox{\Hypertarget{classm_1_1win32_1_1_i_windowed_application_impl_a24573169d436742496dbd28a9143a101}\label{classm_1_1win32_1_1_i_windowed_application_impl_a24573169d436742496dbd28a9143a101}} 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_windowed_application_impl_ac8a2628a86f944333e8668bd3b46e599}\label{classm_1_1win32_1_1_i_windowed_application_impl_ac8a2628a86f944333e8668bd3b46e599}} 
 \index{m::win32::IWindowedApplicationImpl@{m::win32::IWindowedApplicationImpl}!step@{step}}
 \index{step@{step}!m::win32::IWindowedApplicationImpl@{m::win32::IWindowedApplicationImpl}}
 \doxysubsubsection{\texorpdfstring{step()}{step()}}
-{\footnotesize\ttfamily Bool m\+::win32\+::\+IWindowed\+Application\+Impl\+::step (\begin{DoxyParamCaption}\item[{const Double \&}]{a\+\_\+delta\+Time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily Bool m\+::win32\+::\+IWindowed\+Application\+Impl\+::step (\begin{DoxyParamCaption}\item[{std\+::chrono\+::steady\+\_\+clock\+::duration const \&}]{a\+\_\+delta\+Time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
 
 
 
-Implements \mbox{\hyperlink{classm_1_1application_1_1_i_timed_loop_application}{m\+::application\+::\+ITimed\+Loop\+Application}}.
+Virtual that should implement each step. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+delta\+Time} & The time elapsed since last step in microseconds \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+should return true for the application to continue, false to stop 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application}{m\+::application\+::m\+ITimed\+Loop\+Application}}.
 
 
 

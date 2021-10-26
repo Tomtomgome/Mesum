@@ -16,9 +16,7 @@ template <typename AppClass>
 void internal_run(mCmdLine const& a_cmdLine, void* a_data)
 {
     AppClass app;
-    app.set_cmdLineData(a_cmdLine);
-    app.setup(a_data);
-    app.launch();
+    app.launch(a_cmdLine, a_data);
 }
 }  // namespace m
 

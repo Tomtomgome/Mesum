@@ -20,22 +20,20 @@
 \DoxyCodeLine{16 \textcolor{keywordtype}{void} internal\_run(mCmdLine \textcolor{keyword}{const}\& a\_cmdLine, \textcolor{keywordtype}{void}* a\_data)}
 \DoxyCodeLine{17 \{}
 \DoxyCodeLine{18     AppClass app;}
-\DoxyCodeLine{19     app.set\_cmdLineData(a\_cmdLine);}
-\DoxyCodeLine{20     app.setup(a\_data);}
-\DoxyCodeLine{21     app.launch();}
-\DoxyCodeLine{22 \}}
-\DoxyCodeLine{23 \}  \textcolor{comment}{// namespace m}}
-\DoxyCodeLine{24 }
-\DoxyCodeLine{25 \textcolor{preprocessor}{\#define M\_EXECUTE\_CONSOLE\_APP(AppClass)              \(\backslash\)}}
-\DoxyCodeLine{26 \textcolor{preprocessor}{    int main(m::Int argc, m::Char** argv)       \(\backslash\)}}
-\DoxyCodeLine{27 \textcolor{preprocessor}{    \{                                                \(\backslash\)}}
-\DoxyCodeLine{28 \textcolor{preprocessor}{        m::BasicLaunchData data;                     \(\backslash\)}}
-\DoxyCodeLine{29 \textcolor{preprocessor}{        m::mCmdLine        cmdLine;                  \(\backslash\)}}
-\DoxyCodeLine{30 \textcolor{preprocessor}{        cmdLine.parse\_cmdLineAguments(argc, argv);   \(\backslash\)}}
-\DoxyCodeLine{31 \textcolor{preprocessor}{        m::internal\_run<AppClass>(cmdLine, \&data);   \(\backslash\)}}
-\DoxyCodeLine{32 \textcolor{preprocessor}{        return 0;                                    \(\backslash\)}}
-\DoxyCodeLine{33 \textcolor{preprocessor}{    \}}}
-\DoxyCodeLine{34 }
-\DoxyCodeLine{35 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//M\_MAIN}}
+\DoxyCodeLine{19     app.launch(a\_cmdLine, a\_data);}
+\DoxyCodeLine{20 \}}
+\DoxyCodeLine{21 \}  \textcolor{comment}{// namespace m}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#define M\_EXECUTE\_CONSOLE\_APP(AppClass)              \(\backslash\)}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{    int main(m::Int argc, m::Char** argv)       \(\backslash\)}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{    \{                                                \(\backslash\)}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{        m::BasicLaunchData data;                     \(\backslash\)}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{        m::mCmdLine        cmdLine;                  \(\backslash\)}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{        cmdLine.parse\_cmdLineAguments(argc, argv);   \(\backslash\)}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{        m::internal\_run<AppClass>(cmdLine, \&data);   \(\backslash\)}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{        return 0;                                    \(\backslash\)}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{    \}}}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//M\_MAIN}}
 
 \end{DoxyCode}

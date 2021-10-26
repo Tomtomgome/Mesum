@@ -2,68 +2,65 @@
 \label{_kernel_8hpp_source}\index{MesumCore/Kernel/Kernel.hpp@{MesumCore/Kernel/Kernel.hpp}}
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_KERNEL}}
-\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_KERNEL}}
-\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
-\DoxyCodeLine{4 }
-\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <Asserts.hpp>}}
-\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <MesumCore/Common.hpp>}}
-\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <Types.hpp>}}
-\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <algorithm>}}
-\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <sstream>}}
-\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <string>}}
-\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <vector>}}
-\DoxyCodeLine{12 }
-\DoxyCodeLine{16 \textcolor{keyword}{namespace }m}
-\DoxyCodeLine{17 \{}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <Asserts.hpp>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <MesumCore/Common.hpp>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <Types.hpp>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <sstream>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{14 \textcolor{keyword}{namespace }m}
+\DoxyCodeLine{15 \{}
+\DoxyCodeLine{16 \textcolor{comment}{//*****************************************************************************}}
+\DoxyCodeLine{17 \textcolor{comment}{//*****************************************************************************}}
 \DoxyCodeLine{18 \textcolor{comment}{//*****************************************************************************}}
-\DoxyCodeLine{19 \textcolor{comment}{//*****************************************************************************}}
-\DoxyCodeLine{20 \textcolor{comment}{//*****************************************************************************}}
-\DoxyCodeLine{22 \textcolor{comment}{}}
-\DoxyCodeLine{26 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1m_cmd_line}{mCmdLine}}}
-\DoxyCodeLine{27 \{}
-\DoxyCodeLine{29 }
-\DoxyCodeLine{33     \textcolor{keywordtype}{void} \mbox{\hyperlink{structm_1_1m_cmd_line_ae80a0e6b45ca8d32a1052a00543f7b4c}{parse\_cmdLineAguments}}(Int a\_argc, Char** a\_argv);}
+\DoxyCodeLine{20 \textcolor{comment}{}}
+\DoxyCodeLine{24 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1m_cmd_line}{mCmdLine}}}
+\DoxyCodeLine{25 \{}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{31     \textcolor{keywordtype}{void} \mbox{\hyperlink{structm_1_1m_cmd_line_ae80a0e6b45ca8d32a1052a00543f7b4c}{parse\_cmdLineAguments}}(Int a\_argc, Char** a\_argv);}
+\DoxyCodeLine{32 }
 \DoxyCodeLine{34 }
-\DoxyCodeLine{36 }
-\DoxyCodeLine{44     \textcolor{keyword}{template} <\textcolor{keyword}{class} t\_ValueType>}
-\DoxyCodeLine{45     Bool \mbox{\hyperlink{structm_1_1m_cmd_line_acb6619d8804bfcc912f1d807f95463d3}{get\_parameter}}(\textcolor{keyword}{const} std::string a\_key, t\_ValueType\& a\_result)\textcolor{keyword}{ const}}
-\DoxyCodeLine{46 \textcolor{keyword}{    }\{}
-\DoxyCodeLine{47         \mbox{\hyperlink{group___core_ga375da2becf883550c0e1293307b02c9a}{mExpect}}(!a\_key.empty());}
-\DoxyCodeLine{48 }
-\DoxyCodeLine{49         \textcolor{keyword}{auto} found = std::find(m\_listArgs.begin(), m\_listArgs.end(), a\_key);}
-\DoxyCodeLine{50         \textcolor{keywordflow}{if} (found == m\_listArgs.end())}
-\DoxyCodeLine{51         \{}
-\DoxyCodeLine{52             \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
-\DoxyCodeLine{53         \}}
-\DoxyCodeLine{54 }
-\DoxyCodeLine{55         ++found;}
-\DoxyCodeLine{56         \mbox{\hyperlink{group___core_ga5cbca1ff1eb730a016c7c63f94afa154}{mAssert}}(found != m\_listArgs.end())}
-\DoxyCodeLine{57 }
-\DoxyCodeLine{58         std::basic\_istringstream(*found) >> a\_result;}
-\DoxyCodeLine{59         \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
-\DoxyCodeLine{60     \}}
+\DoxyCodeLine{42     \textcolor{keyword}{template} <\textcolor{keyword}{class} t\_ValueType>}
+\DoxyCodeLine{43     Bool \mbox{\hyperlink{structm_1_1m_cmd_line_acb6619d8804bfcc912f1d807f95463d3}{get\_parameter}}(\textcolor{keyword}{const} std::string a\_key, t\_ValueType\& a\_result)\textcolor{keyword}{ const}}
+\DoxyCodeLine{44 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{45         \mbox{\hyperlink{group___core_ga375da2becf883550c0e1293307b02c9a}{mExpect}}(!a\_key.empty());}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47         \textcolor{keyword}{auto} found = std::find(m\_listArgs.begin(), m\_listArgs.end(), a\_key);}
+\DoxyCodeLine{48         \textcolor{keywordflow}{if} (found == m\_listArgs.end())}
+\DoxyCodeLine{49         \{}
+\DoxyCodeLine{50             \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{51         \}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53         ++found;}
+\DoxyCodeLine{54         \mbox{\hyperlink{group___core_ga5cbca1ff1eb730a016c7c63f94afa154}{mAssert}}(found != m\_listArgs.end())}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56         std::basic\_istringstream(*found) >> a\_result;}
+\DoxyCodeLine{57         \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{58     \}}
+\DoxyCodeLine{59 }
 \DoxyCodeLine{61 }
-\DoxyCodeLine{63 }
-\DoxyCodeLine{67     [[nodiscard]] \textcolor{keyword}{inline} Bool \mbox{\hyperlink{structm_1_1m_cmd_line_a589a0a954f6f5bf5043dcb29fbf1769d}{get\_arg}}(std::string \textcolor{keyword}{const}\& a\_arg)\textcolor{keyword}{ const}}
-\DoxyCodeLine{68 \textcolor{keyword}{    }\{}
-\DoxyCodeLine{69         \textcolor{keywordflow}{return} std::find(m\_listArgs.begin(), m\_listArgs.end(), a\_arg) !=}
-\DoxyCodeLine{70                m\_listArgs.end();}
-\DoxyCodeLine{71     \}}
-\DoxyCodeLine{72 }
-\DoxyCodeLine{73     std::vector<std::string> m\_listArgs; }
-\DoxyCodeLine{74 \};}
-\DoxyCodeLine{75 }
-\DoxyCodeLine{76 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1_basic_launch_data}{BasicLaunchData}}}
-\DoxyCodeLine{77 \{}
-\DoxyCodeLine{78 \};}
-\DoxyCodeLine{79 \textcolor{preprocessor}{\#ifdef M\_WIN32}}
-\DoxyCodeLine{81 }
-\DoxyCodeLine{85 std::wstring convert\_string(std::string \textcolor{keyword}{const}\& a\_as);}
-\DoxyCodeLine{86 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{65     [[nodiscard]] \textcolor{keyword}{inline} Bool \mbox{\hyperlink{structm_1_1m_cmd_line_a589a0a954f6f5bf5043dcb29fbf1769d}{get\_arg}}(std::string \textcolor{keyword}{const}\& a\_arg)\textcolor{keyword}{ const}}
+\DoxyCodeLine{66 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{67         \textcolor{keywordflow}{return} std::find(m\_listArgs.begin(), m\_listArgs.end(), a\_arg) !=}
+\DoxyCodeLine{68                m\_listArgs.end();}
+\DoxyCodeLine{69     \}}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71     std::vector<std::string> m\_listArgs; }
+\DoxyCodeLine{72 \};}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1_basic_launch_data}{BasicLaunchData}}}
+\DoxyCodeLine{75 \{}
+\DoxyCodeLine{76 \};}
+\DoxyCodeLine{77 \textcolor{preprocessor}{\#ifdef M\_WIN32}}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{83 std::wstring convert\_string(std::string \textcolor{keyword}{const}\& a\_as);}
+\DoxyCodeLine{84 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 \}  \textcolor{comment}{// namespace m}}
 \DoxyCodeLine{87 }
-\DoxyCodeLine{88 \}  \textcolor{comment}{// namespace m}}
-\DoxyCodeLine{89 }
-\DoxyCodeLine{94 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_KERNEL}}
 
 \end{DoxyCode}

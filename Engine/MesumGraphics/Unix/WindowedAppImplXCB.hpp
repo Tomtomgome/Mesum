@@ -22,9 +22,10 @@ class IWindowedApplicationImpl : public application::IWindowedApplicationBase
     virtual void render();
 
    protected:
-    virtual void init() override;
+    virtual void init(mCmdLine const& a_cmdLine, void* a_appData) override;
     virtual void destroy() override;
-    virtual Bool step(const Double& a_deltaTime) override;
+    virtual Bool step(const std::chrono::duration<long long int, std::nano>&
+                          a_deltaTime) override;
 
    private:
     Bool                        m_supportImGuiMultiViewPorts = false;

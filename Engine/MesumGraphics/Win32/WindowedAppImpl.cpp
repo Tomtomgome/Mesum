@@ -56,9 +56,9 @@ void IWindowedApplicationImpl::start_dearImGuiNewFrame(
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void IWindowedApplicationImpl::init()
+void IWindowedApplicationImpl::init(mCmdLine const& a_cmdLine, void* a_appData)
 {
-    WindowedLaunchData& data = *(WindowedLaunchData*)m_appData;
+    WindowedLaunchData& data = *(WindowedLaunchData*)a_appData;
 
     m_W32Context.init(data.m_hInstance);
 
@@ -93,7 +93,8 @@ void IWindowedApplicationImpl::destroy()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-Bool IWindowedApplicationImpl::step(const Double& a_deltaTime)
+Bool IWindowedApplicationImpl::step(
+    std::chrono::steady_clock::duration const& a_deltaTime)
 {
     Bool signalKeepRunning = true;
 

@@ -2,64 +2,66 @@
 \label{_application_8hpp_source}\index{MesumCore/Kernel/Application.hpp@{MesumCore/Kernel/Application.hpp}}
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_APPLICATION}}
-\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_APPLICATION}}
-\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
-\DoxyCodeLine{4 }
-\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <Types.hpp>}}
-\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <Kernel.hpp>}}
-\DoxyCodeLine{7 }
-\DoxyCodeLine{8 \textcolor{keyword}{namespace }m}
-\DoxyCodeLine{9 \{}
-\DoxyCodeLine{10 \textcolor{comment}{//*****************************************************************************}}
-\DoxyCodeLine{11 \textcolor{comment}{//*****************************************************************************}}
-\DoxyCodeLine{12 \textcolor{comment}{//*****************************************************************************}}
-\DoxyCodeLine{13 \textcolor{keyword}{namespace }application}
-\DoxyCodeLine{14 \{}
-\DoxyCodeLine{15 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1application_1_1_i_basic_application}{IBasicApplication}}}
-\DoxyCodeLine{16 \{}
-\DoxyCodeLine{17    \textcolor{keyword}{public}:}
-\DoxyCodeLine{18     \textcolor{keywordtype}{void} setup(\textcolor{keywordtype}{void}* a\_data) \{ m\_appData = a\_data; \}}
-\DoxyCodeLine{19     \textcolor{keywordtype}{void} set\_cmdLineData(\mbox{\hyperlink{structm_1_1m_cmd_line}{mCmdLine}} \textcolor{keyword}{const}\& a\_cmdLine) \{ m\_cmdLine = \&a\_cmdLine; \}}
-\DoxyCodeLine{20     \mbox{\hyperlink{structm_1_1m_cmd_line}{mCmdLine}} \textcolor{keyword}{const}\& get\_cmdLine() \{ \textcolor{keywordflow}{return} *m\_cmdLine; \}}
-\DoxyCodeLine{21 }
-\DoxyCodeLine{22     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} launch() = 0;}
-\DoxyCodeLine{23 }
-\DoxyCodeLine{24    \textcolor{keyword}{protected}:}
-\DoxyCodeLine{25     \mbox{\hyperlink{structm_1_1m_cmd_line}{mCmdLine}} \textcolor{keyword}{const}* m\_cmdLine;}
-\DoxyCodeLine{26     \textcolor{keywordtype}{void}*          m\_appData;}
-\DoxyCodeLine{27 \};}
-\DoxyCodeLine{28 }
-\DoxyCodeLine{29 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1application_1_1_i_timed_loop_application}{ITimedLoopApplication}} : \textcolor{keyword}{public} \mbox{\hyperlink{classm_1_1application_1_1_i_basic_application}{IBasicApplication}}}
-\DoxyCodeLine{30 \{}
-\DoxyCodeLine{31     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} init()                          = 0;}
-\DoxyCodeLine{32     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} destroy()                       = 0;}
-\DoxyCodeLine{33     \textcolor{keyword}{virtual} Bool step(\textcolor{keyword}{const} Double\& a\_deltaTime) = 0;}
-\DoxyCodeLine{34 }
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <Kernel.hpp>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <Types.hpp>}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{10 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacem_1_1application}{m::application}}}
+\DoxyCodeLine{11 \{}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{16 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1application_1_1m_i_basic_application}{mIBasicApplication}}}
+\DoxyCodeLine{17 \{}
+\DoxyCodeLine{18    \textcolor{keyword}{public}:}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{25     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1application_1_1m_i_basic_application_a10ecb6a45dbf100c037eff46b5a1f161}{launch}}(\mbox{\hyperlink{structm_1_1m_cmd_line}{mCmdLine}} \textcolor{keyword}{const}\& a\_cmdLine, \textcolor{keywordtype}{void}* a\_appData) = 0;}
+\DoxyCodeLine{26 \};}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{29 }
+\DoxyCodeLine{33 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1application_1_1m_i_loop_application}{mILoopApplication}} : \textcolor{keyword}{public} \mbox{\hyperlink{classm_1_1application_1_1m_i_basic_application}{mIBasicApplication}}}
+\DoxyCodeLine{34 \{}
 \DoxyCodeLine{35    \textcolor{keyword}{public}:}
-\DoxyCodeLine{36     \textcolor{keywordtype}{void} set\_microSecondsLimit(I64 a\_limit)}
-\DoxyCodeLine{37     \{}
-\DoxyCodeLine{38         m\_limitMicroSecondsPerFrame = a\_limit;}
-\DoxyCodeLine{39     \}}
-\DoxyCodeLine{40     I64 get\_microSecondsLimit() \{ \textcolor{keywordflow}{return} m\_limitMicroSecondsPerFrame; \}}
-\DoxyCodeLine{41 }
-\DoxyCodeLine{42     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} launch() \textcolor{keyword}{final};}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{42     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1application_1_1m_i_loop_application_ac9606c3ee30894f0694bc390a6c42f0d}{launch}}(\mbox{\hyperlink{structm_1_1m_cmd_line}{mCmdLine}} \textcolor{keyword}{const}\& a\_cmdLine, \textcolor{keywordtype}{void}* a\_appData) \textcolor{keyword}{final};}
 \DoxyCodeLine{43 }
 \DoxyCodeLine{44    \textcolor{keyword}{private}:}
-\DoxyCodeLine{45     I64 m\_limitMicroSecondsPerFrame;}
-\DoxyCodeLine{46 \};}
-\DoxyCodeLine{47 }
-\DoxyCodeLine{48 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1application_1_1_i_loop_application}{ILoopApplication}} : \textcolor{keyword}{public} \mbox{\hyperlink{classm_1_1application_1_1_i_basic_application}{IBasicApplication}}}
-\DoxyCodeLine{49 \{}
-\DoxyCodeLine{50     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} init()    = 0;}
-\DoxyCodeLine{51     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} destroy() = 0;}
-\DoxyCodeLine{52     \textcolor{keyword}{virtual} Bool step()    = 0;}
-\DoxyCodeLine{53 }
-\DoxyCodeLine{54    \textcolor{keyword}{public}:}
-\DoxyCodeLine{55     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} launch() \textcolor{keyword}{final};}
-\DoxyCodeLine{56 \};}
-\DoxyCodeLine{57 \}  \textcolor{comment}{// namespace application}}
-\DoxyCodeLine{58 \}  \textcolor{comment}{// namespace m}}
-\DoxyCodeLine{59 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//M\_APPLICATION}}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{51     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} init(\mbox{\hyperlink{structm_1_1m_cmd_line}{mCmdLine}} \textcolor{keyword}{const}\& a\_cmdLine, \textcolor{keywordtype}{void}* a\_appData) = 0;}
+\DoxyCodeLine{53     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} destroy() = 0;}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{58     \textcolor{keyword}{virtual} Bool step() = 0;}
+\DoxyCodeLine{59 \};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{62 }
+\DoxyCodeLine{66 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application}{mITimedLoopApplication}} : \textcolor{keyword}{public} \mbox{\hyperlink{classm_1_1application_1_1m_i_basic_application}{mIBasicApplication}}}
+\DoxyCodeLine{67 \{}
+\DoxyCodeLine{68    \textcolor{keyword}{public}:}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{75     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application_a2ec2d8e42fcf88cb05bd8fc6748959b9}{launch}}(\mbox{\hyperlink{structm_1_1m_cmd_line}{mCmdLine}} \textcolor{keyword}{const}\& a\_cmdLine, \textcolor{keywordtype}{void}* a\_appData) \textcolor{keyword}{final};}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{80     \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application_a30915222caf71e7686751485d89194b3}{set\_minimalStepDuration}}(}
+\DoxyCodeLine{81         std::chrono::steady\_clock::duration a\_minStepDuration)}
+\DoxyCodeLine{82     \{}
+\DoxyCodeLine{83         m\_minStepDuration = a\_minStepDuration;}
+\DoxyCodeLine{84     \}}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{89     \textcolor{keyword}{inline} std::chrono::steady\_clock::duration \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application_aacc12d18ffeae05cdbdbfa2eed7a4376}{get\_minimalStepDuration}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{90 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{91         \textcolor{keywordflow}{return} m\_minStepDuration;}
+\DoxyCodeLine{92     \}}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94    \textcolor{keyword}{private}:}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{101     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} init(\mbox{\hyperlink{structm_1_1m_cmd_line}{mCmdLine}} \textcolor{keyword}{const}\& a\_cmdLine, \textcolor{keywordtype}{void}* a\_appData) = 0;}
+\DoxyCodeLine{103     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} destroy() = 0;}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{109     \textcolor{keyword}{virtual} Bool step(}
+\DoxyCodeLine{110         std::chrono::steady\_clock::duration \textcolor{keyword}{const}\& a\_deltaTime) = 0;}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{113     std::chrono::steady\_clock::duration m\_minStepDuration\{0\};}
+\DoxyCodeLine{114 \};}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 \}  \textcolor{comment}{// namespace m::application}}
+\DoxyCodeLine{117 }
 
 \end{DoxyCode}

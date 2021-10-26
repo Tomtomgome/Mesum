@@ -27,13 +27,13 @@ virtual void {\bfseries render} ()
 \doxysubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-virtual void \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_windowed_application_impl_ac8bd99881aa9f207c0d803af7b335b50}{init}} () override
-\item 
+virtual void \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_windowed_application_impl_af51366e2fdd19f1d8d9e8ec99523a850}{init}} (\mbox{\hyperlink{structm_1_1m_cmd_line}{m\+Cmd\+Line}} const \&a\+\_\+cmd\+Line, void $\ast$a\+\_\+app\+Data) override
+\begin{DoxyCompactList}\small\item\em Virtual that should implement initialization. \end{DoxyCompactList}\item 
 virtual void \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a8baef1bc4148d903512c731ab3121da5}{destroy}} () override
-\item 
-virtual Bool \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a01f89017869d852ec6b711ab1a3ba9ad}{step}} (const Double \&a\+\_\+delta\+Time) override
+\begin{DoxyCompactList}\small\item\em Virtual that should implement the application exits. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a1315ad79c40feb339499e3c8ff0921d7}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a1315ad79c40feb339499e3c8ff0921d7}} 
+virtual Bool {\bfseries step} (const std\+::chrono\+::duration$<$ long long int, std\+::nano $>$ \&a\+\_\+delta\+Time) override
 \end{DoxyCompactItemize}
-\doxysubsection*{Additional Inherited Members}
 
 
 \doxysubsection{Member Function Documentation}
@@ -45,27 +45,32 @@ virtual Bool \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_windowed_application_imp
 
 
 
-Implements \mbox{\hyperlink{classm_1_1application_1_1_i_timed_loop_application}{m\+::application\+::\+ITimed\+Loop\+Application}}.
+Virtual that should implement the application exits. 
 
-\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_ac8bd99881aa9f207c0d803af7b335b50}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_ac8bd99881aa9f207c0d803af7b335b50}} 
+
+
+Implements \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application}{m\+::application\+::m\+ITimed\+Loop\+Application}}.
+
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_af51366e2fdd19f1d8d9e8ec99523a850}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_af51366e2fdd19f1d8d9e8ec99523a850}} 
 \index{m::xcb\_unix::IWindowedApplicationImpl@{m::xcb\_unix::IWindowedApplicationImpl}!init@{init}}
 \index{init@{init}!m::xcb\_unix::IWindowedApplicationImpl@{m::xcb\_unix::IWindowedApplicationImpl}}
 \doxysubsubsection{\texorpdfstring{init()}{init()}}
-{\footnotesize\ttfamily void m\+::xcb\+\_\+unix\+::\+IWindowed\+Application\+Impl\+::init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily void m\+::xcb\+\_\+unix\+::\+IWindowed\+Application\+Impl\+::init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structm_1_1m_cmd_line}{m\+Cmd\+Line}} const \&}]{a\+\_\+cmd\+Line,  }\item[{void $\ast$}]{a\+\_\+app\+Data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
 
 
 
-Implements \mbox{\hyperlink{classm_1_1application_1_1_i_timed_loop_application}{m\+::application\+::\+ITimed\+Loop\+Application}}.
-
-\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a01f89017869d852ec6b711ab1a3ba9ad}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a01f89017869d852ec6b711ab1a3ba9ad}} 
-\index{m::xcb\_unix::IWindowedApplicationImpl@{m::xcb\_unix::IWindowedApplicationImpl}!step@{step}}
-\index{step@{step}!m::xcb\_unix::IWindowedApplicationImpl@{m::xcb\_unix::IWindowedApplicationImpl}}
-\doxysubsubsection{\texorpdfstring{step()}{step()}}
-{\footnotesize\ttfamily Bool m\+::xcb\+\_\+unix\+::\+IWindowed\+Application\+Impl\+::step (\begin{DoxyParamCaption}\item[{const Double \&}]{a\+\_\+delta\+Time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+Virtual that should implement initialization. 
 
 
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+cmd\+Line} & A reference to a parsed cmd\+Line \\
+\hline
+{\em a\+\_\+app\+Data} & A pointer to a nameless structure containing application data (might be nullptr) \\
+\hline
+\end{DoxyParams}
 
-Implements \mbox{\hyperlink{classm_1_1application_1_1_i_timed_loop_application}{m\+::application\+::\+ITimed\+Loop\+Application}}.
+
+Implements \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application}{m\+::application\+::m\+ITimed\+Loop\+Application}}.
 
 
 

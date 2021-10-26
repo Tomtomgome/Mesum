@@ -1,0 +1,89 @@
+\hypertarget{classm_1_1application_1_1m_i_timed_loop_application}{}\doxysection{m\+::application\+::m\+ITimed\+Loop\+Application Class Reference}
+\label{classm_1_1application_1_1m_i_timed_loop_application}\index{m::application::mITimedLoopApplication@{m::application::mITimedLoopApplication}}
+
+
+Interface for a loop based application with timmed steps.  
+
+
+
+
+{\ttfamily \#include $<$Application.\+hpp$>$}
+
+Inheritance diagram for m\+::application\+::m\+ITimed\+Loop\+Application\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{classm_1_1application_1_1m_i_timed_loop_application}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application_a2ec2d8e42fcf88cb05bd8fc6748959b9}{launch}} (\mbox{\hyperlink{structm_1_1m_cmd_line}{m\+Cmd\+Line}} const \&a\+\_\+cmd\+Line, void $\ast$a\+\_\+app\+Data) final
+\begin{DoxyCompactList}\small\item\em Launch the application. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application_a30915222caf71e7686751485d89194b3}{set\+\_\+minimal\+Step\+Duration}} (std\+::chrono\+::steady\+\_\+clock\+::duration a\+\_\+min\+Step\+Duration)
+\begin{DoxyCompactList}\small\item\em Set the minimal duration of a step. \end{DoxyCompactList}\item 
+std\+::chrono\+::steady\+\_\+clock\+::duration \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application_aacc12d18ffeae05cdbdbfa2eed7a4376}{get\+\_\+minimal\+Step\+Duration}} () const
+\begin{DoxyCompactList}\small\item\em Get the minimal duration of a step. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Interface for a loop based application with timmed steps. 
+
+It has a three step life cycle \+: init called first, a step called in a loop, and finally a destroy when exiting 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classm_1_1application_1_1m_i_timed_loop_application_aacc12d18ffeae05cdbdbfa2eed7a4376}\label{classm_1_1application_1_1m_i_timed_loop_application_aacc12d18ffeae05cdbdbfa2eed7a4376}} 
+\index{m::application::mITimedLoopApplication@{m::application::mITimedLoopApplication}!get\_minimalStepDuration@{get\_minimalStepDuration}}
+\index{get\_minimalStepDuration@{get\_minimalStepDuration}!m::application::mITimedLoopApplication@{m::application::mITimedLoopApplication}}
+\doxysubsubsection{\texorpdfstring{get\_minimalStepDuration()}{get\_minimalStepDuration()}}
+{\footnotesize\ttfamily std\+::chrono\+::steady\+\_\+clock\+::duration m\+::application\+::m\+ITimed\+Loop\+Application\+::get\+\_\+minimal\+Step\+Duration (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the minimal duration of a step. 
+
+\begin{DoxyReturn}{Returns}
+The target minimal duration 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classm_1_1application_1_1m_i_timed_loop_application_a2ec2d8e42fcf88cb05bd8fc6748959b9}\label{classm_1_1application_1_1m_i_timed_loop_application_a2ec2d8e42fcf88cb05bd8fc6748959b9}} 
+\index{m::application::mITimedLoopApplication@{m::application::mITimedLoopApplication}!launch@{launch}}
+\index{launch@{launch}!m::application::mITimedLoopApplication@{m::application::mITimedLoopApplication}}
+\doxysubsubsection{\texorpdfstring{launch()}{launch()}}
+{\footnotesize\ttfamily void m\+::application\+::m\+ITimed\+Loop\+Application\+::launch (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structm_1_1m_cmd_line}{m\+Cmd\+Line}} const \&}]{a\+\_\+cmd\+Line,  }\item[{void $\ast$}]{a\+\_\+app\+Data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [final]}, {\ttfamily [virtual]}}
+
+
+
+Launch the application. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+cmd\+Line} & A reference to a parsed cmd\+Line \\
+\hline
+{\em a\+\_\+app\+Data} & A pointer to a nameless structure containing application data (might bu nullptr) \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classm_1_1application_1_1m_i_basic_application_a10ecb6a45dbf100c037eff46b5a1f161}{m\+::application\+::m\+IBasic\+Application}}.
+
+\mbox{\Hypertarget{classm_1_1application_1_1m_i_timed_loop_application_a30915222caf71e7686751485d89194b3}\label{classm_1_1application_1_1m_i_timed_loop_application_a30915222caf71e7686751485d89194b3}} 
+\index{m::application::mITimedLoopApplication@{m::application::mITimedLoopApplication}!set\_minimalStepDuration@{set\_minimalStepDuration}}
+\index{set\_minimalStepDuration@{set\_minimalStepDuration}!m::application::mITimedLoopApplication@{m::application::mITimedLoopApplication}}
+\doxysubsubsection{\texorpdfstring{set\_minimalStepDuration()}{set\_minimalStepDuration()}}
+{\footnotesize\ttfamily void m\+::application\+::m\+ITimed\+Loop\+Application\+::set\+\_\+minimal\+Step\+Duration (\begin{DoxyParamCaption}\item[{std\+::chrono\+::steady\+\_\+clock\+::duration}]{a\+\_\+min\+Step\+Duration }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Set the minimal duration of a step. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+min\+Step\+Duration} & The target minimal duration \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Core/\+Kernel/Application.\+hpp\item 
+Mesum\+Core/\+Kernel/Application.\+cpp\end{DoxyCompactItemize}

@@ -26,18 +26,19 @@
 \DoxyCodeLine{22     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} render();}
 \DoxyCodeLine{23 }
 \DoxyCodeLine{24    \textcolor{keyword}{protected}:}
-\DoxyCodeLine{25     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} init() \textcolor{keyword}{override};}
-\DoxyCodeLine{26     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} destroy() \textcolor{keyword}{override};}
-\DoxyCodeLine{27     \textcolor{keyword}{virtual} Bool step(\textcolor{keyword}{const} Double\& a\_deltaTime) \textcolor{keyword}{override};}
-\DoxyCodeLine{28 }
-\DoxyCodeLine{29    \textcolor{keyword}{private}:}
-\DoxyCodeLine{30     Bool                        m\_supportImGuiMultiViewPorts = \textcolor{keyword}{false};}
-\DoxyCodeLine{31     \mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{render::IRenderer}}*          m\_renderer = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{32     \mbox{\hyperlink{structm_1_1xcb__unix_1_1_x_c_b_context}{XCBContext}}                  m\_XCBContext;}
-\DoxyCodeLine{33     std::set<windows::IWindow*> m\_windows;}
-\DoxyCodeLine{34 \};}
-\DoxyCodeLine{35 \}  \textcolor{comment}{// namespace xcb\_unix}}
-\DoxyCodeLine{36 \}  \textcolor{comment}{// namespace m}}
-\DoxyCodeLine{37 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_WINDOWEDAPPIMPLXCB}}
+\DoxyCodeLine{25     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_windowed_application_impl_af51366e2fdd19f1d8d9e8ec99523a850}{init}}(\mbox{\hyperlink{structm_1_1m_cmd_line}{mCmdLine}} \textcolor{keyword}{const}\& a\_cmdLine, \textcolor{keywordtype}{void}* a\_appData) \textcolor{keyword}{override};}
+\DoxyCodeLine{26     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a8baef1bc4148d903512c731ab3121da5}{destroy}}() \textcolor{keyword}{override};}
+\DoxyCodeLine{27     \textcolor{keyword}{virtual} Bool step(\textcolor{keyword}{const} std::chrono::duration<long long int, std::nano>\&}
+\DoxyCodeLine{28                           a\_deltaTime) \textcolor{keyword}{override};}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30    \textcolor{keyword}{private}:}
+\DoxyCodeLine{31     Bool                        m\_supportImGuiMultiViewPorts = \textcolor{keyword}{false};}
+\DoxyCodeLine{32     \mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{render::IRenderer}}*          m\_renderer = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{33     \mbox{\hyperlink{structm_1_1xcb__unix_1_1_x_c_b_context}{XCBContext}}                  m\_XCBContext;}
+\DoxyCodeLine{34     std::set<windows::IWindow*> m\_windows;}
+\DoxyCodeLine{35 \};}
+\DoxyCodeLine{36 \}  \textcolor{comment}{// namespace xcb\_unix}}
+\DoxyCodeLine{37 \}  \textcolor{comment}{// namespace m}}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_WINDOWEDAPPIMPLXCB}}
 
 \end{DoxyCode}

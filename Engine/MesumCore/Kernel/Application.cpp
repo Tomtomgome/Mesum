@@ -1,45 +1,18 @@
 #include <Application.hpp>
-
 #include <chrono>
 #include <thread>
 
-namespace m
+namespace m::application
 {
 //*****************************************************************************
 //*****************************************************************************
 //*****************************************************************************
-namespace application
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void mILoopApplication::launch(mCmdLine const& a_cmdLine, void* a_appData)
 {
-void ITimedLoopApplication::launch()
-{
-    init();
-
-    auto   start     = std::chrono::high_resolution_clock::now();
-    Double deltaTime = 0.0;
-    while (step(deltaTime))
-    {
-        auto end = std::chrono::high_resolution_clock::now();
-        I64  timming =
-            std::chrono::duration_cast<std::chrono::duration<I64, std::micro>>(
-                end - start)
-                .count();
-        // LOG("Frame Lasted ", timming, " microseconds")
-        if (timming < m_limitMicroSecondsPerFrame)
-        {
-            std::this_thread::sleep_for(std::chrono::microseconds(
-                m_limitMicroSecondsPerFrame - timming));
-            timming = m_limitMicroSecondsPerFrame;
-        }
-        deltaTime = timming * 0.000001;
-        start     = std::chrono::high_resolution_clock::now();
-    }
-
-    destroy();
-}
-
-void ILoopApplication::launch()
-{
-    init();
+    init(a_cmdLine, a_appData);
 
     while (step())
     {
@@ -48,5 +21,31 @@ void ILoopApplication::launch()
 
     destroy();
 }
-}  // namespace application
-}  // namespace m
+
+//*****************************************************************************
+//*****************************************************************************
+//*****************************************************************************
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void mITimedLoopApplication::launch(mCmdLine const& a_cmdLine, void* a_appData)
+{
+    init(a_cmdLine, a_appData);
+
+    auto start = std::chrono::high_resolution_clock::now();
+    std::chrono::steady_clock::duration deltaTime;
+    while (step(deltaTime))
+    {
+        auto end  = std::chrono::high_resolution_clock::now();
+        deltaTime = end - start;
+        if (deltaTime < m_minStepDuration)
+        {
+            std::this_thread::sleep_for(m_minStepDuration - deltaTime);
+            deltaTime = m_minStepDuration;
+        }
+        start = std::chrono::high_resolution_clock::now();
+    }
+
+    destroy();
+}
+}  // namespace m::application

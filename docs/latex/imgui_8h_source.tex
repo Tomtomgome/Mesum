@@ -7,7 +7,7 @@
 \DoxyCodeLine{3 }
 \DoxyCodeLine{4 \textcolor{comment}{// Help:}}
 \DoxyCodeLine{5 \textcolor{comment}{// -\/ Read FAQ at http://dearimgui.org/faq}}
-\DoxyCodeLine{6 \textcolor{comment}{// -\/ Newcomers, read 'Programmer guide' in imgui.cpp for notes on how to setup Dear ImGui in your codebase.}}
+\DoxyCodeLine{6 \textcolor{comment}{// -\/ Newcomers, read 'Programmer guide' in imgui.cpp for notes on how to set\_appData Dear ImGui in your codebase.}}
 \DoxyCodeLine{7 \textcolor{comment}{// -\/ Call and read ImGui::ShowDemoWindow() in imgui\_demo.cpp. All applications in examples/ are doing that.}}
 \DoxyCodeLine{8 \textcolor{comment}{// Read imgui.cpp for details, links and comments.}}
 \DoxyCodeLine{9 }
@@ -918,7 +918,7 @@
 \DoxyCodeLine{914     \textcolor{comment}{// (Optional) Platform/OS interface for multi-\/viewport support}}
 \DoxyCodeLine{915     \textcolor{comment}{// Read comments around the ImGuiPlatformIO structure for more details.}}
 \DoxyCodeLine{916     \textcolor{comment}{// Note: You may use GetWindowViewport() to get the current viewport of the current window.}}
-\DoxyCodeLine{917     IMGUI\_API \mbox{\hyperlink{struct_im_gui_platform_i_o}{ImGuiPlatformIO}}\&  GetPlatformIO();                                                \textcolor{comment}{// platform/renderer functions, for backend to setup + viewports list.}}
+\DoxyCodeLine{917     IMGUI\_API \mbox{\hyperlink{struct_im_gui_platform_i_o}{ImGuiPlatformIO}}\&  GetPlatformIO();                                                \textcolor{comment}{// platform/renderer functions, for backend to set\_appData + viewports list.}}
 \DoxyCodeLine{918     IMGUI\_API \textcolor{keywordtype}{void}              UpdatePlatformWindows();                                        \textcolor{comment}{// call in main loop. will call CreateWindow/ResizeWindow/etc. platform functions for each secondary viewport, and DestroyWindow for each inactive viewport.}}
 \DoxyCodeLine{919     IMGUI\_API \textcolor{keywordtype}{void}              RenderPlatformWindowsDefault(\textcolor{keywordtype}{void}* platform\_render\_arg = NULL, \textcolor{keywordtype}{void}* renderer\_render\_arg = NULL); \textcolor{comment}{// call in main loop. will call RenderWindow/SwapBuffers platform functions for each secondary viewport which doesn't have the ImGuiViewportFlags\_Minimized flag set. May be reimplemented by user for custom rendering needs.}}
 \DoxyCodeLine{920     IMGUI\_API \textcolor{keywordtype}{void}              DestroyPlatformWindows();                                       \textcolor{comment}{// call DestroyWindow platform functions for all viewports. call from backend Shutdown() if you need to close platform windows before imgui shutdown. otherwise will be called by DestroyContext().}}
@@ -1290,7 +1290,7 @@
 \DoxyCodeLine{1286     ImGuiDockNodeFlags\_NoDockingInCentralNode       = 1 << 2,   \textcolor{comment}{// Shared       // Disable docking inside the Central Node, which will be always kept empty.}}
 \DoxyCodeLine{1287     ImGuiDockNodeFlags\_PassthruCentralNode          = 1 << 3,   \textcolor{comment}{// Shared       // Enable passthru dockspace: 1) DockSpace() will render a ImGuiCol\_WindowBg background covering everything excepted the Central Node when empty. Meaning the host window should probably use SetNextWindowBgAlpha(0.0f) prior to Begin() when using this. 2) When Central Node is empty: let inputs pass-\/through + won't display a DockingEmptyBg background. See demo for details.}}
 \DoxyCodeLine{1288     ImGuiDockNodeFlags\_NoSplit                      = 1 << 4,   \textcolor{comment}{// Shared/Local // Disable splitting the node into smaller nodes. Useful e.g. when embedding dockspaces into a main root one (the root one may have splitting disabled to reduce confusion). Note: when turned off, existing splits will be preserved.}}
-\DoxyCodeLine{1289     ImGuiDockNodeFlags\_NoResize                     = 1 << 5,   \textcolor{comment}{// Shared/Local // Disable resizing node using the splitter/separators. Useful with programatically setup dockspaces.}}
+\DoxyCodeLine{1289     ImGuiDockNodeFlags\_NoResize                     = 1 << 5,   \textcolor{comment}{// Shared/Local // Disable resizing node using the splitter/separators. Useful with programatically set\_appData dockspaces.}}
 \DoxyCodeLine{1290     ImGuiDockNodeFlags\_AutoHideTabBar               = 1 << 6    \textcolor{comment}{// Shared/Local // Tab bar will automatically hide when there is a single window in the dock node.}}
 \DoxyCodeLine{1291 \};}
 \DoxyCodeLine{1292 }
@@ -1865,7 +1865,7 @@
 \DoxyCodeLine{1861     \textcolor{keywordtype}{bool}        ConfigViewportsNoAutoMerge;     \textcolor{comment}{// = false;         // Set to make all floating imgui windows always create their own viewport. Otherwise, they are merged into the main host viewports when overlapping it. May also set ImGuiViewportFlags\_NoAutoMerge on individual viewport.}}
 \DoxyCodeLine{1862     \textcolor{keywordtype}{bool}        ConfigViewportsNoTaskBarIcon;   \textcolor{comment}{// = false          // Disable default OS task bar icon flag for secondary viewports. When a viewport doesn't want a task bar icon, ImGuiViewportFlags\_NoTaskBarIcon will be set on it.}}
 \DoxyCodeLine{1863     \textcolor{keywordtype}{bool}        ConfigViewportsNoDecoration;    \textcolor{comment}{// = true           // Disable default OS window decoration flag for secondary viewports. When a viewport doesn't want window decorations, ImGuiViewportFlags\_NoDecoration will be set on it. Enabling decoration can create subsequent issues at OS levels (e.g. minimum window size).}}
-\DoxyCodeLine{1864     \textcolor{keywordtype}{bool}        ConfigViewportsNoDefaultParent; \textcolor{comment}{// = false          // Disable default OS parenting to main viewport for secondary viewports. By default, viewports are marked with ParentViewportId = <main\_viewport>, expecting the platform backend to setup a parent/child relationship between the OS windows (some backend may ignore this). Set to true if you want the default to be 0, then all viewports will be top-\/level OS windows.}}
+\DoxyCodeLine{1864     \textcolor{keywordtype}{bool}        ConfigViewportsNoDefaultParent; \textcolor{comment}{// = false          // Disable default OS parenting to main viewport for secondary viewports. By default, viewports are marked with ParentViewportId = <main\_viewport>, expecting the platform backend to set\_appData a parent/child relationship between the OS windows (some backend may ignore this). Set to true if you want the default to be 0, then all viewports will be top-\/level OS windows.}}
 \DoxyCodeLine{1865 }
 \DoxyCodeLine{1866     \textcolor{comment}{// Miscellaneous options}}
 \DoxyCodeLine{1867     \textcolor{keywordtype}{bool}        MouseDrawCursor;                \textcolor{comment}{// = false          // Request ImGui to draw a mouse cursor for you (if you are on a platform without a mouse cursor). Cannot be easily renamed to 'io.ConfigXXX' because this is frequently used by backend implementations.}}
@@ -2657,7 +2657,7 @@
 \DoxyCodeLine{2653 \textcolor{comment}{//  -\/ One or more fonts.}}
 \DoxyCodeLine{2654 \textcolor{comment}{//  -\/ Custom graphics data needed to render the shapes needed by Dear ImGui.}}
 \DoxyCodeLine{2655 \textcolor{comment}{//  -\/ Mouse cursor shapes for software cursor rendering (unless setting 'Flags |= ImFontAtlasFlags\_NoMouseCursors' in the font atlas).}}
-\DoxyCodeLine{2656 \textcolor{comment}{// It is the user-\/code responsibility to setup/build the atlas, then upload the pixel data into a texture accessible by your graphics api.}}
+\DoxyCodeLine{2656 \textcolor{comment}{// It is the user-\/code responsibility to set\_appData/build the atlas, then upload the pixel data into a texture accessible by your graphics api.}}
 \DoxyCodeLine{2657 \textcolor{comment}{//  -\/ Optionally, call any of the AddFont*** functions. If you don't call any, the default font embedded in the code will be loaded for you.}}
 \DoxyCodeLine{2658 \textcolor{comment}{//  -\/ Call GetTexDataAsAlpha8() or GetTexDataAsRGBA32() to build and retrieve pixels data.}}
 \DoxyCodeLine{2659 \textcolor{comment}{//  -\/ Upload the pixels data into a texture within your graphics system (see imgui\_impl\_xxxx.cpp examples)}}
@@ -2742,7 +2742,7 @@
 \DoxyCodeLine{2738     \textcolor{keywordtype}{bool}                        Locked;             \textcolor{comment}{// Marked as Locked by ImGui::NewFrame() so attempt to modify the atlas will assert.}}
 \DoxyCodeLine{2739 }
 \DoxyCodeLine{2740     \textcolor{comment}{// [Internal]}}
-\DoxyCodeLine{2741     \textcolor{comment}{// NB: Access texture data via GetTexData*() calls! Which will setup a default font for you.}}
+\DoxyCodeLine{2741     \textcolor{comment}{// NB: Access texture data via GetTexData*() calls! Which will set\_appData a default font for you.}}
 \DoxyCodeLine{2742     \textcolor{keywordtype}{bool}                        TexPixelsUseColors; \textcolor{comment}{// Tell whether our texture data is known to use colors (rather than just alpha channel), in order to help backend select a format.}}
 \DoxyCodeLine{2743     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char}*              TexPixelsAlpha8;    \textcolor{comment}{// 1 component per pixel, each component is unsigned 8-\/bit. Total size = TexWidth * TexHeight}}
 \DoxyCodeLine{2744     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}*               TexPixelsRGBA32;    \textcolor{comment}{// 4 component per pixel, each component is unsigned 8-\/bit. Total size = TexWidth * TexHeight * 4}}
@@ -2861,7 +2861,7 @@
 \DoxyCodeLine{2857     \mbox{\hyperlink{struct_im_vec2}{ImVec2}}              WorkPos;                \textcolor{comment}{// Work Area: Position of the viewport minus task bars, menus bars, status bars (>= Pos)}}
 \DoxyCodeLine{2858     \mbox{\hyperlink{struct_im_vec2}{ImVec2}}              WorkSize;               \textcolor{comment}{// Work Area: Size of the viewport minus task bars, menu bars, status bars (<= Size)}}
 \DoxyCodeLine{2859     \textcolor{keywordtype}{float}               DpiScale;               \textcolor{comment}{// 1.0f = 96 DPI = No extra scale.}}
-\DoxyCodeLine{2860     ImGuiID             ParentViewportId;       \textcolor{comment}{// (Advanced) 0: no parent. Instruct the platform backend to setup a parent/child relationship between platform windows.}}
+\DoxyCodeLine{2860     ImGuiID             ParentViewportId;       \textcolor{comment}{// (Advanced) 0: no parent. Instruct the platform backend to set\_appData a parent/child relationship between platform windows.}}
 \DoxyCodeLine{2861     \mbox{\hyperlink{struct_im_draw_data}{ImDrawData}}*         DrawData;               \textcolor{comment}{// The ImDrawData corresponding to this viewport. Valid after Render() and until the next call to NewFrame().}}
 \DoxyCodeLine{2862 }
 \DoxyCodeLine{2863     \textcolor{comment}{// Our design separate the Renderer and Platform backends to facilitate combining default backends with each others.}}
@@ -2904,7 +2904,7 @@
 \DoxyCodeLine{2900 \textcolor{comment}{//}}
 \DoxyCodeLine{2901 \textcolor{comment}{// Steps to use multi-\/viewports in your application, when using a default backend from the examples/ folder:}}
 \DoxyCodeLine{2902 \textcolor{comment}{// -\/ Application:  Enable feature with 'io.ConfigFlags |= ImGuiConfigFlags\_ViewportsEnable'.}}
-\DoxyCodeLine{2903 \textcolor{comment}{// -\/ Backend:      The backend initialization will setup all necessary ImGuiPlatformIO's functions and update monitors info every frame.}}
+\DoxyCodeLine{2903 \textcolor{comment}{// -\/ Backend:      The backend initialization will set\_appData all necessary ImGuiPlatformIO's functions and update monitors info every frame.}}
 \DoxyCodeLine{2904 \textcolor{comment}{// -\/ Application:  In your main loop, call ImGui::UpdatePlatformWindows(), ImGui::RenderPlatformWindowsDefault() after EndFrame() or Render().}}
 \DoxyCodeLine{2905 \textcolor{comment}{// -\/ Application:  Fix absolute coordinates used in ImGui::SetWindowPos() or ImGui::SetNextWindowPos() calls.}}
 \DoxyCodeLine{2906 \textcolor{comment}{//}}
@@ -2924,13 +2924,13 @@
 \DoxyCodeLine{2920 \textcolor{comment}{// About ImGui::RenderPlatformWindowsDefault():}}
 \DoxyCodeLine{2921 \textcolor{comment}{// -\/ This function is a mostly a \_helper\_ for the common-\/most cases, and to facilitate using default backends.}}
 \DoxyCodeLine{2922 \textcolor{comment}{// -\/ You can check its simple source code to understand what it does.}}
-\DoxyCodeLine{2923 \textcolor{comment}{//   It basically iterates secondary viewports and call 4 functions that are setup in ImGuiPlatformIO, if available:}}
+\DoxyCodeLine{2923 \textcolor{comment}{//   It basically iterates secondary viewports and call 4 functions that are set\_appData in ImGuiPlatformIO, if available:}}
 \DoxyCodeLine{2924 \textcolor{comment}{//     Platform\_RenderWindow(), Renderer\_RenderWindow(), Platform\_SwapBuffers(), Renderer\_SwapBuffers()}}
 \DoxyCodeLine{2925 \textcolor{comment}{//   Those functions pointers exists only for the benefit of RenderPlatformWindowsDefault().}}
 \DoxyCodeLine{2926 \textcolor{comment}{// -\/ If you have very specific rendering needs (e.g. flipping multiple swap-\/chain simultaneously, unusual sync/threading issues, etc.),}}
 \DoxyCodeLine{2927 \textcolor{comment}{//   you may be tempted to ignore RenderPlatformWindowsDefault() and write customized code to perform your renderingg.}}
-\DoxyCodeLine{2928 \textcolor{comment}{//   You may decide to setup the platform\_io's *RenderWindow and *SwapBuffers pointers and call your functions through those pointers,}}
-\DoxyCodeLine{2929 \textcolor{comment}{//   or you may decide to never setup those pointers and call your code directly. They are a convenience, not an obligatory interface.}}
+\DoxyCodeLine{2928 \textcolor{comment}{//   You may decide to set\_appData the platform\_io's *RenderWindow and *SwapBuffers pointers and call your functions through those pointers,}}
+\DoxyCodeLine{2929 \textcolor{comment}{//   or you may decide to never set\_appData those pointers and call your code directly. They are a convenience, not an obligatory interface.}}
 \DoxyCodeLine{2930 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
 \DoxyCodeLine{2931 }
 \DoxyCodeLine{2932 \textcolor{comment}{// (Optional) Access via ImGui::GetPlatformIO()}}
@@ -2978,7 +2978,7 @@
 \DoxyCodeLine{2974     void    (*Renderer\_CreateWindow)(\mbox{\hyperlink{struct_im_gui_viewport}{ImGuiViewport}}* vp);                    \textcolor{comment}{// . . U . .  // Create swap chain, frame buffers etc. (called after Platform\_CreateWindow)}}
 \DoxyCodeLine{2975     void    (*Renderer\_DestroyWindow)(\mbox{\hyperlink{struct_im_gui_viewport}{ImGuiViewport}}* vp);                   \textcolor{comment}{// N . U . D  // Destroy swap chain, frame buffers etc. (called before Platform\_DestroyWindow)}}
 \DoxyCodeLine{2976     void    (*Renderer\_SetWindowSize)(\mbox{\hyperlink{struct_im_gui_viewport}{ImGuiViewport}}* vp, \mbox{\hyperlink{struct_im_vec2}{ImVec2}} size);      \textcolor{comment}{// . . U . .  // Resize swap chain, frame buffers etc. (called after Platform\_SetWindowSize)}}
-\DoxyCodeLine{2977     void    (*Renderer\_RenderWindow)(\mbox{\hyperlink{struct_im_gui_viewport}{ImGuiViewport}}* vp, \textcolor{keywordtype}{void}* render\_arg);  \textcolor{comment}{// . . . R .  // (Optional) Clear framebuffer, setup render target, then render the viewport-\/>DrawData. 'render\_arg' is the value passed to RenderPlatformWindowsDefault().}}
+\DoxyCodeLine{2977     void    (*Renderer\_RenderWindow)(\mbox{\hyperlink{struct_im_gui_viewport}{ImGuiViewport}}* vp, \textcolor{keywordtype}{void}* render\_arg);  \textcolor{comment}{// . . . R .  // (Optional) Clear framebuffer, set\_appData render target, then render the viewport-\/>DrawData. 'render\_arg' is the value passed to RenderPlatformWindowsDefault().}}
 \DoxyCodeLine{2978     void    (*Renderer\_SwapBuffers)(\mbox{\hyperlink{struct_im_gui_viewport}{ImGuiViewport}}* vp, \textcolor{keywordtype}{void}* render\_arg);   \textcolor{comment}{// . . . R .  // (Optional) Call Present/SwapBuffers. 'render\_arg' is the value passed to RenderPlatformWindowsDefault().}}
 \DoxyCodeLine{2979 }
 \DoxyCodeLine{2980     \textcolor{comment}{// (Optional) Monitor list}}
