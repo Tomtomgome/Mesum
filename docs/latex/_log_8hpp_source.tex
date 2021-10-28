@@ -59,23 +59,23 @@
 \DoxyCodeLine{92     \mbox{\hyperlink{group___log_ga65bf48423557daf6361e9273fa3cedcc}{\string~Logger}}();}
 \DoxyCodeLine{93 }
 \DoxyCodeLine{94    \textcolor{keyword}{private}:}
-\DoxyCodeLine{96     std::string get\_time();}
-\DoxyCodeLine{98     std::string get\_loglineHeader();}
+\DoxyCodeLine{96     std::string \mbox{\hyperlink{group___log_ga3e8d8b07780e2a257355602b47f79ff4}{get\_time}}();}
+\DoxyCodeLine{98     std::string \mbox{\hyperlink{group___log_ga4f8d02722b9085722cd2babce3c510e4}{get\_loglineHeader}}();}
 \DoxyCodeLine{99 }
-\DoxyCodeLine{101     std::stringstream m\_logStream;}
-\DoxyCodeLine{103     LogPolicy* m\_policy;}
-\DoxyCodeLine{105     std::mutex m\_mutexWrite;}
+\DoxyCodeLine{101     std::stringstream \mbox{\hyperlink{group___log_ga11ebab8edadf2023987c805ce9576b15}{m\_logStream}};}
+\DoxyCodeLine{103     LogPolicy* \mbox{\hyperlink{group___log_ga109c6d2d50e4a3e8da08a69b38dfbb16}{m\_policy}};}
+\DoxyCodeLine{105     std::mutex \mbox{\hyperlink{group___log_gaf2ee2daa8a15910cde5824c736506ae0}{m\_mutexWrite}};}
 \DoxyCodeLine{106 }
-\DoxyCodeLine{108     \textcolor{keywordtype}{void} print\_impl();}
+\DoxyCodeLine{108     \textcolor{keywordtype}{void} \mbox{\hyperlink{group___log_ga5dc93cb7cc1e460f1c1e7fb8c23634f5}{print\_impl}}();}
 \DoxyCodeLine{109 }
 \DoxyCodeLine{111 }
 \DoxyCodeLine{117     \textcolor{keyword}{template} <\textcolor{keyword}{typename} First, \textcolor{keyword}{typename}... Rest>}
-\DoxyCodeLine{118     \textcolor{keywordtype}{void} print\_impl(First a\_parm1, Rest... a\_parm);}
+\DoxyCodeLine{118     \textcolor{keywordtype}{void} \mbox{\hyperlink{group___log_ga5dc93cb7cc1e460f1c1e7fb8c23634f5}{print\_impl}}(First a\_parm1, Rest... a\_parm);}
 \DoxyCodeLine{119 }
 \DoxyCodeLine{120    \textcolor{keyword}{private}:}
-\DoxyCodeLine{122     \textcolor{keywordtype}{unsigned} m\_lineNumber;}
-\DoxyCodeLine{124     \mbox{\hyperlink{group___log_ga16bb065e762d9d22730e02ef41a8165f}{ChannelFilter}} m\_filter = -\/1;}
-\DoxyCodeLine{126     \mbox{\hyperlink{group___log_ga13f51627936471940ede5666fd047313}{ChannelID}} m\_nextChannelID = 1;}
+\DoxyCodeLine{122     \textcolor{keywordtype}{unsigned} \mbox{\hyperlink{group___log_gac5d048908987c191774d4fa620984968}{m\_lineNumber}};}
+\DoxyCodeLine{124     \mbox{\hyperlink{group___log_ga16bb065e762d9d22730e02ef41a8165f}{ChannelFilter}} \mbox{\hyperlink{group___log_ga1200f9c4218e3986e86c515c158fa8db}{m\_filter}} = -\/1;}
+\DoxyCodeLine{126     \mbox{\hyperlink{group___log_ga13f51627936471940ede5666fd047313}{ChannelID}} \mbox{\hyperlink{group___log_ga35d8e6f355599eaf31c2a144780e0cf4}{m\_nextChannelID}} = 1;}
 \DoxyCodeLine{127 \};}
 \DoxyCodeLine{128 }
 \DoxyCodeLine{129 \textcolor{keyword}{template} <\textcolor{keyword}{typename} LogPolicy>}
@@ -104,7 +104,7 @@
 \DoxyCodeLine{152 \}}
 \DoxyCodeLine{153 }
 \DoxyCodeLine{154 \textcolor{keyword}{template} <\textcolor{keyword}{typename} LogPolicy>}
-\DoxyCodeLine{155 \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1logging_1_1_logger}{Logger<LogPolicy>::print\_impl}}()}
+\DoxyCodeLine{155 \textcolor{keywordtype}{void} \mbox{\hyperlink{group___log_ga5dc93cb7cc1e460f1c1e7fb8c23634f5}{Logger<LogPolicy>::print\_impl}}()}
 \DoxyCodeLine{156 \{}
 \DoxyCodeLine{157     m\_policy-\/>write(get\_loglineHeader() + m\_logStream.str());}
 \DoxyCodeLine{158     m\_logStream.str(\textcolor{stringliteral}{"{}"{}});}
@@ -112,14 +112,14 @@
 \DoxyCodeLine{160 }
 \DoxyCodeLine{161 \textcolor{keyword}{template} <\textcolor{keyword}{typename} LogPolicy>}
 \DoxyCodeLine{162 \textcolor{keyword}{template} <\textcolor{keyword}{typename} First, \textcolor{keyword}{typename}... Rest>}
-\DoxyCodeLine{163 \textcolor{keywordtype}{void} Logger<LogPolicy>::print\_impl(First a\_parm1, Rest... a\_parm)}
+\DoxyCodeLine{163 \textcolor{keywordtype}{void} \mbox{\hyperlink{group___log_ga5dc93cb7cc1e460f1c1e7fb8c23634f5}{Logger<LogPolicy>::print\_impl}}(First a\_parm1, Rest... a\_parm)}
 \DoxyCodeLine{164 \{}
 \DoxyCodeLine{165     m\_logStream << a\_parm1;}
 \DoxyCodeLine{166     print\_impl(a\_parm...);}
 \DoxyCodeLine{167 \}}
 \DoxyCodeLine{168 }
 \DoxyCodeLine{169 \textcolor{keyword}{template} <\textcolor{keyword}{typename} LogPolicy>}
-\DoxyCodeLine{170 std::string Logger<LogPolicy>::get\_time()}
+\DoxyCodeLine{170 std::string \mbox{\hyperlink{group___log_ga3e8d8b07780e2a257355602b47f79ff4}{Logger<LogPolicy>::get\_time}}()}
 \DoxyCodeLine{171 \{}
 \DoxyCodeLine{172     time\_t       raw\_time;}
 \DoxyCodeLine{173     time(\&raw\_time);}
@@ -138,7 +138,7 @@
 \DoxyCodeLine{186 \}}
 \DoxyCodeLine{187 }
 \DoxyCodeLine{188 \textcolor{keyword}{template} <\textcolor{keyword}{typename} LogPolicy>}
-\DoxyCodeLine{189 std::string Logger<LogPolicy>::get\_loglineHeader()}
+\DoxyCodeLine{189 std::string \mbox{\hyperlink{group___log_ga4f8d02722b9085722cd2babce3c510e4}{Logger<LogPolicy>::get\_loglineHeader}}()}
 \DoxyCodeLine{190 \{}
 \DoxyCodeLine{191     std::stringstream header;}
 \DoxyCodeLine{192     header.str(\textcolor{stringliteral}{"{}"{}});}

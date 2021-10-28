@@ -34,6 +34,21 @@ virtual void \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_windowed_application_imp
 \mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a1315ad79c40feb339499e3c8ff0921d7}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a1315ad79c40feb339499e3c8ff0921d7}} 
 virtual Bool {\bfseries step} (const std\+::chrono\+::duration$<$ long long int, std\+::nano $>$ \&a\+\_\+delta\+Time) override
 \end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_adbb6b7984a4b3392181e14941eedc1a3}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_adbb6b7984a4b3392181e14941eedc1a3}} 
+Bool {\bfseries m\+\_\+support\+Im\+Gui\+Multi\+View\+Ports} = false
+\item 
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a5fe94e86a57be7df68e5a35bbcb6e43c}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a5fe94e86a57be7df68e5a35bbcb6e43c}} 
+\mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{render\+::\+IRenderer}} $\ast$ {\bfseries m\+\_\+renderer} = nullptr
+\item 
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a59f51f83fdfc2b027f9111eedad617d8}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a59f51f83fdfc2b027f9111eedad617d8}} 
+\mbox{\hyperlink{structm_1_1xcb__unix_1_1_x_c_b_context}{XCBContext}} {\bfseries m\+\_\+\+XCBContext}
+\item 
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_aebc53f3580a0751b9fec7ce31407ab18}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_aebc53f3580a0751b9fec7ce31407ab18}} 
+std\+::set$<$ \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{windows\+::\+IWindow}} $\ast$ $>$ {\bfseries m\+\_\+windows}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Member Function Documentation}
@@ -49,7 +64,7 @@ Virtual that should implement the application exits.
 
 
 
-Implements \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application}{m\+::application\+::m\+ITimed\+Loop\+Application}}.
+Implements \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application_a7f497a19bcd06e55087a92548550201d}{m\+::application\+::m\+ITimed\+Loop\+Application}}.
 
 \mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_af51366e2fdd19f1d8d9e8ec99523a850}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_af51366e2fdd19f1d8d9e8ec99523a850}} 
 \index{m::xcb\_unix::IWindowedApplicationImpl@{m::xcb\_unix::IWindowedApplicationImpl}!init@{init}}
@@ -70,7 +85,7 @@ Virtual that should implement initialization.
 \end{DoxyParams}
 
 
-Implements \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application}{m\+::application\+::m\+ITimed\+Loop\+Application}}.
+Implements \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application_ad4ed9bb275006c340185826f215e6215}{m\+::application\+::m\+ITimed\+Loop\+Application}}.
 
 
 

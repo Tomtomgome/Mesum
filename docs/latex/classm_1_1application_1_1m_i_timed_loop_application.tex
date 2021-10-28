@@ -24,6 +24,21 @@ void \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application_a30915
 \begin{DoxyCompactList}\small\item\em Set the minimal duration of a step. \end{DoxyCompactList}\item 
 std\+::chrono\+::steady\+\_\+clock\+::duration \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application_aacc12d18ffeae05cdbdbfa2eed7a4376}{get\+\_\+minimal\+Step\+Duration}} () const
 \begin{DoxyCompactList}\small\item\em Get the minimal duration of a step. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application_ad4ed9bb275006c340185826f215e6215}{init}} (\mbox{\hyperlink{structm_1_1m_cmd_line}{m\+Cmd\+Line}} const \&a\+\_\+cmd\+Line, void $\ast$a\+\_\+app\+Data)=0
+\begin{DoxyCompactList}\small\item\em Virtual that should implement initialization. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application_a7f497a19bcd06e55087a92548550201d}{destroy}} ()=0
+\begin{DoxyCompactList}\small\item\em Virtual that should implement the application exits. \end{DoxyCompactList}\item 
+virtual Bool \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application_ac2afcb4ee8711b4d1204e3a17af404d7}{step}} (std\+::chrono\+::steady\+\_\+clock\+::duration const \&a\+\_\+delta\+Time)=0
+\begin{DoxyCompactList}\small\item\em Virtual that should implement each step. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1application_1_1m_i_timed_loop_application_afffa7f3a19ce07e78e580eed75708139}\label{classm_1_1application_1_1m_i_timed_loop_application_afffa7f3a19ce07e78e580eed75708139}} 
+std\+::chrono\+::steady\+\_\+clock\+::duration {\bfseries m\+\_\+min\+Step\+Duration} \{0\}
+\begin{DoxyCompactList}\small\item\em the minimal duration a step can take \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -32,6 +47,20 @@ Interface for a loop based application with timmed steps.
 It has a three step life cycle \+: init called first, a step called in a loop, and finally a destroy when exiting 
 
 \doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classm_1_1application_1_1m_i_timed_loop_application_a7f497a19bcd06e55087a92548550201d}\label{classm_1_1application_1_1m_i_timed_loop_application_a7f497a19bcd06e55087a92548550201d}} 
+\index{m::application::mITimedLoopApplication@{m::application::mITimedLoopApplication}!destroy@{destroy}}
+\index{destroy@{destroy}!m::application::mITimedLoopApplication@{m::application::mITimedLoopApplication}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily virtual void m\+::application\+::m\+ITimed\+Loop\+Application\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [pure virtual]}}
+
+
+
+Virtual that should implement the application exits. 
+
+
+
+Implemented in \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a8baef1bc4148d903512c731ab3121da5}{m\+::xcb\+\_\+unix\+::\+IWindowed\+Application\+Impl}}, and \mbox{\hyperlink{classm_1_1win32_1_1_i_windowed_application_impl_ade7cd05678503ae2990cbb224af7e29e}{m\+::win32\+::\+IWindowed\+Application\+Impl}}.
+
 \mbox{\Hypertarget{classm_1_1application_1_1m_i_timed_loop_application_aacc12d18ffeae05cdbdbfa2eed7a4376}\label{classm_1_1application_1_1m_i_timed_loop_application_aacc12d18ffeae05cdbdbfa2eed7a4376}} 
 \index{m::application::mITimedLoopApplication@{m::application::mITimedLoopApplication}!get\_minimalStepDuration@{get\_minimalStepDuration}}
 \index{get\_minimalStepDuration@{get\_minimalStepDuration}!m::application::mITimedLoopApplication@{m::application::mITimedLoopApplication}}
@@ -45,6 +74,27 @@ Get the minimal duration of a step.
 \begin{DoxyReturn}{Returns}
 The target minimal duration 
 \end{DoxyReturn}
+\mbox{\Hypertarget{classm_1_1application_1_1m_i_timed_loop_application_ad4ed9bb275006c340185826f215e6215}\label{classm_1_1application_1_1m_i_timed_loop_application_ad4ed9bb275006c340185826f215e6215}} 
+\index{m::application::mITimedLoopApplication@{m::application::mITimedLoopApplication}!init@{init}}
+\index{init@{init}!m::application::mITimedLoopApplication@{m::application::mITimedLoopApplication}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily virtual void m\+::application\+::m\+ITimed\+Loop\+Application\+::init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structm_1_1m_cmd_line}{m\+Cmd\+Line}} const \&}]{a\+\_\+cmd\+Line,  }\item[{void $\ast$}]{a\+\_\+app\+Data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [pure virtual]}}
+
+
+
+Virtual that should implement initialization. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+cmd\+Line} & A reference to a parsed cmd\+Line \\
+\hline
+{\em a\+\_\+app\+Data} & A pointer to a nameless structure containing application data (might be nullptr) \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_windowed_application_impl_af51366e2fdd19f1d8d9e8ec99523a850}{m\+::xcb\+\_\+unix\+::\+IWindowed\+Application\+Impl}}, and \mbox{\hyperlink{classm_1_1win32_1_1_i_windowed_application_impl_aab2f38772a89c69b29f02e3620c850bf}{m\+::win32\+::\+IWindowed\+Application\+Impl}}.
+
 \mbox{\Hypertarget{classm_1_1application_1_1m_i_timed_loop_application_a2ec2d8e42fcf88cb05bd8fc6748959b9}\label{classm_1_1application_1_1m_i_timed_loop_application_a2ec2d8e42fcf88cb05bd8fc6748959b9}} 
 \index{m::application::mITimedLoopApplication@{m::application::mITimedLoopApplication}!launch@{launch}}
 \index{launch@{launch}!m::application::mITimedLoopApplication@{m::application::mITimedLoopApplication}}
@@ -81,6 +131,28 @@ Set the minimal duration of a step.
 {\em a\+\_\+min\+Step\+Duration} & The target minimal duration \\
 \hline
 \end{DoxyParams}
+\mbox{\Hypertarget{classm_1_1application_1_1m_i_timed_loop_application_ac2afcb4ee8711b4d1204e3a17af404d7}\label{classm_1_1application_1_1m_i_timed_loop_application_ac2afcb4ee8711b4d1204e3a17af404d7}} 
+\index{m::application::mITimedLoopApplication@{m::application::mITimedLoopApplication}!step@{step}}
+\index{step@{step}!m::application::mITimedLoopApplication@{m::application::mITimedLoopApplication}}
+\doxysubsubsection{\texorpdfstring{step()}{step()}}
+{\footnotesize\ttfamily virtual Bool m\+::application\+::m\+ITimed\+Loop\+Application\+::step (\begin{DoxyParamCaption}\item[{std\+::chrono\+::steady\+\_\+clock\+::duration const \&}]{a\+\_\+delta\+Time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [pure virtual]}}
+
+
+
+Virtual that should implement each step. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+delta\+Time} & The time elapsed since last step in microseconds \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+should return true for the application to continue, false to stop 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{classm_1_1win32_1_1_i_windowed_application_impl_ac8a2628a86f944333e8668bd3b46e599}{m\+::win32\+::\+IWindowed\+Application\+Impl}}.
+
 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}

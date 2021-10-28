@@ -1,5 +1,10 @@
 \hypertarget{classm_1_1dx12_1_1_d_x12_command_queue}{}\doxysection{m\+::dx12\+::DX12\+Command\+Queue Class Reference}
 \label{classm_1_1dx12_1_1_d_x12_command_queue}\index{m::dx12::DX12CommandQueue@{m::dx12::DX12CommandQueue}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structm_1_1dx12_1_1_d_x12_command_queue_1_1_command_allocator_entry}{Command\+Allocator\+Entry}}
+\end{DoxyCompactItemize}
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -38,6 +43,42 @@ Microsoft\+::\+WRL\+::\+Com\+Ptr$<$ ID3\+D12\+Command\+Allocator $>$ {\bfseries 
 \item 
 \mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_command_queue_aba4420c0a148eaaaf4083980777aff3d}\label{classm_1_1dx12_1_1_d_x12_command_queue_aba4420c0a148eaaaf4083980777aff3d}} 
 Microsoft\+::\+WRL\+::\+Com\+Ptr$<$ ID3\+D12\+Graphics\+Command\+List2 $>$ {\bfseries create\+\_\+command\+List} (Microsoft\+::\+WRL\+::\+Com\+Ptr$<$ ID3\+D12\+Command\+Allocator $>$ a\+\_\+allocator)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_command_queue_a8eb5066e7ad9a3a5ff1db7c7ec44f47c}\label{classm_1_1dx12_1_1_d_x12_command_queue_a8eb5066e7ad9a3a5ff1db7c7ec44f47c}} 
+using {\bfseries Command\+Allocator\+Queue} = std\+::queue$<$ \mbox{\hyperlink{structm_1_1dx12_1_1_d_x12_command_queue_1_1_command_allocator_entry}{Command\+Allocator\+Entry}} $>$
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_command_queue_af765eba7e450a7571150af8d4f1e8caf}\label{classm_1_1dx12_1_1_d_x12_command_queue_af765eba7e450a7571150af8d4f1e8caf}} 
+using {\bfseries Command\+List\+Queue} = std\+::queue$<$ Microsoft\+::\+WRL\+::\+Com\+Ptr$<$ ID3\+D12\+Graphics\+Command\+List2 $>$ $>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_command_queue_a375cd50fd7331e67ccc377c3f9ce1b02}\label{classm_1_1dx12_1_1_d_x12_command_queue_a375cd50fd7331e67ccc377c3f9ce1b02}} 
+D3\+D12\+\_\+\+COMMAND\+\_\+\+LIST\+\_\+\+TYPE {\bfseries m\+\_\+command\+List\+Type}
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_command_queue_ae79dbef8893828e1609cc9b84b535ccb}\label{classm_1_1dx12_1_1_d_x12_command_queue_ae79dbef8893828e1609cc9b84b535ccb}} 
+Microsoft\+::\+WRL\+::\+Com\+Ptr$<$ ID3\+D12\+Device2 $>$ {\bfseries m\+\_\+d3d12\+Device}
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_command_queue_ab1308ab860f2d727fe067938f9a5ca49}\label{classm_1_1dx12_1_1_d_x12_command_queue_ab1308ab860f2d727fe067938f9a5ca49}} 
+Microsoft\+::\+WRL\+::\+Com\+Ptr$<$ ID3\+D12\+Command\+Queue $>$ {\bfseries m\+\_\+d3d12\+Command\+Queue}
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_command_queue_ab2eb040cfdc59e8e95f78e1f90a8affc}\label{classm_1_1dx12_1_1_d_x12_command_queue_ab2eb040cfdc59e8e95f78e1f90a8affc}} 
+Microsoft\+::\+WRL\+::\+Com\+Ptr$<$ ID3\+D12\+Fence $>$ {\bfseries m\+\_\+d3d12\+Fence}
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_command_queue_a2f7714d847b31f32663fc5ec0611f715}\label{classm_1_1dx12_1_1_d_x12_command_queue_a2f7714d847b31f32663fc5ec0611f715}} 
+HANDLE {\bfseries m\+\_\+fence\+Event}
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_command_queue_a7f64b009523be08d7cf5faf4ba98cc42}\label{classm_1_1dx12_1_1_d_x12_command_queue_a7f64b009523be08d7cf5faf4ba98cc42}} 
+U64 {\bfseries m\+\_\+fence\+Value}
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_command_queue_a7d6b4ab6a9b45545bf975abf2cb64d8d}\label{classm_1_1dx12_1_1_d_x12_command_queue_a7d6b4ab6a9b45545bf975abf2cb64d8d}} 
+Command\+Allocator\+Queue {\bfseries m\+\_\+command\+Allocator\+Queue}
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_command_queue_ab20bd53ddb322b1c988de4d2e6d32f6c}\label{classm_1_1dx12_1_1_d_x12_command_queue_ab20bd53ddb322b1c988de4d2e6d32f6c}} 
+Command\+List\+Queue {\bfseries m\+\_\+command\+List\+Queue}
 \end{DoxyCompactItemize}
 
 

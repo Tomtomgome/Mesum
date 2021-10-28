@@ -70,6 +70,8 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classm_1_1dx12_1_1_d_x12_surface-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">m::dx12::DX12Surface Class Reference</div></div>
 </div><!--header-->
@@ -116,6 +118,57 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:abbadca6315bf5caf9c2c266f9bbd38aa"><td class="memItemLeft" align="right" valign="top"><a id="abbadca6315bf5caf9c2c266f9bbd38aa" name="abbadca6315bf5caf9c2c266f9bbd38aa"></a>
 static const U8&#160;</td><td class="memItemRight" valign="bottom"><b>scm_numFrames</b> = 3</td></tr>
 <tr class="separator:abbadca6315bf5caf9c2c266f9bbd38aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a620b40ff1a3b2658a56fb11597d725fb"><td class="memItemLeft" align="right" valign="top"><a id="a620b40ff1a3b2658a56fb11597d725fb" name="a620b40ff1a3b2658a56fb11597d725fb"></a>
+UInt&#160;</td><td class="memItemRight" valign="bottom"><b>get_syncInterval</b> () const</td></tr>
+<tr class="separator:a620b40ff1a3b2658a56fb11597d725fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30e95e2b5dfb7ac04e2822bf778cea44"><td class="memItemLeft" align="right" valign="top"><a id="a30e95e2b5dfb7ac04e2822bf778cea44" name="a30e95e2b5dfb7ac04e2822bf778cea44"></a>
+UInt&#160;</td><td class="memItemRight" valign="bottom"><b>get_presentFlags</b> () const</td></tr>
+<tr class="separator:a30e95e2b5dfb7ac04e2822bf778cea44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e4412c262735260b4dfc096174267f6"><td class="memItemLeft" align="right" valign="top"><a id="a9e4412c262735260b4dfc096174267f6" name="a9e4412c262735260b4dfc096174267f6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>update_renderTargetViews</b> (ComPtr&lt; ID3D12Device2 &gt; a_device, ComPtr&lt; IDXGISwapChain4 &gt; a_swapChain, ComPtr&lt; ID3D12DescriptorHeap &gt; a_descriptorHeap)</td></tr>
+<tr class="separator:a9e4412c262735260b4dfc096174267f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a28361763b610eee0817aad0694fca22e"><td class="memItemLeft" align="right" valign="top"><a id="a28361763b610eee0817aad0694fca22e" name="a28361763b610eee0817aad0694fca22e"></a>
+Bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_vSync</b> = true</td></tr>
+<tr class="separator:a28361763b610eee0817aad0694fca22e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a912edc748baad14a8664b0d00e94bfcb"><td class="memItemLeft" align="right" valign="top"><a id="a912edc748baad14a8664b0d00e94bfcb" name="a912edc748baad14a8664b0d00e94bfcb"></a>
+Bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_tearingSupported</b> = false</td></tr>
+<tr class="separator:a912edc748baad14a8664b0d00e94bfcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd2174b181df6d47ef80ffc08f6aad4b"><td class="memItemLeft" align="right" valign="top"><a id="afd2174b181df6d47ef80ffc08f6aad4b" name="afd2174b181df6d47ef80ffc08f6aad4b"></a>
+ComPtr&lt; IDXGISwapChain4 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_swapChain</b></td></tr>
+<tr class="separator:afd2174b181df6d47ef80ffc08f6aad4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d72cbd09e624873714ce32aabcb9f18"><td class="memItemLeft" align="right" valign="top"><a id="a4d72cbd09e624873714ce32aabcb9f18" name="a4d72cbd09e624873714ce32aabcb9f18"></a>
+ComPtr&lt; ID3D12Resource &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_backBuffers</b> [scm_numFrames]</td></tr>
+<tr class="separator:a4d72cbd09e624873714ce32aabcb9f18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfe787ecc5561ee15b12acce94a4c456"><td class="memItemLeft" align="right" valign="top"><a id="acfe787ecc5561ee15b12acce94a4c456" name="acfe787ecc5561ee15b12acce94a4c456"></a>
+UInt&#160;</td><td class="memItemRight" valign="bottom"><b>m_currentBackBufferIndex</b></td></tr>
+<tr class="separator:acfe787ecc5561ee15b12acce94a4c456"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abea6fdd49aa0819f9fd96991b8ba4afe"><td class="memItemLeft" align="right" valign="top"><a id="abea6fdd49aa0819f9fd96991b8ba4afe" name="abea6fdd49aa0819f9fd96991b8ba4afe"></a>
+ComPtr&lt; ID3D12DescriptorHeap &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_RTVDescriptorHeap</b></td></tr>
+<tr class="separator:abea6fdd49aa0819f9fd96991b8ba4afe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abddee02ededd58d566cd6c4ac6f42f9d"><td class="memItemLeft" align="right" valign="top"><a id="abddee02ededd58d566cd6c4ac6f42f9d" name="abddee02ededd58d566cd6c4ac6f42f9d"></a>
+UInt&#160;</td><td class="memItemRight" valign="bottom"><b>m_RTVDescriptorSize</b></td></tr>
+<tr class="separator:abddee02ededd58d566cd6c4ac6f42f9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea127bcbf36123abf3c05b474700d822"><td class="memItemLeft" align="right" valign="top"><a id="aea127bcbf36123abf3c05b474700d822" name="aea127bcbf36123abf3c05b474700d822"></a>
+ComPtr&lt; ID3D12DescriptorHeap &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_SRVDescriptorHeap</b></td></tr>
+<tr class="separator:aea127bcbf36123abf3c05b474700d822"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f9ac803ab68829cf2ed307dd37fa440"><td class="memItemLeft" align="right" valign="top"><a id="a4f9ac803ab68829cf2ed307dd37fa440" name="a4f9ac803ab68829cf2ed307dd37fa440"></a>
+std::vector&lt; <a class="el" href="structm_1_1dx12_1_1_d_x12_render_taskset.html">DX12RenderTaskset</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_renderTasksets</b></td></tr>
+<tr class="separator:a4f9ac803ab68829cf2ed307dd37fa440"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b515c8f1d5957d45587ef0b5cff0b29"><td class="memItemLeft" align="right" valign="top"><a id="a9b515c8f1d5957d45587ef0b5cff0b29" name="a9b515c8f1d5957d45587ef0b5cff0b29"></a>
+U64&#160;</td><td class="memItemRight" valign="bottom"><b>m_frameFenceValues</b> [scm_numFrames] = {}</td></tr>
+<tr class="separator:a9b515c8f1d5957d45587ef0b5cff0b29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e2d1d388dddb6c5f9bcd1ca0b246c47"><td class="memItemLeft" align="right" valign="top"><a id="a3e2d1d388dddb6c5f9bcd1ca0b246c47" name="a3e2d1d388dddb6c5f9bcd1ca0b246c47"></a>
+U32&#160;</td><td class="memItemRight" valign="bottom"><b>m_clientWidth</b></td></tr>
+<tr class="separator:a3e2d1d388dddb6c5f9bcd1ca0b246c47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe666813171c92754a73725cd1b802d1"><td class="memItemLeft" align="right" valign="top"><a id="abe666813171c92754a73725cd1b802d1" name="abe666813171c92754a73725cd1b802d1"></a>
+U32&#160;</td><td class="memItemRight" valign="bottom"><b>m_clientHeight</b></td></tr>
+<tr class="separator:abe666813171c92754a73725cd1b802d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>

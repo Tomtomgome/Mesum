@@ -70,6 +70,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classm_1_1win32_1_1_i_windowed_application_impl-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">m::win32::IWindowedApplicationImpl Class Reference</div></div>
 </div><!--header-->
@@ -114,6 +115,15 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:ac8a2628a86f944333e8668bd3b46e599"><td class="memItemLeft" align="right" valign="top">Bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1win32_1_1_i_windowed_application_impl.html#ac8a2628a86f944333e8668bd3b46e599">step</a> (std::chrono::steady_clock::duration const &amp;a_deltaTime) override</td></tr>
 <tr class="memdesc:ac8a2628a86f944333e8668bd3b46e599"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual that should implement each step.  <a href="classm_1_1win32_1_1_i_windowed_application_impl.html#ac8a2628a86f944333e8668bd3b46e599">More...</a><br /></td></tr>
 <tr class="separator:ac8a2628a86f944333e8668bd3b46e599"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:acaa60f8d6a2a8c068af3c74514a0ad42"><td class="memItemLeft" align="right" valign="top"><a id="acaa60f8d6a2a8c068af3c74514a0ad42" name="acaa60f8d6a2a8c068af3c74514a0ad42"></a>
+<a class="el" href="structm_1_1win32_1_1_w_i_n32_context.html">WIN32Context</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_W32Context</b></td></tr>
+<tr class="separator:acaa60f8d6a2a8c068af3c74514a0ad42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64c132f0ed069955ee84a314b07bf8b1"><td class="memItemLeft" align="right" valign="top"><a id="a64c132f0ed069955ee84a314b07bf8b1" name="a64c132f0ed069955ee84a314b07bf8b1"></a>
+std::set&lt; <a class="el" href="classm_1_1windows_1_1_i_window.html">windows::IWindow</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_windows</b></td></tr>
+<tr class="separator:a64c132f0ed069955ee84a314b07bf8b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="aa80f822aa19864470fbf83e0ff1d1f48" name="aa80f822aa19864470fbf83e0ff1d1f48"></a>
@@ -185,7 +195,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Virtual that should implement the application exits. </p>
 
-<p>Implements <a class="el" href="classm_1_1application_1_1m_i_timed_loop_application.html">m::application::mITimedLoopApplication</a>.</p>
+<p>Implements <a class="el" href="classm_1_1application_1_1m_i_timed_loop_application.html#a7f497a19bcd06e55087a92548550201d">m::application::mITimedLoopApplication</a>.</p>
 
 </div>
 </div>
@@ -232,7 +242,7 @@ Protected Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classm_1_1application_1_1m_i_timed_loop_application.html">m::application::mITimedLoopApplication</a>.</p>
+<p>Implements <a class="el" href="classm_1_1application_1_1m_i_timed_loop_application.html#ad4ed9bb275006c340185826f215e6215">m::application::mITimedLoopApplication</a>.</p>
 
 </div>
 </div>
@@ -297,7 +307,7 @@ Protected Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>should return true for the application to continue, false to stop </dd></dl>
 
-<p>Implements <a class="el" href="classm_1_1application_1_1m_i_timed_loop_application.html">m::application::mITimedLoopApplication</a>.</p>
+<p>Implements <a class="el" href="classm_1_1application_1_1m_i_timed_loop_application.html#ac2afcb4ee8711b4d1204e3a17af404d7">m::application::mITimedLoopApplication</a>.</p>
 
 </div>
 </div>

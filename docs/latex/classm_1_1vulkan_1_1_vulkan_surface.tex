@@ -46,6 +46,78 @@ static const U8 {\bfseries scm\+\_\+num\+Frames} = 3
 \item 
 static const Vk\+Format \mbox{\hyperlink{classm_1_1vulkan_1_1_vulkan_surface_ac754663bb5e8c9d37c5bd1153f26ebd7}{scm\+\_\+selected\+Swap\+Chain\+Format}}
 \end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_aff804052ee22f5cc26c9d0deeee68b9c}\label{classm_1_1vulkan_1_1_vulkan_surface_aff804052ee22f5cc26c9d0deeee68b9c}} 
+void {\bfseries init\+\_\+internal} ()
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_a38d88c2d54d42085361057f328eb6eae}\label{classm_1_1vulkan_1_1_vulkan_surface_a38d88c2d54d42085361057f328eb6eae}} 
+void {\bfseries init\+\_\+swap\+Chain} ()
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_ab80a975b199e3071a7f89ce21faf9dd3}\label{classm_1_1vulkan_1_1_vulkan_surface_ab80a975b199e3071a7f89ce21faf9dd3}} 
+void {\bfseries destroy\+\_\+swap\+Chain} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_a49e53e65605b09c961b3a840b354b5ea}\label{classm_1_1vulkan_1_1_vulkan_surface_a49e53e65605b09c961b3a840b354b5ea}} 
+Vk\+Surface\+KHR {\bfseries m\+\_\+surface} = VK\+\_\+\+NULL\+\_\+\+HANDLE
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_a012457b2acfe9a41a3d64c2891795a9a}\label{classm_1_1vulkan_1_1_vulkan_surface_a012457b2acfe9a41a3d64c2891795a9a}} 
+Vk\+Swapchain\+KHR {\bfseries m\+\_\+swap\+Chain} = VK\+\_\+\+NULL\+\_\+\+HANDLE
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_a5e92747508bdc8dfe386dbe5d1ff2100}\label{classm_1_1vulkan_1_1_vulkan_surface_a5e92747508bdc8dfe386dbe5d1ff2100}} 
+std\+::vector$<$ Vk\+Image $>$ {\bfseries m\+\_\+swap\+Chain\+Images}
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_ac514eb89cf73eb475bfbf9399c9c0d9b}\label{classm_1_1vulkan_1_1_vulkan_surface_ac514eb89cf73eb475bfbf9399c9c0d9b}} 
+std\+::vector$<$ Vk\+Image\+View $>$ {\bfseries m\+\_\+swap\+Chain\+Image\+Views}
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_aefedde3db4fb698580276504fe03ae35}\label{classm_1_1vulkan_1_1_vulkan_surface_aefedde3db4fb698580276504fe03ae35}} 
+std\+::vector$<$ U64 $>$ {\bfseries m\+\_\+tstp\+Render\+Finish}
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_acd51a276b62736c367444531269c0b19}\label{classm_1_1vulkan_1_1_vulkan_surface_acd51a276b62736c367444531269c0b19}} 
+std\+::vector$<$ Vk\+Semaphore $>$ {\bfseries m\+\_\+semaphores\+Image\+Acquired}
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_a5370c2fc9ebfd779b10a6cfdd17edab3}\label{classm_1_1vulkan_1_1_vulkan_surface_a5370c2fc9ebfd779b10a6cfdd17edab3}} 
+std\+::vector$<$ Vk\+Semaphore $>$ {\bfseries m\+\_\+semaphores\+Render\+Completed}
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_aa335972ac5288e15d468213197cc250f}\label{classm_1_1vulkan_1_1_vulkan_surface_aa335972ac5288e15d468213197cc250f}} 
+Bool {\bfseries m\+\_\+v\+Sync} = true
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_af87f09495a53f3f256e4648922afa854}\label{classm_1_1vulkan_1_1_vulkan_surface_af87f09495a53f3f256e4648922afa854}} 
+Bool {\bfseries m\+\_\+tearing\+Supported} = false
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_a54f1906792e48a6df04bd653fd17c8c0}\label{classm_1_1vulkan_1_1_vulkan_surface_a54f1906792e48a6df04bd653fd17c8c0}} 
+UInt {\bfseries m\+\_\+current\+Back\+Buffer\+Index} = 0
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_a1361ac0b4d6821f5c9c4d710e761740c}\label{classm_1_1vulkan_1_1_vulkan_surface_a1361ac0b4d6821f5c9c4d710e761740c}} 
+UInt {\bfseries m\+\_\+current\+Image\+Index} = 0
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_ae45d876a52b69c3cfc0cb27ea1bf8119}\label{classm_1_1vulkan_1_1_vulkan_surface_ae45d876a52b69c3cfc0cb27ea1bf8119}} 
+U64 {\bfseries m\+\_\+frame\+Fence\+Values} \mbox{[}scm\+\_\+num\+Frames\mbox{]} = \{\}
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_a11390c1c500ee6f4fef88bdd08b7b037}\label{classm_1_1vulkan_1_1_vulkan_surface_a11390c1c500ee6f4fef88bdd08b7b037}} 
+U32 {\bfseries m\+\_\+client\+Width}
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_a6d3212c07b1e34716a6e3e8e3cc4e359}\label{classm_1_1vulkan_1_1_vulkan_surface_a6d3212c07b1e34716a6e3e8e3cc4e359}} 
+U32 {\bfseries m\+\_\+client\+Height}
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_a5a021af255ba7ec26aa38504d3712c62}\label{classm_1_1vulkan_1_1_vulkan_surface_a5a021af255ba7ec26aa38504d3712c62}} 
+Vk\+Command\+Pool {\bfseries m\+\_\+frame\+Command\+Pools} \mbox{[}scm\+\_\+num\+Frames\mbox{]}
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_add7011e52d9e1209e46f5a8f88b9f18b}\label{classm_1_1vulkan_1_1_vulkan_surface_add7011e52d9e1209e46f5a8f88b9f18b}} 
+Vk\+Command\+Buffer {\bfseries m\+\_\+frame\+Main\+Command\+Buffers} \mbox{[}scm\+\_\+num\+Frames\mbox{]}
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_a9442dd0e3c58008c66300a86b38d986b}\label{classm_1_1vulkan_1_1_vulkan_surface_a9442dd0e3c58008c66300a86b38d986b}} 
+Vk\+Render\+Pass {\bfseries m\+\_\+main\+Render\+Pass} = VK\+\_\+\+NULL\+\_\+\+HANDLE
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_abe945b84dc12171e0b88bb4b5de5b7e6}\label{classm_1_1vulkan_1_1_vulkan_surface_abe945b84dc12171e0b88bb4b5de5b7e6}} 
+std\+::vector$<$ Vk\+Framebuffer $>$ {\bfseries m\+\_\+frame\+Framebuffers}
+\item 
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_surface_a40251a4b01787596981a9b5b91b78b84}\label{classm_1_1vulkan_1_1_vulkan_surface_a40251a4b01787596981a9b5b91b78b84}} 
+std\+::vector$<$ \mbox{\hyperlink{structm_1_1vulkan_1_1_vulkan_render_taskset}{Vulkan\+Render\+Taskset}} $\ast$ $>$ {\bfseries m\+\_\+render\+Tasksets}
+\end{DoxyCompactItemize}
 \doxysubsection*{Additional Inherited Members}
 
 

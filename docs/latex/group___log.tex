@@ -104,7 +104,39 @@ void \mbox{\hyperlink{group___log_gaf8b43c36de390d048e69e3a7f9391ab0}{m\+::loggi
 \begin{DoxyCompactList}\small\item\em Print things in the logs. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{group___log_ga65bf48423557daf6361e9273fa3cedcc}\label{group___log_ga65bf48423557daf6361e9273fa3cedcc}} 
 {\bfseries m\+::logging\+::\+Logger$<$ Log\+Policy $>$\+::$\sim$\+Logger} ()
-\begin{DoxyCompactList}\small\item\em Destroy a logger. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Destroy a logger. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_ga3e8d8b07780e2a257355602b47f79ff4}\label{group___log_ga3e8d8b07780e2a257355602b47f79ff4}} 
+std\+::string {\bfseries m\+::logging\+::\+Logger$<$ Log\+Policy $>$\+::get\+\_\+time} ()
+\begin{DoxyCompactList}\small\item\em Get the time of the day into a string format. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_ga4f8d02722b9085722cd2babce3c510e4}\label{group___log_ga4f8d02722b9085722cd2babce3c510e4}} 
+std\+::string {\bfseries m\+::logging\+::\+Logger$<$ Log\+Policy $>$\+::get\+\_\+logline\+Header} ()
+\begin{DoxyCompactList}\small\item\em Construct the header of the log line. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_ga5dc93cb7cc1e460f1c1e7fb8c23634f5}\label{group___log_ga5dc93cb7cc1e460f1c1e7fb8c23634f5}} 
+void {\bfseries m\+::logging\+::\+Logger$<$ Log\+Policy $>$\+::print\+\_\+impl} ()
+\begin{DoxyCompactList}\small\item\em End of the variadic function. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename First , typename... Rest$>$ }\\void \mbox{\hyperlink{group___log_gacb466eaee633c4878ad84dd1d53e0faf}{m\+::logging\+::\+Logger$<$ Log\+Policy $>$\+::print\+\_\+impl}} (First a\+\_\+parm1, Rest... a\+\_\+parm)
+\begin{DoxyCompactList}\small\item\em Variadic function implementing the writing of the output. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{group___log_ga11ebab8edadf2023987c805ce9576b15}\label{group___log_ga11ebab8edadf2023987c805ce9576b15}} 
+std\+::stringstream {\bfseries m\+::logging\+::\+Logger$<$ Log\+Policy $>$\+::m\+\_\+log\+Stream}
+\begin{DoxyCompactList}\small\item\em The current line to write. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_ga109c6d2d50e4a3e8da08a69b38dfbb16}\label{group___log_ga109c6d2d50e4a3e8da08a69b38dfbb16}} 
+Log\+Policy $\ast$ {\bfseries m\+::logging\+::\+Logger$<$ Log\+Policy $>$\+::m\+\_\+policy}
+\begin{DoxyCompactList}\small\item\em Pointer to the logpolicy to use. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_gaf2ee2daa8a15910cde5824c736506ae0}\label{group___log_gaf2ee2daa8a15910cde5824c736506ae0}} 
+std\+::mutex {\bfseries m\+::logging\+::\+Logger$<$ Log\+Policy $>$\+::m\+\_\+mutex\+Write}
+\begin{DoxyCompactList}\small\item\em Mutex preventing multiple writes to the output file. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_gac5d048908987c191774d4fa620984968}\label{group___log_gac5d048908987c191774d4fa620984968}} 
+unsigned {\bfseries m\+::logging\+::\+Logger$<$ Log\+Policy $>$\+::m\+\_\+line\+Number}
+\begin{DoxyCompactList}\small\item\em Number of the current log line. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_ga1200f9c4218e3986e86c515c158fa8db}\label{group___log_ga1200f9c4218e3986e86c515c158fa8db}} 
+\mbox{\hyperlink{group___log_ga16bb065e762d9d22730e02ef41a8165f}{Channel\+Filter}} {\bfseries m\+::logging\+::\+Logger$<$ Log\+Policy $>$\+::m\+\_\+filter} = -\/1
+\begin{DoxyCompactList}\small\item\em The filter used to filter out specific channels. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___log_ga35d8e6f355599eaf31c2a144780e0cf4}\label{group___log_ga35d8e6f355599eaf31c2a144780e0cf4}} 
+\mbox{\hyperlink{group___log_ga13f51627936471940ede5666fd047313}{Channel\+ID}} {\bfseries m\+::logging\+::\+Logger$<$ Log\+Policy $>$\+::m\+\_\+next\+Channel\+ID} = 1
+\begin{DoxyCompactList}\small\item\em The next channel id to attribute. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -202,6 +234,32 @@ Print things in the logs.
 
 \begin{DoxyParams}{Parameters}
 {\em a\+\_\+args} & the things to log. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group___log_gacb466eaee633c4878ad84dd1d53e0faf}\label{group___log_gacb466eaee633c4878ad84dd1d53e0faf}} 
+\index{Log@{Log}!print\_impl@{print\_impl}}
+\index{print\_impl@{print\_impl}!Log@{Log}}
+\doxysubsubsection{\texorpdfstring{print\_impl()}{print\_impl()}}
+{\footnotesize\ttfamily template$<$typename Log\+Policy $>$ \\
+template$<$typename First , typename... Rest$>$ \\
+void \mbox{\hyperlink{classm_1_1logging_1_1_logger}{m\+::logging\+::\+Logger}}$<$ Log\+Policy $>$\+::print\+\_\+impl (\begin{DoxyParamCaption}\item[{First}]{a\+\_\+parm1,  }\item[{Rest...}]{a\+\_\+parm }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Variadic function implementing the writing of the output. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em First} & type of the first thing to print. \\
+\hline
+{\em Rest} & the rest of the types of things to print. \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+\+First} & the first thing to print. \\
+\hline
+{\em a\+\_\+param} & the rest of things to print. \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{group___log_gab06c4b9527f8da19747c470798fdd124}\label{group___log_gab06c4b9527f8da19747c470798fdd124}} 

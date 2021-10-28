@@ -66,6 +66,45 @@ void {\bfseries detach\+\_\+\+From\+Mouse\+State} (\mbox{\hyperlink{structm_1_1i
 \mbox{\Hypertarget{classm_1_1input_1_1_input_manager_a4343f58edf8ac8ab1eb1912f1baae23e}\label{classm_1_1input_1_1_input_manager_a4343f58edf8ac8ab1eb1912f1baae23e}} 
 void {\bfseries detach\+\_\+\+From\+Mouse\+State} (\mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{Mouse\+State}} a\+\_\+mouse\+State, const Mouse\+State\+Signal\+::handle \&a\+\_\+handle)
 \end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_a580b72a9ef4421d692ed7d7e98df7a62}\label{classm_1_1input_1_1_input_manager_a580b72a9ef4421d692ed7d7e98df7a62}} 
+double {\bfseries m\+\_\+mouse\+PosX}
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_a18075eddd45685094f178aa2640973c9}\label{classm_1_1input_1_1_input_manager_a18075eddd45685094f178aa2640973c9}} 
+double {\bfseries m\+\_\+mouse\+PosY}
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_ad60917f691a9ac91334280270b17d23e}\label{classm_1_1input_1_1_input_manager_ad60917f691a9ac91334280270b17d23e}} 
+std\+::array$<$ Bool, 8 $>$ {\bfseries m\+\_\+previous\+Mouse\+Button\+Clicked} = \{false\}
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_a8302972b67a0938be46da84a1eb5bbdc}\label{classm_1_1input_1_1_input_manager_a8302972b67a0938be46da84a1eb5bbdc}} 
+std\+::array$<$ Bool, 8 $>$ {\bfseries m\+\_\+mouse\+Button\+Clicked} = \{false\}
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_a1c64c5432e7f2538f517651c07834686}\label{classm_1_1input_1_1_input_manager_a1c64c5432e7f2538f517651c07834686}} 
+std\+::array$<$ Bool, Key\+::\+KEY\+\_\+\+LAST+1 $>$ {\bfseries m\+\_\+key\+Pressed}
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_af35a3486eda300f0fb9c939fb0977c38}\label{classm_1_1input_1_1_input_manager_af35a3486eda300f0fb9c939fb0977c38}} 
+int {\bfseries m\+\_\+previous\+Mod} = 0
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_a7b42e255686e1648f618d9e8d9140cfb}\label{classm_1_1input_1_1_input_manager_a7b42e255686e1648f618d9e8d9140cfb}} 
+int {\bfseries m\+\_\+current\+Mod} = 0
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_a922a7cc2f68c74ef3cea99a1207681ce}\label{classm_1_1input_1_1_input_manager_a922a7cc2f68c74ef3cea99a1207681ce}} 
+std\+::map$<$ \mbox{\hyperlink{structm_1_1input_1_1_key_action}{Key\+Action}}, \mbox{\hyperlink{classm_1_1_signal}{Key\+Action\+Signal}} $>$ {\bfseries m\+\_\+key\+Signals}
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_a5bae2c84d0abea45d701995833cd1d78}\label{classm_1_1input_1_1_input_manager_a5bae2c84d0abea45d701995833cd1d78}} 
+std\+::map$<$ \mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{Mouse\+Action}}, \mbox{\hyperlink{classm_1_1_signal}{Mouse\+Action\+Signal}} $>$ {\bfseries m\+\_\+mouse\+Signals}
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_ac6a4e6f5a1297db607429f26d584a9e8}\label{classm_1_1input_1_1_input_manager_ac6a4e6f5a1297db607429f26d584a9e8}} 
+std\+::map$<$ \mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{Mouse\+State}}, \mbox{\hyperlink{classm_1_1_signal}{Mouse\+State\+Signal}} $>$ {\bfseries m\+\_\+mouse\+State\+Signals}
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_a84b29533b815107ea3f4fc0c9fcab752}\label{classm_1_1input_1_1_input_manager_a84b29533b815107ea3f4fc0c9fcab752}} 
+\mbox{\hyperlink{classm_1_1_signal}{Scroll\+Signal}} {\bfseries m\+\_\+scroll\+Signal}
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1_input_manager_ab13939cb4b86b9e0fde83de2e303b282}\label{classm_1_1input_1_1_input_manager_ab13939cb4b86b9e0fde83de2e303b282}} 
+\mbox{\hyperlink{classm_1_1_signal}{Mouse\+Move\+Signal}} {\bfseries m\+\_\+move\+Signal}
+\end{DoxyCompactItemize}
 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}

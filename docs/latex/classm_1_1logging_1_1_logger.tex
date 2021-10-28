@@ -28,6 +28,32 @@ void \mbox{\hyperlink{group___log_gaf8b43c36de390d048e69e3a7f9391ab0}{enable\+\_
 \begin{DoxyCompactList}\small\item\em Print things in the logs. \end{DoxyCompactList}\item 
 {\bfseries $\sim$\+Logger} ()
 \begin{DoxyCompactList}\small\item\em Destroy a logger. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string {\bfseries get\+\_\+time} ()
+\begin{DoxyCompactList}\small\item\em Get the time of the day into a string format. \end{DoxyCompactList}\item 
+std\+::string {\bfseries get\+\_\+logline\+Header} ()
+\begin{DoxyCompactList}\small\item\em Construct the header of the log line. \end{DoxyCompactList}\item 
+void {\bfseries print\+\_\+impl} ()
+\begin{DoxyCompactList}\small\item\em End of the variadic function. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename First , typename... Rest$>$ }\\void \mbox{\hyperlink{group___log_gacb466eaee633c4878ad84dd1d53e0faf}{print\+\_\+impl}} (First a\+\_\+parm1, Rest... a\+\_\+parm)
+\begin{DoxyCompactList}\small\item\em Variadic function implementing the writing of the output. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::stringstream {\bfseries m\+\_\+log\+Stream}
+\begin{DoxyCompactList}\small\item\em The current line to write. \end{DoxyCompactList}\item 
+Log\+Policy $\ast$ {\bfseries m\+\_\+policy}
+\begin{DoxyCompactList}\small\item\em Pointer to the logpolicy to use. \end{DoxyCompactList}\item 
+std\+::mutex {\bfseries m\+\_\+mutex\+Write}
+\begin{DoxyCompactList}\small\item\em Mutex preventing multiple writes to the output file. \end{DoxyCompactList}\item 
+unsigned {\bfseries m\+\_\+line\+Number}
+\begin{DoxyCompactList}\small\item\em Number of the current log line. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{group___log_ga16bb065e762d9d22730e02ef41a8165f}{Channel\+Filter}} {\bfseries m\+\_\+filter} = -\/1
+\begin{DoxyCompactList}\small\item\em The filter used to filter out specific channels. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{group___log_ga13f51627936471940ede5666fd047313}{Channel\+ID}} {\bfseries m\+\_\+next\+Channel\+ID} = 1
+\begin{DoxyCompactList}\small\item\em The next channel id to attribute. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}

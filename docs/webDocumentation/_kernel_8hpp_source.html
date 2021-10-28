@@ -80,62 +80,57 @@ $(function() {
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">namespace </span>m</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>{</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">//*****************************************************************************</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">//*****************************************************************************</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">//*****************************************************************************</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"></span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="structm_1_1m_cmd_line.html">   24</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structm_1_1m_cmd_line.html">mCmdLine</a></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>{</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">namespace </span>m</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>{</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="structm_1_1m_cmd_line.html">   23</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structm_1_1m_cmd_line.html">mCmdLine</a></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>{</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="structm_1_1m_cmd_line.html#ae80a0e6b45ca8d32a1052a00543f7b4c">parse_cmdLineAguments</a>(Int a_argc, Char** a_argv);</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keyword">template</span> &lt;<span class="keyword">class</span> t_ValueType&gt;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="structm_1_1m_cmd_line.html#acb6619d8804bfcc912f1d807f95463d3">   43</a></span>    Bool <a class="code hl_function" href="structm_1_1m_cmd_line.html#acb6619d8804bfcc912f1d807f95463d3">get_parameter</a>(<span class="keyword">const</span> std::string a_key, t_ValueType&amp; a_result)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">    </span>{</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        <a class="code hl_define" href="group___core.html#ga375da2becf883550c0e1293307b02c9a">mExpect</a>(!a_key.empty());</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <span class="keyword">auto</span> found = std::find(m_listArgs.begin(), m_listArgs.end(), a_key);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        <span class="keywordflow">if</span> (found == m_listArgs.end())</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        {</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        }</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        ++found;</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        <a class="code hl_define" href="group___core.html#ga5cbca1ff1eb730a016c7c63f94afa154">mAssert</a>(found != m_listArgs.end())</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        std::basic_istringstream(*found) &gt;&gt; a_result;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    }</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keyword">template</span> &lt;<span class="keyword">class</span> t_ValueType&gt;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="structm_1_1m_cmd_line.html#acb6619d8804bfcc912f1d807f95463d3">   44</a></span>    Bool <a class="code hl_function" href="structm_1_1m_cmd_line.html#acb6619d8804bfcc912f1d807f95463d3">get_parameter</a>(<span class="keyword">const</span> std::string a_key, t_ValueType&amp; a_result)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">    </span>{</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <a class="code hl_define" href="group___core.html#ga375da2becf883550c0e1293307b02c9a">mExpect</a>(!a_key.empty());</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        <span class="keyword">auto</span> found = std::find(<a class="code hl_variable" href="structm_1_1m_cmd_line.html#a6d806d285ce78eaa5d90f10e55a5609e">m_listArgs</a>.begin(), <a class="code hl_variable" href="structm_1_1m_cmd_line.html#a6d806d285ce78eaa5d90f10e55a5609e">m_listArgs</a>.end(), a_key);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <span class="keywordflow">if</span> (found == <a class="code hl_variable" href="structm_1_1m_cmd_line.html#a6d806d285ce78eaa5d90f10e55a5609e">m_listArgs</a>.end())</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        {</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        }</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        ++found;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        <a class="code hl_define" href="group___core.html#ga5cbca1ff1eb730a016c7c63f94afa154">mAssert</a>(found != <a class="code hl_variable" href="structm_1_1m_cmd_line.html#a6d806d285ce78eaa5d90f10e55a5609e">m_listArgs</a>.end())</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                std::basic_istringstream(*found) &gt;&gt;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            a_result;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    }</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="structm_1_1m_cmd_line.html#a589a0a954f6f5bf5043dcb29fbf1769d">   65</a></span>    [[nodiscard]] <span class="keyword">inline</span> Bool <a class="code hl_function" href="structm_1_1m_cmd_line.html#a589a0a954f6f5bf5043dcb29fbf1769d">get_arg</a>(std::string <span class="keyword">const</span>&amp; a_arg)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="keyword">    </span>{</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        <span class="keywordflow">return</span> std::find(m_listArgs.begin(), m_listArgs.end(), a_arg) !=</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>               m_listArgs.end();</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    }</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    std::vector&lt;std::string&gt; m_listArgs; </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>};</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="structm_1_1m_cmd_line.html#a589a0a954f6f5bf5043dcb29fbf1769d">   68</a></span>    [[nodiscard]] <span class="keyword">inline</span> Bool <a class="code hl_function" href="structm_1_1m_cmd_line.html#a589a0a954f6f5bf5043dcb29fbf1769d">get_arg</a>(std::string <span class="keyword">const</span>&amp; a_arg)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="keyword">    </span>{</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <span class="keywordflow">return</span> std::find(<a class="code hl_variable" href="structm_1_1m_cmd_line.html#a6d806d285ce78eaa5d90f10e55a5609e">m_listArgs</a>.begin(), <a class="code hl_variable" href="structm_1_1m_cmd_line.html#a6d806d285ce78eaa5d90f10e55a5609e">m_listArgs</a>.end(), a_arg) !=</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>               <a class="code hl_variable" href="structm_1_1m_cmd_line.html#a6d806d285ce78eaa5d90f10e55a5609e">m_listArgs</a>.end();</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    }</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="structm_1_1_basic_launch_data.html">   74</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structm_1_1_basic_launch_data.html">BasicLaunchData</a></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>{</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>};</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">#ifdef M_WIN32</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>std::wstring convert_string(std::string <span class="keyword">const</span>&amp; a_as);</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>}  <span class="comment">// namespace m</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
-<div class="ttc" id="agroup___core_html_ga375da2becf883550c0e1293307b02c9a"><div class="ttname"><a href="group___core.html#ga375da2becf883550c0e1293307b02c9a">mExpect</a></div><div class="ttdeci">#define mExpect(condition)</div><div class="ttdoc">Blocking assert reserved to check function preconditions.</div><div class="ttdef"><b>Definition:</b> Asserts.hpp:73</div></div>
-<div class="ttc" id="agroup___core_html_ga5cbca1ff1eb730a016c7c63f94afa154"><div class="ttname"><a href="group___core.html#ga5cbca1ff1eb730a016c7c63f94afa154">mAssert</a></div><div class="ttdeci">#define mAssert(condition)</div><div class="ttdoc">A basic assert interrupting execution.</div><div class="ttdef"><b>Definition:</b> Asserts.hpp:65</div></div>
-<div class="ttc" id="astructm_1_1_basic_launch_data_html"><div class="ttname"><a href="structm_1_1_basic_launch_data.html">m::BasicLaunchData</a></div><div class="ttdef"><b>Definition:</b> Kernel.hpp:75</div></div>
-<div class="ttc" id="astructm_1_1m_cmd_line_html"><div class="ttname"><a href="structm_1_1m_cmd_line.html">m::mCmdLine</a></div><div class="ttdoc">Structure holding a list of command line arguments.</div><div class="ttdef"><b>Definition:</b> Kernel.hpp:25</div></div>
-<div class="ttc" id="astructm_1_1m_cmd_line_html_a589a0a954f6f5bf5043dcb29fbf1769d"><div class="ttname"><a href="structm_1_1m_cmd_line.html#a589a0a954f6f5bf5043dcb29fbf1769d">m::mCmdLine::get_arg</a></div><div class="ttdeci">Bool get_arg(std::string const &amp;a_arg) const</div><div class="ttdoc">Check the presence of a command line argument.</div><div class="ttdef"><b>Definition:</b> Kernel.hpp:65</div></div>
-<div class="ttc" id="astructm_1_1m_cmd_line_html_acb6619d8804bfcc912f1d807f95463d3"><div class="ttname"><a href="structm_1_1m_cmd_line.html#acb6619d8804bfcc912f1d807f95463d3">m::mCmdLine::get_parameter</a></div><div class="ttdeci">Bool get_parameter(const std::string a_key, t_ValueType &amp;a_result) const</div><div class="ttdoc">Get the value of a command line argument.</div><div class="ttdef"><b>Definition:</b> Kernel.hpp:43</div></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="structm_1_1m_cmd_line.html#a6d806d285ce78eaa5d90f10e55a5609e">   74</a></span>    std::vector&lt;std::string&gt; <a class="code hl_variable" href="structm_1_1m_cmd_line.html#a6d806d285ce78eaa5d90f10e55a5609e">m_listArgs</a>; </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>};</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="structm_1_1_basic_launch_data.html">   77</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structm_1_1_basic_launch_data.html">BasicLaunchData</a></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>{</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>};</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="preprocessor">#ifdef M_WIN32</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>std::wstring convert_string(std::string <span class="keyword">const</span>&amp; a_as);</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>}  <span class="comment">// namespace m</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="ttc" id="agroup___core_html_ga375da2becf883550c0e1293307b02c9a"><div class="ttname"><a href="group___core.html#ga375da2becf883550c0e1293307b02c9a">mExpect</a></div><div class="ttdeci">#define mExpect(condition)</div><div class="ttdoc">Blocking assert reserved to check function preconditions.</div><div class="ttdef"><b>Definition:</b> Asserts.hpp:79</div></div>
+<div class="ttc" id="agroup___core_html_ga5cbca1ff1eb730a016c7c63f94afa154"><div class="ttname"><a href="group___core.html#ga5cbca1ff1eb730a016c7c63f94afa154">mAssert</a></div><div class="ttdeci">#define mAssert(condition)</div><div class="ttdoc">A basic assert interrupting execution.</div><div class="ttdef"><b>Definition:</b> Asserts.hpp:70</div></div>
+<div class="ttc" id="astructm_1_1_basic_launch_data_html"><div class="ttname"><a href="structm_1_1_basic_launch_data.html">m::BasicLaunchData</a></div><div class="ttdef"><b>Definition:</b> Kernel.hpp:78</div></div>
+<div class="ttc" id="astructm_1_1m_cmd_line_html"><div class="ttname"><a href="structm_1_1m_cmd_line.html">m::mCmdLine</a></div><div class="ttdef"><b>Definition:</b> Kernel.hpp:24</div></div>
+<div class="ttc" id="astructm_1_1m_cmd_line_html_a589a0a954f6f5bf5043dcb29fbf1769d"><div class="ttname"><a href="structm_1_1m_cmd_line.html#a589a0a954f6f5bf5043dcb29fbf1769d">m::mCmdLine::get_arg</a></div><div class="ttdeci">Bool get_arg(std::string const &amp;a_arg) const</div><div class="ttdoc">Check the presence of a command line argument.</div><div class="ttdef"><b>Definition:</b> Kernel.hpp:68</div></div>
+<div class="ttc" id="astructm_1_1m_cmd_line_html_a6d806d285ce78eaa5d90f10e55a5609e"><div class="ttname"><a href="structm_1_1m_cmd_line.html#a6d806d285ce78eaa5d90f10e55a5609e">m::mCmdLine::m_listArgs</a></div><div class="ttdeci">std::vector&lt; std::string &gt; m_listArgs</div><div class="ttdoc">Holds the list of arguments.</div><div class="ttdef"><b>Definition:</b> Kernel.hpp:74</div></div>
+<div class="ttc" id="astructm_1_1m_cmd_line_html_acb6619d8804bfcc912f1d807f95463d3"><div class="ttname"><a href="structm_1_1m_cmd_line.html#acb6619d8804bfcc912f1d807f95463d3">m::mCmdLine::get_parameter</a></div><div class="ttdeci">Bool get_parameter(const std::string a_key, t_ValueType &amp;a_result) const</div><div class="ttdoc">Get the value of a command line argument.</div><div class="ttdef"><b>Definition:</b> Kernel.hpp:44</div></div>
 <div class="ttc" id="astructm_1_1m_cmd_line_html_ae80a0e6b45ca8d32a1052a00543f7b4c"><div class="ttname"><a href="structm_1_1m_cmd_line.html#ae80a0e6b45ca8d32a1052a00543f7b4c">m::mCmdLine::parse_cmdLineAguments</a></div><div class="ttdeci">void parse_cmdLineAguments(Int a_argc, Char **a_argv)</div><div class="ttdoc">Initialize the structure given classic cmdline structures.</div><div class="ttdef"><b>Definition:</b> Kernel.cpp:19</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

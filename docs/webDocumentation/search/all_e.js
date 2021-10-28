@@ -23,5 +23,5 @@ var searchData=
   ['stbundorecord_20',['StbUndoRecord',['../struct_stb_undo_record.html',1,'']]],
   ['stbundostate_21',['StbUndoState',['../struct_stb_undo_state.html',1,'']]],
   ['stdcoutlogpolicy_22',['StdcoutLogPolicy',['../classm_1_1logging_1_1_stdcout_log_policy.html',1,'m::logging::StdcoutLogPolicy'],['../classm_1_1logging_1_1_stdcout_log_policy.html#abb9a14a1deb6f90cff9da2a3974c63f2',1,'m::logging::StdcoutLogPolicy::StdcoutLogPolicy()']]],
-  ['step_23',['step',['../classm_1_1win32_1_1_i_windowed_application_impl.html#ac8a2628a86f944333e8668bd3b46e599',1,'m::win32::IWindowedApplicationImpl']]]
+  ['step_23',['step',['../classm_1_1application_1_1m_i_loop_application.html#aa47382bad3d069b8ec3aa5f3fcae830e',1,'m::application::mILoopApplication::step()'],['../classm_1_1application_1_1m_i_timed_loop_application.html#ac2afcb4ee8711b4d1204e3a17af404d7',1,'m::application::mITimedLoopApplication::step()'],['../classm_1_1win32_1_1_i_windowed_application_impl.html#ac8a2628a86f944333e8668bd3b46e599',1,'m::win32::IWindowedApplicationImpl::step()']]]
 ];

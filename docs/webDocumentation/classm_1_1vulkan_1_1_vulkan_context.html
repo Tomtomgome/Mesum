@@ -71,6 +71,7 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classm_1_1vulkan_1_1_vulkan_context-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">m::vulkan::VulkanContext Class Reference</div></div>
 </div><!--header-->
@@ -138,6 +139,36 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:a4347042001d6c055e8c8d843ad05a384"><td class="memItemLeft" align="right" valign="top"><a id="a4347042001d6c055e8c8d843ad05a384" name="a4347042001d6c055e8c8d843ad05a384"></a>
 static <a class="el" href="classm_1_1vulkan_1_1_vulkan_context.html">VulkanContext</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>gs_VulkanContexte</b></td></tr>
 <tr class="separator:a4347042001d6c055e8c8d843ad05a384"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a87c539ea3a5c7e9426231bf8295ca4ae"><td class="memItemLeft" align="right" valign="top"><a id="a87c539ea3a5c7e9426231bf8295ca4ae" name="a87c539ea3a5c7e9426231bf8295ca4ae"></a>
+VkInstance&#160;</td><td class="memItemRight" valign="bottom"><b>m_instance</b> = VK_NULL_HANDLE</td></tr>
+<tr class="separator:a87c539ea3a5c7e9426231bf8295ca4ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0b9baba7dde5a2ddc367ad96088dcce"><td class="memItemLeft" align="right" valign="top"><a id="af0b9baba7dde5a2ddc367ad96088dcce" name="af0b9baba7dde5a2ddc367ad96088dcce"></a>
+VkPhysicalDevice&#160;</td><td class="memItemRight" valign="bottom"><b>m_physicalDevice</b> = VK_NULL_HANDLE</td></tr>
+<tr class="separator:af0b9baba7dde5a2ddc367ad96088dcce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bbcdc5e775f49ef1dddae3c08f2ea13"><td class="memItemLeft" align="right" valign="top"><a id="a7bbcdc5e775f49ef1dddae3c08f2ea13" name="a7bbcdc5e775f49ef1dddae3c08f2ea13"></a>
+VkDevice&#160;</td><td class="memItemRight" valign="bottom"><b>m_logicalDevice</b> = VK_NULL_HANDLE</td></tr>
+<tr class="separator:a7bbcdc5e775f49ef1dddae3c08f2ea13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75f645e61b0ad7991894db4945bf36e9"><td class="memItemLeft" align="right" valign="top"><a id="a75f645e61b0ad7991894db4945bf36e9" name="a75f645e61b0ad7991894db4945bf36e9"></a>
+VkDebugUtilsMessengerEXT&#160;</td><td class="memItemRight" valign="bottom"><b>m_debugUtil</b></td></tr>
+<tr class="separator:a75f645e61b0ad7991894db4945bf36e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa16c75f68910b6c165aec07decca840"><td class="memItemLeft" align="right" valign="top"><a id="aaa16c75f68910b6c165aec07decca840" name="aaa16c75f68910b6c165aec07decca840"></a>
+U32&#160;</td><td class="memItemRight" valign="bottom"><b>m_queueFamilyIndex</b></td></tr>
+<tr class="separator:aaa16c75f68910b6c165aec07decca840"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46191e5536a49e6df78abb6c9f0806bc"><td class="memItemLeft" align="right" valign="top"><a id="a46191e5536a49e6df78abb6c9f0806bc" name="a46191e5536a49e6df78abb6c9f0806bc"></a>
+VkQueue&#160;</td><td class="memItemRight" valign="bottom"><b>m_queue</b> = VK_NULL_HANDLE</td></tr>
+<tr class="separator:a46191e5536a49e6df78abb6c9f0806bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6db092359c47a031254938366b614935"><td class="memItemLeft" align="right" valign="top"><a id="a6db092359c47a031254938366b614935" name="a6db092359c47a031254938366b614935"></a>
+VkCommandPool&#160;</td><td class="memItemRight" valign="bottom"><b>m_utilityCommandPool</b></td></tr>
+<tr class="separator:a6db092359c47a031254938366b614935"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13cdeee13cb45275452a5f073c808828"><td class="memItemLeft" align="right" valign="top"><a id="a13cdeee13cb45275452a5f073c808828" name="a13cdeee13cb45275452a5f073c808828"></a>
+VkSemaphore&#160;</td><td class="memItemRight" valign="bottom"><b>m_timelineSemaphore</b></td></tr>
+<tr class="separator:a13cdeee13cb45275452a5f073c808828"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac65b4c7a2cafcb593f9b8b56caf78897"><td class="memItemLeft" align="right" valign="top"><a id="ac65b4c7a2cafcb593f9b8b56caf78897" name="ac65b4c7a2cafcb593f9b8b56caf78897"></a>
+U64&#160;</td><td class="memItemRight" valign="bottom"><b>m_timeline</b> = 0</td></tr>
+<tr class="separator:ac65b4c7a2cafcb593f9b8b56caf78897"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>MesumGraphics/VulkanRenderer/<a class="el" href="_vulkan_context_8hpp_source.html">VulkanContext.hpp</a></li>

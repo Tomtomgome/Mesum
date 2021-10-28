@@ -69,6 +69,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classm_1_1logging_1_1_logger-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">m::logging::Logger&lt; LogPolicy &gt; Class Template Reference<div class="ingroups"><a class="el" href="group___log.html">Log</a></div></div></div>
 </div><!--header-->
@@ -109,6 +111,52 @@ const <a class="el" href="group___log.html#ga13f51627936471940ede5666fd047313">C
 &#160;</td><td class="memItemRight" valign="bottom"><b>~Logger</b> ()</td></tr>
 <tr class="memdesc:ga65bf48423557daf6361e9273fa3cedcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a logger. <br /></td></tr>
 <tr class="separator:ga65bf48423557daf6361e9273fa3cedcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:ga3e8d8b07780e2a257355602b47f79ff4"><td class="memItemLeft" align="right" valign="top">
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>get_time</b> ()</td></tr>
+<tr class="memdesc:ga3e8d8b07780e2a257355602b47f79ff4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the time of the day into a string format. <br /></td></tr>
+<tr class="separator:ga3e8d8b07780e2a257355602b47f79ff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4f8d02722b9085722cd2babce3c510e4"><td class="memItemLeft" align="right" valign="top">
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>get_loglineHeader</b> ()</td></tr>
+<tr class="memdesc:ga4f8d02722b9085722cd2babce3c510e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct the header of the log line. <br /></td></tr>
+<tr class="separator:ga4f8d02722b9085722cd2babce3c510e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5dc93cb7cc1e460f1c1e7fb8c23634f5"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>print_impl</b> ()</td></tr>
+<tr class="memdesc:ga5dc93cb7cc1e460f1c1e7fb8c23634f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">End of the variadic function. <br /></td></tr>
+<tr class="separator:ga5dc93cb7cc1e460f1c1e7fb8c23634f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacb466eaee633c4878ad84dd1d53e0faf"><td class="memTemplParams" colspan="2">template&lt;typename First , typename... Rest&gt; </td></tr>
+<tr class="memitem:gacb466eaee633c4878ad84dd1d53e0faf"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___log.html#gacb466eaee633c4878ad84dd1d53e0faf">print_impl</a> (First a_parm1, Rest... a_parm)</td></tr>
+<tr class="memdesc:gacb466eaee633c4878ad84dd1d53e0faf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Variadic function implementing the writing of the output.  <a href="group___log.html#gacb466eaee633c4878ad84dd1d53e0faf">More...</a><br /></td></tr>
+<tr class="separator:gacb466eaee633c4878ad84dd1d53e0faf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:ga11ebab8edadf2023987c805ce9576b15"><td class="memItemLeft" align="right" valign="top">
+std::stringstream&#160;</td><td class="memItemRight" valign="bottom"><b>m_logStream</b></td></tr>
+<tr class="memdesc:ga11ebab8edadf2023987c805ce9576b15"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current line to write. <br /></td></tr>
+<tr class="separator:ga11ebab8edadf2023987c805ce9576b15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga109c6d2d50e4a3e8da08a69b38dfbb16"><td class="memItemLeft" align="right" valign="top">
+LogPolicy *&#160;</td><td class="memItemRight" valign="bottom"><b>m_policy</b></td></tr>
+<tr class="memdesc:ga109c6d2d50e4a3e8da08a69b38dfbb16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the logpolicy to use. <br /></td></tr>
+<tr class="separator:ga109c6d2d50e4a3e8da08a69b38dfbb16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf2ee2daa8a15910cde5824c736506ae0"><td class="memItemLeft" align="right" valign="top">
+std::mutex&#160;</td><td class="memItemRight" valign="bottom"><b>m_mutexWrite</b></td></tr>
+<tr class="memdesc:gaf2ee2daa8a15910cde5824c736506ae0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutex preventing multiple writes to the output file. <br /></td></tr>
+<tr class="separator:gaf2ee2daa8a15910cde5824c736506ae0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac5d048908987c191774d4fa620984968"><td class="memItemLeft" align="right" valign="top">
+unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>m_lineNumber</b></td></tr>
+<tr class="memdesc:gac5d048908987c191774d4fa620984968"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of the current log line. <br /></td></tr>
+<tr class="separator:gac5d048908987c191774d4fa620984968"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1200f9c4218e3986e86c515c158fa8db"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="group___log.html#ga16bb065e762d9d22730e02ef41a8165f">ChannelFilter</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_filter</b> = -1</td></tr>
+<tr class="memdesc:ga1200f9c4218e3986e86c515c158fa8db"><td class="mdescLeft">&#160;</td><td class="mdescRight">The filter used to filter out specific channels. <br /></td></tr>
+<tr class="separator:ga1200f9c4218e3986e86c515c158fa8db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga35d8e6f355599eaf31c2a144780e0cf4"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="group___log.html#ga13f51627936471940ede5666fd047313">ChannelID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_nextChannelID</b> = 1</td></tr>
+<tr class="memdesc:ga35d8e6f355599eaf31c2a144780e0cf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The next channel id to attribute. <br /></td></tr>
+<tr class="separator:ga35d8e6f355599eaf31c2a144780e0cf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename LogPolicy&gt;<br />

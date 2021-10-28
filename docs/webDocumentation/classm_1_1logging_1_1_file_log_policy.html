@@ -69,6 +69,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classm_1_1logging_1_1_file_log_policy-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">m::logging::FileLogPolicy Class Reference<span class="mlabels"><span class="mlabel">final</span></span><div class="ingroups"><a class="el" href="group___log.html">Log</a></div></div></div>
 </div><!--header-->
@@ -105,6 +106,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a62d5f803225bd3e6d2aa356cd0be3d86"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1logging_1_1_file_log_policy.html#a62d5f803225bd3e6d2aa356cd0be3d86">write</a> (const std::string &amp;a_msg) override</td></tr>
 <tr class="memdesc:a62d5f803225bd3e6d2aa356cd0be3d86"><td class="mdescLeft">&#160;</td><td class="mdescRight">write into the output file  <a href="classm_1_1logging_1_1_file_log_policy.html#a62d5f803225bd3e6d2aa356cd0be3d86">More...</a><br /></td></tr>
 <tr class="separator:a62d5f803225bd3e6d2aa356cd0be3d86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a451700456b98d63128787a23a0862a4e"><td class="memItemLeft" align="right" valign="top"><a id="a451700456b98d63128787a23a0862a4e" name="a451700456b98d63128787a23a0862a4e"></a>
+std::unique_ptr&lt; std::ofstream &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_outStream</b></td></tr>
+<tr class="memdesc:a451700456b98d63128787a23a0862a4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The output file. <br /></td></tr>
+<tr class="separator:a451700456b98d63128787a23a0862a4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Log policy outputing into a file. </p>

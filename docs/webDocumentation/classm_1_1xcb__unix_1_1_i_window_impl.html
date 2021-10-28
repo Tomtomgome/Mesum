@@ -69,6 +69,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classm_1_1xcb__unix_1_1_i_window_impl-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">m::xcb_unix::IWindowImpl Class Reference</div></div>
 </div><!--header-->
@@ -136,6 +137,45 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>attach_toDest
 <tr class="memitem:a6bc20e26c101564aa7b6c9344593b58c inherit pub_methods_classm_1_1windows_1_1_i_window"><td class="memItemLeft" align="right" valign="top"><a id="a6bc20e26c101564aa7b6c9344593b58c" name="a6bc20e26c101564aa7b6c9344593b58c"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>attach_toResize</b> (<a class="el" href="classm_1_1_callback.html">Callback</a>&lt; void, U32, U32 &gt; const &amp;a_onResizeCallback)=0</td></tr>
 <tr class="separator:a6bc20e26c101564aa7b6c9344593b58c inherit pub_methods_classm_1_1windows_1_1_i_window"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a4cc991f2c2787fb00f3804baf5e6654b"><td class="memItemLeft" align="right" valign="top"><a id="a4cc991f2c2787fb00f3804baf5e6654b" name="a4cc991f2c2787fb00f3804baf5e6654b"></a>
+<a class="el" href="classm_1_1input_1_1_input_manager.html">input::InputManager</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_linkedInputManager</b></td></tr>
+<tr class="separator:a4cc991f2c2787fb00f3804baf5e6654b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addc914e134e841e4a07e027a61d01b69"><td class="memItemLeft" align="right" valign="top"><a id="addc914e134e841e4a07e027a61d01b69" name="addc914e134e841e4a07e027a61d01b69"></a>
+Bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_fullscreen</b> = false</td></tr>
+<tr class="separator:addc914e134e841e4a07e027a61d01b69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af515d4fcf883dd84cd10dc34c2c37087"><td class="memItemLeft" align="right" valign="top"><a id="af515d4fcf883dd84cd10dc34c2c37087" name="af515d4fcf883dd84cd10dc34c2c37087"></a>
+Bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_flagToBeClosed</b> = false</td></tr>
+<tr class="separator:af515d4fcf883dd84cd10dc34c2c37087"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7868acee838fc0837ed3717a6fb01902"><td class="memItemLeft" align="right" valign="top"><a id="a7868acee838fc0837ed3717a6fb01902" name="a7868acee838fc0837ed3717a6fb01902"></a>
+std::wstring&#160;</td><td class="memItemRight" valign="bottom"><b>m_windowName</b></td></tr>
+<tr class="separator:a7868acee838fc0837ed3717a6fb01902"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b096a3a32061f48f9a3f90f56bac103"><td class="memItemLeft" align="right" valign="top"><a id="a3b096a3a32061f48f9a3f90f56bac103" name="a3b096a3a32061f48f9a3f90f56bac103"></a>
+Bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_isMainWindow</b> = false</td></tr>
+<tr class="separator:a3b096a3a32061f48f9a3f90f56bac103"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad46928fd3c5d5007d4d0a9f460f4712e"><td class="memItemLeft" align="right" valign="top"><a id="ad46928fd3c5d5007d4d0a9f460f4712e" name="ad46928fd3c5d5007d4d0a9f460f4712e"></a>
+Bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_isImGuiWindow</b> = false</td></tr>
+<tr class="separator:ad46928fd3c5d5007d4d0a9f460f4712e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a042deccdec968b7263e493b8c0f7a710"><td class="memItemLeft" align="right" valign="top"><a id="a042deccdec968b7263e493b8c0f7a710" name="a042deccdec968b7263e493b8c0f7a710"></a>
+U32&#160;</td><td class="memItemRight" valign="bottom"><b>m_clientWidth</b> = 1280</td></tr>
+<tr class="separator:a042deccdec968b7263e493b8c0f7a710"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e77db6dfbcef924deb1f2db4d168a86"><td class="memItemLeft" align="right" valign="top"><a id="a6e77db6dfbcef924deb1f2db4d168a86" name="a6e77db6dfbcef924deb1f2db4d168a86"></a>
+U32&#160;</td><td class="memItemRight" valign="bottom"><b>m_clientHeight</b> = 720</td></tr>
+<tr class="separator:a6e77db6dfbcef924deb1f2db4d168a86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a202e06ff53e7a3dd43b492b88bd69600"><td class="memItemLeft" align="right" valign="top"><a id="a202e06ff53e7a3dd43b492b88bd69600" name="a202e06ff53e7a3dd43b492b88bd69600"></a>
+<a class="el" href="structm_1_1math_1_1_vec.html">m::math::UIVec4</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_windowRect</b></td></tr>
+<tr class="separator:a202e06ff53e7a3dd43b492b88bd69600"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a6fbc86984632329289edd156dcc940"><td class="memItemLeft" align="right" valign="top"><a id="a2a6fbc86984632329289edd156dcc940" name="a2a6fbc86984632329289edd156dcc940"></a>
+<a class="el" href="structm_1_1xcb__unix_1_1_x_c_b_context.html">XCBContext</a> const  *&#160;</td><td class="memItemRight" valign="bottom"><b>m_parentContext</b> = nullptr</td></tr>
+<tr class="separator:a2a6fbc86984632329289edd156dcc940"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76782a034066fa6fe587cddb8bba726e"><td class="memItemLeft" align="right" valign="top"><a id="a76782a034066fa6fe587cddb8bba726e" name="a76782a034066fa6fe587cddb8bba726e"></a>
+<a class="el" href="classm_1_1render_1_1_i_renderer.html">render::IRenderer</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_parentRenderer</b> = nullptr</td></tr>
+<tr class="separator:a76782a034066fa6fe587cddb8bba726e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32b14b6feb379077b2a2c6d4e39704ab"><td class="memItemLeft" align="right" valign="top"><a id="a32b14b6feb379077b2a2c6d4e39704ab" name="a32b14b6feb379077b2a2c6d4e39704ab"></a>
+<a class="el" href="classm_1_1render_1_1_i_surface.html">render::ISurface</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_renderSurface</b> = nullptr</td></tr>
+<tr class="separator:a32b14b6feb379077b2a2c6d4e39704ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a1b8ae947d2408e93b4419f6a1001405d" name="a1b8ae947d2408e93b4419f6a1001405d"></a>

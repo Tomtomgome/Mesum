@@ -42,6 +42,60 @@ void {\bfseries set\+\_\+win\+Context} (\mbox{\hyperlink{structm_1_1win32_1_1_w_
 \mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_ad62831cbcc66fe4b5a2cad4c607a4d06}\label{classm_1_1win32_1_1_i_window_impl_ad62831cbcc66fe4b5a2cad4c607a4d06}} 
 Bool {\bfseries is\+\_\+flagged\+To\+Be\+Closed} () const
 \end{DoxyCompactItemize}
+\doxysubsection*{Private Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a9e26b51d0ce27ec9029c236c0ce9118b}\label{classm_1_1win32_1_1_i_window_impl_a9e26b51d0ce27ec9029c236c0ce9118b}} 
+using {\bfseries Callback\+Resize} = \mbox{\hyperlink{classm_1_1_callback}{Callback}}$<$ void, U32, U32 $>$
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_aec3d06b6a61e902cddf9bef8501ba3e6}\label{classm_1_1win32_1_1_i_window_impl_aec3d06b6a61e902cddf9bef8501ba3e6}} 
+using {\bfseries Callback\+Window\+Destroy} = \mbox{\hyperlink{classm_1_1_callback}{Callback}}$<$ void $>$
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a394a16c3d3737a8a3585e81d5bf953ac}\label{classm_1_1win32_1_1_i_window_impl_a394a16c3d3737a8a3585e81d5bf953ac}} 
+using {\bfseries Callback\+Input\+Processing} = \mbox{\hyperlink{classm_1_1_callback}{Callback}}$<$ void, Bool $\ast$, HWND, UINT, WPARAM, LPARAM $>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a228231c7ecff07432b671fc03f86d991}\label{classm_1_1win32_1_1_i_window_impl_a228231c7ecff07432b671fc03f86d991}} 
+\mbox{\hyperlink{classm_1_1input_1_1_input_manager}{input\+::\+Input\+Manager}} $\ast$ {\bfseries m\+\_\+linked\+Input\+Manager}
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_ad40e324b6c6a8a08a288eaef881ae861}\label{classm_1_1win32_1_1_i_window_impl_ad40e324b6c6a8a08a288eaef881ae861}} 
+HWND {\bfseries m\+\_\+hwnd}
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a99c7d64d464f96533a95285f00b491f7}\label{classm_1_1win32_1_1_i_window_impl_a99c7d64d464f96533a95285f00b491f7}} 
+Bool {\bfseries m\+\_\+fullscreen} = false
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_ae5acdd9b88f3c4cfb6bcda0aeba240e7}\label{classm_1_1win32_1_1_i_window_impl_ae5acdd9b88f3c4cfb6bcda0aeba240e7}} 
+Bool {\bfseries m\+\_\+flag\+To\+Be\+Closed} = false
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a535146e94b6020c92ebf3e448dec6997}\label{classm_1_1win32_1_1_i_window_impl_a535146e94b6020c92ebf3e448dec6997}} 
+std\+::string {\bfseries m\+\_\+window\+Name}
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a1193847b02d63af66d4d98c948edbdf4}\label{classm_1_1win32_1_1_i_window_impl_a1193847b02d63af66d4d98c948edbdf4}} 
+Bool {\bfseries m\+\_\+is\+Main\+Window} = false
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a25019e2a7e0fafd3f492fe3ab1492acc}\label{classm_1_1win32_1_1_i_window_impl_a25019e2a7e0fafd3f492fe3ab1492acc}} 
+U32 {\bfseries m\+\_\+client\+Width} = 1280
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a0a65fda4b80dbb8417c77d76e217b30b}\label{classm_1_1win32_1_1_i_window_impl_a0a65fda4b80dbb8417c77d76e217b30b}} 
+U32 {\bfseries m\+\_\+client\+Height} = 720
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a5fabd3511dfcb575ccca18810d32da1d}\label{classm_1_1win32_1_1_i_window_impl_a5fabd3511dfcb575ccca18810d32da1d}} 
+RECT {\bfseries m\+\_\+window\+Rect}
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_af894e7bbd0828b72160cfcc012be58ff}\label{classm_1_1win32_1_1_i_window_impl_af894e7bbd0828b72160cfcc012be58ff}} 
+\mbox{\hyperlink{structm_1_1win32_1_1_w_i_n32_context}{WIN32\+Context}} const  $\ast$ {\bfseries m\+\_\+parent\+Context} = nullptr
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_ac196942a01ebf5ec1e9ea6bf1ea0fbd1}\label{classm_1_1win32_1_1_i_window_impl_ac196942a01ebf5ec1e9ea6bf1ea0fbd1}} 
+\mbox{\hyperlink{classm_1_1_signal}{Signal}}$<$ U32, U32 $>$ {\bfseries m\+\_\+signal\+Resize}
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_aced480277410a0bf1b8c7e80840c8730}\label{classm_1_1win32_1_1_i_window_impl_aced480277410a0bf1b8c7e80840c8730}} 
+\mbox{\hyperlink{classm_1_1_signal}{Signal}} {\bfseries m\+\_\+signal\+Window\+Destroyed}
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a8deaae611b6c1a47f41c5e7d79dda605}\label{classm_1_1win32_1_1_i_window_impl_a8deaae611b6c1a47f41c5e7d79dda605}} 
+\mbox{\hyperlink{classm_1_1_signal}{Signal}}$<$ Bool $\ast$, HWND, UINT, WPARAM, LPARAM $>$ {\bfseries m\+\_\+signal\+Override\+Input\+Processing}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Member Function Documentation}

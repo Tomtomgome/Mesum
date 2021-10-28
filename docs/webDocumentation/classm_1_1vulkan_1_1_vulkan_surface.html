@@ -70,6 +70,8 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classm_1_1vulkan_1_1_vulkan_surface-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">m::vulkan::VulkanSurface Class Reference</div></div>
 </div><!--header-->
@@ -130,6 +132,78 @@ static const U8&#160;</td><td class="memItemRight" valign="bottom"><b>scm_numFra
 <tr class="separator:ac91caefe12d11b2a92948f45c5187f52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac754663bb5e8c9d37c5bd1153f26ebd7"><td class="memItemLeft" align="right" valign="top">static const VkFormat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1vulkan_1_1_vulkan_surface.html#ac754663bb5e8c9d37c5bd1153f26ebd7">scm_selectedSwapChainFormat</a></td></tr>
 <tr class="separator:ac754663bb5e8c9d37c5bd1153f26ebd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:aff804052ee22f5cc26c9d0deeee68b9c"><td class="memItemLeft" align="right" valign="top"><a id="aff804052ee22f5cc26c9d0deeee68b9c" name="aff804052ee22f5cc26c9d0deeee68b9c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>init_internal</b> ()</td></tr>
+<tr class="separator:aff804052ee22f5cc26c9d0deeee68b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38d88c2d54d42085361057f328eb6eae"><td class="memItemLeft" align="right" valign="top"><a id="a38d88c2d54d42085361057f328eb6eae" name="a38d88c2d54d42085361057f328eb6eae"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>init_swapChain</b> ()</td></tr>
+<tr class="separator:a38d88c2d54d42085361057f328eb6eae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab80a975b199e3071a7f89ce21faf9dd3"><td class="memItemLeft" align="right" valign="top"><a id="ab80a975b199e3071a7f89ce21faf9dd3" name="ab80a975b199e3071a7f89ce21faf9dd3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>destroy_swapChain</b> ()</td></tr>
+<tr class="separator:ab80a975b199e3071a7f89ce21faf9dd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a49e53e65605b09c961b3a840b354b5ea"><td class="memItemLeft" align="right" valign="top"><a id="a49e53e65605b09c961b3a840b354b5ea" name="a49e53e65605b09c961b3a840b354b5ea"></a>
+VkSurfaceKHR&#160;</td><td class="memItemRight" valign="bottom"><b>m_surface</b> = VK_NULL_HANDLE</td></tr>
+<tr class="separator:a49e53e65605b09c961b3a840b354b5ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a012457b2acfe9a41a3d64c2891795a9a"><td class="memItemLeft" align="right" valign="top"><a id="a012457b2acfe9a41a3d64c2891795a9a" name="a012457b2acfe9a41a3d64c2891795a9a"></a>
+VkSwapchainKHR&#160;</td><td class="memItemRight" valign="bottom"><b>m_swapChain</b> = VK_NULL_HANDLE</td></tr>
+<tr class="separator:a012457b2acfe9a41a3d64c2891795a9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e92747508bdc8dfe386dbe5d1ff2100"><td class="memItemLeft" align="right" valign="top"><a id="a5e92747508bdc8dfe386dbe5d1ff2100" name="a5e92747508bdc8dfe386dbe5d1ff2100"></a>
+std::vector&lt; VkImage &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_swapChainImages</b></td></tr>
+<tr class="separator:a5e92747508bdc8dfe386dbe5d1ff2100"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac514eb89cf73eb475bfbf9399c9c0d9b"><td class="memItemLeft" align="right" valign="top"><a id="ac514eb89cf73eb475bfbf9399c9c0d9b" name="ac514eb89cf73eb475bfbf9399c9c0d9b"></a>
+std::vector&lt; VkImageView &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_swapChainImageViews</b></td></tr>
+<tr class="separator:ac514eb89cf73eb475bfbf9399c9c0d9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefedde3db4fb698580276504fe03ae35"><td class="memItemLeft" align="right" valign="top"><a id="aefedde3db4fb698580276504fe03ae35" name="aefedde3db4fb698580276504fe03ae35"></a>
+std::vector&lt; U64 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_tstpRenderFinish</b></td></tr>
+<tr class="separator:aefedde3db4fb698580276504fe03ae35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd51a276b62736c367444531269c0b19"><td class="memItemLeft" align="right" valign="top"><a id="acd51a276b62736c367444531269c0b19" name="acd51a276b62736c367444531269c0b19"></a>
+std::vector&lt; VkSemaphore &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_semaphoresImageAcquired</b></td></tr>
+<tr class="separator:acd51a276b62736c367444531269c0b19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5370c2fc9ebfd779b10a6cfdd17edab3"><td class="memItemLeft" align="right" valign="top"><a id="a5370c2fc9ebfd779b10a6cfdd17edab3" name="a5370c2fc9ebfd779b10a6cfdd17edab3"></a>
+std::vector&lt; VkSemaphore &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_semaphoresRenderCompleted</b></td></tr>
+<tr class="separator:a5370c2fc9ebfd779b10a6cfdd17edab3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa335972ac5288e15d468213197cc250f"><td class="memItemLeft" align="right" valign="top"><a id="aa335972ac5288e15d468213197cc250f" name="aa335972ac5288e15d468213197cc250f"></a>
+Bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_vSync</b> = true</td></tr>
+<tr class="separator:aa335972ac5288e15d468213197cc250f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af87f09495a53f3f256e4648922afa854"><td class="memItemLeft" align="right" valign="top"><a id="af87f09495a53f3f256e4648922afa854" name="af87f09495a53f3f256e4648922afa854"></a>
+Bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_tearingSupported</b> = false</td></tr>
+<tr class="separator:af87f09495a53f3f256e4648922afa854"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54f1906792e48a6df04bd653fd17c8c0"><td class="memItemLeft" align="right" valign="top"><a id="a54f1906792e48a6df04bd653fd17c8c0" name="a54f1906792e48a6df04bd653fd17c8c0"></a>
+UInt&#160;</td><td class="memItemRight" valign="bottom"><b>m_currentBackBufferIndex</b> = 0</td></tr>
+<tr class="separator:a54f1906792e48a6df04bd653fd17c8c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1361ac0b4d6821f5c9c4d710e761740c"><td class="memItemLeft" align="right" valign="top"><a id="a1361ac0b4d6821f5c9c4d710e761740c" name="a1361ac0b4d6821f5c9c4d710e761740c"></a>
+UInt&#160;</td><td class="memItemRight" valign="bottom"><b>m_currentImageIndex</b> = 0</td></tr>
+<tr class="separator:a1361ac0b4d6821f5c9c4d710e761740c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae45d876a52b69c3cfc0cb27ea1bf8119"><td class="memItemLeft" align="right" valign="top"><a id="ae45d876a52b69c3cfc0cb27ea1bf8119" name="ae45d876a52b69c3cfc0cb27ea1bf8119"></a>
+U64&#160;</td><td class="memItemRight" valign="bottom"><b>m_frameFenceValues</b> [scm_numFrames] = {}</td></tr>
+<tr class="separator:ae45d876a52b69c3cfc0cb27ea1bf8119"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11390c1c500ee6f4fef88bdd08b7b037"><td class="memItemLeft" align="right" valign="top"><a id="a11390c1c500ee6f4fef88bdd08b7b037" name="a11390c1c500ee6f4fef88bdd08b7b037"></a>
+U32&#160;</td><td class="memItemRight" valign="bottom"><b>m_clientWidth</b></td></tr>
+<tr class="separator:a11390c1c500ee6f4fef88bdd08b7b037"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d3212c07b1e34716a6e3e8e3cc4e359"><td class="memItemLeft" align="right" valign="top"><a id="a6d3212c07b1e34716a6e3e8e3cc4e359" name="a6d3212c07b1e34716a6e3e8e3cc4e359"></a>
+U32&#160;</td><td class="memItemRight" valign="bottom"><b>m_clientHeight</b></td></tr>
+<tr class="separator:a6d3212c07b1e34716a6e3e8e3cc4e359"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a021af255ba7ec26aa38504d3712c62"><td class="memItemLeft" align="right" valign="top"><a id="a5a021af255ba7ec26aa38504d3712c62" name="a5a021af255ba7ec26aa38504d3712c62"></a>
+VkCommandPool&#160;</td><td class="memItemRight" valign="bottom"><b>m_frameCommandPools</b> [scm_numFrames]</td></tr>
+<tr class="separator:a5a021af255ba7ec26aa38504d3712c62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add7011e52d9e1209e46f5a8f88b9f18b"><td class="memItemLeft" align="right" valign="top"><a id="add7011e52d9e1209e46f5a8f88b9f18b" name="add7011e52d9e1209e46f5a8f88b9f18b"></a>
+VkCommandBuffer&#160;</td><td class="memItemRight" valign="bottom"><b>m_frameMainCommandBuffers</b> [scm_numFrames]</td></tr>
+<tr class="separator:add7011e52d9e1209e46f5a8f88b9f18b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9442dd0e3c58008c66300a86b38d986b"><td class="memItemLeft" align="right" valign="top"><a id="a9442dd0e3c58008c66300a86b38d986b" name="a9442dd0e3c58008c66300a86b38d986b"></a>
+VkRenderPass&#160;</td><td class="memItemRight" valign="bottom"><b>m_mainRenderPass</b> = VK_NULL_HANDLE</td></tr>
+<tr class="separator:a9442dd0e3c58008c66300a86b38d986b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe945b84dc12171e0b88bb4b5de5b7e6"><td class="memItemLeft" align="right" valign="top"><a id="abe945b84dc12171e0b88bb4b5de5b7e6" name="abe945b84dc12171e0b88bb4b5de5b7e6"></a>
+std::vector&lt; VkFramebuffer &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_frameFramebuffers</b></td></tr>
+<tr class="separator:abe945b84dc12171e0b88bb4b5de5b7e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40251a4b01787596981a9b5b91b78b84"><td class="memItemLeft" align="right" valign="top"><a id="a40251a4b01787596981a9b5b91b78b84" name="a40251a4b01787596981a9b5b91b78b84"></a>
+std::vector&lt; <a class="el" href="structm_1_1vulkan_1_1_vulkan_render_taskset.html">VulkanRenderTaskset</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_renderTasksets</b></td></tr>
+<tr class="separator:a40251a4b01787596981a9b5b91b78b84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
