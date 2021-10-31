@@ -156,7 +156,7 @@ void IWindowImpl::set_asImGuiWindow(Bool a_supportMultiViewports)
     if (m_renderSurface != nullptr)
     {
         m_renderSurface->init_dearImGui(
-            Callback<void>(this, &IWindowImpl::callback_dearImGuiNewFrame));
+            mCallback<void>(this, &IWindowImpl::callback_dearImGuiNewFrame));
     }
 }
 

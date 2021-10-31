@@ -2,97 +2,120 @@
 \label{_callbacks_8hpp_source}\index{MesumCore/Kernel/Callbacks.hpp@{MesumCore/Kernel/Callbacks.hpp}}
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_CALLBACKS}}
-\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_CALLBACKS}}
-\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
-\DoxyCodeLine{4 }
-\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <Asserts.hpp>}}
-\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <Types.hpp>}}
-\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <functional>}}
-\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <list>}}
-\DoxyCodeLine{9 }
-\DoxyCodeLine{10 \textcolor{keyword}{namespace }m}
-\DoxyCodeLine{11 \{}
-\DoxyCodeLine{12 \textcolor{keyword}{template} <\textcolor{keyword}{typename} rType, \textcolor{keyword}{typename}... Args>}
-\DoxyCodeLine{13 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1_callback}{Callback}}}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <Asserts.hpp>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <Types.hpp>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <functional>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <list>}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{keyword}{namespace }m}
 \DoxyCodeLine{14 \{}
-\DoxyCodeLine{15    \textcolor{keyword}{public}:}
-\DoxyCodeLine{16     \textcolor{keyword}{using} functionType = rType(Args...);}
-\DoxyCodeLine{17 }
-\DoxyCodeLine{18     \mbox{\hyperlink{classm_1_1_callback}{Callback}}() \{\}}
-\DoxyCodeLine{19 }
-\DoxyCodeLine{20     \textcolor{keyword}{template} <\textcolor{keyword}{typename} CArgs>}
-\DoxyCodeLine{21     \mbox{\hyperlink{classm_1_1_callback}{Callback}}(CArgs* a\_owner, rType (CArgs::*a\_func)(Args...))}
-\DoxyCodeLine{22     \{}
-\DoxyCodeLine{23         m\_func = [a\_owner, a\_func](Args... a\_args) -\/> rType}
-\DoxyCodeLine{24         \{ \textcolor{keywordflow}{return} (a\_owner-\/>*a\_func)(a\_args...); \};}
-\DoxyCodeLine{25     \}}
-\DoxyCodeLine{26 }
-\DoxyCodeLine{27     \mbox{\hyperlink{classm_1_1_callback}{Callback}}(std::function<functionType> a\_func) \{ m\_func = a\_func; \}}
-\DoxyCodeLine{28 }
-\DoxyCodeLine{29     \textcolor{keyword}{template} <\textcolor{keyword}{typename} CArgs>}
-\DoxyCodeLine{30     \textcolor{keywordtype}{void} set(CArgs* a\_owner, rType (CArgs::*a\_func)(Args...))}
-\DoxyCodeLine{31     \{}
-\DoxyCodeLine{32         m\_func = [a\_owner, a\_func](Args... a\_args) -\/> rType}
-\DoxyCodeLine{33         \{ \textcolor{keywordflow}{return} (a\_owner-\/>*a\_func)(a\_args...); \};}
-\DoxyCodeLine{34     \}}
-\DoxyCodeLine{35 }
-\DoxyCodeLine{36     \textcolor{keywordtype}{void} set(std::function<functionType> a\_func) \{ m\_func = a\_func; \}}
-\DoxyCodeLine{37 }
-\DoxyCodeLine{38     rType call(Args... a\_args)}
-\DoxyCodeLine{39     \{}
-\DoxyCodeLine{40         \mbox{\hyperlink{group___core_ga5cbca1ff1eb730a016c7c63f94afa154}{mAssert}}(Bool(m\_func));}
-\DoxyCodeLine{41         \textcolor{keywordflow}{return} m\_func(a\_args...);}
-\DoxyCodeLine{42     \}}
-\DoxyCodeLine{43 }
-\DoxyCodeLine{44     \textcolor{keyword}{explicit} \textcolor{keyword}{operator} bool()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Bool(m\_func); \}}
-\DoxyCodeLine{45 }
-\DoxyCodeLine{46     rType operator()(Args... a\_args) \{ call(a\_args...); \}}
-\DoxyCodeLine{47 }
-\DoxyCodeLine{48     \textcolor{keyword}{friend} Bool operator==(\textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1_callback}{Callback}}\& lhs, \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1_callback}{Callback}}\& rhs)}
-\DoxyCodeLine{49     \{}
-\DoxyCodeLine{50         \textcolor{keywordflow}{return} lhs.m\_func.template target<functionType>() ==}
-\DoxyCodeLine{51                rhs.m\_func.template target<functionType>();}
-\DoxyCodeLine{52     \}}
-\DoxyCodeLine{53 }
-\DoxyCodeLine{54    \textcolor{keyword}{private}:}
-\DoxyCodeLine{55     std::function<functionType> m\_func;}
-\DoxyCodeLine{56 \};}
+\DoxyCodeLine{25 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_RetType, \textcolor{keyword}{typename}... t\_Args>}
+\DoxyCodeLine{26 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1m_callback}{mCallback}}}
+\DoxyCodeLine{27 \{}
+\DoxyCodeLine{28    \textcolor{keyword}{public}:}
+\DoxyCodeLine{32     \textcolor{keyword}{using} \mbox{\hyperlink{classm_1_1m_callback_ade0c31357b0e4d1f33ba842cb2e41b04}{mFunctionType}} = t\_RetType(t\_Args...);}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{37     \mbox{\hyperlink{classm_1_1m_callback_a34b6e899fa571ae511ae2cafda9872d9}{mCallback}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{49     \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_CArgs>}
+\DoxyCodeLine{50     \mbox{\hyperlink{classm_1_1m_callback_aa0eac6739ee64075289c0410caa6f14e}{mCallback}}(t\_CArgs* a\_owner, t\_RetType (t\_CArgs::*a\_func)(t\_Args...))}
+\DoxyCodeLine{51     \{}
+\DoxyCodeLine{52         \mbox{\hyperlink{group___core_ga375da2becf883550c0e1293307b02c9a}{mExpect}}(a\_owner != \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{53         \mbox{\hyperlink{group___core_ga375da2becf883550c0e1293307b02c9a}{mExpect}}(a\_func != \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{54         \mbox{\hyperlink{classm_1_1m_callback_ae4aee5ac7416e0a0b04e6472b70f7e81}{m\_func}} = [a\_owner, a\_func](t\_Args... a\_args) -\/> t\_RetType}
+\DoxyCodeLine{55         \{ \textcolor{keywordflow}{return} (a\_owner-\/>*a\_func)(a\_args...); \};}
+\DoxyCodeLine{56     \}}
 \DoxyCodeLine{57 }
-\DoxyCodeLine{58 \textcolor{keyword}{template} <\textcolor{keyword}{typename}... Args>}
-\DoxyCodeLine{59 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1_signal}{Signal}}}
-\DoxyCodeLine{60 \{}
-\DoxyCodeLine{61    \textcolor{keyword}{public}:}
-\DoxyCodeLine{62     \textcolor{keyword}{using} handle = \textcolor{keyword}{typename} std::list<\mbox{\hyperlink{classm_1_1_callback}{Callback}}<void, Args...>>::iterator;}
-\DoxyCodeLine{63 }
-\DoxyCodeLine{64     handle attach\_ToSignal(\mbox{\hyperlink{classm_1_1_callback}{Callback<void, Args...>}} a\_callback)}
-\DoxyCodeLine{65     \{}
-\DoxyCodeLine{66         m\_callbacks.push\_front(a\_callback);}
-\DoxyCodeLine{67         \textcolor{keywordflow}{return} m\_callbacks.begin();}
-\DoxyCodeLine{68     \}}
-\DoxyCodeLine{69 }
-\DoxyCodeLine{70     \textcolor{keywordtype}{void} detach\_FromSignal(\mbox{\hyperlink{classm_1_1_callback}{Callback<void, Args...>}} a\_callback)}
-\DoxyCodeLine{71     \{}
-\DoxyCodeLine{72         m\_callbacks.remove(a\_callback);}
-\DoxyCodeLine{73     \}}
-\DoxyCodeLine{74 }
-\DoxyCodeLine{75     \textcolor{keywordtype}{void} detach\_FromSignal(\textcolor{keyword}{const} handle\& a\_handle)}
-\DoxyCodeLine{76     \{}
-\DoxyCodeLine{77         m\_callbacks.erase(a\_handle);}
-\DoxyCodeLine{78     \}}
-\DoxyCodeLine{79 }
-\DoxyCodeLine{80     \textcolor{keywordtype}{void} call(Args... a\_args)}
-\DoxyCodeLine{81     \{}
-\DoxyCodeLine{82         \textcolor{keywordflow}{for} (\mbox{\hyperlink{classm_1_1_callback}{Callback<void, Args...>}} cbs : m\_callbacks) \{ cbs.call(a\_args...); \}}
-\DoxyCodeLine{83     \}}
-\DoxyCodeLine{84 }
-\DoxyCodeLine{85     \textcolor{keywordtype}{void} clear() \{ m\_callbacks.clear(); \}}
-\DoxyCodeLine{86 }
-\DoxyCodeLine{87    \textcolor{keyword}{private}:}
-\DoxyCodeLine{88     std::list<\mbox{\hyperlink{classm_1_1_callback}{Callback}}<void, Args...>> m\_callbacks;}
-\DoxyCodeLine{89 \};}
-\DoxyCodeLine{90 \};  \textcolor{comment}{// namespace m}}
-\DoxyCodeLine{91 }
-\DoxyCodeLine{92 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_CALLBACKS}}
+\DoxyCodeLine{66     \textcolor{keyword}{explicit} \mbox{\hyperlink{classm_1_1m_callback_a530ef5e956e46dbae7e904eac6c67a91}{mCallback}}(std::function<mFunctionType> \textcolor{keyword}{const}\& a\_func)}
+\DoxyCodeLine{67     \{}
+\DoxyCodeLine{68         \mbox{\hyperlink{classm_1_1m_callback_ae4aee5ac7416e0a0b04e6472b70f7e81}{m\_func}} = a\_func;}
+\DoxyCodeLine{69     \}}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{79     \textcolor{keyword}{explicit} \mbox{\hyperlink{classm_1_1m_callback_a204f76e43710fd71904277efd494bf36}{mCallback}}(std::function<mFunctionType>\&\& a\_func)}
+\DoxyCodeLine{80     \{}
+\DoxyCodeLine{81         \mbox{\hyperlink{classm_1_1m_callback_ae4aee5ac7416e0a0b04e6472b70f7e81}{m\_func}} = std::move(a\_func);}
+\DoxyCodeLine{82     \}}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{94     \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_CArgs>}
+\DoxyCodeLine{95     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1m_callback_a08e0c1570e03ccb8caccec23644c2b13}{set}}(t\_CArgs* a\_owner, t\_RetType (t\_CArgs::*a\_func)(t\_Args...))}
+\DoxyCodeLine{96     \{}
+\DoxyCodeLine{97         \mbox{\hyperlink{group___core_ga375da2becf883550c0e1293307b02c9a}{mExpect}}(a\_owner != \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{98         \mbox{\hyperlink{group___core_ga375da2becf883550c0e1293307b02c9a}{mExpect}}(a\_func != \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{99         \mbox{\hyperlink{classm_1_1m_callback_ae4aee5ac7416e0a0b04e6472b70f7e81}{m\_func}} = [a\_owner, a\_func](t\_Args... a\_args) -\/> t\_RetType}
+\DoxyCodeLine{100         \{ \textcolor{keywordflow}{return} (a\_owner-\/>*a\_func)(a\_args...); \};}
+\DoxyCodeLine{101     \}}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{111     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1m_callback_ac79bd8006224a4d446be24a111ee6a4d}{set}}(std::function<mFunctionType> \textcolor{keyword}{const}\& a\_func) \{ \mbox{\hyperlink{classm_1_1m_callback_ae4aee5ac7416e0a0b04e6472b70f7e81}{m\_func}} = a\_func; \}}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{121     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1m_callback_ad1d9cecb679dd3bade3de9758cb0bb20}{set}}(std::function<mFunctionType>\&\& a\_func)}
+\DoxyCodeLine{122     \{}
+\DoxyCodeLine{123         \mbox{\hyperlink{classm_1_1m_callback_ae4aee5ac7416e0a0b04e6472b70f7e81}{m\_func}} = std::move(a\_func);}
+\DoxyCodeLine{124     \}}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{132     t\_RetType \mbox{\hyperlink{classm_1_1m_callback_a91a172c066c1c2d8a47cafeb94da77a6}{call}}(t\_Args... a\_args)}
+\DoxyCodeLine{133     \{}
+\DoxyCodeLine{134         \mbox{\hyperlink{group___core_ga5cbca1ff1eb730a016c7c63f94afa154}{mAssert}}(Bool(\mbox{\hyperlink{classm_1_1m_callback_ae4aee5ac7416e0a0b04e6472b70f7e81}{m\_func}}));}
+\DoxyCodeLine{135         \textcolor{keywordflow}{return} \mbox{\hyperlink{classm_1_1m_callback_ae4aee5ac7416e0a0b04e6472b70f7e81}{m\_func}}(a\_args...);}
+\DoxyCodeLine{136     \}}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{144     t\_RetType \mbox{\hyperlink{classm_1_1m_callback_a7709c741ce81dde79460c00761ced546}{operator()}}(t\_Args... a\_args) \{ \mbox{\hyperlink{classm_1_1m_callback_a91a172c066c1c2d8a47cafeb94da77a6}{call}}(a\_args...); \}}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{151     \textcolor{keyword}{friend} Bool \mbox{\hyperlink{classm_1_1m_callback_ab5e50be73b4f50c578820324d30432d0}{operator==}}(\textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_callback}{mCallback}}\& lhs, \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_callback}{mCallback}}\& rhs)}
+\DoxyCodeLine{152     \{}
+\DoxyCodeLine{153         \textcolor{keywordflow}{return} lhs.\mbox{\hyperlink{classm_1_1m_callback_ae4aee5ac7416e0a0b04e6472b70f7e81}{m\_func}}.template target<mFunctionType>() ==}
+\DoxyCodeLine{154                rhs.\mbox{\hyperlink{classm_1_1m_callback_ae4aee5ac7416e0a0b04e6472b70f7e81}{m\_func}}.template target<mFunctionType>();}
+\DoxyCodeLine{155     \}}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{162     \textcolor{keyword}{explicit} \textcolor{keyword}{operator} bool()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Bool(\mbox{\hyperlink{classm_1_1m_callback_ae4aee5ac7416e0a0b04e6472b70f7e81}{m\_func}}); \}}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164    \textcolor{keyword}{private}:}
+\DoxyCodeLine{168     std::function<mFunctionType> \mbox{\hyperlink{classm_1_1m_callback_ae4aee5ac7416e0a0b04e6472b70f7e81}{m\_func}};}
+\DoxyCodeLine{169 \};}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{180 \textcolor{keyword}{template} <\textcolor{keyword}{typename}... t\_Args>}
+\DoxyCodeLine{181 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1_signal}{mSignal}}}
+\DoxyCodeLine{182 \{}
+\DoxyCodeLine{183    \textcolor{keyword}{public}:}
+\DoxyCodeLine{187     \textcolor{keyword}{using} \mbox{\hyperlink{classm_1_1_signal_af932ce760d285e0d8413edf3bdf9c518}{mCallbackHandle}} =}
+\DoxyCodeLine{188         \textcolor{keyword}{typename} std::list<\mbox{\hyperlink{classm_1_1m_callback}{mCallback}}<void, t\_Args...>>::iterator;}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{196     \mbox{\hyperlink{classm_1_1_signal_af932ce760d285e0d8413edf3bdf9c518}{mCallbackHandle}} \mbox{\hyperlink{classm_1_1_signal_aff70ff76b47b223657b43f3d146093d5}{attach\_toSignal}}(}
+\DoxyCodeLine{197         \mbox{\hyperlink{classm_1_1m_callback}{mCallback<void, t\_Args...>}} \textcolor{keyword}{const}\& a\_callback)}
+\DoxyCodeLine{198     \{}
+\DoxyCodeLine{199         \mbox{\hyperlink{classm_1_1_signal_a9e55493bc4429050453c10319889210e}{m\_callbacks}}.push\_front(a\_callback);}
+\DoxyCodeLine{200         \textcolor{keywordflow}{return} \mbox{\hyperlink{classm_1_1_signal_a9e55493bc4429050453c10319889210e}{m\_callbacks}}.begin();}
+\DoxyCodeLine{201     \}}
+\DoxyCodeLine{202 }
+\DoxyCodeLine{208     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1_signal_a19b8d29b8b463ed00032ce5e0ec4da14}{detach\_fromSignal}}(\mbox{\hyperlink{classm_1_1m_callback}{mCallback<void, t\_Args...>}} a\_callback)}
+\DoxyCodeLine{209     \{}
+\DoxyCodeLine{210         \mbox{\hyperlink{classm_1_1_signal_a9e55493bc4429050453c10319889210e}{m\_callbacks}}.remove(a\_callback);}
+\DoxyCodeLine{211     \}}
+\DoxyCodeLine{212 }
+\DoxyCodeLine{219     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1_signal_af94fe3240830e31e2d4c3ee1337eed3f}{detach\_fromSignal}}(\textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1_signal_af932ce760d285e0d8413edf3bdf9c518}{mCallbackHandle}}\& a\_handle)}
+\DoxyCodeLine{220     \{}
+\DoxyCodeLine{221         \mbox{\hyperlink{group___core_ga375da2becf883550c0e1293307b02c9a}{mExpect}}(std::find(\mbox{\hyperlink{classm_1_1_signal_a9e55493bc4429050453c10319889210e}{m\_callbacks}}.begin(), \mbox{\hyperlink{classm_1_1_signal_a9e55493bc4429050453c10319889210e}{m\_callbacks}}.end(), *a\_handle) !=}
+\DoxyCodeLine{222                 \mbox{\hyperlink{classm_1_1_signal_a9e55493bc4429050453c10319889210e}{m\_callbacks}}.end());}
+\DoxyCodeLine{223         \mbox{\hyperlink{classm_1_1_signal_a9e55493bc4429050453c10319889210e}{m\_callbacks}}.erase(a\_handle);}
+\DoxyCodeLine{224     \}}
+\DoxyCodeLine{225 }
+\DoxyCodeLine{231     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1_signal_aacf52b1321e7b4e0fc0c5cd3d573b1e2}{call}}(t\_Args... a\_args)}
+\DoxyCodeLine{232     \{}
+\DoxyCodeLine{233         \textcolor{keywordflow}{for} (\mbox{\hyperlink{classm_1_1m_callback}{mCallback<void, t\_Args...>}} cbs : \mbox{\hyperlink{classm_1_1_signal_a9e55493bc4429050453c10319889210e}{m\_callbacks}})}
+\DoxyCodeLine{234         \{}
+\DoxyCodeLine{235             cbs.call(a\_args...);}
+\DoxyCodeLine{236         \}}
+\DoxyCodeLine{237     \}}
+\DoxyCodeLine{238 }
+\DoxyCodeLine{245     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1_signal_ae3c1a6a8104acc5f0d34dcf8c0666e29}{clear}}() \{ \mbox{\hyperlink{classm_1_1_signal_a9e55493bc4429050453c10319889210e}{m\_callbacks}}.clear(); \}}
+\DoxyCodeLine{246 }
+\DoxyCodeLine{247    \textcolor{keyword}{private}:}
+\DoxyCodeLine{251     std::list<\mbox{\hyperlink{classm_1_1m_callback}{mCallback}}<void, t\_Args...>> \mbox{\hyperlink{classm_1_1_signal_a9e55493bc4429050453c10319889210e}{m\_callbacks}};}
+\DoxyCodeLine{252 \};}
+\DoxyCodeLine{253 \};  \textcolor{comment}{// namespace m}}
+\DoxyCodeLine{254 }
+\DoxyCodeLine{257 }
 
 \end{DoxyCode}

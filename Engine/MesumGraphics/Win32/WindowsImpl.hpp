@@ -36,9 +36,9 @@ class IWindowImpl : public windows::IWindow
     void set_fullScreen(Bool a_fullscreen) override;
     void toggle_fullScreen() override;
 
-    void attach_toDestroy(Callback<void> const& a_onDestroyCallback) override;
+    void attach_toDestroy(mCallback<void> const& a_onDestroyCallback) override;
     void attach_toResize(
-        Callback<void, U32, U32> const& a_onResizeCallback) override;
+        mCallback<void, U32, U32> const& a_onResizeCallback) override;
 
     void set_winContext(WIN32Context const& a_winContext)
     {
@@ -67,13 +67,13 @@ class IWindowImpl : public windows::IWindow
 
     WIN32Context const* m_parentContext = nullptr;
 
-    using CallbackResize        = Callback<void, U32, U32>;
-    using CallbackWindowDestroy = Callback<void>;
+    using CallbackResize        = mCallback<void, U32, U32>;
+    using CallbackWindowDestroy = mCallback<void>;
     using CallbackInputProcessing =
-        Callback<void, Bool*, HWND, UINT, WPARAM, LPARAM>;
-    Signal<U32, U32>                          m_signalResize;
-    Signal<>                                  m_signalWindowDestroyed;
-    Signal<Bool*, HWND, UINT, WPARAM, LPARAM> m_signalOverrideInputProcessing;
+        mCallback<void, Bool*, HWND, UINT, WPARAM, LPARAM>;
+    mSignal<U32, U32>                          m_signalResize;
+    mSignal<>                                  m_signalWindowDestroyed;
+    mSignal<Bool*, HWND, UINT, WPARAM, LPARAM> m_signalOverrideInputProcessing;
 };
 
 }  // namespace m::win32

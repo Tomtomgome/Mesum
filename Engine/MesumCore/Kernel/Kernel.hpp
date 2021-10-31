@@ -74,7 +74,7 @@ struct mCmdLine
     std::vector<std::string> m_listArgs; //!< Holds the list of arguments
 };
 
-struct BasicLaunchData
+struct mBasicLaunchData
 {
 };
 #ifdef M_WIN32

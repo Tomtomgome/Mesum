@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['destroy_0',['destroy',['../classm_1_1application_1_1m_i_loop_application.html#a5a2573e1a7468ce947c800cd6397f5b9',1,'m::application::mILoopApplication::destroy()'],['../classm_1_1application_1_1m_i_timed_loop_application.html#a7f497a19bcd06e55087a92548550201d',1,'m::application::mITimedLoopApplication::destroy()'],['../classm_1_1xcb__unix_1_1_i_windowed_application_impl.html#a8baef1bc4148d903512c731ab3121da5',1,'m::xcb_unix::IWindowedApplicationImpl::destroy()'],['../classm_1_1win32_1_1_i_windowed_application_impl.html#ade7cd05678503ae2990cbb224af7e29e',1,'m::win32::IWindowedApplicationImpl::destroy()']]],
-  ['disable_5fchannels_1',['disable_channels',['../group___log.html#ga63b74328f6c81f7ee28958fad4bc874b',1,'m::logging::Logger']]]
+  ['call_0',['call',['../classm_1_1m_callback.html#a91a172c066c1c2d8a47cafeb94da77a6',1,'m::mCallback::call()'],['../classm_1_1_signal.html#aacf52b1321e7b4e0fc0c5cd3d573b1e2',1,'m::Signal::call(t_Args... a_args)']]],
+  ['clear_1',['clear',['../classm_1_1_signal.html#ae3c1a6a8104acc5f0d34dcf8c0666e29',1,'m::Signal']]],
+  ['close_5fostream_2',['close_ostream',['../classm_1_1logging_1_1_i_log_policy.html#a1e20ba94f4b934f93c2ab0bc5da0cbc2',1,'m::logging::ILogPolicy::close_ostream()'],['../classm_1_1logging_1_1_file_log_policy.html#a5f185d7a0c25907f1e036089c867246e',1,'m::logging::FileLogPolicy::close_ostream()'],['../classm_1_1logging_1_1_stdcout_log_policy.html#a00904a294718b8bc7ada42cf746e3d44',1,'m::logging::StdcoutLogPolicy::close_ostream()']]]
 ];

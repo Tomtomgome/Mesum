@@ -121,11 +121,11 @@ render::ISurface::HdlPtr IWindowImpl::link_renderer(
                                                 m_clientHeight};
     surfaceHandle->surface->init_win32(surfaceData);
 
-    m_signalResize.attach_ToSignal(Callback<void, U32, U32>(
+    m_signalResize.attach_toSignal(mCallback<void, U32, U32>(
         surfaceHandle->surface, &render::ISurface::resize));
 
     // TODO : Manage this from the renderer
-    m_signalWindowDestroyed.attach_ToSignal(Callback<void>(
+    m_signalWindowDestroyed.attach_toSignal(mCallback<void>(
         [surfaceHandle]()
         {
             surfaceHandle->isValid = false;
@@ -160,10 +160,10 @@ void IWindowImpl::set_asImGuiWindow()
 
     ImGui_ImplWin32_Init(m_hwnd);
 
-    m_signalWindowDestroyed.attach_ToSignal(
-        Callback<void>([]() { ImGui_ImplWin32_Shutdown(); }));
+    m_signalWindowDestroyed.attach_toSignal(
+        mCallback<void>([]() { ImGui_ImplWin32_Shutdown(); }));
 
-    m_signalOverrideInputProcessing.attach_ToSignal(CallbackInputProcessing(
+    m_signalOverrideInputProcessing.attach_toSignal(CallbackInputProcessing(
         [](Bool* a_interrupt, HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam,
            LPARAM a_lParam)
         {
@@ -234,18 +234,18 @@ void IWindowImpl::toggle_fullScreen()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void IWindowImpl::attach_toDestroy(Callback<void> const& a_onDestroyCallback)
+void IWindowImpl::attach_toDestroy(mCallback<void> const& a_onDestroyCallback)
 {
-    m_signalWindowDestroyed.attach_ToSignal(a_onDestroyCallback);
+    m_signalWindowDestroyed.attach_toSignal(a_onDestroyCallback);
 }
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 void IWindowImpl::attach_toResize(
-    Callback<void, U32, U32> const& a_onResizeCallback)
+    mCallback<void, U32, U32> const& a_onResizeCallback)
 {
-    m_signalResize.attach_ToSignal(a_onResizeCallback);
+    m_signalResize.attach_toSignal(a_onResizeCallback);
 }
 
 }  // namespace m::win32

@@ -109,7 +109,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         m_inputManager.attach_ToKeyEvent(
             input::KeyAction::keyPressed(input::KEY_N),
-            Callback<void>(&m_bunchOfSquares, &BunchOfSquares::add_newSquare));
+            mCallback<void>(&m_bunchOfSquares, &BunchOfSquares::add_newSquare));
 
         // Setup vulkan window
         m_windowVulkan     = add_newWindow("Vulkan Window", 1280, 720);
@@ -124,7 +124,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         m_inputManager.attach_ToKeyEvent(
             input::KeyAction::keyPressed(input::KEY_N),
-            Callback<void>(&m_bunchOfSquares, &BunchOfSquares::add_newSquare));
+            mCallback<void>(&m_bunchOfSquares, &BunchOfSquares::add_newSquare));
     }
 
     void destroy() override

@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['_7efilelogpolicy_0',['~FileLogPolicy',['../classm_1_1logging_1_1_file_log_policy.html#ade158755d2d9b7bbdf7274736904eff6',1,'m::logging::FileLogPolicy']]],
-  ['_7elogger_1',['~Logger',['../group___log.html#ga65bf48423557daf6361e9273fa3cedcc',1,'m::logging::Logger']]],
-  ['_7estdcoutlogpolicy_2',['~StdcoutLogPolicy',['../classm_1_1logging_1_1_stdcout_log_policy.html#a0f2590955d06fb967da3068f3aba3c99',1,'m::logging::StdcoutLogPolicy']]]
+  ['set_0',['set',['../classm_1_1m_callback.html#a08e0c1570e03ccb8caccec23644c2b13',1,'m::mCallback::set(t_CArgs *a_owner, t_RetType(t_CArgs::*a_func)(t_Args...))'],['../classm_1_1m_callback.html#ac79bd8006224a4d446be24a111ee6a4d',1,'m::mCallback::set(std::function&lt; mFunctionType &gt; const &amp;a_func)'],['../classm_1_1m_callback.html#ad1d9cecb679dd3bade3de9758cb0bb20',1,'m::mCallback::set(std::function&lt; mFunctionType &gt; &amp;&amp;a_func)']]],
+  ['set_5ffilter_1',['set_filter',['../group___log.html#gaddcfb00131aac4b1706bdd3b509353bb',1,'m::logging::Logger']]],
+  ['set_5fminimalstepduration_2',['set_minimalStepDuration',['../classm_1_1application_1_1m_i_timed_loop_application.html#a30915222caf71e7686751485d89194b3',1,'m::application::mITimedLoopApplication']]],
+  ['stdcoutlogpolicy_3',['StdcoutLogPolicy',['../classm_1_1logging_1_1_stdcout_log_policy.html#abb9a14a1deb6f90cff9da2a3974c63f2',1,'m::logging::StdcoutLogPolicy']]],
+  ['step_4',['step',['../classm_1_1application_1_1m_i_loop_application.html#aa47382bad3d069b8ec3aa5f3fcae830e',1,'m::application::mILoopApplication::step()'],['../classm_1_1application_1_1m_i_timed_loop_application.html#ac2afcb4ee8711b4d1204e3a17af404d7',1,'m::application::mITimedLoopApplication::step()'],['../classm_1_1win32_1_1_i_windowed_application_impl.html#ac8a2628a86f944333e8668bd3b46e599',1,'m::win32::IWindowedApplicationImpl::step()']]]
 ];

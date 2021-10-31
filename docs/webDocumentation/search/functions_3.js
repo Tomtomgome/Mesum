@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['filelogpolicy_0',['FileLogPolicy',['../classm_1_1logging_1_1_file_log_policy.html#a6c43c4d1957e1b308ae57c74a1edc056',1,'m::logging::FileLogPolicy']]]
+  ['enable_5fchannels_0',['enable_channels',['../group___log.html#gaf8b43c36de390d048e69e3a7f9391ab0',1,'m::logging::Logger']]]
 ];

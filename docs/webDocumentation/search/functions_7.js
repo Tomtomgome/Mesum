@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['open_5fostream_0',['open_ostream',['../classm_1_1logging_1_1_i_log_policy.html#a3025648b5054e9230a2f55373358d61a',1,'m::logging::ILogPolicy::open_ostream()'],['../classm_1_1logging_1_1_file_log_policy.html#a660971d89cd25b7a11ca2002208f9106',1,'m::logging::FileLogPolicy::open_ostream()'],['../classm_1_1logging_1_1_stdcout_log_policy.html#a8d1dc6329cb18395e76f8c79b38385c9',1,'m::logging::StdcoutLogPolicy::open_ostream()']]]
+  ['launch_0',['launch',['../classm_1_1application_1_1m_i_basic_application.html#a10ecb6a45dbf100c037eff46b5a1f161',1,'m::application::mIBasicApplication::launch()'],['../classm_1_1application_1_1m_i_loop_application.html#ac9606c3ee30894f0694bc390a6c42f0d',1,'m::application::mILoopApplication::launch()'],['../classm_1_1application_1_1m_i_timed_loop_application.html#a2ec2d8e42fcf88cb05bd8fc6748959b9',1,'m::application::mITimedLoopApplication::launch()']]],
+  ['logger_1',['Logger',['../group___log.html#ga5dfda4dcd8b2bea3fc48a8852eb7edf8',1,'m::logging::Logger']]]
 ];

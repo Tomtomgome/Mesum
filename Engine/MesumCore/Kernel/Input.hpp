@@ -117,36 +117,36 @@ class InputManager
 
     void processAndUpdate_States();
 
-    KeyActionSignal::handle attach_ToKeyEvent(
+    KeyActionSignal::mCallbackHandle attach_ToKeyEvent(
         KeyAction a_keyAction, const KeyActionCallback& a_callback);
-    MouseActionSignal::handle attach_ToMouseEvent(
+    MouseActionSignal::mCallbackHandle attach_ToMouseEvent(
         MouseAction a_mouseAction, const MouseActionCallback& a_callback);
-    ScrollSignal::handle attach_ToScrollEvent(const ScrollCallback& a_callback);
-    MouseMoveSignal::handle attach_ToMoveEvent(
+    ScrollSignal::mCallbackHandle attach_ToScrollEvent(const ScrollCallback& a_callback);
+    MouseMoveSignal::mCallbackHandle attach_ToMoveEvent(
         const MouseMoveCallback& a_callback);
 
     void detach_FromKeyEvent(KeyAction                a_keyAction,
                             const KeyActionCallback& a_callback);
     void detach_FromKeyEvent(KeyAction                      a_keyAction,
-                            const KeyActionSignal::handle& a_handle);
+                            const KeyActionSignal::mCallbackHandle& a_handle);
 
     void detach_FromMouseEvent(MouseAction                a_mouseAction,
                               const MouseActionCallback& a_callback);
     void detach_FromMouseEvent(MouseAction                      a_mouseAction,
-                              const MouseActionSignal::handle& a_handle);
+                              const MouseActionSignal::mCallbackHandle& a_handle);
 
     void detach_FromScrollEvent(const ScrollCallback& a_callback);
-    void detach_FromScrollEvent(const ScrollSignal::handle& a_callback);
+    void detach_FromScrollEvent(const ScrollSignal::mCallbackHandle& a_callback);
 
     void detach_FromMoveEvent(const MouseMoveCallback& a_callback);
-    void detach_FromMoveEvent(const MouseMoveSignal::handle& a_callback);
+    void detach_FromMoveEvent(const MouseMoveSignal::mCallbackHandle& a_callback);
 
-    MouseStateSignal::handle attach_ToMouseState(
+    MouseStateSignal::mCallbackHandle attach_ToMouseState(
         MouseState a_mouseState, const MouseStateCallback& a_callback);
     void detach_FromMouseState(MouseState                a_mouseState,
                               const MouseStateCallback& a_callback);
     void detach_FromMouseState(MouseState                      a_mouseState,
-                              const MouseStateSignal::handle& a_handle);
+                              const MouseStateSignal::mCallbackHandle& a_handle);
 
    private:
     double m_mousePosX;

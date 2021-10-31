@@ -34,9 +34,9 @@ class IWindow
     virtual void toggle_fullScreen()               = 0;
 
     virtual void attach_toDestroy(
-        Callback<void> const& a_onDestroyCallback) = 0;
+        mCallback<void> const& a_onDestroyCallback) = 0;
     virtual void attach_toResize(
-        Callback<void, U32, U32> const& a_onResizeCallback) = 0;
+        mCallback<void, U32, U32> const& a_onResizeCallback) = 0;
 };
 }  // namespace windows
 }  // namespace m

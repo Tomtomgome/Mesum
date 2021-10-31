@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['_7efilelogpolicy_0',['~FileLogPolicy',['../classm_1_1logging_1_1_file_log_policy.html#ade158755d2d9b7bbdf7274736904eff6',1,'m::logging::FileLogPolicy']]],
-  ['_7elogger_1',['~Logger',['../group___log.html#ga65bf48423557daf6361e9273fa3cedcc',1,'m::logging::Logger']]],
-  ['_7estdcoutlogpolicy_2',['~StdcoutLogPolicy',['../classm_1_1logging_1_1_stdcout_log_policy.html#a0f2590955d06fb967da3068f3aba3c99',1,'m::logging::StdcoutLogPolicy']]]
+  ['xcbcontext_0',['XCBContext',['../structm_1_1xcb__unix_1_1_x_c_b_context.html',1,'m::xcb_unix']]],
+  ['xoshiro256ssstate_1',['xoshiro256ssState',['../structm_1_1math_1_1_random_generator_1_1xoshiro256ss_state.html',1,'m::math::RandomGenerator']]]
 ];
