@@ -43,10 +43,10 @@ inline void check_MicrosoftHRESULT(HRESULT a_hr)
 }
 
 void set_dxgiDebugName(ComPtr<IDXGIObject> a_dxgiObject, std::string a_sName,
-                       const Int a_lineNumber, const Char* a_file);
+                       const mInt a_lineNumber, const mChar* a_file);
 
 void set_d3g12DebugName(ComPtr<ID3D12Object> a_d3d12Object, std::string a_sName,
-                        const Int a_lineNumber, const Char* a_file);
+                        const mInt a_lineNumber, const mChar* a_file);
 
 #ifdef M_DEBUG
 #define mDXGIDebugNamed(a_dxgiObject, a_name) \
@@ -66,7 +66,7 @@ void enable_debugLayer();
 void report_liveObjects();
 bool check_tearingSupport();
 
-ComPtr<IDXGIAdapter4> get_adapter(Bool a_useWarp);
+ComPtr<IDXGIAdapter4> get_adapter(mBool a_useWarp);
 
 ComPtr<ID3D12Device2>      create_device(ComPtr<IDXGIAdapter4> a_adapter);
 ComPtr<ID3D12CommandQueue> create_commandQueue(ComPtr<ID3D12Device2>   a_device,
@@ -86,8 +86,8 @@ ComPtr<ID3D12GraphicsCommandList2> create_commandList(
     D3D12_COMMAND_LIST_TYPE        a_type);
 ComPtr<ID3D12Fence> create_fence(ComPtr<ID3D12Device2> a_device);
 HANDLE              create_eventHandle();
-U64                 signal_fence(ComPtr<ID3D12CommandQueue> a_commandQueue,
-                                 ComPtr<ID3D12Fence> a_fence, U64& a_fenceValue);
+mU64                signal_fence(ComPtr<ID3D12CommandQueue> a_commandQueue,
+                                 ComPtr<ID3D12Fence> a_fence, mU64& a_fenceValue);
 void                wait_fenceValue(
                    ComPtr<ID3D12Fence> a_fence, uint64_t a_fenceValue, HANDLE a_fenceEvent,
                    std::chrono::milliseconds a_duration = std::chrono::milliseconds::max());

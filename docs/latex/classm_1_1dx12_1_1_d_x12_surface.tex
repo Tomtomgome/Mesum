@@ -19,7 +19,7 @@ void {\bfseries init\+\_\+x11} (render\+::\+X11\+Surface\+Init\+Data \&a\+\_\+da
 \item 
 void \mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_surface_af585a8c3ffe216370f097d612dfc68ef}{render}} () override
 \item 
-void \mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_surface_a20549692f32a0dff93e0c41ac80e93a4}{resize}} (U32 a\+\_\+width, U32 a\+\_\+height) override
+void \mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_surface_a0f855dd3562306d525451fd12c3cb9a1}{resize}} (m\+U32 a\+\_\+width, m\+U32 a\+\_\+height) override
 \item 
 void \mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_surface_abb065d3c757b8858a12a2de73123c856}{destroy}} () override
 \item 
@@ -29,17 +29,17 @@ D3\+D12\+\_\+\+CPU\+\_\+\+DESCRIPTOR\+\_\+\+HANDLE {\bfseries get\+\_\+current\+
 \doxysubsection*{Static Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_abbadca6315bf5caf9c2c266f9bbd38aa}\label{classm_1_1dx12_1_1_d_x12_surface_abbadca6315bf5caf9c2c266f9bbd38aa}} 
-static const U8 {\bfseries scm\+\_\+num\+Frames} = 3
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_ab4737830f51694b5c907c3d4e63e422d}\label{classm_1_1dx12_1_1_d_x12_surface_ab4737830f51694b5c907c3d4e63e422d}} 
+static const m\+U8 {\bfseries scm\+\_\+num\+Frames} = 3
 \end{DoxyCompactItemize}
 \doxysubsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a620b40ff1a3b2658a56fb11597d725fb}\label{classm_1_1dx12_1_1_d_x12_surface_a620b40ff1a3b2658a56fb11597d725fb}} 
-UInt {\bfseries get\+\_\+sync\+Interval} () const
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_aa859bbf1752ac8fea64665da00ad88e5}\label{classm_1_1dx12_1_1_d_x12_surface_aa859bbf1752ac8fea64665da00ad88e5}} 
+m\+UInt {\bfseries get\+\_\+sync\+Interval} () const
 \item 
-\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a30e95e2b5dfb7ac04e2822bf778cea44}\label{classm_1_1dx12_1_1_d_x12_surface_a30e95e2b5dfb7ac04e2822bf778cea44}} 
-UInt {\bfseries get\+\_\+present\+Flags} () const
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_aa0685d012dc96a4a2092d72d7142ecb0}\label{classm_1_1dx12_1_1_d_x12_surface_aa0685d012dc96a4a2092d72d7142ecb0}} 
+m\+UInt {\bfseries get\+\_\+present\+Flags} () const
 \item 
 \mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a9e4412c262735260b4dfc096174267f6}\label{classm_1_1dx12_1_1_d_x12_surface_a9e4412c262735260b4dfc096174267f6}} 
 void {\bfseries update\+\_\+render\+Target\+Views} (Com\+Ptr$<$ ID3\+D12\+Device2 $>$ a\+\_\+device, Com\+Ptr$<$ IDXGISwap\+Chain4 $>$ a\+\_\+swap\+Chain, Com\+Ptr$<$ ID3\+D12\+Descriptor\+Heap $>$ a\+\_\+descriptor\+Heap)
@@ -47,11 +47,11 @@ void {\bfseries update\+\_\+render\+Target\+Views} (Com\+Ptr$<$ ID3\+D12\+Device
 \doxysubsection*{Private Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a28361763b610eee0817aad0694fca22e}\label{classm_1_1dx12_1_1_d_x12_surface_a28361763b610eee0817aad0694fca22e}} 
-Bool {\bfseries m\+\_\+v\+Sync} = true
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a48610fcb9665312ec937f500101e211a}\label{classm_1_1dx12_1_1_d_x12_surface_a48610fcb9665312ec937f500101e211a}} 
+m\+Bool {\bfseries m\+\_\+v\+Sync} = true
 \item 
-\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a912edc748baad14a8664b0d00e94bfcb}\label{classm_1_1dx12_1_1_d_x12_surface_a912edc748baad14a8664b0d00e94bfcb}} 
-Bool {\bfseries m\+\_\+tearing\+Supported} = false
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_acb54bd7d282450d66b3cfd259416818f}\label{classm_1_1dx12_1_1_d_x12_surface_acb54bd7d282450d66b3cfd259416818f}} 
+m\+Bool {\bfseries m\+\_\+tearing\+Supported} = false
 \item 
 \mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_afd2174b181df6d47ef80ffc08f6aad4b}\label{classm_1_1dx12_1_1_d_x12_surface_afd2174b181df6d47ef80ffc08f6aad4b}} 
 Com\+Ptr$<$ IDXGISwap\+Chain4 $>$ {\bfseries m\+\_\+swap\+Chain}
@@ -59,14 +59,14 @@ Com\+Ptr$<$ IDXGISwap\+Chain4 $>$ {\bfseries m\+\_\+swap\+Chain}
 \mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a4d72cbd09e624873714ce32aabcb9f18}\label{classm_1_1dx12_1_1_d_x12_surface_a4d72cbd09e624873714ce32aabcb9f18}} 
 Com\+Ptr$<$ ID3\+D12\+Resource $>$ {\bfseries m\+\_\+back\+Buffers} \mbox{[}scm\+\_\+num\+Frames\mbox{]}
 \item 
-\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_acfe787ecc5561ee15b12acce94a4c456}\label{classm_1_1dx12_1_1_d_x12_surface_acfe787ecc5561ee15b12acce94a4c456}} 
-UInt {\bfseries m\+\_\+current\+Back\+Buffer\+Index}
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a8167ca92e410f8c6e1021d8e3fbf2d3a}\label{classm_1_1dx12_1_1_d_x12_surface_a8167ca92e410f8c6e1021d8e3fbf2d3a}} 
+m\+UInt {\bfseries m\+\_\+current\+Back\+Buffer\+Index}
 \item 
 \mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_abea6fdd49aa0819f9fd96991b8ba4afe}\label{classm_1_1dx12_1_1_d_x12_surface_abea6fdd49aa0819f9fd96991b8ba4afe}} 
 Com\+Ptr$<$ ID3\+D12\+Descriptor\+Heap $>$ {\bfseries m\+\_\+\+RTVDescriptor\+Heap}
 \item 
-\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_abddee02ededd58d566cd6c4ac6f42f9d}\label{classm_1_1dx12_1_1_d_x12_surface_abddee02ededd58d566cd6c4ac6f42f9d}} 
-UInt {\bfseries m\+\_\+\+RTVDescriptor\+Size}
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a7ce6e74fd3a6ee6afe38d310f635af33}\label{classm_1_1dx12_1_1_d_x12_surface_a7ce6e74fd3a6ee6afe38d310f635af33}} 
+m\+UInt {\bfseries m\+\_\+\+RTVDescriptor\+Size}
 \item 
 \mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_aea127bcbf36123abf3c05b474700d822}\label{classm_1_1dx12_1_1_d_x12_surface_aea127bcbf36123abf3c05b474700d822}} 
 Com\+Ptr$<$ ID3\+D12\+Descriptor\+Heap $>$ {\bfseries m\+\_\+\+SRVDescriptor\+Heap}
@@ -74,14 +74,14 @@ Com\+Ptr$<$ ID3\+D12\+Descriptor\+Heap $>$ {\bfseries m\+\_\+\+SRVDescriptor\+He
 \mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a4f9ac803ab68829cf2ed307dd37fa440}\label{classm_1_1dx12_1_1_d_x12_surface_a4f9ac803ab68829cf2ed307dd37fa440}} 
 std\+::vector$<$ \mbox{\hyperlink{structm_1_1dx12_1_1_d_x12_render_taskset}{DX12\+Render\+Taskset}} $\ast$ $>$ {\bfseries m\+\_\+render\+Tasksets}
 \item 
-\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a9b515c8f1d5957d45587ef0b5cff0b29}\label{classm_1_1dx12_1_1_d_x12_surface_a9b515c8f1d5957d45587ef0b5cff0b29}} 
-U64 {\bfseries m\+\_\+frame\+Fence\+Values} \mbox{[}scm\+\_\+num\+Frames\mbox{]} = \{\}
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a2eacb3eb2fb8a24014efec7bf172bf94}\label{classm_1_1dx12_1_1_d_x12_surface_a2eacb3eb2fb8a24014efec7bf172bf94}} 
+m\+U64 {\bfseries m\+\_\+frame\+Fence\+Values} \mbox{[}scm\+\_\+num\+Frames\mbox{]} = \{\}
 \item 
-\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a3e2d1d388dddb6c5f9bcd1ca0b246c47}\label{classm_1_1dx12_1_1_d_x12_surface_a3e2d1d388dddb6c5f9bcd1ca0b246c47}} 
-U32 {\bfseries m\+\_\+client\+Width}
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a452f4e3e9396c378e256f24c977a77c6}\label{classm_1_1dx12_1_1_d_x12_surface_a452f4e3e9396c378e256f24c977a77c6}} 
+m\+U32 {\bfseries m\+\_\+client\+Width}
 \item 
-\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_abe666813171c92754a73725cd1b802d1}\label{classm_1_1dx12_1_1_d_x12_surface_abe666813171c92754a73725cd1b802d1}} 
-U32 {\bfseries m\+\_\+client\+Height}
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a7f198d8f1c3f383bb4e8f16fd117b06a}\label{classm_1_1dx12_1_1_d_x12_surface_a7f198d8f1c3f383bb4e8f16fd117b06a}} 
+m\+U32 {\bfseries m\+\_\+client\+Height}
 \end{DoxyCompactItemize}
 \doxysubsection*{Additional Inherited Members}
 
@@ -117,11 +117,11 @@ Implements \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{m\+::render\+::\+ISu
 
 Implements \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{m\+::render\+::\+ISurface}}.
 
-\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a20549692f32a0dff93e0c41ac80e93a4}\label{classm_1_1dx12_1_1_d_x12_surface_a20549692f32a0dff93e0c41ac80e93a4}} 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a0f855dd3562306d525451fd12c3cb9a1}\label{classm_1_1dx12_1_1_d_x12_surface_a0f855dd3562306d525451fd12c3cb9a1}} 
 \index{m::dx12::DX12Surface@{m::dx12::DX12Surface}!resize@{resize}}
 \index{resize@{resize}!m::dx12::DX12Surface@{m::dx12::DX12Surface}}
 \doxysubsubsection{\texorpdfstring{resize()}{resize()}}
-{\footnotesize\ttfamily void m\+::dx12\+::\+DX12\+Surface\+::resize (\begin{DoxyParamCaption}\item[{U32}]{a\+\_\+width,  }\item[{U32}]{a\+\_\+height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily void m\+::dx12\+::\+DX12\+Surface\+::resize (\begin{DoxyParamCaption}\item[{m\+U32}]{a\+\_\+width,  }\item[{m\+U32}]{a\+\_\+height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 

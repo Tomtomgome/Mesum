@@ -8,7 +8,9 @@ namespace \mbox{\hyperlink{namespacem_1_1application}{m\+::application}}
 namespace \mbox{\hyperlink{namespacem_1_1files}{m\+::files}}
 \begin{DoxyCompactList}\small\item\em Namespace grouping file related utilities. \end{DoxyCompactList}\item 
 namespace \mbox{\hyperlink{namespacem_1_1logging}{m\+::logging}}
-\begin{DoxyCompactList}\small\item\em Namespace grouping all logging tools. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Namespace grouping all logging tools. \end{DoxyCompactList}\item 
+namespace \mbox{\hyperlink{namespacem_1_1math}{m\+::math}}
+\begin{DoxyCompactList}\small\item\em Namespace for math related utils. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
@@ -33,7 +35,11 @@ class \mbox{\hyperlink{classm_1_1logging_1_1m_i_log_policy}{m\+::logging\+::m\+I
 class \mbox{\hyperlink{classm_1_1logging_1_1m_file_log_policy}{m\+::logging\+::m\+File\+Log\+Policy}}
 \begin{DoxyCompactList}\small\item\em Log policy outputting into a file. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classm_1_1logging_1_1m_stdcout_log_policy}{m\+::logging\+::m\+Stdcout\+Log\+Policy}}
-\begin{DoxyCompactList}\small\item\em Log policy outputting into the standard output. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Log policy outputting into the standard output. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classm_1_1math_1_1m_xo_random_number_generator}{m\+::math\+::m\+Xo\+Random\+Number\+Generator}}
+\begin{DoxyCompactList}\small\item\em Random\+Number\+Generator using Xor\+Shift. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state}{m\+::math\+::m\+Xo\+Random\+Number\+Generator\+::m\+Xoshiro256ss\+State}}
+\begin{DoxyCompactList}\small\item\em State of the xoshiro algorithm. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
@@ -52,11 +58,11 @@ class \mbox{\hyperlink{classm_1_1logging_1_1m_stdcout_log_policy}{m\+::logging\+
 \mbox{\Hypertarget{group___core_gaa46368d8dc5683fc05fde329f4c69532}\label{group___core_gaa46368d8dc5683fc05fde329f4c69532}} 
 \#define {\bfseries WFILE}~WIDE1(\+\_\+\+\_\+\+FILE\+\_\+\+\_\+)
 \item 
-\#define \mbox{\hyperlink{group___core_ga130ddba9a4e2dc6e95a6797c0f448243}{m\+Soft\+Assert}}(condition)
+\#define \mbox{\hyperlink{group___core_gaed17c7e2d6fa608a86bd77dbf44de294}{m\+Soft\+Assert}}(a\+\_\+condition)
 \begin{DoxyCompactList}\small\item\em A soft assert is non blocking. \end{DoxyCompactList}\item 
-\#define \mbox{\hyperlink{group___core_ga5cbca1ff1eb730a016c7c63f94afa154}{m\+Assert}}(condition)
+\#define \mbox{\hyperlink{group___core_gae68855c8125ce66a9e53e758526c95ca}{m\+Assert}}(a\+\_\+condition)
 \begin{DoxyCompactList}\small\item\em A basic assert interrupting execution. \end{DoxyCompactList}\item 
-\#define \mbox{\hyperlink{group___core_ga375da2becf883550c0e1293307b02c9a}{m\+Expect}}(condition)
+\#define \mbox{\hyperlink{group___core_ga85d6f0f15b7e1ab2f6a30c07054c8904}{m\+Expect}}(a\+\_\+condition)
 \begin{DoxyCompactList}\small\item\em Blocking assert reserved to check function preconditions. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{group___core_ga9aa869d857bafeb44058596e5ba4b1e6}\label{group___core_ga9aa869d857bafeb44058596e5ba4b1e6}} 
 \#define {\bfseries m\+Log\+\_\+get\+Id}~m\+::log\+\_\+inst.\+get\+\_\+new\+Channel\+ID
@@ -112,15 +118,15 @@ class \mbox{\hyperlink{classm_1_1logging_1_1m_stdcout_log_policy}{m\+::logging\+
 
 
 \doxysubsection{Macro Definition Documentation}
-\mbox{\Hypertarget{group___core_ga5cbca1ff1eb730a016c7c63f94afa154}\label{group___core_ga5cbca1ff1eb730a016c7c63f94afa154}} 
+\mbox{\Hypertarget{group___core_gae68855c8125ce66a9e53e758526c95ca}\label{group___core_gae68855c8125ce66a9e53e758526c95ca}} 
 \index{Core@{Core}!mAssert@{mAssert}}
 \index{mAssert@{mAssert}!Core@{Core}}
 \doxysubsubsection{\texorpdfstring{mAssert}{mAssert}}
-{\footnotesize\ttfamily \#define m\+Assert(\begin{DoxyParamCaption}\item[{}]{condition }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \#define m\+Assert(\begin{DoxyParamCaption}\item[{}]{a\+\_\+condition }\end{DoxyParamCaption})}
 
 {\bfseries Value\+:}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{    m::manage\_assert(condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}
+\DoxyCodeLine{    m::manage\_assert(a\_condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}
 \DoxyCodeLine{                     \textcolor{stringliteral}{"{}Triggered soft assertion from file : "{}});}
 
 \end{DoxyCode}
@@ -133,15 +139,15 @@ A basic assert interrupting execution.
 {\em a\+\_\+condition} & The condition to check \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{group___core_ga375da2becf883550c0e1293307b02c9a}\label{group___core_ga375da2becf883550c0e1293307b02c9a}} 
+\mbox{\Hypertarget{group___core_ga85d6f0f15b7e1ab2f6a30c07054c8904}\label{group___core_ga85d6f0f15b7e1ab2f6a30c07054c8904}} 
 \index{Core@{Core}!mExpect@{mExpect}}
 \index{mExpect@{mExpect}!Core@{Core}}
 \doxysubsubsection{\texorpdfstring{mExpect}{mExpect}}
-{\footnotesize\ttfamily \#define m\+Expect(\begin{DoxyParamCaption}\item[{}]{condition }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \#define m\+Expect(\begin{DoxyParamCaption}\item[{}]{a\+\_\+condition }\end{DoxyParamCaption})}
 
 {\bfseries Value\+:}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{    m::manage\_assert(condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}
+\DoxyCodeLine{    m::manage\_assert(a\_condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}
 \DoxyCodeLine{                     \textcolor{stringliteral}{"{}Precondition not matched : "{}});}
 
 \end{DoxyCode}
@@ -154,15 +160,15 @@ Blocking assert reserved to check function preconditions.
 {\em a\+\_\+condition} & The condition to check \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{group___core_ga130ddba9a4e2dc6e95a6797c0f448243}\label{group___core_ga130ddba9a4e2dc6e95a6797c0f448243}} 
+\mbox{\Hypertarget{group___core_gaed17c7e2d6fa608a86bd77dbf44de294}\label{group___core_gaed17c7e2d6fa608a86bd77dbf44de294}} 
 \index{Core@{Core}!mSoftAssert@{mSoftAssert}}
 \index{mSoftAssert@{mSoftAssert}!Core@{Core}}
 \doxysubsubsection{\texorpdfstring{mSoftAssert}{mSoftAssert}}
-{\footnotesize\ttfamily \#define m\+Soft\+Assert(\begin{DoxyParamCaption}\item[{}]{condition }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \#define m\+Soft\+Assert(\begin{DoxyParamCaption}\item[{}]{a\+\_\+condition }\end{DoxyParamCaption})}
 
 {\bfseries Value\+:}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{    m::manage\_assert(condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}
+\DoxyCodeLine{    m::manage\_assert(a\_condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}
 \DoxyCodeLine{                     \textcolor{stringliteral}{"{}Triggered soft assertion from file : "{}}, \textcolor{keyword}{false});}
 
 \end{DoxyCode}

@@ -12,11 +12,11 @@ Inheritance diagram for m\+::xcb\+\_\+unix\+::IWindowed\+Application\+Impl\+:\be
 \mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a06b89ebe1ae34a51595c596e3b502076}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a06b89ebe1ae34a51595c596e3b502076}} 
 virtual void {\bfseries init\+\_\+renderer} (render\+::\+Renderer\+Api a\+\_\+render\+Api=render\+::\+Renderer\+Api\+::\+Default) override
 \item 
-\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_afe4c54872b75a84b9c99c75baf88d0ed}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_afe4c54872b75a84b9c99c75baf88d0ed}} 
-virtual \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{windows\+::\+IWindow}} $\ast$ {\bfseries add\+\_\+new\+Window} (std\+::wstring a\+\_\+name, U32 a\+\_\+width, U32 a\+\_\+height)
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_ac1a971ba4162e5ca556a49132f00e0b9}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_ac1a971ba4162e5ca556a49132f00e0b9}} 
+virtual \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{windows\+::\+IWindow}} $\ast$ {\bfseries add\+\_\+new\+Window} (std\+::wstring a\+\_\+name, m\+U32 a\+\_\+width, m\+U32 a\+\_\+height)
 \item 
-\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a2cca829e6f2c9da072322b0f0053dc43}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a2cca829e6f2c9da072322b0f0053dc43}} 
-virtual void {\bfseries set\+\_\+process\+Im\+Gui\+Multi\+Viewports} (Bool a\+\_\+support\+Multi\+View\+Ports)
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a9475cb500288e2196ce779dd51119757}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a9475cb500288e2196ce779dd51119757}} 
+virtual void {\bfseries set\+\_\+process\+Im\+Gui\+Multi\+Viewports} (m\+Bool a\+\_\+support\+Multi\+View\+Ports)
 \item 
 \mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a6c7fbc62423cdbeeb54b85e6b8ed137d}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a6c7fbc62423cdbeeb54b85e6b8ed137d}} 
 virtual void {\bfseries start\+\_\+dear\+Im\+Gui\+New\+Frame} ()
@@ -31,14 +31,14 @@ virtual void \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_windowed_application_imp
 \begin{DoxyCompactList}\small\item\em Virtual that should implement initialization. \end{DoxyCompactList}\item 
 virtual void \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a8baef1bc4148d903512c731ab3121da5}{destroy}} () override
 \begin{DoxyCompactList}\small\item\em Virtual that should implement the application exits. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a1315ad79c40feb339499e3c8ff0921d7}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a1315ad79c40feb339499e3c8ff0921d7}} 
-virtual Bool {\bfseries step} (const std\+::chrono\+::duration$<$ long long int, std\+::nano $>$ \&a\+\_\+delta\+Time) override
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a1b96357467f6e402ecebc123517448f6}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a1b96357467f6e402ecebc123517448f6}} 
+virtual m\+Bool {\bfseries step} (const std\+::chrono\+::duration$<$ long long int, std\+::nano $>$ \&a\+\_\+delta\+Time) override
 \end{DoxyCompactItemize}
 \doxysubsection*{Private Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_adbb6b7984a4b3392181e14941eedc1a3}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_adbb6b7984a4b3392181e14941eedc1a3}} 
-Bool {\bfseries m\+\_\+support\+Im\+Gui\+Multi\+View\+Ports} = false
+\mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a93f0fc5acdc7219e26a1eefe31a616af}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a93f0fc5acdc7219e26a1eefe31a616af}} 
+m\+Bool {\bfseries m\+\_\+support\+Im\+Gui\+Multi\+View\+Ports} = false
 \item 
 \mbox{\Hypertarget{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a5fe94e86a57be7df68e5a35bbcb6e43c}\label{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a5fe94e86a57be7df68e5a35bbcb6e43c}} 
 \mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{render\+::\+IRenderer}} $\ast$ {\bfseries m\+\_\+renderer} = nullptr

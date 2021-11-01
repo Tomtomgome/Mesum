@@ -11,7 +11,7 @@ var namespaces_dup =
         [ "DX12Texture", "structm_1_1dx12_1_1_d_x12_texture.html", null ]
       ] ],
       [ "files", "namespacem_1_1files.html", [
-        [ "copy_fileToBinary", "namespacem_1_1files.html#aa3db50dd787fc4bb5c38aa8785f3ccc3", null ]
+        [ "copy_fileToBinary", "namespacem_1_1files.html#a20b16a1a42fafe54c1513dae48cc1a44", null ]
       ] ],
       [ "input", null, [
         [ "InputManager", "classm_1_1input_1_1_input_manager.html", null ],
@@ -20,15 +20,7 @@ var namespaces_dup =
         [ "MouseState", "structm_1_1input_1_1_mouse_state.html", null ]
       ] ],
       [ "logging", "namespacem_1_1logging.html", "namespacem_1_1logging" ],
-      [ "math", null, [
-        [ "RandomGenerator", "classm_1_1math_1_1_random_generator.html", "classm_1_1math_1_1_random_generator" ],
-        [ "splitmix64State", "structm_1_1math_1_1splitmix64_state.html", null ],
-        [ "Vec", "structm_1_1math_1_1_vec.html", null ],
-        [ "VecData", "structm_1_1math_1_1_vec_data.html", null ],
-        [ "VecData< T, 2 >", "structm_1_1math_1_1_vec_data_3_01_t_00_012_01_4.html", null ],
-        [ "VecData< T, 3 >", "structm_1_1math_1_1_vec_data_3_01_t_00_013_01_4.html", null ],
-        [ "VecData< T, 4 >", "structm_1_1math_1_1_vec_data_3_01_t_00_014_01_4.html", null ]
-      ] ],
+      [ "math", "namespacem_1_1math.html", "namespacem_1_1math" ],
       [ "render", null, [
         [ "BasicVertex", "structm_1_1render_1_1_basic_vertex.html", null ],
         [ "BufferBase", "structm_1_1render_1_1_buffer_base.html", null ],

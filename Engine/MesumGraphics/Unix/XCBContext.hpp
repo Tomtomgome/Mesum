@@ -21,7 +21,7 @@ struct XCBContext
 
     // Properties
     input::Key m_lut_keycodes[256];
-    I16        m_lut_scancode[input::Key::KEY_LAST + 1];
+    mI16       m_lut_scancode[input::Key::KEY_LAST + 1];
 
 };
 

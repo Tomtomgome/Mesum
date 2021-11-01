@@ -16,10 +16,10 @@ class DX12Context
     ~DX12Context()                   = default;
     static DX12Context* gs_dx12Contexte;
 
-    void init(Bool a_useWarp = false);
+    void init(mBool a_useWarp = false);
     void deinit();
 
-    Bool get_tearingSupport() const { return m_tearingSupported; }
+    mBool get_tearingSupport() const { return m_tearingSupported; }
 
     DX12CommandQueue& get_commandQueue() { return m_commandQueue; }
 
@@ -29,12 +29,12 @@ class DX12Context
 
    private:
     // Use WARP adapter
-    Bool g_UseWarp = false;
+    mBool g_UseWarp = false;
 
     // Set to true once the DX12 objects have been initialized.
-    Bool g_IsInitialized = false;
+    mBool g_IsInitialized = false;
 
-    Bool m_tearingSupported = false;
+    mBool m_tearingSupported = false;
 };
 
 }  // namespace m::dx12

@@ -16,13 +16,13 @@
 \DoxyCodeLine{16 }
 \DoxyCodeLine{20 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacem_1_1logging}{m::logging}}}
 \DoxyCodeLine{21 \{}
-\DoxyCodeLine{27 \textcolor{keyword}{using} \mbox{\hyperlink{namespacem_1_1logging_ac4aaaa53dd22d25e9b24d091274b28a7}{mChannelID}} = U64;}
+\DoxyCodeLine{27 \textcolor{keyword}{using} \mbox{\hyperlink{namespacem_1_1logging_af807dfba0ed733f24957c0f3d016a15f}{mChannelID}} = mU64;}
 \DoxyCodeLine{28 }
-\DoxyCodeLine{32 \textcolor{keyword}{using} \mbox{\hyperlink{namespacem_1_1logging_aaeb5f100312ad1db0f563f74d7914c9f}{mChannelFilter}} = U64;}
+\DoxyCodeLine{32 \textcolor{keyword}{using} \mbox{\hyperlink{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}{mChannelFilter}} = mU64;}
 \DoxyCodeLine{33 }
-\DoxyCodeLine{37 \textcolor{keyword}{constexpr} \mbox{\hyperlink{namespacem_1_1logging_aaeb5f100312ad1db0f563f74d7914c9f}{mChannelFilter}} \mbox{\hyperlink{namespacem_1_1logging_ac3d7342b9694fe25c6f2119fe2886a46}{g\_allChannelsFilter}} =}
-\DoxyCodeLine{38     (std::numeric\_limits<U64>::max)();}
-\DoxyCodeLine{42 \textcolor{keyword}{constexpr} \mbox{\hyperlink{namespacem_1_1logging_aaeb5f100312ad1db0f563f74d7914c9f}{mChannelFilter}} \mbox{\hyperlink{namespacem_1_1logging_a201855eccf18d6c2e13758836e1bc31e}{g\_noChannelsFilter}} = 0;}
+\DoxyCodeLine{37 \textcolor{keyword}{constexpr} \mbox{\hyperlink{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}{mChannelFilter}} \mbox{\hyperlink{namespacem_1_1logging_ac3d7342b9694fe25c6f2119fe2886a46}{g\_allChannelsFilter}} =}
+\DoxyCodeLine{38     (std::numeric\_limits<mU64>::max)();}
+\DoxyCodeLine{42 \textcolor{keyword}{constexpr} \mbox{\hyperlink{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}{mChannelFilter}} \mbox{\hyperlink{namespacem_1_1logging_a201855eccf18d6c2e13758836e1bc31e}{g\_noChannelsFilter}} = 0;}
 \DoxyCodeLine{43 }
 \DoxyCodeLine{47 \textcolor{keyword}{enum} \mbox{\hyperlink{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387}{mSeverityType}}}
 \DoxyCodeLine{48 \{}
@@ -39,13 +39,13 @@
 \DoxyCodeLine{69 }
 \DoxyCodeLine{73     \mbox{\hyperlink{classm_1_1logging_1_1m_logger_a290891ccb1be92d2912fdbdfe3b04e5a}{\string~mLogger}}();}
 \DoxyCodeLine{74 }
-\DoxyCodeLine{78     \mbox{\hyperlink{namespacem_1_1logging_ac4aaaa53dd22d25e9b24d091274b28a7}{mChannelID}} \mbox{\hyperlink{classm_1_1logging_1_1m_logger_a59961a6eebe198f19bb95a5000f6373c}{get\_newChannelID}}();}
+\DoxyCodeLine{78     \mbox{\hyperlink{namespacem_1_1logging_af807dfba0ed733f24957c0f3d016a15f}{mChannelID}} \mbox{\hyperlink{classm_1_1logging_1_1m_logger_a59961a6eebe198f19bb95a5000f6373c}{get\_newChannelID}}();}
 \DoxyCodeLine{79 }
-\DoxyCodeLine{85     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1logging_1_1m_logger_ab72e23ec1dee710ae547720bcebe446d}{set\_filter}}(\mbox{\hyperlink{namespacem_1_1logging_aaeb5f100312ad1db0f563f74d7914c9f}{mChannelFilter}} a\_filter);}
+\DoxyCodeLine{85     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1logging_1_1m_logger_ab72e23ec1dee710ae547720bcebe446d}{set\_filter}}(\mbox{\hyperlink{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}{mChannelFilter}} a\_filter);}
 \DoxyCodeLine{86 }
-\DoxyCodeLine{92     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1logging_1_1m_logger_a8447286a207b62778ea2fd3c2fd1cb10}{disable\_channels}}(\mbox{\hyperlink{namespacem_1_1logging_aaeb5f100312ad1db0f563f74d7914c9f}{mChannelFilter}} a\_filter);}
+\DoxyCodeLine{92     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1logging_1_1m_logger_a8447286a207b62778ea2fd3c2fd1cb10}{disable\_channels}}(\mbox{\hyperlink{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}{mChannelFilter}} a\_filter);}
 \DoxyCodeLine{93 }
-\DoxyCodeLine{99     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1logging_1_1m_logger_a83c957baadaf5ad52f112fdc36f58d83}{enable\_channels}}(\mbox{\hyperlink{namespacem_1_1logging_aaeb5f100312ad1db0f563f74d7914c9f}{mChannelFilter}} a\_filter);}
+\DoxyCodeLine{99     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1logging_1_1m_logger_a83c957baadaf5ad52f112fdc36f58d83}{enable\_channels}}(\mbox{\hyperlink{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}{mChannelFilter}} a\_filter);}
 \DoxyCodeLine{100 }
 \DoxyCodeLine{109     \textcolor{keyword}{template} <\mbox{\hyperlink{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387}{mSeverityType}} t\_Severity, \textcolor{keyword}{typename}... t\_Args>}
 \DoxyCodeLine{110     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1logging_1_1m_logger_ac6fe0dc8b19e8e94eac606d71838befd}{print\_toChannel}}(uint64\_t a\_channel, t\_Args... a\_args);}
@@ -69,8 +69,8 @@
 \DoxyCodeLine{155     t\_LogPolicy*      \mbox{\hyperlink{classm_1_1logging_1_1m_logger_a7cdf26de1340fc616c6bade585ce9ff5}{m\_policy}} = \textcolor{keyword}{nullptr};  }
 \DoxyCodeLine{156     \textcolor{keywordtype}{unsigned}          \mbox{\hyperlink{classm_1_1logging_1_1m_logger_a6f8a344c00f2070681691a3d7422a588}{m\_lineNumber}} = 0;    }
 \DoxyCodeLine{157 }
-\DoxyCodeLine{161     \mbox{\hyperlink{namespacem_1_1logging_aaeb5f100312ad1db0f563f74d7914c9f}{mChannelFilter}} \mbox{\hyperlink{classm_1_1logging_1_1m_logger_acdddf0d18b89b8040850cf0ae3fbc2a3}{m\_filter}}        = \mbox{\hyperlink{namespacem_1_1logging_ac3d7342b9694fe25c6f2119fe2886a46}{g\_allChannelsFilter}};}
-\DoxyCodeLine{162     \mbox{\hyperlink{namespacem_1_1logging_ac4aaaa53dd22d25e9b24d091274b28a7}{mChannelID}}     \mbox{\hyperlink{classm_1_1logging_1_1m_logger_a5a0049f9abdded520fdc9b1218569c6d}{m\_nextChannelID}} = 1;  }
+\DoxyCodeLine{161     \mbox{\hyperlink{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}{mChannelFilter}} \mbox{\hyperlink{classm_1_1logging_1_1m_logger_acdddf0d18b89b8040850cf0ae3fbc2a3}{m\_filter}}        = \mbox{\hyperlink{namespacem_1_1logging_ac3d7342b9694fe25c6f2119fe2886a46}{g\_allChannelsFilter}};}
+\DoxyCodeLine{162     \mbox{\hyperlink{namespacem_1_1logging_af807dfba0ed733f24957c0f3d016a15f}{mChannelID}}     \mbox{\hyperlink{classm_1_1logging_1_1m_logger_a5a0049f9abdded520fdc9b1218569c6d}{m\_nextChannelID}} = 1;  }
 \DoxyCodeLine{163 \};}
 \DoxyCodeLine{164 }
 \DoxyCodeLine{165 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
@@ -108,10 +108,10 @@
 \DoxyCodeLine{197 \textcolor{comment}{//}}
 \DoxyCodeLine{198 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
 \DoxyCodeLine{199 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_LogPolicy>}
-\DoxyCodeLine{200 \mbox{\hyperlink{namespacem_1_1logging_ac4aaaa53dd22d25e9b24d091274b28a7}{mChannelID}} \mbox{\hyperlink{classm_1_1logging_1_1m_logger_a59961a6eebe198f19bb95a5000f6373c}{mLogger<t\_LogPolicy>::get\_newChannelID}}()}
+\DoxyCodeLine{200 \mbox{\hyperlink{namespacem_1_1logging_af807dfba0ed733f24957c0f3d016a15f}{mChannelID}} \mbox{\hyperlink{classm_1_1logging_1_1m_logger_a59961a6eebe198f19bb95a5000f6373c}{mLogger<t\_LogPolicy>::get\_newChannelID}}()}
 \DoxyCodeLine{201 \{}
 \DoxyCodeLine{202     \textcolor{comment}{// TODO : Fix this ID generation problem}}
-\DoxyCodeLine{203     \textcolor{keyword}{static} \mbox{\hyperlink{namespacem_1_1logging_ac4aaaa53dd22d25e9b24d091274b28a7}{mChannelID}} nextChannelID = 1;}
+\DoxyCodeLine{203     \textcolor{keyword}{static} \mbox{\hyperlink{namespacem_1_1logging_af807dfba0ed733f24957c0f3d016a15f}{mChannelID}} nextChannelID = 1;}
 \DoxyCodeLine{204     \textcolor{keywordflow}{return} nextChannelID <<= 1;}
 \DoxyCodeLine{205 \}}
 \DoxyCodeLine{206 }
@@ -119,7 +119,7 @@
 \DoxyCodeLine{208 \textcolor{comment}{//}}
 \DoxyCodeLine{209 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
 \DoxyCodeLine{210 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_LogPolicy>}
-\DoxyCodeLine{211 \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1logging_1_1m_logger_ab72e23ec1dee710ae547720bcebe446d}{mLogger<t\_LogPolicy>::set\_filter}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacem_1_1logging_aaeb5f100312ad1db0f563f74d7914c9f}{mChannelFilter}} a\_filter)}
+\DoxyCodeLine{211 \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1logging_1_1m_logger_ab72e23ec1dee710ae547720bcebe446d}{mLogger<t\_LogPolicy>::set\_filter}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}{mChannelFilter}} a\_filter)}
 \DoxyCodeLine{212 \{}
 \DoxyCodeLine{213     m\_filter = a\_filter;}
 \DoxyCodeLine{214 \}}
@@ -128,7 +128,7 @@
 \DoxyCodeLine{217 \textcolor{comment}{//}}
 \DoxyCodeLine{218 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
 \DoxyCodeLine{219 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_LogPolicy>}
-\DoxyCodeLine{220 \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1logging_1_1m_logger_a8447286a207b62778ea2fd3c2fd1cb10}{mLogger<t\_LogPolicy>::disable\_channels}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacem_1_1logging_aaeb5f100312ad1db0f563f74d7914c9f}{mChannelFilter}} a\_filter)}
+\DoxyCodeLine{220 \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1logging_1_1m_logger_a8447286a207b62778ea2fd3c2fd1cb10}{mLogger<t\_LogPolicy>::disable\_channels}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}{mChannelFilter}} a\_filter)}
 \DoxyCodeLine{221 \{}
 \DoxyCodeLine{222     m\_filter = m\_filter \& \string~a\_filter;}
 \DoxyCodeLine{223 \}}
@@ -137,7 +137,7 @@
 \DoxyCodeLine{226 \textcolor{comment}{//}}
 \DoxyCodeLine{227 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
 \DoxyCodeLine{228 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_LogPolicy>}
-\DoxyCodeLine{229 \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1logging_1_1m_logger_a83c957baadaf5ad52f112fdc36f58d83}{mLogger<t\_LogPolicy>::enable\_channels}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacem_1_1logging_aaeb5f100312ad1db0f563f74d7914c9f}{mChannelFilter}} a\_filter)}
+\DoxyCodeLine{229 \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1logging_1_1m_logger_a83c957baadaf5ad52f112fdc36f58d83}{mLogger<t\_LogPolicy>::enable\_channels}}(\textcolor{keyword}{const} \mbox{\hyperlink{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}{mChannelFilter}} a\_filter)}
 \DoxyCodeLine{230 \{}
 \DoxyCodeLine{231     m\_filter = m\_filter | a\_filter;}
 \DoxyCodeLine{232 \}}
@@ -188,7 +188,7 @@
 \DoxyCodeLine{277 \textcolor{preprocessor}{\#else}}
 \DoxyCodeLine{278     timeInfo = localtime(\&raw\_time);}
 \DoxyCodeLine{279 \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{280     Char buffer[80];}
+\DoxyCodeLine{280     mChar buffer[80];}
 \DoxyCodeLine{281     strftime(buffer, 80, \textcolor{stringliteral}{"{}\%d/\%m/\%y -\/ \%H/\%M/\%S"{}}, timeInfo);}
 \DoxyCodeLine{282 }
 \DoxyCodeLine{283     std::string time\_str(buffer);}

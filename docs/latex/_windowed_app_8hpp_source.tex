@@ -25,8 +25,8 @@
 \DoxyCodeLine{21 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1application_1_1_i_windowed_application_base}{IWindowedApplicationBase}} : \textcolor{keyword}{public} \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application}{mITimedLoopApplication}}}
 \DoxyCodeLine{22 \{}
 \DoxyCodeLine{23    \textcolor{keyword}{public}:}
-\DoxyCodeLine{24     \textcolor{keyword}{virtual} \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{windows::IWindow}}* add\_newWindow(std::string a\_name, U32 a\_width,}
-\DoxyCodeLine{25                                             U32 a\_height) = 0;}
+\DoxyCodeLine{24     \textcolor{keyword}{virtual} \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{windows::IWindow}}* add\_newWindow(std::string a\_name, mU32 a\_width,}
+\DoxyCodeLine{25                                             mU32 a\_height) = 0;}
 \DoxyCodeLine{26 }
 \DoxyCodeLine{27     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} start\_dearImGuiNewFrame(}
 \DoxyCodeLine{28         \mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{render::IRenderer}} \textcolor{keyword}{const}* a\_renderer) \textcolor{keyword}{const} = 0;}
@@ -44,7 +44,7 @@
 \DoxyCodeLine{40 \textcolor{keyword}{struct }WindowedLaunchData}
 \DoxyCodeLine{41 \{}
 \DoxyCodeLine{42     HINSTANCE m\_hInstance;}
-\DoxyCodeLine{43     m::Int    m\_nCmdShow;}
+\DoxyCodeLine{43     m::mInt   m\_nCmdShow;}
 \DoxyCodeLine{44 \};}
 \DoxyCodeLine{45 }
 \DoxyCodeLine{46 \textcolor{keywordtype}{bool} init\_console();}
@@ -52,13 +52,13 @@
 \DoxyCodeLine{48 LPSTR* CommandLineToArgvA(LPWSTR lpWCmdLine, INT* pNumArgs);}
 \DoxyCodeLine{49 \}  \textcolor{comment}{// namespace m}}
 \DoxyCodeLine{50 \textcolor{preprocessor}{\#define M\_EXECUTE\_WINDOWED\_APP(AppClass)                                     \(\backslash\)}}
-\DoxyCodeLine{51 \textcolor{preprocessor}{    m::Int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine,   \(\backslash\)}}
-\DoxyCodeLine{52 \textcolor{preprocessor}{                           m::Int nCmdShow)                                  \(\backslash\)}}
+\DoxyCodeLine{51 \textcolor{preprocessor}{    m::mInt WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine,  \(\backslash\)}}
+\DoxyCodeLine{52 \textcolor{preprocessor}{                            m::mInt nCmdShow)                                \(\backslash\)}}
 \DoxyCodeLine{53 \textcolor{preprocessor}{    \{                                                                        \(\backslash\)}}
 \DoxyCodeLine{54 \textcolor{preprocessor}{        m::WindowedLaunchData data;                                          \(\backslash\)}}
 \DoxyCodeLine{55 \textcolor{preprocessor}{        m::mCmdLine           cmdLine;                                       \(\backslash\)}}
-\DoxyCodeLine{56 \textcolor{preprocessor}{        m::Int                argc;                                          \(\backslash\)}}
-\DoxyCodeLine{57 \textcolor{preprocessor}{        m::Char**             argv = m::CommandLineToArgvA(pCmdLine, \&argc); \(\backslash\)}}
+\DoxyCodeLine{56 \textcolor{preprocessor}{        m::mInt               argc;                                          \(\backslash\)}}
+\DoxyCodeLine{57 \textcolor{preprocessor}{        m::mChar**            argv = m::CommandLineToArgvA(pCmdLine, \&argc); \(\backslash\)}}
 \DoxyCodeLine{58 \textcolor{preprocessor}{        if (argv != nullptr)                                                 \(\backslash\)}}
 \DoxyCodeLine{59 \textcolor{preprocessor}{        \{                                                                    \(\backslash\)}}
 \DoxyCodeLine{60 \textcolor{preprocessor}{            cmdLine.parse\_cmdLineAguments(argc, argv);                       \(\backslash\)}}
@@ -79,10 +79,10 @@
 \DoxyCodeLine{75 \};}
 \DoxyCodeLine{76 \}  \textcolor{comment}{// namespace m}}
 \DoxyCodeLine{77 \textcolor{preprocessor}{\#define M\_EXECUTE\_WINDOWED\_APP(AppClass)           \(\backslash\)}}
-\DoxyCodeLine{78 \textcolor{preprocessor}{    int main(m::Int argc, m::Char** argv)          \(\backslash\)}}
+\DoxyCodeLine{78 \textcolor{preprocessor}{    int main(m::mInt argc, m::mChar** argv)        \(\backslash\)}}
 \DoxyCodeLine{79 \textcolor{preprocessor}{    \{                                              \(\backslash\)}}
 \DoxyCodeLine{80 \textcolor{preprocessor}{        m::WindowedLaunchData data;                \(\backslash\)}}
-\DoxyCodeLine{81 \textcolor{preprocessor}{        m::mCmdLine            cmdLine;             \(\backslash\)}}
+\DoxyCodeLine{81 \textcolor{preprocessor}{        m::mCmdLine           cmdLine;             \(\backslash\)}}
 \DoxyCodeLine{82 \textcolor{preprocessor}{        cmdLine.parse\_cmdLineAguments(argc, argv); \(\backslash\)}}
 \DoxyCodeLine{83 \textcolor{preprocessor}{        m::internal\_run<AppClass>(cmdLine, \&data); \(\backslash\)}}
 \DoxyCodeLine{84 \textcolor{preprocessor}{        return 0;                                  \(\backslash\)}}

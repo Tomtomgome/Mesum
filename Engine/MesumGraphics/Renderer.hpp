@@ -22,8 +22,8 @@ enum class RendererApi
 struct Win32SurfaceInitData
 {
     HWND m_hwnd;
-    U32  m_width;
-    U32  m_height;
+    mU32  m_width;
+    mU32  m_height;
 };
 
 struct X11SurfaceInitData
@@ -38,8 +38,8 @@ struct Win32SurfaceInitData
 
 struct X11SurfaceInitData
 {
-    U32 m_width;
-    U32 m_height;
+    mU32 m_width;
+    mU32 m_height;
 };
 
 #endif
@@ -54,14 +54,14 @@ class ISurface
     virtual render::Taskset* addNew_renderTaskset() = 0;
 
     virtual void render()                          = 0;
-    virtual void resize(U32 a_width, U32 a_height) = 0;
+    virtual void resize(mU32 a_width, mU32 a_height) = 0;
 
     virtual void destroy() = 0;
 
     struct Handle
     {
         ISurface* surface = nullptr;
-        Bool      isValid = true;
+        mBool     isValid = true;
     };
 
     using HdlPtr = std::shared_ptr<Handle>;
@@ -75,7 +75,7 @@ class IRenderer
     virtual void init()    = 0;
     virtual void destroy() = 0;
 
-    virtual Bool get_supportDearImGuiMultiViewports()    = 0;
+    virtual mBool get_supportDearImGuiMultiViewports()    = 0;
     virtual void start_dearImGuiNewFrameRenderer() const = 0;
 
     virtual ISurface* get_newSurface() = 0;

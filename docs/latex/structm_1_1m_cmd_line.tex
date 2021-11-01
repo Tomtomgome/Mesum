@@ -12,11 +12,11 @@ Structure holding a list of command line arguments.
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{structm_1_1m_cmd_line_ae80a0e6b45ca8d32a1052a00543f7b4c}{parse\+\_\+cmd\+Line\+Aguments}} (Int a\+\_\+argc, Char $\ast$$\ast$a\+\_\+argv)
+void \mbox{\hyperlink{structm_1_1m_cmd_line_ac1d7df6b4bf9ca42161e9177efeaa45a}{parse\+\_\+cmd\+Line\+Aguments}} (m\+Int a\+\_\+argc, m\+Char $\ast$$\ast$a\+\_\+argv)
 \begin{DoxyCompactList}\small\item\em Initialize the structure given classic cmdline structures. \end{DoxyCompactList}\item 
-{\footnotesize template$<$class t\+\_\+\+Value\+Type $>$ }\\Bool \mbox{\hyperlink{structm_1_1m_cmd_line_acb6619d8804bfcc912f1d807f95463d3}{get\+\_\+parameter}} (const std\+::string a\+\_\+key, t\+\_\+\+Value\+Type \&a\+\_\+result) const
+{\footnotesize template$<$class t\+\_\+\+Value\+Type $>$ }\\m\+Bool \mbox{\hyperlink{structm_1_1m_cmd_line_ab8de7405bf1f0f8a07d9ab3b7647209b}{get\+\_\+parameter}} (const std\+::string a\+\_\+key, t\+\_\+\+Value\+Type \&a\+\_\+result) const
 \begin{DoxyCompactList}\small\item\em Get the value of a command line argument. \end{DoxyCompactList}\item 
-Bool \mbox{\hyperlink{structm_1_1m_cmd_line_a589a0a954f6f5bf5043dcb29fbf1769d}{get\+\_\+arg}} (std\+::string const \&a\+\_\+arg) const
+m\+Bool \mbox{\hyperlink{structm_1_1m_cmd_line_a03cf17a95051b7b6f7786ae3469ed4b3}{get\+\_\+arg}} (std\+::string const \&a\+\_\+arg) const
 \begin{DoxyCompactList}\small\item\em Check the presence of a command line argument. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
@@ -32,11 +32,11 @@ Structure holding a list of command line arguments.
 For exemple holds the line executable -\/w 1080 -\/h 720 -\/full\+Screen will hold an array of strings with \{-\/w, 1080, -\/h, 720, -\/full\+Screen\} 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{structm_1_1m_cmd_line_a589a0a954f6f5bf5043dcb29fbf1769d}\label{structm_1_1m_cmd_line_a589a0a954f6f5bf5043dcb29fbf1769d}} 
+\mbox{\Hypertarget{structm_1_1m_cmd_line_a03cf17a95051b7b6f7786ae3469ed4b3}\label{structm_1_1m_cmd_line_a03cf17a95051b7b6f7786ae3469ed4b3}} 
 \index{m::mCmdLine@{m::mCmdLine}!get\_arg@{get\_arg}}
 \index{get\_arg@{get\_arg}!m::mCmdLine@{m::mCmdLine}}
 \doxysubsubsection{\texorpdfstring{get\_arg()}{get\_arg()}}
-{\footnotesize\ttfamily Bool m\+::m\+Cmd\+Line\+::get\+\_\+arg (\begin{DoxyParamCaption}\item[{std\+::string const \&}]{a\+\_\+arg }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily m\+Bool m\+::m\+Cmd\+Line\+::get\+\_\+arg (\begin{DoxyParamCaption}\item[{std\+::string const \&}]{a\+\_\+arg }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -50,12 +50,12 @@ Check the presence of a command line argument.
 \begin{DoxyReturn}{Returns}
 true if the key was found, false otherwise 
 \end{DoxyReturn}
-\mbox{\Hypertarget{structm_1_1m_cmd_line_acb6619d8804bfcc912f1d807f95463d3}\label{structm_1_1m_cmd_line_acb6619d8804bfcc912f1d807f95463d3}} 
+\mbox{\Hypertarget{structm_1_1m_cmd_line_ab8de7405bf1f0f8a07d9ab3b7647209b}\label{structm_1_1m_cmd_line_ab8de7405bf1f0f8a07d9ab3b7647209b}} 
 \index{m::mCmdLine@{m::mCmdLine}!get\_parameter@{get\_parameter}}
 \index{get\_parameter@{get\_parameter}!m::mCmdLine@{m::mCmdLine}}
 \doxysubsubsection{\texorpdfstring{get\_parameter()}{get\_parameter()}}
 {\footnotesize\ttfamily template$<$class t\+\_\+\+Value\+Type $>$ \\
-Bool m\+::m\+Cmd\+Line\+::get\+\_\+parameter (\begin{DoxyParamCaption}\item[{const std\+::string}]{a\+\_\+key,  }\item[{t\+\_\+\+Value\+Type \&}]{a\+\_\+result }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+m\+Bool m\+::m\+Cmd\+Line\+::get\+\_\+parameter (\begin{DoxyParamCaption}\item[{const std\+::string}]{a\+\_\+key,  }\item[{t\+\_\+\+Value\+Type \&}]{a\+\_\+result }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -82,11 +82,11 @@ a\+\_\+key should not be empty
 \begin{DoxyReturn}{Returns}
 true if the key was found, false otherwise 
 \end{DoxyReturn}
-\mbox{\Hypertarget{structm_1_1m_cmd_line_ae80a0e6b45ca8d32a1052a00543f7b4c}\label{structm_1_1m_cmd_line_ae80a0e6b45ca8d32a1052a00543f7b4c}} 
+\mbox{\Hypertarget{structm_1_1m_cmd_line_ac1d7df6b4bf9ca42161e9177efeaa45a}\label{structm_1_1m_cmd_line_ac1d7df6b4bf9ca42161e9177efeaa45a}} 
 \index{m::mCmdLine@{m::mCmdLine}!parse\_cmdLineAguments@{parse\_cmdLineAguments}}
 \index{parse\_cmdLineAguments@{parse\_cmdLineAguments}!m::mCmdLine@{m::mCmdLine}}
 \doxysubsubsection{\texorpdfstring{parse\_cmdLineAguments()}{parse\_cmdLineAguments()}}
-{\footnotesize\ttfamily void m\+::m\+Cmd\+Line\+::parse\+\_\+cmd\+Line\+Aguments (\begin{DoxyParamCaption}\item[{Int}]{a\+\_\+argc,  }\item[{Char $\ast$$\ast$}]{a\+\_\+argv }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void m\+::m\+Cmd\+Line\+::parse\+\_\+cmd\+Line\+Aguments (\begin{DoxyParamCaption}\item[{m\+Int}]{a\+\_\+argc,  }\item[{m\+Char $\ast$$\ast$}]{a\+\_\+argv }\end{DoxyParamCaption})}
 
 
 

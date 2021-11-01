@@ -6,7 +6,7 @@ namespace xcb_unix
 {
 const logging::mChannelID PLATFORM_APP_ID = mLog_getId();
 
-static input::Key translateKeys(Int a_keyCode)
+static input::Key translateKeys(mInt a_keyCode)
 {
     using namespace input;
     // Taken from GLFW Fallback function

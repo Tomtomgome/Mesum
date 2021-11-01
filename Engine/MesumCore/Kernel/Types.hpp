@@ -1,31 +1,35 @@
-#ifndef M_TYPES
-#define M_TYPES
 #pragma once
 
-#include<stdint.h>
+#include<cstdint>
 
+///////////////////////////////////////////////////////////////////////////////
+/// \addtogroup Core
+/// \{
+///////////////////////////////////////////////////////////////////////////////
 namespace m
 {
-    using U8 = uint8_t;
-    using U16 = uint16_t;
-    using U32 = uint32_t;
-    using U64 = uint64_t;
+    using mU8 = uint8_t;
+    using mU16 = uint16_t;
+    using mU32 = uint32_t;
+    using mU64 = uint64_t;
 
-    using I8 = int8_t;
-    using I16 = int16_t;
-    using I32 = int32_t;
-    using I64 = int64_t;
+    using mI8 = int8_t;
+    using mI16 = int16_t;
+    using mI32 = int32_t;
+    using mI64 = int64_t;
 
-    using Char      = char;
-    using WideChar  = wchar_t;
+    using mChar     = char;
+    using mWideChar = wchar_t;
 
-    using Int = int32_t;
-    using UInt = uint32_t;
+    using mInt = int32_t;
+    using mUInt = uint32_t;
 
-    using Double = double;
-    using Float = float;
+    using mDouble = double;
+    using mFloat  = float;
 
-    using Bool = bool;
+    using mBool = bool;
 };
 
-#endif //M_TYPES
+///////////////////////////////////////////////////////////////////////////////
+/// \}
+///////////////////////////////////////////////////////////////////////////////

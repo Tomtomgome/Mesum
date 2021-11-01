@@ -4,8 +4,8 @@ var namespacem_1_1logging =
     [ "mILogPolicy", "classm_1_1logging_1_1m_i_log_policy.html", "classm_1_1logging_1_1m_i_log_policy" ],
     [ "mLogger", "classm_1_1logging_1_1m_logger.html", "classm_1_1logging_1_1m_logger" ],
     [ "mStdcoutLogPolicy", "classm_1_1logging_1_1m_stdcout_log_policy.html", "classm_1_1logging_1_1m_stdcout_log_policy" ],
-    [ "mChannelFilter", "namespacem_1_1logging.html#aaeb5f100312ad1db0f563f74d7914c9f", null ],
-    [ "mChannelID", "namespacem_1_1logging.html#ac4aaaa53dd22d25e9b24d091274b28a7", null ],
+    [ "mChannelFilter", "namespacem_1_1logging.html#a0fa5af708b452e8c58088597cdea8392", null ],
+    [ "mChannelID", "namespacem_1_1logging.html#af807dfba0ed733f24957c0f3d016a15f", null ],
     [ "mSeverityType", "namespacem_1_1logging.html#ad98e602820072dd69a260765a95bd387", [
       [ "debug", "namespacem_1_1logging.html#ad98e602820072dd69a260765a95bd387abfecbf648c2deaa801f62e8dad71e361", null ],
       [ "error", "namespacem_1_1logging.html#ad98e602820072dd69a260765a95bd387ad564300fbfad44fd5b83f8ba9441ba5d", null ],

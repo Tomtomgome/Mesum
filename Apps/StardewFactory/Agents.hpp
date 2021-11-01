@@ -16,7 +16,7 @@ class Agent
     class IAgentConcept
     {
        public:
-        virtual void update(m::Double a_deltaTime) = 0;
+        virtual void update(m::mDouble a_deltaTime) = 0;
         virtual void render()                      = 0;
         virtual bool request_deletion()            = 0;
     };
@@ -27,14 +27,14 @@ class Agent
         AgentImpl(T* a_data) { m_data = a_data; }
         ~AgentImpl() { delete m_data; }
 
-        virtual void update(m::Double a_deltaTime) override
+        virtual void update(m::mDouble a_deltaTime) override
         {
             m_data->update(a_deltaTime);
         }
 
         virtual void render() override { render_agent(m_data); }
 
-        virtual m::Bool request_deletion() override
+        virtual m::mBool request_deletion() override
         {
             return m_data->request_deletion();
         }
@@ -52,9 +52,9 @@ class Agent
     }
     ~Agent() { delete m_agent; }
 
-    void    update(m::Double a_deltaTime) { m_agent->update(a_deltaTime); }
+    void    update(m::mDouble a_deltaTime) { m_agent->update(a_deltaTime); }
     void    render() { m_agent->render(); }
-    m::Bool request_deletion() { return m_agent->request_deletion(); }
+    m::mBool request_deletion() { return m_agent->request_deletion(); }
 };
 
 struct AgentManager
@@ -66,7 +66,7 @@ struct AgentManager
         m_agents.insert(newAgent);
     }
 
-    void update_agents(m::Double a_deltaTime)
+    void update_agents(m::mDouble a_deltaTime)
     {
         for (auto agent : m_agents)
         {
@@ -93,16 +93,16 @@ struct AgentManager
     std::set<Agent*> m_agents;
 };
 
-static const Float s_maxSoilNutrient              = 10.0f;
-static const Float s_grassSoilRegenerationRate    = 0.1f;
-static const Float s_wetDirtSoilRegenerationRate  = 0.05f;
-static const Float s_dirtSoilRegenerationRate     = 0.03f;
-static const Float s_grassToDirPropagationRate    = 30.0f;
-static const Float s_grassToWetDirPropagationRate = 20.0f;
+static const mFloat s_maxSoilNutrient              = 10.0f;
+static const mFloat s_grassSoilRegenerationRate    = 0.1f;
+static const mFloat s_wetDirtSoilRegenerationRate  = 0.05f;
+static const mFloat s_dirtSoilRegenerationRate     = 0.03f;
+static const mFloat s_grassToDirPropagationRate    = 30.0f;
+static const mFloat s_grassToWetDirPropagationRate = 20.0f;
 
 struct AgentSoil : public IPositionable, public IPermanent
 {
-    void update(Double a_deltaTime)
+    void update(mDouble a_deltaTime)
     {
         switch (m_type)
         {
@@ -110,7 +110,7 @@ struct AgentSoil : public IPositionable, public IPermanent
             {
                 m_nutrientQuantity +=
                     std::min(s_grassSoilRegenerationRate *
-                                 static_cast<Float>(a_deltaTime),
+                                 static_cast<mFloat>(a_deltaTime),
                              s_maxSoilNutrient);
             }
             break;
@@ -118,7 +118,7 @@ struct AgentSoil : public IPositionable, public IPermanent
             {
                 m_nutrientQuantity +=
                     std::min(s_dirtSoilRegenerationRate *
-                                 static_cast<Float>(a_deltaTime),
+                                 static_cast<mFloat>(a_deltaTime),
                              s_maxSoilNutrient);
                 update_grassState(a_deltaTime, s_grassToDirPropagationRate);
             }
@@ -127,7 +127,7 @@ struct AgentSoil : public IPositionable, public IPermanent
             {
                 m_nutrientQuantity +=
                     std::min(s_dirtSoilRegenerationRate *
-                                 static_cast<Float>(a_deltaTime),
+                                 static_cast<mFloat>(a_deltaTime),
                              s_maxSoilNutrient);
                 update_grassState(a_deltaTime, s_grassToWetDirPropagationRate);
             }
@@ -136,9 +136,9 @@ struct AgentSoil : public IPositionable, public IPermanent
         }
     }
 
-    void update_grassStateFromNeighbor(math::IVec2 a_neighbor,
-                                       Double      a_deltaTime,
-                                       Float       a_propagationRate)
+    void update_grassStateFromNeighbor(math::mIVec2 a_neighbor,
+                                       mDouble      a_deltaTime,
+                                       mFloat       a_propagationRate)
     {
         if (m_position.x + a_neighbor.x < 0 ||
             m_position.x + a_neighbor.x >= FIELD_SIZE)
@@ -161,17 +161,17 @@ struct AgentSoil : public IPositionable, public IPermanent
         }
     }
 
-    void update_grassState(Double a_deltaTime, Float a_propagationRate)
+    void update_grassState(mDouble a_deltaTime, mFloat a_propagationRate)
     {
         if (!m_isOccupied)
         {
-            update_grassStateFromNeighbor(math::IVec2({-1, 0}), a_deltaTime,
+            update_grassStateFromNeighbor(math::mIVec2({-1, 0}), a_deltaTime,
                                           a_propagationRate);
-            update_grassStateFromNeighbor(math::IVec2({1, 0}), a_deltaTime,
+            update_grassStateFromNeighbor(math::mIVec2({1, 0}), a_deltaTime,
                                           a_propagationRate);
-            update_grassStateFromNeighbor(math::IVec2({0, -1}), a_deltaTime,
+            update_grassStateFromNeighbor(math::mIVec2({0, -1}), a_deltaTime,
                                           a_propagationRate);
-            update_grassStateFromNeighbor(math::IVec2({0, 1}), a_deltaTime,
+            update_grassStateFromNeighbor(math::mIVec2({0, 1}), a_deltaTime,
                                           a_propagationRate);
         }
     }
@@ -185,8 +185,8 @@ struct AgentSoil : public IPositionable, public IPermanent
 
     Field* m_fieldOfSoil;
     Type   m_type;
-    Bool   m_isOccupied;
-    Float  m_nutrientQuantity;
+    mBool  m_isOccupied;
+    mFloat m_nutrientQuantity;
 };
 
 //*****************************************************************************
@@ -209,7 +209,7 @@ struct ItemHoe : public IItem
     }
 
     virtual std::string get_name() override { return "Hoe"; }
-    virtual U64         get_id() override { return 1; }
+    virtual mU64        get_id() override { return 1; }
 
     Field*         m_fieldOfSoil;
     IPositionable* m_positionable;
@@ -232,7 +232,7 @@ struct ItemWateringCan : public IItem
     }
 
     virtual std::string get_name() override { return "Watering can"; }
-    virtual U64         get_id() override { return 2; }
+    virtual mU64        get_id() override { return 2; }
 
     Field*         m_fieldOfSoil;
     IPositionable* m_positionable;
@@ -245,9 +245,9 @@ struct AgentCharacter : public IPositionable,
                         public IInventory,
                         public IPermanent
 {
-    void update(Double a_deltaTime) {}
+    void update(mDouble a_deltaTime) {}
 
-    Float m_money = 0.0f;
+    mFloat m_money = 0.0f;
 };
 
 #endif Agents_hpp

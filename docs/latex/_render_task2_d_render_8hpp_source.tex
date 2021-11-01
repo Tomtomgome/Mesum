@@ -22,17 +22,17 @@
 \DoxyCodeLine{18 \{}
 \DoxyCodeLine{19 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_basic_vertex}{BasicVertex}}}
 \DoxyCodeLine{20 \{}
-\DoxyCodeLine{21     \mbox{\hyperlink{structm_1_1math_1_1_vec}{math::Vec3}} position;}
-\DoxyCodeLine{22     \mbox{\hyperlink{structm_1_1math_1_1_vec}{math::Vec4}} color;}
+\DoxyCodeLine{21     \mbox{\hyperlink{structm_1_1math_1_1_vec}{math::mVec3}} position;}
+\DoxyCodeLine{22     \mbox{\hyperlink{structm_1_1math_1_1_vec}{math::mVec4}} color;}
 \DoxyCodeLine{23 \};}
 \DoxyCodeLine{24 }
 \DoxyCodeLine{25 \textcolor{keyword}{template} <\textcolor{keyword}{typename} tt\_Vertex, \textcolor{keyword}{typename} tt\_Index>}
 \DoxyCodeLine{26 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_buffer_base}{BufferBase}}}
 \DoxyCodeLine{27 \{}
-\DoxyCodeLine{28     UInt                  vertexBufferSize = 0;}
-\DoxyCodeLine{29     \textcolor{keyword}{static} \textcolor{keyword}{constexpr} UInt vertexSize       = \textcolor{keyword}{sizeof}(tt\_Vertex);}
-\DoxyCodeLine{30     UInt                  indexBufferSize  = 0;}
-\DoxyCodeLine{31     \textcolor{keyword}{static} \textcolor{keyword}{constexpr} UInt indexSize        = \textcolor{keyword}{sizeof}(tt\_Index);}
+\DoxyCodeLine{28     mUInt                  vertexBufferSize = 0;}
+\DoxyCodeLine{29     \textcolor{keyword}{static} \textcolor{keyword}{constexpr} mUInt vertexSize       = \textcolor{keyword}{sizeof}(tt\_Vertex);}
+\DoxyCodeLine{30     mUInt                  indexBufferSize  = 0;}
+\DoxyCodeLine{31     \textcolor{keyword}{static} \textcolor{keyword}{constexpr} mUInt indexSize        = \textcolor{keyword}{sizeof}(tt\_Index);}
 \DoxyCodeLine{32 \};}
 \DoxyCodeLine{33 }
 \DoxyCodeLine{34 \textcolor{keyword}{template} <\textcolor{keyword}{typename} tt\_Vertex, \textcolor{keyword}{typename} tt\_Index>}
@@ -313,10 +313,10 @@
 \DoxyCodeLine{309 \}}
 \DoxyCodeLine{310 }
 \DoxyCodeLine{311 \textcolor{keyword}{using} uploadBuffers =}
-\DoxyCodeLine{312     Dx12BufferBase<BasicVertex, U16>[dx12::DX12Surface::scm\_numFrames];}
+\DoxyCodeLine{312     Dx12BufferBase<BasicVertex, mU16>[dx12::DX12Surface::scm\_numFrames];}
 \DoxyCodeLine{313 }
 \DoxyCodeLine{314 \textcolor{keyword}{using} vulkanUploadBuffers =}
-\DoxyCodeLine{315     VulkanBufferBase<BasicVertex, U16>[vulkan::VulkanSurface::scm\_numFrames];}
+\DoxyCodeLine{315     VulkanBufferBase<BasicVertex, mU16>[vulkan::VulkanSurface::scm\_numFrames];}
 \DoxyCodeLine{316 }
 \DoxyCodeLine{317 \textcolor{keyword}{template} <\textcolor{keyword}{typename} tt\_Vertex, \textcolor{keyword}{typename} tt\_Index>}
 \DoxyCodeLine{318 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_data_mesh_buffer}{DataMeshBuffer}}}
@@ -336,7 +336,7 @@
 \DoxyCodeLine{332 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
 \DoxyCodeLine{333 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_task_data2d_render}{TaskData2dRender}} : \textcolor{keyword}{public} \mbox{\hyperlink{structm_1_1render_1_1_task_data}{TaskData}}}
 \DoxyCodeLine{334 \{}
-\DoxyCodeLine{335     \mbox{\hyperlink{structm_1_1render_1_1_data_mesh_buffer}{DataMeshBuffer<BasicVertex, U16>}}* m\_pMeshBuffer;}
+\DoxyCodeLine{335     \mbox{\hyperlink{structm_1_1render_1_1_data_mesh_buffer}{DataMeshBuffer<BasicVertex, mU16>}}* m\_pMeshBuffer;}
 \DoxyCodeLine{336     ISurface::HdlPtr                  m\_hdlOutput;}
 \DoxyCodeLine{337 }
 \DoxyCodeLine{338     mIfDx12Enabled(\mbox{\hyperlink{structm_1_1render_1_1_task}{Task}}* getNew\_dx12Implementation(\mbox{\hyperlink{structm_1_1render_1_1_task_data}{TaskData}}* a\_data) \textcolor{keyword}{override});}
@@ -368,7 +368,7 @@
 \DoxyCodeLine{364     \textcolor{keywordtype}{void} execute() \textcolor{keyword}{const override};}
 \DoxyCodeLine{365 }
 \DoxyCodeLine{366    \textcolor{keyword}{private}:}
-\DoxyCodeLine{367     UInt          m\_i = 0;}
+\DoxyCodeLine{367     mUInt         m\_i = 0;}
 \DoxyCodeLine{368     uploadBuffers m\_buffers;}
 \DoxyCodeLine{369 }
 \DoxyCodeLine{370     dx12::ComPtr<ID3D12RootSignature> m\_rootSignature = \textcolor{keyword}{nullptr};}
@@ -383,7 +383,7 @@
 \DoxyCodeLine{379     \textcolor{keyword}{explicit} VulkanTask2dRender(TaskData2dRender* a\_data);}
 \DoxyCodeLine{380     \string~VulkanTask2dRender() \textcolor{keyword}{override};}
 \DoxyCodeLine{381 }
-\DoxyCodeLine{382     \textcolor{keywordtype}{void} create\_renderPassAndPipeline(U32 a\_width, U32 a\_height);}
+\DoxyCodeLine{382     \textcolor{keywordtype}{void} create\_renderPassAndPipeline(mU32 a\_width, mU32 a\_height);}
 \DoxyCodeLine{383 }
 \DoxyCodeLine{384     \textcolor{keywordtype}{void} prepare() \textcolor{keyword}{override};}
 \DoxyCodeLine{385 }
@@ -399,7 +399,7 @@
 \DoxyCodeLine{395     VkRenderPass     m\_renderPass;}
 \DoxyCodeLine{396     VkPipeline       m\_graphicsPipeline;}
 \DoxyCodeLine{397 }
-\DoxyCodeLine{398     UInt m\_i = 0;}
+\DoxyCodeLine{398     mUInt m\_i = 0;}
 \DoxyCodeLine{399 \};)}
 \DoxyCodeLine{400 }
 \DoxyCodeLine{401 \}  \textcolor{comment}{// namespace m::render}}

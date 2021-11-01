@@ -102,6 +102,9 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacem_1_1logging"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacem_1_1logging.html">m::logging</a></td></tr>
 <tr class="memdesc:namespacem_1_1logging"><td class="mdescLeft">&#160;</td><td class="mdescRight">Namespace grouping all logging tools. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacem_1_1math"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacem_1_1math.html">m::math</a></td></tr>
+<tr class="memdesc:namespacem_1_1math"><td class="mdescLeft">&#160;</td><td class="mdescRight">Namespace for math related utils. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -138,6 +141,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1logging_1_1m_stdcout_log_policy.html">m::logging::mStdcoutLogPolicy</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log policy outputting into the standard output.  <a href="classm_1_1logging_1_1m_stdcout_log_policy.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1math_1_1m_xo_random_number_generator.html">m::math::mXoRandomNumberGenerator</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">RandomNumberGenerator using XorShift.  <a href="classm_1_1math_1_1m_xo_random_number_generator.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state.html">m::math::mXoRandomNumberGenerator::mXoshiro256ssState</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">State of the xoshiro algorithm.  <a href="structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
@@ -158,15 +167,15 @@ Macros</h2></td></tr>
 <tr class="memitem:gaa46368d8dc5683fc05fde329f4c69532"><td class="memItemLeft" align="right" valign="top"><a id="gaa46368d8dc5683fc05fde329f4c69532" name="gaa46368d8dc5683fc05fde329f4c69532"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>WFILE</b>&#160;&#160;&#160;WIDE1(__FILE__)</td></tr>
 <tr class="separator:gaa46368d8dc5683fc05fde329f4c69532"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga130ddba9a4e2dc6e95a6797c0f448243"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#ga130ddba9a4e2dc6e95a6797c0f448243">mSoftAssert</a>(condition)</td></tr>
-<tr class="memdesc:ga130ddba9a4e2dc6e95a6797c0f448243"><td class="mdescLeft">&#160;</td><td class="mdescRight">A soft assert is non blocking.  <a href="group___core.html#ga130ddba9a4e2dc6e95a6797c0f448243">More...</a><br /></td></tr>
-<tr class="separator:ga130ddba9a4e2dc6e95a6797c0f448243"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5cbca1ff1eb730a016c7c63f94afa154"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#ga5cbca1ff1eb730a016c7c63f94afa154">mAssert</a>(condition)</td></tr>
-<tr class="memdesc:ga5cbca1ff1eb730a016c7c63f94afa154"><td class="mdescLeft">&#160;</td><td class="mdescRight">A basic assert interrupting execution.  <a href="group___core.html#ga5cbca1ff1eb730a016c7c63f94afa154">More...</a><br /></td></tr>
-<tr class="separator:ga5cbca1ff1eb730a016c7c63f94afa154"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga375da2becf883550c0e1293307b02c9a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#ga375da2becf883550c0e1293307b02c9a">mExpect</a>(condition)</td></tr>
-<tr class="memdesc:ga375da2becf883550c0e1293307b02c9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocking assert reserved to check function preconditions.  <a href="group___core.html#ga375da2becf883550c0e1293307b02c9a">More...</a><br /></td></tr>
-<tr class="separator:ga375da2becf883550c0e1293307b02c9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaed17c7e2d6fa608a86bd77dbf44de294"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#gaed17c7e2d6fa608a86bd77dbf44de294">mSoftAssert</a>(a_condition)</td></tr>
+<tr class="memdesc:gaed17c7e2d6fa608a86bd77dbf44de294"><td class="mdescLeft">&#160;</td><td class="mdescRight">A soft assert is non blocking.  <a href="group___core.html#gaed17c7e2d6fa608a86bd77dbf44de294">More...</a><br /></td></tr>
+<tr class="separator:gaed17c7e2d6fa608a86bd77dbf44de294"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae68855c8125ce66a9e53e758526c95ca"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#gae68855c8125ce66a9e53e758526c95ca">mAssert</a>(a_condition)</td></tr>
+<tr class="memdesc:gae68855c8125ce66a9e53e758526c95ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">A basic assert interrupting execution.  <a href="group___core.html#gae68855c8125ce66a9e53e758526c95ca">More...</a><br /></td></tr>
+<tr class="separator:gae68855c8125ce66a9e53e758526c95ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga85d6f0f15b7e1ab2f6a30c07054c8904"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#ga85d6f0f15b7e1ab2f6a30c07054c8904">mExpect</a>(a_condition)</td></tr>
+<tr class="memdesc:ga85d6f0f15b7e1ab2f6a30c07054c8904"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocking assert reserved to check function preconditions.  <a href="group___core.html#ga85d6f0f15b7e1ab2f6a30c07054c8904">More...</a><br /></td></tr>
+<tr class="separator:ga85d6f0f15b7e1ab2f6a30c07054c8904"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9aa869d857bafeb44058596e5ba4b1e6"><td class="memItemLeft" align="right" valign="top"><a id="ga9aa869d857bafeb44058596e5ba4b1e6" name="ga9aa869d857bafeb44058596e5ba4b1e6"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_getId</b>&#160;&#160;&#160;m::log_inst.get_newChannelID</td></tr>
 <tr class="memdesc:ga9aa869d857bafeb44058596e5ba4b1e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to get a channel ID. <br /></td></tr>
@@ -234,8 +243,8 @@ Macros</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ga5cbca1ff1eb730a016c7c63f94afa154" name="ga5cbca1ff1eb730a016c7c63f94afa154"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga5cbca1ff1eb730a016c7c63f94afa154">&#9670;&nbsp;</a></span>mAssert</h2>
+<a id="gae68855c8125ce66a9e53e758526c95ca" name="gae68855c8125ce66a9e53e758526c95ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae68855c8125ce66a9e53e758526c95ca">&#9670;&nbsp;</a></span>mAssert</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -244,12 +253,12 @@ Macros</h2></td></tr>
           <td class="memname">#define mAssert</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">condition</td><td>)</td>
+          <td class="paramname">a_condition</td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    m::manage_assert(condition, __LINE__, __FILE__, \</div>
+<b>Value:</b><div class="fragment"><div class="line">    m::manage_assert(a_condition, __LINE__, __FILE__, \</div>
 <div class="line">                     <span class="stringliteral">&quot;Triggered soft assertion from file : &quot;</span>);</div>
 </div><!-- fragment -->
 <p>A basic assert interrupting execution. </p>
@@ -262,8 +271,8 @@ Macros</h2></td></tr>
 
 </div>
 </div>
-<a id="ga375da2becf883550c0e1293307b02c9a" name="ga375da2becf883550c0e1293307b02c9a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga375da2becf883550c0e1293307b02c9a">&#9670;&nbsp;</a></span>mExpect</h2>
+<a id="ga85d6f0f15b7e1ab2f6a30c07054c8904" name="ga85d6f0f15b7e1ab2f6a30c07054c8904"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga85d6f0f15b7e1ab2f6a30c07054c8904">&#9670;&nbsp;</a></span>mExpect</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -272,12 +281,12 @@ Macros</h2></td></tr>
           <td class="memname">#define mExpect</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">condition</td><td>)</td>
+          <td class="paramname">a_condition</td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    m::manage_assert(condition, __LINE__, __FILE__, \</div>
+<b>Value:</b><div class="fragment"><div class="line">    m::manage_assert(a_condition, __LINE__, __FILE__, \</div>
 <div class="line">                     <span class="stringliteral">&quot;Precondition not matched : &quot;</span>);</div>
 </div><!-- fragment -->
 <p>Blocking assert reserved to check function preconditions. </p>
@@ -290,8 +299,8 @@ Macros</h2></td></tr>
 
 </div>
 </div>
-<a id="ga130ddba9a4e2dc6e95a6797c0f448243" name="ga130ddba9a4e2dc6e95a6797c0f448243"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga130ddba9a4e2dc6e95a6797c0f448243">&#9670;&nbsp;</a></span>mSoftAssert</h2>
+<a id="gaed17c7e2d6fa608a86bd77dbf44de294" name="gaed17c7e2d6fa608a86bd77dbf44de294"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaed17c7e2d6fa608a86bd77dbf44de294">&#9670;&nbsp;</a></span>mSoftAssert</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -300,12 +309,12 @@ Macros</h2></td></tr>
           <td class="memname">#define mSoftAssert</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname">condition</td><td>)</td>
+          <td class="paramname">a_condition</td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    m::manage_assert(condition, __LINE__, __FILE__, \</div>
+<b>Value:</b><div class="fragment"><div class="line">    m::manage_assert(a_condition, __LINE__, __FILE__, \</div>
 <div class="line">                     <span class="stringliteral">&quot;Triggered soft assertion from file : &quot;</span>, <span class="keyword">false</span>);</div>
 </div><!-- fragment -->
 <p>A soft assert is non blocking. </p>

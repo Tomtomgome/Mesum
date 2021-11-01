@@ -28,7 +28,7 @@ struct mCmdLine
     /// \param a_argc The number of arguments
     /// \param a_argv The array of arguments to parse
     ///////////////////////////////////////////////////////////////////////////
-    void parse_cmdLineAguments(Int a_argc, Char** a_argv);
+    void parse_cmdLineAguments(mInt a_argc, mChar** a_argv);
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Get the value of a command line argument
@@ -41,7 +41,7 @@ struct mCmdLine
     /// \return true if the key was found, false otherwise
     ///////////////////////////////////////////////////////////////////////////
     template <class t_ValueType>
-    Bool get_parameter(const std::string a_key, t_ValueType& a_result) const
+    mBool get_parameter(const std::string a_key, t_ValueType& a_result) const
     {
         mExpect(!a_key.empty());
 
@@ -65,7 +65,7 @@ struct mCmdLine
     /// \param a_arg The argument we want to check the presence of
     /// \return true if the key was found, false otherwise
     ///////////////////////////////////////////////////////////////////////////
-    [[nodiscard]] inline Bool get_arg(std::string const& a_arg) const
+    [[nodiscard]] inline mBool get_arg(std::string const& a_arg) const
     {
         return std::find(m_listArgs.begin(), m_listArgs.end(), a_arg) !=
                m_listArgs.end();

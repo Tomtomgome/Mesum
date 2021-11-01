@@ -104,7 +104,7 @@ $(document).ready(function(){initNavTree('_vulkan_renderer_common_8hpp_source.ht
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>{</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">namespace </span>vulkan</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>{</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">extern</span> MesumGraphicsApi <span class="keyword">const</span> <a class="code hl_typedef" href="namespacem_1_1logging.html#ac4aaaa53dd22d25e9b24d091274b28a7">logging::mChannelID</a> VK_RENDERER_ID;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">extern</span> MesumGraphicsApi <span class="keyword">const</span> <a class="code hl_typedef" href="namespacem_1_1logging.html#af807dfba0ed733f24957c0f3d016a15f">logging::mChannelID</a> VK_RENDERER_ID;</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">inline</span> <span class="keywordtype">void</span> check_vkResult(VkResult err)</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>{</div>
@@ -130,18 +130,18 @@ $(document).ready(function(){initNavTree('_vulkan_renderer_common_8hpp_source.ht
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keywordtype">void</span> select_physicalDevice(VkInstance        a_instance,</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>                           VkPhysicalDevice&amp; a_physicalDevice);</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>Bool find_graphicQueueFamilyIndex(VkPhysicalDevice a_physicalDevice,</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                                  U32&amp;             a_queueFamilyIndex);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>mBool find_graphicQueueFamilyIndex(VkPhysicalDevice a_physicalDevice,</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                                  mU32&amp;             a_queueFamilyIndex);</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keywordtype">void</span> create_logicalDevice(VkPhysicalDevice a_physicalDevice,</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                          VkDevice&amp; a_logicalDevice, VkQueue&amp; a_queue,</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                          U32&amp; a_queueFamilyIndex);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                          mU32&amp; a_queueFamilyIndex);</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>};  <span class="comment">// namespace vulkan</span></div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>};  <span class="comment">// namespace m</span></div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="preprocessor">#endif  </span><span class="comment">// M_VulkanRendererCommon</span></div>
 <div class="ttc" id="agroup___core_html_gadf1cbf9f4fd7fbf02a0770de0d579455"><div class="ttname"><a href="group___core.html#gadf1cbf9f4fd7fbf02a0770de0d579455">mLog_errorTo</a></div><div class="ttdeci">#define mLog_errorTo(...)</div><div class="ttdoc">Macro used to log simple error messages to a channel.</div><div class="ttdef"><b>Definition:</b> Logger.hpp:48</div></div>
-<div class="ttc" id="anamespacem_1_1logging_html_ac4aaaa53dd22d25e9b24d091274b28a7"><div class="ttname"><a href="namespacem_1_1logging.html#ac4aaaa53dd22d25e9b24d091274b28a7">m::logging::mChannelID</a></div><div class="ttdeci">U64 mChannelID</div><div class="ttdoc">ChannelIDs are defined by a bit.</div><div class="ttdef"><b>Definition:</b> Log.hpp:27</div></div>
+<div class="ttc" id="anamespacem_1_1logging_html_af807dfba0ed733f24957c0f3d016a15f"><div class="ttname"><a href="namespacem_1_1logging.html#af807dfba0ed733f24957c0f3d016a15f">m::logging::mChannelID</a></div><div class="ttdeci">mU64 mChannelID</div><div class="ttdoc">ChannelIDs are defined by a bit.</div><div class="ttdef"><b>Definition:</b> Log.hpp:27</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

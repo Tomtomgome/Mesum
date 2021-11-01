@@ -149,11 +149,11 @@ var hierarchy =
     [ "m::input::MouseAction", "structm_1_1input_1_1_mouse_action.html", null ],
     [ "m::input::MouseState", "structm_1_1input_1_1_mouse_state.html", null ],
     [ "m::mSignal< t_Args >", "classm_1_1m_signal.html", null ],
-    [ "m::mSignal< const math::DVec2 & >", "classm_1_1m_signal.html", null ],
+    [ "m::mSignal< const math::mDVec2 & >", "classm_1_1m_signal.html", null ],
+    [ "m::math::mXoRandomNumberGenerator", "classm_1_1math_1_1m_xo_random_number_generator.html", null ],
+    [ "m::math::mXoRandomNumberGenerator::mXoshiro256ssState", "structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state.html", null ],
     [ "MyDocument", "struct_my_document.html", null ],
-    [ "m::math::RandomGenerator", "classm_1_1math_1_1_random_generator.html", null ],
     [ "m::render::ResourceDataHolder< t_DataType >", "classm_1_1render_1_1_resource_data_holder.html", null ],
-    [ "m::math::splitmix64State", "structm_1_1math_1_1splitmix64_state.html", null ],
     [ "STB_TexteditState", "struct_s_t_b___textedit_state.html", null ],
     [ "stbrp_context", "structstbrp__context.html", null ],
     [ "stbrp_node", "structstbrp__node.html", null ],
@@ -196,6 +196,5 @@ var hierarchy =
     [ "VERTEX_CONSTANT_BUFFER", "struct_v_e_r_t_e_x___c_o_n_s_t_a_n_t___b_u_f_f_e_r.html", null ],
     [ "m::vulkan::VulkanContext", "classm_1_1vulkan_1_1_vulkan_context.html", null ],
     [ "m::win32::WIN32Context", "structm_1_1win32_1_1_w_i_n32_context.html", null ],
-    [ "m::xcb_unix::XCBContext", "structm_1_1xcb__unix_1_1_x_c_b_context.html", null ],
-    [ "m::math::RandomGenerator::xoshiro256ssState", "structm_1_1math_1_1_random_generator_1_1xoshiro256ss_state.html", null ]
+    [ "m::xcb_unix::XCBContext", "structm_1_1xcb__unix_1_1_x_c_b_context.html", null ]
 ];

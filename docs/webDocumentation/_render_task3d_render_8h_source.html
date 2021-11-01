@@ -104,14 +104,14 @@ $(document).ready(function(){initNavTree('_render_task3d_render_8h_source.html',
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">namespace </span>m::render</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>{</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">using</span> uploadBuffers =</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    Dx12BufferBase&lt;BasicVertex, U16&gt;[dx12::DX12Surface::scm_numFrames];</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    Dx12BufferBase&lt;BasicVertex, mU16&gt;[dx12::DX12Surface::scm_numFrames];</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="structm_1_1render_1_1_task_data3d_render.html">   24</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structm_1_1render_1_1_task_data3d_render.html">TaskData3dRender</a> : <span class="keyword">public</span> <a class="code hl_struct" href="structm_1_1render_1_1_task_data.html">TaskData</a></div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>{</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <a class="code hl_struct" href="structm_1_1render_1_1_data_mesh_buffer.html">DataMeshBuffer&lt;BasicVertex, U16&gt;</a>*   m_pMeshBuffer;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <a class="code hl_struct" href="structm_1_1render_1_1_data_mesh_buffer.html">DataMeshBuffer&lt;BasicVertex, mU16&gt;</a>*  m_pMeshBuffer;</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    ISurface::HdlPtr                    m_hdlOutput;</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    DirectX::XMMATRIX*                  m_matrix;</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
@@ -140,7 +140,7 @@ $(document).ready(function(){initNavTree('_render_task3d_render_8h_source.html',
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordtype">void</span> execute() <span class="keyword">const override</span>;</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    UInt          m_i = 0;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> mUInt         m_i = 0;</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    uploadBuffers m_buffers;</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    dx12::ComPtr&lt;ID3D12RootSignature&gt; m_rootSignature = <span class="keyword">nullptr</span>;</div>

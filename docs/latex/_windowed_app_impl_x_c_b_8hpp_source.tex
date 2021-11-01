@@ -19,20 +19,20 @@
 \DoxyCodeLine{15    \textcolor{keyword}{public}:}
 \DoxyCodeLine{16     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} init\_renderer(}
 \DoxyCodeLine{17         render::RendererApi a\_renderApi = render::RendererApi::Default) \textcolor{keyword}{override};}
-\DoxyCodeLine{18     \textcolor{keyword}{virtual} \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{windows::IWindow}}* add\_newWindow(std::wstring a\_name, U32 a\_width,}
-\DoxyCodeLine{19                                             U32 a\_height);}
-\DoxyCodeLine{20     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_processImGuiMultiViewports(Bool a\_supportMultiViewPorts);}
+\DoxyCodeLine{18     \textcolor{keyword}{virtual} \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{windows::IWindow}}* add\_newWindow(std::wstring a\_name, mU32 a\_width,}
+\DoxyCodeLine{19                                             mU32 a\_height);}
+\DoxyCodeLine{20     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_processImGuiMultiViewports(mBool a\_supportMultiViewPorts);}
 \DoxyCodeLine{21     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} start\_dearImGuiNewFrame();}
 \DoxyCodeLine{22     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} render();}
 \DoxyCodeLine{23 }
 \DoxyCodeLine{24    \textcolor{keyword}{protected}:}
 \DoxyCodeLine{25     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_windowed_application_impl_af51366e2fdd19f1d8d9e8ec99523a850}{init}}(\mbox{\hyperlink{structm_1_1m_cmd_line}{mCmdLine}} \textcolor{keyword}{const}\& a\_cmdLine, \textcolor{keywordtype}{void}* a\_appData) \textcolor{keyword}{override};}
 \DoxyCodeLine{26     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a8baef1bc4148d903512c731ab3121da5}{destroy}}() \textcolor{keyword}{override};}
-\DoxyCodeLine{27     \textcolor{keyword}{virtual} Bool step(\textcolor{keyword}{const} std::chrono::duration<long long int, std::nano>\&}
+\DoxyCodeLine{27     \textcolor{keyword}{virtual} mBool step(\textcolor{keyword}{const} std::chrono::duration<long long int, std::nano>\&}
 \DoxyCodeLine{28                           a\_deltaTime) \textcolor{keyword}{override};}
 \DoxyCodeLine{29 }
 \DoxyCodeLine{30    \textcolor{keyword}{private}:}
-\DoxyCodeLine{31     Bool                        m\_supportImGuiMultiViewPorts = \textcolor{keyword}{false};}
+\DoxyCodeLine{31     mBool                       m\_supportImGuiMultiViewPorts = \textcolor{keyword}{false};}
 \DoxyCodeLine{32     \mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{render::IRenderer}}*          m\_renderer = \textcolor{keyword}{nullptr};}
 \DoxyCodeLine{33     \mbox{\hyperlink{structm_1_1xcb__unix_1_1_x_c_b_context}{XCBContext}}                  m\_XCBContext;}
 \DoxyCodeLine{34     std::set<windows::IWindow*> m\_windows;}

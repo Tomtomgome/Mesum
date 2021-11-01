@@ -12,22 +12,22 @@ namespace m::dx12
 extern const logging::mChannelID DX_RENDERER_ID = mLog_getId();
 
 void set_dxgiDebugName(ComPtr<IDXGIObject> a_dxgiObject, std::string a_sName,
-                       const Int a_lineNumber, const Char* a_file)
+                       const mInt a_lineNumber, const mChar* a_file)
 {
     std::stringstream sString;
     sString << a_sName << " (" << a_lineNumber << ":" << a_file << ")";
     a_dxgiObject->SetPrivateData(WKPDID_D3DDebugObjectName,
-                                 UInt(sString.str().size()),
+                                 mUInt(sString.str().size()),
                                  sString.str().c_str());
 }
 
 void set_d3g12DebugName(ComPtr<ID3D12Object> a_d3d12Object, std::string a_sName,
-                        const Int a_lineNumber, const Char* a_file)
+                        const mInt a_lineNumber, const mChar* a_file)
 {
     std::stringstream sString;
     sString << a_sName << " (" << a_lineNumber << ":" << a_file << ")";
     a_d3d12Object->SetPrivateData(WKPDID_D3DDebugObjectName,
-                                  UInt(sString.str().size()),
+                                  mUInt(sString.str().size()),
                                   sString.str().c_str());
 }
 
@@ -147,9 +147,9 @@ void report_liveObjects()
     }
 }
 
-Bool check_tearingSupport()
+mBool check_tearingSupport()
 {
-    Bool allowTearing = false;
+    mBool allowTearing = false;
 
     // Rather than create the DXGI 1.5 factory interface directly, we create the
     // DXGI 1.4 interface and query for the 1.5 interface. This is to enable the
@@ -173,10 +173,10 @@ Bool check_tearingSupport()
     return allowTearing;
 }
 
-ComPtr<IDXGIAdapter4> get_adapter(Bool a_useWarp)
+ComPtr<IDXGIAdapter4> get_adapter(mBool a_useWarp)
 {
     ComPtr<IDXGIFactory4> dxgiFactory;
-    UInt                  createFactoryFlags = 0;
+    mUInt                 createFactoryFlags = 0;
 #ifdef M_DEBUG
     createFactoryFlags = DXGI_CREATE_FACTORY_DEBUG;
 #endif  // M_DEBUG
@@ -195,8 +195,8 @@ ComPtr<IDXGIAdapter4> get_adapter(Bool a_useWarp)
     }
     else
     {
-        U64 size_maxDedicatedVideoMemory = 0;
-        for (UInt i = 0; dxgiFactory->EnumAdapters1(i, &dxgiAdapter1) !=
+        mU64 size_maxDedicatedVideoMemory = 0;
+        for (mUInt i = 0; dxgiFactory->EnumAdapters1(i, &dxgiAdapter1) !=
                          DXGI_ERROR_NOT_FOUND;
              ++i)
         {
@@ -295,8 +295,8 @@ ComPtr<ID3D12CommandQueue> create_commandQueue(ComPtr<ID3D12Device2>   a_device,
 }
 
 ComPtr<IDXGISwapChain4> create_swapChain(
-    HWND a_hWnd, ComPtr<ID3D12CommandQueue> a_commandQueue, U32 a_width,
-    U32 a_height, U32 a_bufferCount)
+    HWND a_hWnd, ComPtr<ID3D12CommandQueue> a_commandQueue, mU32 a_width,
+    mU32 a_height, mU32 a_bufferCount)
 {
     ComPtr<IDXGISwapChain4> dxgiSwapChain4;
     ComPtr<IDXGIFactory4>   dxgiFactory4;
@@ -344,7 +344,7 @@ ComPtr<IDXGISwapChain4> create_swapChain(
 
 ComPtr<ID3D12DescriptorHeap> create_descriptorHeap(
     ComPtr<ID3D12Device2> a_device, D3D12_DESCRIPTOR_HEAP_TYPE a_type,
-    U32 a_numDescriptors, D3D12_DESCRIPTOR_HEAP_FLAGS a_flags)
+    mU32 a_numDescriptors, D3D12_DESCRIPTOR_HEAP_FLAGS a_flags)
 {
     ComPtr<ID3D12DescriptorHeap> descriptorHeap;
 
@@ -408,10 +408,10 @@ HANDLE create_eventHandle()
     return fenceEvent;
 }
 
-U64 signal_fence(ComPtr<ID3D12CommandQueue> a_commandQueue,
-                 ComPtr<ID3D12Fence> a_fence, U64& a_fenceValue)
+mU64 signal_fence(ComPtr<ID3D12CommandQueue> a_commandQueue,
+                 ComPtr<ID3D12Fence> a_fence, mU64& a_fenceValue)
 {
-    U64 fenceValueForSignal = ++a_fenceValue;
+    mU64 fenceValueForSignal = ++a_fenceValue;
     check_MicrosoftHRESULT(
         a_commandQueue->Signal(a_fence.Get(), fenceValueForSignal));
 

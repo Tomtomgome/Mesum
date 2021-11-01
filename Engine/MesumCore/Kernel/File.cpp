@@ -9,7 +9,7 @@ MesumCoreApi const logging::mChannelID FILE_ID = mLog_getId();
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-Bool copy_fileToBinary(std::filesystem::path const& a_filePath,
+mBool copy_fileToBinary(std::filesystem::path const& a_filePath,
                        std::vector<char>&           a_output)
 {
     if (!std::filesystem::exists(a_filePath))

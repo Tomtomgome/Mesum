@@ -209,7 +209,8 @@ VulkanTask2dRender::~VulkanTask2dRender()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void VulkanTask2dRender::create_renderPassAndPipeline(U32 a_width, U32 a_height)
+void VulkanTask2dRender::create_renderPassAndPipeline(mU32 a_width,
+                                                      mU32 a_height)
 {
     VkDevice device = vulkan::VulkanContext::get_logDevice();
 
@@ -264,8 +265,8 @@ void VulkanTask2dRender::create_renderPassAndPipeline(U32 a_width, U32 a_height)
     VkViewport viewport{};
     viewport.x        = 0.0f;
     viewport.y        = 0.0f;
-    viewport.width    = Float(a_width);
-    viewport.height   = Float(a_height);
+    viewport.width    = mFloat(a_width);
+    viewport.height   = mFloat(a_height);
     viewport.minDepth = 0.0f;
     viewport.maxDepth = 1.0f;
 
@@ -434,8 +435,8 @@ void VulkanTask2dRender::execute() const
     auto framebuffer   = currentSurface->get_currentFramebuffer();
     auto commandBuffer = currentSurface->get_currentCommandBuffer();
 
-    Double width  = currentSurface->get_width();
-    Double height = currentSurface->get_height();
+    mDouble width  = currentSurface->get_width();
+    mDouble height = currentSurface->get_height();
 
     {
         VkRenderPassBeginInfo info = {};
@@ -475,7 +476,7 @@ void VulkanTask2dRender::execute() const
 
         VkRect2D scissor{};
         scissor.offset = {0, 0};
-        scissor.extent = {UInt(width), UInt(height)};
+        scissor.extent = {mUInt(width), mUInt(height)};
 
         vkCmdSetViewport(commandBuffer, 0, 1, &viewport);
         vkCmdSetScissor(commandBuffer, 0, 1, &scissor);

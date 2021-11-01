@@ -29,8 +29,8 @@ LRESULT CALLBACK WindowProc(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam,
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 windows::IWindow* IWindowedApplicationImpl::add_newWindow(std::string a_name,
-                                                          U32         a_width,
-                                                          U32         a_height)
+                                                          mU32        a_width,
+                                                          mU32        a_height)
 {
     IWindowImpl* newWindow = new IWindowImpl();
     m_windows.insert(newWindow);
@@ -68,7 +68,7 @@ void IWindowedApplicationImpl::init(mCmdLine const& a_cmdLine, void* a_appData)
     // be rendered in a DPI sensitive fashion.
     SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
 
-    const WideChar className[] = L"MainWindowClass";
+    const mWideChar className[] = L"MainWindowClass";
     // Register the window class.
     m_W32Context.register_windowClass(className, data.m_hInstance, WindowProc);
 }
@@ -93,10 +93,10 @@ void IWindowedApplicationImpl::destroy()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-Bool IWindowedApplicationImpl::step(
+mBool IWindowedApplicationImpl::step(
     std::chrono::steady_clock::duration const& a_deltaTime)
 {
-    Bool signalKeepRunning = true;
+    mBool signalKeepRunning = true;
 
     // Run the message loop.
     MSG msg = {};

@@ -24,8 +24,8 @@
 \DoxyCodeLine{20     \textcolor{keywordtype}{void}                  deinit();}
 \DoxyCodeLine{21 }
 \DoxyCodeLine{22     \textcolor{keyword}{static} \textcolor{keywordtype}{void} wait\_onMainTimelineTstp(}
-\DoxyCodeLine{23         U64 a\_tstpToWaitOn, U64 a\_timeout = std::numeric\_limits<U64>::max());}
-\DoxyCodeLine{24     \textcolor{keyword}{static} U64 submit\_onMainTimeline(}
+\DoxyCodeLine{23         mU64 a\_tstpToWaitOn, mU64 a\_timeout = std::numeric\_limits<mU64>::max());}
+\DoxyCodeLine{24     \textcolor{keyword}{static} mU64 submit\_onMainTimeline(}
 \DoxyCodeLine{25         VkCommandBuffer \textcolor{keyword}{const}\&          a\_commandBuffer,}
 \DoxyCodeLine{26         std::vector<VkSemaphore> \textcolor{keyword}{const}\& a\_semaphoresToWait,}
 \DoxyCodeLine{27         std::vector<VkSemaphore>        a\_semaphoresToSignal);}
@@ -49,12 +49,12 @@
 \DoxyCodeLine{45         \textcolor{keywordflow}{return} gs\_VulkanContexte-\/>m\_queue;}
 \DoxyCodeLine{46     \}}
 \DoxyCodeLine{47     \textcolor{keyword}{static} VkQueue get\_graphicQueue() \{ \textcolor{keywordflow}{return} gs\_VulkanContexte-\/>m\_queue; \}}
-\DoxyCodeLine{48     \textcolor{keyword}{static} U32     get\_graphicQueueFamilyIndex()}
+\DoxyCodeLine{48     \textcolor{keyword}{static} mU32    get\_graphicQueueFamilyIndex()}
 \DoxyCodeLine{49     \{}
 \DoxyCodeLine{50         \textcolor{keywordflow}{return} gs\_VulkanContexte-\/>m\_queueFamilyIndex;}
 \DoxyCodeLine{51     \}}
 \DoxyCodeLine{52 }
-\DoxyCodeLine{53     \textcolor{keyword}{static} U32            get\_memoryTypeIndex(U32                   a\_typeFilter,}
+\DoxyCodeLine{53     \textcolor{keyword}{static} mU32           get\_memoryTypeIndex(mU32                  a\_typeFilter,}
 \DoxyCodeLine{54                                               VkMemoryPropertyFlags a\_properties);}
 \DoxyCodeLine{55     \textcolor{keyword}{static} VkShaderModule create\_shaderModule(std::string \textcolor{keyword}{const}\& a\_shaderPath);}
 \DoxyCodeLine{56 }
@@ -67,7 +67,7 @@
 \DoxyCodeLine{63     VkDebugUtilsMessengerEXT m\_debugUtil;}
 \DoxyCodeLine{64 }
 \DoxyCodeLine{65     \textcolor{comment}{// queues}}
-\DoxyCodeLine{66     U32     m\_queueFamilyIndex;}
+\DoxyCodeLine{66     mU32    m\_queueFamilyIndex;}
 \DoxyCodeLine{67     VkQueue m\_queue = VK\_NULL\_HANDLE;}
 \DoxyCodeLine{68 }
 \DoxyCodeLine{69     \textcolor{comment}{// Utility}}
@@ -75,7 +75,7 @@
 \DoxyCodeLine{71 }
 \DoxyCodeLine{72     \textcolor{comment}{// Synchronization tools}}
 \DoxyCodeLine{73     VkSemaphore m\_timelineSemaphore;}
-\DoxyCodeLine{74     U64         m\_timeline = 0;}
+\DoxyCodeLine{74     mU64        m\_timeline = 0;}
 \DoxyCodeLine{75 \};}
 \DoxyCodeLine{76 }
 \DoxyCodeLine{77 \};  \textcolor{comment}{// namespace vulkan}}

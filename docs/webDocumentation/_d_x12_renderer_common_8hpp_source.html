@@ -119,22 +119,22 @@ $(document).ready(function(){initNavTree('_d_x12_renderer_common_8hpp_source.htm
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">// Based on https://www.3dgep.com/learning-directx-12-1/</span></div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="keyword">using namespace </span>Microsoft::WRL;</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">extern</span> MesumGraphicsApi <span class="keyword">const</span> <a class="code hl_typedef" href="namespacem_1_1logging.html#ac4aaaa53dd22d25e9b24d091274b28a7">logging::mChannelID</a> DX_RENDERER_ID;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">extern</span> MesumGraphicsApi <span class="keyword">const</span> <a class="code hl_typedef" href="namespacem_1_1logging.html#af807dfba0ed733f24957c0f3d016a15f">logging::mChannelID</a> DX_RENDERER_ID;</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword">inline</span> <span class="keywordtype">void</span> check_MicrosoftHRESULT(HRESULT a_hr)</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>{</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordflow">if</span> (FAILED(a_hr))</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    {</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        <a class="code hl_define" href="group___core.html#gadf1cbf9f4fd7fbf02a0770de0d579455">mLog_errorTo</a>(DX_RENDERER_ID, <span class="stringliteral">&quot;HRESULT FAIL&quot;</span>);</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        <a class="code hl_define" href="group___core.html#ga5cbca1ff1eb730a016c7c63f94afa154">mAssert</a>(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        <a class="code hl_define" href="group___core.html#gae68855c8125ce66a9e53e758526c95ca">mAssert</a>(<span class="keyword">false</span>);</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    }</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>}</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keywordtype">void</span> set_dxgiDebugName(ComPtr&lt;IDXGIObject&gt; a_dxgiObject, std::string a_sName,</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                       <span class="keyword">const</span> Int a_lineNumber, <span class="keyword">const</span> Char* a_file);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                       <span class="keyword">const</span> mInt a_lineNumber, <span class="keyword">const</span> mChar* a_file);</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="keywordtype">void</span> set_d3g12DebugName(ComPtr&lt;ID3D12Object&gt; a_d3d12Object, std::string a_sName,</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                        <span class="keyword">const</span> Int a_lineNumber, <span class="keyword">const</span> Char* a_file);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                        <span class="keyword">const</span> mInt a_lineNumber, <span class="keyword">const</span> mChar* a_file);</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#ifdef M_DEBUG</span></div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#define mDXGIDebugNamed(a_dxgiObject, a_name) \</span></div>
@@ -154,7 +154,7 @@ $(document).ready(function(){initNavTree('_d_x12_renderer_common_8hpp_source.htm
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="keywordtype">void</span> report_liveObjects();</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="keywordtype">bool</span> check_tearingSupport();</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>ComPtr&lt;IDXGIAdapter4&gt; get_adapter(Bool a_useWarp);</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>ComPtr&lt;IDXGIAdapter4&gt; get_adapter(mBool a_useWarp);</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>ComPtr&lt;ID3D12Device2&gt;      create_device(ComPtr&lt;IDXGIAdapter4&gt; a_adapter);</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>ComPtr&lt;ID3D12CommandQueue&gt; create_commandQueue(ComPtr&lt;ID3D12Device2&gt;   a_device,</div>
@@ -174,8 +174,8 @@ $(document).ready(function(){initNavTree('_d_x12_renderer_common_8hpp_source.htm
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    D3D12_COMMAND_LIST_TYPE        a_type);</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>ComPtr&lt;ID3D12Fence&gt; create_fence(ComPtr&lt;ID3D12Device2&gt; a_device);</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>HANDLE              create_eventHandle();</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>U64                 signal_fence(ComPtr&lt;ID3D12CommandQueue&gt; a_commandQueue,</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                                 ComPtr&lt;ID3D12Fence&gt; a_fence, U64&amp; a_fenceValue);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>mU64                signal_fence(ComPtr&lt;ID3D12CommandQueue&gt; a_commandQueue,</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                                 ComPtr&lt;ID3D12Fence&gt; a_fence, mU64&amp; a_fenceValue);</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="keywordtype">void</span>                wait_fenceValue(</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>                   ComPtr&lt;ID3D12Fence&gt; a_fence, uint64_t a_fenceValue, HANDLE a_fenceEvent,</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                   std::chrono::milliseconds a_duration = std::chrono::milliseconds::max());</div>
@@ -185,9 +185,9 @@ $(document).ready(function(){initNavTree('_d_x12_renderer_common_8hpp_source.htm
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>}  <span class="comment">// namespace m::dx12</span></div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="preprocessor">#endif  </span><span class="comment">// M_DX12RendererCommon</span></div>
-<div class="ttc" id="agroup___core_html_ga5cbca1ff1eb730a016c7c63f94afa154"><div class="ttname"><a href="group___core.html#ga5cbca1ff1eb730a016c7c63f94afa154">mAssert</a></div><div class="ttdeci">#define mAssert(condition)</div><div class="ttdoc">A basic assert interrupting execution.</div><div class="ttdef"><b>Definition:</b> Asserts.hpp:70</div></div>
 <div class="ttc" id="agroup___core_html_gadf1cbf9f4fd7fbf02a0770de0d579455"><div class="ttname"><a href="group___core.html#gadf1cbf9f4fd7fbf02a0770de0d579455">mLog_errorTo</a></div><div class="ttdeci">#define mLog_errorTo(...)</div><div class="ttdoc">Macro used to log simple error messages to a channel.</div><div class="ttdef"><b>Definition:</b> Logger.hpp:48</div></div>
-<div class="ttc" id="anamespacem_1_1logging_html_ac4aaaa53dd22d25e9b24d091274b28a7"><div class="ttname"><a href="namespacem_1_1logging.html#ac4aaaa53dd22d25e9b24d091274b28a7">m::logging::mChannelID</a></div><div class="ttdeci">U64 mChannelID</div><div class="ttdoc">ChannelIDs are defined by a bit.</div><div class="ttdef"><b>Definition:</b> Log.hpp:27</div></div>
+<div class="ttc" id="agroup___core_html_gae68855c8125ce66a9e53e758526c95ca"><div class="ttname"><a href="group___core.html#gae68855c8125ce66a9e53e758526c95ca">mAssert</a></div><div class="ttdeci">#define mAssert(a_condition)</div><div class="ttdoc">A basic assert interrupting execution.</div><div class="ttdef"><b>Definition:</b> Asserts.hpp:70</div></div>
+<div class="ttc" id="anamespacem_1_1logging_html_af807dfba0ed733f24957c0f3d016a15f"><div class="ttname"><a href="namespacem_1_1logging.html#af807dfba0ed733f24957c0f3d016a15f">m::logging::mChannelID</a></div><div class="ttdeci">mU64 mChannelID</div><div class="ttdoc">ChannelIDs are defined by a bit.</div><div class="ttdef"><b>Definition:</b> Log.hpp:27</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

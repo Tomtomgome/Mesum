@@ -10,7 +10,7 @@ namespace m
 //*****************************************************************************
     namespace math
     {
-        template<typename T, UInt Size>
+        template<typename T, mUInt Size>
         struct VecData
         {
             T data[Size];
@@ -59,7 +59,7 @@ namespace m
             }; 
         };
 
-        template<typename T, UInt Size>
+        template<typename T, mUInt Size>
         struct Vec : public VecData<T, Size>
         {
             Vec();
@@ -68,8 +68,8 @@ namespace m
 
             Vec<T, Size>& operator=(const VecData<T, Size>& a_data);
 
-            T& operator[](const UInt a_index);
-            T operator[](const UInt a_index) const;
+            T& operator[](const mUInt a_index);
+            T operator[](const mUInt a_index) const;
 
             Vec<T, Size>& operator++();
             Vec<T, Size> operator++(int);
@@ -88,46 +88,46 @@ namespace m
             Vec<T, Size> operator+() const;
             Vec<T, Size> operator-() const;
 
-            Bool operator==(const Vec<T, Size>& a_v) const;
+            mBool operator==(const Vec<T, Size>& a_v) const;
         };
 
-        template<typename T, UInt Size>
+        template<typename T, mUInt Size>
         Vec<T, Size> operator+(const Vec<T, Size>& a_lhs, const Vec<T, Size>& a_rhs);
-        template<typename T, UInt Size>
+        template<typename T, mUInt Size>
         Vec<T, Size> operator-(const Vec<T, Size>& a_lhs, const Vec<T, Size>& a_rhs);
-        template<typename T, UInt Size>
+        template<typename T, mUInt Size>
         Vec<T, Size> operator*(const Vec<T, Size>& a_lhs, const Vec<T, Size>& a_rhs);
-        template<typename T, UInt Size>
+        template<typename T, mUInt Size>
         Vec<T, Size> operator/(const Vec<T, Size>& a_lhs, const Vec<T, Size>& a_rhs);
 
-        template<typename T, UInt Size>
+        template<typename T, mUInt Size>
         Vec<T, Size> operator+(const Vec<T, Size>& a_lhs, const T a_rhs);
-        template<typename T, UInt Size>
+        template<typename T, mUInt Size>
         Vec<T, Size> operator-(const Vec<T, Size>& a_lhs, const T a_rhs);
-        template<typename T, UInt Size>
+        template<typename T, mUInt Size>
         Vec<T, Size> operator*(const Vec<T, Size>& a_lhs, const T a_rhs);
-        template<typename T, UInt Size>
+        template<typename T, mUInt Size>
         Vec<T, Size> operator/(const Vec<T, Size>& a_lhs, const T a_rhs);
 
-        template<typename T, UInt Size>
+        template<typename T, mUInt Size>
         Vec<T, Size> operator+(const T a_lhs, const Vec<T, Size>& a_rhs);
-        template<typename T, UInt Size>
+        template<typename T, mUInt Size>
         Vec<T, Size> operator-(const T a_lhs, const Vec<T, Size>& a_rhs);
-        template<typename T, UInt Size>
+        template<typename T, mUInt Size>
         Vec<T, Size> operator*(const T a_lhs, const Vec<T, Size>& a_rhs);
-        template<typename T, UInt Size>
+        template<typename T, mUInt Size>
         Vec<T, Size> operator/(const T a_lhs, const Vec<T, Size>& a_rhs);
 
         
-        template<typename T, UInt Size>
+        template<typename T, mUInt Size>
         [[nodiscard]] Vec<T, Size> abs(const Vec<T, Size>& a_v);
-        template<typename T, UInt Size>
+        template<typename T, mUInt Size>
         [[nodiscard]] T dot(const Vec<T, Size>& a_lhs, const Vec<T, Size>& a_rhs);
-        template<typename T, UInt Size>
+        template<typename T, mUInt Size>
         [[nodiscard]] T length(const Vec<T, Size>& a_v);
-        template<typename T, UInt Size>
+        template<typename T, mUInt Size>
         [[nodiscard]] T sqlength(const Vec<T, Size>& a_v);
-        template<typename T, UInt Size>
+        template<typename T, mUInt Size>
         [[nodiscard]] Vec<T, Size> normalized(const Vec<T, Size>& a_v);
 
     };

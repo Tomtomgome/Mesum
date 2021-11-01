@@ -10,8 +10,9 @@ MesumCoreApi const logging::mChannelID ASSERT_ID = mLog_getId();
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void manage_assert(Bool a_condition, const Int a_lineNumber, const Char* a_file,
-                   const Char* a_message, Bool a_interrupt)
+void manage_assert(mBool a_condition, const mInt a_lineNumber, const mChar* a_file,
+                   const mChar* a_message,
+                   mBool a_interrupt)
 {
     if (!a_condition)
     {

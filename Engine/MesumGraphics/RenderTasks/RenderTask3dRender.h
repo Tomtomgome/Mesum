@@ -16,14 +16,14 @@
 namespace m::render
 {
 using uploadBuffers =
-    Dx12BufferBase<BasicVertex, U16>[dx12::DX12Surface::scm_numFrames];
+    Dx12BufferBase<BasicVertex, mU16>[dx12::DX12Surface::scm_numFrames];
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 struct TaskData3dRender : public TaskData
 {
-    DataMeshBuffer<BasicVertex, U16>* 	m_pMeshBuffer;
+    DataMeshBuffer<BasicVertex, mU16>* 	m_pMeshBuffer;
     ISurface::HdlPtr                  	m_hdlOutput;
 	DirectX::XMMATRIX* 					m_matrix;
 
@@ -52,7 +52,7 @@ mIfDx12Enabled(struct Dx12Task3dRender : public Task3dRender
     void execute() const override;
 
 private:
-    UInt          m_i = 0;
+ mUInt         m_i = 0;
     uploadBuffers m_buffers;
 
     dx12::ComPtr<ID3D12RootSignature> m_rootSignature = nullptr;

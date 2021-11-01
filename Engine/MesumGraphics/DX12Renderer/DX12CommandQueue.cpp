@@ -79,7 +79,7 @@ DX12CommandQueue::get_commandList()
 
 // Execute a command list.
 // Returns the fence value to wait for for this command list.
-U64 DX12CommandQueue::execute_commandList(
+mU64 DX12CommandQueue::execute_commandList(
     Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList2> a_commandList)
 {
     check_MicrosoftHRESULT(a_commandList->Close());
@@ -106,16 +106,16 @@ U64 DX12CommandQueue::execute_commandList(
     return fenceValue;
 }
 
-U64 DX12CommandQueue::signal_fence()
+mU64 DX12CommandQueue::signal_fence()
 {
     return dx12::signal_fence(m_d3d12CommandQueue, m_d3d12Fence, m_fenceValue);
 }
 
-Bool DX12CommandQueue::is_fenceComplete(U64 a_fenceValue)
+mBool DX12CommandQueue::is_fenceComplete(mU64 a_fenceValue)
 {
     return m_d3d12Fence->GetCompletedValue() >= a_fenceValue;
 }
-void DX12CommandQueue::wait_fenceValue(U64 a_fenceValue)
+void DX12CommandQueue::wait_fenceValue(mU64 a_fenceValue)
 {
     dx12::wait_fenceValue(m_d3d12Fence, a_fenceValue, m_fenceEvent);
 }

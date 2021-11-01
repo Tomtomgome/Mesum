@@ -28,7 +28,7 @@ extern MesumCoreApi const logging::mChannelID FILE_ID;
 /// lost
 /// \return true if the file as been successfully open and copied
 ///////////////////////////////////////////////////////////////////////////////
-Bool copy_fileToBinary(std::filesystem::path const& a_filePath,
+mBool copy_fileToBinary(std::filesystem::path const& a_filePath,
                        std::vector<char>&           a_output);
 }  // namespace m::files
 

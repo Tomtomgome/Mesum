@@ -105,8 +105,8 @@ Inheritance diagram for m::win32::IWindowedApplicationImpl:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa80f822aa19864470fbf83e0ff1d1f48"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classm_1_1windows_1_1_i_window.html">windows::IWindow</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1win32_1_1_i_windowed_application_impl.html#aa80f822aa19864470fbf83e0ff1d1f48">add_newWindow</a> (std::string a_name, U32 a_width, U32 a_height) override</td></tr>
-<tr class="separator:aa80f822aa19864470fbf83e0ff1d1f48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a278b11464fbea81fde45b6af92f9bf58"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classm_1_1windows_1_1_i_window.html">windows::IWindow</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1win32_1_1_i_windowed_application_impl.html#a278b11464fbea81fde45b6af92f9bf58">add_newWindow</a> (std::string a_name, mU32 a_width, mU32 a_height) override</td></tr>
+<tr class="separator:a278b11464fbea81fde45b6af92f9bf58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abeabe866f4b32bd15192922eb682181e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1win32_1_1_i_windowed_application_impl.html#abeabe866f4b32bd15192922eb682181e">start_dearImGuiNewFrame</a> (<a class="el" href="classm_1_1render_1_1_i_renderer.html">render::IRenderer</a> const *a_renderer) const override</td></tr>
 <tr class="separator:abeabe866f4b32bd15192922eb682181e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classm_1_1application_1_1m_i_timed_loop_application"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classm_1_1application_1_1m_i_timed_loop_application')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classm_1_1application_1_1m_i_timed_loop_application.html">m::application::mITimedLoopApplication</a></td></tr>
@@ -128,9 +128,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:ade7cd05678503ae2990cbb224af7e29e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1win32_1_1_i_windowed_application_impl.html#ade7cd05678503ae2990cbb224af7e29e">destroy</a> () override</td></tr>
 <tr class="memdesc:ade7cd05678503ae2990cbb224af7e29e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual that should implement the application exits.  <a href="classm_1_1win32_1_1_i_windowed_application_impl.html#ade7cd05678503ae2990cbb224af7e29e">More...</a><br /></td></tr>
 <tr class="separator:ade7cd05678503ae2990cbb224af7e29e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8a2628a86f944333e8668bd3b46e599"><td class="memItemLeft" align="right" valign="top">Bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1win32_1_1_i_windowed_application_impl.html#ac8a2628a86f944333e8668bd3b46e599">step</a> (std::chrono::steady_clock::duration const &amp;a_deltaTime) override</td></tr>
-<tr class="memdesc:ac8a2628a86f944333e8668bd3b46e599"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual that should implement each step.  <a href="classm_1_1win32_1_1_i_windowed_application_impl.html#ac8a2628a86f944333e8668bd3b46e599">More...</a><br /></td></tr>
-<tr class="separator:ac8a2628a86f944333e8668bd3b46e599"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56dcd1af67cf769cc2f6380a6b2c5120"><td class="memItemLeft" align="right" valign="top">mBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1win32_1_1_i_windowed_application_impl.html#a56dcd1af67cf769cc2f6380a6b2c5120">step</a> (std::chrono::steady_clock::duration const &amp;a_deltaTime) override</td></tr>
+<tr class="memdesc:a56dcd1af67cf769cc2f6380a6b2c5120"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual that should implement each step.  <a href="classm_1_1win32_1_1_i_windowed_application_impl.html#a56dcd1af67cf769cc2f6380a6b2c5120">More...</a><br /></td></tr>
+<tr class="separator:a56dcd1af67cf769cc2f6380a6b2c5120"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -142,8 +142,8 @@ std::set&lt; <a class="el" href="classm_1_1windows_1_1_i_window.html">windows::I
 <tr class="separator:a64c132f0ed069955ee84a314b07bf8b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa80f822aa19864470fbf83e0ff1d1f48" name="aa80f822aa19864470fbf83e0ff1d1f48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa80f822aa19864470fbf83e0ff1d1f48">&#9670;&nbsp;</a></span>add_newWindow()</h2>
+<a id="a278b11464fbea81fde45b6af92f9bf58" name="a278b11464fbea81fde45b6af92f9bf58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a278b11464fbea81fde45b6af92f9bf58">&#9670;&nbsp;</a></span>add_newWindow()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -160,13 +160,13 @@ std::set&lt; <a class="el" href="classm_1_1windows_1_1_i_window.html">windows::I
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">U32&#160;</td>
+          <td class="paramtype">mU32&#160;</td>
           <td class="paramname"><em>a_width</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">U32&#160;</td>
+          <td class="paramtype">mU32&#160;</td>
           <td class="paramname"><em>a_height</em>&#160;</td>
         </tr>
         <tr>
@@ -290,8 +290,8 @@ std::set&lt; <a class="el" href="classm_1_1windows_1_1_i_window.html">windows::I
 
 </div>
 </div>
-<a id="ac8a2628a86f944333e8668bd3b46e599" name="ac8a2628a86f944333e8668bd3b46e599"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac8a2628a86f944333e8668bd3b46e599">&#9670;&nbsp;</a></span>step()</h2>
+<a id="a56dcd1af67cf769cc2f6380a6b2c5120" name="a56dcd1af67cf769cc2f6380a6b2c5120"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56dcd1af67cf769cc2f6380a6b2c5120">&#9670;&nbsp;</a></span>step()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -300,7 +300,7 @@ std::set&lt; <a class="el" href="classm_1_1windows_1_1_i_window.html">windows::I
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Bool m::win32::IWindowedApplicationImpl::step </td>
+          <td class="memname">mBool m::win32::IWindowedApplicationImpl::step </td>
           <td>(</td>
           <td class="paramtype">std::chrono::steady_clock::duration const &amp;&#160;</td>
           <td class="paramname"><em>a_deltaTime</em></td><td>)</td>
@@ -323,7 +323,7 @@ std::set&lt; <a class="el" href="classm_1_1windows_1_1_i_window.html">windows::I
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>should return true for the application to continue, false to stop </dd></dl>
 
-<p>Implements <a class="el" href="classm_1_1application_1_1m_i_timed_loop_application.html#ac2afcb4ee8711b4d1204e3a17af404d7">m::application::mITimedLoopApplication</a>.</p>
+<p>Implements <a class="el" href="classm_1_1application_1_1m_i_timed_loop_application.html#a962bd499a87f45a4995832697ee7da9f">m::application::mITimedLoopApplication</a>.</p>
 
 </div>
 </div>

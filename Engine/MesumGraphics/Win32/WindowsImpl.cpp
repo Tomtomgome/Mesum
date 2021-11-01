@@ -70,8 +70,8 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
             RECT clientRect = {};
             ::GetClientRect(m_hwnd, &clientRect);
 
-            U32 width  = clientRect.right - clientRect.left;
-            U32 height = clientRect.bottom - clientRect.top;
+            mU32 width  = clientRect.right - clientRect.left;
+            mU32 height = clientRect.bottom - clientRect.top;
 
             m_signalResize.call(width, height);
         }
@@ -86,7 +86,7 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
 //-----------------------------------------------------------------------------
 void IWindowImpl::init()
 {
-    const WideChar className[] = L"MainWindowClass";
+    const mWideChar className[] = L"MainWindowClass";
     m_hwnd = m_parentContext->create_window(className, m_windowName,
                                             m_clientWidth, m_clientHeight);
     GetWindowRect(m_hwnd, &m_windowRect);
@@ -121,7 +121,7 @@ render::ISurface::HdlPtr IWindowImpl::link_renderer(
                                                 m_clientHeight};
     surfaceHandle->surface->init_win32(surfaceData);
 
-    m_signalResize.attach_toSignal(mCallback<void, U32, U32>(
+    m_signalResize.attach_toSignal(mCallback<void, mU32, mU32>(
         surfaceHandle->surface, &render::ISurface::resize));
 
     // TODO : Manage this from the renderer
@@ -141,7 +141,7 @@ render::ISurface::HdlPtr IWindowImpl::link_renderer(
 //-----------------------------------------------------------------------------
 void IWindowImpl::set_asMainWindow()
 {
-    static m::Bool s_mainWindowIsDefined = false;
+    static m::mBool s_mainWindowIsDefined = false;
 
     // There can only be one main window
     mAssert(s_mainWindowIsDefined == false);
@@ -164,7 +164,7 @@ void IWindowImpl::set_asImGuiWindow()
         mCallback<void>([]() { ImGui_ImplWin32_Shutdown(); }));
 
     m_signalOverrideInputProcessing.attach_toSignal(CallbackInputProcessing(
-        [](Bool* a_interrupt, HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam,
+        [](mBool* a_interrupt, HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam,
            LPARAM a_lParam)
         {
             if (!(*a_interrupt))
@@ -178,7 +178,7 @@ void IWindowImpl::set_asImGuiWindow()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void IWindowImpl::set_fullScreen(Bool a_fullscreen)
+void IWindowImpl::set_fullScreen(mBool a_fullscreen)
 {
     if (m_fullscreen != a_fullscreen)
     {
@@ -243,7 +243,7 @@ void IWindowImpl::attach_toDestroy(mCallback<void> const& a_onDestroyCallback)
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 void IWindowImpl::attach_toResize(
-    mCallback<void, U32, U32> const& a_onResizeCallback)
+    mCallback<void, mU32, mU32> const& a_onResizeCallback)
 {
     m_signalResize.attach_toSignal(a_onResizeCallback);
 }

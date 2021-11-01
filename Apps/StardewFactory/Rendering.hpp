@@ -7,10 +7,10 @@
 
 struct DrawData
 {
-    m::math::Vec2 m_position;
-    m::math::Vec2 m_size;
-    m::math::Vec4 m_color;
-    m::Bool       m_filled = true;
+    m::math::mVec2 m_position;
+    m::math::mVec2 m_size;
+    m::math::mVec4 m_color;
+    m::mBool       m_filled = true;
 };
 
 struct WorldToDisplay

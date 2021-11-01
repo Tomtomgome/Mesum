@@ -16,8 +16,8 @@
 \DoxyCodeLine{12 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1win32_1_1_i_windowed_application_impl}{IWindowedApplicationImpl}} : \textcolor{keyword}{public} \mbox{\hyperlink{classm_1_1application_1_1_i_windowed_application_base}{application::IWindowedApplicationBase}}}
 \DoxyCodeLine{13 \{}
 \DoxyCodeLine{14    \textcolor{keyword}{public}:}
-\DoxyCodeLine{15     \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{windows::IWindow}}* add\_newWindow(std::string a\_name, U32 a\_width,}
-\DoxyCodeLine{16                                     U32 a\_height) \textcolor{keyword}{override};}
+\DoxyCodeLine{15     \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{windows::IWindow}}* add\_newWindow(std::string a\_name, mU32 a\_width,}
+\DoxyCodeLine{16                                     mU32 a\_height) \textcolor{keyword}{override};}
 \DoxyCodeLine{17 }
 \DoxyCodeLine{18     \textcolor{keywordtype}{void} start\_dearImGuiNewFrame(}
 \DoxyCodeLine{19         \mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{render::IRenderer}} \textcolor{keyword}{const}* a\_renderer) \textcolor{keyword}{const override};}
@@ -25,7 +25,7 @@
 \DoxyCodeLine{21    \textcolor{keyword}{protected}:}
 \DoxyCodeLine{22     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1win32_1_1_i_windowed_application_impl_aab2f38772a89c69b29f02e3620c850bf}{init}}(\mbox{\hyperlink{structm_1_1m_cmd_line}{mCmdLine}} \textcolor{keyword}{const}\& a\_cmdLine, \textcolor{keywordtype}{void}* a\_appData) \textcolor{keyword}{override};}
 \DoxyCodeLine{23     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1win32_1_1_i_windowed_application_impl_ade7cd05678503ae2990cbb224af7e29e}{destroy}}() \textcolor{keyword}{override};}
-\DoxyCodeLine{24     Bool \mbox{\hyperlink{classm_1_1win32_1_1_i_windowed_application_impl_ac8a2628a86f944333e8668bd3b46e599}{step}}(std::chrono::steady\_clock::duration \textcolor{keyword}{const}\& a\_deltaTime) \textcolor{keyword}{override};}
+\DoxyCodeLine{24     mBool \mbox{\hyperlink{classm_1_1win32_1_1_i_windowed_application_impl_a56dcd1af67cf769cc2f6380a6b2c5120}{step}}(std::chrono::steady\_clock::duration \textcolor{keyword}{const}\& a\_deltaTime) \textcolor{keyword}{override};}
 \DoxyCodeLine{25 }
 \DoxyCodeLine{26    \textcolor{keyword}{private}:}
 \DoxyCodeLine{27     \mbox{\hyperlink{structm_1_1win32_1_1_w_i_n32_context}{WIN32Context}}                m\_W32Context;}

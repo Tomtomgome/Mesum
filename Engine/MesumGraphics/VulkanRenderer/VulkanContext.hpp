@@ -20,8 +20,8 @@ class VulkanContext
     void                  deinit();
 
     static void wait_onMainTimelineTstp(
-        U64 a_tstpToWaitOn, U64 a_timeout = std::numeric_limits<U64>::max());
-    static U64 submit_onMainTimeline(
+        mU64 a_tstpToWaitOn, mU64 a_timeout = std::numeric_limits<mU64>::max());
+    static mU64 submit_onMainTimeline(
         VkCommandBuffer const&          a_commandBuffer,
         std::vector<VkSemaphore> const& a_semaphoresToWait,
         std::vector<VkSemaphore>        a_semaphoresToSignal);
@@ -45,12 +45,12 @@ class VulkanContext
         return gs_VulkanContexte->m_queue;
     }
     static VkQueue get_graphicQueue() { return gs_VulkanContexte->m_queue; }
-    static U32     get_graphicQueueFamilyIndex()
+    static mU32    get_graphicQueueFamilyIndex()
     {
         return gs_VulkanContexte->m_queueFamilyIndex;
     }
 
-    static U32            get_memoryTypeIndex(U32                   a_typeFilter,
+    static mU32           get_memoryTypeIndex(mU32                  a_typeFilter,
                                               VkMemoryPropertyFlags a_properties);
     static VkShaderModule create_shaderModule(std::string const& a_shaderPath);
 
@@ -63,7 +63,7 @@ class VulkanContext
     VkDebugUtilsMessengerEXT m_debugUtil;
 
     // queues
-    U32     m_queueFamilyIndex;
+    mU32    m_queueFamilyIndex;
     VkQueue m_queue = VK_NULL_HANDLE;
 
     // Utility
@@ -71,7 +71,7 @@ class VulkanContext
 
     // Synchronization tools
     VkSemaphore m_timelineSemaphore;
-    U64         m_timeline = 0;
+    mU64        m_timeline = 0;
 };
 
 };  // namespace vulkan

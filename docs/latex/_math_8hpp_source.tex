@@ -2,45 +2,44 @@
 \label{_math_8hpp_source}\index{MesumCore/Kernel/Math.hpp@{MesumCore/Kernel/Math.hpp}}
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_Math}}
-\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_MATH}}
-\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
-\DoxyCodeLine{4 }
-\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <Types.hpp>}}
-\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <MathTypes.hpp>}}
-\DoxyCodeLine{7 }
-\DoxyCodeLine{8 \textcolor{keyword}{namespace }m}
-\DoxyCodeLine{9 \{}
-\DoxyCodeLine{10 \textcolor{keyword}{namespace }math}
-\DoxyCodeLine{11 \{}
-\DoxyCodeLine{12 \textcolor{keyword}{template} <\textcolor{keyword}{typename} T>}
-\DoxyCodeLine{13 T lerp(T \textcolor{keyword}{const}\& a\_a1, T \textcolor{keyword}{const}\& a\_a2, Float a\_ratio)}
-\DoxyCodeLine{14 \{}
-\DoxyCodeLine{15     \textcolor{keywordflow}{return} (1.0f -\/ a\_ratio) * a\_a1 + a\_ratio * a\_a2;}
-\DoxyCodeLine{16 \}}
-\DoxyCodeLine{17 }
-\DoxyCodeLine{18 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1math_1_1_random_generator}{RandomGenerator}}}
-\DoxyCodeLine{19 \{}
-\DoxyCodeLine{20    \textcolor{keyword}{public}:}
-\DoxyCodeLine{21     \textcolor{keywordtype}{void} init(U64 a\_seed);}
-\DoxyCodeLine{22 }
-\DoxyCodeLine{23     U64 get\_nextU64();}
-\DoxyCodeLine{24     U32 get\_nextU32();}
-\DoxyCodeLine{25     Double get\_nextDouble();}
-\DoxyCodeLine{26     Float  get\_nextFloat();}
-\DoxyCodeLine{27 }
-\DoxyCodeLine{28 \textcolor{keyword}{private}:}
-\DoxyCodeLine{29     \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1math_1_1_random_generator_1_1xoshiro256ss_state}{xoshiro256ssState}}}
-\DoxyCodeLine{30     \{}
-\DoxyCodeLine{31         U64 s[4];}
-\DoxyCodeLine{32     \};}
-\DoxyCodeLine{33 }
-\DoxyCodeLine{34     \mbox{\hyperlink{structm_1_1math_1_1_random_generator_1_1xoshiro256ss_state}{xoshiro256ssState}} m\_state;}
-\DoxyCodeLine{35 \};}
-\DoxyCodeLine{36 }
-\DoxyCodeLine{37 \}}
-\DoxyCodeLine{38 \}  \textcolor{comment}{// namespace m}}
-\DoxyCodeLine{39 }
-\DoxyCodeLine{40 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//M\_Math}}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <MathTypes.hpp>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <Types.hpp>}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{10 }
+\DoxyCodeLine{14 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacem_1_1math}{m::math}}}
+\DoxyCodeLine{15 \{}
+\DoxyCodeLine{25 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T>}
+\DoxyCodeLine{26 t\_T \mbox{\hyperlink{namespacem_1_1math_a666b1ae25814d4956ff8d5266fd4e601}{lerp}}(t\_T \textcolor{keyword}{const}\& a\_a, t\_T \textcolor{keyword}{const}\& a\_b, mDouble a\_ratio)}
+\DoxyCodeLine{27 \{}
+\DoxyCodeLine{28     \textcolor{keywordflow}{return} (1.0 -\/ a\_ratio) * a\_a + a\_ratio * a\_b;}
+\DoxyCodeLine{29 \}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{36 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1math_1_1m_xo_random_number_generator}{mXoRandomNumberGenerator}}}
+\DoxyCodeLine{37 \{}
+\DoxyCodeLine{38    \textcolor{keyword}{public}:}
+\DoxyCodeLine{44     \textcolor{keyword}{explicit} \mbox{\hyperlink{classm_1_1math_1_1m_xo_random_number_generator_a19b46ac054019318c8d2ed23cc710f49}{mXoRandomNumberGenerator}}(mU64 a\_seed);}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{51     mU64 \mbox{\hyperlink{classm_1_1math_1_1m_xo_random_number_generator_aa6ffaa8fa1f2a3405af81ec9d5166af2}{get\_nextU64}}();}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{58     mU32 \mbox{\hyperlink{classm_1_1math_1_1m_xo_random_number_generator_aebac1aba36bb438d80aed79a124c0274}{get\_nextU32}}();}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{65     mDouble \mbox{\hyperlink{classm_1_1math_1_1m_xo_random_number_generator_aa81fdd462a9ef685ce5893925df7d559}{get\_nextDouble}}();}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{72     mFloat \mbox{\hyperlink{classm_1_1math_1_1m_xo_random_number_generator_a1376ae80f993338db928b0fce5ae1a45}{get\_nextFloat}}();}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74    \textcolor{keyword}{private}:}
+\DoxyCodeLine{78     \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state}{mXoshiro256ssState}}}
+\DoxyCodeLine{79     \{}
+\DoxyCodeLine{80         mU64 s[4];}
+\DoxyCodeLine{81     \};}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83    \textcolor{keyword}{private}:}
+\DoxyCodeLine{87     \mbox{\hyperlink{structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state}{mXoshiro256ssState}} \mbox{\hyperlink{classm_1_1math_1_1m_xo_random_number_generator_a6ba9fdbfc115b7e57914d79cfcd77685}{m\_state}} = \{0, 0, 0, 0\};}
+\DoxyCodeLine{88 \};}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 \}  \textcolor{comment}{// namespace m::math}}
+\DoxyCodeLine{91 }
 
 \end{DoxyCode}

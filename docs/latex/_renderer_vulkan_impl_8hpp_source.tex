@@ -36,7 +36,7 @@
 \DoxyCodeLine{32     \mbox{\hyperlink{structm_1_1render_1_1_taskset}{render::Taskset}}* addNew\_renderTaskset() \textcolor{keyword}{override};}
 \DoxyCodeLine{33 }
 \DoxyCodeLine{34     \textcolor{keywordtype}{void} render() \textcolor{keyword}{override};}
-\DoxyCodeLine{35     \textcolor{keywordtype}{void} resize(U32 a\_width, U32 a\_height) \textcolor{keyword}{override};}
+\DoxyCodeLine{35     \textcolor{keywordtype}{void} resize(mU32 a\_width, mU32 a\_height) \textcolor{keyword}{override};}
 \DoxyCodeLine{36 }
 \DoxyCodeLine{37     \textcolor{keywordtype}{void} destroy() \textcolor{keyword}{override};}
 \DoxyCodeLine{38 }
@@ -49,12 +49,12 @@
 \DoxyCodeLine{45         \textcolor{keywordflow}{return} m\_frameFramebuffers[m\_currentImageIndex];}
 \DoxyCodeLine{46     \}}
 \DoxyCodeLine{47     VkRenderPass get\_mainRenderPass() \{ \textcolor{keywordflow}{return} m\_mainRenderPass; \}}
-\DoxyCodeLine{48     U32          get\_width()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_clientWidth; \}}
-\DoxyCodeLine{49     U32          get\_height()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_clientHeight; \}}
+\DoxyCodeLine{48     mU32          get\_width()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_clientWidth; \}}
+\DoxyCodeLine{49     mU32          get\_height()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_clientHeight; \}}
 \DoxyCodeLine{50 }
 \DoxyCodeLine{51    \textcolor{keyword}{public}:}
 \DoxyCodeLine{52     \textcolor{comment}{// The number of swap chain back buffers.}}
-\DoxyCodeLine{53     \textcolor{keyword}{static} \textcolor{keyword}{const} U8 scm\_numFrames = 3;}
+\DoxyCodeLine{53     \textcolor{keyword}{static} \textcolor{keyword}{const} mU8      scm\_numFrames = 3;}
 \DoxyCodeLine{54     \textcolor{keyword}{static} \textcolor{keyword}{const} VkFormat scm\_selectedSwapChainFormat =}
 \DoxyCodeLine{55         VK\_FORMAT\_B8G8R8A8\_UNORM;}
 \DoxyCodeLine{56 }
@@ -71,24 +71,24 @@
 \DoxyCodeLine{67     std::vector<VkImage>     m\_swapChainImages;}
 \DoxyCodeLine{68     std::vector<VkImageView> m\_swapChainImageViews;}
 \DoxyCodeLine{69 }
-\DoxyCodeLine{70     std::vector<U64>         m\_tstpRenderFinish;}
+\DoxyCodeLine{70     std::vector<mU64>         m\_tstpRenderFinish;}
 \DoxyCodeLine{71     std::vector<VkSemaphore> m\_semaphoresImageAcquired;}
 \DoxyCodeLine{72     std::vector<VkSemaphore> m\_semaphoresRenderCompleted;}
 \DoxyCodeLine{73 }
 \DoxyCodeLine{74     \textcolor{comment}{// By default, enable V-\/Sync.}}
 \DoxyCodeLine{75     \textcolor{comment}{// Can be toggled with the V key.}}
-\DoxyCodeLine{76     Bool m\_vSync            = \textcolor{keyword}{true};}
-\DoxyCodeLine{77     Bool m\_tearingSupported = \textcolor{keyword}{false};}
+\DoxyCodeLine{76     mBool m\_vSync            = \textcolor{keyword}{true};}
+\DoxyCodeLine{77     mBool m\_tearingSupported = \textcolor{keyword}{false};}
 \DoxyCodeLine{78 }
-\DoxyCodeLine{79     UInt m\_currentBackBufferIndex = 0;}
-\DoxyCodeLine{80     UInt m\_currentImageIndex      = 0;}
+\DoxyCodeLine{79     mUInt m\_currentBackBufferIndex = 0;}
+\DoxyCodeLine{80     mUInt m\_currentImageIndex      = 0;}
 \DoxyCodeLine{81 }
 \DoxyCodeLine{82     \textcolor{comment}{// Synchronization objects}}
-\DoxyCodeLine{83     U64 m\_frameFenceValues[scm\_numFrames] = \{\};}
+\DoxyCodeLine{83     mU64 m\_frameFenceValues[scm\_numFrames] = \{\};}
 \DoxyCodeLine{84 }
 \DoxyCodeLine{85     \textcolor{comment}{// Surface description}}
-\DoxyCodeLine{86     U32 m\_clientWidth;}
-\DoxyCodeLine{87     U32 m\_clientHeight;}
+\DoxyCodeLine{86     mU32 m\_clientWidth;}
+\DoxyCodeLine{87     mU32 m\_clientHeight;}
 \DoxyCodeLine{88 }
 \DoxyCodeLine{89     \textcolor{comment}{// Base render objects}}
 \DoxyCodeLine{90     VkCommandPool              m\_frameCommandPools[scm\_numFrames];}
@@ -108,7 +108,7 @@
 \DoxyCodeLine{104     \textcolor{keywordtype}{void} init() \textcolor{keyword}{override};}
 \DoxyCodeLine{105     \textcolor{keywordtype}{void} destroy() \textcolor{keyword}{override};}
 \DoxyCodeLine{106 }
-\DoxyCodeLine{107     Bool get\_supportDearImGuiMultiViewports()\textcolor{keyword}{ override }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{107     mBool get\_supportDearImGuiMultiViewports()\textcolor{keyword}{ override }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
 \DoxyCodeLine{108     \textcolor{keywordtype}{void} start\_dearImGuiNewFrameRenderer() \textcolor{keyword}{const override};}
 \DoxyCodeLine{109 }
 \DoxyCodeLine{110     \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{render::ISurface}}* get\_newSurface() \textcolor{keyword}{override};}

@@ -36,14 +36,14 @@ KeyAction KeyAction::keyReleased(Key a_key, KeyMod a_keyMod)
 void InputManager::update_KeyMods(KeyMod a_mod, Action a_action)
 {
     if (a_action == Action::PRESSED &&
-        (m_currentMod & Int(a_mod)) != Int(a_mod))
+        (m_currentMod & mInt(a_mod)) != mInt(a_mod))
     {
-        m_currentMod = m_currentMod | Int(a_mod);
+        m_currentMod = m_currentMod | mInt(a_mod);
     }
     else if (a_action == Action::RELEASED &&
-             (m_currentMod & Int(a_mod)) == Int(a_mod))
+             (m_currentMod & mInt(a_mod)) == mInt(a_mod))
     {
-        m_currentMod = m_currentMod & !(Int(a_mod));
+        m_currentMod = m_currentMod & !(mInt(a_mod));
     }
 }
 
@@ -51,10 +51,10 @@ void InputManager::process_MouseEvent(MouseButton a_button, Action a_action,
                                       KeyMod a_mods)
 {
     m_mouseSignals[{a_action, a_mods, a_button}].call(
-        math::DVec2({m_mousePosX, m_mousePosX}));
-    m_mouseButtonClicked[Int(a_button)] = a_action == Action::PRESSED;
+        math::mDVec2({m_mousePosX, m_mousePosX}));
+    m_mouseButtonClicked[mInt(a_button)] = a_action == Action::PRESSED;
 }
-void InputManager::process_KeyEvent(Key a_key, Int a_scancode, Action a_action,
+void InputManager::process_KeyEvent(Key a_key, mInt a_scancode, Action a_action,
                                     KeyMod a_mods)
 {
     m_keySignals[{a_action, a_mods, a_key}].call();
@@ -74,12 +74,12 @@ void InputManager::process_KeyEvent(Key a_key, Int a_scancode, Action a_action,
 }
 void InputManager::process_ScrollEvent(double a_xoffset, double a_yoffset)
 {
-    m_scrollSignal.call(math::DVec2({a_xoffset, a_yoffset}));
+    m_scrollSignal.call(math::mDVec2({a_xoffset, a_yoffset}));
 }
 void InputManager::process_CursorPosition(double a_xpos, double a_ypos)
 {
     m_moveSignal.call(
-        math::DVec2({a_xpos - m_mousePosX, a_ypos - m_mousePosY}));
+        math::mDVec2({a_xpos - m_mousePosX, a_ypos - m_mousePosY}));
     m_mousePosX = a_xpos;
     m_mousePosY = a_ypos;
 }
@@ -90,13 +90,14 @@ void InputManager::processAndUpdate_States()
          ++it)
     {
         MouseState state = it->first;
-        if ((Int(state.m_keyMod) & (m_currentMod ^ m_previousMod)) != 0 ||
+        if ((mInt(state.m_keyMod) & (m_currentMod ^ m_previousMod)) != 0 ||
             m_mouseButtonClicked[int(state.m_button)] !=
-                m_previousMouseButtonClicked[Int(state.m_button)])
+                m_previousMouseButtonClicked[mInt(state.m_button)])
         {
             it->second.call(
-                ((Int(state.m_keyMod) & m_currentMod) == Int(state.m_keyMod)) &&
-                m_mouseButtonClicked[Int(state.m_button)]);
+                ((mInt(state.m_keyMod) & m_currentMod) ==
+                             mInt(state.m_keyMod)) &&
+                m_mouseButtonClicked[mInt(state.m_button)]);
         }
     }
 

@@ -12,7 +12,9 @@ var searchData=
   ['mouseaction_9',['MouseAction',['../structm_1_1input_1_1_mouse_action.html',1,'m::input']]],
   ['mousestate_10',['MouseState',['../structm_1_1input_1_1_mouse_state.html',1,'m::input']]],
   ['msignal_11',['mSignal',['../classm_1_1m_signal.html',1,'m']]],
-  ['msignal_3c_20const_20math_3a_3advec2_20_26_20_3e_12',['mSignal&lt; const math::DVec2 &amp; &gt;',['../classm_1_1m_signal.html',1,'m']]],
+  ['msignal_3c_20const_20math_3a_3amdvec2_20_26_20_3e_12',['mSignal&lt; const math::mDVec2 &amp; &gt;',['../classm_1_1m_signal.html',1,'m']]],
   ['mstdcoutlogpolicy_13',['mStdcoutLogPolicy',['../classm_1_1logging_1_1m_stdcout_log_policy.html',1,'m::logging']]],
-  ['mydocument_14',['MyDocument',['../struct_my_document.html',1,'']]]
+  ['mxorandomnumbergenerator_14',['mXoRandomNumberGenerator',['../classm_1_1math_1_1m_xo_random_number_generator.html',1,'m::math']]],
+  ['mxoshiro256ssstate_15',['mXoshiro256ssState',['../structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state.html',1,'m::math::mXoRandomNumberGenerator']]],
+  ['mydocument_16',['MyDocument',['../struct_my_document.html',1,'']]]
 ];

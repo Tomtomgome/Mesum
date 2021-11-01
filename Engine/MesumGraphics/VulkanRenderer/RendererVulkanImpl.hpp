@@ -32,7 +32,7 @@ class VulkanSurface : public render::ISurface
     render::Taskset* addNew_renderTaskset() override;
 
     void render() override;
-    void resize(U32 a_width, U32 a_height) override;
+    void resize(mU32 a_width, mU32 a_height) override;
 
     void destroy() override;
 
@@ -45,12 +45,12 @@ class VulkanSurface : public render::ISurface
         return m_frameFramebuffers[m_currentImageIndex];
     }
     VkRenderPass get_mainRenderPass() { return m_mainRenderPass; }
-    U32          get_width() const { return m_clientWidth; }
-    U32          get_height() const { return m_clientHeight; }
+    mU32          get_width() const { return m_clientWidth; }
+    mU32          get_height() const { return m_clientHeight; }
 
    public:
     // The number of swap chain back buffers.
-    static const U8 scm_numFrames = 3;
+    static const mU8      scm_numFrames = 3;
     static const VkFormat scm_selectedSwapChainFormat =
         VK_FORMAT_B8G8R8A8_UNORM;
 
@@ -67,24 +67,24 @@ class VulkanSurface : public render::ISurface
     std::vector<VkImage>     m_swapChainImages;
     std::vector<VkImageView> m_swapChainImageViews;
 
-    std::vector<U64>         m_tstpRenderFinish;
+    std::vector<mU64>         m_tstpRenderFinish;
     std::vector<VkSemaphore> m_semaphoresImageAcquired;
     std::vector<VkSemaphore> m_semaphoresRenderCompleted;
 
     // By default, enable V-Sync.
     // Can be toggled with the V key.
-    Bool m_vSync            = true;
-    Bool m_tearingSupported = false;
+    mBool m_vSync            = true;
+    mBool m_tearingSupported = false;
 
-    UInt m_currentBackBufferIndex = 0;
-    UInt m_currentImageIndex      = 0;
+    mUInt m_currentBackBufferIndex = 0;
+    mUInt m_currentImageIndex      = 0;
 
     // Synchronization objects
-    U64 m_frameFenceValues[scm_numFrames] = {};
+    mU64 m_frameFenceValues[scm_numFrames] = {};
 
     // Surface description
-    U32 m_clientWidth;
-    U32 m_clientHeight;
+    mU32 m_clientWidth;
+    mU32 m_clientHeight;
 
     // Base render objects
     VkCommandPool              m_frameCommandPools[scm_numFrames];
@@ -104,7 +104,7 @@ class VulkanRenderer : public render::IRenderer
     void init() override;
     void destroy() override;
 
-    Bool get_supportDearImGuiMultiViewports() override { return false; }
+    mBool get_supportDearImGuiMultiViewports() override { return false; }
     void start_dearImGuiNewFrameRenderer() const override;
 
     render::ISurface* get_newSurface() override;

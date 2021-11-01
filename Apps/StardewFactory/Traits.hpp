@@ -13,16 +13,16 @@
 //*****************************************************************************
 struct IVolatile
 {
-    m::Bool request_deletion() { return m_requestDeletion; }
+    m::mBool request_deletion() { return m_requestDeletion; }
 
     void ask_deletion() { m_requestDeletion = true; }
 
-    m::Bool m_requestDeletion = false;
+    m::mBool m_requestDeletion = false;
 };
 
 struct IPermanent
 {
-    m::Bool request_deletion() { return false; }
+    m::mBool request_deletion() { return false; }
 };
 
 //*****************************************************************************
@@ -30,7 +30,7 @@ struct IPermanent
 //*****************************************************************************
 struct ICommand
 {
-    virtual m::Bool execute() = 0;
+    virtual m::mBool execute() = 0;
 };
 
 //*****************************************************************************
@@ -38,12 +38,12 @@ struct ICommand
 //*****************************************************************************
 struct IPositionable
 {
-    m::math::IVec2 m_position;
+    m::math::mIVec2 m_position;
 };
 
 struct CommandMoveUp : public ICommand
 {
-    virtual m::Bool execute() override
+    virtual m::mBool execute() override
     {
         if (m_positionableToMove->m_position.y <= 0)
         {
@@ -59,7 +59,7 @@ struct CommandMoveUp : public ICommand
 
 struct CommandMoveDown : public ICommand
 {
-    virtual m::Bool execute() override
+    virtual m::mBool execute() override
     {
         if (m_positionableToMove->m_position.y >= FIELD_SIZE - 1)
         {
@@ -75,7 +75,7 @@ struct CommandMoveDown : public ICommand
 
 struct CommandMoveLeft : public ICommand
 {
-    virtual m::Bool execute() override
+    virtual m::mBool execute() override
     {
         if (m_positionableToMove->m_position.x <= 0)
         {
@@ -91,7 +91,7 @@ struct CommandMoveLeft : public ICommand
 
 struct CommandMoveRight : public ICommand
 {
-    virtual m::Bool execute() override
+    virtual m::mBool execute() override
     {
         if (m_positionableToMove->m_position.x >= FIELD_SIZE - 1)
         {
@@ -136,7 +136,7 @@ struct IOrientable
 
 struct CommandRotateClockWise : public ICommand
 {
-    virtual m::Bool execute() override
+    virtual m::mBool execute() override
     {
         m_orientable->rotation_clockwise();
         return true;
@@ -147,7 +147,7 @@ struct CommandRotateClockWise : public ICommand
 
 struct CommandRotateCounterClockWise : public ICommand
 {
-    virtual m::Bool execute() override
+    virtual m::mBool execute() override
     {
         m_orientable->rotation_counterClockwise();
         return true;
@@ -158,7 +158,7 @@ struct CommandRotateCounterClockWise : public ICommand
 
 struct CommandMoveForward : public ICommand
 {
-    virtual m::Bool execute() override
+    virtual m::mBool execute() override
     {
         switch (m_orientable->m_orientation)
         {
@@ -205,10 +205,10 @@ struct Field
 
 struct CommandPlaceOnField : public ICommand
 {
-    virtual Bool execute() override
+    virtual mBool execute() override
     {
-        Int x = m_positionableToPlace->m_position.x;
-        Int y = m_positionableToPlace->m_position.y;
+        mInt x = m_positionableToPlace->m_position.x;
+        mInt y = m_positionableToPlace->m_position.y;
         m_field->m_cells[x][y].insert(m_positionableToPlace);
 
         return true;
@@ -220,10 +220,10 @@ struct CommandPlaceOnField : public ICommand
 
 struct CommandRemoveFromField : public ICommand
 {
-    virtual Bool execute() override
+    virtual mBool execute() override
     {
-        Int x = m_positionableToRemoveMove->m_position.x;
-        Int y = m_positionableToRemoveMove->m_position.y;
+        mInt x = m_positionableToRemoveMove->m_position.x;
+        mInt y = m_positionableToRemoveMove->m_position.y;
         m_field->m_cells[x][y].erase(m_positionableToRemoveMove);
 
         return true;
@@ -240,7 +240,7 @@ struct IItem
 {
     virtual void        use()      = 0;
     virtual std::string get_name() = 0;
-    virtual U64         get_id()   = 0;
+    virtual mU64        get_id()   = 0;
 };
 
 struct Slot
@@ -250,13 +250,13 @@ struct Slot
 
 struct IInventory
 {
-    std::map<U64, Slot>::iterator m_selectedSlot;
-    std::map<U64, Slot>           m_slots;
+    std::map<mU64, Slot>::iterator m_selectedSlot;
+    std::map<mU64, Slot>           m_slots;
 };
 
 struct CommandAddObjectToInventory : ICommand
 {
-    Bool execute()
+    mBool execute()
     {
         m_inventory->m_slots[m_itemToAdd->get_id()].m_items.push_back(
             m_itemToAdd);

@@ -107,10 +107,10 @@ $(document).ready(function(){initNavTree('_asserts_8hpp_source.html',''); initRe
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">namespace </span>m</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">extern</span> MesumCoreApi <span class="keyword">const</span> <a class="code hl_typedef" href="namespacem_1_1logging.html#ac4aaaa53dd22d25e9b24d091274b28a7">logging::mChannelID</a> ASSERT_ID;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">extern</span> MesumCoreApi <span class="keyword">const</span> <a class="code hl_typedef" href="namespacem_1_1logging.html#af807dfba0ed733f24957c0f3d016a15f">logging::mChannelID</a> ASSERT_ID;</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keywordtype">void</span> manage_assert(Bool a_condition, Int a_lineNumber, <span class="keyword">const</span> Char* a_file,</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>                   <span class="keyword">const</span> Char* a_message, Bool a_interrupt = <span class="keyword">true</span>);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keywordtype">void</span> manage_assert(mBool a_condition, mInt a_lineNumber, <span class="keyword">const</span> mChar* a_file,</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>                   <span class="keyword">const</span> mChar* a_message, mBool a_interrupt = <span class="keyword">true</span>);</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>};  <span class="comment">// namespace m</span></div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
@@ -123,21 +123,21 @@ $(document).ready(function(){initNavTree('_asserts_8hpp_source.html',''); initRe
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#define mSoftAssert(condition)</span></div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor">#define mAssert(condition)</span></div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="group___core.html#ga130ddba9a4e2dc6e95a6797c0f448243">   60</a></span><span class="preprocessor">#define mSoftAssert(condition)                      \</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">    m::manage_assert(condition, __LINE__, __FILE__, \</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="group___core.html#gaed17c7e2d6fa608a86bd77dbf44de294">   60</a></span><span class="preprocessor">#define mSoftAssert(a_condition)                      \</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">    m::manage_assert(a_condition, __LINE__, __FILE__, \</span></div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="preprocessor">                     &quot;Triggered soft assertion from file : &quot;</span>, false);</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="group___core.html#ga5cbca1ff1eb730a016c7c63f94afa154">   70</a></span><span class="preprocessor">#define mAssert(condition)                          \</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">    m::manage_assert(condition, __LINE__, __FILE__, \</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="group___core.html#gae68855c8125ce66a9e53e758526c95ca">   70</a></span><span class="preprocessor">#define mAssert(a_condition)                          \</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">    m::manage_assert(a_condition, __LINE__, __FILE__, \</span></div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="preprocessor">                     &quot;Triggered soft assertion from file : &quot;</span>);</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="group___core.html#ga375da2becf883550c0e1293307b02c9a">   79</a></span><span class="preprocessor">#define mExpect(condition)                          \</span></div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="preprocessor">    m::manage_assert(condition, __LINE__, __FILE__, \</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="group___core.html#ga85d6f0f15b7e1ab2f6a30c07054c8904">   79</a></span><span class="preprocessor">#define mExpect(a_condition)                          \</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="preprocessor">    m::manage_assert(a_condition, __LINE__, __FILE__, \</span></div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">                     &quot;Precondition not matched : &quot;</span>);</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="ttc" id="anamespacem_1_1logging_html_ac4aaaa53dd22d25e9b24d091274b28a7"><div class="ttname"><a href="namespacem_1_1logging.html#ac4aaaa53dd22d25e9b24d091274b28a7">m::logging::mChannelID</a></div><div class="ttdeci">U64 mChannelID</div><div class="ttdoc">ChannelIDs are defined by a bit.</div><div class="ttdef"><b>Definition:</b> Log.hpp:27</div></div>
+<div class="ttc" id="anamespacem_1_1logging_html_af807dfba0ed733f24957c0f3d016a15f"><div class="ttname"><a href="namespacem_1_1logging.html#af807dfba0ed733f24957c0f3d016a15f">m::logging::mChannelID</a></div><div class="ttdeci">mU64 mChannelID</div><div class="ttdoc">ChannelIDs are defined by a bit.</div><div class="ttdef"><b>Definition:</b> Log.hpp:27</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

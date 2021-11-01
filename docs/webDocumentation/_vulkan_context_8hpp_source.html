@@ -108,8 +108,8 @@ $(document).ready(function(){initNavTree('_vulkan_context_8hpp_source.html','');
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keywordtype">void</span>                  deinit();</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keyword">static</span> <span class="keywordtype">void</span> wait_onMainTimelineTstp(</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        U64 a_tstpToWaitOn, U64 a_timeout = std::numeric_limits&lt;U64&gt;::max());</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keyword">static</span> U64 submit_onMainTimeline(</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        mU64 a_tstpToWaitOn, mU64 a_timeout = std::numeric_limits&lt;mU64&gt;::max());</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keyword">static</span> mU64 submit_onMainTimeline(</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        VkCommandBuffer <span class="keyword">const</span>&amp;          a_commandBuffer,</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        std::vector&lt;VkSemaphore&gt; <span class="keyword">const</span>&amp; a_semaphoresToWait,</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        std::vector&lt;VkSemaphore&gt;        a_semaphoresToSignal);</div>
@@ -133,12 +133,12 @@ $(document).ready(function(){initNavTree('_vulkan_context_8hpp_source.html','');
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        <span class="keywordflow">return</span> gs_VulkanContexte-&gt;m_queue;</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    }</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keyword">static</span> VkQueue get_graphicQueue() { <span class="keywordflow">return</span> gs_VulkanContexte-&gt;m_queue; }</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keyword">static</span> U32     get_graphicQueueFamilyIndex()</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keyword">static</span> mU32    get_graphicQueueFamilyIndex()</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    {</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <span class="keywordflow">return</span> gs_VulkanContexte-&gt;m_queueFamilyIndex;</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    }</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keyword">static</span> U32            get_memoryTypeIndex(U32                   a_typeFilter,</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keyword">static</span> mU32           get_memoryTypeIndex(mU32                  a_typeFilter,</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                                              VkMemoryPropertyFlags a_properties);</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keyword">static</span> VkShaderModule create_shaderModule(std::string <span class="keyword">const</span>&amp; a_shaderPath);</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
@@ -151,7 +151,7 @@ $(document).ready(function(){initNavTree('_vulkan_context_8hpp_source.html','');
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    VkDebugUtilsMessengerEXT m_debugUtil;</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="comment">// queues</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    U32     m_queueFamilyIndex;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    mU32    m_queueFamilyIndex;</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    VkQueue m_queue = VK_NULL_HANDLE;</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="comment">// Utility</span></div>
@@ -159,7 +159,7 @@ $(document).ready(function(){initNavTree('_vulkan_context_8hpp_source.html','');
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="comment">// Synchronization tools</span></div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    VkSemaphore m_timelineSemaphore;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    U64         m_timeline = 0;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    mU64        m_timeline = 0;</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>};</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>};  <span class="comment">// namespace vulkan</span></div>

@@ -21,8 +21,8 @@ namespace application
 class IWindowedApplicationBase : public mITimedLoopApplication
 {
    public:
-    virtual windows::IWindow* add_newWindow(std::string a_name, U32 a_width,
-                                            U32 a_height) = 0;
+    virtual windows::IWindow* add_newWindow(std::string a_name, mU32 a_width,
+                                            mU32 a_height) = 0;
 
     virtual void start_dearImGuiNewFrame(
         render::IRenderer const* a_renderer) const = 0;
@@ -40,7 +40,7 @@ namespace m
 struct WindowedLaunchData
 {
     HINSTANCE m_hInstance;
-    m::Int    m_nCmdShow;
+    m::mInt   m_nCmdShow;
 };
 
 bool init_console();
@@ -48,13 +48,13 @@ bool init_console();
 LPSTR* CommandLineToArgvA(LPWSTR lpWCmdLine, INT* pNumArgs);
 }  // namespace m
 #define M_EXECUTE_WINDOWED_APP(AppClass)                                     \
-    m::Int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine,   \
-                           m::Int nCmdShow)                                  \
+    m::mInt WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine,  \
+                            m::mInt nCmdShow)                                \
     {                                                                        \
         m::WindowedLaunchData data;                                          \
         m::mCmdLine           cmdLine;                                       \
-        m::Int                argc;                                          \
-        m::Char**             argv = m::CommandLineToArgvA(pCmdLine, &argc); \
+        m::mInt               argc;                                          \
+        m::mChar**            argv = m::CommandLineToArgvA(pCmdLine, &argc); \
         if (argv != nullptr)                                                 \
         {                                                                    \
             cmdLine.parse_cmdLineAguments(argc, argv);                       \
@@ -75,10 +75,10 @@ struct WindowedLaunchData
 };
 }  // namespace m
 #define M_EXECUTE_WINDOWED_APP(AppClass)           \
-    int main(m::Int argc, m::Char** argv)          \
+    int main(m::mInt argc, m::mChar** argv)        \
     {                                              \
         m::WindowedLaunchData data;                \
-        m::mCmdLine            cmdLine;             \
+        m::mCmdLine           cmdLine;             \
         cmdLine.parse_cmdLineAguments(argc, argv); \
         m::internal_run<AppClass>(cmdLine, &data); \
         return 0;                                  \

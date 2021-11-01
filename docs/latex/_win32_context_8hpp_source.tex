@@ -13,7 +13,7 @@
 \DoxyCodeLine{9 }
 \DoxyCodeLine{10 \textcolor{keyword}{namespace }m::win32}
 \DoxyCodeLine{11 \{}
-\DoxyCodeLine{12 \textcolor{keyword}{extern} \textcolor{keyword}{const} \mbox{\hyperlink{namespacem_1_1logging_ac4aaaa53dd22d25e9b24d091274b28a7}{logging::mChannelID}} PLATFORM\_APP\_ID;}
+\DoxyCodeLine{12 \textcolor{keyword}{extern} \textcolor{keyword}{const} \mbox{\hyperlink{namespacem_1_1logging_af807dfba0ed733f24957c0f3d016a15f}{logging::mChannelID}} PLATFORM\_APP\_ID;}
 \DoxyCodeLine{13 }
 \DoxyCodeLine{14 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1win32_1_1_w_i_n32_context}{WIN32Context}}}
 \DoxyCodeLine{15 \{}
@@ -23,17 +23,17 @@
 \DoxyCodeLine{19     \textcolor{keywordtype}{void} destroy();}
 \DoxyCodeLine{20 }
 \DoxyCodeLine{21     \textcolor{comment}{// Windows}}
-\DoxyCodeLine{22     \textcolor{keywordtype}{void} register\_windowClass(\textcolor{keyword}{const} WideChar* a\_className, HINSTANCE a\_hInstance,}
+\DoxyCodeLine{22     \textcolor{keywordtype}{void} register\_windowClass(\textcolor{keyword}{const} mWideChar* a\_className, HINSTANCE a\_hInstance,}
 \DoxyCodeLine{23                               WNDPROC a\_proc);}
-\DoxyCodeLine{24     HWND create\_window(\textcolor{keyword}{const} WideChar* a\_className, std::string a\_windowName,}
-\DoxyCodeLine{25                        U32 a\_clientWidth, U32 a\_clientHeight) \textcolor{keyword}{const};}
+\DoxyCodeLine{24     HWND create\_window(\textcolor{keyword}{const} mWideChar* a\_className, std::string a\_windowName,}
+\DoxyCodeLine{25                        mU32 a\_clientWidth, mU32 a\_clientHeight) \textcolor{keyword}{const};}
 \DoxyCodeLine{26 }
 \DoxyCodeLine{27     \textcolor{comment}{// Keys and inputs}}
 \DoxyCodeLine{28     [[nodiscard]] input::Key get\_keyFromParam(WPARAM a\_wParam) \textcolor{keyword}{const};}
 \DoxyCodeLine{29 }
 \DoxyCodeLine{30     \textcolor{comment}{// Properties}}
 \DoxyCodeLine{31     input::Key m\_lut\_keycodes[256];}
-\DoxyCodeLine{32     I16        m\_lut\_scancode[input::Key::KEY\_LAST + 1];}
+\DoxyCodeLine{32     mI16       m\_lut\_scancode[input::Key::KEY\_LAST + 1];}
 \DoxyCodeLine{33 }
 \DoxyCodeLine{34     HINSTANCE m\_hInstance;}
 \DoxyCodeLine{35 \};}

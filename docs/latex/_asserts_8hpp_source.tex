@@ -23,10 +23,10 @@
 \DoxyCodeLine{27 }
 \DoxyCodeLine{28 \textcolor{keyword}{namespace }m}
 \DoxyCodeLine{29 \{}
-\DoxyCodeLine{30 \textcolor{keyword}{extern} MesumCoreApi \textcolor{keyword}{const} \mbox{\hyperlink{namespacem_1_1logging_ac4aaaa53dd22d25e9b24d091274b28a7}{logging::mChannelID}} ASSERT\_ID;}
+\DoxyCodeLine{30 \textcolor{keyword}{extern} MesumCoreApi \textcolor{keyword}{const} \mbox{\hyperlink{namespacem_1_1logging_af807dfba0ed733f24957c0f3d016a15f}{logging::mChannelID}} ASSERT\_ID;}
 \DoxyCodeLine{31 }
-\DoxyCodeLine{41 \textcolor{keywordtype}{void} manage\_assert(Bool a\_condition, Int a\_lineNumber, \textcolor{keyword}{const} Char* a\_file,}
-\DoxyCodeLine{42                    \textcolor{keyword}{const} Char* a\_message, Bool a\_interrupt = \textcolor{keyword}{true});}
+\DoxyCodeLine{41 \textcolor{keywordtype}{void} manage\_assert(mBool a\_condition, mInt a\_lineNumber, \textcolor{keyword}{const} mChar* a\_file,}
+\DoxyCodeLine{42                    \textcolor{keyword}{const} mChar* a\_message, mBool a\_interrupt = \textcolor{keyword}{true});}
 \DoxyCodeLine{43 }
 \DoxyCodeLine{44 \};  \textcolor{comment}{// namespace m}}
 \DoxyCodeLine{45 }
@@ -39,16 +39,16 @@
 \DoxyCodeLine{52 \textcolor{preprocessor}{\#define mSoftAssert(condition)}}
 \DoxyCodeLine{53 \textcolor{preprocessor}{\#define mAssert(condition)}}
 \DoxyCodeLine{54 \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{60 \textcolor{preprocessor}{\#define mSoftAssert(condition)                      \(\backslash\)}}
-\DoxyCodeLine{61 \textcolor{preprocessor}{    m::manage\_assert(condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}}
+\DoxyCodeLine{60 \textcolor{preprocessor}{\#define mSoftAssert(a\_condition)                      \(\backslash\)}}
+\DoxyCodeLine{61 \textcolor{preprocessor}{    m::manage\_assert(a\_condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}}
 \DoxyCodeLine{62 \textcolor{preprocessor}{                     "{}Triggered soft assertion from file : "{}}, false);}
 \DoxyCodeLine{63 }
-\DoxyCodeLine{70 \textcolor{preprocessor}{\#define mAssert(condition)                          \(\backslash\)}}
-\DoxyCodeLine{71 \textcolor{preprocessor}{    m::manage\_assert(condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}}
+\DoxyCodeLine{70 \textcolor{preprocessor}{\#define mAssert(a\_condition)                          \(\backslash\)}}
+\DoxyCodeLine{71 \textcolor{preprocessor}{    m::manage\_assert(a\_condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}}
 \DoxyCodeLine{72 \textcolor{preprocessor}{                     "{}Triggered soft assertion from file : "{}});}
 \DoxyCodeLine{73 }
-\DoxyCodeLine{79 \textcolor{preprocessor}{\#define mExpect(condition)                          \(\backslash\)}}
-\DoxyCodeLine{80 \textcolor{preprocessor}{    m::manage\_assert(condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}}
+\DoxyCodeLine{79 \textcolor{preprocessor}{\#define mExpect(a\_condition)                          \(\backslash\)}}
+\DoxyCodeLine{80 \textcolor{preprocessor}{    m::manage\_assert(a\_condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}}
 \DoxyCodeLine{81 \textcolor{preprocessor}{                     "{}Precondition not matched : "{}});}
 \DoxyCodeLine{82 \textcolor{preprocessor}{\#endif}}
 \DoxyCodeLine{83 }

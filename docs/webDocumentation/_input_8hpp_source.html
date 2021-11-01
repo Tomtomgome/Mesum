@@ -244,9 +244,9 @@ $(document).ready(function(){initNavTree('_input_8hpp_source.html',''); initResi
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="keywordtype">double</span> m_mousePosX;</div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    <span class="keywordtype">double</span> m_mousePosY;</div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    std::array&lt;Bool, 8&gt;                 m_previousMouseButtonClicked = {<span class="keyword">false</span>};</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    std::array&lt;Bool, 8&gt;                 m_mouseButtonClicked         = {<span class="keyword">false</span>};</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    std::array&lt;Bool, Key::KEY_LAST + 1&gt; m_keyPressed;</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    std::array&lt;mBool, 8&gt;                 m_previousMouseButtonClicked = {<span class="keyword">false</span>};</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    std::array&lt;mBool, 8&gt;                 m_mouseButtonClicked         = {<span class="keyword">false</span>};</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    std::array&lt;mBool, Key::KEY_LAST + 1&gt; m_keyPressed;</div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    <span class="keywordtype">int</span>                                      m_previousMod = 0;</div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    <span class="keywordtype">int</span>                                      m_currentMod  = 0;</div>
@@ -263,7 +263,7 @@ $(document).ready(function(){initNavTree('_input_8hpp_source.html',''); initResi
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><span class="preprocessor">#endif  </span><span class="comment">// M_INPUT</span></div>
 <div class="ttc" id="aclassm_1_1input_1_1_input_manager_html"><div class="ttname"><a href="classm_1_1input_1_1_input_manager.html">m::input::InputManager</a></div><div class="ttdef"><b>Definition:</b> Input.hpp:106</div></div>
 <div class="ttc" id="aclassm_1_1m_callback_html"><div class="ttname"><a href="classm_1_1m_callback.html">m::mCallback</a></div><div class="ttdoc">Class encapsulating a callback.</div><div class="ttdef"><b>Definition:</b> Callbacks.hpp:27</div></div>
-<div class="ttc" id="aclassm_1_1m_signal_html"><div class="ttname"><a href="classm_1_1m_signal.html">m::mSignal&lt; const math::DVec2 &amp; &gt;</a></div></div>
+<div class="ttc" id="aclassm_1_1m_signal_html"><div class="ttname"><a href="classm_1_1m_signal.html">m::mSignal&lt; const math::mDVec2 &amp; &gt;</a></div></div>
 <div class="ttc" id="aclassm_1_1m_signal_html_aad959466bfb4da3a46ece8eb6608191b"><div class="ttname"><a href="classm_1_1m_signal.html#aad959466bfb4da3a46ece8eb6608191b">m::mSignal::mCallbackHandle</a></div><div class="ttdeci">typename std::list&lt; mCallback&lt; void, t_Args... &gt; &gt;::iterator mCallbackHandle</div><div class="ttdoc">Alias an iterator to a callback.</div><div class="ttdef"><b>Definition:</b> Callbacks.hpp:188</div></div>
 <div class="ttc" id="astructm_1_1input_1_1_key_action_html"><div class="ttname"><a href="structm_1_1input_1_1_key_action.html">m::input::KeyAction</a></div><div class="ttdef"><b>Definition:</b> Input.hpp:86</div></div>
 <div class="ttc" id="astructm_1_1input_1_1_mouse_action_html"><div class="ttname"><a href="structm_1_1input_1_1_mouse_action.html">m::input::MouseAction</a></div><div class="ttdef"><b>Definition:</b> Input.hpp:44</div></div>

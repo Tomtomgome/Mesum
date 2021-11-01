@@ -108,12 +108,12 @@ $(document).ready(function(){initNavTree('_d_x12_command_queue_8hpp_source.html'
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="comment">// Execute a command list.</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="comment">// Returns the fence value to wait for for this command list.</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    U64 execute_commandList(</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    mU64 execute_commandList(</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        Microsoft::WRL::ComPtr&lt;ID3D12GraphicsCommandList2&gt; a_commandList);</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    U64  signal_fence();</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    Bool is_fenceComplete(U64 a_fenceValue);</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keywordtype">void</span> wait_fenceValue(U64 a_fenceValue);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    mU64 signal_fence();</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    mBool is_fenceComplete(mU64 a_fenceValue);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keywordtype">void</span> wait_fenceValue(mU64 a_fenceValue);</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordtype">void</span> flush();</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    Microsoft::WRL::ComPtr&lt;ID3D12CommandQueue&gt; get_D3D12CommandQueue() <span class="keyword">const</span>;</div>
@@ -127,7 +127,7 @@ $(document).ready(function(){initNavTree('_d_x12_command_queue_8hpp_source.html'
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="comment">// Keep track of command allocators that are &quot;in-flight&quot;</span></div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="structm_1_1dx12_1_1_d_x12_command_queue_1_1_command_allocator_entry.html">   40</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structm_1_1dx12_1_1_d_x12_command_queue_1_1_command_allocator_entry.html">CommandAllocatorEntry</a></div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    {</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        U64                                            m_fenceValue;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        mU64                                           m_fenceValue;</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        Microsoft::WRL::ComPtr&lt;ID3D12CommandAllocator&gt; m_commandAllocator;</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    };</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
@@ -140,7 +140,7 @@ $(document).ready(function(){initNavTree('_d_x12_command_queue_8hpp_source.html'
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    Microsoft::WRL::ComPtr&lt;ID3D12CommandQueue&gt; m_d3d12CommandQueue;</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    Microsoft::WRL::ComPtr&lt;ID3D12Fence&gt;        m_d3d12Fence;</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    HANDLE                                     m_fenceEvent;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    U64                                        m_fenceValue;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    mU64                                       m_fenceValue;</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    CommandAllocatorQueue m_commandAllocatorQueue;</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    CommandListQueue      m_commandListQueue;</div>

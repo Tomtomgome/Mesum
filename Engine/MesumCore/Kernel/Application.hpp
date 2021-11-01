@@ -70,7 +70,7 @@ class mILoopApplication : public mIBasicApplication
     /// \return should return true for the application to continue, false to
     /// stop
     ///////////////////////////////////////////////////////////////////////////
-    virtual Bool step() = 0;
+    virtual mBool step() = 0;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -134,7 +134,7 @@ class mITimedLoopApplication : public mIBasicApplication
     /// \return should return true for the application to continue, false to
     /// stop
     ///////////////////////////////////////////////////////////////////////////
-    virtual Bool step(
+    virtual mBool step(
         std::chrono::steady_clock::duration const& a_deltaTime) = 0;
 
    private:

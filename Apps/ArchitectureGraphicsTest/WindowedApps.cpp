@@ -7,7 +7,7 @@
 class CubeMover
 {
    public:
-    void move(m::Float& x, m::Float& y)
+    void move(m::mFloat& x, m::mFloat& y)
     {
         if (m_up)
         {
@@ -39,11 +39,11 @@ class CubeMover
     void set_notMoveRight() { m_right = false; }
 
    private:
-    m::Float speed   = 0.016f * 100.f;
-    m::Bool  m_up    = false;
-    m::Bool  m_down  = false;
-    m::Bool  m_left  = false;
-    m::Bool  m_right = false;
+    m::mFloat speed   = 0.016f * 100.f;
+    m::mBool  m_up    = false;
+    m::mBool  m_down  = false;
+    m::mBool  m_left  = false;
+    m::mBool  m_right = false;
 
     const m::logging::mChannelID m_CUBEMOVER_ID = mLog_getId();
 };
@@ -62,8 +62,8 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m::crossPlatform::IWindowedApplication::init(<#initializer #>, nullptr);
 
         m::mCmdLine const& cmdLine = get_cmdLine();
-        m::UInt           width   = 1280;
-        m::UInt           height  = 720;
+        m::mUInt           width   = 1280;
+        m::mUInt           height  = 720;
         if (!cmdLine.get_parameter("-w", width))
         {
             mLog_to(m_CUBEAPP_ID, "Width not overriden, use default : ", width);
@@ -154,7 +154,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m::dearImGui::destroy();
     }
 
-    m::Bool step(const m::Double& a_deltaTime) override
+    m::mBool step(const m::mDouble& a_deltaTime) override
     {
         if (!m::crossPlatform::IWindowedApplication::step(a_deltaTime))
         {
@@ -177,7 +177,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         ImGui::NewFrame();
 
-        m::Bool showDemo = true;
+        m::mBool showDemo = true;
         ImGui::ShowDemoWindow(&showDemo);
         ImGui::Render();
 
@@ -190,8 +190,8 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         return true;
     }
 
-    m::Float m_x = 0.0f;
-    m::Float m_y = 0.0f;
+    m::mFloat m_x = 0.0f;
+    m::mFloat m_y = 0.0f;
 
     m::render::IRenderer*       m_iDx12Renderer;
     m::render::IRenderer*       m_iVulkanRenderer;

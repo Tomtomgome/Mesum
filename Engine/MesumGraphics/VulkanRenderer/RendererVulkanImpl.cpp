@@ -88,7 +88,7 @@ void VulkanSurface::render()
 
     // Aquire next image
     vkAcquireNextImageKHR(VulkanContext::get_logDevice(), m_swapChain,
-                          std::numeric_limits<U64>::max(),
+                          std::numeric_limits<mU64>::max(),
                           m_semaphoresImageAcquired[m_currentBackBufferIndex],
                           VK_NULL_HANDLE, &m_currentImageIndex);
 
@@ -133,7 +133,7 @@ void VulkanSurface::render()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void VulkanSurface::resize(U32 a_width, U32 a_height)
+void VulkanSurface::resize(mU32 a_width, mU32 a_height)
 {
     if (m_clientWidth != a_width || m_clientHeight != a_height)
     {
@@ -188,7 +188,7 @@ void VulkanSurface::destroy()
 //*****************************************************************************
 void VulkanSurface::init_internal()
 {
-    U32 queueFamilyIndex;
+    mU32 queueFamilyIndex;
     find_graphicQueueFamilyIndex(VulkanContext::get_physDevice(),
                                  queueFamilyIndex);
 
@@ -204,7 +204,7 @@ void VulkanSurface::init_internal()
 
     std::vector<VkSurfaceFormatKHR> supportedFormats;
 
-    U32 formatCount;
+    mU32 formatCount;
     vkGetPhysicalDeviceSurfaceFormatsKHR(VulkanContext::get_physDevice(),
                                          m_surface, &formatCount, nullptr);
 
@@ -213,7 +213,7 @@ void VulkanSurface::init_internal()
                                          m_surface, &formatCount,
                                          supportedFormats.data());
 
-    Bool isFormatSupported = false;
+    mBool isFormatSupported = false;
     for (size_t i = 0; i < formatCount; i++)
     {
         if (supportedFormats[i].format == scm_selectedSwapChainFormat)
@@ -344,7 +344,7 @@ void VulkanSurface::init_swapChain()
         throw std::runtime_error("failed to create swap chain!");
     }
 
-    U32 imageCount;
+    mU32 imageCount;
     vkGetSwapchainImagesKHR(VulkanContext::get_logDevice(), m_swapChain,
                             &imageCount, nullptr);
     m_swapChainImages.resize(imageCount);
@@ -427,7 +427,7 @@ void VulkanSurface::init_swapChain()
 //*****************************************************************************
 void VulkanSurface::destroy_swapChain()
 {
-    for (Int i = 0; i < scm_numFrames; ++i)
+    for (mInt i = 0; i < scm_numFrames; ++i)
     {
         m_tstpRenderFinish[i] = m_tstpRenderFinish[m_currentBackBufferIndex];
     }

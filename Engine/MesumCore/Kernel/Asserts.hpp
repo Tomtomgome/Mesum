@@ -38,8 +38,8 @@ extern MesumCoreApi const logging::mChannelID ASSERT_ID;
 /// \param a_message The message to log in the terminal
 /// \param a_interrupt If the assert blocks the execution
 ///////////////////////////////////////////////////////////////////////////////
-void manage_assert(Bool a_condition, Int a_lineNumber, const Char* a_file,
-                   const Char* a_message, Bool a_interrupt = true);
+void manage_assert(mBool a_condition, mInt a_lineNumber, const mChar* a_file,
+                   const mChar* a_message, mBool a_interrupt = true);
 
 };  // namespace m
 
@@ -57,8 +57,8 @@ void manage_assert(Bool a_condition, Int a_lineNumber, const Char* a_file,
 ///
 /// \param a_condition The condition to check
 ///////////////////////////////////////////////////////////////////////////////
-#define mSoftAssert(condition)                      \
-    m::manage_assert(condition, __LINE__, __FILE__, \
+#define mSoftAssert(a_condition)                      \
+    m::manage_assert(a_condition, __LINE__, __FILE__, \
                      "Triggered soft assertion from file : ", false);
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -67,8 +67,8 @@ void manage_assert(Bool a_condition, Int a_lineNumber, const Char* a_file,
 /// \param a_condition The condition to check
 ///
 ///////////////////////////////////////////////////////////////////////////////
-#define mAssert(condition)                          \
-    m::manage_assert(condition, __LINE__, __FILE__, \
+#define mAssert(a_condition)                          \
+    m::manage_assert(a_condition, __LINE__, __FILE__, \
                      "Triggered soft assertion from file : ");
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -76,8 +76,8 @@ void manage_assert(Bool a_condition, Int a_lineNumber, const Char* a_file,
 ///
 /// \param a_condition The condition to check
 ///////////////////////////////////////////////////////////////////////////////
-#define mExpect(condition)                          \
-    m::manage_assert(condition, __LINE__, __FILE__, \
+#define mExpect(a_condition)                          \
+    m::manage_assert(a_condition, __LINE__, __FILE__, \
                      "Precondition not matched : ");
 #endif
 

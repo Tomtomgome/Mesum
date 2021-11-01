@@ -16,9 +16,9 @@ MesumCoreApi logging::mLogger<m::logging::mStdcoutLogPolicy> log_inst("");
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void mCmdLine::parse_cmdLineAguments(Int a_argc, Char** a_argv)
+void mCmdLine::parse_cmdLineAguments(mInt a_argc, mChar** a_argv)
 {
-    for (Int i = 0; i < a_argc; ++i)
+    for (mInt i = 0; i < a_argc; ++i)
     {
         std::string arg(a_argv[i]);
         if (std::find(m_listArgs.begin(), m_listArgs.end(), arg) ==

@@ -24,11 +24,11 @@ void {\bfseries submit\+\_\+signle\+Use\+Command\+Buffer} (Vk\+Command\+Buffer a
 \doxysubsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_context_a4312a8d72ee15fff1627c5814f9f2f40}\label{classm_1_1vulkan_1_1_vulkan_context_a4312a8d72ee15fff1627c5814f9f2f40}} 
-static void {\bfseries wait\+\_\+on\+Main\+Timeline\+Tstp} (U64 a\+\_\+tstp\+To\+Wait\+On, U64 a\+\_\+timeout=std\+::numeric\+\_\+limits$<$ U64 $>$\+::max())
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_context_a76c517d5b1ac60b4bb5ecaca454bf131}\label{classm_1_1vulkan_1_1_vulkan_context_a76c517d5b1ac60b4bb5ecaca454bf131}} 
+static void {\bfseries wait\+\_\+on\+Main\+Timeline\+Tstp} (m\+U64 a\+\_\+tstp\+To\+Wait\+On, m\+U64 a\+\_\+timeout=std\+::numeric\+\_\+limits$<$ m\+U64 $>$\+::max())
 \item 
-\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_context_a267ed3e8fabab18ae39ffebbd3aaab03}\label{classm_1_1vulkan_1_1_vulkan_context_a267ed3e8fabab18ae39ffebbd3aaab03}} 
-static U64 {\bfseries submit\+\_\+on\+Main\+Timeline} (Vk\+Command\+Buffer const \&a\+\_\+command\+Buffer, std\+::vector$<$ Vk\+Semaphore $>$ const \&a\+\_\+semaphores\+To\+Wait, std\+::vector$<$ Vk\+Semaphore $>$ a\+\_\+semaphores\+To\+Signal)
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_context_a267ff2c594f70da0eae3db9bf8ceffb4}\label{classm_1_1vulkan_1_1_vulkan_context_a267ff2c594f70da0eae3db9bf8ceffb4}} 
+static m\+U64 {\bfseries submit\+\_\+on\+Main\+Timeline} (Vk\+Command\+Buffer const \&a\+\_\+command\+Buffer, std\+::vector$<$ Vk\+Semaphore $>$ const \&a\+\_\+semaphores\+To\+Wait, std\+::vector$<$ Vk\+Semaphore $>$ a\+\_\+semaphores\+To\+Signal)
 \item 
 \mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_context_a4ca852a188b9316c7f4e0531d91a3903}\label{classm_1_1vulkan_1_1_vulkan_context_a4ca852a188b9316c7f4e0531d91a3903}} 
 static void {\bfseries present} (Vk\+Present\+Info\+KHR const \&a\+\_\+info\+Present)
@@ -48,11 +48,11 @@ static Vk\+Queue {\bfseries get\+\_\+presentation\+Queue} ()
 \mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_context_a8f50230bc4fe41a567e553beddbefe22}\label{classm_1_1vulkan_1_1_vulkan_context_a8f50230bc4fe41a567e553beddbefe22}} 
 static Vk\+Queue {\bfseries get\+\_\+graphic\+Queue} ()
 \item 
-\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_context_af58ced59849b56d976264eb1e39507f6}\label{classm_1_1vulkan_1_1_vulkan_context_af58ced59849b56d976264eb1e39507f6}} 
-static U32 {\bfseries get\+\_\+graphic\+Queue\+Family\+Index} ()
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_context_a2825f588d2c598f5572ea7a844a7f0a5}\label{classm_1_1vulkan_1_1_vulkan_context_a2825f588d2c598f5572ea7a844a7f0a5}} 
+static m\+U32 {\bfseries get\+\_\+graphic\+Queue\+Family\+Index} ()
 \item 
-\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_context_a2efa2f24574ada24f268f7b827835885}\label{classm_1_1vulkan_1_1_vulkan_context_a2efa2f24574ada24f268f7b827835885}} 
-static U32 {\bfseries get\+\_\+memory\+Type\+Index} (U32 a\+\_\+type\+Filter, Vk\+Memory\+Property\+Flags a\+\_\+properties)
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_context_a00329cacf3642299783e34970c93b3f8}\label{classm_1_1vulkan_1_1_vulkan_context_a00329cacf3642299783e34970c93b3f8}} 
+static m\+U32 {\bfseries get\+\_\+memory\+Type\+Index} (m\+U32 a\+\_\+type\+Filter, Vk\+Memory\+Property\+Flags a\+\_\+properties)
 \item 
 \mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_context_ae5498ded16cbbe73e646a46bc4e6a70b}\label{classm_1_1vulkan_1_1_vulkan_context_ae5498ded16cbbe73e646a46bc4e6a70b}} 
 static Vk\+Shader\+Module {\bfseries create\+\_\+shader\+Module} (std\+::string const \&a\+\_\+shader\+Path)
@@ -78,8 +78,8 @@ Vk\+Device {\bfseries m\+\_\+logical\+Device} = VK\+\_\+\+NULL\+\_\+\+HANDLE
 \mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_context_a75f645e61b0ad7991894db4945bf36e9}\label{classm_1_1vulkan_1_1_vulkan_context_a75f645e61b0ad7991894db4945bf36e9}} 
 Vk\+Debug\+Utils\+Messenger\+EXT {\bfseries m\+\_\+debug\+Util}
 \item 
-\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_context_aaa16c75f68910b6c165aec07decca840}\label{classm_1_1vulkan_1_1_vulkan_context_aaa16c75f68910b6c165aec07decca840}} 
-U32 {\bfseries m\+\_\+queue\+Family\+Index}
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_context_a90aed4cd220bb1657c3a48b75152364a}\label{classm_1_1vulkan_1_1_vulkan_context_a90aed4cd220bb1657c3a48b75152364a}} 
+m\+U32 {\bfseries m\+\_\+queue\+Family\+Index}
 \item 
 \mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_context_a46191e5536a49e6df78abb6c9f0806bc}\label{classm_1_1vulkan_1_1_vulkan_context_a46191e5536a49e6df78abb6c9f0806bc}} 
 Vk\+Queue {\bfseries m\+\_\+queue} = VK\+\_\+\+NULL\+\_\+\+HANDLE
@@ -90,8 +90,8 @@ Vk\+Command\+Pool {\bfseries m\+\_\+utility\+Command\+Pool}
 \mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_context_a13cdeee13cb45275452a5f073c808828}\label{classm_1_1vulkan_1_1_vulkan_context_a13cdeee13cb45275452a5f073c808828}} 
 Vk\+Semaphore {\bfseries m\+\_\+timeline\+Semaphore}
 \item 
-\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_context_ac65b4c7a2cafcb593f9b8b56caf78897}\label{classm_1_1vulkan_1_1_vulkan_context_ac65b4c7a2cafcb593f9b8b56caf78897}} 
-U64 {\bfseries m\+\_\+timeline} = 0
+\mbox{\Hypertarget{classm_1_1vulkan_1_1_vulkan_context_a05ad6298480bf21298000d3f131921d2}\label{classm_1_1vulkan_1_1_vulkan_context_a05ad6298480bf21298000d3f131921d2}} 
+m\+U64 {\bfseries m\+\_\+timeline} = 0
 \end{DoxyCompactItemize}
 
 

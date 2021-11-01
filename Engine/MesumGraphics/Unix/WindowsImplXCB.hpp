@@ -23,7 +23,7 @@ class IWindowImpl : public windows::IWindow
     {
         m_linkedInputManager = a_inputManager;
     };
-    virtual void set_size(UInt a_width, UInt a_height)
+    virtual void set_size(mUInt a_width, mUInt a_height)
     {
         m_clientWidth  = a_width;
         m_clientHeight = a_height;
@@ -34,8 +34,8 @@ class IWindowImpl : public windows::IWindow
         m_parentRenderer = a_renderer;
     }
     virtual void set_asMainWindow();
-    virtual void set_asImGuiWindow(Bool a_supportMultiViewports);
-    virtual void set_fullScreen(Bool a_fullscreen);
+    virtual void set_asImGuiWindow(mBool a_supportMultiViewports);
+    virtual void set_fullScreen(mBool a_fullscreen);
     virtual void toggle_fullScreen();
 
     void set_winContext(XCBContext const& a_xcbContext)
@@ -43,7 +43,7 @@ class IWindowImpl : public windows::IWindow
         m_parentContext = &a_xcbContext;
     }
 
-    Bool is_flaggedToBeClosed() { return m_flagToBeClosed; }
+    mBool is_flaggedToBeClosed() { return m_flagToBeClosed; }
 
     void callback_dearImGuiNewFrame();
 
@@ -52,17 +52,17 @@ class IWindowImpl : public windows::IWindow
 
     // By default, use windowed mode.
     // Can be toggled with F11
-    Bool m_fullscreen     = false;
-    Bool m_flagToBeClosed = false;
+    mBool m_fullscreen     = false;
+    mBool m_flagToBeClosed = false;
 
     std::wstring m_windowName;
-    Bool         m_isMainWindow  = false;
-    Bool         m_isImGuiWindow = false;
-    U32          m_clientWidth   = 1280;
-    U32          m_clientHeight  = 720;
+    mBool         m_isMainWindow  = false;
+    mBool         m_isImGuiWindow = false;
+    mU32          m_clientWidth   = 1280;
+    mU32          m_clientHeight  = 720;
 
     // Window rectangle (used to toggle fullscreen state).
-    m::math::UIVec4 m_windowRect;
+    m::math::mUIVec4 m_windowRect;
 
     XCBContext const* m_parentContext  = nullptr;
     render::IRenderer*  m_parentRenderer = nullptr;

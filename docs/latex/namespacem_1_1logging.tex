@@ -19,10 +19,10 @@ class \mbox{\hyperlink{classm_1_1logging_1_1m_stdcout_log_policy}{m\+Stdcout\+Lo
 \doxysubsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
-using \mbox{\hyperlink{namespacem_1_1logging_ac4aaaa53dd22d25e9b24d091274b28a7}{m\+Channel\+ID}} = U64
+using \mbox{\hyperlink{namespacem_1_1logging_af807dfba0ed733f24957c0f3d016a15f}{m\+Channel\+ID}} = m\+U64
 \begin{DoxyCompactList}\small\item\em Channel\+IDs are defined by a bit. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{namespacem_1_1logging_aaeb5f100312ad1db0f563f74d7914c9f}\label{namespacem_1_1logging_aaeb5f100312ad1db0f563f74d7914c9f}} 
-using {\bfseries m\+Channel\+Filter} = U64
+\mbox{\Hypertarget{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}\label{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}} 
+using {\bfseries m\+Channel\+Filter} = m\+U64
 \begin{DoxyCompactList}\small\item\em Channel filters are an aggregation of channel ids. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Enumerations}
 \begin{DoxyCompactItemize}
@@ -35,10 +35,10 @@ enum \mbox{\hyperlink{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387}{m
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-constexpr \mbox{\hyperlink{namespacem_1_1logging_aaeb5f100312ad1db0f563f74d7914c9f}{m\+Channel\+Filter}} \mbox{\hyperlink{namespacem_1_1logging_ac3d7342b9694fe25c6f2119fe2886a46}{g\+\_\+all\+Channels\+Filter}}
+constexpr \mbox{\hyperlink{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}{m\+Channel\+Filter}} \mbox{\hyperlink{namespacem_1_1logging_ac3d7342b9694fe25c6f2119fe2886a46}{g\+\_\+all\+Channels\+Filter}}
 \begin{DoxyCompactList}\small\item\em Filter that allows all channels. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{namespacem_1_1logging_a201855eccf18d6c2e13758836e1bc31e}\label{namespacem_1_1logging_a201855eccf18d6c2e13758836e1bc31e}} 
-constexpr \mbox{\hyperlink{namespacem_1_1logging_aaeb5f100312ad1db0f563f74d7914c9f}{m\+Channel\+Filter}} {\bfseries g\+\_\+no\+Channels\+Filter} = 0
+constexpr \mbox{\hyperlink{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}{m\+Channel\+Filter}} {\bfseries g\+\_\+no\+Channels\+Filter} = 0
 \begin{DoxyCompactList}\small\item\em Filter that disallows all channels. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
@@ -46,11 +46,11 @@ constexpr \mbox{\hyperlink{namespacem_1_1logging_aaeb5f100312ad1db0f563f74d7914c
 Namespace grouping all logging tools. 
 
 \doxysubsection{Typedef Documentation}
-\mbox{\Hypertarget{namespacem_1_1logging_ac4aaaa53dd22d25e9b24d091274b28a7}\label{namespacem_1_1logging_ac4aaaa53dd22d25e9b24d091274b28a7}} 
+\mbox{\Hypertarget{namespacem_1_1logging_af807dfba0ed733f24957c0f3d016a15f}\label{namespacem_1_1logging_af807dfba0ed733f24957c0f3d016a15f}} 
 \index{m::logging@{m::logging}!mChannelID@{mChannelID}}
 \index{mChannelID@{mChannelID}!m::logging@{m::logging}}
 \doxysubsubsection{\texorpdfstring{mChannelID}{mChannelID}}
-{\footnotesize\ttfamily using \mbox{\hyperlink{namespacem_1_1logging_ac4aaaa53dd22d25e9b24d091274b28a7}{m\+::logging\+::m\+Channel\+ID}} = typedef U64}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacem_1_1logging_af807dfba0ed733f24957c0f3d016a15f}{m\+::logging\+::m\+Channel\+ID}} = typedef m\+U64}
 
 
 
@@ -90,12 +90,12 @@ warning&sets a warning severity level \\
 \index{m::logging@{m::logging}!g\_allChannelsFilter@{g\_allChannelsFilter}}
 \index{g\_allChannelsFilter@{g\_allChannelsFilter}!m::logging@{m::logging}}
 \doxysubsubsection{\texorpdfstring{g\_allChannelsFilter}{g\_allChannelsFilter}}
-{\footnotesize\ttfamily constexpr \mbox{\hyperlink{namespacem_1_1logging_aaeb5f100312ad1db0f563f74d7914c9f}{m\+Channel\+Filter}} m\+::logging\+::g\+\_\+all\+Channels\+Filter\hspace{0.3cm}{\ttfamily [constexpr]}}
+{\footnotesize\ttfamily constexpr \mbox{\hyperlink{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}{m\+Channel\+Filter}} m\+::logging\+::g\+\_\+all\+Channels\+Filter\hspace{0.3cm}{\ttfamily [constexpr]}}
 
 {\bfseries Initial value\+:}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{=}
-\DoxyCodeLine{    (std::numeric\_limits<U64>::max)()}
+\DoxyCodeLine{    (std::numeric\_limits<mU64>::max)()}
 
 \end{DoxyCode}
 

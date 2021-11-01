@@ -131,7 +131,7 @@ class mCallback
     ///////////////////////////////////////////////////////////////////////////
     t_RetType call(t_Args... a_args)
     {
-        mAssert(Bool(m_func));
+        mAssert(mBool(m_func));
         return m_func(a_args...);
     }
 
@@ -148,7 +148,7 @@ class mCallback
     ///
     /// \return true if the functions are the same
     ///////////////////////////////////////////////////////////////////////////
-    friend Bool operator==(const mCallback& lhs, const mCallback& rhs)
+    friend mBool operator==(const mCallback& lhs, const mCallback& rhs)
     {
         return lhs.m_func.template target<mFunctionType>() ==
                rhs.m_func.template target<mFunctionType>();
@@ -159,7 +159,7 @@ class mCallback
     ///
     /// \return true if the function has been set, false otherwise
     ///////////////////////////////////////////////////////////////////////////
-    explicit operator bool() const { return Bool(m_func); }
+    explicit operator bool() const { return mBool(m_func); }
 
    private:
     ///////////////////////////////////////////////////////////////////////////

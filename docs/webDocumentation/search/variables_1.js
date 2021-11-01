@@ -10,5 +10,6 @@ var searchData=
   ['m_5fmutexwrite_7',['m_mutexWrite',['../classm_1_1logging_1_1m_logger.html#ac8d7f6e8fdf27307de2e7e753be530d7',1,'m::logging::mLogger']]],
   ['m_5fnextchannelid_8',['m_nextChannelID',['../classm_1_1logging_1_1m_logger.html#a5a0049f9abdded520fdc9b1218569c6d',1,'m::logging::mLogger']]],
   ['m_5foutstream_9',['m_outStream',['../classm_1_1logging_1_1m_file_log_policy.html#aae9ba74200b18b5d2ff4882934b12a57',1,'m::logging::mFileLogPolicy']]],
-  ['m_5fpolicy_10',['m_policy',['../classm_1_1logging_1_1m_logger.html#a7cdf26de1340fc616c6bade585ce9ff5',1,'m::logging::mLogger']]]
+  ['m_5fpolicy_10',['m_policy',['../classm_1_1logging_1_1m_logger.html#a7cdf26de1340fc616c6bade585ce9ff5',1,'m::logging::mLogger']]],
+  ['m_5fstate_11',['m_state',['../classm_1_1math_1_1m_xo_random_number_generator.html#a6ba9fdbfc115b7e57914d79cfcd77685',1,'m::math::mXoRandomNumberGenerator']]]
 ];

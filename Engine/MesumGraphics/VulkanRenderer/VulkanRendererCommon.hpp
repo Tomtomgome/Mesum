@@ -42,11 +42,11 @@ void destroy_debugMessenger(VkInstance                a_instance,
 void select_physicalDevice(VkInstance        a_instance,
                            VkPhysicalDevice& a_physicalDevice);
 
-Bool find_graphicQueueFamilyIndex(VkPhysicalDevice a_physicalDevice,
-                                  U32&             a_queueFamilyIndex);
+mBool find_graphicQueueFamilyIndex(VkPhysicalDevice a_physicalDevice,
+                                  mU32&             a_queueFamilyIndex);
 void create_logicalDevice(VkPhysicalDevice a_physicalDevice,
                           VkDevice& a_logicalDevice, VkQueue& a_queue,
-                          U32& a_queueFamilyIndex);
+                          mU32& a_queueFamilyIndex);
 
 };  // namespace vulkan
 };  // namespace m

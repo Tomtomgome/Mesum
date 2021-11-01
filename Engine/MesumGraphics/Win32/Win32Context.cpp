@@ -7,7 +7,7 @@ namespace m::win32
 {
 const logging::mChannelID PLATFORM_APP_ID = mLog_getId();
 
-static input::Key translateKeys(Int a_keyCode)
+static input::Key translateKeys(mInt a_keyCode)
 {
     using namespace input;
     // Taken from GLFW Fallback function
@@ -154,7 +154,7 @@ void WIN32Context::init_keysLuts()
     memset(m_lut_keycodes, -1, sizeof(m_lut_keycodes));
     memset(m_lut_scancode, -1, sizeof(m_lut_scancode));
 
-    for (Int scancode = 0; scancode <= 255; scancode++)
+    for (mInt scancode = 0; scancode <= 255; scancode++)
     {
         // Translate the un-translated key codes using traditional X11
         // KeySym lookups
@@ -171,7 +171,7 @@ void WIN32Context::init_keysLuts()
 
 void WIN32Context::destroy() {}
 
-void WIN32Context::register_windowClass(const WideChar* a_className,
+void WIN32Context::register_windowClass(const mWideChar* a_className,
                                         HINSTANCE a_hInstance, WNDPROC a_proc)
 {
     WNDCLASSEXW windowClass   = {};
@@ -185,21 +185,21 @@ void WIN32Context::register_windowClass(const WideChar* a_className,
     RegisterClassExW(&windowClass);
 }
 
-HWND WIN32Context::create_window(const WideChar* a_className,
-                                 std::string a_windowName, U32 a_width,
-                                 U32 a_height) const
+HWND WIN32Context::create_window(const mWideChar* a_className,
+                                 std::string a_windowName, mU32 a_width,
+                                 mU32 a_height) const
 {
-    Int screenWidth  = GetSystemMetrics(SM_CXSCREEN);
-    Int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+    mInt screenWidth  = GetSystemMetrics(SM_CXSCREEN);
+    mInt screenHeight = GetSystemMetrics(SM_CYSCREEN);
 
     RECT windowRect = {0, 0, (long)a_width, (long)a_height};
     AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, FALSE);
 
-    Int windowWidth  = windowRect.right - windowRect.left;
-    Int windowHeight = windowRect.bottom - windowRect.top;
+    mInt windowWidth  = windowRect.right - windowRect.left;
+    mInt windowHeight = windowRect.bottom - windowRect.top;
 
-    Int windowPosX = std::max<Int>(0, (screenWidth - windowWidth) / 2);
-    Int windowPosY = std::max<Int>(0, (screenHeight - windowHeight) / 2);
+    mInt windowPosX = std::max<mInt>(0, (screenWidth - windowWidth) / 2);
+    mInt windowPosY = std::max<mInt>(0, (screenHeight - windowHeight) / 2);
     // Create the window.
 
     HWND hwnd =
@@ -224,7 +224,7 @@ HWND WIN32Context::create_window(const WideChar* a_className,
 
 input::Key WIN32Context::get_keyFromParam(WPARAM a_wParam) const
 {
-    I64 scancode = a_wParam;
+    mI64 scancode = a_wParam;
     if (scancode < 0 || scancode > 255)
     {
         return input::Key::KEY_UNKNOWN;

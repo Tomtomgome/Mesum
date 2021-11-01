@@ -24,12 +24,12 @@
 \DoxyCodeLine{20 }
 \DoxyCodeLine{21     \textcolor{comment}{// Execute a command list.}}
 \DoxyCodeLine{22     \textcolor{comment}{// Returns the fence value to wait for for this command list.}}
-\DoxyCodeLine{23     U64 execute\_commandList(}
+\DoxyCodeLine{23     mU64 execute\_commandList(}
 \DoxyCodeLine{24         Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList2> a\_commandList);}
 \DoxyCodeLine{25 }
-\DoxyCodeLine{26     U64  signal\_fence();}
-\DoxyCodeLine{27     Bool is\_fenceComplete(U64 a\_fenceValue);}
-\DoxyCodeLine{28     \textcolor{keywordtype}{void} wait\_fenceValue(U64 a\_fenceValue);}
+\DoxyCodeLine{26     mU64 signal\_fence();}
+\DoxyCodeLine{27     mBool is\_fenceComplete(mU64 a\_fenceValue);}
+\DoxyCodeLine{28     \textcolor{keywordtype}{void} wait\_fenceValue(mU64 a\_fenceValue);}
 \DoxyCodeLine{29     \textcolor{keywordtype}{void} flush();}
 \DoxyCodeLine{30 }
 \DoxyCodeLine{31     Microsoft::WRL::ComPtr<ID3D12CommandQueue> get\_D3D12CommandQueue() \textcolor{keyword}{const};}
@@ -43,7 +43,7 @@
 \DoxyCodeLine{39     \textcolor{comment}{// Keep track of command allocators that are "{}in-\/flight"{}}}
 \DoxyCodeLine{40     \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1dx12_1_1_d_x12_command_queue_1_1_command_allocator_entry}{CommandAllocatorEntry}}}
 \DoxyCodeLine{41     \{}
-\DoxyCodeLine{42         U64                                            m\_fenceValue;}
+\DoxyCodeLine{42         mU64                                           m\_fenceValue;}
 \DoxyCodeLine{43         Microsoft::WRL::ComPtr<ID3D12CommandAllocator> m\_commandAllocator;}
 \DoxyCodeLine{44     \};}
 \DoxyCodeLine{45 }
@@ -56,7 +56,7 @@
 \DoxyCodeLine{52     Microsoft::WRL::ComPtr<ID3D12CommandQueue> m\_d3d12CommandQueue;}
 \DoxyCodeLine{53     Microsoft::WRL::ComPtr<ID3D12Fence>        m\_d3d12Fence;}
 \DoxyCodeLine{54     HANDLE                                     m\_fenceEvent;}
-\DoxyCodeLine{55     U64                                        m\_fenceValue;}
+\DoxyCodeLine{55     mU64                                       m\_fenceValue;}
 \DoxyCodeLine{56 }
 \DoxyCodeLine{57     CommandAllocatorQueue m\_commandAllocatorQueue;}
 \DoxyCodeLine{58     CommandListQueue      m\_commandListQueue;}

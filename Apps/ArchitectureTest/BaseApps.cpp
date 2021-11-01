@@ -27,7 +27,7 @@ class TestLoopedApp : public m::application::mILoopApplication
     {
         mLog("Hello world !"); }
     virtual void    destroy() { mLog("Bye world !"); }
-    virtual m::Bool step()
+    virtual m::mBool step()
     {
         mLog("world !");
         if (m_MaxSteps-- > 0)
@@ -36,7 +36,7 @@ class TestLoopedApp : public m::application::mILoopApplication
             return false;
     }
 
-    m::Int m_MaxSteps = 1000;
+    m::mInt m_MaxSteps = 1000;
 };
 
 class TestTimedLoopedApp : public m::application::mITimedLoopApplication
@@ -47,7 +47,7 @@ class TestTimedLoopedApp : public m::application::mITimedLoopApplication
         mLog("Hello world !");
     }
     virtual void    destroy() { mLog("Bye world !"); }
-    virtual m::Bool step(
+    virtual m::mBool step(
         const std::chrono::duration<long long int, std::nano>& a_deltaTime)
     {
         mLog("dt =", a_deltaTime);
@@ -57,7 +57,7 @@ class TestTimedLoopedApp : public m::application::mITimedLoopApplication
             return false;
     }
 
-    m::Int m_MaxSteps = 1000;
+    m::mInt m_MaxSteps = 1000;
 };
 
-M_EXECUTE_CONSOLE_APP(TestTimedLoopedApp)
+mExecute_consoleApplication(TestTimedLoopedApp)

@@ -27,9 +27,8 @@ var annotated_dup =
         [ "mLogger", "classm_1_1logging_1_1m_logger.html", "classm_1_1logging_1_1m_logger" ],
         [ "mStdcoutLogPolicy", "classm_1_1logging_1_1m_stdcout_log_policy.html", "classm_1_1logging_1_1m_stdcout_log_policy" ]
       ] ],
-      [ "math", null, [
-        [ "RandomGenerator", "classm_1_1math_1_1_random_generator.html", "classm_1_1math_1_1_random_generator" ],
-        [ "splitmix64State", "structm_1_1math_1_1splitmix64_state.html", null ],
+      [ "math", "namespacem_1_1math.html", [
+        [ "mXoRandomNumberGenerator", "classm_1_1math_1_1m_xo_random_number_generator.html", "classm_1_1math_1_1m_xo_random_number_generator" ],
         [ "Vec", "structm_1_1math_1_1_vec.html", null ],
         [ "VecData", "structm_1_1math_1_1_vec_data.html", null ],
         [ "VecData< T, 2 >", "structm_1_1math_1_1_vec_data_3_01_t_00_012_01_4.html", null ],

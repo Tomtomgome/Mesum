@@ -16,12 +16,12 @@
 \DoxyCodeLine{16 \{}
 \DoxyCodeLine{23 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1m_cmd_line}{mCmdLine}}}
 \DoxyCodeLine{24 \{}
-\DoxyCodeLine{31     \textcolor{keywordtype}{void} \mbox{\hyperlink{structm_1_1m_cmd_line_ae80a0e6b45ca8d32a1052a00543f7b4c}{parse\_cmdLineAguments}}(Int a\_argc, Char** a\_argv);}
+\DoxyCodeLine{31     \textcolor{keywordtype}{void} \mbox{\hyperlink{structm_1_1m_cmd_line_ac1d7df6b4bf9ca42161e9177efeaa45a}{parse\_cmdLineAguments}}(mInt a\_argc, mChar** a\_argv);}
 \DoxyCodeLine{32 }
 \DoxyCodeLine{43     \textcolor{keyword}{template} <\textcolor{keyword}{class} t\_ValueType>}
-\DoxyCodeLine{44     Bool \mbox{\hyperlink{structm_1_1m_cmd_line_acb6619d8804bfcc912f1d807f95463d3}{get\_parameter}}(\textcolor{keyword}{const} std::string a\_key, t\_ValueType\& a\_result)\textcolor{keyword}{ const}}
+\DoxyCodeLine{44     mBool \mbox{\hyperlink{structm_1_1m_cmd_line_ab8de7405bf1f0f8a07d9ab3b7647209b}{get\_parameter}}(\textcolor{keyword}{const} std::string a\_key, t\_ValueType\& a\_result)\textcolor{keyword}{ const}}
 \DoxyCodeLine{45 \textcolor{keyword}{    }\{}
-\DoxyCodeLine{46         \mbox{\hyperlink{group___core_ga375da2becf883550c0e1293307b02c9a}{mExpect}}(!a\_key.empty());}
+\DoxyCodeLine{46         \mbox{\hyperlink{group___core_ga85d6f0f15b7e1ab2f6a30c07054c8904}{mExpect}}(!a\_key.empty());}
 \DoxyCodeLine{47 }
 \DoxyCodeLine{48         \textcolor{keyword}{auto} found = std::find(\mbox{\hyperlink{structm_1_1m_cmd_line_a6d806d285ce78eaa5d90f10e55a5609e}{m\_listArgs}}.begin(), \mbox{\hyperlink{structm_1_1m_cmd_line_a6d806d285ce78eaa5d90f10e55a5609e}{m\_listArgs}}.end(), a\_key);}
 \DoxyCodeLine{49         \textcolor{keywordflow}{if} (found == \mbox{\hyperlink{structm_1_1m_cmd_line_a6d806d285ce78eaa5d90f10e55a5609e}{m\_listArgs}}.end())}
@@ -30,14 +30,14 @@
 \DoxyCodeLine{52         \}}
 \DoxyCodeLine{53 }
 \DoxyCodeLine{54         ++found;}
-\DoxyCodeLine{55         \mbox{\hyperlink{group___core_ga5cbca1ff1eb730a016c7c63f94afa154}{mAssert}}(found != \mbox{\hyperlink{structm_1_1m_cmd_line_a6d806d285ce78eaa5d90f10e55a5609e}{m\_listArgs}}.end())}
+\DoxyCodeLine{55         \mbox{\hyperlink{group___core_gae68855c8125ce66a9e53e758526c95ca}{mAssert}}(found != \mbox{\hyperlink{structm_1_1m_cmd_line_a6d806d285ce78eaa5d90f10e55a5609e}{m\_listArgs}}.end())}
 \DoxyCodeLine{56 }
 \DoxyCodeLine{57                 std::basic\_istringstream(*found) >>}
 \DoxyCodeLine{58             a\_result;}
 \DoxyCodeLine{59         \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
 \DoxyCodeLine{60     \}}
 \DoxyCodeLine{61 }
-\DoxyCodeLine{68     [[nodiscard]] \textcolor{keyword}{inline} Bool \mbox{\hyperlink{structm_1_1m_cmd_line_a589a0a954f6f5bf5043dcb29fbf1769d}{get\_arg}}(std::string \textcolor{keyword}{const}\& a\_arg)\textcolor{keyword}{ const}}
+\DoxyCodeLine{68     [[nodiscard]] \textcolor{keyword}{inline} mBool \mbox{\hyperlink{structm_1_1m_cmd_line_a03cf17a95051b7b6f7786ae3469ed4b3}{get\_arg}}(std::string \textcolor{keyword}{const}\& a\_arg)\textcolor{keyword}{ const}}
 \DoxyCodeLine{69 \textcolor{keyword}{    }\{}
 \DoxyCodeLine{70         \textcolor{keywordflow}{return} std::find(\mbox{\hyperlink{structm_1_1m_cmd_line_a6d806d285ce78eaa5d90f10e55a5609e}{m\_listArgs}}.begin(), \mbox{\hyperlink{structm_1_1m_cmd_line_a6d806d285ce78eaa5d90f10e55a5609e}{m\_listArgs}}.end(), a\_arg) !=}
 \DoxyCodeLine{71                \mbox{\hyperlink{structm_1_1m_cmd_line_a6d806d285ce78eaa5d90f10e55a5609e}{m\_listArgs}}.end();}

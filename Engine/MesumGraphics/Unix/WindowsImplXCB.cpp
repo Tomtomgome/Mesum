@@ -64,8 +64,8 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
             RECT clientRect = {};
             ::GetClientRect(m_hwnd, &clientRect);
 
-            U32 width  = clientRect.right - clientRect.left;
-            U32 height = clientRect.bottom - clientRect.top;
+            mU32 width  = clientRect.right - clientRect.left;
+            mU32 height = clientRect.bottom - clientRect.top;
 
             m_renderSurface->resize(width, height);
         }
@@ -77,7 +77,7 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
 
 void IWindowImpl::init()
 {
-    const Char className[] = L"MainWindowClass";
+    const mChar className[] = L"MainWindowClass";
     m_hwnd = m_parentContext->create_window(className, m_windowName,
                                            m_clientWidth,
                                         m_clientHeight);
@@ -125,7 +125,7 @@ void IWindowImpl::destroy()
 
 void IWindowImpl::set_asMainWindow()
 {
-    static m::Bool s_mainWindowIsDefined = false;
+    static m::mBool s_mainWindowIsDefined = false;
 
     //There can only be one main window
     mAssert(s_mainWindowIsDefined == false);
@@ -134,7 +134,7 @@ void IWindowImpl::set_asMainWindow()
     m_isMainWindow = true;
 }
 
-void IWindowImpl::set_asImGuiWindow(Bool a_supportMultiViewports)
+void IWindowImpl::set_asImGuiWindow(mBool a_supportMultiViewports)
 {
     // There can only be one ImGui window, and it's the main one
     mAssert(m_isMainWindow == true);
@@ -160,7 +160,7 @@ void IWindowImpl::set_asImGuiWindow(Bool a_supportMultiViewports)
     }
 }
 
-void IWindowImpl::set_fullScreen(Bool a_fullscreen)
+void IWindowImpl::set_fullScreen(mBool a_fullscreen)
 {
     if (m_fullscreen != a_fullscreen)
     {

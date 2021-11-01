@@ -3,6 +3,7 @@ var group___core =
     [ "m::application", "namespacem_1_1application.html", null ],
     [ "m::files", "namespacem_1_1files.html", null ],
     [ "m::logging", "namespacem_1_1logging.html", null ],
+    [ "m::math", "namespacem_1_1math.html", null ],
     [ "m::application::mIBasicApplication", "classm_1_1application_1_1m_i_basic_application.html", [
       [ "launch", "classm_1_1application_1_1m_i_basic_application.html#a10ecb6a45dbf100c037eff46b5a1f161", null ]
     ] ],
@@ -10,7 +11,7 @@ var group___core =
       [ "destroy", "classm_1_1application_1_1m_i_loop_application.html#a5a2573e1a7468ce947c800cd6397f5b9", null ],
       [ "init", "classm_1_1application_1_1m_i_loop_application.html#aa1f941cca206e4783c7bcc206c85a950", null ],
       [ "launch", "classm_1_1application_1_1m_i_loop_application.html#ac9606c3ee30894f0694bc390a6c42f0d", null ],
-      [ "step", "classm_1_1application_1_1m_i_loop_application.html#aa47382bad3d069b8ec3aa5f3fcae830e", null ]
+      [ "step", "classm_1_1application_1_1m_i_loop_application.html#a2a918b6f3eed947f5f75e9affa1e4680", null ]
     ] ],
     [ "m::application::mITimedLoopApplication", "classm_1_1application_1_1m_i_timed_loop_application.html", [
       [ "destroy", "classm_1_1application_1_1m_i_timed_loop_application.html#a7f497a19bcd06e55087a92548550201d", null ],
@@ -18,7 +19,7 @@ var group___core =
       [ "init", "classm_1_1application_1_1m_i_timed_loop_application.html#ad4ed9bb275006c340185826f215e6215", null ],
       [ "launch", "classm_1_1application_1_1m_i_timed_loop_application.html#a2ec2d8e42fcf88cb05bd8fc6748959b9", null ],
       [ "set_minimalStepDuration", "classm_1_1application_1_1m_i_timed_loop_application.html#a30915222caf71e7686751485d89194b3", null ],
-      [ "step", "classm_1_1application_1_1m_i_timed_loop_application.html#ac2afcb4ee8711b4d1204e3a17af404d7", null ],
+      [ "step", "classm_1_1application_1_1m_i_timed_loop_application.html#a962bd499a87f45a4995832697ee7da9f", null ],
       [ "m_minStepDuration", "classm_1_1application_1_1m_i_timed_loop_application.html#afffa7f3a19ce07e78e580eed75708139", null ]
     ] ],
     [ "m::mCallback< t_RetType, t_Args >", "classm_1_1m_callback.html", [
@@ -33,7 +34,7 @@ var group___core =
       [ "set", "classm_1_1m_callback.html#ad1d9cecb679dd3bade3de9758cb0bb20", null ],
       [ "set", "classm_1_1m_callback.html#ac79bd8006224a4d446be24a111ee6a4d", null ],
       [ "set", "classm_1_1m_callback.html#a08e0c1570e03ccb8caccec23644c2b13", null ],
-      [ "operator==", "classm_1_1m_callback.html#ab5e50be73b4f50c578820324d30432d0", null ],
+      [ "operator==", "classm_1_1m_callback.html#ac0662a3f49432e8e21fa92340404c254", null ],
       [ "m_func", "classm_1_1m_callback.html#ae4aee5ac7416e0a0b04e6472b70f7e81", null ]
     ] ],
     [ "m::mSignal< t_Args >", "classm_1_1m_signal.html", [
@@ -46,9 +47,9 @@ var group___core =
       [ "m_callbacks", "classm_1_1m_signal.html#a7d0937df96ca9773d0086d423a0f0e33", null ]
     ] ],
     [ "m::mCmdLine", "structm_1_1m_cmd_line.html", [
-      [ "get_arg", "structm_1_1m_cmd_line.html#a589a0a954f6f5bf5043dcb29fbf1769d", null ],
-      [ "get_parameter", "structm_1_1m_cmd_line.html#acb6619d8804bfcc912f1d807f95463d3", null ],
-      [ "parse_cmdLineAguments", "structm_1_1m_cmd_line.html#ae80a0e6b45ca8d32a1052a00543f7b4c", null ],
+      [ "get_arg", "structm_1_1m_cmd_line.html#a03cf17a95051b7b6f7786ae3469ed4b3", null ],
+      [ "get_parameter", "structm_1_1m_cmd_line.html#ab8de7405bf1f0f8a07d9ab3b7647209b", null ],
+      [ "parse_cmdLineAguments", "structm_1_1m_cmd_line.html#ac1d7df6b4bf9ca42161e9177efeaa45a", null ],
       [ "m_listArgs", "structm_1_1m_cmd_line.html#a6d806d285ce78eaa5d90f10e55a5609e", null ]
     ] ],
     [ "m::mBasicLaunchData", "structm_1_1m_basic_launch_data.html", null ],
@@ -93,10 +94,19 @@ var group___core =
       [ "open_ostream", "classm_1_1logging_1_1m_stdcout_log_policy.html#a660197bf0e027922c0fff971ce62bb6e", null ],
       [ "write", "classm_1_1logging_1_1m_stdcout_log_policy.html#a2924572ab56800abb7a3cd08be670f28", null ]
     ] ],
-    [ "mAssert", "group___core.html#ga5cbca1ff1eb730a016c7c63f94afa154", null ],
+    [ "m::math::mXoRandomNumberGenerator", "classm_1_1math_1_1m_xo_random_number_generator.html", [
+      [ "mXoRandomNumberGenerator", "classm_1_1math_1_1m_xo_random_number_generator.html#a19b46ac054019318c8d2ed23cc710f49", null ],
+      [ "get_nextDouble", "classm_1_1math_1_1m_xo_random_number_generator.html#aa81fdd462a9ef685ce5893925df7d559", null ],
+      [ "get_nextFloat", "classm_1_1math_1_1m_xo_random_number_generator.html#a1376ae80f993338db928b0fce5ae1a45", null ],
+      [ "get_nextU32", "classm_1_1math_1_1m_xo_random_number_generator.html#aebac1aba36bb438d80aed79a124c0274", null ],
+      [ "get_nextU64", "classm_1_1math_1_1m_xo_random_number_generator.html#aa6ffaa8fa1f2a3405af81ec9d5166af2", null ],
+      [ "m_state", "classm_1_1math_1_1m_xo_random_number_generator.html#a6ba9fdbfc115b7e57914d79cfcd77685", null ]
+    ] ],
+    [ "m::math::mXoRandomNumberGenerator::mXoshiro256ssState", "structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state.html", null ],
+    [ "mAssert", "group___core.html#gae68855c8125ce66a9e53e758526c95ca", null ],
     [ "mDisable_logChannels", "group___core.html#gac6a132763c1ef06eb8dbdc7d339ab00b", null ],
     [ "mEnable_logChannels", "group___core.html#gad373fce774649fa0b14363289cb8eeab", null ],
-    [ "mExpect", "group___core.html#ga375da2becf883550c0e1293307b02c9a", null ],
+    [ "mExpect", "group___core.html#ga85d6f0f15b7e1ab2f6a30c07054c8904", null ],
     [ "mInterrupt", "group___core.html#ga5123b201bc1b15852430f15fd0a495d6", null ],
     [ "mLog", "group___core.html#ga680e34b3f157af7f411b5979ad1a4ac3", null ],
     [ "mLog_error", "group___core.html#ga5fbb2d1e48c3d6b25c16ee857251d351", null ],
@@ -113,5 +123,5 @@ var group___core =
     [ "mLog_warningTo", "group___core.html#ga69ed0c9a7e1c9e250fc27634c8500823", null ],
     [ "mNotImplemented", "group___core.html#ga546b07714c544247ba947aab1bdec5b8", null ],
     [ "mSet_logFilter", "group___core.html#gab72bba1e02da9f12494fbc01656c6a42", null ],
-    [ "mSoftAssert", "group___core.html#ga130ddba9a4e2dc6e95a6797c0f448243", null ]
+    [ "mSoftAssert", "group___core.html#gaed17c7e2d6fa608a86bd77dbf44de294", null ]
 ];

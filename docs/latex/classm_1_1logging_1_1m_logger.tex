@@ -18,13 +18,13 @@ Thread safe logger class used to write logs.
 {\bfseries $\sim$m\+Logger} ()
 \begin{DoxyCompactList}\small\item\em Destroy a logger. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{classm_1_1logging_1_1m_logger_a59961a6eebe198f19bb95a5000f6373c}\label{classm_1_1logging_1_1m_logger_a59961a6eebe198f19bb95a5000f6373c}} 
-\mbox{\hyperlink{namespacem_1_1logging_ac4aaaa53dd22d25e9b24d091274b28a7}{m\+Channel\+ID}} {\bfseries get\+\_\+new\+Channel\+ID} ()
+\mbox{\hyperlink{namespacem_1_1logging_af807dfba0ed733f24957c0f3d016a15f}{m\+Channel\+ID}} {\bfseries get\+\_\+new\+Channel\+ID} ()
 \begin{DoxyCompactList}\small\item\em Get a new channel ID for this logger. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classm_1_1logging_1_1m_logger_ab72e23ec1dee710ae547720bcebe446d}{set\+\_\+filter}} (\mbox{\hyperlink{namespacem_1_1logging_aaeb5f100312ad1db0f563f74d7914c9f}{m\+Channel\+Filter}} a\+\_\+filter)
+void \mbox{\hyperlink{classm_1_1logging_1_1m_logger_ab72e23ec1dee710ae547720bcebe446d}{set\+\_\+filter}} (\mbox{\hyperlink{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}{m\+Channel\+Filter}} a\+\_\+filter)
 \begin{DoxyCompactList}\small\item\em Set filters on the logger. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classm_1_1logging_1_1m_logger_a8447286a207b62778ea2fd3c2fd1cb10}{disable\+\_\+channels}} (\mbox{\hyperlink{namespacem_1_1logging_aaeb5f100312ad1db0f563f74d7914c9f}{m\+Channel\+Filter}} a\+\_\+filter)
+void \mbox{\hyperlink{classm_1_1logging_1_1m_logger_a8447286a207b62778ea2fd3c2fd1cb10}{disable\+\_\+channels}} (\mbox{\hyperlink{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}{m\+Channel\+Filter}} a\+\_\+filter)
 \begin{DoxyCompactList}\small\item\em Disable channels of the logger. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classm_1_1logging_1_1m_logger_a83c957baadaf5ad52f112fdc36f58d83}{enable\+\_\+channels}} (\mbox{\hyperlink{namespacem_1_1logging_aaeb5f100312ad1db0f563f74d7914c9f}{m\+Channel\+Filter}} a\+\_\+filter)
+void \mbox{\hyperlink{classm_1_1logging_1_1m_logger_a83c957baadaf5ad52f112fdc36f58d83}{enable\+\_\+channels}} (\mbox{\hyperlink{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}{m\+Channel\+Filter}} a\+\_\+filter)
 \begin{DoxyCompactList}\small\item\em Enable channels of the logger. \end{DoxyCompactList}\item 
 {\footnotesize template$<$\mbox{\hyperlink{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387}{m\+Severity\+Type}} t\+\_\+\+Severity, typename... t\+\_\+\+Args$>$ }\\void \mbox{\hyperlink{classm_1_1logging_1_1m_logger_ac6fe0dc8b19e8e94eac606d71838befd}{print\+\_\+to\+Channel}} (uint64\+\_\+t a\+\_\+channel, t\+\_\+\+Args... a\+\_\+args)
 \begin{DoxyCompactList}\small\item\em Print things in the logs using a specified channel. \end{DoxyCompactList}\item 
@@ -60,10 +60,10 @@ t\+\_\+\+Log\+Policy $\ast$ {\bfseries m\+\_\+policy} = nullptr
 unsigned {\bfseries m\+\_\+line\+Number} = 0
 \begin{DoxyCompactList}\small\item\em Number of the current log line. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{classm_1_1logging_1_1m_logger_acdddf0d18b89b8040850cf0ae3fbc2a3}\label{classm_1_1logging_1_1m_logger_acdddf0d18b89b8040850cf0ae3fbc2a3}} 
-\mbox{\hyperlink{namespacem_1_1logging_aaeb5f100312ad1db0f563f74d7914c9f}{m\+Channel\+Filter}} {\bfseries m\+\_\+filter} = \mbox{\hyperlink{namespacem_1_1logging_ac3d7342b9694fe25c6f2119fe2886a46}{g\+\_\+all\+Channels\+Filter}}
+\mbox{\hyperlink{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}{m\+Channel\+Filter}} {\bfseries m\+\_\+filter} = \mbox{\hyperlink{namespacem_1_1logging_ac3d7342b9694fe25c6f2119fe2886a46}{g\+\_\+all\+Channels\+Filter}}
 \begin{DoxyCompactList}\small\item\em The current filter used to filter out specific channels. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{classm_1_1logging_1_1m_logger_a5a0049f9abdded520fdc9b1218569c6d}\label{classm_1_1logging_1_1m_logger_a5a0049f9abdded520fdc9b1218569c6d}} 
-\mbox{\hyperlink{namespacem_1_1logging_ac4aaaa53dd22d25e9b24d091274b28a7}{m\+Channel\+ID}} {\bfseries m\+\_\+next\+Channel\+ID} = 1
+\mbox{\hyperlink{namespacem_1_1logging_af807dfba0ed733f24957c0f3d016a15f}{m\+Channel\+ID}} {\bfseries m\+\_\+next\+Channel\+ID} = 1
 \begin{DoxyCompactList}\small\item\em The next channel id to attribute. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
@@ -104,7 +104,7 @@ Construct a logger.
 \index{disable\_channels@{disable\_channels}!m::logging::mLogger$<$ t\_LogPolicy $>$@{m::logging::mLogger$<$ t\_LogPolicy $>$}}
 \doxysubsubsection{\texorpdfstring{disable\_channels()}{disable\_channels()}}
 {\footnotesize\ttfamily template$<$typename t\+\_\+\+Log\+Policy $>$ \\
-void \mbox{\hyperlink{classm_1_1logging_1_1m_logger}{m\+::logging\+::m\+Logger}}$<$ t\+\_\+\+Log\+Policy $>$\+::disable\+\_\+channels (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacem_1_1logging_aaeb5f100312ad1db0f563f74d7914c9f}{m\+Channel\+Filter}}}]{a\+\_\+filter }\end{DoxyParamCaption})}
+void \mbox{\hyperlink{classm_1_1logging_1_1m_logger}{m\+::logging\+::m\+Logger}}$<$ t\+\_\+\+Log\+Policy $>$\+::disable\+\_\+channels (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}{m\+Channel\+Filter}}}]{a\+\_\+filter }\end{DoxyParamCaption})}
 
 
 
@@ -120,7 +120,7 @@ Disable channels of the logger.
 \index{enable\_channels@{enable\_channels}!m::logging::mLogger$<$ t\_LogPolicy $>$@{m::logging::mLogger$<$ t\_LogPolicy $>$}}
 \doxysubsubsection{\texorpdfstring{enable\_channels()}{enable\_channels()}}
 {\footnotesize\ttfamily template$<$typename t\+\_\+\+Log\+Policy $>$ \\
-void \mbox{\hyperlink{classm_1_1logging_1_1m_logger}{m\+::logging\+::m\+Logger}}$<$ t\+\_\+\+Log\+Policy $>$\+::enable\+\_\+channels (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacem_1_1logging_aaeb5f100312ad1db0f563f74d7914c9f}{m\+Channel\+Filter}}}]{a\+\_\+filter }\end{DoxyParamCaption})}
+void \mbox{\hyperlink{classm_1_1logging_1_1m_logger}{m\+::logging\+::m\+Logger}}$<$ t\+\_\+\+Log\+Policy $>$\+::enable\+\_\+channels (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}{m\+Channel\+Filter}}}]{a\+\_\+filter }\end{DoxyParamCaption})}
 
 
 
@@ -212,7 +212,7 @@ Print things in the logs using a specified channel.
 \index{set\_filter@{set\_filter}!m::logging::mLogger$<$ t\_LogPolicy $>$@{m::logging::mLogger$<$ t\_LogPolicy $>$}}
 \doxysubsubsection{\texorpdfstring{set\_filter()}{set\_filter()}}
 {\footnotesize\ttfamily template$<$typename t\+\_\+\+Log\+Policy $>$ \\
-void \mbox{\hyperlink{classm_1_1logging_1_1m_logger}{m\+::logging\+::m\+Logger}}$<$ t\+\_\+\+Log\+Policy $>$\+::set\+\_\+filter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacem_1_1logging_aaeb5f100312ad1db0f563f74d7914c9f}{m\+Channel\+Filter}}}]{a\+\_\+filter }\end{DoxyParamCaption})}
+void \mbox{\hyperlink{classm_1_1logging_1_1m_logger}{m\+::logging\+::m\+Logger}}$<$ t\+\_\+\+Log\+Policy $>$\+::set\+\_\+filter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}{m\+Channel\+Filter}}}]{a\+\_\+filter }\end{DoxyParamCaption})}
 
 
 

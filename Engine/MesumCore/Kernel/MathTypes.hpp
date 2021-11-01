@@ -1,32 +1,30 @@
-#ifndef M_MATHTYPES
-#define M_MATHTYPES
 #pragma once
 
 #include <Vec.hpp>
 #include <cstring>
 
-namespace m {
-//*****************************************************************************
-//*****************************************************************************
-//*****************************************************************************
-    namespace math
-    {
-        using Vec2 = Vec<Float, 2>;
-        using Vec3 = Vec<Float, 3>;
-        using Vec4 = Vec<Float, 4>;
+///////////////////////////////////////////////////////////////////////////////
+/// \addtogroup Core
+/// \{
+///////////////////////////////////////////////////////////////////////////////
+namespace m::math
+{
+using mVec2 = Vec<mFloat, 2>;
+using mVec3 = Vec<mFloat, 3>;
+using mVec4 = Vec<mFloat, 4>;
 
-        using DVec2 = Vec<Double, 2>;
-        using DVec3 = Vec<Double, 3>;
-        using DVec4 = Vec<Double, 4>;
+using mDVec2 = Vec<mDouble, 2>;
+using mDVec3 = Vec<mDouble, 3>;
+using mDVec4 = Vec<mDouble, 4>;
 
-        using IVec2 = Vec<Int, 2>;
-        using IVec3 = Vec<Int, 3>;
-        using IVec4 = Vec<Int, 4>;
+using mIVec2 = Vec<mInt, 2>;
+using mIVec3 = Vec<mInt, 3>;
+using mIVec4 = Vec<mInt, 4>;
 
-        using UIVec2 = Vec<UInt, 2>;
-        using UIVec3 = Vec<UInt, 3>;
-        using UIVec4 = Vec<UInt, 4>;
-    };
-};
-
-#endif //M_MATHTYPES
+using mUIVec2 = Vec<mUInt, 2>;
+using mUIVec3 = Vec<mUInt, 3>;
+using mUIVec4 = Vec<mUInt, 4>;
+};  // namespace m::math
+///////////////////////////////////////////////////////////////////////////////
+/// \}
+///////////////////////////////////////////////////////////////////////////////

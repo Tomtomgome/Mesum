@@ -20,12 +20,12 @@ class DX12CommandQueue
 
     // Execute a command list.
     // Returns the fence value to wait for for this command list.
-    U64 execute_commandList(
+    mU64 execute_commandList(
         Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList2> a_commandList);
 
-    U64  signal_fence();
-    Bool is_fenceComplete(U64 a_fenceValue);
-    void wait_fenceValue(U64 a_fenceValue);
+    mU64 signal_fence();
+    mBool is_fenceComplete(mU64 a_fenceValue);
+    void wait_fenceValue(mU64 a_fenceValue);
     void flush();
 
     Microsoft::WRL::ComPtr<ID3D12CommandQueue> get_D3D12CommandQueue() const;
@@ -39,7 +39,7 @@ class DX12CommandQueue
     // Keep track of command allocators that are "in-flight"
     struct CommandAllocatorEntry
     {
-        U64                                            m_fenceValue;
+        mU64                                           m_fenceValue;
         Microsoft::WRL::ComPtr<ID3D12CommandAllocator> m_commandAllocator;
     };
 
@@ -52,7 +52,7 @@ class DX12CommandQueue
     Microsoft::WRL::ComPtr<ID3D12CommandQueue> m_d3d12CommandQueue;
     Microsoft::WRL::ComPtr<ID3D12Fence>        m_d3d12Fence;
     HANDLE                                     m_fenceEvent;
-    U64                                        m_fenceValue;
+    mU64                                       m_fenceValue;
 
     CommandAllocatorQueue m_commandAllocatorQueue;
     CommandListQueue      m_commandListQueue;
