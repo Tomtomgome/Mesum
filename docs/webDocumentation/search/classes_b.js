@@ -1,21 +1,14 @@
 var searchData=
 [
-  ['splitmix64state_0',['splitmix64State',['../structm_1_1math_1_1splitmix64_state.html',1,'m::math']]],
-  ['stb_5ftexteditstate_1',['STB_TexteditState',['../struct_s_t_b___textedit_state.html',1,'']]],
-  ['stbrp_5fcontext_2',['stbrp_context',['../structstbrp__context.html',1,'']]],
-  ['stbrp_5fnode_3',['stbrp_node',['../structstbrp__node.html',1,'']]],
-  ['stbrp_5frect_4',['stbrp_rect',['../structstbrp__rect.html',1,'']]],
-  ['stbtexteditrow_5',['StbTexteditRow',['../struct_stb_textedit_row.html',1,'']]],
-  ['stbtt_5f_5fbitmap_6',['stbtt__bitmap',['../structstbtt____bitmap.html',1,'']]],
-  ['stbtt_5f_5fbuf_7',['stbtt__buf',['../structstbtt____buf.html',1,'']]],
-  ['stbtt_5faligned_5fquad_8',['stbtt_aligned_quad',['../structstbtt__aligned__quad.html',1,'']]],
-  ['stbtt_5fbakedchar_9',['stbtt_bakedchar',['../structstbtt__bakedchar.html',1,'']]],
-  ['stbtt_5ffontinfo_10',['stbtt_fontinfo',['../structstbtt__fontinfo.html',1,'']]],
-  ['stbtt_5fpack_5fcontext_11',['stbtt_pack_context',['../structstbtt__pack__context.html',1,'']]],
-  ['stbtt_5fpack_5frange_12',['stbtt_pack_range',['../structstbtt__pack__range.html',1,'']]],
-  ['stbtt_5fpackedchar_13',['stbtt_packedchar',['../structstbtt__packedchar.html',1,'']]],
-  ['stbtt_5fvertex_14',['stbtt_vertex',['../structstbtt__vertex.html',1,'']]],
-  ['stbundorecord_15',['StbUndoRecord',['../struct_stb_undo_record.html',1,'']]],
-  ['stbundostate_16',['StbUndoState',['../struct_stb_undo_state.html',1,'']]],
-  ['stdcoutlogpolicy_17',['StdcoutLogPolicy',['../classm_1_1logging_1_1_stdcout_log_policy.html',1,'m::logging']]]
+  ['vec_0',['Vec',['../structm_1_1math_1_1_vec.html',1,'m::math']]],
+  ['vecdata_1',['VecData',['../structm_1_1math_1_1_vec_data.html',1,'m::math']]],
+  ['vecdata_3c_20t_2c_202_20_3e_2',['VecData&lt; T, 2 &gt;',['../structm_1_1math_1_1_vec_data_3_01_t_00_012_01_4.html',1,'m::math']]],
+  ['vecdata_3c_20t_2c_203_20_3e_3',['VecData&lt; T, 3 &gt;',['../structm_1_1math_1_1_vec_data_3_01_t_00_013_01_4.html',1,'m::math']]],
+  ['vecdata_3c_20t_2c_204_20_3e_4',['VecData&lt; T, 4 &gt;',['../structm_1_1math_1_1_vec_data_3_01_t_00_014_01_4.html',1,'m::math']]],
+  ['vertex_5fconstant_5fbuffer_5',['VERTEX_CONSTANT_BUFFER',['../struct_v_e_r_t_e_x___c_o_n_s_t_a_n_t___b_u_f_f_e_r.html',1,'']]],
+  ['vulkanbufferbase_6',['VulkanBufferBase',['../structm_1_1render_1_1_vulkan_buffer_base.html',1,'m::render']]],
+  ['vulkancontext_7',['VulkanContext',['../classm_1_1vulkan_1_1_vulkan_context.html',1,'m::vulkan']]],
+  ['vulkanrenderer_8',['VulkanRenderer',['../classm_1_1vulkan_1_1_vulkan_renderer.html',1,'m::vulkan']]],
+  ['vulkanrendertaskset_9',['VulkanRenderTaskset',['../structm_1_1vulkan_1_1_vulkan_render_taskset.html',1,'m::vulkan']]],
+  ['vulkansurface_10',['VulkanSurface',['../classm_1_1vulkan_1_1_vulkan_surface.html',1,'m::vulkan']]]
 ];

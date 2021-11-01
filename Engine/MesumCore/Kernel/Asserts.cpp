@@ -2,7 +2,7 @@
 
 namespace m
 {
-MesumCoreApi const logging::ChannelID ASSERT_ID = mLOG_GET_ID();
+MesumCoreApi const logging::mChannelID ASSERT_ID = mLog_getId();
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -15,7 +15,7 @@ void manage_assert(Bool a_condition, const Int a_lineNumber, const Char* a_file,
 {
     if (!a_condition)
     {
-        mLOG_WARN_TO(ASSERT_ID, "Triggered assertion from file ", a_file,
+        mLog_warningTo(ASSERT_ID, "Triggered assertion from file ", a_file,
                      " at Line ", a_lineNumber);
         if (a_interrupt)
         {

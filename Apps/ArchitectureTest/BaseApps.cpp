@@ -12,11 +12,11 @@ public:
         mSoftAssert(false);
         if (cmdLine.get_arg("-N"))
         {
-            mLOG("Not Hello world !");
+            mLog("Not Hello world !");
         }
         else
         {
-            mLOG("Hello world !");
+            mLog("Hello world !");
         }
     }
 };
@@ -24,11 +24,12 @@ public:
 class TestLoopedApp : public m::application::mILoopApplication
 {
     virtual void init(const m::mCmdLine& a_cmdLine, void* a_appData)
-    { mLOG("Hello world !"); }
-    virtual void    destroy() { mLOG("Bye world !"); }
+    {
+        mLog("Hello world !"); }
+    virtual void    destroy() { mLog("Bye world !"); }
     virtual m::Bool step()
     {
-        mLOG("world !");
+        mLog("world !");
         if (m_MaxSteps-- > 0)
             return true;
         else
@@ -43,13 +44,13 @@ class TestTimedLoopedApp : public m::application::mITimedLoopApplication
     virtual void init(const m::mCmdLine& a_cmdLine, void* a_appData)
     {
         set_microSecondsLimit(16000);
-        mLOG("Hello world !");
+        mLog("Hello world !");
     }
-    virtual void    destroy() { mLOG("Bye world !"); }
+    virtual void    destroy() { mLog("Bye world !"); }
     virtual m::Bool step(
         const std::chrono::duration<long long int, std::nano>& a_deltaTime)
     {
-        mLOG("dt =", a_deltaTime);
+        mLog("dt =", a_deltaTime);
         if (m_MaxSteps-- > 0)
             return true;
         else

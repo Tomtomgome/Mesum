@@ -4,7 +4,7 @@
 
 namespace m::files
 {
-MesumCoreApi const logging::ChannelID FILE_ID = mLOG_GET_ID();
+MesumCoreApi const logging::mChannelID FILE_ID = mLog_getId();
 
 //-----------------------------------------------------------------------------
 //
@@ -14,13 +14,13 @@ Bool copy_fileToBinary(std::filesystem::path const& a_filePath,
 {
     if (!std::filesystem::exists(a_filePath))
     {
-        mLOG_ERR_TO(FILE_ID, "File ", a_filePath, " does not exist");
+        mLog_errorTo(FILE_ID, "File ", a_filePath, " does not exist");
         return false;
     }
 
     if (!std::filesystem::is_regular_file(a_filePath))
     {
-        mLOG_ERR_TO(FILE_ID, "File ", a_filePath, " is not a regular file");
+        mLog_errorTo(FILE_ID, "File ", a_filePath, " is not a regular file");
         return false;
     }
 
@@ -28,7 +28,7 @@ Bool copy_fileToBinary(std::filesystem::path const& a_filePath,
 
     if (!file.is_open())
     {
-        mLOG_ERR_TO(FILE_ID, "Could not open ", a_filePath);
+        mLog_errorTo(FILE_ID, "Could not open ", a_filePath);
         return false;
     }
 

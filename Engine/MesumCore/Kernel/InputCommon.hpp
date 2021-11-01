@@ -9,7 +9,7 @@
 
 namespace m
 {
-extern const logging::ChannelID INPUT_LOG_ID;
+extern const logging::mChannelID INPUT_LOG_ID;
 
 //*****************************************************************************
 //*****************************************************************************

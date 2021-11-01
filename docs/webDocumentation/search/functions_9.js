@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['open_5fostream_0',['open_ostream',['../classm_1_1logging_1_1_i_log_policy.html#a3025648b5054e9230a2f55373358d61a',1,'m::logging::ILogPolicy::open_ostream()'],['../classm_1_1logging_1_1_file_log_policy.html#a660971d89cd25b7a11ca2002208f9106',1,'m::logging::FileLogPolicy::open_ostream()'],['../classm_1_1logging_1_1_stdcout_log_policy.html#a8d1dc6329cb18395e76f8c79b38385c9',1,'m::logging::StdcoutLogPolicy::open_ostream()']]],
-  ['operator_20bool_1',['operator bool',['../classm_1_1m_callback.html#ac76b7ca7cc0c33144fbab3d1c47ee692',1,'m::mCallback']]],
-  ['operator_28_29_2',['operator()',['../classm_1_1m_callback.html#a7709c741ce81dde79460c00761ced546',1,'m::mCallback']]]
+  ['parse_5fcmdlineaguments_0',['parse_cmdLineAguments',['../structm_1_1m_cmd_line.html#ae80a0e6b45ca8d32a1052a00543f7b4c',1,'m::mCmdLine']]],
+  ['print_1',['print',['../classm_1_1logging_1_1m_logger.html#a940569f3a073ca1809417b787c916927',1,'m::logging::mLogger']]],
+  ['print_5fimpl_2',['print_impl',['../classm_1_1logging_1_1m_logger.html#aff49d3cca0255f46624c4011715db24b',1,'m::logging::mLogger::print_impl()'],['../classm_1_1logging_1_1m_logger.html#a328181cfff3445e97cd2376358ff79ca',1,'m::logging::mLogger::print_impl(t_First a_parm1, t_Rest... a_parm)']]],
+  ['print_5ftochannel_3',['print_toChannel',['../classm_1_1logging_1_1m_logger.html#ac6fe0dc8b19e8e94eac606d71838befd',1,'m::logging::mLogger']]]
 ];

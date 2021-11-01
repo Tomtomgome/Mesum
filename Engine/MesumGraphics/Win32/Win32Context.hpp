@@ -9,7 +9,7 @@
 
 namespace m::win32
 {
-extern const logging::ChannelID PLATFORM_APP_ID;
+extern const logging::mChannelID PLATFORM_APP_ID;
 
 struct WIN32Context
 {

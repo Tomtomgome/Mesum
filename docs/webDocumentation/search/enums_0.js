@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['severitytype_0',['SeverityType',['../group___log.html#gaf620be757be465af66aa69d08a4f5c8e',1,'m::logging']]]
+  ['mseveritytype_0',['mSeverityType',['../namespacem_1_1logging.html#ad98e602820072dd69a260765a95bd387',1,'m::logging']]]
 ];

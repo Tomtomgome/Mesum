@@ -20,7 +20,7 @@
 \DoxyCodeLine{16 \{}
 \DoxyCodeLine{17 \textcolor{keyword}{namespace }vulkan}
 \DoxyCodeLine{18 \{}
-\DoxyCodeLine{19 \textcolor{keyword}{extern} MesumGraphicsApi \textcolor{keyword}{const} \mbox{\hyperlink{group___log_ga13f51627936471940ede5666fd047313}{logging::ChannelID}} VK\_RENDERER\_ID;}
+\DoxyCodeLine{19 \textcolor{keyword}{extern} MesumGraphicsApi \textcolor{keyword}{const} \mbox{\hyperlink{namespacem_1_1logging_ac4aaaa53dd22d25e9b24d091274b28a7}{logging::mChannelID}} VK\_RENDERER\_ID;}
 \DoxyCodeLine{20 }
 \DoxyCodeLine{21 \textcolor{keyword}{inline} \textcolor{keywordtype}{void} check\_vkResult(VkResult err)}
 \DoxyCodeLine{22 \{}
@@ -28,7 +28,7 @@
 \DoxyCodeLine{24     \{}
 \DoxyCodeLine{25         \textcolor{keywordflow}{return};}
 \DoxyCodeLine{26     \}}
-\DoxyCodeLine{27     \mbox{\hyperlink{group___log_ga7a7702749ea8787667bc29f82220fea7}{mLOG\_ERR\_TO}}(VK\_RENDERER\_ID, \textcolor{stringliteral}{"{}[vulkan] Error: VkResult = "{}}, err);}
+\DoxyCodeLine{27     \mbox{\hyperlink{group___core_gadf1cbf9f4fd7fbf02a0770de0d579455}{mLog\_errorTo}}(VK\_RENDERER\_ID, \textcolor{stringliteral}{"{}[vulkan] Error: VkResult = "{}}, err);}
 \DoxyCodeLine{28     \textcolor{keywordflow}{if} (err < 0)}
 \DoxyCodeLine{29     \{}
 \DoxyCodeLine{30         abort();}

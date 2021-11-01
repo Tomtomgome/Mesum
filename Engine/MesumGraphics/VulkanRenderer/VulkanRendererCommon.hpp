@@ -16,7 +16,7 @@ namespace m
 {
 namespace vulkan
 {
-extern MesumGraphicsApi const logging::ChannelID VK_RENDERER_ID;
+extern MesumGraphicsApi const logging::mChannelID VK_RENDERER_ID;
 
 inline void check_vkResult(VkResult err)
 {
@@ -24,7 +24,7 @@ inline void check_vkResult(VkResult err)
     {
         return;
     }
-    mLOG_ERR_TO(VK_RENDERER_ID, "[vulkan] Error: VkResult = ", err);
+    mLog_errorTo(VK_RENDERER_ID, "[vulkan] Error: VkResult = ", err);
     if (err < 0)
     {
         abort();

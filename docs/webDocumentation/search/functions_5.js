@@ -1,9 +1,4 @@
 var searchData=
 [
-  ['get_5farg_0',['get_arg',['../structm_1_1m_cmd_line.html#a589a0a954f6f5bf5043dcb29fbf1769d',1,'m::mCmdLine']]],
-  ['get_5floglineheader_1',['get_loglineHeader',['../group___log.html#ga4f8d02722b9085722cd2babce3c510e4',1,'m::logging::Logger']]],
-  ['get_5fminimalstepduration_2',['get_minimalStepDuration',['../classm_1_1application_1_1m_i_timed_loop_application.html#aacc12d18ffeae05cdbdbfa2eed7a4376',1,'m::application::mITimedLoopApplication']]],
-  ['get_5fnewchannelid_3',['get_newChannelID',['../group___log.html#ga47287bdcab12bc333f8e978be79c0c75',1,'m::logging::Logger']]],
-  ['get_5fparameter_4',['get_parameter',['../structm_1_1m_cmd_line.html#acb6619d8804bfcc912f1d807f95463d3',1,'m::mCmdLine']]],
-  ['get_5ftime_5',['get_time',['../group___log.html#ga3e8d8b07780e2a257355602b47f79ff4',1,'m::logging::Logger']]]
+  ['init_0',['init',['../classm_1_1application_1_1m_i_loop_application.html#aa1f941cca206e4783c7bcc206c85a950',1,'m::application::mILoopApplication::init()'],['../classm_1_1application_1_1m_i_timed_loop_application.html#ad4ed9bb275006c340185826f215e6215',1,'m::application::mITimedLoopApplication::init()'],['../classm_1_1xcb__unix_1_1_i_windowed_application_impl.html#af51366e2fdd19f1d8d9e8ec99523a850',1,'m::xcb_unix::IWindowedApplicationImpl::init()'],['../classm_1_1win32_1_1_i_windowed_application_impl.html#aab2f38772a89c69b29f02e3620c850bf',1,'m::win32::IWindowedApplicationImpl::init()']]]
 ];

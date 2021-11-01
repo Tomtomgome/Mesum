@@ -173,9 +173,9 @@
 
 boxfont setfont
 1 boundaspect scale
-(m::logging::ILogPolicy) cw
-(m::logging::FileLogPolicy) cw
-(m::logging::StdcoutLogPolicy) cw
+(m::logging::mILogPolicy) cw
+(m::logging::mFileLogPolicy) cw
+(m::logging::mStdcoutLogPolicy) cw
 /boxwidth boxwidth marginwidth 2 mul add def
 /xspacing boxwidth distx add def
 /yspacing boxheight disty add def
@@ -187,9 +187,9 @@ boundx scalefactor div boundy scalefactor div scale
 
 % ----- classes -----
 
- (m::logging::ILogPolicy) 0.500000 1.000000 box
- (m::logging::FileLogPolicy) 0.000000 0.000000 box
- (m::logging::StdcoutLogPolicy) 1.000000 0.000000 box
+ (m::logging::mILogPolicy) 0.500000 1.000000 box
+ (m::logging::mFileLogPolicy) 0.000000 0.000000 box
+ (m::logging::mStdcoutLogPolicy) 1.000000 0.000000 box
 
 % ----- relations -----
 

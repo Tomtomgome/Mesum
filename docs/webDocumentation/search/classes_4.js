@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['filelogpolicy_0',['FileLogPolicy',['../classm_1_1logging_1_1_file_log_policy.html',1,'m::logging']]]
+  ['handle_0',['Handle',['../structm_1_1render_1_1_i_surface_1_1_handle.html',1,'m::render::ISurface']]]
 ];

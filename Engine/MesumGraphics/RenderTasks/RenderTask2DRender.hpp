@@ -269,12 +269,12 @@ void upload_data(Dx12BufferBase<tt_Vertex, tt_Index>& a_buffer,
     memset(&range, 0, sizeof(D3D12_RANGE));
     if (a_buffer.vertexBuffer->Map(0, &range, &vtxResource) != S_OK)
     {
-        mLOG_ERR("Could not map vertex buffer");
+        mLog_error("Could not map vertex buffer");
         return;
     }
     if (a_buffer.indexBuffer->Map(0, &range, &idxResource) != S_OK)
     {
-        mLOG_ERR("Could not map index buffer");
+        mLog_error("Could not map index buffer");
         return;
     }
 

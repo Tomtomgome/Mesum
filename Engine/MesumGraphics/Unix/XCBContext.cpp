@@ -4,7 +4,7 @@ namespace m
 {
 namespace xcb_unix
 {
-const logging::ChannelID PLATFORM_APP_ID = mLOG_GET_ID();
+const logging::mChannelID PLATFORM_APP_ID = mLog_getId();
 
 static input::Key translateKeys(Int a_keyCode)
 {
@@ -143,7 +143,7 @@ static input::Key translateKeys(Int a_keyCode)
 
 void XCBContext::init(HINSTANCE& a_hInstance)
 {
-    mLOG_TO(PLATFORM_APP_ID, "Initializing XcbContext");
+    mLog_to(PLATFORM_APP_ID, "Initializing XcbContext");
     init_keysLuts();
 }
 

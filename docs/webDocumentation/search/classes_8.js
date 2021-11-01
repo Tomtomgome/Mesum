@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['logger_0',['Logger',['../classm_1_1logging_1_1_logger.html',1,'m::logging']]]
+  ['randomgenerator_0',['RandomGenerator',['../classm_1_1math_1_1_random_generator.html',1,'m::math']]],
+  ['resourcedataholder_1',['ResourceDataHolder',['../classm_1_1render_1_1_resource_data_holder.html',1,'m::render']]]
 ];

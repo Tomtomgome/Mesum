@@ -31,13 +31,13 @@ namespace m::dx12
 // Based on https://www.3dgep.com/learning-directx-12-1/
 using namespace Microsoft::WRL;
 
-extern MesumGraphicsApi const logging::ChannelID DX_RENDERER_ID;
+extern MesumGraphicsApi const logging::mChannelID DX_RENDERER_ID;
 
 inline void check_MicrosoftHRESULT(HRESULT a_hr)
 {
     if (FAILED(a_hr))
     {
-        mLOG_ERR_TO(DX_RENDERER_ID, "HRESULT FAIL");
+        mLog_errorTo(DX_RENDERER_ID, "HRESULT FAIL");
         mAssert(false);
     }
 }

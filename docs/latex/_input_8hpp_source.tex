@@ -8,170 +8,174 @@
 \DoxyCodeLine{4 }
 \DoxyCodeLine{5 \textcolor{preprocessor}{\#include <InputCommon.hpp>}}
 \DoxyCodeLine{6 \textcolor{preprocessor}{\#include <Keys.hpp>}}
-\DoxyCodeLine{7 }
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <array>}}
 \DoxyCodeLine{8 \textcolor{preprocessor}{\#include <map>}}
-\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <array>}}
-\DoxyCodeLine{10 }
-\DoxyCodeLine{11 \textcolor{keyword}{namespace }m}
-\DoxyCodeLine{12 \{}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{keyword}{namespace }m}
+\DoxyCodeLine{11 \{}
+\DoxyCodeLine{12 \textcolor{comment}{//*****************************************************************************}}
 \DoxyCodeLine{13 \textcolor{comment}{//*****************************************************************************}}
 \DoxyCodeLine{14 \textcolor{comment}{//*****************************************************************************}}
-\DoxyCodeLine{15 \textcolor{comment}{//*****************************************************************************}}
-\DoxyCodeLine{16 \textcolor{keyword}{namespace }input}
-\DoxyCodeLine{17 \{}
-\DoxyCodeLine{18 \textcolor{keyword}{enum class} KeyMod}
-\DoxyCodeLine{19 \{}
-\DoxyCodeLine{20 }
-\DoxyCodeLine{21     NONE      = 0,}
-\DoxyCodeLine{22     SHIFT     = 1 << 0,}
-\DoxyCodeLine{23     CTRL      = 1 << 1,}
-\DoxyCodeLine{24     ALT       = 1 << 2,}
-\DoxyCodeLine{25     SUPER     = 1 << 3,}
-\DoxyCodeLine{26     CAPS\_LOCK = 1 << 4,}
-\DoxyCodeLine{27     NUM\_LOCK  = 1 << 5}
-\DoxyCodeLine{28 \};}
-\DoxyCodeLine{29 }
-\DoxyCodeLine{30 \textcolor{keyword}{enum class} MouseButton}
-\DoxyCodeLine{31 \{}
-\DoxyCodeLine{32     LEFT   = 0,}
-\DoxyCodeLine{33     RIGHT  = 1,}
-\DoxyCodeLine{34     MIDDLE = 2}
-\DoxyCodeLine{35 \};}
-\DoxyCodeLine{36 }
-\DoxyCodeLine{37 \textcolor{keyword}{enum class} Action}
-\DoxyCodeLine{38 \{}
-\DoxyCodeLine{39     RELEASED,}
-\DoxyCodeLine{40     PRESSED,}
-\DoxyCodeLine{41     REAPETED}
-\DoxyCodeLine{42 \};}
-\DoxyCodeLine{43 }
-\DoxyCodeLine{44 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}}}
-\DoxyCodeLine{45 \{}
-\DoxyCodeLine{46     \textcolor{keyword}{static} \mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}} mousePressed(MouseButton a\_button,}
-\DoxyCodeLine{47                                     KeyMod      a\_keyMod = KeyMod::NONE);}
-\DoxyCodeLine{48     \textcolor{keyword}{static} \mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}} mouseReleased(MouseButton a\_button,}
-\DoxyCodeLine{49                                      KeyMod      a\_keyMod = KeyMod::NONE);}
-\DoxyCodeLine{50 }
-\DoxyCodeLine{51     \mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}}()                               = \textcolor{keywordflow}{default};}
-\DoxyCodeLine{52     \mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}}(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}}\& \mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}}) = \textcolor{keywordflow}{default};}
-\DoxyCodeLine{53 }
-\DoxyCodeLine{54     \textcolor{keyword}{friend} \textcolor{keywordtype}{bool} operator<(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}}\& l, \textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}}\& r)}
-\DoxyCodeLine{55     \{}
-\DoxyCodeLine{56         \textcolor{keywordflow}{return} std::tie(l.m\_action, l.m\_keyMod, l.m\_button) <}
-\DoxyCodeLine{57                std::tie(r.m\_action, r.m\_keyMod,}
-\DoxyCodeLine{58                         r.m\_button);  \textcolor{comment}{// keep the same order}}
-\DoxyCodeLine{59     \}}
-\DoxyCodeLine{60 }
-\DoxyCodeLine{61     Action      m\_action;}
-\DoxyCodeLine{62     KeyMod      m\_keyMod;}
-\DoxyCodeLine{63     MouseButton m\_button;}
-\DoxyCodeLine{64 \};}
-\DoxyCodeLine{65 }
-\DoxyCodeLine{66 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{MouseState}}}
-\DoxyCodeLine{67 \{}
-\DoxyCodeLine{68     \mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{MouseState}}() = \textcolor{keywordflow}{default};}
-\DoxyCodeLine{69     \mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{MouseState}}(MouseButton a\_button, KeyMod a\_keyMod = KeyMod::NONE)}
-\DoxyCodeLine{70         : m\_keyMod(a\_keyMod),}
-\DoxyCodeLine{71           m\_button(a\_button)}
-\DoxyCodeLine{72     \{}
-\DoxyCodeLine{73     \}}
-\DoxyCodeLine{74     \mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{MouseState}}(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{MouseState}}\& \mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}}) = \textcolor{keywordflow}{default};}
-\DoxyCodeLine{75 }
-\DoxyCodeLine{76     \textcolor{keyword}{friend} \textcolor{keywordtype}{bool} operator<(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{MouseState}}\& l, \textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{MouseState}}\& r)}
-\DoxyCodeLine{77     \{}
-\DoxyCodeLine{78         \textcolor{keywordflow}{return} std::tie(l.m\_keyMod, l.m\_button) <}
-\DoxyCodeLine{79                std::tie(r.m\_keyMod, r.m\_button);  \textcolor{comment}{// keep the same order}}
-\DoxyCodeLine{80     \}}
-\DoxyCodeLine{81 }
-\DoxyCodeLine{82     KeyMod      m\_keyMod;}
-\DoxyCodeLine{83     MouseButton m\_button;}
-\DoxyCodeLine{84 \};}
-\DoxyCodeLine{85 }
-\DoxyCodeLine{86 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1input_1_1_key_action}{KeyAction}}}
-\DoxyCodeLine{87 \{}
-\DoxyCodeLine{88     \textcolor{keyword}{static} \mbox{\hyperlink{structm_1_1input_1_1_key_action}{KeyAction}} keyPressed(Key a\_key, KeyMod a\_keyMod = KeyMod::NONE);}
-\DoxyCodeLine{89     \textcolor{keyword}{static} \mbox{\hyperlink{structm_1_1input_1_1_key_action}{KeyAction}} keyReleased(Key a\_key, KeyMod a\_keyMod = KeyMod::NONE);}
-\DoxyCodeLine{90 }
-\DoxyCodeLine{91     \mbox{\hyperlink{structm_1_1input_1_1_key_action}{KeyAction}}()                             = \textcolor{keywordflow}{default};}
-\DoxyCodeLine{92     \mbox{\hyperlink{structm_1_1input_1_1_key_action}{KeyAction}}(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1input_1_1_key_action}{KeyAction}}\& \mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}}) = \textcolor{keywordflow}{default};}
-\DoxyCodeLine{93 }
-\DoxyCodeLine{94     \textcolor{keyword}{friend} \textcolor{keywordtype}{bool} operator<(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1input_1_1_key_action}{KeyAction}}\& l, \textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1input_1_1_key_action}{KeyAction}}\& r)}
-\DoxyCodeLine{95     \{}
-\DoxyCodeLine{96         \textcolor{keywordflow}{return} std::tie(l.m\_action, l.m\_keyMod, l.m\_key) <}
-\DoxyCodeLine{97                std::tie(r.m\_action, r.m\_keyMod,}
-\DoxyCodeLine{98                         r.m\_key);  \textcolor{comment}{// keep the same order}}
-\DoxyCodeLine{99     \}}
-\DoxyCodeLine{100 }
-\DoxyCodeLine{101     Action m\_action;}
-\DoxyCodeLine{102     KeyMod m\_keyMod;}
-\DoxyCodeLine{103     Key    m\_key;}
-\DoxyCodeLine{104 \};}
-\DoxyCodeLine{105 }
-\DoxyCodeLine{106 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1input_1_1_input_manager}{InputManager}}}
-\DoxyCodeLine{107 \{}
-\DoxyCodeLine{108    \textcolor{keyword}{public}:}
-\DoxyCodeLine{109     \textcolor{keywordtype}{void} update\_KeyMods(KeyMod a\_mod, Action a\_action);}
-\DoxyCodeLine{110 }
-\DoxyCodeLine{111     \textcolor{keywordtype}{void} process\_MouseEvent(MouseButton a\_button, Action a\_action,}
-\DoxyCodeLine{112                            KeyMod a\_mods);}
-\DoxyCodeLine{113     \textcolor{keywordtype}{void} process\_KeyEvent(Key a\_key, \textcolor{keywordtype}{int} a\_scancode, Action a\_action,}
-\DoxyCodeLine{114                          KeyMod a\_mods);}
-\DoxyCodeLine{115     \textcolor{keywordtype}{void} process\_ScrollEvent(\textcolor{keywordtype}{double} a\_xoffset, \textcolor{keywordtype}{double} a\_yoffset);}
-\DoxyCodeLine{116     \textcolor{keywordtype}{void} process\_CursorPosition(\textcolor{keywordtype}{double} a\_xpos, \textcolor{keywordtype}{double} a\_ypos);}
-\DoxyCodeLine{117 }
-\DoxyCodeLine{118     \textcolor{keywordtype}{void} processAndUpdate\_States();}
-\DoxyCodeLine{119 }
-\DoxyCodeLine{120     \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{KeyActionSignal::mCallbackHandle}} attach\_ToKeyEvent(}
-\DoxyCodeLine{121         \mbox{\hyperlink{structm_1_1input_1_1_key_action}{KeyAction}} a\_keyAction, \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_callback}{KeyActionCallback}}\& a\_callback);}
-\DoxyCodeLine{122     \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{MouseActionSignal::mCallbackHandle}} attach\_ToMouseEvent(}
-\DoxyCodeLine{123         \mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}} a\_mouseAction, \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_callback}{MouseActionCallback}}\& a\_callback);}
-\DoxyCodeLine{124     \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{ScrollSignal::mCallbackHandle}} attach\_ToScrollEvent(\textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_callback}{ScrollCallback}}\& a\_callback);}
+\DoxyCodeLine{15 \textcolor{keyword}{namespace }input}
+\DoxyCodeLine{16 \{}
+\DoxyCodeLine{17 \textcolor{keyword}{enum class} KeyMod}
+\DoxyCodeLine{18 \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20     NONE      = 0,}
+\DoxyCodeLine{21     SHIFT     = 1 << 0,}
+\DoxyCodeLine{22     CTRL      = 1 << 1,}
+\DoxyCodeLine{23     ALT       = 1 << 2,}
+\DoxyCodeLine{24     SUPER     = 1 << 3,}
+\DoxyCodeLine{25     CAPS\_LOCK = 1 << 4,}
+\DoxyCodeLine{26     NUM\_LOCK  = 1 << 5}
+\DoxyCodeLine{27 \};}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keyword}{enum class} MouseButton}
+\DoxyCodeLine{30 \{}
+\DoxyCodeLine{31     LEFT   = 0,}
+\DoxyCodeLine{32     RIGHT  = 1,}
+\DoxyCodeLine{33     MIDDLE = 2}
+\DoxyCodeLine{34 \};}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{keyword}{enum class} Action}
+\DoxyCodeLine{37 \{}
+\DoxyCodeLine{38     RELEASED,}
+\DoxyCodeLine{39     PRESSED,}
+\DoxyCodeLine{40     REAPETED}
+\DoxyCodeLine{41 \};}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}}}
+\DoxyCodeLine{44 \{}
+\DoxyCodeLine{45     \textcolor{keyword}{static} \mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}} mousePressed(MouseButton a\_button,}
+\DoxyCodeLine{46                                     KeyMod      a\_keyMod = KeyMod::NONE);}
+\DoxyCodeLine{47     \textcolor{keyword}{static} \mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}} mouseReleased(MouseButton a\_button,}
+\DoxyCodeLine{48                                      KeyMod      a\_keyMod = KeyMod::NONE);}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50     \mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}}()                               = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{51     \mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}}(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}}\& \mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}}) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53     \textcolor{keyword}{friend} \textcolor{keywordtype}{bool} operator<(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}}\& l, \textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}}\& r)}
+\DoxyCodeLine{54     \{}
+\DoxyCodeLine{55         \textcolor{keywordflow}{return} std::tie(l.m\_action, l.m\_keyMod, l.m\_button) <}
+\DoxyCodeLine{56                std::tie(r.m\_action, r.m\_keyMod,}
+\DoxyCodeLine{57                         r.m\_button);  \textcolor{comment}{// keep the same order}}
+\DoxyCodeLine{58     \}}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60     Action      m\_action;}
+\DoxyCodeLine{61     KeyMod      m\_keyMod;}
+\DoxyCodeLine{62     MouseButton m\_button;}
+\DoxyCodeLine{63 \};}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{MouseState}}}
+\DoxyCodeLine{66 \{}
+\DoxyCodeLine{67     \mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{MouseState}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{68     \mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{MouseState}}(MouseButton a\_button, KeyMod a\_keyMod = KeyMod::NONE)}
+\DoxyCodeLine{69         : m\_keyMod(a\_keyMod),}
+\DoxyCodeLine{70           m\_button(a\_button)}
+\DoxyCodeLine{71     \{}
+\DoxyCodeLine{72     \}}
+\DoxyCodeLine{73     \mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{MouseState}}(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{MouseState}}\& \mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}}) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75     \textcolor{keyword}{friend} \textcolor{keywordtype}{bool} operator<(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{MouseState}}\& l, \textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{MouseState}}\& r)}
+\DoxyCodeLine{76     \{}
+\DoxyCodeLine{77         \textcolor{keywordflow}{return} std::tie(l.m\_keyMod, l.m\_button) <}
+\DoxyCodeLine{78                std::tie(r.m\_keyMod, r.m\_button);  \textcolor{comment}{// keep the same order}}
+\DoxyCodeLine{79     \}}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81     KeyMod      m\_keyMod;}
+\DoxyCodeLine{82     MouseButton m\_button;}
+\DoxyCodeLine{83 \};}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1input_1_1_key_action}{KeyAction}}}
+\DoxyCodeLine{86 \{}
+\DoxyCodeLine{87     \textcolor{keyword}{static} \mbox{\hyperlink{structm_1_1input_1_1_key_action}{KeyAction}} keyPressed(Key a\_key, KeyMod a\_keyMod = KeyMod::NONE);}
+\DoxyCodeLine{88     \textcolor{keyword}{static} \mbox{\hyperlink{structm_1_1input_1_1_key_action}{KeyAction}} keyReleased(Key a\_key, KeyMod a\_keyMod = KeyMod::NONE);}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90     \mbox{\hyperlink{structm_1_1input_1_1_key_action}{KeyAction}}()                             = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{91     \mbox{\hyperlink{structm_1_1input_1_1_key_action}{KeyAction}}(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1input_1_1_key_action}{KeyAction}}\& \mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}}) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93     \textcolor{keyword}{friend} \textcolor{keywordtype}{bool} operator<(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1input_1_1_key_action}{KeyAction}}\& l, \textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1input_1_1_key_action}{KeyAction}}\& r)}
+\DoxyCodeLine{94     \{}
+\DoxyCodeLine{95         \textcolor{keywordflow}{return} std::tie(l.m\_action, l.m\_keyMod, l.m\_key) <}
+\DoxyCodeLine{96                std::tie(r.m\_action, r.m\_keyMod,}
+\DoxyCodeLine{97                         r.m\_key);  \textcolor{comment}{// keep the same order}}
+\DoxyCodeLine{98     \}}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100     Action m\_action;}
+\DoxyCodeLine{101     KeyMod m\_keyMod;}
+\DoxyCodeLine{102     Key    m\_key;}
+\DoxyCodeLine{103 \};}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1input_1_1_input_manager}{InputManager}}}
+\DoxyCodeLine{106 \{}
+\DoxyCodeLine{107    \textcolor{keyword}{public}:}
+\DoxyCodeLine{108     \textcolor{keywordtype}{void} update\_KeyMods(KeyMod a\_mod, Action a\_action);}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110     \textcolor{keywordtype}{void} process\_MouseEvent(MouseButton a\_button, Action a\_action,}
+\DoxyCodeLine{111                             KeyMod a\_mods);}
+\DoxyCodeLine{112     \textcolor{keywordtype}{void} process\_KeyEvent(Key a\_key, \textcolor{keywordtype}{int} a\_scancode, Action a\_action,}
+\DoxyCodeLine{113                           KeyMod a\_mods);}
+\DoxyCodeLine{114     \textcolor{keywordtype}{void} process\_ScrollEvent(\textcolor{keywordtype}{double} a\_xoffset, \textcolor{keywordtype}{double} a\_yoffset);}
+\DoxyCodeLine{115     \textcolor{keywordtype}{void} process\_CursorPosition(\textcolor{keywordtype}{double} a\_xpos, \textcolor{keywordtype}{double} a\_ypos);}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117     \textcolor{keywordtype}{void} processAndUpdate\_States();}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119     \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{KeyActionSignal::mCallbackHandle}} attach\_ToKeyEvent(}
+\DoxyCodeLine{120         \mbox{\hyperlink{structm_1_1input_1_1_key_action}{KeyAction}} a\_keyAction, \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_callback}{KeyActionCallback}}\& a\_callback);}
+\DoxyCodeLine{121     \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{MouseActionSignal::mCallbackHandle}} attach\_ToMouseEvent(}
+\DoxyCodeLine{122         \mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}} a\_mouseAction, \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_callback}{MouseActionCallback}}\& a\_callback);}
+\DoxyCodeLine{123     \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{ScrollSignal::mCallbackHandle}} attach\_ToScrollEvent(}
+\DoxyCodeLine{124         \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_callback}{ScrollCallback}}\& a\_callback);}
 \DoxyCodeLine{125     \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{MouseMoveSignal::mCallbackHandle}} attach\_ToMoveEvent(}
 \DoxyCodeLine{126         \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_callback}{MouseMoveCallback}}\& a\_callback);}
 \DoxyCodeLine{127 }
 \DoxyCodeLine{128     \textcolor{keywordtype}{void} detach\_FromKeyEvent(\mbox{\hyperlink{structm_1_1input_1_1_key_action}{KeyAction}}                a\_keyAction,}
-\DoxyCodeLine{129                             \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_callback}{KeyActionCallback}}\& a\_callback);}
-\DoxyCodeLine{130     \textcolor{keywordtype}{void} detach\_FromKeyEvent(\mbox{\hyperlink{structm_1_1input_1_1_key_action}{KeyAction}}                      a\_keyAction,}
-\DoxyCodeLine{131                             \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{KeyActionSignal::mCallbackHandle}}\& a\_handle);}
+\DoxyCodeLine{129                              \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_callback}{KeyActionCallback}}\& a\_callback);}
+\DoxyCodeLine{130     \textcolor{keywordtype}{void} detach\_FromKeyEvent(\mbox{\hyperlink{structm_1_1input_1_1_key_action}{KeyAction}} a\_keyAction,}
+\DoxyCodeLine{131                              \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{KeyActionSignal::mCallbackHandle}}\& a\_handle);}
 \DoxyCodeLine{132 }
 \DoxyCodeLine{133     \textcolor{keywordtype}{void} detach\_FromMouseEvent(\mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}}                a\_mouseAction,}
-\DoxyCodeLine{134                               \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_callback}{MouseActionCallback}}\& a\_callback);}
-\DoxyCodeLine{135     \textcolor{keywordtype}{void} detach\_FromMouseEvent(\mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}}                      a\_mouseAction,}
-\DoxyCodeLine{136                               \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{MouseActionSignal::mCallbackHandle}}\& a\_handle);}
-\DoxyCodeLine{137 }
-\DoxyCodeLine{138     \textcolor{keywordtype}{void} detach\_FromScrollEvent(\textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_callback}{ScrollCallback}}\& a\_callback);}
-\DoxyCodeLine{139     \textcolor{keywordtype}{void} detach\_FromScrollEvent(\textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{ScrollSignal::mCallbackHandle}}\& a\_callback);}
-\DoxyCodeLine{140 }
-\DoxyCodeLine{141     \textcolor{keywordtype}{void} detach\_FromMoveEvent(\textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_callback}{MouseMoveCallback}}\& a\_callback);}
-\DoxyCodeLine{142     \textcolor{keywordtype}{void} detach\_FromMoveEvent(\textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{MouseMoveSignal::mCallbackHandle}}\& a\_callback);}
-\DoxyCodeLine{143 }
-\DoxyCodeLine{144     \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{MouseStateSignal::mCallbackHandle}} attach\_ToMouseState(}
-\DoxyCodeLine{145         \mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{MouseState}} a\_mouseState, \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_callback}{MouseStateCallback}}\& a\_callback);}
-\DoxyCodeLine{146     \textcolor{keywordtype}{void} detach\_FromMouseState(\mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{MouseState}}                a\_mouseState,}
-\DoxyCodeLine{147                               \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_callback}{MouseStateCallback}}\& a\_callback);}
-\DoxyCodeLine{148     \textcolor{keywordtype}{void} detach\_FromMouseState(\mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{MouseState}}                      a\_mouseState,}
-\DoxyCodeLine{149                               \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{MouseStateSignal::mCallbackHandle}}\& a\_handle);}
-\DoxyCodeLine{150 }
-\DoxyCodeLine{151    \textcolor{keyword}{private}:}
-\DoxyCodeLine{152     \textcolor{keywordtype}{double} m\_mousePosX;}
-\DoxyCodeLine{153     \textcolor{keywordtype}{double} m\_mousePosY;}
+\DoxyCodeLine{134                                \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_callback}{MouseActionCallback}}\& a\_callback);}
+\DoxyCodeLine{135     \textcolor{keywordtype}{void} detach\_FromMouseEvent(}
+\DoxyCodeLine{136         \mbox{\hyperlink{structm_1_1input_1_1_mouse_action}{MouseAction}}                               a\_mouseAction,}
+\DoxyCodeLine{137         \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{MouseActionSignal::mCallbackHandle}}\& a\_handle);}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139     \textcolor{keywordtype}{void} detach\_FromScrollEvent(\textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_callback}{ScrollCallback}}\& a\_callback);}
+\DoxyCodeLine{140     \textcolor{keywordtype}{void} detach\_FromScrollEvent(}
+\DoxyCodeLine{141         \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{ScrollSignal::mCallbackHandle}}\& a\_callback);}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143     \textcolor{keywordtype}{void} detach\_FromMoveEvent(\textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_callback}{MouseMoveCallback}}\& a\_callback);}
+\DoxyCodeLine{144     \textcolor{keywordtype}{void} detach\_FromMoveEvent(}
+\DoxyCodeLine{145         \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{MouseMoveSignal::mCallbackHandle}}\& a\_callback);}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147     \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{MouseStateSignal::mCallbackHandle}} attach\_ToMouseState(}
+\DoxyCodeLine{148         \mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{MouseState}} a\_mouseState, \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_callback}{MouseStateCallback}}\& a\_callback);}
+\DoxyCodeLine{149     \textcolor{keywordtype}{void} detach\_FromMouseState(\mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{MouseState}}                a\_mouseState,}
+\DoxyCodeLine{150                                \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_callback}{MouseStateCallback}}\& a\_callback);}
+\DoxyCodeLine{151     \textcolor{keywordtype}{void} detach\_FromMouseState(}
+\DoxyCodeLine{152         \mbox{\hyperlink{structm_1_1input_1_1_mouse_state}{MouseState}}                               a\_mouseState,}
+\DoxyCodeLine{153         \textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{MouseStateSignal::mCallbackHandle}}\& a\_handle);}
 \DoxyCodeLine{154 }
-\DoxyCodeLine{155     std::array<Bool, 8>                 m\_previousMouseButtonClicked = \{\textcolor{keyword}{false}\};}
-\DoxyCodeLine{156     std::array<Bool, 8>                 m\_mouseButtonClicked         = \{\textcolor{keyword}{false}\};}
-\DoxyCodeLine{157     std::array<Bool, Key::KEY\_LAST + 1> m\_keyPressed;}
+\DoxyCodeLine{155    \textcolor{keyword}{private}:}
+\DoxyCodeLine{156     \textcolor{keywordtype}{double} m\_mousePosX;}
+\DoxyCodeLine{157     \textcolor{keywordtype}{double} m\_mousePosY;}
 \DoxyCodeLine{158 }
-\DoxyCodeLine{159     \textcolor{keywordtype}{int}                                      m\_previousMod = 0;}
-\DoxyCodeLine{160     \textcolor{keywordtype}{int}                                      m\_currentMod  = 0;}
-\DoxyCodeLine{161     std::map<KeyAction, KeyActionSignal>     m\_keySignals;}
-\DoxyCodeLine{162     std::map<MouseAction, MouseActionSignal> m\_mouseSignals;}
-\DoxyCodeLine{163 }
-\DoxyCodeLine{164     std::map<MouseState, MouseStateSignal> m\_mouseStateSignals;}
-\DoxyCodeLine{165 }
-\DoxyCodeLine{166     \mbox{\hyperlink{classm_1_1m_signal}{ScrollSignal}}    m\_scrollSignal;}
-\DoxyCodeLine{167     \mbox{\hyperlink{classm_1_1m_signal}{MouseMoveSignal}} m\_moveSignal;}
-\DoxyCodeLine{168 \};}
-\DoxyCodeLine{169 \}  \textcolor{comment}{// namespace input}}
-\DoxyCodeLine{170 \}  \textcolor{comment}{// namespace m}}
-\DoxyCodeLine{171 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//M\_INPUT}}
+\DoxyCodeLine{159     std::array<Bool, 8>                 m\_previousMouseButtonClicked = \{\textcolor{keyword}{false}\};}
+\DoxyCodeLine{160     std::array<Bool, 8>                 m\_mouseButtonClicked         = \{\textcolor{keyword}{false}\};}
+\DoxyCodeLine{161     std::array<Bool, Key::KEY\_LAST + 1> m\_keyPressed;}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163     \textcolor{keywordtype}{int}                                      m\_previousMod = 0;}
+\DoxyCodeLine{164     \textcolor{keywordtype}{int}                                      m\_currentMod  = 0;}
+\DoxyCodeLine{165     std::map<KeyAction, KeyActionSignal>     m\_keySignals;}
+\DoxyCodeLine{166     std::map<MouseAction, MouseActionSignal> m\_mouseSignals;}
+\DoxyCodeLine{167 }
+\DoxyCodeLine{168     std::map<MouseState, MouseStateSignal> m\_mouseStateSignals;}
+\DoxyCodeLine{169 }
+\DoxyCodeLine{170     \mbox{\hyperlink{classm_1_1m_signal}{ScrollSignal}}    m\_scrollSignal;}
+\DoxyCodeLine{171     \mbox{\hyperlink{classm_1_1m_signal}{MouseMoveSignal}} m\_moveSignal;}
+\DoxyCodeLine{172 \};}
+\DoxyCodeLine{173 \}  \textcolor{comment}{// namespace input}}
+\DoxyCodeLine{174 \}  \textcolor{comment}{// namespace m}}
+\DoxyCodeLine{175 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_INPUT}}
 
 \end{DoxyCode}

@@ -4,9 +4,8 @@
 
 #include <InputCommon.hpp>
 #include <Keys.hpp>
-
-#include <map>
 #include <array>
+#include <map>
 
 namespace m
 {
@@ -109,9 +108,9 @@ class InputManager
     void update_KeyMods(KeyMod a_mod, Action a_action);
 
     void process_MouseEvent(MouseButton a_button, Action a_action,
-                           KeyMod a_mods);
+                            KeyMod a_mods);
     void process_KeyEvent(Key a_key, int a_scancode, Action a_action,
-                         KeyMod a_mods);
+                          KeyMod a_mods);
     void process_ScrollEvent(double a_xoffset, double a_yoffset);
     void process_CursorPosition(double a_xpos, double a_ypos);
 
@@ -121,32 +120,37 @@ class InputManager
         KeyAction a_keyAction, const KeyActionCallback& a_callback);
     MouseActionSignal::mCallbackHandle attach_ToMouseEvent(
         MouseAction a_mouseAction, const MouseActionCallback& a_callback);
-    ScrollSignal::mCallbackHandle attach_ToScrollEvent(const ScrollCallback& a_callback);
+    ScrollSignal::mCallbackHandle attach_ToScrollEvent(
+        const ScrollCallback& a_callback);
     MouseMoveSignal::mCallbackHandle attach_ToMoveEvent(
         const MouseMoveCallback& a_callback);
 
     void detach_FromKeyEvent(KeyAction                a_keyAction,
-                            const KeyActionCallback& a_callback);
-    void detach_FromKeyEvent(KeyAction                      a_keyAction,
-                            const KeyActionSignal::mCallbackHandle& a_handle);
+                             const KeyActionCallback& a_callback);
+    void detach_FromKeyEvent(KeyAction a_keyAction,
+                             const KeyActionSignal::mCallbackHandle& a_handle);
 
     void detach_FromMouseEvent(MouseAction                a_mouseAction,
-                              const MouseActionCallback& a_callback);
-    void detach_FromMouseEvent(MouseAction                      a_mouseAction,
-                              const MouseActionSignal::mCallbackHandle& a_handle);
+                               const MouseActionCallback& a_callback);
+    void detach_FromMouseEvent(
+        MouseAction                               a_mouseAction,
+        const MouseActionSignal::mCallbackHandle& a_handle);
 
     void detach_FromScrollEvent(const ScrollCallback& a_callback);
-    void detach_FromScrollEvent(const ScrollSignal::mCallbackHandle& a_callback);
+    void detach_FromScrollEvent(
+        const ScrollSignal::mCallbackHandle& a_callback);
 
     void detach_FromMoveEvent(const MouseMoveCallback& a_callback);
-    void detach_FromMoveEvent(const MouseMoveSignal::mCallbackHandle& a_callback);
+    void detach_FromMoveEvent(
+        const MouseMoveSignal::mCallbackHandle& a_callback);
 
     MouseStateSignal::mCallbackHandle attach_ToMouseState(
         MouseState a_mouseState, const MouseStateCallback& a_callback);
     void detach_FromMouseState(MouseState                a_mouseState,
-                              const MouseStateCallback& a_callback);
-    void detach_FromMouseState(MouseState                      a_mouseState,
-                              const MouseStateSignal::mCallbackHandle& a_handle);
+                               const MouseStateCallback& a_callback);
+    void detach_FromMouseState(
+        MouseState                               a_mouseState,
+        const MouseStateSignal::mCallbackHandle& a_handle);
 
    private:
     double m_mousePosX;
@@ -168,4 +172,4 @@ class InputManager
 };
 }  // namespace input
 }  // namespace m
-#endif //M_INPUT
+#endif  // M_INPUT

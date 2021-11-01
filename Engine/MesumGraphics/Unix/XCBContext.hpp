@@ -10,7 +10,7 @@ namespace m
 {
 namespace xcb_unix
 {
-extern const logging::ChannelID PLATFORM_APP_ID;
+extern const logging::mChannelID PLATFORM_APP_ID;
 
 struct XCBContext
 {

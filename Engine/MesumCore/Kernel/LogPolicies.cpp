@@ -1,13 +1,25 @@
 #include <LogPolicies.hpp>
 
-namespace m
+namespace m::logging
 {
-namespace logging
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+mFileLogPolicy::~mFileLogPolicy()
 {
-//------------------------------------------------------------
-//------------------------------------------------------------
-//------------------------------------------------------------
-void FileLogPolicy::open_ostream(const std::string& a_name)
+    if (m_outStream)
+    {
+        close_ostream();
+    }
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void mFileLogPolicy::open_ostream(const std::string& a_name)
 {
     m_outStream->open(a_name.c_str(),
                       std::ios_base::binary | std::ios_base::out);
@@ -17,7 +29,10 @@ void FileLogPolicy::open_ostream(const std::string& a_name)
     }
 }
 
-void FileLogPolicy::close_ostream()
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void mFileLogPolicy::close_ostream()
 {
     if (m_outStream)
     {
@@ -25,33 +40,22 @@ void FileLogPolicy::close_ostream()
     }
 }
 
-void FileLogPolicy::write(const std::string& a_msg)
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void mFileLogPolicy::write(const std::string& a_msg)
 {
     (*m_outStream) << a_msg << std::endl;
 }
 
-FileLogPolicy::~FileLogPolicy()
-{
-    if (m_outStream)
-    {
-        close_ostream();
-    }
-}
-
-//------------------------------------------------------------
-//------------------------------------------------------------
-//------------------------------------------------------------
-StdcoutLogPolicy::StdcoutLogPolicy() {}
-
-void StdcoutLogPolicy::open_ostream(const std::string& a_name) {}
-
-void StdcoutLogPolicy::close_ostream() {}
-
-void StdcoutLogPolicy::write(const std::string& a_msg)
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void mStdcoutLogPolicy::write(const std::string& a_msg)
 {
     std::cout << a_msg << std::endl;
 }
-
-StdcoutLogPolicy::~StdcoutLogPolicy() {}
-}  // namespace logging
-}  // namespace m
+}  // namespace m::logging

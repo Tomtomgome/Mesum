@@ -25,7 +25,7 @@ class CubeMover
         {
             x += speed;
         }
-        mLOG_TO(m_CUBEMOVER_ID, "Se deplace : ", x, ":", y);
+        mLog_to(m_CUBEMOVER_ID, "Se deplace : ", x, ":", y);
     }
 
     void set_moveUp() { m_up = true; }
@@ -45,7 +45,7 @@ class CubeMover
     m::Bool  m_left  = false;
     m::Bool  m_right = false;
 
-    const m::logging::ChannelID m_CUBEMOVER_ID = mLOG_GET_ID();
+    const m::logging::mChannelID m_CUBEMOVER_ID = mLog_getId();
 };
 
 class CubeMoverApp : public m::crossPlatform::IWindowedApplication
@@ -66,12 +66,12 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m::UInt           height  = 720;
         if (!cmdLine.get_parameter("-w", width))
         {
-            mLOG_TO(m_CUBEAPP_ID, "Width not overriden, use default : ", width);
+            mLog_to(m_CUBEAPP_ID, "Width not overriden, use default : ", width);
         }
 
         if (!cmdLine.get_parameter("-h", height))
         {
-            mLOG_TO(m_CUBEAPP_ID,
+            mLog_to(m_CUBEAPP_ID,
                     "Height not overriden, use default : ", height);
         }
 
@@ -166,10 +166,10 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m::mCmdLine const& cmdLine = get_cmdLine();
         if (cmdLine.get_arg("-NoLog"))
         {
-            mLOG_DISABLE(m_CUBEAPP_ID);
+            mDisable_logChannels(m_CUBEAPP_ID);
         }
 
-        mLOG_TO(m_CUBEAPP_ID, "Bonjour !, dt = ", a_deltaTime, "ms");
+        mLog_to(m_CUBEAPP_ID, "Bonjour !, dt = ", a_deltaTime, "ms");
 
         m_mover.move(m_x, m_y);
 
@@ -202,7 +202,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
     m::windows::IWindow*        m_mainVulkanWindow;
     CubeMover                   m_mover;
 
-    const m::logging::ChannelID m_CUBEAPP_ID = mLOG_GET_ID();
+    const m::logging::mChannelID m_CUBEAPP_ID = mLog_getId();
 };
 
 M_EXECUTE_WINDOWED_APP(CubeMoverApp)

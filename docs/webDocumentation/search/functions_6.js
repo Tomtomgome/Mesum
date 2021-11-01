@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['init_0',['init',['../classm_1_1application_1_1m_i_loop_application.html#aa1f941cca206e4783c7bcc206c85a950',1,'m::application::mILoopApplication::init()'],['../classm_1_1application_1_1m_i_timed_loop_application.html#ad4ed9bb275006c340185826f215e6215',1,'m::application::mITimedLoopApplication::init()'],['../classm_1_1xcb__unix_1_1_i_windowed_application_impl.html#af51366e2fdd19f1d8d9e8ec99523a850',1,'m::xcb_unix::IWindowedApplicationImpl::init()'],['../classm_1_1win32_1_1_i_windowed_application_impl.html#aab2f38772a89c69b29f02e3620c850bf',1,'m::win32::IWindowedApplicationImpl::init()']]]
+  ['launch_0',['launch',['../classm_1_1application_1_1m_i_basic_application.html#a10ecb6a45dbf100c037eff46b5a1f161',1,'m::application::mIBasicApplication::launch()'],['../classm_1_1application_1_1m_i_loop_application.html#ac9606c3ee30894f0694bc390a6c42f0d',1,'m::application::mILoopApplication::launch()'],['../classm_1_1application_1_1m_i_timed_loop_application.html#a2ec2d8e42fcf88cb05bd8fc6748959b9',1,'m::application::mITimedLoopApplication::launch()']]]
 ];

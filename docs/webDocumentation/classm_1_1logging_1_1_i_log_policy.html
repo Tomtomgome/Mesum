@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Mesum Framework: m::logging::ILogPolicy Class Reference</title>
+<title>Mesum Framework: m::logging::mILogPolicy Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -63,14 +63,14 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>m</b></li><li class="navelem"><a class="el" href="namespacem_1_1logging.html">logging</a></li><li class="navelem"><a class="el" href="classm_1_1logging_1_1_i_log_policy.html">ILogPolicy</a></li>  </ul>
+<li class="navelem"><b>m</b></li><li class="navelem"><a class="el" href="namespacem_1_1logging.html">logging</a></li><li class="navelem"><a class="el" href="classm_1_1logging_1_1_i_log_policy.html">mILogPolicy</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classm_1_1logging_1_1_i_log_policy-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">m::logging::ILogPolicy Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span><div class="ingroups"><a class="el" href="group___log.html">Log</a></div></div></div>
+  <div class="headertitle"><div class="title">m::logging::mILogPolicy Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span><div class="ingroups"><a class="el" href="group___log.html">Log</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -79,13 +79,13 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="_log_policies_8hpp_source.html">LogPolicies.hpp</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for m::logging::ILogPolicy:</div>
+Inheritance diagram for m::logging::mILogPolicy:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="classm_1_1logging_1_1_i_log_policy.png" usemap="#m::logging::ILogPolicy_map" alt=""/>
   <map id="m::logging::ILogPolicy_map" name="m::logging::ILogPolicy_map">
-<area href="classm_1_1logging_1_1_file_log_policy.html" title="Log policy outputing into a file." alt="m::logging::FileLogPolicy" shape="rect" coords="0,56,172,80"/>
-<area href="classm_1_1logging_1_1_stdcout_log_policy.html" title="Log policy outputing into the standard output." alt="m::logging::StdcoutLogPolicy" shape="rect" coords="182,56,354,80"/>
+<area href="classm_1_1logging_1_1_file_log_policy.html" title="Log policy outputing into a file." alt="m::logging::mFileLogPolicy" shape="rect" coords="0,56,172,80"/>
+<area href="classm_1_1logging_1_1_stdcout_log_policy.html" title="Log policy outputing into the standard output." alt="m::logging::mStdcoutLogPolicy" shape="rect" coords="182,56,354,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -115,7 +115,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void m::logging::ILogPolicy::close_ostream </td>
+          <td class="memname">virtual void m::logging::mILogPolicy::close_ostream </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -130,7 +130,7 @@ Public Member Functions</h2></td></tr>
 
 <p>close the output stream </p>
 
-<p>Implemented in <a class="el" href="classm_1_1logging_1_1_file_log_policy.html#a5f185d7a0c25907f1e036089c867246e">m::logging::FileLogPolicy</a>, and <a class="el" href="classm_1_1logging_1_1_stdcout_log_policy.html#a00904a294718b8bc7ada42cf746e3d44">m::logging::StdcoutLogPolicy</a>.</p>
+<p>Implemented in <a class="el" href="classm_1_1logging_1_1_file_log_policy.html#a5f185d7a0c25907f1e036089c867246e">m::logging::mFileLogPolicy</a>, and <a class="el" href="classm_1_1logging_1_1_stdcout_log_policy.html#a00904a294718b8bc7ada42cf746e3d44">m::logging::mStdcoutLogPolicy</a>.</p>
 
 </div>
 </div>
@@ -144,7 +144,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void m::logging::ILogPolicy::open_ostream </td>
+          <td class="memname">virtual void m::logging::mILogPolicy::open_ostream </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>a_name</em></td><td>)</td>
@@ -166,7 +166,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classm_1_1logging_1_1_file_log_policy.html#a660971d89cd25b7a11ca2002208f9106">m::logging::FileLogPolicy</a>, and <a class="el" href="classm_1_1logging_1_1_stdcout_log_policy.html#a8d1dc6329cb18395e76f8c79b38385c9">m::logging::StdcoutLogPolicy</a>.</p>
+<p>Implemented in <a class="el" href="classm_1_1logging_1_1_file_log_policy.html#a660971d89cd25b7a11ca2002208f9106">m::logging::mFileLogPolicy</a>, and <a class="el" href="classm_1_1logging_1_1_stdcout_log_policy.html#a8d1dc6329cb18395e76f8c79b38385c9">m::logging::mStdcoutLogPolicy</a>.</p>
 
 </div>
 </div>
@@ -180,7 +180,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void m::logging::ILogPolicy::write </td>
+          <td class="memname">virtual void m::logging::mILogPolicy::write </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>a_msg</em></td><td>)</td>
@@ -202,7 +202,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classm_1_1logging_1_1_file_log_policy.html#a62d5f803225bd3e6d2aa356cd0be3d86">m::logging::FileLogPolicy</a>, and <a class="el" href="classm_1_1logging_1_1_stdcout_log_policy.html#a187ba18cae9538c335b13112ad4f565f">m::logging::StdcoutLogPolicy</a>.</p>
+<p>Implemented in <a class="el" href="classm_1_1logging_1_1_file_log_policy.html#a62d5f803225bd3e6d2aa356cd0be3d86">m::logging::mFileLogPolicy</a>, and <a class="el" href="classm_1_1logging_1_1_stdcout_log_policy.html#a187ba18cae9538c335b13112ad4f565f">m::logging::mStdcoutLogPolicy</a>.</p>
 
 </div>
 </div>

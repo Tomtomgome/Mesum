@@ -1,4 +1,4 @@
-\hypertarget{classm_1_1_signal}{}\doxysection{m\+::mSignal\texorpdfstring{$<$}{<} t\+\_\+\+Args \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classm_1_1_signal}{}\doxysection{m\+::mSignal\texorpdfstring{$<$}{<} t\+\_\+\+t_Args \texorpdfstring{$>$}{>} Class Template Reference}
 \label{classm_1_1_signal}\index{m::mSignal$<$ t\_Args $>$@{m::mSignal$<$ t\_Args $>$}}
 
 
@@ -13,18 +13,18 @@ Class representing a signal.
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{classm_1_1_signal_af932ce760d285e0d8413edf3bdf9c518}\label{classm_1_1_signal_af932ce760d285e0d8413edf3bdf9c518}} 
-using {\bfseries m\+Callback\+Handle} = typename std\+::list$<$ \mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, t\+\_\+\+Args... $>$ $>$\+::iterator
+using {\bfseries m\+Callback\+Handle} = typename std\+::list$<$ \mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, t\+\_\+\+t_Args... $>$ $>$\+::iterator
 \begin{DoxyCompactList}\small\item\em Alias an iterator to a callback. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classm_1_1_signal_af932ce760d285e0d8413edf3bdf9c518}{m\+Callback\+Handle}} \mbox{\hyperlink{classm_1_1_signal_aff70ff76b47b223657b43f3d146093d5}{attach\+\_\+to\+mSignal}} (\mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, t\+\_\+\+Args... $>$ const \&a\+\_\+callback)
+\mbox{\hyperlink{classm_1_1_signal_af932ce760d285e0d8413edf3bdf9c518}{m\+Callback\+Handle}} \mbox{\hyperlink{classm_1_1_signal_aff70ff76b47b223657b43f3d146093d5}{attach\+\_\+to\+mSignal}} (\mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, t\+\_\+\+t_Args... $>$ const \&a\+\_\+callback)
 \begin{DoxyCompactList}\small\item\em Attach a callback for the signal to call. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classm_1_1_signal_a19b8d29b8b463ed00032ce5e0ec4da14}{detach\+\_\+from\+mSignal}} (\mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, t\+\_\+\+Args... $>$ a\+\_\+callback)
+void \mbox{\hyperlink{classm_1_1_signal_a19b8d29b8b463ed00032ce5e0ec4da14}{detach\+\_\+from\+mSignal}} (\mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, t\+\_\+\+t_Args... $>$ a\+\_\+callback)
 \begin{DoxyCompactList}\small\item\em Detach a callback from the signal. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classm_1_1_signal_af94fe3240830e31e2d4c3ee1337eed3f}{detach\+\_\+from\+mSignal}} (const \mbox{\hyperlink{classm_1_1_signal_af932ce760d285e0d8413edf3bdf9c518}{m\+Callback\+Handle}} \&a\+\_\+handle)
 \begin{DoxyCompactList}\small\item\em Detach a callback from the signal. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classm_1_1_signal_aacf52b1321e7b4e0fc0c5cd3d573b1e2}{call}} (t\+\_\+\+Args... a\+\_\+args)
+void \mbox{\hyperlink{classm_1_1_signal_aacf52b1321e7b4e0fc0c5cd3d573b1e2}{call}} (t\+\_\+\+t_Args... a\+\_\+args)
 \begin{DoxyCompactList}\small\item\em Call all the callback attached to the signal. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classm_1_1_signal_ae3c1a6a8104acc5f0d34dcf8c0666e29}{clear}} ()
 \begin{DoxyCompactList}\small\item\em Clear the list of callback attached to the signal. \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -32,20 +32,20 @@ void \mbox{\hyperlink{classm_1_1_signal_ae3c1a6a8104acc5f0d34dcf8c0666e29}{clear
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{classm_1_1_signal_a9e55493bc4429050453c10319889210e}\label{classm_1_1_signal_a9e55493bc4429050453c10319889210e}} 
-std\+::list$<$ \mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, t\+\_\+\+Args... $>$ $>$ {\bfseries m\+\_\+callbacks}
+std\+::list$<$ \mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, t\+\_\+\+t_Args... $>$ $>$ {\bfseries m\+\_\+callbacks}
 \begin{DoxyCompactList}\small\item\em The list of callbacks. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-\subsubsection*{template$<$typename... t\+\_\+\+Args$>$\newline
-class m\+::\+mSignal$<$ t\+\_\+\+Args $>$}
+\subsubsection*{template$<$typename... t\+\_\+\+t_Args$>$\newline
+class m\+::\+mSignal$<$ t\+\_\+\+t_Args $>$}
 Class representing a signal. 
 
 Functions registered to a signal can only return void. When a signal is called with arguments, all its registered callback are called. Order is not guaranteed.
 
 
 \begin{DoxyTemplParams}{Template Parameters}
-{\em t\+\_\+\+Args} & The list of arguments of the function \\
+{\em t\+\_\+\+t_Args} & The list of arguments of the function \\
 \hline
 \end{DoxyTemplParams}
 
@@ -55,8 +55,8 @@ Functions registered to a signal can only return void. When a signal is called w
 \index{m::mSignal$<$ t\_Args $>$@{m::mSignal$<$ t\_Args $>$}!attach\_toSignal@{attach\_toSignal}}
 \index{attach\_toSignal@{attach\_toSignal}!m::mSignal$<$ t\_Args $>$@{m::mSignal$<$ t\_Args $>$}}
 \doxysubsubsection{\texorpdfstring{attach\_toSignal()}{attach\_toSignal()}}
-{\footnotesize\ttfamily template$<$typename... t\+\_\+\+Args$>$ \\
-\mbox{\hyperlink{classm_1_1_signal_af932ce760d285e0d8413edf3bdf9c518}{m\+Callback\+Handle}} \mbox{\hyperlink{classm_1_1_signal}{m\+::\+mSignal}}$<$ t\+\_\+\+Args $>$\+::attach\+\_\+to\+mSignal (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, t\+\_\+\+Args... $>$ const \&}]{a\+\_\+callback }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename... t\+\_\+\+t_Args$>$ \\
+\mbox{\hyperlink{classm_1_1_signal_af932ce760d285e0d8413edf3bdf9c518}{m\+Callback\+Handle}} \mbox{\hyperlink{classm_1_1_signal}{m\+::\+mSignal}}$<$ t\+\_\+\+t_Args $>$\+::attach\+\_\+to\+mSignal (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, t\+\_\+\+t_Args... $>$ const \&}]{a\+\_\+callback }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -74,8 +74,8 @@ a handle to the callback in order to remove it later
 \index{m::mSignal$<$ t\_Args $>$@{m::mSignal$<$ t\_Args $>$}!call@{call}}
 \index{call@{call}!m::mSignal$<$ t\_Args $>$@{m::mSignal$<$ t\_Args $>$}}
 \doxysubsubsection{\texorpdfstring{call()}{call()}}
-{\footnotesize\ttfamily template$<$typename... t\+\_\+\+Args$>$ \\
-void \mbox{\hyperlink{classm_1_1_signal}{m\+::\+mSignal}}$<$ t\+\_\+\+Args $>$\+::call (\begin{DoxyParamCaption}\item[{t\+\_\+\+Args...}]{a\+\_\+args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename... t\+\_\+\+t_Args$>$ \\
+void \mbox{\hyperlink{classm_1_1_signal}{m\+::\+mSignal}}$<$ t\+\_\+\+t_Args $>$\+::call (\begin{DoxyParamCaption}\item[{t\+\_\+\+t_Args...}]{a\+\_\+args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -90,8 +90,8 @@ Call all the callback attached to the signal.
 \index{m::mSignal$<$ t\_Args $>$@{m::mSignal$<$ t\_Args $>$}!clear@{clear}}
 \index{clear@{clear}!m::mSignal$<$ t\_Args $>$@{m::mSignal$<$ t\_Args $>$}}
 \doxysubsubsection{\texorpdfstring{clear()}{clear()}}
-{\footnotesize\ttfamily template$<$typename... t\+\_\+\+Args$>$ \\
-void \mbox{\hyperlink{classm_1_1_signal}{m\+::\+mSignal}}$<$ t\+\_\+\+Args $>$\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename... t\+\_\+\+t_Args$>$ \\
+void \mbox{\hyperlink{classm_1_1_signal}{m\+::\+mSignal}}$<$ t\+\_\+\+t_Args $>$\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -101,8 +101,8 @@ Warnning ! The gathered handles are not valid anymore and should not be used \mb
 \index{m::mSignal$<$ t\_Args $>$@{m::mSignal$<$ t\_Args $>$}!detach\_fromSignal@{detach\_fromSignal}}
 \index{detach\_fromSignal@{detach\_fromSignal}!m::mSignal$<$ t\_Args $>$@{m::mSignal$<$ t\_Args $>$}}
 \doxysubsubsection{\texorpdfstring{detach\_fromSignal()}{detach\_fromSignal()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily template$<$typename... t\+\_\+\+Args$>$ \\
-void \mbox{\hyperlink{classm_1_1_signal}{m\+::\+mSignal}}$<$ t\+\_\+\+Args $>$\+::detach\+\_\+from\+mSignal (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classm_1_1_signal_af932ce760d285e0d8413edf3bdf9c518}{m\+Callback\+Handle}} \&}]{a\+\_\+handle }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename... t\+\_\+\+t_Args$>$ \\
+void \mbox{\hyperlink{classm_1_1_signal}{m\+::\+mSignal}}$<$ t\+\_\+\+t_Args $>$\+::detach\+\_\+from\+mSignal (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classm_1_1_signal_af932ce760d285e0d8413edf3bdf9c518}{m\+Callback\+Handle}} \&}]{a\+\_\+handle }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -120,8 +120,8 @@ a\+\_\+handle should have been given by attach\+\_\+to\+mSignal
 \index{m::mSignal$<$ t\_Args $>$@{m::mSignal$<$ t\_Args $>$}!detach\_fromSignal@{detach\_fromSignal}}
 \index{detach\_fromSignal@{detach\_fromSignal}!m::mSignal$<$ t\_Args $>$@{m::mSignal$<$ t\_Args $>$}}
 \doxysubsubsection{\texorpdfstring{detach\_fromSignal()}{detach\_fromSignal()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily template$<$typename... t\+\_\+\+Args$>$ \\
-void \mbox{\hyperlink{classm_1_1_signal}{m\+::\+mSignal}}$<$ t\+\_\+\+Args $>$\+::detach\+\_\+from\+mSignal (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, t\+\_\+\+Args... $>$}]{a\+\_\+callback }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$typename... t\+\_\+\+t_Args$>$ \\
+void \mbox{\hyperlink{classm_1_1_signal}{m\+::\+mSignal}}$<$ t\+\_\+\+t_Args $>$\+::detach\+\_\+from\+mSignal (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, t\+\_\+\+t_Args... $>$}]{a\+\_\+callback }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 

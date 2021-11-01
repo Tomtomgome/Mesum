@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['enable_5fchannels_0',['enable_channels',['../group___log.html#gaf8b43c36de390d048e69e3a7f9391ab0',1,'m::logging::Logger']]]
+  ['enable_5fchannels_0',['enable_channels',['../classm_1_1logging_1_1m_logger.html#a83c957baadaf5ad52f112fdc36f58d83',1,'m::logging::mLogger']]]
 ];

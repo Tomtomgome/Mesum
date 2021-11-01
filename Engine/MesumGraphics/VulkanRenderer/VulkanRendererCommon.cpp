@@ -8,7 +8,7 @@ namespace m
 {
 namespace vulkan
 {
-extern const logging::ChannelID VK_RENDERER_ID = mLOG_GET_ID();
+extern const logging::mChannelID VK_RENDERER_ID = mLog_getId();
 
 #ifdef M_DEBUG
 const Bool g_enableValidationLayers = true;
@@ -121,10 +121,10 @@ void create_instance(VkInstance& a_InstaceToCreate)
     vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount,
                                            extensions.data());
 
-    mLOG_TO(VK_RENDERER_ID, "Available extensions");
+    mLog_to(VK_RENDERER_ID, "Available extensions");
     for (const auto& extension : extensions)
     {
-        mLOG_TO(VK_RENDERER_ID, extension.extensionName);
+        mLog_to(VK_RENDERER_ID, extension.extensionName);
     }
 #endif  // PRINT_EXTENTIONS
 
@@ -146,15 +146,15 @@ VKAPI_ATTR VkBool32 VKAPI_CALL callback_logDebugMessage(
     {
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT: break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:
-            mLOG_TO(VK_RENDERER_ID,
+            mLog_to(VK_RENDERER_ID,
                     "Validation layer : ", pCallbackData->pMessage);
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
-            mLOG_WARN_TO(VK_RENDERER_ID,
+            mLog_warningTo(VK_RENDERER_ID,
                          "Validation layer : ", pCallbackData->pMessage);
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
-            mLOG_ERR_TO(VK_RENDERER_ID,
+            mLog_errorTo(VK_RENDERER_ID,
                         "Validation layer : ", pCallbackData->pMessage);
             break;
         default: mInterrupt;

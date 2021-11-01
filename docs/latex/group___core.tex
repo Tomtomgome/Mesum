@@ -4,7 +4,11 @@
 \begin{DoxyCompactItemize}
 \item 
 namespace \mbox{\hyperlink{namespacem_1_1application}{m\+::application}}
-\begin{DoxyCompactList}\small\item\em Namespace grouping basic application structures. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Namespace grouping basic application structures. \end{DoxyCompactList}\item 
+namespace \mbox{\hyperlink{namespacem_1_1files}{m\+::files}}
+\begin{DoxyCompactList}\small\item\em Namespace grouping file related utilities. \end{DoxyCompactList}\item 
+namespace \mbox{\hyperlink{namespacem_1_1logging}{m\+::logging}}
+\begin{DoxyCompactList}\small\item\em Namespace grouping all logging tools. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
@@ -21,7 +25,15 @@ class \mbox{\hyperlink{classm_1_1m_signal}{m\+::m\+Signal$<$ t\+\_\+\+Args $>$}}
 struct \mbox{\hyperlink{structm_1_1m_cmd_line}{m\+::m\+Cmd\+Line}}
 \begin{DoxyCompactList}\small\item\em Structure holding a list of command line arguments. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structm_1_1m_basic_launch_data}{m\+::m\+Basic\+Launch\+Data}}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Structure that might hold console app launch data. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classm_1_1logging_1_1m_logger}{m\+::logging\+::m\+Logger$<$ t\+\_\+\+Log\+Policy $>$}}
+\begin{DoxyCompactList}\small\item\em Thread safe logger class used to write logs. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classm_1_1logging_1_1m_i_log_policy}{m\+::logging\+::m\+ILog\+Policy}}
+\begin{DoxyCompactList}\small\item\em Interface defining a logging policy. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classm_1_1logging_1_1m_file_log_policy}{m\+::logging\+::m\+File\+Log\+Policy}}
+\begin{DoxyCompactList}\small\item\em Log policy outputting into a file. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classm_1_1logging_1_1m_stdcout_log_policy}{m\+::logging\+::m\+Stdcout\+Log\+Policy}}
+\begin{DoxyCompactList}\small\item\em Log policy outputting into the standard output. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
@@ -45,7 +57,55 @@ struct \mbox{\hyperlink{structm_1_1m_basic_launch_data}{m\+::m\+Basic\+Launch\+D
 \#define \mbox{\hyperlink{group___core_ga5cbca1ff1eb730a016c7c63f94afa154}{m\+Assert}}(condition)
 \begin{DoxyCompactList}\small\item\em A basic assert interrupting execution. \end{DoxyCompactList}\item 
 \#define \mbox{\hyperlink{group___core_ga375da2becf883550c0e1293307b02c9a}{m\+Expect}}(condition)
-\begin{DoxyCompactList}\small\item\em Blocking assert reserved to check function preconditions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Blocking assert reserved to check function preconditions. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_ga9aa869d857bafeb44058596e5ba4b1e6}\label{group___core_ga9aa869d857bafeb44058596e5ba4b1e6}} 
+\#define {\bfseries m\+Log\+\_\+get\+Id}~m\+::log\+\_\+inst.\+get\+\_\+new\+Channel\+ID
+\begin{DoxyCompactList}\small\item\em Macro used to get a channel ID. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_ga680e34b3f157af7f411b5979ad1a4ac3}\label{group___core_ga680e34b3f157af7f411b5979ad1a4ac3}} 
+\#define {\bfseries m\+Log}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to log simple debug messages. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_ga5fbb2d1e48c3d6b25c16ee857251d351}\label{group___core_ga5fbb2d1e48c3d6b25c16ee857251d351}} 
+\#define {\bfseries m\+Log\+\_\+error}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to log simple error messages. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_gae1032e7185f812c2d99bfb85310db818}\label{group___core_gae1032e7185f812c2d99bfb85310db818}} 
+\#define {\bfseries m\+Log\+\_\+warning}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to log simple warning messages. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_ga68b88f85079be232c5241fe6030e05cb}\label{group___core_ga68b88f85079be232c5241fe6030e05cb}} 
+\#define {\bfseries m\+Log\+\_\+to}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to log simple debug messages to a channel. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_gadf1cbf9f4fd7fbf02a0770de0d579455}\label{group___core_gadf1cbf9f4fd7fbf02a0770de0d579455}} 
+\#define {\bfseries m\+Log\+\_\+error\+To}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to log simple error messages to a channel. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_ga69ed0c9a7e1c9e250fc27634c8500823}\label{group___core_ga69ed0c9a7e1c9e250fc27634c8500823}} 
+\#define {\bfseries m\+Log\+\_\+warning\+To}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to log simple warning messages to a channel. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_ga60b018f1e6e00b588d2bd8f0cd42b0a7}\label{group___core_ga60b018f1e6e00b588d2bd8f0cd42b0a7}} 
+\#define {\bfseries m\+Log\+\_\+verbose}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to log verbose debug messages. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_ga1848e387de750cedfad1837fc97f9937}\label{group___core_ga1848e387de750cedfad1837fc97f9937}} 
+\#define {\bfseries m\+Log\+\_\+verbose\+Error}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to log verbose error messages. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_ga65bb68d733e34685ff0488ad2d8659cd}\label{group___core_ga65bb68d733e34685ff0488ad2d8659cd}} 
+\#define {\bfseries m\+Log\+\_\+verbose\+Warning}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to log verbose warning messages. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_ga8897d907fd045fa4ed41484db869be19}\label{group___core_ga8897d907fd045fa4ed41484db869be19}} 
+\#define {\bfseries m\+Log\+\_\+verbose\+To}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to log verbose debug messages to a channel. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_ga063b3285c370c05ba0c8922d725a88d8}\label{group___core_ga063b3285c370c05ba0c8922d725a88d8}} 
+\#define {\bfseries m\+Log\+\_\+verbose\+Error\+To}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to log verbose error messages to a channel. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_gafc6799da5ed7131d606efa488f0b06ed}\label{group___core_gafc6799da5ed7131d606efa488f0b06ed}} 
+\#define {\bfseries m\+Log\+\_\+\+Verbose\+Warning\+To}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to log verbose warning messages to a channel. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_gab72bba1e02da9f12494fbc01656c6a42}\label{group___core_gab72bba1e02da9f12494fbc01656c6a42}} 
+\#define {\bfseries m\+Set\+\_\+log\+Filter}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to set filters for the logger. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_gad373fce774649fa0b14363289cb8eeab}\label{group___core_gad373fce774649fa0b14363289cb8eeab}} 
+\#define {\bfseries m\+Enable\+\_\+log\+Channels}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to enable channels of the logger. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_gac6a132763c1ef06eb8dbdc7d339ab00b}\label{group___core_gac6a132763c1ef06eb8dbdc7d339ab00b}} 
+\#define {\bfseries m\+Disable\+\_\+log\+Channels}(...)
+\begin{DoxyCompactList}\small\item\em Macro used to disable channels the logger. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}

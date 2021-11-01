@@ -27,7 +27,7 @@
 
 namespace m
 {
-extern MesumCoreApi const logging::ChannelID ASSERT_ID;
+extern MesumCoreApi const logging::mChannelID ASSERT_ID;
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \brief Managing asserts

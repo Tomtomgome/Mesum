@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['channelfilter_0',['ChannelFilter',['../group___log.html#ga16bb065e762d9d22730e02ef41a8165f',1,'m::logging']]],
-  ['channelid_1',['ChannelID',['../group___log.html#ga13f51627936471940ede5666fd047313',1,'m::logging']]]
+  ['mcallbackhandle_0',['mCallbackHandle',['../classm_1_1m_signal.html#aad959466bfb4da3a46ece8eb6608191b',1,'m::mSignal']]],
+  ['mchannelfilter_1',['mChannelFilter',['../namespacem_1_1logging.html#aaeb5f100312ad1db0f563f74d7914c9f',1,'m::logging']]],
+  ['mchannelid_2',['mChannelID',['../namespacem_1_1logging.html#ac4aaaa53dd22d25e9b24d091274b28a7',1,'m::logging']]],
+  ['mfunctiontype_3',['mFunctionType',['../classm_1_1m_callback.html#ade0c31357b0e4d1f33ba842cb2e41b04',1,'m::mCallback']]]
 ];

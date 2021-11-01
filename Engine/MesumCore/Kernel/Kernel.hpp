@@ -71,9 +71,12 @@ struct mCmdLine
                m_listArgs.end();
     }
 
-    std::vector<std::string> m_listArgs; //!< Holds the list of arguments
+    std::vector<std::string> m_listArgs;  //!< Holds the list of arguments
 };
 
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Structure that might hold console app launch data
+///////////////////////////////////////////////////////////////////////////////
 struct mBasicLaunchData
 {
 };

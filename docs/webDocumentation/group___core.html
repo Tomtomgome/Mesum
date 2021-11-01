@@ -76,6 +76,12 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacem_1_1application"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacem_1_1application.html">m::application</a></td></tr>
 <tr class="memdesc:namespacem_1_1application"><td class="mdescLeft">&#160;</td><td class="mdescRight">Namespace grouping basic application structures. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacem_1_1files"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacem_1_1files.html">m::files</a></td></tr>
+<tr class="memdesc:namespacem_1_1files"><td class="mdescLeft">&#160;</td><td class="mdescRight">Namespace grouping file related utilities. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacem_1_1logging"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacem_1_1logging.html">m::logging</a></td></tr>
+<tr class="memdesc:namespacem_1_1logging"><td class="mdescLeft">&#160;</td><td class="mdescRight">Namespace grouping all logging tools. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -98,6 +104,19 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure holding a list of command line arguments.  <a href="structm_1_1m_cmd_line.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structm_1_1m_basic_launch_data.html">m::mBasicLaunchData</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure that might hold console app launch data.  <a href="structm_1_1m_basic_launch_data.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1logging_1_1m_logger.html">m::logging::mLogger&lt; t_LogPolicy &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thread safe logger class used to write logs.  <a href="classm_1_1logging_1_1m_logger.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1logging_1_1m_i_log_policy.html">m::logging::mILogPolicy</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface defining a logging policy.  <a href="classm_1_1logging_1_1m_i_log_policy.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1logging_1_1m_file_log_policy.html">m::logging::mFileLogPolicy</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log policy outputting into a file.  <a href="classm_1_1logging_1_1m_file_log_policy.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1logging_1_1m_stdcout_log_policy.html">m::logging::mStdcoutLogPolicy</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log policy outputting into the standard output.  <a href="classm_1_1logging_1_1m_stdcout_log_policy.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
@@ -128,6 +147,70 @@ Macros</h2></td></tr>
 <tr class="memitem:ga375da2becf883550c0e1293307b02c9a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#ga375da2becf883550c0e1293307b02c9a">mExpect</a>(condition)</td></tr>
 <tr class="memdesc:ga375da2becf883550c0e1293307b02c9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocking assert reserved to check function preconditions.  <a href="group___core.html#ga375da2becf883550c0e1293307b02c9a">More...</a><br /></td></tr>
 <tr class="separator:ga375da2becf883550c0e1293307b02c9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9aa869d857bafeb44058596e5ba4b1e6"><td class="memItemLeft" align="right" valign="top"><a id="ga9aa869d857bafeb44058596e5ba4b1e6" name="ga9aa869d857bafeb44058596e5ba4b1e6"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_getId</b>&#160;&#160;&#160;m::log_inst.get_newChannelID</td></tr>
+<tr class="memdesc:ga9aa869d857bafeb44058596e5ba4b1e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to get a channel ID. <br /></td></tr>
+<tr class="separator:ga9aa869d857bafeb44058596e5ba4b1e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga680e34b3f157af7f411b5979ad1a4ac3"><td class="memItemLeft" align="right" valign="top"><a id="ga680e34b3f157af7f411b5979ad1a4ac3" name="ga680e34b3f157af7f411b5979ad1a4ac3"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog</b>(...)</td></tr>
+<tr class="memdesc:ga680e34b3f157af7f411b5979ad1a4ac3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log simple debug messages. <br /></td></tr>
+<tr class="separator:ga680e34b3f157af7f411b5979ad1a4ac3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5fbb2d1e48c3d6b25c16ee857251d351"><td class="memItemLeft" align="right" valign="top"><a id="ga5fbb2d1e48c3d6b25c16ee857251d351" name="ga5fbb2d1e48c3d6b25c16ee857251d351"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_error</b>(...)</td></tr>
+<tr class="memdesc:ga5fbb2d1e48c3d6b25c16ee857251d351"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log simple error messages. <br /></td></tr>
+<tr class="separator:ga5fbb2d1e48c3d6b25c16ee857251d351"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae1032e7185f812c2d99bfb85310db818"><td class="memItemLeft" align="right" valign="top"><a id="gae1032e7185f812c2d99bfb85310db818" name="gae1032e7185f812c2d99bfb85310db818"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_warning</b>(...)</td></tr>
+<tr class="memdesc:gae1032e7185f812c2d99bfb85310db818"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log simple warning messages. <br /></td></tr>
+<tr class="separator:gae1032e7185f812c2d99bfb85310db818"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga68b88f85079be232c5241fe6030e05cb"><td class="memItemLeft" align="right" valign="top"><a id="ga68b88f85079be232c5241fe6030e05cb" name="ga68b88f85079be232c5241fe6030e05cb"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_to</b>(...)</td></tr>
+<tr class="memdesc:ga68b88f85079be232c5241fe6030e05cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log simple debug messages to a channel. <br /></td></tr>
+<tr class="separator:ga68b88f85079be232c5241fe6030e05cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadf1cbf9f4fd7fbf02a0770de0d579455"><td class="memItemLeft" align="right" valign="top"><a id="gadf1cbf9f4fd7fbf02a0770de0d579455" name="gadf1cbf9f4fd7fbf02a0770de0d579455"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_errorTo</b>(...)</td></tr>
+<tr class="memdesc:gadf1cbf9f4fd7fbf02a0770de0d579455"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log simple error messages to a channel. <br /></td></tr>
+<tr class="separator:gadf1cbf9f4fd7fbf02a0770de0d579455"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga69ed0c9a7e1c9e250fc27634c8500823"><td class="memItemLeft" align="right" valign="top"><a id="ga69ed0c9a7e1c9e250fc27634c8500823" name="ga69ed0c9a7e1c9e250fc27634c8500823"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_warningTo</b>(...)</td></tr>
+<tr class="memdesc:ga69ed0c9a7e1c9e250fc27634c8500823"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log simple warning messages to a channel. <br /></td></tr>
+<tr class="separator:ga69ed0c9a7e1c9e250fc27634c8500823"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga60b018f1e6e00b588d2bd8f0cd42b0a7"><td class="memItemLeft" align="right" valign="top"><a id="ga60b018f1e6e00b588d2bd8f0cd42b0a7" name="ga60b018f1e6e00b588d2bd8f0cd42b0a7"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_verbose</b>(...)</td></tr>
+<tr class="memdesc:ga60b018f1e6e00b588d2bd8f0cd42b0a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log verbose debug messages. <br /></td></tr>
+<tr class="separator:ga60b018f1e6e00b588d2bd8f0cd42b0a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1848e387de750cedfad1837fc97f9937"><td class="memItemLeft" align="right" valign="top"><a id="ga1848e387de750cedfad1837fc97f9937" name="ga1848e387de750cedfad1837fc97f9937"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_verboseError</b>(...)</td></tr>
+<tr class="memdesc:ga1848e387de750cedfad1837fc97f9937"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log verbose error messages. <br /></td></tr>
+<tr class="separator:ga1848e387de750cedfad1837fc97f9937"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga65bb68d733e34685ff0488ad2d8659cd"><td class="memItemLeft" align="right" valign="top"><a id="ga65bb68d733e34685ff0488ad2d8659cd" name="ga65bb68d733e34685ff0488ad2d8659cd"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_verboseWarning</b>(...)</td></tr>
+<tr class="memdesc:ga65bb68d733e34685ff0488ad2d8659cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log verbose warning messages. <br /></td></tr>
+<tr class="separator:ga65bb68d733e34685ff0488ad2d8659cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8897d907fd045fa4ed41484db869be19"><td class="memItemLeft" align="right" valign="top"><a id="ga8897d907fd045fa4ed41484db869be19" name="ga8897d907fd045fa4ed41484db869be19"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_verboseTo</b>(...)</td></tr>
+<tr class="memdesc:ga8897d907fd045fa4ed41484db869be19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log verbose debug messages to a channel. <br /></td></tr>
+<tr class="separator:ga8897d907fd045fa4ed41484db869be19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga063b3285c370c05ba0c8922d725a88d8"><td class="memItemLeft" align="right" valign="top"><a id="ga063b3285c370c05ba0c8922d725a88d8" name="ga063b3285c370c05ba0c8922d725a88d8"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_verboseErrorTo</b>(...)</td></tr>
+<tr class="memdesc:ga063b3285c370c05ba0c8922d725a88d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log verbose error messages to a channel. <br /></td></tr>
+<tr class="separator:ga063b3285c370c05ba0c8922d725a88d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafc6799da5ed7131d606efa488f0b06ed"><td class="memItemLeft" align="right" valign="top"><a id="gafc6799da5ed7131d606efa488f0b06ed" name="gafc6799da5ed7131d606efa488f0b06ed"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_VerboseWarningTo</b>(...)</td></tr>
+<tr class="memdesc:gafc6799da5ed7131d606efa488f0b06ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log verbose warning messages to a channel. <br /></td></tr>
+<tr class="separator:gafc6799da5ed7131d606efa488f0b06ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab72bba1e02da9f12494fbc01656c6a42"><td class="memItemLeft" align="right" valign="top"><a id="gab72bba1e02da9f12494fbc01656c6a42" name="gab72bba1e02da9f12494fbc01656c6a42"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>mSet_logFilter</b>(...)</td></tr>
+<tr class="memdesc:gab72bba1e02da9f12494fbc01656c6a42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to set filters for the logger. <br /></td></tr>
+<tr class="separator:gab72bba1e02da9f12494fbc01656c6a42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad373fce774649fa0b14363289cb8eeab"><td class="memItemLeft" align="right" valign="top"><a id="gad373fce774649fa0b14363289cb8eeab" name="gad373fce774649fa0b14363289cb8eeab"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>mEnable_logChannels</b>(...)</td></tr>
+<tr class="memdesc:gad373fce774649fa0b14363289cb8eeab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to enable channels of the logger. <br /></td></tr>
+<tr class="separator:gad373fce774649fa0b14363289cb8eeab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac6a132763c1ef06eb8dbdc7d339ab00b"><td class="memItemLeft" align="right" valign="top"><a id="gac6a132763c1ef06eb8dbdc7d339ab00b" name="gac6a132763c1ef06eb8dbdc7d339ab00b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>mDisable_logChannels</b>(...)</td></tr>
+<tr class="memdesc:gac6a132763c1ef06eb8dbdc7d339ab00b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to disable channels the logger. <br /></td></tr>
+<tr class="separator:gac6a132763c1ef06eb8dbdc7d339ab00b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2 class="groupheader">Macro Definition Documentation</h2>

@@ -70,8 +70,9 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a>  </div>
-  <div class="headertitle"><div class="title">m::logging Namespace Reference<div class="ingroups"><a class="el" href="group___log.html">Log</a></div></div></div>
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#var-members">Variables</a>  </div>
+  <div class="headertitle"><div class="title">m::logging Namespace Reference<div class="ingroups"><a class="el" href="group___core.html">Core</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -80,42 +81,121 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1logging_1_1_file_log_policy.html">FileLogPolicy</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log policy outputing into a file.  <a href="classm_1_1logging_1_1_file_log_policy.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1logging_1_1m_file_log_policy.html">mFileLogPolicy</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log policy outputting into a file.  <a href="classm_1_1logging_1_1m_file_log_policy.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1logging_1_1_i_log_policy.html">ILogPolicy</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface defining a logging policy .  <a href="classm_1_1logging_1_1_i_log_policy.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1logging_1_1m_i_log_policy.html">mILogPolicy</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface defining a logging policy.  <a href="classm_1_1logging_1_1m_i_log_policy.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1logging_1_1_logger.html">Logger</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thread safe logger class used to write logs.  <a href="classm_1_1logging_1_1_logger.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1logging_1_1m_logger.html">mLogger</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thread safe logger class used to write logs.  <a href="classm_1_1logging_1_1m_logger.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1logging_1_1_stdcout_log_policy.html">StdcoutLogPolicy</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log policy outputing into the standard output.  <a href="classm_1_1logging_1_1_stdcout_log_policy.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1logging_1_1m_stdcout_log_policy.html">mStdcoutLogPolicy</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log policy outputting into the standard output.  <a href="classm_1_1logging_1_1m_stdcout_log_policy.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ga13f51627936471940ede5666fd047313"><td class="memItemLeft" align="right" valign="top">
-using&#160;</td><td class="memItemRight" valign="bottom"><b>ChannelID</b> = uint64_t</td></tr>
-<tr class="memdesc:ga13f51627936471940ede5666fd047313"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defining what a ChannelID is. <br /></td></tr>
-<tr class="separator:ga13f51627936471940ede5666fd047313"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga16bb065e762d9d22730e02ef41a8165f"><td class="memItemLeft" align="right" valign="top">
-using&#160;</td><td class="memItemRight" valign="bottom"><b>ChannelFilter</b> = uint64_t</td></tr>
-<tr class="memdesc:ga16bb065e762d9d22730e02ef41a8165f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defining what a ChannelFilter is. <br /></td></tr>
-<tr class="separator:ga16bb065e762d9d22730e02ef41a8165f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4aaaa53dd22d25e9b24d091274b28a7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacem_1_1logging.html#ac4aaaa53dd22d25e9b24d091274b28a7">mChannelID</a> = U64</td></tr>
+<tr class="memdesc:ac4aaaa53dd22d25e9b24d091274b28a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">ChannelIDs are defined by a bit.  <a href="namespacem_1_1logging.html#ac4aaaa53dd22d25e9b24d091274b28a7">More...</a><br /></td></tr>
+<tr class="separator:ac4aaaa53dd22d25e9b24d091274b28a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaeb5f100312ad1db0f563f74d7914c9f"><td class="memItemLeft" align="right" valign="top"><a id="aaeb5f100312ad1db0f563f74d7914c9f" name="aaeb5f100312ad1db0f563f74d7914c9f"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>mChannelFilter</b> = U64</td></tr>
+<tr class="memdesc:aaeb5f100312ad1db0f563f74d7914c9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Channel filters are an aggregation of channel ids. <br /></td></tr>
+<tr class="separator:aaeb5f100312ad1db0f563f74d7914c9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:gaf620be757be465af66aa69d08a4f5c8e"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___log.html#gaf620be757be465af66aa69d08a4f5c8e">SeverityType</a> { <a class="el" href="group___log.html#ggaf620be757be465af66aa69d08a4f5c8eabfecbf648c2deaa801f62e8dad71e361">debug</a> = 1
-, <a class="el" href="group___log.html#ggaf620be757be465af66aa69d08a4f5c8ead564300fbfad44fd5b83f8ba9441ba5d">error</a>
-, <a class="el" href="group___log.html#ggaf620be757be465af66aa69d08a4f5c8ea52b9f3af43a3f80e4a62548382b2c04b">warning</a>
+<tr class="memitem:ad98e602820072dd69a260765a95bd387"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacem_1_1logging.html#ad98e602820072dd69a260765a95bd387">mSeverityType</a> { <a class="el" href="namespacem_1_1logging.html#ad98e602820072dd69a260765a95bd387abfecbf648c2deaa801f62e8dad71e361">debug</a> = 1
+, <a class="el" href="namespacem_1_1logging.html#ad98e602820072dd69a260765a95bd387ad564300fbfad44fd5b83f8ba9441ba5d">error</a>
+, <a class="el" href="namespacem_1_1logging.html#ad98e602820072dd69a260765a95bd387a52b9f3af43a3f80e4a62548382b2c04b">warning</a>
  }</td></tr>
-<tr class="memdesc:gaf620be757be465af66aa69d08a4f5c8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumeration of the logginh severity levels.  <a href="group___log.html#gaf620be757be465af66aa69d08a4f5c8e">More...</a><br /></td></tr>
-<tr class="separator:gaf620be757be465af66aa69d08a4f5c8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:ad98e602820072dd69a260765a95bd387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumeration of the logginh severity levels.  <a href="namespacem_1_1logging.html#ad98e602820072dd69a260765a95bd387">More...</a><br /></td></tr>
+<tr class="separator:ad98e602820072dd69a260765a95bd387"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ac3d7342b9694fe25c6f2119fe2886a46"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacem_1_1logging.html#aaeb5f100312ad1db0f563f74d7914c9f">mChannelFilter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacem_1_1logging.html#ac3d7342b9694fe25c6f2119fe2886a46">g_allChannelsFilter</a></td></tr>
+<tr class="memdesc:ac3d7342b9694fe25c6f2119fe2886a46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Filter that allows all channels.  <a href="namespacem_1_1logging.html#ac3d7342b9694fe25c6f2119fe2886a46">More...</a><br /></td></tr>
+<tr class="separator:ac3d7342b9694fe25c6f2119fe2886a46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a201855eccf18d6c2e13758836e1bc31e"><td class="memItemLeft" align="right" valign="top"><a id="a201855eccf18d6c2e13758836e1bc31e" name="a201855eccf18d6c2e13758836e1bc31e"></a>
+constexpr <a class="el" href="namespacem_1_1logging.html#aaeb5f100312ad1db0f563f74d7914c9f">mChannelFilter</a>&#160;</td><td class="memItemRight" valign="bottom"><b>g_noChannelsFilter</b> = 0</td></tr>
+<tr class="memdesc:a201855eccf18d6c2e13758836e1bc31e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Filter that disallows all channels. <br /></td></tr>
+<tr class="separator:a201855eccf18d6c2e13758836e1bc31e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Namespace grouping all logging tools. </p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Typedef Documentation</h2>
+<a id="ac4aaaa53dd22d25e9b24d091274b28a7" name="ac4aaaa53dd22d25e9b24d091274b28a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4aaaa53dd22d25e9b24d091274b28a7">&#9670;&nbsp;</a></span>mChannelID</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacem_1_1logging.html#ac4aaaa53dd22d25e9b24d091274b28a7">m::logging::mChannelID</a> = typedef U64</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ChannelIDs are defined by a bit. </p>
+<p >Currently a logger can have a maximum of 64 channels </p>
+
+</div>
+</div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="ad98e602820072dd69a260765a95bd387" name="ad98e602820072dd69a260765a95bd387"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad98e602820072dd69a260765a95bd387">&#9670;&nbsp;</a></span>mSeverityType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespacem_1_1logging.html#ad98e602820072dd69a260765a95bd387">m::logging::mSeverityType</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enumeration of the logginh severity levels. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ad98e602820072dd69a260765a95bd387abfecbf648c2deaa801f62e8dad71e361" name="ad98e602820072dd69a260765a95bd387abfecbf648c2deaa801f62e8dad71e361"></a>debug&#160;</td><td class="fielddoc"><p >sets a debug severity level </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad98e602820072dd69a260765a95bd387ad564300fbfad44fd5b83f8ba9441ba5d" name="ad98e602820072dd69a260765a95bd387ad564300fbfad44fd5b83f8ba9441ba5d"></a>error&#160;</td><td class="fielddoc"><p >sets a error severity level </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad98e602820072dd69a260765a95bd387a52b9f3af43a3f80e4a62548382b2c04b" name="ad98e602820072dd69a260765a95bd387a52b9f3af43a3f80e4a62548382b2c04b"></a>warning&#160;</td><td class="fielddoc"><p >sets a warning severity level </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="ac3d7342b9694fe25c6f2119fe2886a46" name="ac3d7342b9694fe25c6f2119fe2886a46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3d7342b9694fe25c6f2119fe2886a46">&#9670;&nbsp;</a></span>g_allChannelsFilter</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="namespacem_1_1logging.html#aaeb5f100312ad1db0f563f74d7914c9f">mChannelFilter</a> m::logging::g_allChannelsFilter</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">    (std::numeric_limits&lt;U64&gt;::max)()</div>
+</div><!-- fragment -->
+<p>Filter that allows all channels. </p>
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2

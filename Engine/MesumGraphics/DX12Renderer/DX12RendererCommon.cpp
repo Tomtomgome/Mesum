@@ -9,7 +9,7 @@
 
 namespace m::dx12
 {
-extern const logging::ChannelID DX_RENDERER_ID = mLOG_GET_ID();
+extern const logging::mChannelID DX_RENDERER_ID = mLog_getId();
 
 void set_dxgiDebugName(ComPtr<IDXGIObject> a_dxgiObject, std::string a_sName,
                        const Int a_lineNumber, const Char* a_file)
@@ -69,7 +69,7 @@ ComPtr<ID3DBlob> compile_shader(std::string const& a_shaderPath,
     pUtils->LoadFile(lFilePath.c_str(), nullptr, &pSource);
     if (pSource == nullptr)
     {
-        mLOG_ERR_TO(DX_RENDERER_ID, "Could not load the shader file");
+        mLog_errorTo(DX_RENDERER_ID, "Could not load the shader file");
         return nullptr;
     }
 
@@ -95,7 +95,7 @@ ComPtr<ID3DBlob> compile_shader(std::string const& a_shaderPath,
     // present. IDxcCompiler3::Compile will always return an error buffer, but
     // its length will be zero if there are no warnings or errors.
     if (pErrors != nullptr && pErrors->GetStringLength() != 0)
-        mLOG_WARN_TO(DX_RENDERER_ID, "Shader ", a_shaderPath,
+        mLog_warningTo(DX_RENDERER_ID, "Shader ", a_shaderPath,
                      " : warnings and errors : ", pErrors->GetStringPointer());
 
     //
@@ -117,7 +117,7 @@ ComPtr<ID3DBlob> compile_shader(std::string const& a_shaderPath,
     pResults->GetStatus(&hrStatus);
     if (FAILED(hrStatus))
     {
-        mLOG_ERR_TO(DX_RENDERER_ID, "Shader ", a_shaderPath,
+        mLog_errorTo(DX_RENDERER_ID, "Shader ", a_shaderPath,
                     " : Compilation faled");
         return nullptr;
     }

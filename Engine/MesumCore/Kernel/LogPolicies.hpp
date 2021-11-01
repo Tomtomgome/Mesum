@@ -1,5 +1,3 @@
-#ifndef M_LOG_POLICIES
-#define M_LOG_POLICIES
 #pragma once
 #include <fstream>
 #include <iostream>
@@ -7,95 +5,119 @@
 #include <mutex>
 #include <sstream>
 #include <string>
-/** \addtogroup Log
- *	@{
- */
-//! Namespace grouping all logging tools.
+///////////////////////////////////////////////////////////////////////////////
+/// \addtogroup Core
+/// \{
+///////////////////////////////////////////////////////////////////////////////
 namespace m::logging
 {
-//*****************************************************************************
-//*****************************************************************************
-//*****************************************************************************
-//! Interface defining a logging policy .
-/*!
-        The policy difines where the logs are outputed (file, stream, etc...).
-*/
-class ILogPolicy
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Interface defining a logging policy
+///
+/// The policy defines where the logs are outputted (file, stream, etc...)
+///////////////////////////////////////////////////////////////////////////////
+class mILogPolicy
 {
    public:
-    virtual ~ILogPolicy() = default;
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Default policy destructor
+    ///////////////////////////////////////////////////////////////////////////
+    virtual ~mILogPolicy() = default;
 
-    //! Open the output stream.
-    /*!
-            \param	a_name	the name of the stream.
-    */
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Open the output stream
+    ///
+    /// \param a_name The name of the stream
+    ///////////////////////////////////////////////////////////////////////////
     virtual void open_ostream(const std::string& a_name) = 0;
-    //! close the output stream
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Close the output stream
+    ///////////////////////////////////////////////////////////////////////////
     virtual void close_ostream() = 0;
-    //! write into the output steam
-    /*!
-            \param	a_msg		the message to output.
-    */
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Write into the output stream
+    ///
+    /// \param a_msg The message to output
+    ///////////////////////////////////////////////////////////////////////////
     virtual void write(const std::string& a_msg) = 0;
 };
 
-//! Log policy outputing into a file
-class FileLogPolicy final : public ILogPolicy
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Log policy outputting into a file
+///////////////////////////////////////////////////////////////////////////////
+class mFileLogPolicy final : public mILogPolicy
 {
    public:
-    //! Construct a file logging policy.
-    /*!
-            This creates a new ofstream object.
-    */
-    FileLogPolicy() : m_outStream(new std::ofstream) {}
-    //! Destroy a file logging policy.
-    /*!
-            This destroy the ofstream object.
-    */
-    ~FileLogPolicy() final;
-    //! Open the output file.
-    /*!
-            \param	a_name	the name of the file.
-    */
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Construct a file logging policy
+    ///
+    /// This creates a new ofstream object
+    ///////////////////////////////////////////////////////////////////////////
+    mFileLogPolicy() : m_outStream(new std::ofstream) {}
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Destroy a file logging policy
+    ///
+    /// This destroys the ofstream object
+    ///////////////////////////////////////////////////////////////////////////
+    ~mFileLogPolicy() final;
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Open the output stream
+    ///
+    /// \param a_name The name of the file to open
+    ///////////////////////////////////////////////////////////////////////////
     void open_ostream(const std::string& a_name) override;
-    //! close the output file
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Close the file stream
+    ///////////////////////////////////////////////////////////////////////////
     void close_ostream() override;
-    //! write into the output file
-    /*!
-            \param	a_msg		the message to output.
-    */
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Write into the output file
+    ///
+    /// \param a_msg The message to output
+    ///////////////////////////////////////////////////////////////////////////
     void write(const std::string& a_msg) override;
 
    private:
-    //! The output file.
-    std::unique_ptr<std::ofstream> m_outStream;
+    std::unique_ptr<std::ofstream> m_outStream;  //!< The output file
 };
 
-//! Log policy outputing into the standard output
-class StdcoutLogPolicy final : public ILogPolicy
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Log policy outputting into the standard output
+///////////////////////////////////////////////////////////////////////////////
+class mStdcoutLogPolicy final : public mILogPolicy
 {
    public:
-    //! Construct the cout logging policy.
-    StdcoutLogPolicy();
-    //! Destroy a file logging policy.
-    /*!
-            This destroy the ofstream object.
-    */
-    ~StdcoutLogPolicy() final;
-    //! Open the output stream.
-    /*!
-            \param	a_name	the name of the file.
-    */
-    void open_ostream(const std::string& a_name) override;
-    //! close the output stream
-    void close_ostream() override;
-    //! write into the output stream
-    /*!
-            \param	a_msg		the message to output.
-    */
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Constructs the std::cout logging policy.
+    ///////////////////////////////////////////////////////////////////////////
+    mStdcoutLogPolicy() = default;
+    ///////////////////////////////////////////////////////////////////////////
+    //! Destroys a std::cout logging policy.
+    ///////////////////////////////////////////////////////////////////////////
+    ~mStdcoutLogPolicy() final = default;
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Does nothing
+    ///////////////////////////////////////////////////////////////////////////
+    void open_ostream(const std::string& a_name) override{};
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Does nothing
+    ///////////////////////////////////////////////////////////////////////////
+    void close_ostream() override{};
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Write into the standard output
+    ///
+    /// \param a_msg The message to output
+    ///////////////////////////////////////////////////////////////////////////
     void write(const std::string& a_msg) override;
 };
 
 }  // namespace m::logging
-#endif  // M_LOG_POLICIES
-        /** @}*/
+///////////////////////////////////////////////////////////////////////////////
+/// \}
+///////////////////////////////////////////////////////////////////////////////
