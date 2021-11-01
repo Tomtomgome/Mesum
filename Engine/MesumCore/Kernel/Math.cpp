@@ -31,7 +31,7 @@ mU64 rol64(mU64 a_x, mInt a_k)
 //-----------------------------------------------------------------------------
 mXoRandomNumberGenerator::mXoRandomNumberGenerator(mU64 a_seed)
 {
-    mU64 tmp      = splitmix64(&a_seed);
+    mU64 tmp     = splitmix64(&a_seed);
     m_state.s[0] = (mU32)tmp;
     m_state.s[1] = (mU32)(tmp >> 32);
 

@@ -9,21 +9,21 @@
 ///////////////////////////////////////////////////////////////////////////////
 namespace m::math
 {
-using mVec2 = Vec<mFloat, 2>;
-using mVec3 = Vec<mFloat, 3>;
-using mVec4 = Vec<mFloat, 4>;
+using mVec2 = mVec<mFloat, 2>;
+using mVec3 = mVec<mFloat, 3>;
+using mVec4 = mVec<mFloat, 4>;
 
-using mDVec2 = Vec<mDouble, 2>;
-using mDVec3 = Vec<mDouble, 3>;
-using mDVec4 = Vec<mDouble, 4>;
+using mDVec2 = mVec<mDouble, 2>;
+using mDVec3 = mVec<mDouble, 3>;
+using mDVec4 = mVec<mDouble, 4>;
 
-using mIVec2 = Vec<mInt, 2>;
-using mIVec3 = Vec<mInt, 3>;
-using mIVec4 = Vec<mInt, 4>;
+using mIVec2 = mVec<mInt, 2>;
+using mIVec3 = mVec<mInt, 3>;
+using mIVec4 = mVec<mInt, 4>;
 
-using mUIVec2 = Vec<mUInt, 2>;
-using mUIVec3 = Vec<mUInt, 3>;
-using mUIVec4 = Vec<mUInt, 4>;
+using mUIVec2 = mVec<mUInt, 2>;
+using mUIVec3 = mVec<mUInt, 3>;
+using mUIVec4 = mVec<mUInt, 4>;
 };  // namespace m::math
 ///////////////////////////////////////////////////////////////////////////////
 /// \}

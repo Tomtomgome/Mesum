@@ -27,7 +27,7 @@ void internal_run(mCmdLine const& a_cmdLine, void* a_data)
 /// \param a_AppClass The type of application to execute
 ///////////////////////////////////////////////////////////////////////////////
 #define mExecute_consoleApplication(a_AppClass)      \
-    int main(m::mInt argc, m::mChar** argv)            \
+    int main(m::mInt argc, m::mChar** argv)          \
     {                                                \
         m::mBasicLaunchData data;                    \
         m::mCmdLine         cmdLine;                 \

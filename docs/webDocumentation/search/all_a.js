@@ -18,7 +18,7 @@ var searchData=
   ['massert_15',['mAssert',['../group___core.html#gae68855c8125ce66a9e53e758526c95ca',1,'Asserts.hpp']]],
   ['math_16',['math',['../namespacem_1_1math.html',1,'m']]],
   ['mbasiclaunchdata_17',['mBasicLaunchData',['../structm_1_1m_basic_launch_data.html',1,'m']]],
-  ['mcallback_18',['mCallback',['../classm_1_1m_callback.html',1,'m::mCallback&lt; t_RetType, t_Args &gt;'],['../classm_1_1m_callback.html#aa0eac6739ee64075289c0410caa6f14e',1,'m::mCallback::mCallback(t_CArgs *a_owner, t_RetType(t_CArgs::*a_func)(t_Args...))'],['../classm_1_1m_callback.html#a530ef5e956e46dbae7e904eac6c67a91',1,'m::mCallback::mCallback(std::function&lt; mFunctionType &gt; const &amp;a_func)'],['../classm_1_1m_callback.html#a204f76e43710fd71904277efd494bf36',1,'m::mCallback::mCallback(std::function&lt; mFunctionType &gt; &amp;&amp;a_func)'],['../classm_1_1m_callback.html#a34b6e899fa571ae511ae2cafda9872d9',1,'m::mCallback::mCallback()=default']]],
+  ['mcallback_18',['mCallback',['../classm_1_1m_callback.html',1,'m::mCallback&lt; t_RetType, t_Args &gt;'],['../classm_1_1m_callback.html#a204f76e43710fd71904277efd494bf36',1,'m::mCallback::mCallback(std::function&lt; mFunctionType &gt; &amp;&amp;a_func)'],['../classm_1_1m_callback.html#a530ef5e956e46dbae7e904eac6c67a91',1,'m::mCallback::mCallback(std::function&lt; mFunctionType &gt; const &amp;a_func)'],['../classm_1_1m_callback.html#aa0eac6739ee64075289c0410caa6f14e',1,'m::mCallback::mCallback(t_CArgs *a_owner, t_RetType(t_CArgs::*a_func)(t_Args...))'],['../classm_1_1m_callback.html#a34b6e899fa571ae511ae2cafda9872d9',1,'m::mCallback::mCallback()=default']]],
   ['mcallbackhandle_19',['mCallbackHandle',['../classm_1_1m_signal.html#aad959466bfb4da3a46ece8eb6608191b',1,'m::mSignal']]],
   ['mchannelfilter_20',['mChannelFilter',['../namespacem_1_1logging.html#a0fa5af708b452e8c58088597cdea8392',1,'m::logging']]],
   ['mchannelid_21',['mChannelID',['../namespacem_1_1logging.html#af807dfba0ed733f24957c0f3d016a15f',1,'m::logging']]],
@@ -56,7 +56,12 @@ var searchData=
   ['msignal_3c_20const_20math_3a_3amdvec2_20_26_20_3e_53',['mSignal&lt; const math::mDVec2 &amp; &gt;',['../classm_1_1m_signal.html',1,'m']]],
   ['msoftassert_54',['mSoftAssert',['../group___core.html#gaed17c7e2d6fa608a86bd77dbf44de294',1,'Asserts.hpp']]],
   ['mstdcoutlogpolicy_55',['mStdcoutLogPolicy',['../classm_1_1logging_1_1m_stdcout_log_policy.html',1,'m::logging::mStdcoutLogPolicy'],['../classm_1_1logging_1_1m_stdcout_log_policy.html#aed487acf90165eb431b9a2b521d20610',1,'m::logging::mStdcoutLogPolicy::mStdcoutLogPolicy()']]],
-  ['mxorandomnumbergenerator_56',['mXoRandomNumberGenerator',['../classm_1_1math_1_1m_xo_random_number_generator.html',1,'m::math::mXoRandomNumberGenerator'],['../classm_1_1math_1_1m_xo_random_number_generator.html#a19b46ac054019318c8d2ed23cc710f49',1,'m::math::mXoRandomNumberGenerator::mXoRandomNumberGenerator(mU64 a_seed)']]],
-  ['mxoshiro256ssstate_57',['mXoshiro256ssState',['../structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state.html',1,'m::math::mXoRandomNumberGenerator']]],
-  ['mydocument_58',['MyDocument',['../struct_my_document.html',1,'']]]
+  ['mvec_56',['mVec',['../structm_1_1math_1_1m_vec.html',1,'m::math']]],
+  ['mvecdata_57',['mVecData',['../structm_1_1math_1_1m_vec_data.html',1,'m::math']]],
+  ['mvecdata_3c_20t_5ft_2c_202_20_3e_58',['mVecData&lt; t_T, 2 &gt;',['../structm_1_1math_1_1m_vec_data_3_01t___t_00_012_01_4.html',1,'m::math']]],
+  ['mvecdata_3c_20t_5ft_2c_203_20_3e_59',['mVecData&lt; t_T, 3 &gt;',['../structm_1_1math_1_1m_vec_data_3_01t___t_00_013_01_4.html',1,'m::math']]],
+  ['mvecdata_3c_20t_5ft_2c_204_20_3e_60',['mVecData&lt; t_T, 4 &gt;',['../structm_1_1math_1_1m_vec_data_3_01t___t_00_014_01_4.html',1,'m::math']]],
+  ['mxorandomnumbergenerator_61',['mXoRandomNumberGenerator',['../classm_1_1math_1_1m_xo_random_number_generator.html',1,'m::math::mXoRandomNumberGenerator'],['../classm_1_1math_1_1m_xo_random_number_generator.html#a19b46ac054019318c8d2ed23cc710f49',1,'m::math::mXoRandomNumberGenerator::mXoRandomNumberGenerator(mU64 a_seed)']]],
+  ['mxoshiro256ssstate_62',['mXoshiro256ssState',['../structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state.html',1,'m::math::mXoRandomNumberGenerator']]],
+  ['mydocument_63',['MyDocument',['../struct_my_document.html',1,'']]]
 ];

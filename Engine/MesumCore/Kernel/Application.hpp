@@ -138,7 +138,6 @@ class mITimedLoopApplication : public mIBasicApplication
         std::chrono::steady_clock::duration const& a_deltaTime) = 0;
 
    private:
-
     ///////////////////////////////////////////////////////////////////////////
     /// \brief the minimal duration a step can take
     ///////////////////////////////////////////////////////////////////////////

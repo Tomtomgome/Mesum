@@ -1,138 +1,161 @@
-#ifndef VEC_H
-#define VEC_H
+#pragma once
 
 #include <Types.hpp>
 
-namespace m
+///////////////////////////////////////////////////////////////////////////////
+/// \addtogroup Core
+/// \{
+///////////////////////////////////////////////////////////////////////////////
+namespace m::math
 {
-//*****************************************************************************
-//*****************************************************************************
-//*****************************************************************************
-    namespace math
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Holds the data for a math vector
+///////////////////////////////////////////////////////////////////////////////
+template <typename t_T, mUInt t_Size>
+struct mVecData
+{
+    t_T data[t_Size];
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Alias the data for a 2D math vector
+///////////////////////////////////////////////////////////////////////////////
+template <typename t_T>
+struct mVecData<t_T, 2>
+{
+    union
     {
-        template<typename T, mUInt Size>
-        struct VecData
+        t_T data[2];
+        struct
         {
-            T data[Size];
+            t_T x;
+            t_T y;
         };
-
-        template<typename T>
-        struct VecData<T, 2>
-        {
-            union {
-                T data[2];
-                struct
-                {
-                    T x;
-                    T y;
-                };
-            };
-        };
-
-        template<typename T>
-        struct VecData<T, 3>
-        {
-            union {
-                T data[3];
-                struct
-                {
-                    T x;
-                    T y;
-                    T z;
-                };
-            };
-        };
-
-        template<typename T>
-        struct VecData<T, 4>
-        {   
-            union
-            {
-                T data[4];
-                struct
-                {
-                    T x;
-                    T y;
-                    T z;
-                    T w;
-                };
-            }; 
-        };
-
-        template<typename T, mUInt Size>
-        struct Vec : public VecData<T, Size>
-        {
-            Vec();
-            Vec(const VecData<T, Size>& a_data);
-            Vec(const VecData<T, Size>&& a_data);
-
-            Vec<T, Size>& operator=(const VecData<T, Size>& a_data);
-
-            T& operator[](const mUInt a_index);
-            T operator[](const mUInt a_index) const;
-
-            Vec<T, Size>& operator++();
-            Vec<T, Size> operator++(int);
-            Vec<T, Size>& operator--();
-            Vec<T, Size> operator--(int);
-
-            Vec<T, Size>& operator+=(const Vec<T, Size>& a_v);
-            Vec<T, Size>& operator+=(const T a_t);
-            Vec<T, Size>& operator-=(const Vec<T, Size>& a_v);
-            Vec<T, Size>& operator-=(const T a_t);
-            Vec<T, Size>& operator*=(const Vec<T, Size>& a_v);
-            Vec<T, Size>& operator*=(const T a_t);
-            Vec<T, Size>& operator/=(const Vec<T, Size>& a_v);
-            Vec<T, Size>& operator/=(const T a_t);
-
-            Vec<T, Size> operator+() const;
-            Vec<T, Size> operator-() const;
-
-            mBool operator==(const Vec<T, Size>& a_v) const;
-        };
-
-        template<typename T, mUInt Size>
-        Vec<T, Size> operator+(const Vec<T, Size>& a_lhs, const Vec<T, Size>& a_rhs);
-        template<typename T, mUInt Size>
-        Vec<T, Size> operator-(const Vec<T, Size>& a_lhs, const Vec<T, Size>& a_rhs);
-        template<typename T, mUInt Size>
-        Vec<T, Size> operator*(const Vec<T, Size>& a_lhs, const Vec<T, Size>& a_rhs);
-        template<typename T, mUInt Size>
-        Vec<T, Size> operator/(const Vec<T, Size>& a_lhs, const Vec<T, Size>& a_rhs);
-
-        template<typename T, mUInt Size>
-        Vec<T, Size> operator+(const Vec<T, Size>& a_lhs, const T a_rhs);
-        template<typename T, mUInt Size>
-        Vec<T, Size> operator-(const Vec<T, Size>& a_lhs, const T a_rhs);
-        template<typename T, mUInt Size>
-        Vec<T, Size> operator*(const Vec<T, Size>& a_lhs, const T a_rhs);
-        template<typename T, mUInt Size>
-        Vec<T, Size> operator/(const Vec<T, Size>& a_lhs, const T a_rhs);
-
-        template<typename T, mUInt Size>
-        Vec<T, Size> operator+(const T a_lhs, const Vec<T, Size>& a_rhs);
-        template<typename T, mUInt Size>
-        Vec<T, Size> operator-(const T a_lhs, const Vec<T, Size>& a_rhs);
-        template<typename T, mUInt Size>
-        Vec<T, Size> operator*(const T a_lhs, const Vec<T, Size>& a_rhs);
-        template<typename T, mUInt Size>
-        Vec<T, Size> operator/(const T a_lhs, const Vec<T, Size>& a_rhs);
-
-        
-        template<typename T, mUInt Size>
-        [[nodiscard]] Vec<T, Size> abs(const Vec<T, Size>& a_v);
-        template<typename T, mUInt Size>
-        [[nodiscard]] T dot(const Vec<T, Size>& a_lhs, const Vec<T, Size>& a_rhs);
-        template<typename T, mUInt Size>
-        [[nodiscard]] T length(const Vec<T, Size>& a_v);
-        template<typename T, mUInt Size>
-        [[nodiscard]] T sqlength(const Vec<T, Size>& a_v);
-        template<typename T, mUInt Size>
-        [[nodiscard]] Vec<T, Size> normalized(const Vec<T, Size>& a_v);
-
     };
 };
 
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Alias the data for a 3D math vector
+///////////////////////////////////////////////////////////////////////////////
+template <typename t_T>
+struct mVecData<t_T, 3>
+{
+    union
+    {
+        t_T data[3];
+        struct
+        {
+            t_T x;
+            t_T y;
+            t_T z;
+        };
+    };
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Alias the data for a 4D math vector
+///////////////////////////////////////////////////////////////////////////////
+template <typename t_T>
+struct mVecData<t_T, 4>
+{
+    union
+    {
+        t_T data[4];
+        struct
+        {
+            t_T x;
+            t_T y;
+            t_T z;
+            t_T w;
+        };
+    };
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Structure representing a generic math vector
+///
+/// \tparam t_T The type of the data in the vector
+/// \tparam t_Size The dimension pf the vector
+///////////////////////////////////////////////////////////////////////////////
+template <typename t_T, mUInt t_Size>
+struct mVec : public mVecData<t_T, t_Size>
+{
+    mVec();
+    mVec(const mVecData<t_T, t_Size>& a_data);
+    mVec(const mVecData<t_T, t_Size>&& a_data);
+
+    mVec<t_T, t_Size>& operator=(const mVecData<t_T, t_Size>& a_data);
+
+    t_T& operator[](mUInt a_index);
+    t_T  operator[](mUInt a_index) const;
+
+    mVec<t_T, t_Size>& operator++();
+    mVec<t_T, t_Size>  operator++(int);
+    mVec<t_T, t_Size>& operator--();
+    mVec<t_T, t_Size>  operator--(int);
+
+    mVec<t_T, t_Size>& operator+=(const mVec<t_T, t_Size>& a_v);
+    mVec<t_T, t_Size>& operator+=(t_T a_t);
+    mVec<t_T, t_Size>& operator-=(const mVec<t_T, t_Size>& a_v);
+    mVec<t_T, t_Size>& operator-=(t_T a_t);
+    mVec<t_T, t_Size>& operator*=(const mVec<t_T, t_Size>& a_v);
+    mVec<t_T, t_Size>& operator*=(t_T a_t);
+    mVec<t_T, t_Size>& operator/=(const mVec<t_T, t_Size>& a_v);
+    mVec<t_T, t_Size>& operator/=(t_T a_t);
+
+    mVec<t_T, t_Size> operator+() const;
+    mVec<t_T, t_Size> operator-() const;
+
+    mBool operator==(const mVec<t_T, t_Size>& a_v) const;
+};
+
+template <typename t_T, mUInt t_Size>
+mVec<t_T, t_Size> operator+(const mVec<t_T, t_Size>& a_lhs,
+                            const mVec<t_T, t_Size>& a_rhs);
+template <typename t_T, mUInt t_Size>
+mVec<t_T, t_Size> operator-(const mVec<t_T, t_Size>& a_lhs,
+                            const mVec<t_T, t_Size>& a_rhs);
+template <typename t_T, mUInt t_Size>
+mVec<t_T, t_Size> operator*(const mVec<t_T, t_Size>& a_lhs,
+                            const mVec<t_T, t_Size>& a_rhs);
+template <typename t_T, mUInt t_Size>
+mVec<t_T, t_Size> operator/(const mVec<t_T, t_Size>& a_lhs,
+                            const mVec<t_T, t_Size>& a_rhs);
+
+template <typename t_T, mUInt t_Size>
+mVec<t_T, t_Size> operator+(const mVec<t_T, t_Size>& a_lhs, t_T a_rhs);
+template <typename t_T, mUInt t_Size>
+mVec<t_T, t_Size> operator-(const mVec<t_T, t_Size>& a_lhs, t_T a_rhs);
+template <typename t_T, mUInt t_Size>
+mVec<t_T, t_Size> operator*(const mVec<t_T, t_Size>& a_lhs, t_T a_rhs);
+template <typename t_T, mUInt t_Size>
+mVec<t_T, t_Size> operator/(const mVec<t_T, t_Size>& a_lhs, t_T a_rhs);
+
+template <typename t_T, mUInt t_Size>
+mVec<t_T, t_Size> operator+(t_T a_lhs, const mVec<t_T, t_Size>& a_rhs);
+template <typename t_T, mUInt t_Size>
+mVec<t_T, t_Size> operator-(t_T a_lhs, const mVec<t_T, t_Size>& a_rhs);
+template <typename t_T, mUInt t_Size>
+mVec<t_T, t_Size> operator*(t_T a_lhs, const mVec<t_T, t_Size>& a_rhs);
+template <typename t_T, mUInt t_Size>
+mVec<t_T, t_Size> operator/(t_T a_lhs, const mVec<t_T, t_Size>& a_rhs);
+
+template <typename t_T, mUInt t_Size>
+[[nodiscard]] mVec<t_T, t_Size> abs(const mVec<t_T, t_Size>& a_v);
+template <typename t_T, mUInt t_Size>
+[[nodiscard]] t_T dot(const mVec<t_T, t_Size>& a_lhs,
+                      const mVec<t_T, t_Size>& a_rhs);
+template <typename t_T, mUInt t_Size>
+[[nodiscard]] t_T length(const mVec<t_T, t_Size>& a_v);
+template <typename t_T, mUInt t_Size>
+[[nodiscard]] t_T sqlength(const mVec<t_T, t_Size>& a_v);
+template <typename t_T, mUInt t_Size>
+[[nodiscard]] mVec<t_T, t_Size> normalized(const mVec<t_T, t_Size>& a_v);
+
+};  // namespace m::math
+
 #include <Vec.inl>
 
-#endif //VEC_H
+///////////////////////////////////////////////////////////////////////////////
+/// \}
+///////////////////////////////////////////////////////////////////////////////

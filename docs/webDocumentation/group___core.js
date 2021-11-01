@@ -103,6 +103,11 @@ var group___core =
       [ "m_state", "classm_1_1math_1_1m_xo_random_number_generator.html#a6ba9fdbfc115b7e57914d79cfcd77685", null ]
     ] ],
     [ "m::math::mXoRandomNumberGenerator::mXoshiro256ssState", "structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state.html", null ],
+    [ "m::math::mVecData< t_T, t_Size >", "structm_1_1math_1_1m_vec_data.html", null ],
+    [ "m::math::mVecData< t_T, 2 >", "structm_1_1math_1_1m_vec_data_3_01t___t_00_012_01_4.html", null ],
+    [ "m::math::mVecData< t_T, 3 >", "structm_1_1math_1_1m_vec_data_3_01t___t_00_013_01_4.html", null ],
+    [ "m::math::mVecData< t_T, 4 >", "structm_1_1math_1_1m_vec_data_3_01t___t_00_014_01_4.html", null ],
+    [ "m::math::mVec< t_T, t_Size >", "structm_1_1math_1_1m_vec.html", null ],
     [ "mAssert", "group___core.html#gae68855c8125ce66a9e53e758526c95ca", null ],
     [ "mDisable_logChannels", "group___core.html#gac6a132763c1ef06eb8dbdc7d339ab00b", null ],
     [ "mEnable_logChannels", "group___core.html#gad373fce774649fa0b14363289cb8eeab", null ],

@@ -173,8 +173,8 @@
 
 boxfont setfont
 1 boundaspect scale
-(m::math::Vec< T, Size >) cw
-(m::math::VecData< T, Size >) cw
+(m::math::mVec< T, Size >) cw
+(m::math::mVecData< T, Size >) cw
 /boxwidth boxwidth marginwidth 2 mul add def
 /xspacing boxwidth distx add def
 /yspacing boxheight disty add def
@@ -186,8 +186,8 @@ boundx scalefactor div boundy scalefactor div scale
 
 % ----- classes -----
 
- (m::math::Vec< T, Size >) 0.000000 0.000000 box
- (m::math::VecData< T, Size >) 0.000000 1.000000 box
+ (m::math::mVec< T, Size >) 0.000000 0.000000 box
+ (m::math::mVecData< T, Size >) 0.000000 1.000000 box
 
 % ----- relations -----
 

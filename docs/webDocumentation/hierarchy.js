@@ -150,6 +150,12 @@ var hierarchy =
     [ "m::input::MouseState", "structm_1_1input_1_1_mouse_state.html", null ],
     [ "m::mSignal< t_Args >", "classm_1_1m_signal.html", null ],
     [ "m::mSignal< const math::mDVec2 & >", "classm_1_1m_signal.html", null ],
+    [ "m::math::mVecData< t_T, t_Size >", "structm_1_1math_1_1m_vec_data.html", [
+      [ "m::math::mVec< t_T, t_Size >", "structm_1_1math_1_1m_vec.html", null ]
+    ] ],
+    [ "m::math::mVecData< t_T, 2 >", "structm_1_1math_1_1m_vec_data_3_01t___t_00_012_01_4.html", null ],
+    [ "m::math::mVecData< t_T, 3 >", "structm_1_1math_1_1m_vec_data_3_01t___t_00_013_01_4.html", null ],
+    [ "m::math::mVecData< t_T, 4 >", "structm_1_1math_1_1m_vec_data_3_01t___t_00_014_01_4.html", null ],
     [ "m::math::mXoRandomNumberGenerator", "classm_1_1math_1_1m_xo_random_number_generator.html", null ],
     [ "m::math::mXoRandomNumberGenerator::mXoshiro256ssState", "structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state.html", null ],
     [ "MyDocument", "struct_my_document.html", null ],
@@ -187,12 +193,6 @@ var hierarchy =
     [ "m::render::TextureDesc", "structm_1_1render_1_1_texture_desc.html", null ],
     [ "m::render::TextureManager", "structm_1_1render_1_1_texture_manager.html", null ],
     [ "m::render::TextureRequest", "structm_1_1render_1_1_texture_request.html", null ],
-    [ "m::math::VecData< T, Size >", "structm_1_1math_1_1_vec_data.html", [
-      [ "m::math::Vec< T, Size >", "structm_1_1math_1_1_vec.html", null ]
-    ] ],
-    [ "m::math::VecData< T, 2 >", "structm_1_1math_1_1_vec_data_3_01_t_00_012_01_4.html", null ],
-    [ "m::math::VecData< T, 3 >", "structm_1_1math_1_1_vec_data_3_01_t_00_013_01_4.html", null ],
-    [ "m::math::VecData< T, 4 >", "structm_1_1math_1_1_vec_data_3_01_t_00_014_01_4.html", null ],
     [ "VERTEX_CONSTANT_BUFFER", "struct_v_e_r_t_e_x___c_o_n_s_t_a_n_t___b_u_f_f_e_r.html", null ],
     [ "m::vulkan::VulkanContext", "classm_1_1vulkan_1_1_vulkan_context.html", null ],
     [ "m::win32::WIN32Context", "structm_1_1win32_1_1_w_i_n32_context.html", null ],
