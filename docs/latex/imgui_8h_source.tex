@@ -147,7 +147,7 @@
 \DoxyCodeLine{143 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_im_gui_payload}{ImGuiPayload}};                \textcolor{comment}{// User data payload for drag and drop operations}}
 \DoxyCodeLine{144 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_im_gui_platform_i_o}{ImGuiPlatformIO}};             \textcolor{comment}{// Multi-\/viewport support: interface for Platform/Renderer backends + viewports to render}}
 \DoxyCodeLine{145 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_im_gui_platform_monitor}{ImGuiPlatformMonitor}};        \textcolor{comment}{// Multi-\/viewport support: user-\/provided bounds for each connected monitor/display. Used when positioning popups and tooltips to avoid them straddling monitors}}
-\DoxyCodeLine{146 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_im_gui_size_callback_data}{ImGuiSizeCallbackData}};       \textcolor{comment}{// mCallback data when using SetNextWindowSizeConstraints() (rare/advanced use)}}
+\DoxyCodeLine{146 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_im_gui_size_callback_data}{ImGuiSizeCallbackData}};       \textcolor{comment}{// Callback data when using SetNextWindowSizeConstraints() (rare/advanced use)}}
 \DoxyCodeLine{147 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_im_gui_storage}{ImGuiStorage}};                \textcolor{comment}{// Helper for key-\/>value storage}}
 \DoxyCodeLine{148 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_im_gui_style}{ImGuiStyle}};                  \textcolor{comment}{// Runtime data for styling/colors}}
 \DoxyCodeLine{149 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_im_gui_table_sort_specs}{ImGuiTableSortSpecs}};         \textcolor{comment}{// Sorting specifications for a table (often handling sort specs for a single column, occasionally more)}}
@@ -203,8 +203,8 @@
 \DoxyCodeLine{199 \textcolor{keyword}{typedef} \textcolor{keywordtype}{void}* ImTextureID;          \textcolor{comment}{// User data for rendering backend to identify a texture. This is whatever to you want it to be! read the FAQ about ImTextureID for details.}}
 \DoxyCodeLine{200 \textcolor{preprocessor}{\#endif}}
 \DoxyCodeLine{201 \textcolor{keyword}{typedef} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} ImGuiID;       \textcolor{comment}{// A unique ID used by widgets, typically hashed from a stack of string.}}
-\DoxyCodeLine{202 \textcolor{keyword}{typedef} int (*ImGuiInputTextCallback)(\mbox{\hyperlink{struct_im_gui_input_text_callback_data}{ImGuiInputTextCallbackData}}* data);    \textcolor{comment}{// mCallback function for ImGui::InputText()}}
-\DoxyCodeLine{203 \textcolor{keyword}{typedef} void (*ImGuiSizeCallback)(\mbox{\hyperlink{struct_im_gui_size_callback_data}{ImGuiSizeCallbackData}}* data);             \textcolor{comment}{// mCallback function for ImGui::SetNextWindowSizeConstraints()}}
+\DoxyCodeLine{202 \textcolor{keyword}{typedef} int (*ImGuiInputTextCallback)(\mbox{\hyperlink{struct_im_gui_input_text_callback_data}{ImGuiInputTextCallbackData}}* data);    \textcolor{comment}{// Callback function for ImGui::InputText()}}
+\DoxyCodeLine{203 \textcolor{keyword}{typedef} void (*ImGuiSizeCallback)(\mbox{\hyperlink{struct_im_gui_size_callback_data}{ImGuiSizeCallbackData}}* data);             \textcolor{comment}{// Callback function for ImGui::SetNextWindowSizeConstraints()}}
 \DoxyCodeLine{204 \textcolor{keyword}{typedef} \textcolor{keywordtype}{void}* (*ImGuiMemAllocFunc)(\textcolor{keywordtype}{size\_t} sz, \textcolor{keywordtype}{void}* user\_data);             \textcolor{comment}{// Function signature for ImGui::SetAllocatorFunctions()}}
 \DoxyCodeLine{205 \textcolor{keyword}{typedef} void (*ImGuiMemFreeFunc)(\textcolor{keywordtype}{void}* ptr, \textcolor{keywordtype}{void}* user\_data);               \textcolor{comment}{// Function signature for ImGui::SetAllocatorFunctions()}}
 \DoxyCodeLine{206 }
@@ -487,7 +487,7 @@
 \DoxyCodeLine{483     IMGUI\_API \textcolor{keywordtype}{bool}          CheckboxFlags(const \textcolor{keywordtype}{char}* label, \textcolor{keywordtype}{int}* flags, \textcolor{keywordtype}{int} flags\_value);}
 \DoxyCodeLine{484     IMGUI\_API \textcolor{keywordtype}{bool}          CheckboxFlags(const \textcolor{keywordtype}{char}* label, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int}* flags, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} flags\_value);}
 \DoxyCodeLine{485     IMGUI\_API \textcolor{keywordtype}{bool}          RadioButton(const \textcolor{keywordtype}{char}* label, \textcolor{keywordtype}{bool} active);                    \textcolor{comment}{// use with e.g. if (RadioButton("{}one"{}, my\_value==1)) \{ my\_value = 1; \}}}
-\DoxyCodeLine{486     IMGUI\_API \textcolor{keywordtype}{bool}          RadioButton(const \textcolor{keywordtype}{char}* label, \textcolor{keywordtype}{int}* v, \textcolor{keywordtype}{int} v\_button);           \textcolor{comment}{// shortcut to mCallbackHandle the above pattern when value is an integer}}
+\DoxyCodeLine{486     IMGUI\_API \textcolor{keywordtype}{bool}          RadioButton(const \textcolor{keywordtype}{char}* label, \textcolor{keywordtype}{int}* v, \textcolor{keywordtype}{int} v\_button);           \textcolor{comment}{// shortcut to handle the above pattern when value is an integer}}
 \DoxyCodeLine{487     IMGUI\_API \textcolor{keywordtype}{void}          ProgressBar(\textcolor{keywordtype}{float} fraction, const \mbox{\hyperlink{struct_im_vec2}{ImVec2}}\& size\_arg = \mbox{\hyperlink{struct_im_vec2}{ImVec2}}(-\/FLT\_MIN, 0), const \textcolor{keywordtype}{char}* overlay = NULL);}
 \DoxyCodeLine{488     IMGUI\_API \textcolor{keywordtype}{void}          Bullet();                                                       \textcolor{comment}{// draw a small circle + keep the cursor on the same line. advance cursor x position by GetTreeNodeToLabelSpacing(), same distance that TreeNode() uses}}
 \DoxyCodeLine{489 }
@@ -618,7 +618,7 @@
 \DoxyCodeLine{614     IMGUI\_API \textcolor{keywordtype}{void}          PlotHistogram(const \textcolor{keywordtype}{char}* label, \textcolor{keywordtype}{float}(*values\_getter)(\textcolor{keywordtype}{void}* data, \textcolor{keywordtype}{int} idx), \textcolor{keywordtype}{void}* data, \textcolor{keywordtype}{int} values\_count, \textcolor{keywordtype}{int} values\_offset = 0, const \textcolor{keywordtype}{char}* overlay\_text = NULL, \textcolor{keywordtype}{float} scale\_min = FLT\_MAX, \textcolor{keywordtype}{float} scale\_max = FLT\_MAX, \mbox{\hyperlink{struct_im_vec2}{ImVec2}} graph\_size = \mbox{\hyperlink{struct_im_vec2}{ImVec2}}(0, 0));}
 \DoxyCodeLine{615 }
 \DoxyCodeLine{616     \textcolor{comment}{// Widgets: Value() Helpers.}}
-\DoxyCodeLine{617     \textcolor{comment}{// -\/ Those are merely shortcut to calling Text() with a format string. Output single value in "{}name: value"{} format (tip: freely declare more in your code to mCallbackHandle your types. you can add functions to the ImGui namespace)}}
+\DoxyCodeLine{617     \textcolor{comment}{// -\/ Those are merely shortcut to calling Text() with a format string. Output single value in "{}name: value"{} format (tip: freely declare more in your code to handle your types. you can add functions to the ImGui namespace)}}
 \DoxyCodeLine{618     IMGUI\_API \textcolor{keywordtype}{void}          Value(const \textcolor{keywordtype}{char}* prefix, \textcolor{keywordtype}{bool} b);}
 \DoxyCodeLine{619     IMGUI\_API \textcolor{keywordtype}{void}          Value(const \textcolor{keywordtype}{char}* prefix, \textcolor{keywordtype}{int} v);}
 \DoxyCodeLine{620     IMGUI\_API \textcolor{keywordtype}{void}          Value(const \textcolor{keywordtype}{char}* prefix, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} v);}
@@ -868,7 +868,7 @@
 \DoxyCodeLine{864     IMGUI\_API \textcolor{keywordtype}{bool}          IsKeyPressed(\textcolor{keywordtype}{int} user\_key\_index, \textcolor{keywordtype}{bool} repeat = true);               \textcolor{comment}{// was key pressed (went from !Down to Down)? if repeat=true, uses io.KeyRepeatDelay / KeyRepeatRate}}
 \DoxyCodeLine{865     IMGUI\_API \textcolor{keywordtype}{bool}          IsKeyReleased(\textcolor{keywordtype}{int} user\_key\_index);                                  \textcolor{comment}{// was key released (went from Down to !Down)?}}
 \DoxyCodeLine{866     IMGUI\_API \textcolor{keywordtype}{int}           GetKeyPressedAmount(\textcolor{keywordtype}{int} key\_index, \textcolor{keywordtype}{float} repeat\_delay, \textcolor{keywordtype}{float} rate); \textcolor{comment}{// uses provided repeat rate/delay. return a count, most often 0 or 1 but might be >1 if RepeatRate is small enough that DeltaTime > RepeatRate}}
-\DoxyCodeLine{867     IMGUI\_API \textcolor{keywordtype}{void}          CaptureKeyboardFromApp(\textcolor{keywordtype}{bool} want\_capture\_keyboard\_value = true);    \textcolor{comment}{// attention: misleading name! manually override io.WantCaptureKeyboard flag next frame (said flag is entirely left for your application to mCallbackHandle). e.g. force capture keyboard when your widget is being hovered. This is equivalent to setting "{}io.WantCaptureKeyboard = want\_capture\_keyboard\_value"{}; after the next NewFrame() call.}}
+\DoxyCodeLine{867     IMGUI\_API \textcolor{keywordtype}{void}          CaptureKeyboardFromApp(\textcolor{keywordtype}{bool} want\_capture\_keyboard\_value = true);    \textcolor{comment}{// attention: misleading name! manually override io.WantCaptureKeyboard flag next frame (said flag is entirely left for your application to handle). e.g. force capture keyboard when your widget is being hovered. This is equivalent to setting "{}io.WantCaptureKeyboard = want\_capture\_keyboard\_value"{}; after the next NewFrame() call.}}
 \DoxyCodeLine{868 }
 \DoxyCodeLine{869     \textcolor{comment}{// Inputs Utilities: Mouse}}
 \DoxyCodeLine{870     \textcolor{comment}{// -\/ To refer to a mouse button, you may use named enums in your code e.g. ImGuiMouseButton\_Left, ImGuiMouseButton\_Right.}}
@@ -888,7 +888,7 @@
 \DoxyCodeLine{884     IMGUI\_API \textcolor{keywordtype}{void}          ResetMouseDragDelta(ImGuiMouseButton button = 0);                   \textcolor{comment}{//}}
 \DoxyCodeLine{885     IMGUI\_API ImGuiMouseCursor GetMouseCursor();                                                \textcolor{comment}{// get desired cursor type, reset in ImGui::NewFrame(), this is updated during the frame. valid before Render(). If you use software rendering by setting io.MouseDrawCursor ImGui will render those for you}}
 \DoxyCodeLine{886     IMGUI\_API \textcolor{keywordtype}{void}          SetMouseCursor(ImGuiMouseCursor cursor\_type);                       \textcolor{comment}{// set desired cursor type}}
-\DoxyCodeLine{887     IMGUI\_API \textcolor{keywordtype}{void}          CaptureMouseFromApp(\textcolor{keywordtype}{bool} want\_capture\_mouse\_value = true);          \textcolor{comment}{// attention: misleading name! manually override io.WantCaptureMouse flag next frame (said flag is entirely left for your application to mCallbackHandle). This is equivalent to setting "{}io.WantCaptureMouse = want\_capture\_mouse\_value;"{} after the next NewFrame() call.}}
+\DoxyCodeLine{887     IMGUI\_API \textcolor{keywordtype}{void}          CaptureMouseFromApp(\textcolor{keywordtype}{bool} want\_capture\_mouse\_value = true);          \textcolor{comment}{// attention: misleading name! manually override io.WantCaptureMouse flag next frame (said flag is entirely left for your application to handle). This is equivalent to setting "{}io.WantCaptureMouse = want\_capture\_mouse\_value;"{} after the next NewFrame() call.}}
 \DoxyCodeLine{888 }
 \DoxyCodeLine{889     \textcolor{comment}{// Clipboard Utilities}}
 \DoxyCodeLine{890     \textcolor{comment}{// -\/ Also see the LogToClipboard() function to capture GUI into clipboard, or easily output text data to the clipboard.}}
@@ -984,10 +984,10 @@
 \DoxyCodeLine{980     ImGuiInputTextFlags\_CharsNoBlank        = 1 << 3,   \textcolor{comment}{// Filter out spaces, tabs}}
 \DoxyCodeLine{981     ImGuiInputTextFlags\_AutoSelectAll       = 1 << 4,   \textcolor{comment}{// Select entire text when first taking mouse focus}}
 \DoxyCodeLine{982     ImGuiInputTextFlags\_EnterReturnsTrue    = 1 << 5,   \textcolor{comment}{// Return 'true' when Enter is pressed (as opposed to every time the value was modified). Consider looking at the IsItemDeactivatedAfterEdit() function.}}
-\DoxyCodeLine{983     ImGuiInputTextFlags\_CallbackCompletion  = 1 << 6,   \textcolor{comment}{// mCallback on pressing TAB (for completion handling)}}
-\DoxyCodeLine{984     ImGuiInputTextFlags\_CallbackHistory     = 1 << 7,   \textcolor{comment}{// mCallback on pressing Up/Down arrows (for history handling)}}
-\DoxyCodeLine{985     ImGuiInputTextFlags\_CallbackAlways      = 1 << 8,   \textcolor{comment}{// mCallback on each iteration. User code may query cursor position, modify text buffer.}}
-\DoxyCodeLine{986     ImGuiInputTextFlags\_CallbackCharFilter  = 1 << 9,   \textcolor{comment}{// mCallback on character inputs to replace or discard them. Modify 'EventChar' to replace or discard, or return 1 in callback to discard.}}
+\DoxyCodeLine{983     ImGuiInputTextFlags\_CallbackCompletion  = 1 << 6,   \textcolor{comment}{// Callback on pressing TAB (for completion handling)}}
+\DoxyCodeLine{984     ImGuiInputTextFlags\_CallbackHistory     = 1 << 7,   \textcolor{comment}{// Callback on pressing Up/Down arrows (for history handling)}}
+\DoxyCodeLine{985     ImGuiInputTextFlags\_CallbackAlways      = 1 << 8,   \textcolor{comment}{// Callback on each iteration. User code may query cursor position, modify text buffer.}}
+\DoxyCodeLine{986     ImGuiInputTextFlags\_CallbackCharFilter  = 1 << 9,   \textcolor{comment}{// Callback on character inputs to replace or discard them. Modify 'EventChar' to replace or discard, or return 1 in callback to discard.}}
 \DoxyCodeLine{987     ImGuiInputTextFlags\_AllowTabInput       = 1 << 10,  \textcolor{comment}{// Pressing TAB input a '\(\backslash\)t' character into the text field}}
 \DoxyCodeLine{988     ImGuiInputTextFlags\_CtrlEnterForNewLine = 1 << 11,  \textcolor{comment}{// In multi-\/line mode, unfocus with Enter, add new line with Ctrl+Enter (default is opposite: unfocus with Ctrl+Enter, add line with Enter).}}
 \DoxyCodeLine{989     ImGuiInputTextFlags\_NoHorizontalScroll  = 1 << 12,  \textcolor{comment}{// Disable following the cursor horizontally}}
@@ -996,8 +996,8 @@
 \DoxyCodeLine{992     ImGuiInputTextFlags\_Password            = 1 << 15,  \textcolor{comment}{// Password mode, display all characters as '*'}}
 \DoxyCodeLine{993     ImGuiInputTextFlags\_NoUndoRedo          = 1 << 16,  \textcolor{comment}{// Disable undo/redo. Note that input text owns the text data while active, if you want to provide your own undo/redo stack you need e.g. to call ClearActiveID().}}
 \DoxyCodeLine{994     ImGuiInputTextFlags\_CharsScientific     = 1 << 17,  \textcolor{comment}{// Allow 0123456789.+-\/*/eE (Scientific notation input)}}
-\DoxyCodeLine{995     ImGuiInputTextFlags\_CallbackResize      = 1 << 18,  \textcolor{comment}{// mCallback on buffer capacity changes request (beyond 'buf\_size' parameter value), allowing the string to grow. Notify when the string wants to be resized (for string types which hold a cache of their Size). You will be provided a new BufSize in the callback and NEED to honor it. (see misc/cpp/imgui\_stdlib.h for an example of using this)}}
-\DoxyCodeLine{996     ImGuiInputTextFlags\_CallbackEdit        = 1 << 19,  \textcolor{comment}{// mCallback on any edit (note that InputText() already returns true on edit, the callback is useful mainly to manipulate the underlying buffer while focus is active)}}
+\DoxyCodeLine{995     ImGuiInputTextFlags\_CallbackResize      = 1 << 18,  \textcolor{comment}{// Callback on buffer capacity changes request (beyond 'buf\_size' parameter value), allowing the string to grow. Notify when the string wants to be resized (for string types which hold a cache of their Size). You will be provided a new BufSize in the callback and NEED to honor it. (see misc/cpp/imgui\_stdlib.h for an example of using this)}}
+\DoxyCodeLine{996     ImGuiInputTextFlags\_CallbackEdit        = 1 << 19,  \textcolor{comment}{// Callback on any edit (note that InputText() already returns true on edit, the callback is useful mainly to manipulate the underlying buffer while focus is active)}}
 \DoxyCodeLine{997     \textcolor{comment}{// [Internal]}}
 \DoxyCodeLine{998     ImGuiInputTextFlags\_Multiline           = 1 << 20,  \textcolor{comment}{// For internal use by InputTextMultiline()}}
 \DoxyCodeLine{999     ImGuiInputTextFlags\_NoMarkEdited        = 1 << 21   \textcolor{comment}{// For internal use by functions using InputText() before reformatting data}}
@@ -1442,7 +1442,7 @@
 \DoxyCodeLine{1438     \textcolor{comment}{// When using viewports it is recommended that your default value for ImGuiCol\_WindowBg is opaque (Alpha=1.0) so transition to a viewport won't be noticeable.}}
 \DoxyCodeLine{1439     ImGuiConfigFlags\_ViewportsEnable        = 1 << 10,  \textcolor{comment}{// Viewport enable flags (require both ImGuiBackendFlags\_PlatformHasViewports + ImGuiBackendFlags\_RendererHasViewports set by the respective backends)}}
 \DoxyCodeLine{1440     ImGuiConfigFlags\_DpiEnableScaleViewports= 1 << 14,  \textcolor{comment}{// [BETA: Don't use] FIXME-\/DPI: Reposition and resize imgui windows when the DpiScale of a viewport changed (mostly useful for the main viewport hosting other window). Note that resizing the main window itself is up to your application.}}
-\DoxyCodeLine{1441     ImGuiConfigFlags\_DpiEnableScaleFonts    = 1 << 15,  \textcolor{comment}{// [BETA: Don't use] FIXME-\/DPI: Request bitmap-\/scaled fonts to match DpiScale. This is a very low-\/quality workaround. The correct way to mCallbackHandle DPI is \_currently\_ to replace the atlas and/or fonts in the Platform\_OnChangedViewport callback, but this is all early work in progress.}}
+\DoxyCodeLine{1441     ImGuiConfigFlags\_DpiEnableScaleFonts    = 1 << 15,  \textcolor{comment}{// [BETA: Don't use] FIXME-\/DPI: Request bitmap-\/scaled fonts to match DpiScale. This is a very low-\/quality workaround. The correct way to handle DPI is \_currently\_ to replace the atlas and/or fonts in the Platform\_OnChangedViewport callback, but this is all early work in progress.}}
 \DoxyCodeLine{1442 }
 \DoxyCodeLine{1443     \textcolor{comment}{// User storage (to allow your backend/engine to communicate to code that may be shared between multiple projects. Those flags are not used by core Dear ImGui)}}
 \DoxyCodeLine{1444     ImGuiConfigFlags\_IsSRGB                 = 1 << 20,  \textcolor{comment}{// Application is SRGB-\/aware.}}
@@ -1460,7 +1460,7 @@
 \DoxyCodeLine{1456 }
 \DoxyCodeLine{1457     \textcolor{comment}{// [BETA] Viewports}}
 \DoxyCodeLine{1458     ImGuiBackendFlags\_PlatformHasViewports  = 1 << 10,  \textcolor{comment}{// Backend Platform supports multiple viewports.}}
-\DoxyCodeLine{1459     ImGuiBackendFlags\_HasMouseHoveredViewport=1 << 11,  \textcolor{comment}{// Backend Platform supports setting io.MouseHoveredViewport to the viewport directly under the mouse \_IGNORING\_ viewports with the ImGuiViewportFlags\_NoInputs flag and \_REGARDLESS\_ of whether another viewport is focused and may be capturing the mouse. This information is \_NOT EASY\_ to provide correctly with most high-\/level engines! Don't set this without studying \_carefully\_ how the backends mCallbackHandle ImGuiViewportFlags\_NoInputs!}}
+\DoxyCodeLine{1459     ImGuiBackendFlags\_HasMouseHoveredViewport=1 << 11,  \textcolor{comment}{// Backend Platform supports setting io.MouseHoveredViewport to the viewport directly under the mouse \_IGNORING\_ viewports with the ImGuiViewportFlags\_NoInputs flag and \_REGARDLESS\_ of whether another viewport is focused and may be capturing the mouse. This information is \_NOT EASY\_ to provide correctly with most high-\/level engines! Don't set this without studying \_carefully\_ how the backends handle ImGuiViewportFlags\_NoInputs!}}
 \DoxyCodeLine{1460     ImGuiBackendFlags\_RendererHasViewports  = 1 << 12   \textcolor{comment}{// Backend Renderer supports multiple viewports.}}
 \DoxyCodeLine{1461 \};}
 \DoxyCodeLine{1462 }
@@ -1927,8 +1927,8 @@
 \DoxyCodeLine{1923     \textcolor{keywordtype}{bool}        WantTextInput;                  \textcolor{comment}{// Mobile/console: when set, you may display an on-\/screen keyboard. This is set by Dear ImGui when it wants textual keyboard input to happen (e.g. when a InputText widget is active).}}
 \DoxyCodeLine{1924     \textcolor{keywordtype}{bool}        WantSetMousePos;                \textcolor{comment}{// MousePos has been altered, backend should reposition mouse on next frame. Rarely used! Set only when ImGuiConfigFlags\_NavEnableSetMousePos flag is enabled.}}
 \DoxyCodeLine{1925     \textcolor{keywordtype}{bool}        WantSaveIniSettings;            \textcolor{comment}{// When manual .ini load/save is active (io.IniFilename == NULL), this will be set to notify your application that you can call SaveIniSettingsToMemory() and save yourself. Important: clear io.WantSaveIniSettings yourself after saving!}}
-\DoxyCodeLine{1926     \textcolor{keywordtype}{bool}        NavActive;                      \textcolor{comment}{// Keyboard/Gamepad navigation is currently allowed (will mCallbackHandle ImGuiKey\_NavXXX events) = a window is focused and it doesn't use the ImGuiWindowFlags\_NoNavInputs flag.}}
-\DoxyCodeLine{1927     \textcolor{keywordtype}{bool}        NavVisible;                     \textcolor{comment}{// Keyboard/Gamepad navigation is visible and allowed (will mCallbackHandle ImGuiKey\_NavXXX events).}}
+\DoxyCodeLine{1926     \textcolor{keywordtype}{bool}        NavActive;                      \textcolor{comment}{// Keyboard/Gamepad navigation is currently allowed (will handle ImGuiKey\_NavXXX events) = a window is focused and it doesn't use the ImGuiWindowFlags\_NoNavInputs flag.}}
+\DoxyCodeLine{1927     \textcolor{keywordtype}{bool}        NavVisible;                     \textcolor{comment}{// Keyboard/Gamepad navigation is visible and allowed (will handle ImGuiKey\_NavXXX events).}}
 \DoxyCodeLine{1928     \textcolor{keywordtype}{float}       Framerate;                      \textcolor{comment}{// Application framerate estimate, in frame per second. Solely for convenience. Rolling average estimation based on io.DeltaTime over 120 frames.}}
 \DoxyCodeLine{1929     \textcolor{keywordtype}{int}         MetricsRenderVertices;          \textcolor{comment}{// Vertices output during last call to Render()}}
 \DoxyCodeLine{1930     \textcolor{keywordtype}{int}         MetricsRenderIndices;           \textcolor{comment}{// Indices output during last call to Render() = number of triangles * 3}}
@@ -1972,12 +1972,12 @@
 \DoxyCodeLine{1968 \textcolor{comment}{// Shared state of InputText(), passed as an argument to your callback when a ImGuiInputTextFlags\_Callback* flag is used.}}
 \DoxyCodeLine{1969 \textcolor{comment}{// The callback function should return 0 by default.}}
 \DoxyCodeLine{1970 \textcolor{comment}{// Callbacks (follow a flag name and see comments in ImGuiInputTextFlags\_ declarations for more details)}}
-\DoxyCodeLine{1971 \textcolor{comment}{// -\/ ImGuiInputTextFlags\_CallbackEdit:        mCallback on buffer edit (note that InputText() already returns true on edit, the callback is useful mainly to manipulate the underlying buffer while focus is active)}}
-\DoxyCodeLine{1972 \textcolor{comment}{// -\/ ImGuiInputTextFlags\_CallbackAlways:      mCallback on each iteration}}
-\DoxyCodeLine{1973 \textcolor{comment}{// -\/ ImGuiInputTextFlags\_CallbackCompletion:  mCallback on pressing TAB}}
-\DoxyCodeLine{1974 \textcolor{comment}{// -\/ ImGuiInputTextFlags\_CallbackHistory:     mCallback on pressing Up/Down arrows}}
-\DoxyCodeLine{1975 \textcolor{comment}{// -\/ ImGuiInputTextFlags\_CallbackCharFilter:  mCallback on character inputs to replace or discard them. Modify 'EventChar' to replace or discard, or return 1 in callback to discard.}}
-\DoxyCodeLine{1976 \textcolor{comment}{// -\/ ImGuiInputTextFlags\_CallbackResize:      mCallback on buffer capacity changes request (beyond 'buf\_size' parameter value), allowing the string to grow.}}
+\DoxyCodeLine{1971 \textcolor{comment}{// -\/ ImGuiInputTextFlags\_CallbackEdit:        Callback on buffer edit (note that InputText() already returns true on edit, the callback is useful mainly to manipulate the underlying buffer while focus is active)}}
+\DoxyCodeLine{1972 \textcolor{comment}{// -\/ ImGuiInputTextFlags\_CallbackAlways:      Callback on each iteration}}
+\DoxyCodeLine{1973 \textcolor{comment}{// -\/ ImGuiInputTextFlags\_CallbackCompletion:  Callback on pressing TAB}}
+\DoxyCodeLine{1974 \textcolor{comment}{// -\/ ImGuiInputTextFlags\_CallbackHistory:     Callback on pressing Up/Down arrows}}
+\DoxyCodeLine{1975 \textcolor{comment}{// -\/ ImGuiInputTextFlags\_CallbackCharFilter:  Callback on character inputs to replace or discard them. Modify 'EventChar' to replace or discard, or return 1 in callback to discard.}}
+\DoxyCodeLine{1976 \textcolor{comment}{// -\/ ImGuiInputTextFlags\_CallbackResize:      Callback on buffer capacity changes request (beyond 'buf\_size' parameter value), allowing the string to grow.}}
 \DoxyCodeLine{1977 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_im_gui_input_text_callback_data}{ImGuiInputTextCallbackData}}}
 \DoxyCodeLine{1978 \{}
 \DoxyCodeLine{1979     ImGuiInputTextFlags EventFlag;      \textcolor{comment}{// One ImGuiInputTextFlags\_Callback*    // Read-\/only}}
@@ -2007,7 +2007,7 @@
 \DoxyCodeLine{2003     \textcolor{keywordtype}{bool}                HasSelection()\textcolor{keyword}{ const    }\{ \textcolor{keywordflow}{return} SelectionStart != SelectionEnd; \}}
 \DoxyCodeLine{2004 \};}
 \DoxyCodeLine{2005 }
-\DoxyCodeLine{2006 \textcolor{comment}{// Resizing callback data to apply custom constraint. As enabled by SetNextWindowSizeConstraints(). mCallback is called during the next Begin().}}
+\DoxyCodeLine{2006 \textcolor{comment}{// Resizing callback data to apply custom constraint. As enabled by SetNextWindowSizeConstraints(). Callback is called during the next Begin().}}
 \DoxyCodeLine{2007 \textcolor{comment}{// NB: For basic min/max size constraint on each axis you don't need to use the callback! The SetNextWindowSizeConstraints() parameters are enough.}}
 \DoxyCodeLine{2008 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_im_gui_size_callback_data}{ImGuiSizeCallbackData}}}
 \DoxyCodeLine{2009 \{}
@@ -2051,7 +2051,7 @@
 \DoxyCodeLine{2047     ImGuiID         SourceParentId;     \textcolor{comment}{// Source parent id (if available)}}
 \DoxyCodeLine{2048     \textcolor{keywordtype}{int}             DataFrameCount;     \textcolor{comment}{// Data timestamp}}
 \DoxyCodeLine{2049     \textcolor{keywordtype}{char}            DataType[32 + 1];   \textcolor{comment}{// Data type tag (short user-\/supplied string, 32 characters max)}}
-\DoxyCodeLine{2050     \textcolor{keywordtype}{bool}            Preview;            \textcolor{comment}{// Set when AcceptDragDropPayload() was called and mouse has been hovering the target item (nb: mCallbackHandle overlapping drag targets)}}
+\DoxyCodeLine{2050     \textcolor{keywordtype}{bool}            Preview;            \textcolor{comment}{// Set when AcceptDragDropPayload() was called and mouse has been hovering the target item (nb: handle overlapping drag targets)}}
 \DoxyCodeLine{2051     \textcolor{keywordtype}{bool}            Delivery;           \textcolor{comment}{// Set when AcceptDragDropPayload() was called and mouse button is released over the target item.}}
 \DoxyCodeLine{2052 }
 \DoxyCodeLine{2053     \mbox{\hyperlink{struct_im_gui_payload}{ImGuiPayload}}()  \{ Clear(); \}}
@@ -2309,7 +2309,7 @@
 \DoxyCodeLine{2305 \textcolor{preprocessor}{\#endif}}
 \DoxyCodeLine{2306 }
 \DoxyCodeLine{2307 \textcolor{comment}{// Special Draw callback value to request renderer backend to reset the graphics/render state.}}
-\DoxyCodeLine{2308 \textcolor{comment}{// The renderer backend needs to mCallbackHandle this special value, otherwise it will crash trying to call a function at this address.}}
+\DoxyCodeLine{2308 \textcolor{comment}{// The renderer backend needs to handle this special value, otherwise it will crash trying to call a function at this address.}}
 \DoxyCodeLine{2309 \textcolor{comment}{// This is useful for example if you submitted callbacks which you know have altered the render state and you want it to be restored.}}
 \DoxyCodeLine{2310 \textcolor{comment}{// It is not done by default because they are many perfectly useful way of altering render state for imgui contents (e.g. changing shader/blending settings before an Image call).}}
 \DoxyCodeLine{2311 \textcolor{preprocessor}{\#define ImDrawCallback\_ResetRenderState     (ImDrawCallback)(-\/1)}}
@@ -2333,7 +2333,7 @@
 \DoxyCodeLine{2329 \};}
 \DoxyCodeLine{2330 }
 \DoxyCodeLine{2331 \textcolor{comment}{// Vertex index, default to 16-\/bit}}
-\DoxyCodeLine{2332 \textcolor{comment}{// To allow large meshes with 16-\/bit indices: set 'io.BackendFlags |= ImGuiBackendFlags\_RendererHasVtxOffset' and mCallbackHandle ImDrawCmd::VtxOffset in the renderer backend (recommended).}}
+\DoxyCodeLine{2332 \textcolor{comment}{// To allow large meshes with 16-\/bit indices: set 'io.BackendFlags |= ImGuiBackendFlags\_RendererHasVtxOffset' and handle ImDrawCmd::VtxOffset in the renderer backend (recommended).}}
 \DoxyCodeLine{2333 \textcolor{comment}{// To use 32-\/bit indices: override with '\#define ImDrawIdx unsigned int' in imconfig.h.}}
 \DoxyCodeLine{2334 \textcolor{preprocessor}{\#ifndef ImDrawIdx}}
 \DoxyCodeLine{2335 \textcolor{keyword}{typedef} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{short} ImDrawIdx;}
@@ -2686,7 +2686,7 @@
 \DoxyCodeLine{2682     IMGUI\_API \textcolor{keywordtype}{void}              Clear();                    \textcolor{comment}{// Clear all input and output.}}
 \DoxyCodeLine{2683 }
 \DoxyCodeLine{2684     \textcolor{comment}{// Build atlas, retrieve pixel data.}}
-\DoxyCodeLine{2685     \textcolor{comment}{// User is in charge of copying the pixels into graphics memory (e.g. create a texture with your engine). Then store your texture mCallbackHandle with SetTexID().}}
+\DoxyCodeLine{2685     \textcolor{comment}{// User is in charge of copying the pixels into graphics memory (e.g. create a texture with your engine). Then store your texture handle with SetTexID().}}
 \DoxyCodeLine{2686     \textcolor{comment}{// The pitch is always = Width * BytesPerPixels (1 or 4)}}
 \DoxyCodeLine{2687     \textcolor{comment}{// Building in RGBA32 format is provided for convenience and compatibility, but note that unless you manually manipulate or copy color data into}}
 \DoxyCodeLine{2688     \textcolor{comment}{// the texture (e.g. when using the AddCustomRect*** api), then the RGB pixels emitted will always be white (\string~75\% of memory/bandwidth waste.}}
@@ -2870,8 +2870,8 @@
 \DoxyCodeLine{2866     \textcolor{comment}{// The library never uses those fields, they are merely storage to facilitate backend implementation.}}
 \DoxyCodeLine{2867     \textcolor{keywordtype}{void}*               RendererUserData;       \textcolor{comment}{// void* to hold custom data structure for the renderer (e.g. swap chain, framebuffers etc.). generally set by your Renderer\_CreateWindow function.}}
 \DoxyCodeLine{2868     \textcolor{keywordtype}{void}*               PlatformUserData;       \textcolor{comment}{// void* to hold custom data structure for the OS / platform (e.g. windowing info, render context). generally set by your Platform\_CreateWindow function.}}
-\DoxyCodeLine{2869     \textcolor{keywordtype}{void}*               PlatformHandle;         \textcolor{comment}{// void* for FindViewportByPlatformHandle(). (e.g. suggested to use natural platform mCallbackHandle such as HWND, GLFWWindow*, SDL\_Window*)}}
-\DoxyCodeLine{2870     \textcolor{keywordtype}{void}*               PlatformHandleRaw;      \textcolor{comment}{// void* to hold lower-\/level, platform-\/native window mCallbackHandle (e.g. the HWND) when using an abstraction layer like GLFW or SDL (where PlatformHandle would be a SDL\_Window*)}}
+\DoxyCodeLine{2869     \textcolor{keywordtype}{void}*               PlatformHandle;         \textcolor{comment}{// void* for FindViewportByPlatformHandle(). (e.g. suggested to use natural platform handle such as HWND, GLFWWindow*, SDL\_Window*)}}
+\DoxyCodeLine{2870     \textcolor{keywordtype}{void}*               PlatformHandleRaw;      \textcolor{comment}{// void* to hold lower-\/level, platform-\/native window handle (e.g. the HWND) when using an abstraction layer like GLFW or SDL (where PlatformHandle would be a SDL\_Window*)}}
 \DoxyCodeLine{2871     \textcolor{keywordtype}{bool}                PlatformRequestMove;    \textcolor{comment}{// Platform window requested move (e.g. window was moved by the OS / host window manager, authoritative position will be OS window position)}}
 \DoxyCodeLine{2872     \textcolor{keywordtype}{bool}                PlatformRequestResize;  \textcolor{comment}{// Platform window requested resize (e.g. window was resized by the OS / host window manager, authoritative size will be OS window size)}}
 \DoxyCodeLine{2873     \textcolor{keywordtype}{bool}                PlatformRequestClose;   \textcolor{comment}{// Platform window requested closure (e.g. window was moved by the OS / host window manager, e.g. pressing ALT-\/F4)}}

@@ -6,34 +6,33 @@
 \DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_MAIN}}
 \DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
 \DoxyCodeLine{4 }
-\DoxyCodeLine{5 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <Kernel.hpp>}}
 \DoxyCodeLine{6 \textcolor{preprocessor}{\#include <MesumCore/Common.hpp>}}
 \DoxyCodeLine{7 \textcolor{preprocessor}{\#include <Types.hpp>}}
-\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <Kernel.hpp>}}
-\DoxyCodeLine{9 }
-\DoxyCodeLine{10 \textcolor{comment}{//*****************************************************************************}}
-\DoxyCodeLine{11 \textcolor{comment}{//Console entry point}}
-\DoxyCodeLine{12 \textcolor{comment}{//*****************************************************************************}}
-\DoxyCodeLine{13 \textcolor{keyword}{namespace }m}
-\DoxyCodeLine{14 \{}
-\DoxyCodeLine{15 \textcolor{keyword}{template} <\textcolor{keyword}{typename} AppClass>}
-\DoxyCodeLine{16 \textcolor{keywordtype}{void} internal\_run(mCmdLine \textcolor{keyword}{const}\& a\_cmdLine, \textcolor{keywordtype}{void}* a\_data)}
-\DoxyCodeLine{17 \{}
-\DoxyCodeLine{18     AppClass app;}
-\DoxyCodeLine{19     app.launch(a\_cmdLine, a\_data);}
-\DoxyCodeLine{20 \}}
-\DoxyCodeLine{21 \}  \textcolor{comment}{// namespace m}}
-\DoxyCodeLine{22 }
-\DoxyCodeLine{23 \textcolor{preprocessor}{\#define M\_EXECUTE\_CONSOLE\_APP(AppClass)              \(\backslash\)}}
-\DoxyCodeLine{24 \textcolor{preprocessor}{    int main(m::Int argc, m::Char** argv)       \(\backslash\)}}
-\DoxyCodeLine{25 \textcolor{preprocessor}{    \{                                                \(\backslash\)}}
-\DoxyCodeLine{26 \textcolor{preprocessor}{        m::mBasicLaunchData data;                     \(\backslash\)}}
-\DoxyCodeLine{27 \textcolor{preprocessor}{        m::mCmdLine        cmdLine;                  \(\backslash\)}}
-\DoxyCodeLine{28 \textcolor{preprocessor}{        cmdLine.parse\_cmdLineAguments(argc, argv);   \(\backslash\)}}
-\DoxyCodeLine{29 \textcolor{preprocessor}{        m::internal\_run<AppClass>(cmdLine, \&data);   \(\backslash\)}}
-\DoxyCodeLine{30 \textcolor{preprocessor}{        return 0;                                    \(\backslash\)}}
-\DoxyCodeLine{31 \textcolor{preprocessor}{    \}}}
-\DoxyCodeLine{32 }
-\DoxyCodeLine{33 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//M\_MAIN}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{comment}{//*****************************************************************************}}
+\DoxyCodeLine{10 \textcolor{comment}{// Console entry point}}
+\DoxyCodeLine{11 \textcolor{comment}{//*****************************************************************************}}
+\DoxyCodeLine{12 \textcolor{keyword}{namespace }m}
+\DoxyCodeLine{13 \{}
+\DoxyCodeLine{14 \textcolor{keyword}{template} <\textcolor{keyword}{typename} AppClass>}
+\DoxyCodeLine{15 \textcolor{keywordtype}{void} internal\_run(mCmdLine \textcolor{keyword}{const}\& a\_cmdLine, \textcolor{keywordtype}{void}* a\_data)}
+\DoxyCodeLine{16 \{}
+\DoxyCodeLine{17     AppClass app;}
+\DoxyCodeLine{18     app.launch(a\_cmdLine, a\_data);}
+\DoxyCodeLine{19 \}}
+\DoxyCodeLine{20 \}  \textcolor{comment}{// namespace m}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#define M\_EXECUTE\_CONSOLE\_APP(AppClass)            \(\backslash\)}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{    int main(m::Int argc, m::Char** argv)          \(\backslash\)}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{    \{                                              \(\backslash\)}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{        m::mBasicLaunchData data;                  \(\backslash\)}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{        m::mCmdLine         cmdLine;               \(\backslash\)}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{        cmdLine.parse\_cmdLineAguments(argc, argv); \(\backslash\)}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{        m::internal\_run<AppClass>(cmdLine, \&data); \(\backslash\)}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{        return 0;                                  \(\backslash\)}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{    \}}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_MAIN}}
 
 \end{DoxyCode}

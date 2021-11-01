@@ -2,20 +2,24 @@
 \label{_file_8hpp_source}\index{MesumCore/Kernel/File.hpp@{MesumCore/Kernel/File.hpp}}
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_File}}
-\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_File}}
-\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
-\DoxyCodeLine{4 }
-\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <string>}}
-\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <vector>}}
-\DoxyCodeLine{7 }
-\DoxyCodeLine{8 \textcolor{keyword}{namespace }m::files}
-\DoxyCodeLine{9 \{}
-\DoxyCodeLine{10 \textcolor{keywordtype}{void} open\_fileToString(std::string \textcolor{keyword}{const}\& a\_fileName, std::string\& a\_output);}
-\DoxyCodeLine{11 \textcolor{keywordtype}{void} open\_fileToBinary(std::string \textcolor{keyword}{const}\& a\_fileName,}
-\DoxyCodeLine{12                        std::vector<char>\& a\_output);}
-\DoxyCodeLine{13 \} \textcolor{comment}{//m::files}}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <Log.hpp>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <MesumCore/Common.hpp>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <Types.hpp>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <filesystem>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{9 }
 \DoxyCodeLine{14 }
-\DoxyCodeLine{15 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_File}}
+\DoxyCodeLine{18 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacem_1_1files}{m::files}}}
+\DoxyCodeLine{19 \{}
+\DoxyCodeLine{20 \textcolor{keyword}{extern} MesumCoreApi \textcolor{keyword}{const} \mbox{\hyperlink{group___log_ga13f51627936471940ede5666fd047313}{logging::ChannelID}} FILE\_ID;}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{31 Bool \mbox{\hyperlink{namespacem_1_1files_aa3db50dd787fc4bb5c38aa8785f3ccc3}{copy\_fileToBinary}}(std::filesystem::path \textcolor{keyword}{const}\& a\_filePath,}
+\DoxyCodeLine{32                        std::vector<char>\&           a\_output);}
+\DoxyCodeLine{33 \}  \textcolor{comment}{// namespace m::files}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{37 }
 
 \end{DoxyCode}

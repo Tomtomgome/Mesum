@@ -721,7 +721,7 @@
 \DoxyCodeLine{717     ImGuiItemStatusFlags\_HoveredRect        = 1 << 0,}
 \DoxyCodeLine{718     ImGuiItemStatusFlags\_HasDisplayRect     = 1 << 1,   \textcolor{comment}{// LastItemDisplayRect is valid}}
 \DoxyCodeLine{719     ImGuiItemStatusFlags\_Edited             = 1 << 2,   \textcolor{comment}{// Value exposed by item was edited in the current frame (should match the bool return value of most widgets)}}
-\DoxyCodeLine{720     ImGuiItemStatusFlags\_ToggledSelection   = 1 << 3,   \textcolor{comment}{// Set when Selectable(), TreeNode() reports toggling a selection. We can't report "{}Selected"{} because reporting the change allows us to mCallbackHandle clipping with less issues.}}
+\DoxyCodeLine{720     ImGuiItemStatusFlags\_ToggledSelection   = 1 << 3,   \textcolor{comment}{// Set when Selectable(), TreeNode() reports toggling a selection. We can't report "{}Selected"{} because reporting the change allows us to handle clipping with less issues.}}
 \DoxyCodeLine{721     ImGuiItemStatusFlags\_ToggledOpen        = 1 << 4,   \textcolor{comment}{// Set when TreeNode() reports toggling their open state.}}
 \DoxyCodeLine{722     ImGuiItemStatusFlags\_HasDeactivated     = 1 << 5,   \textcolor{comment}{// Set if the widget/group is able to provide data for the ImGuiItemStatusFlags\_Deactivated flag.}}
 \DoxyCodeLine{723     ImGuiItemStatusFlags\_Deactivated        = 1 << 6,   \textcolor{comment}{// Only valid if ImGuiItemStatusFlags\_HasDeactivated is set.}}
@@ -2515,7 +2515,7 @@
 \DoxyCodeLine{2511     IMGUI\_API \textcolor{keywordtype}{void}          PushMultiItemsWidths(\textcolor{keywordtype}{int} components, \textcolor{keywordtype}{float} width\_full);}
 \DoxyCodeLine{2512     IMGUI\_API \textcolor{keywordtype}{void}          PushItemFlag(ImGuiItemFlags option, \textcolor{keywordtype}{bool} enabled);}
 \DoxyCodeLine{2513     IMGUI\_API \textcolor{keywordtype}{void}          PopItemFlag();}
-\DoxyCodeLine{2514     IMGUI\_API \textcolor{keywordtype}{bool}          IsItemToggledSelection();                                   \textcolor{comment}{// Was the last item selection toggled? (after Selectable(), TreeNode() etc. We only returns toggle \_event\_ in order to mCallbackHandle clipping correctly)}}
+\DoxyCodeLine{2514     IMGUI\_API \textcolor{keywordtype}{bool}          IsItemToggledSelection();                                   \textcolor{comment}{// Was the last item selection toggled? (after Selectable(), TreeNode() etc. We only returns toggle \_event\_ in order to handle clipping correctly)}}
 \DoxyCodeLine{2515     IMGUI\_API \mbox{\hyperlink{struct_im_vec2}{ImVec2}}        GetContentRegionMaxAbs();}
 \DoxyCodeLine{2516     IMGUI\_API \textcolor{keywordtype}{void}          ShrinkWidths(\mbox{\hyperlink{struct_im_gui_shrink_width_item}{ImGuiShrinkWidthItem}}* items, \textcolor{keywordtype}{int} count, \textcolor{keywordtype}{float} width\_excess);}
 \DoxyCodeLine{2517 }

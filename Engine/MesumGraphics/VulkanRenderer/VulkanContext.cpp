@@ -172,7 +172,7 @@ VkShaderModule VulkanContext::create_shaderModule(
     std::string const& a_shaderPath)
 {
     std::vector<char> binary;
-    files::open_fileToBinary(a_shaderPath, binary);
+    files::copy_fileToBinary(a_shaderPath, binary);
 
     mAssert(a_shaderPath.size() > 0);
 

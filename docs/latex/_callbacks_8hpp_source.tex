@@ -76,43 +76,43 @@
 \DoxyCodeLine{169 \};}
 \DoxyCodeLine{170 }
 \DoxyCodeLine{180 \textcolor{keyword}{template} <\textcolor{keyword}{typename}... t\_Args>}
-\DoxyCodeLine{181 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1_signal}{mSignal}}}
+\DoxyCodeLine{181 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1m_signal}{mSignal}}}
 \DoxyCodeLine{182 \{}
 \DoxyCodeLine{183    \textcolor{keyword}{public}:}
-\DoxyCodeLine{187     \textcolor{keyword}{using} \mbox{\hyperlink{classm_1_1_signal_af932ce760d285e0d8413edf3bdf9c518}{mCallbackHandle}} =}
+\DoxyCodeLine{187     \textcolor{keyword}{using} \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{mCallbackHandle}} =}
 \DoxyCodeLine{188         \textcolor{keyword}{typename} std::list<\mbox{\hyperlink{classm_1_1m_callback}{mCallback}}<void, t\_Args...>>::iterator;}
 \DoxyCodeLine{189 }
-\DoxyCodeLine{196     \mbox{\hyperlink{classm_1_1_signal_af932ce760d285e0d8413edf3bdf9c518}{mCallbackHandle}} \mbox{\hyperlink{classm_1_1_signal_aff70ff76b47b223657b43f3d146093d5}{attach\_toSignal}}(}
+\DoxyCodeLine{196     \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{mCallbackHandle}} \mbox{\hyperlink{classm_1_1m_signal_abeb02a2ae83970cb7ee74cb9eb5ee265}{attach\_toSignal}}(}
 \DoxyCodeLine{197         \mbox{\hyperlink{classm_1_1m_callback}{mCallback<void, t\_Args...>}} \textcolor{keyword}{const}\& a\_callback)}
 \DoxyCodeLine{198     \{}
-\DoxyCodeLine{199         \mbox{\hyperlink{classm_1_1_signal_a9e55493bc4429050453c10319889210e}{m\_callbacks}}.push\_front(a\_callback);}
-\DoxyCodeLine{200         \textcolor{keywordflow}{return} \mbox{\hyperlink{classm_1_1_signal_a9e55493bc4429050453c10319889210e}{m\_callbacks}}.begin();}
+\DoxyCodeLine{199         \mbox{\hyperlink{classm_1_1m_signal_a7d0937df96ca9773d0086d423a0f0e33}{m\_callbacks}}.push\_front(a\_callback);}
+\DoxyCodeLine{200         \textcolor{keywordflow}{return} \mbox{\hyperlink{classm_1_1m_signal_a7d0937df96ca9773d0086d423a0f0e33}{m\_callbacks}}.begin();}
 \DoxyCodeLine{201     \}}
 \DoxyCodeLine{202 }
-\DoxyCodeLine{208     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1_signal_a19b8d29b8b463ed00032ce5e0ec4da14}{detach\_fromSignal}}(\mbox{\hyperlink{classm_1_1m_callback}{mCallback<void, t\_Args...>}} a\_callback)}
+\DoxyCodeLine{208     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1m_signal_a9f2353d6e412ca07f8cd555d607b9dba}{detach\_fromSignal}}(\mbox{\hyperlink{classm_1_1m_callback}{mCallback<void, t\_Args...>}} a\_callback)}
 \DoxyCodeLine{209     \{}
-\DoxyCodeLine{210         \mbox{\hyperlink{classm_1_1_signal_a9e55493bc4429050453c10319889210e}{m\_callbacks}}.remove(a\_callback);}
+\DoxyCodeLine{210         \mbox{\hyperlink{classm_1_1m_signal_a7d0937df96ca9773d0086d423a0f0e33}{m\_callbacks}}.remove(a\_callback);}
 \DoxyCodeLine{211     \}}
 \DoxyCodeLine{212 }
-\DoxyCodeLine{219     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1_signal_af94fe3240830e31e2d4c3ee1337eed3f}{detach\_fromSignal}}(\textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1_signal_af932ce760d285e0d8413edf3bdf9c518}{mCallbackHandle}}\& a\_handle)}
+\DoxyCodeLine{219     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1m_signal_ac846bbef1acd0dde085eadedb7ba0766}{detach\_fromSignal}}(\textcolor{keyword}{const} \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{mCallbackHandle}}\& a\_handle)}
 \DoxyCodeLine{220     \{}
-\DoxyCodeLine{221         \mbox{\hyperlink{group___core_ga375da2becf883550c0e1293307b02c9a}{mExpect}}(std::find(\mbox{\hyperlink{classm_1_1_signal_a9e55493bc4429050453c10319889210e}{m\_callbacks}}.begin(), \mbox{\hyperlink{classm_1_1_signal_a9e55493bc4429050453c10319889210e}{m\_callbacks}}.end(), *a\_handle) !=}
-\DoxyCodeLine{222                 \mbox{\hyperlink{classm_1_1_signal_a9e55493bc4429050453c10319889210e}{m\_callbacks}}.end());}
-\DoxyCodeLine{223         \mbox{\hyperlink{classm_1_1_signal_a9e55493bc4429050453c10319889210e}{m\_callbacks}}.erase(a\_handle);}
+\DoxyCodeLine{221         \mbox{\hyperlink{group___core_ga375da2becf883550c0e1293307b02c9a}{mExpect}}(std::find(\mbox{\hyperlink{classm_1_1m_signal_a7d0937df96ca9773d0086d423a0f0e33}{m\_callbacks}}.begin(), \mbox{\hyperlink{classm_1_1m_signal_a7d0937df96ca9773d0086d423a0f0e33}{m\_callbacks}}.end(), *a\_handle) !=}
+\DoxyCodeLine{222                 \mbox{\hyperlink{classm_1_1m_signal_a7d0937df96ca9773d0086d423a0f0e33}{m\_callbacks}}.end());}
+\DoxyCodeLine{223         \mbox{\hyperlink{classm_1_1m_signal_a7d0937df96ca9773d0086d423a0f0e33}{m\_callbacks}}.erase(a\_handle);}
 \DoxyCodeLine{224     \}}
 \DoxyCodeLine{225 }
-\DoxyCodeLine{231     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1_signal_aacf52b1321e7b4e0fc0c5cd3d573b1e2}{call}}(t\_Args... a\_args)}
+\DoxyCodeLine{231     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1m_signal_ab9a52f3637fad8e668d87c9fd7abe299}{call}}(t\_Args... a\_args)}
 \DoxyCodeLine{232     \{}
-\DoxyCodeLine{233         \textcolor{keywordflow}{for} (\mbox{\hyperlink{classm_1_1m_callback}{mCallback<void, t\_Args...>}} cbs : \mbox{\hyperlink{classm_1_1_signal_a9e55493bc4429050453c10319889210e}{m\_callbacks}})}
+\DoxyCodeLine{233         \textcolor{keywordflow}{for} (\mbox{\hyperlink{classm_1_1m_callback}{mCallback<void, t\_Args...>}} cbs : \mbox{\hyperlink{classm_1_1m_signal_a7d0937df96ca9773d0086d423a0f0e33}{m\_callbacks}})}
 \DoxyCodeLine{234         \{}
 \DoxyCodeLine{235             cbs.call(a\_args...);}
 \DoxyCodeLine{236         \}}
 \DoxyCodeLine{237     \}}
 \DoxyCodeLine{238 }
-\DoxyCodeLine{245     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1_signal_ae3c1a6a8104acc5f0d34dcf8c0666e29}{clear}}() \{ \mbox{\hyperlink{classm_1_1_signal_a9e55493bc4429050453c10319889210e}{m\_callbacks}}.clear(); \}}
+\DoxyCodeLine{245     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1m_signal_a56d8ba7b156ed62110e64e3e8eac18ca}{clear}}() \{ \mbox{\hyperlink{classm_1_1m_signal_a7d0937df96ca9773d0086d423a0f0e33}{m\_callbacks}}.clear(); \}}
 \DoxyCodeLine{246 }
 \DoxyCodeLine{247    \textcolor{keyword}{private}:}
-\DoxyCodeLine{251     std::list<\mbox{\hyperlink{classm_1_1m_callback}{mCallback}}<void, t\_Args...>> \mbox{\hyperlink{classm_1_1_signal_a9e55493bc4429050453c10319889210e}{m\_callbacks}};}
+\DoxyCodeLine{251     std::list<\mbox{\hyperlink{classm_1_1m_callback}{mCallback}}<void, t\_Args...>> \mbox{\hyperlink{classm_1_1m_signal_a7d0937df96ca9773d0086d423a0f0e33}{m\_callbacks}};}
 \DoxyCodeLine{252 \};}
 \DoxyCodeLine{253 \};  \textcolor{comment}{// namespace m}}
 \DoxyCodeLine{254 }

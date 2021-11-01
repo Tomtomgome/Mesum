@@ -15,7 +15,7 @@
 namespace m
 {
 ///////////////////////////////////////////////////////////////////////////////
-/// \biref Structure holding a list of command line arguments
+/// \brief Structure holding a list of command line arguments
 ///
 /// For exemple holds the line executable -w 1080 -h 720 -fullScreen
 /// will hold an array of strings with {-w, 1080, -h, 720, -fullScreen}

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['m_5fcallbacks_0',['m_callbacks',['../classm_1_1_signal.html#a9e55493bc4429050453c10319889210e',1,'m::Signal']]],
+  ['m_5fcallbacks_0',['m_callbacks',['../classm_1_1m_signal.html#a7d0937df96ca9773d0086d423a0f0e33',1,'m::mSignal']]],
   ['m_5ffilter_1',['m_filter',['../group___log.html#ga1200f9c4218e3986e86c515c158fa8db',1,'m::logging::Logger']]],
   ['m_5ffunc_2',['m_func',['../classm_1_1m_callback.html#ae4aee5ac7416e0a0b04e6472b70f7e81',1,'m::mCallback']]],
   ['m_5flinenumber_3',['m_lineNumber',['../group___log.html#gac5d048908987c191774d4fa620984968',1,'m::logging::Logger']]],
