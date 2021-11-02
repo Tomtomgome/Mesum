@@ -20,8 +20,8 @@ struct XCBContext
     void destroy();
 
     // Properties
-    input::Key m_lut_keycodes[256];
-    mI16       m_lut_scancode[input::Key::KEY_LAST + 1];
+    input::mKey m_lut_keycodes[256];
+    mI16       m_lut_scancode[input::mKey::keyLast + 1];
 
 };
 

@@ -1245,7 +1245,7 @@
 \DoxyCodeLine{1241     \mbox{\hyperlink{struct_im_gui_window_class}{ImGuiWindowClass}}        WindowClass;                \textcolor{comment}{// [Root node only]}}
 \DoxyCodeLine{1242 }
 \DoxyCodeLine{1243     \mbox{\hyperlink{struct_im_gui_window}{ImGuiWindow}}*            HostWindow;}
-\DoxyCodeLine{1244     \mbox{\hyperlink{struct_im_gui_window}{ImGuiWindow}}*            VisibleWindow;              \textcolor{comment}{// Generally point to window which is ID is == SelectedTabID, but when CTRL+Tabbing this can be a different window.}}
+\DoxyCodeLine{1244     \mbox{\hyperlink{struct_im_gui_window}{ImGuiWindow}}*            VisibleWindow;              \textcolor{comment}{// Generally point to window which is ID is == SelectedTabID, but when ctrl+Tabbing this can be a different window.}}
 \DoxyCodeLine{1245     ImGuiDockNode*          CentralNode;                \textcolor{comment}{// [Root node only] Pointer to central node.}}
 \DoxyCodeLine{1246     ImGuiDockNode*          OnlyNodeWithWindows;        \textcolor{comment}{// [Root node only] Set when there is a single visible node within the hierarchy.}}
 \DoxyCodeLine{1247     \textcolor{keywordtype}{int}                     LastFrameAlive;             \textcolor{comment}{// Last frame number the node was updated or kept alive explicitly with DockSpace() + ImGuiDockNodeFlags\_KeepAliveOnly}}
@@ -1594,10 +1594,10 @@
 \DoxyCodeLine{1590     \mbox{\hyperlink{struct_im_gui_window}{ImGuiWindow}}*            NavWrapRequestWindow;               \textcolor{comment}{// Window which requested trying nav wrap-\/around.}}
 \DoxyCodeLine{1591     ImGuiNavMoveFlags       NavWrapRequestFlags;                \textcolor{comment}{// Wrap-\/around operation flags.}}
 \DoxyCodeLine{1592 }
-\DoxyCodeLine{1593     \textcolor{comment}{// Navigation: Windowing (CTRL+TAB for list, or Menu button + keys or directional pads to move/resize)}}
-\DoxyCodeLine{1594     \mbox{\hyperlink{struct_im_gui_window}{ImGuiWindow}}*            NavWindowingTarget;                 \textcolor{comment}{// Target window when doing CTRL+Tab (or Pad Menu + FocusPrev/Next), this window is temporarily displayed top-\/most!}}
+\DoxyCodeLine{1593     \textcolor{comment}{// Navigation: Windowing (ctrl+TAB for list, or Menu button + keys or directional pads to move/resize)}}
+\DoxyCodeLine{1594     \mbox{\hyperlink{struct_im_gui_window}{ImGuiWindow}}*            NavWindowingTarget;                 \textcolor{comment}{// Target window when doing ctrl+Tab (or Pad Menu + FocusPrev/Next), this window is temporarily displayed top-\/most!}}
 \DoxyCodeLine{1595     \mbox{\hyperlink{struct_im_gui_window}{ImGuiWindow}}*            NavWindowingTargetAnim;             \textcolor{comment}{// Record of last valid NavWindowingTarget until DimBgRatio and NavWindowingHighlightAlpha becomes 0.0f, so the fade-\/out can stay on it.}}
-\DoxyCodeLine{1596     \mbox{\hyperlink{struct_im_gui_window}{ImGuiWindow}}*            NavWindowingListWindow;             \textcolor{comment}{// Internal window actually listing the CTRL+Tab contents}}
+\DoxyCodeLine{1596     \mbox{\hyperlink{struct_im_gui_window}{ImGuiWindow}}*            NavWindowingListWindow;             \textcolor{comment}{// Internal window actually listing the ctrl+Tab contents}}
 \DoxyCodeLine{1597     \textcolor{keywordtype}{float}                   NavWindowingTimer;}
 \DoxyCodeLine{1598     \textcolor{keywordtype}{float}                   NavWindowingHighlightAlpha;}
 \DoxyCodeLine{1599     \textcolor{keywordtype}{bool}                    NavWindowingToggleLayer;}
@@ -1612,7 +1612,7 @@
 \DoxyCodeLine{1608     \textcolor{keywordtype}{bool}                    TabFocusPressed;                    \textcolor{comment}{//}}
 \DoxyCodeLine{1609 }
 \DoxyCodeLine{1610     \textcolor{comment}{// Render}}
-\DoxyCodeLine{1611     \textcolor{keywordtype}{float}                   DimBgRatio;                         \textcolor{comment}{// 0.0..1.0 animation when fading in a dimming background (for modal window and CTRL+TAB list)}}
+\DoxyCodeLine{1611     \textcolor{keywordtype}{float}                   DimBgRatio;                         \textcolor{comment}{// 0.0..1.0 animation when fading in a dimming background (for modal window and ctrl+TAB list)}}
 \DoxyCodeLine{1612     ImGuiMouseCursor        MouseCursor;}
 \DoxyCodeLine{1613 }
 \DoxyCodeLine{1614     \textcolor{comment}{// Drag and Drop}}
@@ -1651,7 +1651,7 @@
 \DoxyCodeLine{1647     \mbox{\hyperlink{struct_im_vec2}{ImVec2}}                  LastValidMousePos;}
 \DoxyCodeLine{1648     \mbox{\hyperlink{struct_im_gui_input_text_state}{ImGuiInputTextState}}     InputTextState;}
 \DoxyCodeLine{1649     \mbox{\hyperlink{struct_im_font}{ImFont}}                  InputTextPasswordFont;}
-\DoxyCodeLine{1650     ImGuiID                 TempInputId;                        \textcolor{comment}{// Temporary text input when CTRL+clicking on a slider, etc.}}
+\DoxyCodeLine{1650     ImGuiID                 TempInputId;                        \textcolor{comment}{// Temporary text input when ctrl+clicking on a slider, etc.}}
 \DoxyCodeLine{1651     ImGuiColorEditFlags     ColorEditOptions;                   \textcolor{comment}{// Store user options for color edit widgets}}
 \DoxyCodeLine{1652     \textcolor{keywordtype}{float}                   ColorEditLastHue;                   \textcolor{comment}{// Backup of last Hue associated to LastColor[3], so we can restore Hue in lossy RGB<>HSV round trips}}
 \DoxyCodeLine{1653     \textcolor{keywordtype}{float}                   ColorEditLastSat;                   \textcolor{comment}{// Backup of last Saturation associated to LastColor[3], so we can restore Saturation in lossy RGB<>HSV round trips}}
@@ -2128,7 +2128,7 @@
 \DoxyCodeLine{2124     ImGuiID             ID;                     \textcolor{comment}{// Zero for tab-\/bars used by docking}}
 \DoxyCodeLine{2125     ImGuiID             SelectedTabId;          \textcolor{comment}{// Selected tab/window}}
 \DoxyCodeLine{2126     ImGuiID             NextSelectedTabId;      \textcolor{comment}{// Next selected tab/window. Will also trigger a scrolling animation}}
-\DoxyCodeLine{2127     ImGuiID             VisibleTabId;           \textcolor{comment}{// Can occasionally be != SelectedTabId (e.g. when previewing contents for CTRL+TAB preview)}}
+\DoxyCodeLine{2127     ImGuiID             VisibleTabId;           \textcolor{comment}{// Can occasionally be != SelectedTabId (e.g. when previewing contents for ctrl+TAB preview)}}
 \DoxyCodeLine{2128     \textcolor{keywordtype}{int}                 CurrFrameVisible;}
 \DoxyCodeLine{2129     \textcolor{keywordtype}{int}                 PrevFrameVisible;}
 \DoxyCodeLine{2130     \mbox{\hyperlink{struct_im_rect}{ImRect}}              BarRect;}

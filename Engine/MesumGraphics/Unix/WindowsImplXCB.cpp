@@ -28,10 +28,10 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
         {
             if (m_linkedInputManager != nullptr)
             {
-                input::Key k = m_parentContext->get_keyFromParam(a_wParam);
+                input::mKey k = m_parentContext->get_keyFromParam(a_wParam);
 
                 m_linkedInputManager->process_KeyEvent(
-                    k, 0, input::Action::PRESSED, input::KeyMod::NONE);
+                    k, 0, input::mInputType::pressed, input::mKeyMod::none);
             }
         }
         break;
@@ -40,10 +40,10 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
         {
             if (m_linkedInputManager != nullptr)
             {
-                input::Key k = m_parentContext->get_keyFromParam(a_wParam);
+                input::mKey k = m_parentContext->get_keyFromParam(a_wParam);
 
                 m_linkedInputManager->process_KeyEvent(
-                    k, 0, input::Action::RELEASED, input::KeyMod::NONE);
+                    k, 0, input::mInputType::released, input::mKeyMod::none);
             }
         }
         break;

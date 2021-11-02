@@ -146,7 +146,7 @@ var hierarchy =
       [ "m::logging::mStdcoutLogPolicy", "classm_1_1logging_1_1m_stdcout_log_policy.html", null ]
     ] ],
     [ "m::logging::mLogger< t_LogPolicy >", "classm_1_1logging_1_1m_logger.html", null ],
-    [ "m::input::MouseAction", "structm_1_1input_1_1_mouse_action.html", null ],
+    [ "m::input::mMouseAction", "structm_1_1input_1_1m_mouse_action.html", null ],
     [ "m::input::MouseState", "structm_1_1input_1_1_mouse_state.html", null ],
     [ "m::mSignal< t_Args >", "classm_1_1m_signal.html", null ],
     [ "m::mSignal< const math::mDVec2 & >", "classm_1_1m_signal.html", null ],

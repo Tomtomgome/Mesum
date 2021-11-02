@@ -1,81 +1,112 @@
 #include <Input.hpp>
 
-namespace m
+namespace m::input
 {
-extern const logging::mChannelID INPUT_LOG_ID = mLog_getId();
+MesumCoreApi const logging::mChannelID g_inputLogID = mLog_getId();
 
-namespace input
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+mMouseAction mMouseAction::mousePressed(mMouseButton a_button, mKeyMod a_keyMod)
 {
-//------------------------------------------------------------
-//------------------------------------------------------------
-//------------------------------------------------------------
-MouseAction MouseAction::mousePressed(MouseButton a_button, KeyMod a_keyMod)
-{
-    return {Action::PRESSED, a_keyMod, a_button};
-}
-MouseAction MouseAction::mouseReleased(MouseButton a_button, KeyMod a_keyMod)
-{
-    return {Action::RELEASED, a_keyMod, a_button};
+    return {mInputType::pressed, a_keyMod, a_button};
 }
 
-//------------------------------------------------------------
-//------------------------------------------------------------
-//------------------------------------------------------------
-KeyAction KeyAction::keyPressed(Key a_key, KeyMod a_keyMod)
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+mMouseAction mMouseAction::mouseReleased(mMouseButton a_button,
+                                         mKeyMod      a_keyMod)
 {
-    return {Action::PRESSED, a_keyMod, a_key};
-}
-KeyAction KeyAction::keyReleased(Key a_key, KeyMod a_keyMod)
-{
-    return {Action::RELEASED, a_keyMod, a_key};
+    return {mInputType::released, a_keyMod, a_button};
 }
 
-//------------------------------------------------------------
-//------------------------------------------------------------
-//------------------------------------------------------------
-void InputManager::update_KeyMods(KeyMod a_mod, Action a_action)
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+KeyAction KeyAction::keyPressed(mKey a_key, mKeyMod a_keyMod)
 {
-    if (a_action == Action::PRESSED &&
+    return {mInputType::pressed, a_keyMod, a_key};
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+KeyAction KeyAction::keyReleased(mKey a_key, mKeyMod a_keyMod)
+{
+    return {mInputType::released, a_keyMod, a_key};
+}
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void InputManager::update_KeyMods(mKeyMod a_mod, mInputType a_action)
+{
+    if (a_action == mInputType::pressed &&
         (m_currentMod & mInt(a_mod)) != mInt(a_mod))
     {
         m_currentMod = m_currentMod | mInt(a_mod);
     }
-    else if (a_action == Action::RELEASED &&
+    else if (a_action == mInputType::released &&
              (m_currentMod & mInt(a_mod)) == mInt(a_mod))
     {
         m_currentMod = m_currentMod & !(mInt(a_mod));
     }
 }
 
-void InputManager::process_MouseEvent(MouseButton a_button, Action a_action,
-                                      KeyMod a_mods)
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void InputManager::process_MouseEvent(mMouseButton a_button,
+                                      mInputType a_action, mKeyMod a_mods)
 {
     m_mouseSignals[{a_action, a_mods, a_button}].call(
         math::mDVec2({m_mousePosX, m_mousePosX}));
-    m_mouseButtonClicked[mInt(a_button)] = a_action == Action::PRESSED;
+    m_mouseButtonClicked[mInt(a_button)] = a_action == mInputType::pressed;
 }
-void InputManager::process_KeyEvent(Key a_key, mInt a_scancode, Action a_action,
-                                    KeyMod a_mods)
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void InputManager::process_KeyEvent(mKey a_key, mInt a_scancode,
+                                    mInputType a_action, mKeyMod a_mods)
 {
     m_keySignals[{a_action, a_mods, a_key}].call();
 
-    if (a_key == Key::KEY_LEFT_CONTROL || a_key == Key::KEY_RIGHT_CONTROL)
+    if (a_key == mKey::keyLeftControl || a_key == mKey::keyRightControl)
     {
-        update_KeyMods(KeyMod::CTRL, a_action);
+        update_KeyMods(mKeyMod::ctrl, a_action);
     }
-    else if (a_key == Key::KEY_LEFT_ALT || a_key == Key::KEY_RIGHT_ALT)
+    else if (a_key == mKey::keyLeftAlt || a_key == mKey::keyRightAlt)
     {
-        update_KeyMods(KeyMod::ALT, a_action);
+        update_KeyMods(mKeyMod::alt, a_action);
     }
-    else if (a_key == Key::KEY_LEFT_SHIFT || a_key == Key::KEY_RIGHT_SHIFT)
+    else if (a_key == mKey::keyLeftShift || a_key == mKey::keyRightShift)
     {
-        update_KeyMods(KeyMod::SHIFT, a_action);
+        update_KeyMods(mKeyMod::shift, a_action);
     }
 }
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
 void InputManager::process_ScrollEvent(double a_xoffset, double a_yoffset)
 {
     m_scrollSignal.call(math::mDVec2({a_xoffset, a_yoffset}));
 }
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
 void InputManager::process_CursorPosition(double a_xpos, double a_ypos)
 {
     m_moveSignal.call(
@@ -84,6 +115,9 @@ void InputManager::process_CursorPosition(double a_xpos, double a_ypos)
     m_mousePosY = a_ypos;
 }
 
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
 void InputManager::processAndUpdate_States()
 {
     for (auto it = m_mouseStateSignals.begin(); it != m_mouseStateSignals.end();
@@ -94,10 +128,9 @@ void InputManager::processAndUpdate_States()
             m_mouseButtonClicked[int(state.m_button)] !=
                 m_previousMouseButtonClicked[mInt(state.m_button)])
         {
-            it->second.call(
-                ((mInt(state.m_keyMod) & m_currentMod) ==
+            it->second.call(((mInt(state.m_keyMod) & m_currentMod) ==
                              mInt(state.m_keyMod)) &&
-                m_mouseButtonClicked[mInt(state.m_button)]);
+                            m_mouseButtonClicked[mInt(state.m_button)]);
         }
     }
 
@@ -105,84 +138,137 @@ void InputManager::processAndUpdate_States()
     m_previousMouseButtonClicked = m_mouseButtonClicked;
 }
 
-KeyActionSignal::mCallbackHandle InputManager::attach_ToKeyEvent(
-    KeyAction a_keyAction, const KeyActionCallback& a_callback)
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+mKeyActionSignal::mCallbackHandle InputManager::attach_ToKeyEvent(
+    KeyAction a_keyAction, const mKeyActionCallback& a_callback)
 {
     return m_keySignals[a_keyAction].attach_toSignal(a_callback);
 }
-MouseActionSignal::mCallbackHandle InputManager::attach_ToMouseEvent(
-    MouseAction a_mouseAction, const MouseActionCallback& a_callback)
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+mMouseActionSignal::mCallbackHandle InputManager::attach_ToMouseEvent(
+    mMouseAction a_mouseAction, const mMouseActionCallback& a_callback)
 {
     return m_mouseSignals[a_mouseAction].attach_toSignal(a_callback);
 }
-ScrollSignal::mCallbackHandle InputManager::attach_ToScrollEvent(
-    const ScrollCallback& a_callback)
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+mScrollSignal::mCallbackHandle InputManager::attach_ToScrollEvent(
+    const mScrollCallback& a_callback)
 {
     return m_scrollSignal.attach_toSignal(a_callback);
 }
-MouseMoveSignal::mCallbackHandle InputManager::attach_ToMoveEvent(
-    const MouseMoveCallback& a_callback)
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+mMouseMoveSignal::mCallbackHandle InputManager::attach_ToMoveEvent(
+    const mMouseMoveCallback& a_callback)
 {
     return m_moveSignal.attach_toSignal(a_callback);
 }
 
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
 void InputManager::detach_FromKeyEvent(KeyAction                a_keyAction,
-                                       const KeyActionCallback& a_callback)
+                                       const mKeyActionCallback& a_callback)
 {
     m_keySignals[a_keyAction].detach_fromSignal(a_callback);
 }
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
 void InputManager::detach_FromKeyEvent(
-    KeyAction a_keyAction, const KeyActionSignal::mCallbackHandle& a_handle)
+    KeyAction a_keyAction, const mKeyActionSignal::mCallbackHandle& a_handle)
 {
     m_keySignals[a_keyAction].detach_fromSignal(a_handle);
 }
 
-void InputManager::detach_FromMouseEvent(MouseAction a_mouseAction,
-                                         const MouseActionCallback& a_callback)
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void InputManager::detach_FromMouseEvent(mMouseAction a_mouseAction,
+                                         const mMouseActionCallback& a_callback)
 {
     m_mouseSignals[a_mouseAction].detach_fromSignal(a_callback);
 }
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
 void InputManager::detach_FromMouseEvent(
-    MouseAction                               a_mouseAction,
-    const MouseActionSignal::mCallbackHandle& a_handle)
+    mMouseAction                              a_mouseAction,
+    const mMouseActionSignal::mCallbackHandle& a_handle)
 {
     m_mouseSignals[a_mouseAction].detach_fromSignal(a_handle);
 }
 
-void InputManager::detach_FromScrollEvent(const ScrollCallback& a_callback)
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void InputManager::detach_FromScrollEvent(const mScrollCallback& a_callback)
 {
     m_scrollSignal.detach_fromSignal(a_callback);
 }
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
 void InputManager::detach_FromScrollEvent(
-    const ScrollSignal::mCallbackHandle& a_handle)
+    const mScrollSignal::mCallbackHandle& a_handle)
 {
     m_scrollSignal.detach_fromSignal(a_handle);
 }
 
-void InputManager::detach_FromMoveEvent(const MouseMoveCallback& a_callback)
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void InputManager::detach_FromMoveEvent(const mMouseMoveCallback& a_callback)
 {
     m_moveSignal.detach_fromSignal(a_callback);
 }
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
 void InputManager::detach_FromMoveEvent(
-    const MouseMoveSignal::mCallbackHandle& a_handle)
+    const mMouseMoveSignal::mCallbackHandle& a_handle)
 {
     m_moveSignal.detach_fromSignal(a_handle);
 }
 
-MouseStateSignal::mCallbackHandle InputManager::attach_ToMouseState(
-    MouseState a_mouseState, const MouseStateCallback& a_callback)
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+mMouseStateSignal::mCallbackHandle InputManager::attach_ToMouseState(
+    MouseState a_mouseState, const mMouseStateCallback& a_callback)
 {
     return m_mouseStateSignals[a_mouseState].attach_toSignal(a_callback);
 }
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
 void InputManager::detach_FromMouseState(MouseState                a_mouseState,
-                                         const MouseStateCallback& a_callback)
+                                         const mMouseStateCallback& a_callback)
 {
     m_mouseStateSignals[a_mouseState].detach_fromSignal(a_callback);
 }
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
 void InputManager::detach_FromMouseState(
-    MouseState a_mouseState, const MouseStateSignal::mCallbackHandle& a_handle)
+    MouseState a_mouseState, const mMouseStateSignal::mCallbackHandle& a_handle)
 {
     m_mouseStateSignals[a_mouseState].detach_fromSignal(a_handle);
 }
-};  // namespace input
-};  // namespace m
+};  // namespace m::input

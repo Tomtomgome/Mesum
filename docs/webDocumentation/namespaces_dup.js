@@ -13,12 +13,7 @@ var namespaces_dup =
       [ "files", "namespacem_1_1files.html", [
         [ "copy_fileToBinary", "namespacem_1_1files.html#a20b16a1a42fafe54c1513dae48cc1a44", null ]
       ] ],
-      [ "input", null, [
-        [ "InputManager", "classm_1_1input_1_1_input_manager.html", null ],
-        [ "KeyAction", "structm_1_1input_1_1_key_action.html", null ],
-        [ "MouseAction", "structm_1_1input_1_1_mouse_action.html", null ],
-        [ "MouseState", "structm_1_1input_1_1_mouse_state.html", null ]
-      ] ],
+      [ "input", "namespacem_1_1input.html", "namespacem_1_1input" ],
       [ "logging", "namespacem_1_1logging.html", "namespacem_1_1logging" ],
       [ "math", "namespacem_1_1math.html", "namespacem_1_1math" ],
       [ "render", null, [

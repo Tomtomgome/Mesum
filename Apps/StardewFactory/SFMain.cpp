@@ -409,26 +409,26 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         m_mainWindow->link_inputManager(&m_inputManager);
 
         m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::KEY_F11),
-            m::input::KeyActionCallback(
+            m::input::KeyAction::keyPressed(m::input::keyF11),
+            m::input::mKeyActionCallback(
                 m_mainWindow, &m::windows::IWindow::toggle_fullScreen));
 
         m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::KEY_UP),
-            m::input::KeyActionCallback(this, &StardewFactoryApp::move_up));
+            m::input::KeyAction::keyPressed(m::input::keyUp),
+            m::input::mKeyActionCallback(this, &StardewFactoryApp::move_up));
         m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::KEY_DOWN),
-            m::input::KeyActionCallback(this, &StardewFactoryApp::move_down));
+            m::input::KeyAction::keyPressed(m::input::keyDown),
+            m::input::mKeyActionCallback(this, &StardewFactoryApp::move_down));
         m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::KEY_LEFT),
-            m::input::KeyActionCallback(this, &StardewFactoryApp::move_left));
+            m::input::KeyAction::keyPressed(m::input::keyLeft),
+            m::input::mKeyActionCallback(this, &StardewFactoryApp::move_left));
         m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::KEY_RIGHT),
-            m::input::KeyActionCallback(this, &StardewFactoryApp::move_right));
+            m::input::KeyAction::keyPressed(m::input::keyRight),
+            m::input::mKeyActionCallback(this, &StardewFactoryApp::move_right));
 
         m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::KEY_SPACE),
-            m::input::KeyActionCallback(this,
+            m::input::KeyAction::keyPressed(m::input::keySpace),
+            m::input::mKeyActionCallback(this,
                                         &StardewFactoryApp::player_action));
 
         set_microSecondsLimit(16000);

@@ -159,8 +159,8 @@
 \DoxyCodeLine{155 }
 \DoxyCodeLine{156 \textcolor{comment}{// Enums/Flags (declared as int for compatibility with old C++, to allow using as flags and to not pollute the top of this file)}}
 \DoxyCodeLine{157 \textcolor{comment}{// -\/ Tip: Use your programming IDE navigation facilities on the names in the \_central column\_ below to find the actual flags/enum lists!}}
-\DoxyCodeLine{158 \textcolor{comment}{//   In Visual Studio IDE: CTRL+comma ("{}Edit.NavigateTo"{}) can follow symbols in comments, whereas CTRL+F12 ("{}Edit.GoToImplementation"{}) cannot.}}
-\DoxyCodeLine{159 \textcolor{comment}{//   With Visual Assist installed: ALT+G ("{}VAssistX.GoToImplementation"{}) can also follow symbols in comments.}}
+\DoxyCodeLine{158 \textcolor{comment}{//   In Visual Studio IDE: ctrl+comma ("{}Edit.NavigateTo"{}) can follow symbols in comments, whereas ctrl+F12 ("{}Edit.GoToImplementation"{}) cannot.}}
+\DoxyCodeLine{159 \textcolor{comment}{//   With Visual Assist installed: alt+G ("{}VAssistX.GoToImplementation"{}) can also follow symbols in comments.}}
 \DoxyCodeLine{160 \textcolor{keyword}{typedef} \textcolor{keywordtype}{int} ImGuiCol;               \textcolor{comment}{// -\/> enum ImGuiCol\_             // Enum: A color identifier for styling}}
 \DoxyCodeLine{161 \textcolor{keyword}{typedef} \textcolor{keywordtype}{int} ImGuiCond;              \textcolor{comment}{// -\/> enum ImGuiCond\_            // Enum: A condition for many Set*() functions}}
 \DoxyCodeLine{162 \textcolor{keyword}{typedef} \textcolor{keywordtype}{int} ImGuiDataType;          \textcolor{comment}{// -\/> enum ImGuiDataType\_        // Enum: A primary data type}}
@@ -501,12 +501,12 @@
 \DoxyCodeLine{497     IMGUI\_API \textcolor{keywordtype}{bool}          Combo(const \textcolor{keywordtype}{char}* label, \textcolor{keywordtype}{int}* current\_item, \textcolor{keywordtype}{bool}(*items\_getter)(\textcolor{keywordtype}{void}* data, \textcolor{keywordtype}{int} idx, const \textcolor{keywordtype}{char}** out\_text), \textcolor{keywordtype}{void}* data, \textcolor{keywordtype}{int} items\_count, \textcolor{keywordtype}{int} popup\_max\_height\_in\_items = -\/1);}
 \DoxyCodeLine{498 }
 \DoxyCodeLine{499     \textcolor{comment}{// Widgets: Drag Sliders}}
-\DoxyCodeLine{500     \textcolor{comment}{// -\/ CTRL+Click on any drag box to turn them into an input box. Manually input values aren't clamped and can go off-\/bounds.}}
+\DoxyCodeLine{500     \textcolor{comment}{// -\/ ctrl+Click on any drag box to turn them into an input box. Manually input values aren't clamped and can go off-\/bounds.}}
 \DoxyCodeLine{501     \textcolor{comment}{// -\/ For all the Float2/Float3/Float4/Int2/Int3/Int4 versions of every functions, note that a 'float v[X]' function argument is the same as 'float* v', the array syntax is just a way to document the number of elements that are expected to be accessible. You can pass address of your first element out of a contiguous set, e.g. \&myvector.x}}
 \DoxyCodeLine{502     \textcolor{comment}{// -\/ Adjust format string to decorate the value with a prefix, a suffix, or adapt the editing and display precision e.g. "{}\%.3f"{} -\/> 1.234; "{}\%5.2f secs"{} -\/> 01.23 secs; "{}Biscuit: \%.0f"{} -\/> Biscuit: 1; etc.}}
 \DoxyCodeLine{503     \textcolor{comment}{// -\/ Format string may also be set to NULL or use the default format ("{}\%f"{} or "{}\%d"{}).}}
 \DoxyCodeLine{504     \textcolor{comment}{// -\/ Speed are per-\/pixel of mouse movement (v\_speed=0.2f: mouse needs to move by 5 pixels to increase value by 1). For gamepad/keyboard navigation, minimum speed is Max(v\_speed, minimum\_step\_at\_given\_precision).}}
-\DoxyCodeLine{505     \textcolor{comment}{// -\/ Use v\_min < v\_max to clamp edits to given limits. Note that CTRL+Click manual input can override those limits.}}
+\DoxyCodeLine{505     \textcolor{comment}{// -\/ Use v\_min < v\_max to clamp edits to given limits. Note that ctrl+Click manual input can override those limits.}}
 \DoxyCodeLine{506     \textcolor{comment}{// -\/ Use v\_max = FLT\_MAX / INT\_MAX etc to avoid clamping to a maximum, same with v\_min = -\/FLT\_MAX / INT\_MIN to avoid clamping to a minimum.}}
 \DoxyCodeLine{507     \textcolor{comment}{// -\/ We use the same sets of flags for DragXXX() and SliderXXX() functions as the features are the same and it makes it easier to swap them.}}
 \DoxyCodeLine{508     \textcolor{comment}{// -\/ Legacy: Pre-\/1.78 there are DragXXX() function signatures that takes a final `float power=1.0f' argument instead of the `ImGuiSliderFlags flags=0' argument.}}
@@ -525,7 +525,7 @@
 \DoxyCodeLine{521     IMGUI\_API \textcolor{keywordtype}{bool}          DragScalarN(const \textcolor{keywordtype}{char}* label, ImGuiDataType data\_type, \textcolor{keywordtype}{void}* p\_data, \textcolor{keywordtype}{int} components, \textcolor{keywordtype}{float} v\_speed = 1.0f, const \textcolor{keywordtype}{void}* p\_min = NULL, const \textcolor{keywordtype}{void}* p\_max = NULL, const \textcolor{keywordtype}{char}* format = NULL, ImGuiSliderFlags flags = 0);}
 \DoxyCodeLine{522 }
 \DoxyCodeLine{523     \textcolor{comment}{// Widgets: Regular Sliders}}
-\DoxyCodeLine{524     \textcolor{comment}{// -\/ CTRL+Click on any slider to turn them into an input box. Manually input values aren't clamped and can go off-\/bounds.}}
+\DoxyCodeLine{524     \textcolor{comment}{// -\/ ctrl+Click on any slider to turn them into an input box. Manually input values aren't clamped and can go off-\/bounds.}}
 \DoxyCodeLine{525     \textcolor{comment}{// -\/ Adjust format string to decorate the value with a prefix, a suffix, or adapt the editing and display precision e.g. "{}\%.3f"{} -\/> 1.234; "{}\%5.2f secs"{} -\/> 01.23 secs; "{}Biscuit: \%.0f"{} -\/> Biscuit: 1; etc.}}
 \DoxyCodeLine{526     \textcolor{comment}{// -\/ Format string may also be set to NULL or use the default format ("{}\%f"{} or "{}\%d"{}).}}
 \DoxyCodeLine{527     \textcolor{comment}{// -\/ Legacy: Pre-\/1.78 there are SliderXXX() function signatures that takes a final `float power=1.0f' argument instead of the `ImGuiSliderFlags flags=0' argument.}}
@@ -763,7 +763,7 @@
 \DoxyCodeLine{759     \textcolor{comment}{// [BETA API] Enable with io.ConfigFlags |= ImGuiConfigFlags\_DockingEnable.}}
 \DoxyCodeLine{760     \textcolor{comment}{// Note: You can use most Docking facilities without calling any API. You DO NOT need to call DockSpace() to use Docking!}}
 \DoxyCodeLine{761     \textcolor{comment}{// -\/ To dock windows: if io.ConfigDockingWithShift == false (default) drag window from their title bar.}}
-\DoxyCodeLine{762     \textcolor{comment}{// -\/ To dock windows: if io.ConfigDockingWithShift == true: hold SHIFT anywhere while moving windows.}}
+\DoxyCodeLine{762     \textcolor{comment}{// -\/ To dock windows: if io.ConfigDockingWithShift == true: hold shift anywhere while moving windows.}}
 \DoxyCodeLine{763     \textcolor{comment}{// About DockSpace:}}
 \DoxyCodeLine{764     \textcolor{comment}{// -\/ Use DockSpace() to create an explicit dock node \_within\_ an existing window. See Docking demo for details.}}
 \DoxyCodeLine{765     \textcolor{comment}{// -\/ DockSpace() needs to be submitted \_before\_ any window they can host. If you use a dockspace, submit it early in your app.}}
@@ -953,7 +953,7 @@
 \DoxyCodeLine{949     ImGuiWindowFlags\_AlwaysHorizontalScrollbar=1<< 15,  \textcolor{comment}{// Always show horizontal scrollbar (even if ContentSize.x < Size.x)}}
 \DoxyCodeLine{950     ImGuiWindowFlags\_AlwaysUseWindowPadding = 1 << 16,  \textcolor{comment}{// Ensure child windows without border uses style.WindowPadding (ignored by default for non-\/bordered child windows, because more convenient)}}
 \DoxyCodeLine{951     ImGuiWindowFlags\_NoNavInputs            = 1 << 18,  \textcolor{comment}{// No gamepad/keyboard navigation within the window}}
-\DoxyCodeLine{952     ImGuiWindowFlags\_NoNavFocus             = 1 << 19,  \textcolor{comment}{// No focusing toward this window with gamepad/keyboard navigation (e.g. skipped by CTRL+TAB)}}
+\DoxyCodeLine{952     ImGuiWindowFlags\_NoNavFocus             = 1 << 19,  \textcolor{comment}{// No focusing toward this window with gamepad/keyboard navigation (e.g. skipped by ctrl+TAB)}}
 \DoxyCodeLine{953     ImGuiWindowFlags\_UnsavedDocument        = 1 << 20,  \textcolor{comment}{// Append '*' to title without affecting the ID, as a convenience to avoid using the \#\#\# operator. When used in a tab/docking context, tab is selected on closure and closure is deferred by one frame to allow code to cancel the closure (with a confirmation popup, etc.) without flicker.}}
 \DoxyCodeLine{954     ImGuiWindowFlags\_NoDocking              = 1 << 21,  \textcolor{comment}{// Disable docking of this window}}
 \DoxyCodeLine{955 }
@@ -1370,12 +1370,12 @@
 \DoxyCodeLine{1366     ImGuiKey\_Enter,}
 \DoxyCodeLine{1367     ImGuiKey\_Escape,}
 \DoxyCodeLine{1368     ImGuiKey\_KeyPadEnter,}
-\DoxyCodeLine{1369     ImGuiKey\_A,                 \textcolor{comment}{// for text edit CTRL+A: select all}}
-\DoxyCodeLine{1370     ImGuiKey\_C,                 \textcolor{comment}{// for text edit CTRL+C: copy}}
-\DoxyCodeLine{1371     ImGuiKey\_V,                 \textcolor{comment}{// for text edit CTRL+V: paste}}
-\DoxyCodeLine{1372     ImGuiKey\_X,                 \textcolor{comment}{// for text edit CTRL+X: cut}}
-\DoxyCodeLine{1373     ImGuiKey\_Y,                 \textcolor{comment}{// for text edit CTRL+Y: redo}}
-\DoxyCodeLine{1374     ImGuiKey\_Z,                 \textcolor{comment}{// for text edit CTRL+Z: undo}}
+\DoxyCodeLine{1369     ImGuiKey\_A,                 \textcolor{comment}{// for text edit ctrl+A: select all}}
+\DoxyCodeLine{1370     ImGuiKey\_C,                 \textcolor{comment}{// for text edit ctrl+C: copy}}
+\DoxyCodeLine{1371     ImGuiKey\_V,                 \textcolor{comment}{// for text edit ctrl+V: paste}}
+\DoxyCodeLine{1372     ImGuiKey\_X,                 \textcolor{comment}{// for text edit ctrl+X: cut}}
+\DoxyCodeLine{1373     ImGuiKey\_Y,                 \textcolor{comment}{// for text edit ctrl+Y: redo}}
+\DoxyCodeLine{1374     ImGuiKey\_Z,                 \textcolor{comment}{// for text edit ctrl+Z: undo}}
 \DoxyCodeLine{1375     ImGuiKey\_COUNT}
 \DoxyCodeLine{1376 \};}
 \DoxyCodeLine{1377 }
@@ -1414,7 +1414,7 @@
 \DoxyCodeLine{1410     ImGuiNavInput\_TweakFast,     \textcolor{comment}{// faster tweaks                                // e.g. R1 or R2 (PS4), RB or RT (Xbox), R or ZL (Switch)}}
 \DoxyCodeLine{1411 }
 \DoxyCodeLine{1412     \textcolor{comment}{// [Internal] Don't use directly! This is used internally to differentiate keyboard from gamepad inputs for behaviors that require to differentiate them.}}
-\DoxyCodeLine{1413     \textcolor{comment}{// Keyboard behavior that have no corresponding gamepad mapping (e.g. CTRL+TAB) will be directly reading from io.KeysDown[] instead of io.NavInputs[].}}
+\DoxyCodeLine{1413     \textcolor{comment}{// Keyboard behavior that have no corresponding gamepad mapping (e.g. ctrl+TAB) will be directly reading from io.KeysDown[] instead of io.NavInputs[].}}
 \DoxyCodeLine{1414     ImGuiNavInput\_KeyMenu\_,      \textcolor{comment}{// toggle menu                                  // = io.KeyAlt}}
 \DoxyCodeLine{1415     ImGuiNavInput\_KeyLeft\_,      \textcolor{comment}{// move left                                    // = Arrow keys}}
 \DoxyCodeLine{1416     ImGuiNavInput\_KeyRight\_,     \textcolor{comment}{// move right}}
@@ -1519,8 +1519,8 @@
 \DoxyCodeLine{1515     ImGuiCol\_TextSelectedBg,}
 \DoxyCodeLine{1516     ImGuiCol\_DragDropTarget,}
 \DoxyCodeLine{1517     ImGuiCol\_NavHighlight,          \textcolor{comment}{// Gamepad/keyboard: current highlighted item}}
-\DoxyCodeLine{1518     ImGuiCol\_NavWindowingHighlight, \textcolor{comment}{// Highlight window when using CTRL+TAB}}
-\DoxyCodeLine{1519     ImGuiCol\_NavWindowingDimBg,     \textcolor{comment}{// Darken/colorize entire screen behind the CTRL+TAB window list, when active}}
+\DoxyCodeLine{1518     ImGuiCol\_NavWindowingHighlight, \textcolor{comment}{// Highlight window when using ctrl+TAB}}
+\DoxyCodeLine{1519     ImGuiCol\_NavWindowingDimBg,     \textcolor{comment}{// Darken/colorize entire screen behind the ctrl+TAB window list, when active}}
 \DoxyCodeLine{1520     ImGuiCol\_ModalWindowDimBg,      \textcolor{comment}{// Darken/colorize entire screen behind a modal window, when one is active}}
 \DoxyCodeLine{1521     ImGuiCol\_COUNT}
 \DoxyCodeLine{1522 \};}
@@ -1529,8 +1529,8 @@
 \DoxyCodeLine{1525 \textcolor{comment}{// -\/ The enum only refers to fields of ImGuiStyle which makes sense to be pushed/popped inside UI code.}}
 \DoxyCodeLine{1526 \textcolor{comment}{//   During initialization or between frames, feel free to just poke into ImGuiStyle directly.}}
 \DoxyCodeLine{1527 \textcolor{comment}{// -\/ Tip: Use your programming IDE navigation facilities on the names in the \_second column\_ below to find the actual members and their description.}}
-\DoxyCodeLine{1528 \textcolor{comment}{//   In Visual Studio IDE: CTRL+comma ("{}Edit.NavigateTo"{}) can follow symbols in comments, whereas CTRL+F12 ("{}Edit.GoToImplementation"{}) cannot.}}
-\DoxyCodeLine{1529 \textcolor{comment}{//   With Visual Assist installed: ALT+G ("{}VAssistX.GoToImplementation"{}) can also follow symbols in comments.}}
+\DoxyCodeLine{1528 \textcolor{comment}{//   In Visual Studio IDE: ctrl+comma ("{}Edit.NavigateTo"{}) can follow symbols in comments, whereas ctrl+F12 ("{}Edit.GoToImplementation"{}) cannot.}}
+\DoxyCodeLine{1529 \textcolor{comment}{//   With Visual Assist installed: alt+G ("{}VAssistX.GoToImplementation"{}) can also follow symbols in comments.}}
 \DoxyCodeLine{1530 \textcolor{comment}{// -\/ When changing this enum, you need to update the associated internal table GStyleVarInfo[] accordingly. This is where we link enum values to members offset/type.}}
 \DoxyCodeLine{1531 \textcolor{keyword}{enum} ImGuiStyleVar\_}
 \DoxyCodeLine{1532 \{}
@@ -1626,10 +1626,10 @@
 \DoxyCodeLine{1622 \textcolor{keyword}{enum} ImGuiSliderFlags\_}
 \DoxyCodeLine{1623 \{}
 \DoxyCodeLine{1624     ImGuiSliderFlags\_None                   = 0,}
-\DoxyCodeLine{1625     ImGuiSliderFlags\_AlwaysClamp            = 1 << 4,       \textcolor{comment}{// Clamp value to min/max bounds when input manually with CTRL+Click. By default CTRL+Click allows going out of bounds.}}
+\DoxyCodeLine{1625     ImGuiSliderFlags\_AlwaysClamp            = 1 << 4,       \textcolor{comment}{// Clamp value to min/max bounds when input manually with ctrl+Click. By default ctrl+Click allows going out of bounds.}}
 \DoxyCodeLine{1626     ImGuiSliderFlags\_Logarithmic            = 1 << 5,       \textcolor{comment}{// Make the widget logarithmic (linear otherwise). Consider using ImGuiSliderFlags\_NoRoundToFormat with this if using a format-\/string with small amount of digits.}}
 \DoxyCodeLine{1627     ImGuiSliderFlags\_NoRoundToFormat        = 1 << 6,       \textcolor{comment}{// Disable rounding underlying value to match precision of the display format string (e.g. \%.3f values are rounded to those 3 digits)}}
-\DoxyCodeLine{1628     ImGuiSliderFlags\_NoInput                = 1 << 7,       \textcolor{comment}{// Disable CTRL+Click or Enter key allowing to input text directly into the widget}}
+\DoxyCodeLine{1628     ImGuiSliderFlags\_NoInput                = 1 << 7,       \textcolor{comment}{// Disable ctrl+Click or Enter key allowing to input text directly into the widget}}
 \DoxyCodeLine{1629     ImGuiSliderFlags\_InvalidMask\_           = 0x7000000F    \textcolor{comment}{// [Internal] We treat using those bits as being potentially a 'float power' argument from the previous API that has got miscast to this enum, and will trigger an assert if needed.}}
 \DoxyCodeLine{1630 }
 \DoxyCodeLine{1631     \textcolor{comment}{// Obsolete names (will be removed)}}
@@ -1851,7 +1851,7 @@
 \DoxyCodeLine{1847 }
 \DoxyCodeLine{1848     \mbox{\hyperlink{struct_im_font_atlas}{ImFontAtlas}}*Fonts;                          \textcolor{comment}{// <auto>           // Font atlas: load, rasterize and pack one or more fonts into a single texture.}}
 \DoxyCodeLine{1849     \textcolor{keywordtype}{float}       FontGlobalScale;                \textcolor{comment}{// = 1.0f           // Global scale all fonts}}
-\DoxyCodeLine{1850     \textcolor{keywordtype}{bool}        FontAllowUserScaling;           \textcolor{comment}{// = false          // Allow user scaling text of individual window with CTRL+Wheel.}}
+\DoxyCodeLine{1850     \textcolor{keywordtype}{bool}        FontAllowUserScaling;           \textcolor{comment}{// = false          // Allow user scaling text of individual window with ctrl+Wheel.}}
 \DoxyCodeLine{1851     \mbox{\hyperlink{struct_im_font}{ImFont}}*     FontDefault;                    \textcolor{comment}{// = NULL           // Font to use on NewFrame(). Use NULL to uses Fonts-\/>Fonts[0].}}
 \DoxyCodeLine{1852     \mbox{\hyperlink{struct_im_vec2}{ImVec2}}      DisplayFramebufferScale;        \textcolor{comment}{// = (1, 1)         // For retina display or other situations where window coordinates are different from framebuffer coordinates. This generally ends up in ImDrawData::FramebufferScale.}}
 \DoxyCodeLine{1853 }
@@ -1941,7 +1941,7 @@
 \DoxyCodeLine{1937     \textcolor{comment}{// [Internal] Dear ImGui will maintain those fields. Forward compatibility not guaranteed!}}
 \DoxyCodeLine{1938     \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
 \DoxyCodeLine{1939 }
-\DoxyCodeLine{1940     ImGuiKeyModFlags KeyMods;                   \textcolor{comment}{// Key mods flags (same as io.KeyCtrl/KeyShift/KeyAlt/KeySuper but merged into flags), updated by NewFrame()}}
+\DoxyCodeLine{1940     ImGuiKeyModFlags KeyMods;                   \textcolor{comment}{// mKey mods flags (same as io.KeyCtrl/KeyShift/KeyAlt/KeySuper but merged into flags), updated by NewFrame()}}
 \DoxyCodeLine{1941     \mbox{\hyperlink{struct_im_vec2}{ImVec2}}      MousePosPrev;                   \textcolor{comment}{// Previous mouse position (note that MouseDelta is not necessary == MousePos-\/MousePosPrev, in case either position is invalid)}}
 \DoxyCodeLine{1942     \mbox{\hyperlink{struct_im_vec2}{ImVec2}}      MouseClickedPos[5];             \textcolor{comment}{// Position at time of clicking}}
 \DoxyCodeLine{1943     \textcolor{keywordtype}{double}      MouseClickedTime[5];            \textcolor{comment}{// Time of last click (used to figure out double-\/click)}}
@@ -1988,7 +1988,7 @@
 \DoxyCodeLine{1984     \textcolor{comment}{// -\/ To modify the text buffer in a callback, prefer using the InsertChars() / DeleteChars() function. InsertChars() will take care of calling the resize callback if necessary.}}
 \DoxyCodeLine{1985     \textcolor{comment}{// -\/ If you know your edits are not going to resize the underlying buffer allocation, you may modify the contents of 'Buf[]' directly. You need to update 'BufTextLen' accordingly (0 <= BufTextLen < BufSize) and set 'BufDirty'' to true so InputText can update its internal state.}}
 \DoxyCodeLine{1986     ImWchar             EventChar;      \textcolor{comment}{// Character input                      // Read-\/write   // [CharFilter] Replace character with another one, or set to zero to drop. return 1 is equivalent to setting EventChar=0;}}
-\DoxyCodeLine{1987     ImGuiKey            EventKey;       \textcolor{comment}{// Key pressed (Up/Down/TAB)            // Read-\/only    // [Completion,History]}}
+\DoxyCodeLine{1987     ImGuiKey            EventKey;       \textcolor{comment}{// mKey pressed (Up/Down/TAB)            // Read-\/only    // [Completion,History]}}
 \DoxyCodeLine{1988     \textcolor{keywordtype}{char}*               Buf;            \textcolor{comment}{// Text buffer                          // Read-\/write   // [Resize] Can replace pointer / [Completion,History,Always] Only write to pointed data, don't replace the actual pointer!}}
 \DoxyCodeLine{1989     \textcolor{keywordtype}{int}                 BufTextLen;     \textcolor{comment}{// Text length (in bytes)               // Read-\/write   // [Resize,Completion,History,Always] Exclude zero-\/terminator storage. In C land: == strlen(some\_text), in C++ land: string.length()}}
 \DoxyCodeLine{1990     \textcolor{keywordtype}{int}                 BufSize;        \textcolor{comment}{// Buffer size (in bytes) = capacity+1  // Read-\/only    // [Resize,Completion,History,Always] Include zero-\/terminator storage. In C land == ARRAYSIZE(my\_char\_array), in C++ land: string.capacity()+1}}
@@ -2153,14 +2153,14 @@
 \DoxyCodeLine{2149     IMGUI\_API \textcolor{keywordtype}{void}      appendfv(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* fmt, va\_list args) IM\_FMTLIST(2);}
 \DoxyCodeLine{2150 \};}
 \DoxyCodeLine{2151 }
-\DoxyCodeLine{2152 \textcolor{comment}{// Helper: Key-\/>Value storage}}
+\DoxyCodeLine{2152 \textcolor{comment}{// Helper: mKey-\/>Value storage}}
 \DoxyCodeLine{2153 \textcolor{comment}{// Typically you don't have to worry about this since a storage is held within each Window.}}
 \DoxyCodeLine{2154 \textcolor{comment}{// We use it to e.g. store collapse state for a tree (Int 0/1)}}
 \DoxyCodeLine{2155 \textcolor{comment}{// This is optimized for efficient lookup (dichotomy into a contiguous buffer) and rare insertion (typically tied to user interactions aka max once a frame)}}
 \DoxyCodeLine{2156 \textcolor{comment}{// You can use it as custom user storage for temporary values. Declare your own storage if, for example:}}
 \DoxyCodeLine{2157 \textcolor{comment}{// -\/ You want to manipulate the open/close state of a particular sub-\/tree in your interface (tree node uses Int 0/1 to store their state).}}
 \DoxyCodeLine{2158 \textcolor{comment}{// -\/ You want to store custom debug data easily without adding or editing structures in your code (probably not efficient, but convenient)}}
-\DoxyCodeLine{2159 \textcolor{comment}{// Types are NOT stored, so it is up to you to make sure your Key don't collide with different types.}}
+\DoxyCodeLine{2159 \textcolor{comment}{// Types are NOT stored, so it is up to you to make sure your mKey don't collide with different types.}}
 \DoxyCodeLine{2160 \textcolor{keyword}{struct }\mbox{\hyperlink{struct_im_gui_storage}{ImGuiStorage}}}
 \DoxyCodeLine{2161 \{}
 \DoxyCodeLine{2162     \textcolor{comment}{// [Internal]}}
@@ -2874,7 +2874,7 @@
 \DoxyCodeLine{2870     \textcolor{keywordtype}{void}*               PlatformHandleRaw;      \textcolor{comment}{// void* to hold lower-\/level, platform-\/native window handle (e.g. the HWND) when using an abstraction layer like GLFW or SDL (where PlatformHandle would be a SDL\_Window*)}}
 \DoxyCodeLine{2871     \textcolor{keywordtype}{bool}                PlatformRequestMove;    \textcolor{comment}{// Platform window requested move (e.g. window was moved by the OS / host window manager, authoritative position will be OS window position)}}
 \DoxyCodeLine{2872     \textcolor{keywordtype}{bool}                PlatformRequestResize;  \textcolor{comment}{// Platform window requested resize (e.g. window was resized by the OS / host window manager, authoritative size will be OS window size)}}
-\DoxyCodeLine{2873     \textcolor{keywordtype}{bool}                PlatformRequestClose;   \textcolor{comment}{// Platform window requested closure (e.g. window was moved by the OS / host window manager, e.g. pressing ALT-\/F4)}}
+\DoxyCodeLine{2873     \textcolor{keywordtype}{bool}                PlatformRequestClose;   \textcolor{comment}{// Platform window requested closure (e.g. window was moved by the OS / host window manager, e.g. pressing alt-\/F4)}}
 \DoxyCodeLine{2874 }
 \DoxyCodeLine{2875     \mbox{\hyperlink{struct_im_gui_viewport}{ImGuiViewport}}()     \{ memset(\textcolor{keyword}{this}, 0, \textcolor{keyword}{sizeof}(*\textcolor{keyword}{this})); \}}
 \DoxyCodeLine{2876     \mbox{\hyperlink{struct_im_gui_viewport}{\string~ImGuiViewport}}()    \{ IM\_ASSERT(PlatformUserData == NULL \&\& RendererUserData == NULL); \}}

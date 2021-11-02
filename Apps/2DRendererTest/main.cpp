@@ -106,7 +106,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         taskData_drawDearImGui.add_toTaskSet(taskset_renderPipelineDx12);
 
         m_inputManager.attach_ToKeyEvent(
-            input::KeyAction::keyPressed(input::KEY_N),
+            input::KeyAction::keyPressed(input::keyN),
             mCallback<void>(&m_bunchOfSquares, &BunchOfSquares::add_newSquare));
 
         // Setup vulkan window
@@ -121,7 +121,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         taskData_2dRender.add_toTaskSet(taskset_renderPipelineVulkan);
 
         m_inputManager.attach_ToKeyEvent(
-            input::KeyAction::keyPressed(input::KEY_N),
+            input::KeyAction::keyPressed(input::keyN),
             mCallback<void>(&m_bunchOfSquares, &BunchOfSquares::add_newSquare));
     }
 

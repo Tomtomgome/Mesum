@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['parse_5fcmdlineaguments_0',['parse_cmdLineAguments',['../structm_1_1m_cmd_line.html#ac1d7df6b4bf9ca42161e9177efeaa45a',1,'m::mCmdLine']]],
-  ['print_1',['print',['../classm_1_1logging_1_1m_logger.html#a940569f3a073ca1809417b787c916927',1,'m::logging::mLogger']]],
-  ['print_5fimpl_2',['print_impl',['../classm_1_1logging_1_1m_logger.html#aff49d3cca0255f46624c4011715db24b',1,'m::logging::mLogger::print_impl()'],['../classm_1_1logging_1_1m_logger.html#a328181cfff3445e97cd2376358ff79ca',1,'m::logging::mLogger::print_impl(t_First a_parm1, t_Rest... a_parm)']]],
-  ['print_5ftochannel_3',['print_toChannel',['../classm_1_1logging_1_1m_logger.html#ac6fe0dc8b19e8e94eac606d71838befd',1,'m::logging::mLogger']]]
+  ['open_5fostream_0',['open_ostream',['../classm_1_1logging_1_1m_i_log_policy.html#a3704d6eae517efe8e9829ada8ea19b28',1,'m::logging::mILogPolicy::open_ostream()'],['../classm_1_1logging_1_1m_file_log_policy.html#a39cc36802f793b055738ba8acff8675e',1,'m::logging::mFileLogPolicy::open_ostream()'],['../classm_1_1logging_1_1m_stdcout_log_policy.html#a660197bf0e027922c0fff971ce62bb6e',1,'m::logging::mStdcoutLogPolicy::open_ostream()']]],
+  ['operator_20bool_1',['operator bool',['../classm_1_1m_callback.html#ac76b7ca7cc0c33144fbab3d1c47ee692',1,'m::mCallback']]],
+  ['operator_28_29_2',['operator()',['../classm_1_1m_callback.html#a7709c741ce81dde79460c00761ced546',1,'m::mCallback']]],
+  ['operator_3c_3',['operator&lt;',['../structm_1_1input_1_1m_mouse_action.html#a333397a6df788eb42faab94d303c91f2',1,'m::input::mMouseAction']]],
+  ['operator_3d_3d_4',['operator==',['../classm_1_1m_callback.html#ac0662a3f49432e8e21fa92340404c254',1,'m::mCallback']]]
 ];

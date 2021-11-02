@@ -15,10 +15,10 @@ var annotated_dup =
         [ "DX12Surface", "classm_1_1dx12_1_1_d_x12_surface.html", null ],
         [ "DX12Texture", "structm_1_1dx12_1_1_d_x12_texture.html", null ]
       ] ],
-      [ "input", null, [
+      [ "input", "namespacem_1_1input.html", [
         [ "InputManager", "classm_1_1input_1_1_input_manager.html", null ],
         [ "KeyAction", "structm_1_1input_1_1_key_action.html", null ],
-        [ "MouseAction", "structm_1_1input_1_1_mouse_action.html", null ],
+        [ "mMouseAction", "structm_1_1input_1_1m_mouse_action.html", "structm_1_1input_1_1m_mouse_action" ],
         [ "MouseState", "structm_1_1input_1_1_mouse_state.html", null ]
       ] ],
       [ "logging", "namespacem_1_1logging.html", [

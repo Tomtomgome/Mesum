@@ -2,6 +2,7 @@ var group___core =
 [
     [ "m::application", "namespacem_1_1application.html", null ],
     [ "m::files", "namespacem_1_1files.html", null ],
+    [ "m::input", "namespacem_1_1input.html", null ],
     [ "m::logging", "namespacem_1_1logging.html", null ],
     [ "m::math", "namespacem_1_1math.html", null ],
     [ "m::application::mIBasicApplication", "classm_1_1application_1_1m_i_basic_application.html", [
@@ -46,6 +47,17 @@ var group___core =
       [ "detach_fromSignal", "classm_1_1m_signal.html#a9f2353d6e412ca07f8cd555d607b9dba", null ],
       [ "m_callbacks", "classm_1_1m_signal.html#a7d0937df96ca9773d0086d423a0f0e33", null ]
     ] ],
+    [ "m::input::mMouseAction", "structm_1_1input_1_1m_mouse_action.html", [
+      [ "mMouseAction", "structm_1_1input_1_1m_mouse_action.html#a28d097d5f3db0fd78e8948d4c95aac0d", null ],
+      [ "mMouseAction", "structm_1_1input_1_1m_mouse_action.html#a8ffb6cc294108ca0db6039732a9d5a5e", null ],
+      [ "operator<", "structm_1_1input_1_1m_mouse_action.html#a333397a6df788eb42faab94d303c91f2", null ],
+      [ "action", "structm_1_1input_1_1m_mouse_action.html#a8f3319c686d82087eb860e70da3a3b8b", null ],
+      [ "button", "structm_1_1input_1_1m_mouse_action.html#acf5b91ac9a45938c25dfbe0383109ade", null ],
+      [ "keyMod", "structm_1_1input_1_1m_mouse_action.html#a52e3da955ec26aafc7158b17cf2d4dfe", null ]
+    ] ],
+    [ "m::input::MouseState", "structm_1_1input_1_1_mouse_state.html", null ],
+    [ "m::input::KeyAction", "structm_1_1input_1_1_key_action.html", null ],
+    [ "m::input::InputManager", "classm_1_1input_1_1_input_manager.html", null ],
     [ "m::mCmdLine", "structm_1_1m_cmd_line.html", [
       [ "get_arg", "structm_1_1m_cmd_line.html#a03cf17a95051b7b6f7786ae3469ed4b3", null ],
       [ "get_parameter", "structm_1_1m_cmd_line.html#ab8de7405bf1f0f8a07d9ab3b7647209b", null ],

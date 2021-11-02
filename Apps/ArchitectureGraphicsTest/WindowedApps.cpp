@@ -102,40 +102,40 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m_mainDx12Window->link_inputManager(&m_inputManager);
 
         m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::KEY_F11),
-            m::input::KeyActionCallback(
+            m::input::KeyAction::keyPressed(m::input::keyF11),
+            m::input::mKeyActionCallback(
                 m_mainDx12Window, &m::windows::IWindow::toggle_fullScreen));
 
         m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::KEY_W),
-            m::input::KeyActionCallback(this,
+            m::input::KeyAction::keyPressed(m::input::keyW),
+            m::input::mKeyActionCallback(this,
                                         &CubeMoverApp::add_applicationWindow));
 
         m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::KEY_UP),
-            m::input::KeyActionCallback(&m_mover, &CubeMover::set_moveUp));
+            m::input::KeyAction::keyPressed(m::input::keyUp),
+            m::input::mKeyActionCallback(&m_mover, &CubeMover::set_moveUp));
         m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::KEY_DOWN),
-            m::input::KeyActionCallback(&m_mover, &CubeMover::set_moveDown));
+            m::input::KeyAction::keyPressed(m::input::keyDown),
+            m::input::mKeyActionCallback(&m_mover, &CubeMover::set_moveDown));
         m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::KEY_LEFT),
-            m::input::KeyActionCallback(&m_mover, &CubeMover::set_moveLeft));
+            m::input::KeyAction::keyPressed(m::input::keyLeft),
+            m::input::mKeyActionCallback(&m_mover, &CubeMover::set_moveLeft));
         m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::KEY_RIGHT),
-            m::input::KeyActionCallback(&m_mover, &CubeMover::set_moveRight));
+            m::input::KeyAction::keyPressed(m::input::keyRight),
+            m::input::mKeyActionCallback(&m_mover, &CubeMover::set_moveRight));
 
         m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyReleased(m::input::KEY_UP),
-            m::input::KeyActionCallback(&m_mover, &CubeMover::set_notMoveUp));
+            m::input::KeyAction::keyReleased(m::input::keyUp),
+            m::input::mKeyActionCallback(&m_mover, &CubeMover::set_notMoveUp));
         m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyReleased(m::input::KEY_DOWN),
-            m::input::KeyActionCallback(&m_mover, &CubeMover::set_notMoveDown));
+            m::input::KeyAction::keyReleased(m::input::keyDown),
+            m::input::mKeyActionCallback(&m_mover, &CubeMover::set_notMoveDown));
         m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyReleased(m::input::KEY_LEFT),
-            m::input::KeyActionCallback(&m_mover, &CubeMover::set_notMoveLeft));
+            m::input::KeyAction::keyReleased(m::input::keyLeft),
+            m::input::mKeyActionCallback(&m_mover, &CubeMover::set_notMoveLeft));
         m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyReleased(m::input::KEY_RIGHT),
-            m::input::KeyActionCallback(&m_mover,
+            m::input::KeyAction::keyReleased(m::input::keyRight),
+            m::input::mKeyActionCallback(&m_mover,
                                         &CubeMover::set_notMoveRight));
 
         set_microSecondsLimit(16000);

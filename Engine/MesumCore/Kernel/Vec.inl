@@ -33,14 +33,14 @@ mVec<t_T, t_Size>& mVec<t_T, t_Size>::operator=(
 template <typename t_T, mUInt t_Size>
 t_T& mVec<t_T, t_Size>::operator[](const mUInt a_index)
 {
-    mSoftAssert(a_index < t_Size);
+    mAssert(a_index < t_Size);
     return mVecData<t_T, t_Size>::data[a_index];
 }
 
 template <typename t_T, mUInt t_Size>
 t_T mVec<t_T, t_Size>::operator[](const mUInt a_index) const
 {
-    mSoftAssert(a_index < t_Size);
+    mAssert(a_index < t_Size);
     return mVecData<t_T, t_Size>::data[a_index];
 }
 

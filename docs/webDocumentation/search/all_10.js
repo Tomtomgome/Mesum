@@ -1,9 +1,15 @@
 var searchData=
 [
-  ['vertex_5fconstant_5fbuffer_0',['VERTEX_CONSTANT_BUFFER',['../struct_v_e_r_t_e_x___c_o_n_s_t_a_n_t___b_u_f_f_e_r.html',1,'']]],
-  ['vulkanbufferbase_1',['VulkanBufferBase',['../structm_1_1render_1_1_vulkan_buffer_base.html',1,'m::render']]],
-  ['vulkancontext_2',['VulkanContext',['../classm_1_1vulkan_1_1_vulkan_context.html',1,'m::vulkan']]],
-  ['vulkanrenderer_3',['VulkanRenderer',['../classm_1_1vulkan_1_1_vulkan_renderer.html',1,'m::vulkan']]],
-  ['vulkanrendertaskset_4',['VulkanRenderTaskset',['../structm_1_1vulkan_1_1_vulkan_render_taskset.html',1,'m::vulkan']]],
-  ['vulkansurface_5',['VulkanSurface',['../classm_1_1vulkan_1_1_vulkan_surface.html',1,'m::vulkan']]]
+  ['task_0',['Task',['../structm_1_1render_1_1_task.html',1,'m::render']]],
+  ['task2drender_1',['Task2dRender',['../structm_1_1render_1_1_task2d_render.html',1,'m::render']]],
+  ['task3drender_2',['Task3dRender',['../structm_1_1render_1_1_task3d_render.html',1,'m::render']]],
+  ['taskdata_3',['TaskData',['../structm_1_1render_1_1_task_data.html',1,'m::render']]],
+  ['taskdata2drender_4',['TaskData2dRender',['../structm_1_1render_1_1_task_data2d_render.html',1,'m::render']]],
+  ['taskdata3drender_5',['TaskData3dRender',['../structm_1_1render_1_1_task_data3d_render.html',1,'m::render']]],
+  ['taskdatadrawdearimgui_6',['TaskDataDrawDearImGui',['../structm_1_1render_1_1_task_data_draw_dear_im_gui.html',1,'m::render']]],
+  ['taskdrawdearimgui_7',['TaskDrawDearImGui',['../structm_1_1render_1_1_task_draw_dear_im_gui.html',1,'m::render']]],
+  ['taskset_8',['Taskset',['../structm_1_1render_1_1_taskset.html',1,'m::render']]],
+  ['texturedesc_9',['TextureDesc',['../structm_1_1render_1_1_texture_desc.html',1,'m::render']]],
+  ['texturemanager_10',['TextureManager',['../structm_1_1render_1_1_texture_manager.html',1,'m::render']]],
+  ['texturerequest_11',['TextureRequest',['../structm_1_1render_1_1_texture_request.html',1,'m::render']]]
 ];

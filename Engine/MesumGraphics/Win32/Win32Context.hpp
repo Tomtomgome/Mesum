@@ -25,11 +25,11 @@ struct WIN32Context
                        mU32 a_clientWidth, mU32 a_clientHeight) const;
 
     // Keys and inputs
-    [[nodiscard]] input::Key get_keyFromParam(WPARAM a_wParam) const;
+    [[nodiscard]] input::mKey get_keyFromParam(WPARAM a_wParam) const;
 
     // Properties
-    input::Key m_lut_keycodes[256];
-    mI16       m_lut_scancode[input::Key::KEY_LAST + 1];
+    input::mKey m_lut_keycodes[256];
+    mI16       m_lut_scancode[input::mKey::keyLast + 1];
 
     HINSTANCE m_hInstance;
 };
