@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['g_5fallchannelsfilter_0',['g_allChannelsFilter',['../namespacem_1_1logging.html#ac3d7342b9694fe25c6f2119fe2886a46',1,'m::logging']]],
-  ['g_5fnochannelsfilter_1',['g_noChannelsFilter',['../namespacem_1_1logging.html#a201855eccf18d6c2e13758836e1bc31e',1,'m::logging']]]
+  ['currentkeymod_0',['currentKeyMod',['../structm_1_1input_1_1m_callback_input_manager.html#ac94872d10fc5ef86480d3f097393294d',1,'m::input::mCallbackInputManager']]],
+  ['currentmousepos_1',['currentMousePos',['../structm_1_1input_1_1m_callback_input_manager.html#aa41a0c866cfba0189aab1bf8992667f6',1,'m::input::mCallbackInputManager']]]
 ];

@@ -30,8 +30,7 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
             {
                 input::mKey k = m_parentContext->get_keyFromParam(a_wParam);
 
-                m_linkedInputManager->process_KeyEvent(
-                    k, 0, input::mInputType::pressed, input::mKeyMod::none);
+                m_linkedInputManager->process_keyEvent(k, 0);
             }
         }
         break;
@@ -42,8 +41,7 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
             {
                 input::mKey k = m_parentContext->get_keyFromParam(a_wParam);
 
-                m_linkedInputManager->process_KeyEvent(
-                    k, 0, input::mInputType::released, input::mKeyMod::none);
+                m_linkedInputManager->process_keyEvent(k, 0);
             }
         }
         break;

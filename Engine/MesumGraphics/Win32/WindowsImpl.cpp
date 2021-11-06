@@ -28,32 +28,90 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
     }
 
     LRESULT result = 0;
+
+    mBool processed = true;
+    if (m_linkedInputManager == nullptr)
+    {
+        processed = false;
+    }
+    else
+    {
+        switch (a_uMsg)
+        {
+            case WM_KEYDOWN:
+            {
+                input::mKey k = m_parentContext->get_keyFromParam(a_wParam);
+
+                m_linkedInputManager->process_keyEvent(
+                    k, input::mInputType::pressed);
+            }
+            break;
+            case WM_KEYUP:
+            {
+                input::mKey k = m_parentContext->get_keyFromParam(a_wParam);
+
+                m_linkedInputManager->process_keyEvent(
+                    k, input::mInputType::released);
+            }
+            break;
+
+            case WM_LBUTTONDOWN:
+            {
+                m_linkedInputManager->process_mouseEvent(
+                    input::mMouseButton::left, input::mInputType::pressed);
+            }
+            break;
+            case WM_LBUTTONUP:
+            {
+                m_linkedInputManager->process_mouseEvent(
+                    input::mMouseButton::left, input::mInputType::released);
+            }
+            break;
+
+            case WM_RBUTTONDOWN:
+            {
+                m_linkedInputManager->process_mouseEvent(
+                    input::mMouseButton::right, input::mInputType::pressed);
+            }
+            break;
+            case WM_RBUTTONUP:
+            {
+                m_linkedInputManager->process_mouseEvent(
+                    input::mMouseButton::right, input::mInputType::released);
+            }
+            break;
+
+            case WM_MBUTTONDOWN:
+            {
+                m_linkedInputManager->process_mouseEvent(
+                    input::mMouseButton::middle, input::mInputType::pressed);
+            }
+            break;
+            case WM_MBUTTONUP:
+            {
+                m_linkedInputManager->process_mouseEvent(
+                    input::mMouseButton::middle, input::mInputType::released);
+            }
+            break;
+            case WM_MOUSEMOVE:
+            {
+                mInt x = static_cast<mI16>(LOWORD(a_lParam));
+                mInt y = static_cast<mI16>(HIWORD(a_lParam));
+                m_linkedInputManager->process_mouseMoveEvent(x, y);
+            }
+            break;
+            case WM_MOUSEWHEEL:
+            {
+                m_linkedInputManager->process_mouseScrollEvent(
+                    (SHORT)HIWORD(a_wParam) / (double)WHEEL_DELTA);
+            }
+            break;
+            default: processed = false;
+        }
+    }
+
     switch (a_uMsg)
     {
-        case WM_KEYDOWN:
-        {
-            if (m_linkedInputManager != nullptr)
-            {
-                input::mKey k = m_parentContext->get_keyFromParam(a_wParam);
-
-                m_linkedInputManager->process_KeyEvent(
-                    k, 0, input::mInputType::pressed, input::mKeyMod::none);
-            }
-        }
-        break;
-
-        case WM_KEYUP:
-        {
-            if (m_linkedInputManager != nullptr)
-            {
-                input::mKey k = m_parentContext->get_keyFromParam(a_wParam);
-
-                m_linkedInputManager->process_KeyEvent(
-                    k, 0, input::mInputType::released, input::mKeyMod::none);
-            }
-        }
-        break;
-
         case WM_DESTROY:
         {
             if (m_isMainWindow)
@@ -76,7 +134,13 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
             m_signalResize.call(width, height);
         }
         break;
-        default: result = DefWindowProcW(m_hwnd, a_uMsg, a_wParam, a_lParam);
+        default:
+        {
+            if (!processed)
+            {
+                result = DefWindowProcW(m_hwnd, a_uMsg, a_wParam, a_lParam);
+            }
+        }
     }
     return result;
 }

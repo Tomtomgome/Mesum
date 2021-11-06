@@ -101,42 +101,44 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         m_mainDx12Window->link_inputManager(&m_inputManager);
 
-        m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::keyF11),
+        m_inputManager.attach_toKeyEvent(
+            m::input::mKeyAction::keyPressed(m::input::keyF11),
             m::input::mKeyActionCallback(
                 m_mainDx12Window, &m::windows::IWindow::toggle_fullScreen));
 
-        m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::keyW),
+        m_inputManager.attach_toKeyEvent(
+            m::input::mKeyAction::keyPressed(m::input::keyW),
             m::input::mKeyActionCallback(this,
-                                        &CubeMoverApp::add_applicationWindow));
+                                         &CubeMoverApp::add_applicationWindow));
 
-        m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::keyUp),
+        m_inputManager.attach_toKeyEvent(
+            m::input::mKeyAction::keyPressed(m::input::keyUp),
             m::input::mKeyActionCallback(&m_mover, &CubeMover::set_moveUp));
-        m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::keyDown),
+        m_inputManager.attach_toKeyEvent(
+            m::input::mKeyAction::keyPressed(m::input::keyDown),
             m::input::mKeyActionCallback(&m_mover, &CubeMover::set_moveDown));
-        m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::keyLeft),
+        m_inputManager.attach_toKeyEvent(
+            m::input::mKeyAction::keyPressed(m::input::keyLeft),
             m::input::mKeyActionCallback(&m_mover, &CubeMover::set_moveLeft));
-        m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::keyRight),
+        m_inputManager.attach_toKeyEvent(
+            m::input::mKeyAction::keyPressed(m::input::keyRight),
             m::input::mKeyActionCallback(&m_mover, &CubeMover::set_moveRight));
 
-        m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyReleased(m::input::keyUp),
+        m_inputManager.attach_toKeyEvent(
+            m::input::mKeyAction::keyReleased(m::input::keyUp),
             m::input::mKeyActionCallback(&m_mover, &CubeMover::set_notMoveUp));
-        m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyReleased(m::input::keyDown),
-            m::input::mKeyActionCallback(&m_mover, &CubeMover::set_notMoveDown));
-        m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyReleased(m::input::keyLeft),
-            m::input::mKeyActionCallback(&m_mover, &CubeMover::set_notMoveLeft));
-        m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyReleased(m::input::keyRight),
+        m_inputManager.attach_toKeyEvent(
+            m::input::mKeyAction::keyReleased(m::input::keyDown),
             m::input::mKeyActionCallback(&m_mover,
-                                        &CubeMover::set_notMoveRight));
+                                         &CubeMover::set_notMoveDown));
+        m_inputManager.attach_toKeyEvent(
+            m::input::mKeyAction::keyReleased(m::input::keyLeft),
+            m::input::mKeyActionCallback(&m_mover,
+                                         &CubeMover::set_notMoveLeft));
+        m_inputManager.attach_toKeyEvent(
+            m::input::mKeyAction::keyReleased(m::input::keyRight),
+            m::input::mKeyActionCallback(&m_mover,
+                                         &CubeMover::set_notMoveRight));
 
         set_microSecondsLimit(16000);
     }
@@ -197,7 +199,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
     m::render::IRenderer*       m_iVulkanRenderer;
     m::render::ISurface::HdlPtr m_hdlDx12Surface;
     m::render::ISurface::HdlPtr m_hdlVulkanSurface;
-    m::input::InputManager      m_inputManager;
+    m::input::mCallbackInputManager m_inputManager;
     m::windows::IWindow*        m_mainDx12Window;
     m::windows::IWindow*        m_mainVulkanWindow;
     CubeMover                   m_mover;

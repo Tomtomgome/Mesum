@@ -11,6 +11,13 @@ template <typename t_T, mUInt t_Size>
 mVec<t_T, t_Size>::mVec() = default;
 
 template <typename t_T, mUInt t_Size>
+mVec<t_T, t_Size>::mVec(const std::initializer_list<t_T>& a_list)
+{
+    mAssert(t_Size == a_list.size());
+    std::memcpy(this, std::data(a_list), sizeof(t_T) * t_Size);
+}
+
+template <typename t_T, mUInt t_Size>
 mVec<t_T, t_Size>::mVec(const mVecData<t_T, t_Size>& a_data)
 {
     *this = a_data;

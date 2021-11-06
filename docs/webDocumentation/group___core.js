@@ -47,6 +47,12 @@ var group___core =
       [ "detach_fromSignal", "classm_1_1m_signal.html#a9f2353d6e412ca07f8cd555d607b9dba", null ],
       [ "m_callbacks", "classm_1_1m_signal.html#a7d0937df96ca9773d0086d423a0f0e33", null ]
     ] ],
+    [ "m::input::mIInputManager", "classm_1_1input_1_1m_i_input_manager.html", [
+      [ "process_keyEvent", "classm_1_1input_1_1m_i_input_manager.html#a88bb9969485bf189f3b227d2341308fa", null ],
+      [ "process_mouseEvent", "classm_1_1input_1_1m_i_input_manager.html#a44e14408b79c8f86021917be8fc93f58", null ],
+      [ "process_mouseMoveEvent", "classm_1_1input_1_1m_i_input_manager.html#ad37319d2a2f82af161670596f441b002", null ],
+      [ "process_mouseScrollEvent", "classm_1_1input_1_1m_i_input_manager.html#a0cd864286dc9e9479a60a0b4f2211b0f", null ]
+    ] ],
     [ "m::input::mMouseAction", "structm_1_1input_1_1m_mouse_action.html", [
       [ "mMouseAction", "structm_1_1input_1_1m_mouse_action.html#a28d097d5f3db0fd78e8948d4c95aac0d", null ],
       [ "mMouseAction", "structm_1_1input_1_1m_mouse_action.html#a8ffb6cc294108ca0db6039732a9d5a5e", null ],
@@ -55,9 +61,39 @@ var group___core =
       [ "button", "structm_1_1input_1_1m_mouse_action.html#acf5b91ac9a45938c25dfbe0383109ade", null ],
       [ "keyMod", "structm_1_1input_1_1m_mouse_action.html#a52e3da955ec26aafc7158b17cf2d4dfe", null ]
     ] ],
-    [ "m::input::MouseState", "structm_1_1input_1_1_mouse_state.html", null ],
-    [ "m::input::KeyAction", "structm_1_1input_1_1_key_action.html", null ],
-    [ "m::input::InputManager", "classm_1_1input_1_1_input_manager.html", null ],
+    [ "m::input::mKeyAction", "structm_1_1input_1_1m_key_action.html", [
+      [ "mKeyAction", "structm_1_1input_1_1m_key_action.html#a4c7fc6d6c86cfbdbec092c80519f86bd", null ],
+      [ "mKeyAction", "structm_1_1input_1_1m_key_action.html#a328704e1c3becefd02823ce622bdd43c", null ],
+      [ "operator<", "structm_1_1input_1_1m_key_action.html#a50c44198ad57c65c9e5ac071596e21bc", null ],
+      [ "m_action", "structm_1_1input_1_1m_key_action.html#a57e778fbac68e8d381397aba93a14112", null ],
+      [ "m_key", "structm_1_1input_1_1m_key_action.html#a3cd8fc44ec33abfa7a41f6dc3eb2d251", null ],
+      [ "m_keyMod", "structm_1_1input_1_1m_key_action.html#a0e4b7f734ce7fbdff4154116f9f644e2", null ]
+    ] ],
+    [ "m::input::mCallbackInputManager", "structm_1_1input_1_1m_callback_input_manager.html", [
+      [ "attach_toKeyEvent", "structm_1_1input_1_1m_callback_input_manager.html#a947a65e425598416affb3aa9a6c45a1f", null ],
+      [ "attach_toMouseEvent", "structm_1_1input_1_1m_callback_input_manager.html#a1054019a8a0f0d3575d222030c5ee574", null ],
+      [ "attach_toMouseMoveEvent", "structm_1_1input_1_1m_callback_input_manager.html#a6ae4f9e1df63341928dc97b08734e585", null ],
+      [ "attach_toMouseScrollEvent", "structm_1_1input_1_1m_callback_input_manager.html#ad57889b0898d34b0c6cce95af1d35494", null ],
+      [ "detach_fromKeyEvent", "structm_1_1input_1_1m_callback_input_manager.html#ac3d68465fd4269da1b2d08440505fb0c", null ],
+      [ "detach_fromKeyEvent", "structm_1_1input_1_1m_callback_input_manager.html#a0060847b39ebd3bf27e0c5b7a17fa45b", null ],
+      [ "detach_fromMouseEvent", "structm_1_1input_1_1m_callback_input_manager.html#a18a834680c8ce6e1a1eb5020c0848978", null ],
+      [ "detach_fromMouseEvent", "structm_1_1input_1_1m_callback_input_manager.html#adb3cf35c5b91ea306d98be265dbe7cb0", null ],
+      [ "detach_fromMouseMoveEvent", "structm_1_1input_1_1m_callback_input_manager.html#aed4d184782b1e1c181aad8397eb98d69", null ],
+      [ "detach_fromMouseMoveEvent", "structm_1_1input_1_1m_callback_input_manager.html#ae4abfabf49a6e159dccdaddb395625fc", null ],
+      [ "detach_fromMouseScrollEvent", "structm_1_1input_1_1m_callback_input_manager.html#ad2c9faa1f57fbb8547d02cfd1e8dc581", null ],
+      [ "detach_fromMouseScrollEvent", "structm_1_1input_1_1m_callback_input_manager.html#aea3d2e1c2a410ce38d5b7fe0ace3a14c", null ],
+      [ "process_keyEvent", "structm_1_1input_1_1m_callback_input_manager.html#a2b827625639f99105fa36af9cd80e731", null ],
+      [ "process_mouseEvent", "structm_1_1input_1_1m_callback_input_manager.html#a0ca77905114cf2cb58d3b3dbd7c5b867", null ],
+      [ "process_mouseMoveEvent", "structm_1_1input_1_1m_callback_input_manager.html#ae2ce0985dd4521f5fcccc1b19556d54e", null ],
+      [ "process_mouseScrollEvent", "structm_1_1input_1_1m_callback_input_manager.html#a7f1c2b2f0b4aa8bc158c37cc3a0999d7", null ],
+      [ "update_keyMods", "structm_1_1input_1_1m_callback_input_manager.html#a0889ff9fb98f229a4cc4a20efa7d5841", null ],
+      [ "currentKeyMod", "structm_1_1input_1_1m_callback_input_manager.html#ac94872d10fc5ef86480d3f097393294d", null ],
+      [ "currentMousePos", "structm_1_1input_1_1m_callback_input_manager.html#aa41a0c866cfba0189aab1bf8992667f6", null ],
+      [ "keySignals", "structm_1_1input_1_1m_callback_input_manager.html#a0f34094e003a9e605989f80df28f3430", null ],
+      [ "mouseSignals", "structm_1_1input_1_1m_callback_input_manager.html#aa0033254bc3fffb397ec5033b67dff2d", null ],
+      [ "moveSignal", "structm_1_1input_1_1m_callback_input_manager.html#a930e6756f4885c61db59f6cb78481176", null ],
+      [ "scrollSignal", "structm_1_1input_1_1m_callback_input_manager.html#a6156f28db77f9b8ae184670cd2d9a5e7", null ]
+    ] ],
     [ "m::mCmdLine", "structm_1_1m_cmd_line.html", [
       [ "get_arg", "structm_1_1m_cmd_line.html#a03cf17a95051b7b6f7786ae3469ed4b3", null ],
       [ "get_parameter", "structm_1_1m_cmd_line.html#ab8de7405bf1f0f8a07d9ab3b7647209b", null ],

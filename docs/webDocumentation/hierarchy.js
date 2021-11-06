@@ -112,7 +112,6 @@ var hierarchy =
     [ "ImVec2ih", "struct_im_vec2ih.html", null ],
     [ "ImVec4", "struct_im_vec4.html", null ],
     [ "ImVector< T >", "struct_im_vector.html", null ],
-    [ "m::input::InputManager", "classm_1_1input_1_1_input_manager.html", null ],
     [ "m::render::IRenderer", "classm_1_1render_1_1_i_renderer.html", [
       [ "m::dx12::DX12Renderer", "classm_1_1dx12_1_1_d_x12_renderer.html", null ],
       [ "m::vulkan::VulkanRenderer", "classm_1_1vulkan_1_1_vulkan_renderer.html", null ]
@@ -128,7 +127,6 @@ var hierarchy =
       [ "m::win32::IWindowImpl", "classm_1_1win32_1_1_i_window_impl.html", null ],
       [ "m::xcb_unix::IWindowImpl", "classm_1_1xcb__unix_1_1_i_window_impl.html", null ]
     ] ],
-    [ "m::input::KeyAction", "structm_1_1input_1_1_key_action.html", null ],
     [ "m::mBasicLaunchData", "structm_1_1m_basic_launch_data.html", null ],
     [ "m::mCallback< t_RetType, t_Args >", "classm_1_1m_callback.html", null ],
     [ "m::mCmdLine", "structm_1_1m_cmd_line.html", null ],
@@ -141,15 +139,19 @@ var hierarchy =
         ] ]
       ] ]
     ] ],
+    [ "m::input::mIInputManager", "classm_1_1input_1_1m_i_input_manager.html", [
+      [ "m::input::mCallbackInputManager", "structm_1_1input_1_1m_callback_input_manager.html", null ]
+    ] ],
     [ "m::logging::mILogPolicy", "classm_1_1logging_1_1m_i_log_policy.html", [
       [ "m::logging::mFileLogPolicy", "classm_1_1logging_1_1m_file_log_policy.html", null ],
       [ "m::logging::mStdcoutLogPolicy", "classm_1_1logging_1_1m_stdcout_log_policy.html", null ]
     ] ],
+    [ "m::input::mKeyAction", "structm_1_1input_1_1m_key_action.html", null ],
     [ "m::logging::mLogger< t_LogPolicy >", "classm_1_1logging_1_1m_logger.html", null ],
     [ "m::input::mMouseAction", "structm_1_1input_1_1m_mouse_action.html", null ],
-    [ "m::input::MouseState", "structm_1_1input_1_1_mouse_state.html", null ],
     [ "m::mSignal< t_Args >", "classm_1_1m_signal.html", null ],
-    [ "m::mSignal< const math::mDVec2 & >", "classm_1_1m_signal.html", null ],
+    [ "m::mSignal< const math::mIVec2 & >", "classm_1_1m_signal.html", null ],
+    [ "m::mSignal< mDouble >", "classm_1_1m_signal.html", null ],
     [ "m::math::mVecData< t_T, t_Size >", "structm_1_1math_1_1m_vec_data.html", [
       [ "m::math::mVec< t_T, t_Size >", "structm_1_1math_1_1m_vec.html", null ]
     ] ],

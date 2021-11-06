@@ -169,19 +169,19 @@
 \DoxyCodeLine{165 \textcolor{comment}{//                                          required for default WORDLEFT/WORDRIGHT handlers}}
 \DoxyCodeLine{166 \textcolor{comment}{//    STB\_TEXTEDIT\_MOVEWORDLEFT(obj,i)   custom handler for WORDLEFT, returns index to move cursor to}}
 \DoxyCodeLine{167 \textcolor{comment}{//    STB\_TEXTEDIT\_MOVEWORDRIGHT(obj,i)  custom handler for WORDRIGHT, returns index to move cursor to}}
-\DoxyCodeLine{168 \textcolor{comment}{//    STB\_TEXTEDIT\_K\_WORDLEFT            keyboard input to move cursor left one word // e.g. ctrl-\/left}}
-\DoxyCodeLine{169 \textcolor{comment}{//    STB\_TEXTEDIT\_K\_WORDRIGHT           keyboard input to move cursor right one word // e.g. ctrl-\/right}}
+\DoxyCodeLine{168 \textcolor{comment}{//    STB\_TEXTEDIT\_K\_WORDLEFT            keyboard input to move cursor left one word // e.g. ctrl-\/LEFT}}
+\DoxyCodeLine{169 \textcolor{comment}{//    STB\_TEXTEDIT\_K\_WORDRIGHT           keyboard input to move cursor right one word // e.g. ctrl-\/RIGHT}}
 \DoxyCodeLine{170 \textcolor{comment}{//    STB\_TEXTEDIT\_K\_LINESTART2          secondary keyboard input to move cursor to start of line}}
 \DoxyCodeLine{171 \textcolor{comment}{//    STB\_TEXTEDIT\_K\_LINEEND2            secondary keyboard input to move cursor to end of line}}
 \DoxyCodeLine{172 \textcolor{comment}{//    STB\_TEXTEDIT\_K\_TEXTSTART2          secondary keyboard input to move cursor to start of text}}
 \DoxyCodeLine{173 \textcolor{comment}{//    STB\_TEXTEDIT\_K\_TEXTEND2            secondary keyboard input to move cursor to end of text}}
 \DoxyCodeLine{174 \textcolor{comment}{//}}
 \DoxyCodeLine{175 \textcolor{comment}{// Keyboard input must be encoded as a single integer value; e.g. a character code}}
-\DoxyCodeLine{176 \textcolor{comment}{// and some bitflags that represent shift states. to simplify the interface, shift must}}
+\DoxyCodeLine{176 \textcolor{comment}{// and some bitflags that represent shift states. to simplify the interface, SHIFT must}}
 \DoxyCodeLine{177 \textcolor{comment}{// be a bitflag, so we can test the shifted state of cursor movements to allow selection,}}
 \DoxyCodeLine{178 \textcolor{comment}{// i.e. (STB\_TEXTEDIT\_K\_RIGHT|STB\_TEXTEDIT\_K\_SHIFT) should be shifted right-\/arrow.}}
 \DoxyCodeLine{179 \textcolor{comment}{//}}
-\DoxyCodeLine{180 \textcolor{comment}{// You can encode other things, such as CONTROL or alt, in additional bits, and}}
+\DoxyCodeLine{180 \textcolor{comment}{// You can encode other things, such as CONTROL or ALT, in additional bits, and}}
 \DoxyCodeLine{181 \textcolor{comment}{// then test for their presence in e.g. STB\_TEXTEDIT\_K\_WORDLEFT. For example,}}
 \DoxyCodeLine{182 \textcolor{comment}{// my Windows implementations add an additional CONTROL bit, and an additional KEYDOWN}}
 \DoxyCodeLine{183 \textcolor{comment}{// bit. Then all of the STB\_TEXTEDIT\_K\_ values bitwise-\/or in the KEYDOWN bit,}}

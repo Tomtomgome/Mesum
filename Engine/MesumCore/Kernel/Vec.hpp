@@ -81,6 +81,7 @@ template <typename t_T, mUInt t_Size>
 struct mVec : public mVecData<t_T, t_Size>
 {
     mVec();
+    mVec(const std::initializer_list<t_T>& a_list);
     mVec(const mVecData<t_T, t_Size>& a_data);
     mVec(const mVecData<t_T, t_Size>&& a_data);
 

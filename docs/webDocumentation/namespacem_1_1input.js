@@ -1,9 +1,9 @@
 var namespacem_1_1input =
 [
-    [ "InputManager", "classm_1_1input_1_1_input_manager.html", null ],
-    [ "KeyAction", "structm_1_1input_1_1_key_action.html", null ],
+    [ "mCallbackInputManager", "structm_1_1input_1_1m_callback_input_manager.html", "structm_1_1input_1_1m_callback_input_manager" ],
+    [ "mIInputManager", "classm_1_1input_1_1m_i_input_manager.html", "classm_1_1input_1_1m_i_input_manager" ],
+    [ "mKeyAction", "structm_1_1input_1_1m_key_action.html", "structm_1_1input_1_1m_key_action" ],
     [ "mMouseAction", "structm_1_1input_1_1m_mouse_action.html", "structm_1_1input_1_1m_mouse_action" ],
-    [ "MouseState", "structm_1_1input_1_1_mouse_state.html", null ],
     [ "mInputType", "namespacem_1_1input.html#a4b445365a4b10be8bf18496dcdb68474", [
       [ "released", "namespacem_1_1input.html#a4b445365a4b10be8bf18496dcdb68474a23690fd759f17135ec9879b56ff2600c", null ],
       [ "pressed", "namespacem_1_1input.html#a4b445365a4b10be8bf18496dcdb68474a6375592a2d987630e9bf9afd9e7de973", null ],
@@ -146,5 +146,10 @@ var namespacem_1_1input =
       [ "left", "namespacem_1_1input.html#ab7450ac4b61b5654bc908d4aa4e03ffea811882fecd5c7618d7099ebbd39ea254", null ],
       [ "right", "namespacem_1_1input.html#ab7450ac4b61b5654bc908d4aa4e03ffea7c4f29407893c334a6cb7a87bf045c0d", null ],
       [ "middle", "namespacem_1_1input.html#ab7450ac4b61b5654bc908d4aa4e03ffea4a548addbfb239bbd12f5afe11a4b6dc", null ]
-    ] ]
+    ] ],
+    [ "operator!", "namespacem_1_1input.html#a18cb6e75c0f88421c37c4cf1d9f7ed76", null ],
+    [ "operator&", "namespacem_1_1input.html#aebab0c1dd5f727ef12b5e6123eb79968", null ],
+    [ "operator&=", "namespacem_1_1input.html#a5614fe93cf5e38754c19d37455c7659b", null ],
+    [ "operator|", "namespacem_1_1input.html#aa33f0b866d3bbb0476b49054ef9a6602", null ],
+    [ "operator|=", "namespacem_1_1input.html#acd8737a13b4a965a7e05fd8c0c04f98e", null ]
 ];

@@ -19,7 +19,7 @@ class IWindowImpl : public windows::IWindow
     virtual void render() override;
     virtual void destroy() override;
 
-    virtual void link_inputManager(input::InputManager* a_inputManager)
+    virtual void link_inputManager(input::mCallbackInputManager* a_inputManager)
     {
         m_linkedInputManager = a_inputManager;
     };
@@ -48,7 +48,7 @@ class IWindowImpl : public windows::IWindow
     void callback_dearImGuiNewFrame();
 
    private:
-    input::InputManager* m_linkedInputManager;
+    input::mCallbackInputManager* m_linkedInputManager;
 
     // By default, use windowed mode.
     // Can be toggled with F11

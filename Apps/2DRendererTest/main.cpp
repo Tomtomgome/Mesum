@@ -105,8 +105,8 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         taskData_drawDearImGui.m_hdlOutput = m_hdlSurfaceDx12;
         taskData_drawDearImGui.add_toTaskSet(taskset_renderPipelineDx12);
 
-        m_inputManager.attach_ToKeyEvent(
-            input::KeyAction::keyPressed(input::keyN),
+        m_inputManager.attach_toKeyEvent(
+            input::mKeyAction::keyPressed(input::keyN),
             mCallback<void>(&m_bunchOfSquares, &BunchOfSquares::add_newSquare));
 
         // Setup vulkan window
@@ -120,8 +120,8 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         taskData_2dRender.m_pMeshBuffer = &m_drawer2d.m_meshBuffer;
         taskData_2dRender.add_toTaskSet(taskset_renderPipelineVulkan);
 
-        m_inputManager.attach_ToKeyEvent(
-            input::KeyAction::keyPressed(input::keyN),
+        m_inputManager.attach_toKeyEvent(
+            input::mKeyAction::keyPressed(input::keyN),
             mCallback<void>(&m_bunchOfSquares, &BunchOfSquares::add_newSquare));
     }
 
@@ -188,7 +188,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     Drawer_2D m_drawer2d;
 
     BunchOfSquares      m_bunchOfSquares;
-    input::InputManager m_inputManager;
+    input::mCallbackInputManager m_inputManager;
 };
 
 M_EXECUTE_WINDOWED_APP(RendererTestApp)

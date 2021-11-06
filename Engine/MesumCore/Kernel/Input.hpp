@@ -27,6 +27,51 @@ enum class mKeyMod
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+/// \brief Or operator for mods
+///////////////////////////////////////////////////////////////////////////////
+inline mKeyMod operator|(mKeyMod a_lhs, mKeyMod a_rhs)
+{
+    using T = std::underlying_type_t<mKeyMod>;
+    return static_cast<mKeyMod>(static_cast<T>(a_lhs) | static_cast<T>(a_rhs));
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Or assignment operator for mods
+///////////////////////////////////////////////////////////////////////////////
+inline mKeyMod& operator|=(mKeyMod& a_lhs, mKeyMod a_rhs)
+{
+    a_lhs = a_lhs | a_rhs;
+    return a_lhs;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief And operator for mods
+///////////////////////////////////////////////////////////////////////////////
+inline mKeyMod operator&(mKeyMod a_lhs, mKeyMod a_rhs)
+{
+    using T = std::underlying_type_t<mKeyMod>;
+    return static_cast<mKeyMod>(static_cast<T>(a_lhs) & static_cast<T>(a_rhs));
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief And assignment operator for mods
+///////////////////////////////////////////////////////////////////////////////
+inline mKeyMod& operator&=(mKeyMod& a_lhs, mKeyMod a_rhs)
+{
+    a_lhs = a_lhs & a_rhs;
+    return a_lhs;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Not operator for mods
+///////////////////////////////////////////////////////////////////////////////
+inline mKeyMod operator!(mKeyMod a_mod)
+{
+    using T = std::underlying_type_t<mKeyMod>;
+    return static_cast<mKeyMod>(!static_cast<T>(a_mod));
+}
+
+///////////////////////////////////////////////////////////////////////////////
 /// \brief Enumerating mouse buttons
 ///////////////////////////////////////////////////////////////////////////////
 enum class mMouseButton
@@ -44,6 +89,44 @@ enum class mInputType
     released,  //!< A key/button is released
     pressed,   //!< A key/button is pressed
     repeated   //!< A key/button is hold and repeated by the os
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Interface core to input management
+///
+/// Useless if instantiated
+///////////////////////////////////////////////////////////////////////////////
+class mIInputManager
+{
+   public:
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Process a key event
+    ///
+    /// \param a_key The key concerned by the event
+    /// \param a_action The inputType of the event
+    ///////////////////////////////////////////////////////////////////////////
+    virtual void process_keyEvent(mKey a_key, mInputType a_action){};
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Process a mouse event
+    ///
+    /// \param a_button The mouse button concerned by the event
+    /// \param a_action The inputType of the event
+    ///////////////////////////////////////////////////////////////////////////
+    virtual void process_mouseEvent(mMouseButton a_button,
+                                    mInputType   a_action){};
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Process a mouse move event
+    ///
+    /// \param a_xPos The position of the cursor on the x axis
+    /// \param a_yPos The position of the cursor on the y axis
+    ///////////////////////////////////////////////////////////////////////////
+    virtual void process_mouseMoveEvent(mInt a_xPos, mInt a_yPos){};
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Process a scroll event
+    ///
+    /// \param a_offset The delta of the scroll event
+    ///////////////////////////////////////////////////////////////////////////
+    virtual void process_mouseScrollEvent(mDouble a_offset){};
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -109,113 +192,209 @@ struct mMouseAction
     mMouseButton button = mMouseButton::left;
 };
 
-struct MouseState
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Structure representing an action executed on a key
+///////////////////////////////////////////////////////////////////////////////
+struct mKeyAction
 {
-    MouseState() = default;
-    MouseState(mMouseButton a_button, mKeyMod a_keyMod = mKeyMod::none)
-        : m_keyMod(a_keyMod),
-          m_button(a_button)
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Shortcut function to build a key pressed action
+    ///
+    /// \param a_key The key concerned by the pressed input type
+    /// \param a_keyMod The modulation of the key action
+    ///////////////////////////////////////////////////////////////////////////
+    static mKeyAction keyPressed(mKey a_key, mKeyMod a_keyMod = mKeyMod::none);
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Shortcut function to build a key released action
+    ///
+    /// \param a_key The key concerned by the release input type
+    /// \param a_keyMod The modulation of the key action
+    ///////////////////////////////////////////////////////////////////////////
+    static mKeyAction keyReleased(mKey a_key, mKeyMod a_keyMod = mKeyMod::none);
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Default constructor
+    ///////////////////////////////////////////////////////////////////////////
+    mKeyAction() = default;
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Default copy constructor
+    ///
+    /// \param a_KeyAction The mouse action to copy from
+    ///////////////////////////////////////////////////////////////////////////
+    mKeyAction(const mKeyAction& a_KeyAction) = default;
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Comparison operator allowing sorting
+    ///
+    /// \param a_l Left hand side of the operand
+    /// \param a_r Right hand side of the operand
+    ///////////////////////////////////////////////////////////////////////////
+    friend bool operator<(const mKeyAction& a_l, const mKeyAction& a_r)
     {
-    }
-    MouseState(const MouseState& MouseAction) = default;
-
-    friend bool operator<(const MouseState& l, const MouseState& r)
-    {
-        return std::tie(l.m_keyMod, l.m_button) <
-               std::tie(r.m_keyMod, r.m_button);  // keep the same order
+        return std::tie(a_l.m_action, a_l.m_keyMod, a_l.m_key) <
+               std::tie(a_r.m_action, a_r.m_keyMod, a_r.m_key);
     }
 
-    mKeyMod      m_keyMod;
-    mMouseButton m_button;
-};
-
-struct KeyAction
-{
-    static KeyAction keyPressed(mKey a_key, mKeyMod a_keyMod = mKeyMod::none);
-    static KeyAction keyReleased(mKey a_key, mKeyMod a_keyMod = mKeyMod::none);
-
-    KeyAction()                             = default;
-    KeyAction(const KeyAction& MouseAction) = default;
-
-    friend bool operator<(const KeyAction& l, const KeyAction& r)
-    {
-        return std::tie(l.m_action, l.m_keyMod, l.m_key) <
-               std::tie(r.m_action, r.m_keyMod,
-                        r.m_key);  // keep the same order
-    }
-
-    mInputType m_action;
-    mKeyMod    m_keyMod;
-    mKey       m_key;
-};
-
-class InputManager
-{
    public:
-    void update_KeyMods(mKeyMod a_mod, mInputType a_action);
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief The type of input of the action
+    ///////////////////////////////////////////////////////////////////////////
+    mInputType m_action = mInputType::released;
 
-    void process_MouseEvent(mMouseButton a_button, mInputType a_action,
-                            mKeyMod a_mods);
-    void process_KeyEvent(mKey a_key, int a_scancode, mInputType a_action,
-                          mKeyMod a_mods);
-    void process_ScrollEvent(double a_xoffset, double a_yoffset);
-    void process_CursorPosition(double a_xpos, double a_ypos);
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief The modulation of the action
+    ///////////////////////////////////////////////////////////////////////////
+    mKeyMod m_keyMod = mKeyMod::none;
 
-    void processAndUpdate_States();
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief The button of the action
+    ///////////////////////////////////////////////////////////////////////////
+    mKey m_key = mKey::keyUnknown;
+};
 
-    mKeyActionSignal::mCallbackHandle attach_ToKeyEvent(
-        KeyAction a_keyAction, const mKeyActionCallback& a_callback);
-    mMouseActionSignal::mCallbackHandle attach_ToMouseEvent(
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Implementation of an input manager
+///
+/// User can attach callbacks to events that will be called immediately when
+/// the event is read
+///////////////////////////////////////////////////////////////////////////////
+struct mCallbackInputManager : public mIInputManager
+{
+    void process_keyEvent(mKey a_key, mInputType a_action) override;
+    void process_mouseEvent(mMouseButton a_button,
+                            mInputType   a_action) override;
+    void process_mouseMoveEvent(mInt a_xPos, mInt a_yPos) override;
+    void process_mouseScrollEvent(double a_offset) override;
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Update the current key mods
+    ///
+    /// \param a_mod The key mod to update the status
+    /// \param a_action If the key mod has been pressed of released
+    ///////////////////////////////////////////////////////////////////////////
+    void update_keyMods(mKeyMod a_mod, mInputType a_action);
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Attach a callback to a key action
+    ///
+    /// \param a_keyAction The key action that will trigger the call
+    /// \param a_callback The callback that will be called
+    /// \return A handle to the callback (used to remove it)
+    ///////////////////////////////////////////////////////////////////////////
+    mKeyActionSignal::mCallbackHandle attach_toKeyEvent(
+        mKeyAction a_keyAction, const mKeyActionCallback& a_callback);
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Attach a callback to a mouse action
+    ///
+    /// \param a_keyAction The mouse action that will trigger the call
+    /// \param a_callback The callback that will be called
+    /// \return A handle to the callback (used to remove it)
+    ///////////////////////////////////////////////////////////////////////////
+    mMouseActionSignal::mCallbackHandle attach_toMouseEvent(
         mMouseAction a_mouseAction, const mMouseActionCallback& a_callback);
-    mScrollSignal::mCallbackHandle attach_ToScrollEvent(
-        const mScrollCallback& a_callback);
-    mMouseMoveSignal::mCallbackHandle attach_ToMoveEvent(
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Attach a callback to a mouse move event
+    ///
+    /// \param a_callback The callback that will be called
+    /// \return A handle to the callback (used to remove it)
+    ///////////////////////////////////////////////////////////////////////////
+    mMouseMoveSignal::mCallbackHandle attach_toMouseMoveEvent(
         const mMouseMoveCallback& a_callback);
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Attach a callback to a mouse scroll event
+    ///
+    /// \param a_callback The callback that will be called
+    /// \return A handle to the callback (used to remove it)
+    ///////////////////////////////////////////////////////////////////////////
+    mScrollSignal::mCallbackHandle attach_toMouseScrollEvent(
+        const mScrollCallback& a_callback);
 
-    void detach_FromKeyEvent(KeyAction                a_keyAction,
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Detach a callback to a key action
+    ///
+    /// \param a_keyAction The key action to which the callback is linked
+    /// \param a_callback The callback to remove
+    ///////////////////////////////////////////////////////////////////////////
+    void detach_fromKeyEvent(mKeyAction                a_keyAction,
                              const mKeyActionCallback& a_callback);
-    void detach_FromKeyEvent(KeyAction a_keyAction,
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Detach a callback to a key action
+    ///
+    /// \param a_keyAction The key action to which the callback is linked
+    /// \param a_handle The handle to the callback to remove
+    ///////////////////////////////////////////////////////////////////////////
+    void detach_fromKeyEvent(mKeyAction a_keyAction,
                              const mKeyActionSignal::mCallbackHandle& a_handle);
-
-    void detach_FromMouseEvent(mMouseAction               a_mouseAction,
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Detach a callback to a mouse action
+    ///
+    /// \param a_keyAction The mouse action to which the callback is linked
+    /// \param a_callback The callback to remove
+    ///////////////////////////////////////////////////////////////////////////
+    void detach_fromMouseEvent(mMouseAction                a_mouseAction,
                                const mMouseActionCallback& a_callback);
-    void detach_FromMouseEvent(
-        mMouseAction                              a_mouseAction,
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Detach a callback to a mouse action
+    ///
+    /// \param a_keyAction The mouse action to which the callback is linked
+    /// \param a_handle The handle to the callback to remove
+    ///////////////////////////////////////////////////////////////////////////
+    void detach_fromMouseEvent(
+        mMouseAction                               a_mouseAction,
         const mMouseActionSignal::mCallbackHandle& a_handle);
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Detach a callback to a mouse move event
+    ///
+    /// \param a_callback The callback to remove
+    ///////////////////////////////////////////////////////////////////////////
+    void detach_fromMouseMoveEvent(const mMouseMoveCallback& a_callback);
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Detach a callback to a mouse move event
+    ///
+    /// \param a_handle The handle to the callback to remove
+    ///////////////////////////////////////////////////////////////////////////
+    void detach_fromMouseMoveEvent(
+        const mMouseMoveSignal::mCallbackHandle& a_handle);
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Detach a callback to a mouse scroll event
+    ///
+    /// \param a_callback The callback to remove
+    ///////////////////////////////////////////////////////////////////////////
+    void detach_fromMouseScrollEvent(const mScrollCallback& a_callback);
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Detach a callback to a mouse scroll event
+    ///
+    /// \param a_handle The handle to the callback to remove
+    ///////////////////////////////////////////////////////////////////////////
+    void detach_fromMouseScrollEvent(
+        const mScrollSignal::mCallbackHandle& a_handle);
 
-    void detach_FromScrollEvent(const mScrollCallback& a_callback);
-    void detach_FromScrollEvent(
-        const mScrollSignal::mCallbackHandle& a_callback);
-
-    void detach_FromMoveEvent(const mMouseMoveCallback& a_callback);
-    void detach_FromMoveEvent(
-        const mMouseMoveSignal::mCallbackHandle& a_callback);
-
-    mMouseStateSignal::mCallbackHandle attach_ToMouseState(
-        MouseState a_mouseState, const mMouseStateCallback& a_callback);
-    void detach_FromMouseState(MouseState                a_mouseState,
-                               const mMouseStateCallback& a_callback);
-    void detach_FromMouseState(
-        MouseState                               a_mouseState,
-        const mMouseStateSignal::mCallbackHandle& a_handle);
-
-   private:
-    double m_mousePosX;
-    double m_mousePosY;
-
-    std::array<mBool, 8>                 m_previousMouseButtonClicked = {false};
-    std::array<mBool, 8>                 m_mouseButtonClicked         = {false};
-    std::array<mBool, mKey::keyLast + 1> m_keyPressed;
-
-    int                                       m_previousMod = 0;
-    int                                       m_currentMod  = 0;
-    std::map<KeyAction, mKeyActionSignal>      m_keySignals;
-    std::map<mMouseAction, mMouseActionSignal> m_mouseSignals;
-
-    std::map<MouseState, mMouseStateSignal> m_mouseStateSignals;
-
-    mScrollSignal   m_scrollSignal;
-    mMouseMoveSignal m_moveSignal;
+   public:
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Current position of the cursor on screen
+    ///////////////////////////////////////////////////////////////////////////
+    math::mIVec2 currentMousePos{0, 0};
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Current modulation key pressed
+    ///////////////////////////////////////////////////////////////////////////
+    mKeyMod currentKeyMod = mKeyMod::none;
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Map of key action signals
+    ///////////////////////////////////////////////////////////////////////////
+    std::map<mKeyAction, mKeyActionSignal> keySignals;
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Map of mouse action signals
+    ///////////////////////////////////////////////////////////////////////////
+    std::map<mMouseAction, mMouseActionSignal> mouseSignals;
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Mouse scroll signal
+    ///////////////////////////////////////////////////////////////////////////
+    mScrollSignal scrollSignal;
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Mouse move signal
+    ///////////////////////////////////////////////////////////////////////////
+    mMouseMoveSignal moveSignal;
 };
 }  // namespace m::input
 ///////////////////////////////////////////////////////////////////////////////

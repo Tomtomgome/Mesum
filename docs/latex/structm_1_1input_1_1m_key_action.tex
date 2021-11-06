@@ -1,0 +1,127 @@
+\hypertarget{structm_1_1input_1_1m_key_action}{}\doxysection{m\+::input\+::m\+Key\+Action Struct Reference}
+\label{structm_1_1input_1_1m_key_action}\index{m::input::mKeyAction@{m::input::mKeyAction}}
+
+
+Structure representing an action executed on a key.  
+
+
+
+
+{\ttfamily \#include $<$Input.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structm_1_1input_1_1m_key_action_a4c7fc6d6c86cfbdbec092c80519f86bd}\label{structm_1_1input_1_1m_key_action_a4c7fc6d6c86cfbdbec092c80519f86bd}} 
+{\bfseries m\+Key\+Action} ()=default
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structm_1_1input_1_1m_key_action_a328704e1c3becefd02823ce622bdd43c}{m\+Key\+Action}} (const \mbox{\hyperlink{structm_1_1input_1_1m_key_action}{m\+Key\+Action}} \&a\+\_\+\+Key\+Action)=default
+\begin{DoxyCompactList}\small\item\em Default copy constructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{structm_1_1input_1_1m_key_action}{m\+Key\+Action}} \mbox{\hyperlink{structm_1_1input_1_1m_key_action_a97802f2df5d5c9f77965e872195b9706}{key\+Pressed}} (\mbox{\hyperlink{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}{m\+Key}} a\+\_\+key, \mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}{m\+Key\+Mod}} a\+\_\+key\+Mod=\mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaa334c4a4c42fdb79d7ebc3e73b517e6f8}{m\+Key\+Mod\+::none}})
+\begin{DoxyCompactList}\small\item\em Shortcut function to build a key pressed action. \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{structm_1_1input_1_1m_key_action}{m\+Key\+Action}} \mbox{\hyperlink{structm_1_1input_1_1m_key_action_a4811ed6496ec0e3fb79ae9e9cf063ee6}{key\+Released}} (\mbox{\hyperlink{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}{m\+Key}} a\+\_\+key, \mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}{m\+Key\+Mod}} a\+\_\+key\+Mod=\mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaa334c4a4c42fdb79d7ebc3e73b517e6f8}{m\+Key\+Mod\+::none}})
+\begin{DoxyCompactList}\small\item\em Shortcut function to build a key released action. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structm_1_1input_1_1m_key_action_a57e778fbac68e8d381397aba93a14112}\label{structm_1_1input_1_1m_key_action_a57e778fbac68e8d381397aba93a14112}} 
+\mbox{\hyperlink{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474}{m\+Input\+Type}} {\bfseries m\+\_\+action} = \mbox{\hyperlink{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474a23690fd759f17135ec9879b56ff2600c}{m\+Input\+Type\+::released}}
+\begin{DoxyCompactList}\small\item\em The type of input of the action. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structm_1_1input_1_1m_key_action_a0e4b7f734ce7fbdff4154116f9f644e2}\label{structm_1_1input_1_1m_key_action_a0e4b7f734ce7fbdff4154116f9f644e2}} 
+\mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}{m\+Key\+Mod}} {\bfseries m\+\_\+key\+Mod} = \mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaa334c4a4c42fdb79d7ebc3e73b517e6f8}{m\+Key\+Mod\+::none}}
+\begin{DoxyCompactList}\small\item\em The modulation of the action. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structm_1_1input_1_1m_key_action_a3cd8fc44ec33abfa7a41f6dc3eb2d251}\label{structm_1_1input_1_1m_key_action_a3cd8fc44ec33abfa7a41f6dc3eb2d251}} 
+\mbox{\hyperlink{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}{m\+Key}} {\bfseries m\+\_\+key} = m\+Key\+::key\+Unknown
+\begin{DoxyCompactList}\small\item\em The button of the action. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{structm_1_1input_1_1m_key_action_a50c44198ad57c65c9e5ac071596e21bc}{operator$<$}} (const \mbox{\hyperlink{structm_1_1input_1_1m_key_action}{m\+Key\+Action}} \&a\+\_\+l, const \mbox{\hyperlink{structm_1_1input_1_1m_key_action}{m\+Key\+Action}} \&a\+\_\+r)
+\begin{DoxyCompactList}\small\item\em Comparison operator allowing sorting. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Structure representing an action executed on a key. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structm_1_1input_1_1m_key_action_a328704e1c3becefd02823ce622bdd43c}\label{structm_1_1input_1_1m_key_action_a328704e1c3becefd02823ce622bdd43c}} 
+\index{m::input::mKeyAction@{m::input::mKeyAction}!mKeyAction@{mKeyAction}}
+\index{mKeyAction@{mKeyAction}!m::input::mKeyAction@{m::input::mKeyAction}}
+\doxysubsubsection{\texorpdfstring{mKeyAction()}{mKeyAction()}}
+{\footnotesize\ttfamily m\+::input\+::m\+Key\+Action\+::m\+Key\+Action (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structm_1_1input_1_1m_key_action}{m\+Key\+Action}} \&}]{a\+\_\+\+Key\+Action }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+Default copy constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+\+Key\+Action} & The mouse action to copy from \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{structm_1_1input_1_1m_key_action_a97802f2df5d5c9f77965e872195b9706}\label{structm_1_1input_1_1m_key_action_a97802f2df5d5c9f77965e872195b9706}} 
+\index{m::input::mKeyAction@{m::input::mKeyAction}!keyPressed@{keyPressed}}
+\index{keyPressed@{keyPressed}!m::input::mKeyAction@{m::input::mKeyAction}}
+\doxysubsubsection{\texorpdfstring{keyPressed()}{keyPressed()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structm_1_1input_1_1m_key_action}{m\+Key\+Action}} m\+::input\+::m\+Key\+Action\+::key\+Pressed (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}{m\+Key}}}]{a\+\_\+key,  }\item[{\mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}{m\+Key\+Mod}}}]{a\+\_\+key\+Mod = {\ttfamily \mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaa334c4a4c42fdb79d7ebc3e73b517e6f8}{m\+Key\+Mod\+::none}}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Shortcut function to build a key pressed action. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+key} & The key concerned by the pressed input type \\
+\hline
+{\em a\+\_\+key\+Mod} & The modulation of the key action \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structm_1_1input_1_1m_key_action_a4811ed6496ec0e3fb79ae9e9cf063ee6}\label{structm_1_1input_1_1m_key_action_a4811ed6496ec0e3fb79ae9e9cf063ee6}} 
+\index{m::input::mKeyAction@{m::input::mKeyAction}!keyReleased@{keyReleased}}
+\index{keyReleased@{keyReleased}!m::input::mKeyAction@{m::input::mKeyAction}}
+\doxysubsubsection{\texorpdfstring{keyReleased()}{keyReleased()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structm_1_1input_1_1m_key_action}{m\+Key\+Action}} m\+::input\+::m\+Key\+Action\+::key\+Released (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}{m\+Key}}}]{a\+\_\+key,  }\item[{\mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}{m\+Key\+Mod}}}]{a\+\_\+key\+Mod = {\ttfamily \mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaa334c4a4c42fdb79d7ebc3e73b517e6f8}{m\+Key\+Mod\+::none}}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Shortcut function to build a key released action. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+key} & The key concerned by the release input type \\
+\hline
+{\em a\+\_\+key\+Mod} & The modulation of the key action \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{structm_1_1input_1_1m_key_action_a50c44198ad57c65c9e5ac071596e21bc}\label{structm_1_1input_1_1m_key_action_a50c44198ad57c65c9e5ac071596e21bc}} 
+\index{m::input::mKeyAction@{m::input::mKeyAction}!operator$<$@{operator$<$}}
+\index{operator$<$@{operator$<$}!m::input::mKeyAction@{m::input::mKeyAction}}
+\doxysubsubsection{\texorpdfstring{operator$<$}{operator<}}
+{\footnotesize\ttfamily bool operator$<$ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structm_1_1input_1_1m_key_action}{m\+Key\+Action}} \&}]{a\+\_\+l,  }\item[{const \mbox{\hyperlink{structm_1_1input_1_1m_key_action}{m\+Key\+Action}} \&}]{a\+\_\+r }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Comparison operator allowing sorting. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+l} & Left hand side of the operand \\
+\hline
+{\em a\+\_\+r} & Right hand side of the operand \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Core/\+Kernel/Input.\+hpp\item 
+Mesum\+Core/\+Kernel/Input.\+cpp\end{DoxyCompactItemize}

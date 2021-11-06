@@ -16,10 +16,10 @@ var annotated_dup =
         [ "DX12Texture", "structm_1_1dx12_1_1_d_x12_texture.html", null ]
       ] ],
       [ "input", "namespacem_1_1input.html", [
-        [ "InputManager", "classm_1_1input_1_1_input_manager.html", null ],
-        [ "KeyAction", "structm_1_1input_1_1_key_action.html", null ],
-        [ "mMouseAction", "structm_1_1input_1_1m_mouse_action.html", "structm_1_1input_1_1m_mouse_action" ],
-        [ "MouseState", "structm_1_1input_1_1_mouse_state.html", null ]
+        [ "mCallbackInputManager", "structm_1_1input_1_1m_callback_input_manager.html", "structm_1_1input_1_1m_callback_input_manager" ],
+        [ "mIInputManager", "classm_1_1input_1_1m_i_input_manager.html", "classm_1_1input_1_1m_i_input_manager" ],
+        [ "mKeyAction", "structm_1_1input_1_1m_key_action.html", "structm_1_1input_1_1m_key_action" ],
+        [ "mMouseAction", "structm_1_1input_1_1m_mouse_action.html", "structm_1_1input_1_1m_mouse_action" ]
       ] ],
       [ "logging", "namespacem_1_1logging.html", [
         [ "mFileLogPolicy", "classm_1_1logging_1_1m_file_log_policy.html", "classm_1_1logging_1_1m_file_log_policy" ],

@@ -19,7 +19,7 @@ class IWindowImpl : public windows::IWindow
     void init() override;
     void destroy() override;
 
-    void link_inputManager(input::InputManager* a_inputManager) override
+    void link_inputManager(input::mIInputManager* a_inputManager) override
     {
         m_linkedInputManager = a_inputManager;
     };
@@ -45,10 +45,13 @@ class IWindowImpl : public windows::IWindow
         m_parentContext = &a_winContext;
     }
 
-    [[nodiscard]] mBool is_flaggedToBeClosed() const { return m_flagToBeClosed; }
+    [[nodiscard]] mBool is_flaggedToBeClosed() const
+    {
+        return m_flagToBeClosed;
+    }
 
    private:
-    input::InputManager* m_linkedInputManager;
+    input::mIInputManager* m_linkedInputManager;
 
     HWND m_hwnd;
 
@@ -58,9 +61,9 @@ class IWindowImpl : public windows::IWindow
     mBool m_flagToBeClosed = false;
 
     std::string m_windowName;
-    mBool        m_isMainWindow = false;
-    mU32         m_clientWidth  = 1280;
-    mU32         m_clientHeight = 720;
+    mBool       m_isMainWindow = false;
+    mU32        m_clientWidth  = 1280;
+    mU32        m_clientHeight = 720;
 
     // Window rectangle (used to toggle fullscreen state).
     RECT m_windowRect;
@@ -71,8 +74,8 @@ class IWindowImpl : public windows::IWindow
     using CallbackWindowDestroy = mCallback<void>;
     using CallbackInputProcessing =
         mCallback<void, mBool*, HWND, UINT, WPARAM, LPARAM>;
-    mSignal<mU32, mU32>                          m_signalResize;
-    mSignal<>                                  m_signalWindowDestroyed;
+    mSignal<mU32, mU32>                         m_signalResize;
+    mSignal<>                                   m_signalWindowDestroyed;
     mSignal<mBool*, HWND, UINT, WPARAM, LPARAM> m_signalOverrideInputProcessing;
 };
 

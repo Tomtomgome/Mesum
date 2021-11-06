@@ -1,25 +1,4 @@
 var searchData=
 [
-  ['mbasiclaunchdata_0',['mBasicLaunchData',['../structm_1_1m_basic_launch_data.html',1,'m']]],
-  ['mcallback_1',['mCallback',['../classm_1_1m_callback.html',1,'m']]],
-  ['mcmdline_2',['mCmdLine',['../structm_1_1m_cmd_line.html',1,'m']]],
-  ['mfilelogpolicy_3',['mFileLogPolicy',['../classm_1_1logging_1_1m_file_log_policy.html',1,'m::logging']]],
-  ['mibasicapplication_4',['mIBasicApplication',['../classm_1_1application_1_1m_i_basic_application.html',1,'m::application']]],
-  ['milogpolicy_5',['mILogPolicy',['../classm_1_1logging_1_1m_i_log_policy.html',1,'m::logging']]],
-  ['miloopapplication_6',['mILoopApplication',['../classm_1_1application_1_1m_i_loop_application.html',1,'m::application']]],
-  ['mitimedloopapplication_7',['mITimedLoopApplication',['../classm_1_1application_1_1m_i_timed_loop_application.html',1,'m::application']]],
-  ['mlogger_8',['mLogger',['../classm_1_1logging_1_1m_logger.html',1,'m::logging']]],
-  ['mmouseaction_9',['mMouseAction',['../structm_1_1input_1_1m_mouse_action.html',1,'m::input']]],
-  ['mousestate_10',['MouseState',['../structm_1_1input_1_1_mouse_state.html',1,'m::input']]],
-  ['msignal_11',['mSignal',['../classm_1_1m_signal.html',1,'m']]],
-  ['msignal_3c_20const_20math_3a_3amdvec2_20_26_20_3e_12',['mSignal&lt; const math::mDVec2 &amp; &gt;',['../classm_1_1m_signal.html',1,'m']]],
-  ['mstdcoutlogpolicy_13',['mStdcoutLogPolicy',['../classm_1_1logging_1_1m_stdcout_log_policy.html',1,'m::logging']]],
-  ['mvec_14',['mVec',['../structm_1_1math_1_1m_vec.html',1,'m::math']]],
-  ['mvecdata_15',['mVecData',['../structm_1_1math_1_1m_vec_data.html',1,'m::math']]],
-  ['mvecdata_3c_20t_5ft_2c_202_20_3e_16',['mVecData&lt; t_T, 2 &gt;',['../structm_1_1math_1_1m_vec_data_3_01t___t_00_012_01_4.html',1,'m::math']]],
-  ['mvecdata_3c_20t_5ft_2c_203_20_3e_17',['mVecData&lt; t_T, 3 &gt;',['../structm_1_1math_1_1m_vec_data_3_01t___t_00_013_01_4.html',1,'m::math']]],
-  ['mvecdata_3c_20t_5ft_2c_204_20_3e_18',['mVecData&lt; t_T, 4 &gt;',['../structm_1_1math_1_1m_vec_data_3_01t___t_00_014_01_4.html',1,'m::math']]],
-  ['mxorandomnumbergenerator_19',['mXoRandomNumberGenerator',['../classm_1_1math_1_1m_xo_random_number_generator.html',1,'m::math']]],
-  ['mxoshiro256ssstate_20',['mXoshiro256ssState',['../structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state.html',1,'m::math::mXoRandomNumberGenerator']]],
-  ['mydocument_21',['MyDocument',['../struct_my_document.html',1,'']]]
+  ['resourcedataholder_0',['ResourceDataHolder',['../classm_1_1render_1_1_resource_data_holder.html',1,'m::render']]]
 ];
