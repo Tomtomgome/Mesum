@@ -1,7 +1,7 @@
 #pragma once
 
-#include <InputCommon.hpp>
-#include <Keys.hpp>
+#include "InputCommon.hpp"
+#include "Keys.hpp"
 #include <array>
 #include <map>
 

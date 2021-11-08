@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Callbacks.hpp>
-#include <Logger.hpp>
-#include <MathTypes.hpp>
-#include <Types.hpp>
+#include "Callbacks.hpp"
+#include "Logger.hpp"
+#include "MathTypes.hpp"
+#include "Types.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \addtogroup Core

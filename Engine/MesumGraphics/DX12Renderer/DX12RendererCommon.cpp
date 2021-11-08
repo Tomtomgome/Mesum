@@ -4,7 +4,7 @@
 #include <dxcapi.h>       // Be sure to link with dxcompiler.lib.
 
 #include <DX12RendererCommon.hpp>
-#include <Kernel_pch.hpp>
+#include <Kernel/Kernel_pch.hpp>
 #include <iosfwd>
 
 namespace m::dx12

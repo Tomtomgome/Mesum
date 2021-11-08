@@ -2,7 +2,7 @@
 #define M_CROSSPLATFORM
 #pragma once
 
-#include <MesumCore/Common.hpp>
+#include <MesumCore/Common/CoreCommon.hpp>
 
 #if defined M_UNIX
 

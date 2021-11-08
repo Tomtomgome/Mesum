@@ -90,8 +90,8 @@ $(document).ready(function(){initNavTree('_logger_8hpp_source.html',''); initRes
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">// Inspired from :</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">// http://www.drdobbs.com/cpp/a-lightweight-logger-for-c/240147505</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;Log.hpp&gt;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;MesumCore/Common.hpp&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;../Common/CoreCommon.hpp&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;Log.hpp&quot;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">namespace </span>m</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>{</div>
@@ -101,23 +101,23 @@ $(document).ready(function(){initNavTree('_logger_8hpp_source.html',''); initRes
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="group___core.html#ga9aa869d857bafeb44058596e5ba4b1e6">   19</a></span><span class="preprocessor">#define mLog_getId m::log_inst.get_newChannelID</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#ifdef M_ENABLE_LOG</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#define mLog m::log_inst.print&lt;m::logging::mSeverityType::debug&gt;</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#define mLog_error m::log_inst.print&lt;m::logging::mSeverityType::error&gt;</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#define mLog_warning m::log_inst.print&lt;m::logging::SeverityType::warning&gt;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="group___core.html#gada5e219866231b861b496e86d47e1e78">   23</a></span><span class="preprocessor">#define mLog m::log_inst.print&lt;m::logging::mSeverityType::debug&gt;</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="group___core.html#ga0bcecb82138d5f42db4089c93554f5a2">   25</a></span><span class="preprocessor">#define mLog_error m::log_inst.print&lt;m::logging::mSeverityType::error&gt;</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="group___core.html#gadb3d189e9cbe46dd3620a641763cdf6c">   27</a></span><span class="preprocessor">#define mLog_warning m::log_inst.print&lt;m::logging::SeverityType::warning&gt;</span></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor">#define mLog_to m::log_inst.print_toChannel&lt;m::logging::mSeverityType::debug&gt;</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#define mLog_errorTo \</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="group___core.html#gab009950df9db21d808d3c36818dde4bf">   30</a></span><span class="preprocessor">#define mLog_to m::log_inst.print_toChannel&lt;m::logging::mSeverityType::debug&gt;</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="group___core.html#gafd57e4a697cbf7c30e222a868dcdf9e4">   32</a></span><span class="preprocessor">#define mLog_errorTo \</span></div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">    m::log_inst.print_toChannel&lt;m::logging::mSeverityType::error&gt;</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#define mLog_warningTo \</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="group___core.html#ga8fdc6b16f7a09c13d9ee1ba499d181ff">   35</a></span><span class="preprocessor">#define mLog_warningTo \</span></div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">    m::log_inst.print_toChannel&lt;m::logging::mSeverityType::warning&gt;</span></div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#else</span></div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="group___core.html#ga680e34b3f157af7f411b5979ad1a4ac3">   40</a></span><span class="preprocessor">#define mLog(...)</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="group___core.html#ga5fbb2d1e48c3d6b25c16ee857251d351">   42</a></span><span class="preprocessor">#define mLog_error(...)</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="group___core.html#gae1032e7185f812c2d99bfb85310db818">   44</a></span><span class="preprocessor">#define mLog_warning(...)</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="group___core.html#ga68b88f85079be232c5241fe6030e05cb">   46</a></span><span class="preprocessor">#define mLog_to(...)</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="group___core.html#gadf1cbf9f4fd7fbf02a0770de0d579455">   48</a></span><span class="preprocessor">#define mLog_errorTo(...)</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="group___core.html#ga69ed0c9a7e1c9e250fc27634c8500823">   50</a></span><span class="preprocessor">#define mLog_warningTo(...)</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#define mLog(...)</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#define mLog_error(...)</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#define mLog_warning(...)</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">#define mLog_to(...)</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">#define mLog_errorTo(...)</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#define mLog_warningTo(...)</span></div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
@@ -144,14 +144,14 @@ $(document).ready(function(){initNavTree('_logger_8hpp_source.html',''); initRes
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="preprocessor">#if (defined M_ENABLE_VERBOSE_LOG) || (defined M_ENABLE_LOG)</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="preprocessor">#define mSet_logFilter m::log_inst.set_filter</span></div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="preprocessor">#define mEnable_logChannels m::log_inst.enable_channels</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="preprocessor">#define mDisable_logChannels m::log_inst.disable_channels</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="group___core.html#ga8ed93f4b384ddb9ce37e98d7092e04d4">   90</a></span><span class="preprocessor">#define mSet_logFilter m::log_inst.set_filter</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="group___core.html#ga1ffa20cdc73fef0927476b0142dbfbeb">   92</a></span><span class="preprocessor">#define mEnable_logChannels m::log_inst.enable_channels</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="group___core.html#gac92102d2681a9eb9e2d7f2cc7079190a">   94</a></span><span class="preprocessor">#define mDisable_logChannels m::log_inst.disable_channels</span></div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="group___core.html#gab72bba1e02da9f12494fbc01656c6a42">   98</a></span><span class="preprocessor">#define mSet_logFilter(...)</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="group___core.html#gad373fce774649fa0b14363289cb8eeab">  100</a></span><span class="preprocessor">#define mEnable_logChannels(...)</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="group___core.html#gac6a132763c1ef06eb8dbdc7d339ab00b">  102</a></span><span class="preprocessor">#define mDisable_logChannels(...)</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="preprocessor">#define mSet_logFilter(...)</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="preprocessor">#define mEnable_logChannels(...)</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="preprocessor">#define mDisable_logChannels(...)</span></div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>

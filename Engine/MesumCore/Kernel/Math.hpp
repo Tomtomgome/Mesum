@@ -1,7 +1,7 @@
 #pragma once
 
-#include <MathTypes.hpp>
-#include <Types.hpp>
+#include "MathTypes.hpp"
+#include "Types.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \addtogroup Core

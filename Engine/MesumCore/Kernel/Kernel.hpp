@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Asserts.hpp>
-#include <MesumCore/Common.hpp>
-#include <Types.hpp>
+#include "../Common/CoreCommon.hpp"
+#include "Asserts.hpp"
+#include "Types.hpp"
 #include <algorithm>
 #include <sstream>
 #include <string>

@@ -1,5 +1,3 @@
-#ifndef M_CORE_COMMON
-#define M_CORE_COMMON
 #pragma once
 
 #ifdef _M_DLL_DYNAMIC_LINK
@@ -31,5 +29,3 @@
 #if defined _M_WINDOWED
 #define M_WINDOWED_APP
 #endif //_M_WINDOWED
-
-#endif //M_CORE_COMMON

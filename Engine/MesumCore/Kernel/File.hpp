@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Log.hpp>
-#include <MesumCore/Common.hpp>
-#include <Types.hpp>
+#include "../Common/CoreCommon.hpp"
+#include "Log.hpp"
+#include "Types.hpp"
 #include <filesystem>
 #include <string>
 #include <vector>

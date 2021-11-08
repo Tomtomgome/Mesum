@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Kernel.hpp>
-#include <Types.hpp>
+#include "Kernel.hpp"
+#include "Types.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \addtogroup Core

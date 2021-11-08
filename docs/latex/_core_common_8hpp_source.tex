@@ -1,0 +1,37 @@
+\hypertarget{_core_common_8hpp_source}{}\doxysection{Core\+Common.\+hpp}
+\label{_core_common_8hpp_source}\index{MesumCore/Common/CoreCommon.hpp@{MesumCore/Common/CoreCommon.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#ifdef \_M\_DLL\_DYNAMIC\_LINK}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#ifdef \_M\_CORE\_EXPORT}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#define MesumCoreApi \_\_declspec(dllexport)}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#define MesumCoreApi \_\_declspec(dllimport)}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#define MesumCoreApi}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{comment}{//PLatform specific}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#if defined \_DEBUG || !defined(NDEBUG)}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define M\_DEBUG}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#define M\_RELEASE}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#define M\_ENABLE\_LOG}}
+\DoxyCodeLine{21 \textcolor{comment}{//\#define M\_ENABLE\_VERBOSE\_LOG}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#if defined \_M\_WIN32}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#define M\_WIN32}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#elif defined \_M\_UNIX}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#define M\_UNIX}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#if defined \_M\_WINDOWED}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#define M\_WINDOWED\_APP}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//\_M\_WINDOWED}}
+
+\end{DoxyCode}

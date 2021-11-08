@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Logger.hpp>
-#include <MesumCore/Common.hpp>
-#include <Types.hpp>
+#include "../Common/CoreCommon.hpp"
+#include "Logger.hpp"
+#include "Types.hpp"
 #include <csignal>
 
 ///////////////////////////////////////////////////////////////////////////////

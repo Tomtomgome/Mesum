@@ -2,9 +2,9 @@
 #define M_WINDOWEDAPP
 #pragma once
 
+#include <MesumCore/Common/CoreCommon.hpp>
 #include <MesumCore/Kernel/Application.hpp>
 #include <MesumCore/Kernel/Mains.hpp>
-#include <MesumCore/MesumCore/Common.hpp>
 #include <MesumGraphics/Common.hpp>
 #include <MesumGraphics/Renderer.hpp>
 #include <string>

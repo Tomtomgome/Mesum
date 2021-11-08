@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Kernel.hpp>
-#include <MesumCore/Common.hpp>
-#include <Types.hpp>
+#include "../Common/CoreCommon.hpp"
+#include "Kernel.hpp"
+#include "Types.hpp"
 
 namespace m
 {

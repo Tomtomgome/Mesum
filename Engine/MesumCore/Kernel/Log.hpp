@@ -1,7 +1,7 @@
 #pragma once
-#include <LogPolicies.hpp>
-#include <MesumCore/Common.hpp>
-#include <Types.hpp>
+#include "../Common/CoreCommon.hpp"
+#include "LogPolicies.hpp"
+#include "Types.hpp"
 #include <fstream>
 #include <limits>
 #include <memory>

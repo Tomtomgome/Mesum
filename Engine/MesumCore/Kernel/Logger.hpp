@@ -2,8 +2,8 @@
 
 // Inspired from :
 // http://www.drdobbs.com/cpp/a-lightweight-logger-for-c/240147505
-#include <Log.hpp>
-#include <MesumCore/Common.hpp>
+#include "../Common/CoreCommon.hpp"
+#include "Log.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \addtogroup Core
