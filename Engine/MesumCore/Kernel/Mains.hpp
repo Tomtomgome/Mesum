@@ -1,35 +1,37 @@
-#ifndef M_MAIN
-#define M_MAIN
 #pragma once
 
+#include "../Common/CoreCommon.hpp"
+#include "Kernel.hpp"
+#include "Types.hpp"
 
-#include <MesumCore/Common.hpp>
-#include <Types.hpp>
-#include <Kernel.hpp>
-
-//*****************************************************************************
-//Console entry point
-//*****************************************************************************
 namespace m
 {
-template <typename AppClass>
-void internal_run(CmdLine const& a_cmdLine, void* a_data)
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Launch an application
+///
+/// \tparam t_AppClass The type of application
+/// \param a_cmdLine The cmdline arguments to pass to the application
+/// \param a_data The application data to pass to the application
+///////////////////////////////////////////////////////////////////////////////
+template <typename t_AppClass>
+void internal_run(mCmdLine const& a_cmdLine, void* a_data)
 {
-    AppClass app;
-    app.set_cmdLineData(a_cmdLine);
-    app.setup(a_data);
-    app.launch();
+    t_AppClass app;
+    app.launch(a_cmdLine, a_data);
 }
 }  // namespace m
 
-#define M_EXECUTE_CONSOLE_APP(AppClass)              \
-    int main(m::Int argc, m::Char** argv)       \
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Start an application as a console application
+///
+/// \param a_AppClass The type of application to execute
+///////////////////////////////////////////////////////////////////////////////
+#define mExecute_consoleApplication(a_AppClass)      \
+    int main(m::mInt argc, m::mChar** argv)          \
     {                                                \
-        m::BasicLaunchData data;                     \
-        m::CmdLine         cmdLine;                  \
+        m::mBasicLaunchData data;                    \
+        m::mCmdLine         cmdLine;                 \
         cmdLine.parse_cmdLineAguments(argc, argv);   \
-        m::internal_run<AppClass>(cmdLine, &data);   \
+        m::internal_run<a_AppClass>(cmdLine, &data); \
         return 0;                                    \
     }
-
-#endif //M_MAIN

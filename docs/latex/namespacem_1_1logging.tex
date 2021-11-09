@@ -1,0 +1,104 @@
+\hypertarget{namespacem_1_1logging}{}\doxysection{m\+::logging Namespace Reference}
+\label{namespacem_1_1logging}\index{m::logging@{m::logging}}
+
+
+Namespace grouping all logging tools.  
+
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classm_1_1logging_1_1m_file_log_policy}{m\+File\+Log\+Policy}}
+\begin{DoxyCompactList}\small\item\em Log policy outputting into a file. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classm_1_1logging_1_1m_i_log_policy}{m\+ILog\+Policy}}
+\begin{DoxyCompactList}\small\item\em Interface defining a logging policy. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classm_1_1logging_1_1m_logger}{m\+Logger}}
+\begin{DoxyCompactList}\small\item\em Thread safe logger class used to write logs. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classm_1_1logging_1_1m_stdcout_log_policy}{m\+Stdcout\+Log\+Policy}}
+\begin{DoxyCompactList}\small\item\em Log policy outputting into the standard output. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{namespacem_1_1logging_af807dfba0ed733f24957c0f3d016a15f}{m\+Channel\+ID}} = m\+U64
+\begin{DoxyCompactList}\small\item\em Channel\+IDs are defined by a bit. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}\label{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}} 
+using {\bfseries m\+Channel\+Filter} = m\+U64
+\begin{DoxyCompactList}\small\item\em Channel filters are an aggregation of channel ids. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387}{m\+Severity\+Type}} \{ \mbox{\hyperlink{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387abfecbf648c2deaa801f62e8dad71e361}{debug}} = 1
+, \mbox{\hyperlink{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387ad564300fbfad44fd5b83f8ba9441ba5d}{error}}
+, \mbox{\hyperlink{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387a52b9f3af43a3f80e4a62548382b2c04b}{warning}}
+ \}
+\begin{DoxyCompactList}\small\item\em Enumeration of the logginh severity levels. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+constexpr \mbox{\hyperlink{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}{m\+Channel\+Filter}} \mbox{\hyperlink{namespacem_1_1logging_ac3d7342b9694fe25c6f2119fe2886a46}{g\+\_\+all\+Channels\+Filter}}
+\begin{DoxyCompactList}\small\item\em Filter that allows all channels. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacem_1_1logging_a201855eccf18d6c2e13758836e1bc31e}\label{namespacem_1_1logging_a201855eccf18d6c2e13758836e1bc31e}} 
+constexpr \mbox{\hyperlink{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}{m\+Channel\+Filter}} {\bfseries g\+\_\+no\+Channels\+Filter} = 0
+\begin{DoxyCompactList}\small\item\em Filter that disallows all channels. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Namespace grouping all logging tools. 
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{namespacem_1_1logging_af807dfba0ed733f24957c0f3d016a15f}\label{namespacem_1_1logging_af807dfba0ed733f24957c0f3d016a15f}} 
+\index{m::logging@{m::logging}!mChannelID@{mChannelID}}
+\index{mChannelID@{mChannelID}!m::logging@{m::logging}}
+\doxysubsubsection{\texorpdfstring{mChannelID}{mChannelID}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacem_1_1logging_af807dfba0ed733f24957c0f3d016a15f}{m\+::logging\+::m\+Channel\+ID}} = typedef m\+U64}
+
+
+
+Channel\+IDs are defined by a bit. 
+
+Currently a logger can have a maximum of 64 channels 
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387}\label{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387}} 
+\index{m::logging@{m::logging}!mSeverityType@{mSeverityType}}
+\index{mSeverityType@{mSeverityType}!m::logging@{m::logging}}
+\doxysubsubsection{\texorpdfstring{mSeverityType}{mSeverityType}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387}{m\+::logging\+::m\+Severity\+Type}}}
+
+
+
+Enumeration of the logginh severity levels. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{debug@{debug}!m::logging@{m::logging}}\index{m::logging@{m::logging}!debug@{debug}}}\mbox{\Hypertarget{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387abfecbf648c2deaa801f62e8dad71e361}\label{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387abfecbf648c2deaa801f62e8dad71e361}} 
+debug&sets a debug severity level \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{error@{error}!m::logging@{m::logging}}\index{m::logging@{m::logging}!error@{error}}}\mbox{\Hypertarget{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387ad564300fbfad44fd5b83f8ba9441ba5d}\label{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387ad564300fbfad44fd5b83f8ba9441ba5d}} 
+error&sets a error severity level \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{warning@{warning}!m::logging@{m::logging}}\index{m::logging@{m::logging}!warning@{warning}}}\mbox{\Hypertarget{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387a52b9f3af43a3f80e4a62548382b2c04b}\label{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387a52b9f3af43a3f80e4a62548382b2c04b}} 
+warning&sets a warning severity level \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacem_1_1logging_ac3d7342b9694fe25c6f2119fe2886a46}\label{namespacem_1_1logging_ac3d7342b9694fe25c6f2119fe2886a46}} 
+\index{m::logging@{m::logging}!g\_allChannelsFilter@{g\_allChannelsFilter}}
+\index{g\_allChannelsFilter@{g\_allChannelsFilter}!m::logging@{m::logging}}
+\doxysubsubsection{\texorpdfstring{g\_allChannelsFilter}{g\_allChannelsFilter}}
+{\footnotesize\ttfamily constexpr \mbox{\hyperlink{namespacem_1_1logging_a0fa5af708b452e8c58088597cdea8392}{m\+Channel\+Filter}} m\+::logging\+::g\+\_\+all\+Channels\+Filter\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{    (std::numeric\_limits<mU64>::max)()}
+
+\end{DoxyCode}
+
+
+Filter that allows all channels. 
+

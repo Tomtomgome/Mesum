@@ -1,0 +1,49 @@
+\hypertarget{classm_1_1_callback}{}\doxysection{m\+::mCallback\texorpdfstring{$<$}{<} r\+Type, t_Args \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classm_1_1_callback}\index{m::mCallback$<$ t_RetType, t_Args $>$@{m::mCallback$<$ t_RetType, t_Args $>$}}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1_callback_ab709e12dc04314f234397e7d12e0439d}\label{classm_1_1_callback_ab709e12dc04314f234397e7d12e0439d}} 
+using {\bfseries function\+Type} = r\+Type(t_Args...)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1_callback_ab4eb80315d2b9e88fd2bc716e1047366}\label{classm_1_1_callback_ab4eb80315d2b9e88fd2bc716e1047366}} 
+{\footnotesize template$<$typename t_CArgs $>$ }\\{\bfseries mCallback} (t_CArgs $\ast$a\+\_\+owner, r\+Type(t_CArgs\+::$\ast$a\+\_\+func)(t_Args...))
+\item 
+\mbox{\Hypertarget{classm_1_1_callback_a6190c46bde7c7c9e2aa0cf791d0c739d}\label{classm_1_1_callback_a6190c46bde7c7c9e2aa0cf791d0c739d}} 
+{\bfseries mCallback} (std\+::function$<$ function\+Type $>$ a\+\_\+func)
+\item 
+\mbox{\Hypertarget{classm_1_1_callback_ad48671795f5b0df5ea79942465346d03}\label{classm_1_1_callback_ad48671795f5b0df5ea79942465346d03}} 
+{\footnotesize template$<$typename t_CArgs $>$ }\\void {\bfseries set} (t_CArgs $\ast$a\+\_\+owner, r\+Type(t_CArgs\+::$\ast$a\+\_\+func)(t_Args...))
+\item 
+\mbox{\Hypertarget{classm_1_1_callback_a6f16795fa809940add87ce4e964db6e8}\label{classm_1_1_callback_a6f16795fa809940add87ce4e964db6e8}} 
+void {\bfseries set} (std\+::function$<$ function\+Type $>$ a\+\_\+func)
+\item 
+\mbox{\Hypertarget{classm_1_1_callback_aadb93e31d1688c51aa29f1e1ebe39d09}\label{classm_1_1_callback_aadb93e31d1688c51aa29f1e1ebe39d09}} 
+r\+Type {\bfseries call} (t_Args... a\+\_\+args)
+\item 
+\mbox{\Hypertarget{classm_1_1_callback_a18fc870c78f36791562d2a9b0c4b2460}\label{classm_1_1_callback_a18fc870c78f36791562d2a9b0c4b2460}} 
+{\bfseries operator bool} () const
+\item 
+\mbox{\Hypertarget{classm_1_1_callback_aa9a5bc107a249157bfeb3ab1cef76548}\label{classm_1_1_callback_aa9a5bc107a249157bfeb3ab1cef76548}} 
+r\+Type {\bfseries operator()} (t_Args... a\+\_\+args)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1_callback_a2c68266dbc85fcfd901d626880e89e23}\label{classm_1_1_callback_a2c68266dbc85fcfd901d626880e89e23}} 
+std\+::function$<$ function\+Type $>$ {\bfseries m\+\_\+func}
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1_callback_aa0cb24e39812f34294ae8e7e16d21b4c}\label{classm_1_1_callback_aa0cb24e39812f34294ae8e7e16d21b4c}} 
+mBool {\bfseries operator==} (const \mbox{\hyperlink{classm_1_1_callback}{mCallback}} \&lhs, const \mbox{\hyperlink{classm_1_1_callback}{mCallback}} \&rhs)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Core/\+Kernel/Callbacks.\+hpp\end{DoxyCompactItemize}

@@ -18,17 +18,17 @@ namespace m::render
 {
 struct BasicVertex
 {
-    math::Vec3 position;
-    math::Vec4 color;
+    math::mVec3 position;
+    math::mVec4 color;
 };
 
 template <typename tt_Vertex, typename tt_Index>
 struct BufferBase
 {
-    UInt                  vertexBufferSize = 0;
-    static constexpr UInt vertexSize       = sizeof(tt_Vertex);
-    UInt                  indexBufferSize  = 0;
-    static constexpr UInt indexSize        = sizeof(tt_Index);
+    mUInt                  vertexBufferSize = 0;
+    static constexpr mUInt vertexSize       = sizeof(tt_Vertex);
+    mUInt                  indexBufferSize  = 0;
+    static constexpr mUInt indexSize        = sizeof(tt_Index);
 };
 
 template <typename tt_Vertex, typename tt_Index>
@@ -269,12 +269,12 @@ void upload_data(Dx12BufferBase<tt_Vertex, tt_Index>& a_buffer,
     memset(&range, 0, sizeof(D3D12_RANGE));
     if (a_buffer.vertexBuffer->Map(0, &range, &vtxResource) != S_OK)
     {
-        mLOG_ERR("Could not map vertex buffer");
+        mLog_error("Could not map vertex buffer");
         return;
     }
     if (a_buffer.indexBuffer->Map(0, &range, &idxResource) != S_OK)
     {
-        mLOG_ERR("Could not map index buffer");
+        mLog_error("Could not map index buffer");
         return;
     }
 
@@ -309,10 +309,10 @@ void record_bind(
 }
 
 using uploadBuffers =
-    Dx12BufferBase<BasicVertex, U16>[dx12::DX12Surface::scm_numFrames];
+    Dx12BufferBase<BasicVertex, mU16>[dx12::DX12Surface::scm_numFrames];
 
 using vulkanUploadBuffers =
-    VulkanBufferBase<BasicVertex, U16>[vulkan::VulkanSurface::scm_numFrames];
+    VulkanBufferBase<BasicVertex, mU16>[vulkan::VulkanSurface::scm_numFrames];
 
 template <typename tt_Vertex, typename tt_Index>
 struct DataMeshBuffer
@@ -332,7 +332,7 @@ struct DataMeshBuffer
 //-----------------------------------------------------------------------------
 struct TaskData2dRender : public TaskData
 {
-    DataMeshBuffer<BasicVertex, U16>* m_pMeshBuffer;
+    DataMeshBuffer<BasicVertex, mU16>* m_pMeshBuffer;
     ISurface::HdlPtr                  m_hdlOutput;
 
     mIfDx12Enabled(Task* getNew_dx12Implementation(TaskData* a_data) override);
@@ -364,7 +364,7 @@ mIfDx12Enabled(struct Dx12Task2dRender : public Task2dRender
     void execute() const override;
 
    private:
-    UInt          m_i = 0;
+    mUInt         m_i = 0;
     uploadBuffers m_buffers;
 
     dx12::ComPtr<ID3D12RootSignature> m_rootSignature = nullptr;
@@ -379,7 +379,7 @@ mIfVulkanEnabled(struct VulkanTask2dRender : public Task2dRender
     explicit VulkanTask2dRender(TaskData2dRender* a_data);
     ~VulkanTask2dRender() override;
 
-    void create_renderPassAndPipeline(U32 a_width, U32 a_height);
+    void create_renderPassAndPipeline(mU32 a_width, mU32 a_height);
 
     void prepare() override;
 
@@ -395,7 +395,7 @@ mIfVulkanEnabled(struct VulkanTask2dRender : public Task2dRender
     VkRenderPass     m_renderPass;
     VkPipeline       m_graphicsPipeline;
 
-    UInt m_i = 0;
+    mUInt m_i = 0;
 };)
 
 }  // namespace m::render

@@ -1,0 +1,75 @@
+\hypertarget{_logger_8hpp_source}{}\doxysection{Logger.\+hpp}
+\label{_logger_8hpp_source}\index{MesumCore/Kernel/Logger.hpp@{MesumCore/Kernel/Logger.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{comment}{// Inspired from :}}
+\DoxyCodeLine{4 \textcolor{comment}{// http://www.drdobbs.com/cpp/a-\/lightweight-\/logger-\/for-\/c/240147505}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}../Common/CoreCommon.hpp"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}Log.hpp"{}}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{12 \textcolor{keyword}{namespace }m}
+\DoxyCodeLine{13 \{}
+\DoxyCodeLine{15 \textcolor{keyword}{extern} MesumCoreApi logging::mLogger<m::logging::mStdcoutLogPolicy> log\_inst;}
+\DoxyCodeLine{16 \};  \textcolor{comment}{// namespace m}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#define mLog\_getId m::log\_inst.get\_newChannelID}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#ifdef M\_ENABLE\_LOG}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#define mLog m::log\_inst.print<m::logging::mSeverityType::debug>}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#define mLog\_error m::log\_inst.print<m::logging::mSeverityType::error>}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#define mLog\_warning m::log\_inst.print<m::logging::SeverityType::warning>}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#define mLog\_to m::log\_inst.print\_toChannel<m::logging::mSeverityType::debug>}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#define mLog\_errorTo \(\backslash\)}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{    m::log\_inst.print\_toChannel<m::logging::mSeverityType::error>}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#define mLog\_warningTo \(\backslash\)}}
+\DoxyCodeLine{36 \textcolor{preprocessor}{    m::log\_inst.print\_toChannel<m::logging::mSeverityType::warning>}}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#define mLog(...)}}
+\DoxyCodeLine{42 \textcolor{preprocessor}{\#define mLog\_error(...)}}
+\DoxyCodeLine{44 \textcolor{preprocessor}{\#define mLog\_warning(...)}}
+\DoxyCodeLine{46 \textcolor{preprocessor}{\#define mLog\_to(...)}}
+\DoxyCodeLine{48 \textcolor{preprocessor}{\#define mLog\_errorTo(...)}}
+\DoxyCodeLine{50 \textcolor{preprocessor}{\#define mLog\_warningTo(...)}}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 \textcolor{preprocessor}{\#ifdef M\_ENABLE\_VERBOSE\_LOG}}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{57 \textcolor{preprocessor}{\#define mLog\_verbose m::log\_inst.print<m::logging::mSeverityType::debug>}}
+\DoxyCodeLine{59 \textcolor{preprocessor}{\#define mLog\_verboseError m::log\_inst.print<m::logging::mSeverityType::error>}}
+\DoxyCodeLine{61 \textcolor{preprocessor}{\#define mLog\_verboseWarning m::log\_inst.print<m::logging::mSeverityType::warning>}}
+\DoxyCodeLine{63 \textcolor{preprocessor}{\#define mLog\_verboseTo m::log\_inst.print\_toChannel<m::logging::mSeverityType::debug>}}
+\DoxyCodeLine{65 \textcolor{preprocessor}{\#define mLog\_verboseErrorTo \(\backslash\)}}
+\DoxyCodeLine{66 \textcolor{preprocessor}{    m::log\_inst.print\_toChannel<m::logging::mSeverityType::error>}}
+\DoxyCodeLine{68 \textcolor{preprocessor}{\#define mLog\_VerboseWarningTo \(\backslash\)}}
+\DoxyCodeLine{69 \textcolor{preprocessor}{    m::log\_inst.print\_toChannel<m::logging::mSeverityType::warning>}}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{74 \textcolor{preprocessor}{\#define mLog\_verbose(...)}}
+\DoxyCodeLine{76 \textcolor{preprocessor}{\#define mLog\_verboseError(...)}}
+\DoxyCodeLine{78 \textcolor{preprocessor}{\#define mLog\_verboseWarning(...)}}
+\DoxyCodeLine{80 \textcolor{preprocessor}{\#define mLog\_verboseTo(...)}}
+\DoxyCodeLine{82 \textcolor{preprocessor}{\#define mLog\_verboseErrorTo(...)}}
+\DoxyCodeLine{84 \textcolor{preprocessor}{\#define mLog\_VerboseWarningTo(...)}}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 \textcolor{preprocessor}{\#if (defined M\_ENABLE\_VERBOSE\_LOG) || (defined M\_ENABLE\_LOG)}}
+\DoxyCodeLine{90 \textcolor{preprocessor}{\#define mSet\_logFilter m::log\_inst.set\_filter}}
+\DoxyCodeLine{92 \textcolor{preprocessor}{\#define mEnable\_logChannels m::log\_inst.enable\_channels}}
+\DoxyCodeLine{94 \textcolor{preprocessor}{\#define mDisable\_logChannels m::log\_inst.disable\_channels}}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{98 \textcolor{preprocessor}{\#define mSet\_logFilter(...)}}
+\DoxyCodeLine{100 \textcolor{preprocessor}{\#define mEnable\_logChannels(...)}}
+\DoxyCodeLine{102 \textcolor{preprocessor}{\#define mDisable\_logChannels(...)}}
+\DoxyCodeLine{103 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{107 }
+
+\end{DoxyCode}

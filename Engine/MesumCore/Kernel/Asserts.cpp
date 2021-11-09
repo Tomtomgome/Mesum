@@ -2,26 +2,26 @@
 
 namespace m
 {
-MesumCoreApi const logging::ChannelID ASSERT_ID = mLOG_GET_ID();
+MesumCoreApi const logging::mChannelID g_assertLogID = mLog_getId();
 
-void manage_simple_assert(Bool a_condition, const Int a_lineNumber,
-                          const Char* a_file)
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void manage_assert(mBool a_condition, const mInt a_lineNumber,
+                   const mChar* a_file, const mChar* a_message,
+                   mBool a_interrupt)
 {
     if (!a_condition)
     {
-        mLOG_WARN_TO(ASSERT_ID, "Triggered assertion from file ", a_file,
-                     " at Line ", a_lineNumber);
-    }
-}
-
-void manage_blocking_assert(Bool a_condition, const Int a_lineNumber,
-                            const Char* a_file)
-{
-    if (!a_condition)
-    {
-        mLOG_ERR_TO(ASSERT_ID, "Triggered herd assertion from file ", a_file,
-                    " at Line ", a_lineNumber);
-        mInterrupt;
+        mLog_warningTo(g_assertLogID, "Triggered assertion from file ", a_file,
+                       " at Line ", a_lineNumber);
+        if (a_interrupt)
+        {
+            mInterrupt;
+        }
     }
 }
 }  // namespace m

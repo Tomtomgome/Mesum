@@ -62,7 +62,7 @@ void DX12Surface::init_win32(render::Win32SurfaceInitData& a_data)
 void DX12Surface::init_x11(render::X11SurfaceInitData& a_data)
 {
     // X11 not supported with DX12
-    mHardAssert(false);
+    mAssert(false);
 }
 
 //-----------------------------------------------------------------------------
@@ -117,7 +117,7 @@ void DX12Surface::render()
 
         graphicCommandList->ResourceBarrier(1, &barrier);
 
-        Float clearColor[] = {0.4f, 0.6f, 0.9f, 1.0f};
+        mFloat clearColor[] = {0.4f, 0.6f, 0.9f, 1.0f};
 
         CD3DX12_CPU_DESCRIPTOR_HANDLE rtv(
             m_RTVDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
@@ -167,7 +167,7 @@ void DX12Surface::render()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void DX12Surface::resize(U32 a_width, U32 a_height)
+void DX12Surface::resize(mU32 a_width, mU32 a_height)
 {
     if (m_clientWidth != a_width || m_clientHeight != a_height)
     {
@@ -177,7 +177,7 @@ void DX12Surface::resize(U32 a_width, U32 a_height)
 
         DX12Context::gs_dx12Contexte->get_commandQueue().flush();
 
-        for (Int i = 0; i < scm_numFrames; ++i)
+        for (mInt i = 0; i < scm_numFrames; ++i)
         {
             // Any references to the back buffers must be released
             // before the swap chain can be resized.
@@ -205,7 +205,7 @@ void DX12Surface::update_renderTargetViews(
     ComPtr<ID3D12Device2> a_device, ComPtr<IDXGISwapChain4> a_swapChain,
     ComPtr<ID3D12DescriptorHeap> a_descriptorHeap)
 {
-    UInt size_rtvDescriptor = a_device->GetDescriptorHandleIncrementSize(
+    mUInt size_rtvDescriptor = a_device->GetDescriptorHandleIncrementSize(
         D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 
     CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(

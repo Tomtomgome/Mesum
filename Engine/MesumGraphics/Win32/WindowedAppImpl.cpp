@@ -29,8 +29,8 @@ LRESULT CALLBACK WindowProc(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam,
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 windows::IWindow* IWindowedApplicationImpl::add_newWindow(std::string a_name,
-                                                          U32         a_width,
-                                                          U32         a_height)
+                                                          mU32        a_width,
+                                                          mU32        a_height)
 {
     IWindowImpl* newWindow = new IWindowImpl();
     m_windows.insert(newWindow);
@@ -56,9 +56,9 @@ void IWindowedApplicationImpl::start_dearImGuiNewFrame(
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void IWindowedApplicationImpl::init()
+void IWindowedApplicationImpl::init(mCmdLine const& a_cmdLine, void* a_appData)
 {
-    WindowedLaunchData& data = *(WindowedLaunchData*)m_appData;
+    WindowedLaunchData& data = *(WindowedLaunchData*)a_appData;
 
     m_W32Context.init(data.m_hInstance);
 
@@ -68,7 +68,7 @@ void IWindowedApplicationImpl::init()
     // be rendered in a DPI sensitive fashion.
     SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
 
-    const WideChar className[] = L"MainWindowClass";
+    const mWideChar className[] = L"MainWindowClass";
     // Register the window class.
     m_W32Context.register_windowClass(className, data.m_hInstance, WindowProc);
 }
@@ -93,9 +93,10 @@ void IWindowedApplicationImpl::destroy()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-Bool IWindowedApplicationImpl::step(const Double& a_deltaTime)
+mBool IWindowedApplicationImpl::step(
+    std::chrono::steady_clock::duration const& a_deltaTime)
 {
-    Bool signalKeepRunning = true;
+    mBool signalKeepRunning = true;
 
     // Run the message loop.
     MSG msg = {};

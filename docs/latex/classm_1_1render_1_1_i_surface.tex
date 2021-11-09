@@ -1,0 +1,45 @@
+\hypertarget{classm_1_1render_1_1_i_surface}{}\doxysection{m\+::render\+::ISurface Class Reference}
+\label{classm_1_1render_1_1_i_surface}\index{m::render::ISurface@{m::render::ISurface}}
+Inheritance diagram for m\+::render\+::ISurface\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classm_1_1render_1_1_i_surface}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structm_1_1render_1_1_i_surface_1_1_handle}{Handle}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1render_1_1_i_surface_a09b29addd3e0bf0d5b2d66ceddb213d6}\label{classm_1_1render_1_1_i_surface_a09b29addd3e0bf0d5b2d66ceddb213d6}} 
+using {\bfseries Hdl\+Ptr} = std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structm_1_1render_1_1_i_surface_1_1_handle}{Handle}} $>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1render_1_1_i_surface_a150f07dab1c2b5b07c67816224a6c803}\label{classm_1_1render_1_1_i_surface_a150f07dab1c2b5b07c67816224a6c803}} 
+virtual void {\bfseries init\+\_\+win32} (Win32\+Surface\+Init\+Data \&a\+\_\+data)=0
+\item 
+\mbox{\Hypertarget{classm_1_1render_1_1_i_surface_a4e66a7fe1a3afbdb38f350ef51906a92}\label{classm_1_1render_1_1_i_surface_a4e66a7fe1a3afbdb38f350ef51906a92}} 
+virtual void {\bfseries init\+\_\+x11} (X11\+Surface\+Init\+Data \&a\+\_\+data)=0
+\item 
+\mbox{\Hypertarget{classm_1_1render_1_1_i_surface_a3a0eeeed820885f06755063737d5731a}\label{classm_1_1render_1_1_i_surface_a3a0eeeed820885f06755063737d5731a}} 
+virtual \mbox{\hyperlink{structm_1_1render_1_1_taskset}{render\+::\+Taskset}} $\ast$ {\bfseries add\+New\+\_\+render\+Taskset} ()=0
+\item 
+\mbox{\Hypertarget{classm_1_1render_1_1_i_surface_a40f784de8934fd35373d1f697a3aff2b}\label{classm_1_1render_1_1_i_surface_a40f784de8934fd35373d1f697a3aff2b}} 
+virtual void {\bfseries render} ()=0
+\item 
+\mbox{\Hypertarget{classm_1_1render_1_1_i_surface_af576d7146ee3f1a273755cde7d74d102}\label{classm_1_1render_1_1_i_surface_af576d7146ee3f1a273755cde7d74d102}} 
+virtual void {\bfseries resize} (m\+U32 a\+\_\+width, m\+U32 a\+\_\+height)=0
+\item 
+\mbox{\Hypertarget{classm_1_1render_1_1_i_surface_a1706fe7234de6fe7ba090126b5416ed2}\label{classm_1_1render_1_1_i_surface_a1706fe7234de6fe7ba090126b5416ed2}} 
+virtual void {\bfseries destroy} ()=0
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Graphics/Renderer.\+hpp\end{DoxyCompactItemize}

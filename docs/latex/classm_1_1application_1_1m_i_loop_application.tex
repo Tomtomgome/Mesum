@@ -1,0 +1,97 @@
+\hypertarget{classm_1_1application_1_1m_i_loop_application}{}\doxysection{m\+::application\+::m\+ILoop\+Application Class Reference}
+\label{classm_1_1application_1_1m_i_loop_application}\index{m::application::mILoopApplication@{m::application::mILoopApplication}}
+
+
+Interface for a loop based application.  
+
+
+
+
+{\ttfamily \#include $<$Application.\+hpp$>$}
+
+Inheritance diagram for m\+::application\+::m\+ILoop\+Application\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classm_1_1application_1_1m_i_loop_application}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classm_1_1application_1_1m_i_loop_application_ac9606c3ee30894f0694bc390a6c42f0d}{launch}} (\mbox{\hyperlink{structm_1_1m_cmd_line}{m\+Cmd\+Line}} const \&a\+\_\+cmd\+Line, void $\ast$a\+\_\+app\+Data) final
+\begin{DoxyCompactList}\small\item\em Launch the application. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classm_1_1application_1_1m_i_loop_application_aa1f941cca206e4783c7bcc206c85a950}{init}} (\mbox{\hyperlink{structm_1_1m_cmd_line}{m\+Cmd\+Line}} const \&a\+\_\+cmd\+Line, void $\ast$a\+\_\+app\+Data)=0
+\begin{DoxyCompactList}\small\item\em Virtual that should implement initialization. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classm_1_1application_1_1m_i_loop_application_a5a2573e1a7468ce947c800cd6397f5b9}\label{classm_1_1application_1_1m_i_loop_application_a5a2573e1a7468ce947c800cd6397f5b9}} 
+virtual void {\bfseries destroy} ()=0
+\begin{DoxyCompactList}\small\item\em Virtual that should implement the application exits. \end{DoxyCompactList}\item 
+virtual m\+Bool \mbox{\hyperlink{classm_1_1application_1_1m_i_loop_application_a2a918b6f3eed947f5f75e9affa1e4680}{step}} ()=0
+\begin{DoxyCompactList}\small\item\em Virtual that should implement each step. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Interface for a loop based application. 
+
+It has a three step life cycle \+: init called first, a step called in a loop, and finally a destroy when exiting 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classm_1_1application_1_1m_i_loop_application_aa1f941cca206e4783c7bcc206c85a950}\label{classm_1_1application_1_1m_i_loop_application_aa1f941cca206e4783c7bcc206c85a950}} 
+\index{m::application::mILoopApplication@{m::application::mILoopApplication}!init@{init}}
+\index{init@{init}!m::application::mILoopApplication@{m::application::mILoopApplication}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily virtual void m\+::application\+::m\+ILoop\+Application\+::init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structm_1_1m_cmd_line}{m\+Cmd\+Line}} const \&}]{a\+\_\+cmd\+Line,  }\item[{void $\ast$}]{a\+\_\+app\+Data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [pure virtual]}}
+
+
+
+Virtual that should implement initialization. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+cmd\+Line} & A reference to a parsed cmd\+Line \\
+\hline
+{\em a\+\_\+app\+Data} & A pointer to a nameless structure containing application data (might be nullptr) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classm_1_1application_1_1m_i_loop_application_ac9606c3ee30894f0694bc390a6c42f0d}\label{classm_1_1application_1_1m_i_loop_application_ac9606c3ee30894f0694bc390a6c42f0d}} 
+\index{m::application::mILoopApplication@{m::application::mILoopApplication}!launch@{launch}}
+\index{launch@{launch}!m::application::mILoopApplication@{m::application::mILoopApplication}}
+\doxysubsubsection{\texorpdfstring{launch()}{launch()}}
+{\footnotesize\ttfamily void m\+::application\+::m\+ILoop\+Application\+::launch (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structm_1_1m_cmd_line}{m\+Cmd\+Line}} const \&}]{a\+\_\+cmd\+Line,  }\item[{void $\ast$}]{a\+\_\+app\+Data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [final]}, {\ttfamily [virtual]}}
+
+
+
+Launch the application. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+cmd\+Line} & A reference to a parsed cmd\+Line \\
+\hline
+{\em a\+\_\+app\+Data} & A pointer to a nameless structure containing application data (might be nullptr) \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classm_1_1application_1_1m_i_basic_application_a10ecb6a45dbf100c037eff46b5a1f161}{m\+::application\+::m\+IBasic\+Application}}.
+
+\mbox{\Hypertarget{classm_1_1application_1_1m_i_loop_application_a2a918b6f3eed947f5f75e9affa1e4680}\label{classm_1_1application_1_1m_i_loop_application_a2a918b6f3eed947f5f75e9affa1e4680}} 
+\index{m::application::mILoopApplication@{m::application::mILoopApplication}!step@{step}}
+\index{step@{step}!m::application::mILoopApplication@{m::application::mILoopApplication}}
+\doxysubsubsection{\texorpdfstring{step()}{step()}}
+{\footnotesize\ttfamily virtual m\+Bool m\+::application\+::m\+ILoop\+Application\+::step (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [pure virtual]}}
+
+
+
+Virtual that should implement each step. 
+
+\begin{DoxyReturn}{Returns}
+should return true for the application to continue, false to stop 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Core/\+Kernel/Application.\+hpp\item 
+Mesum\+Core/\+Kernel/Application.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,70 @@
+\hypertarget{_d_x12_command_queue_8hpp_source}{}\doxysection{DX12\+Command\+Queue.\+hpp}
+\label{_d_x12_command_queue_8hpp_source}\index{MesumGraphics/DX12Renderer/DX12CommandQueue.hpp@{MesumGraphics/DX12Renderer/DX12CommandQueue.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_DX12COMMAND\_QUEUE}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_DX12COMMAND\_QUEUE}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <DX12RendererCommon.hpp>}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{keyword}{namespace }m}
+\DoxyCodeLine{8 \{}
+\DoxyCodeLine{9 \textcolor{keyword}{namespace }dx12}
+\DoxyCodeLine{10 \{}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_command_queue}{DX12CommandQueue}}}
+\DoxyCodeLine{13 \{}
+\DoxyCodeLine{14    \textcolor{keyword}{public}:}
+\DoxyCodeLine{15     \textcolor{keywordtype}{void} init(Microsoft::WRL::ComPtr<ID3D12Device2> a\_device,}
+\DoxyCodeLine{16               D3D12\_COMMAND\_LIST\_TYPE               a\_type);}
+\DoxyCodeLine{17     \textcolor{keywordtype}{void} destroy();}
+\DoxyCodeLine{18     \textcolor{comment}{// Get an available command list from the command queue.}}
+\DoxyCodeLine{19     Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList2> get\_commandList();}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21     \textcolor{comment}{// Execute a command list.}}
+\DoxyCodeLine{22     \textcolor{comment}{// Returns the fence value to wait for for this command list.}}
+\DoxyCodeLine{23     mU64 execute\_commandList(}
+\DoxyCodeLine{24         Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList2> a\_commandList);}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26     mU64 signal\_fence();}
+\DoxyCodeLine{27     mBool is\_fenceComplete(mU64 a\_fenceValue);}
+\DoxyCodeLine{28     \textcolor{keywordtype}{void} wait\_fenceValue(mU64 a\_fenceValue);}
+\DoxyCodeLine{29     \textcolor{keywordtype}{void} flush();}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31     Microsoft::WRL::ComPtr<ID3D12CommandQueue> get\_D3D12CommandQueue() \textcolor{keyword}{const};}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33    \textcolor{keyword}{protected}:}
+\DoxyCodeLine{34     Microsoft::WRL::ComPtr<ID3D12CommandAllocator> create\_commandAllocator();}
+\DoxyCodeLine{35     Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList2> create\_commandList(}
+\DoxyCodeLine{36         Microsoft::WRL::ComPtr<ID3D12CommandAllocator> a\_allocator);}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38    \textcolor{keyword}{private}:}
+\DoxyCodeLine{39     \textcolor{comment}{// Keep track of command allocators that are "{}in-\/flight"{}}}
+\DoxyCodeLine{40     \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1dx12_1_1_d_x12_command_queue_1_1_command_allocator_entry}{CommandAllocatorEntry}}}
+\DoxyCodeLine{41     \{}
+\DoxyCodeLine{42         mU64                                           m\_fenceValue;}
+\DoxyCodeLine{43         Microsoft::WRL::ComPtr<ID3D12CommandAllocator> m\_commandAllocator;}
+\DoxyCodeLine{44     \};}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46     \textcolor{keyword}{using} CommandAllocatorQueue = std::queue<CommandAllocatorEntry>;}
+\DoxyCodeLine{47     \textcolor{keyword}{using} CommandListQueue =}
+\DoxyCodeLine{48         std::queue<Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList2> >;}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50     D3D12\_COMMAND\_LIST\_TYPE                    m\_commandListType;}
+\DoxyCodeLine{51     Microsoft::WRL::ComPtr<ID3D12Device2>      m\_d3d12Device;}
+\DoxyCodeLine{52     Microsoft::WRL::ComPtr<ID3D12CommandQueue> m\_d3d12CommandQueue;}
+\DoxyCodeLine{53     Microsoft::WRL::ComPtr<ID3D12Fence>        m\_d3d12Fence;}
+\DoxyCodeLine{54     HANDLE                                     m\_fenceEvent;}
+\DoxyCodeLine{55     mU64                                       m\_fenceValue;}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57     CommandAllocatorQueue m\_commandAllocatorQueue;}
+\DoxyCodeLine{58     CommandListQueue      m\_commandListQueue;}
+\DoxyCodeLine{59 \};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \}  \textcolor{comment}{// namespace dx12}}
+\DoxyCodeLine{62 \}  \textcolor{comment}{// namespace m}}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_DX12COMMAND\_QUEUE}}
+
+\end{DoxyCode}

@@ -1,0 +1,349 @@
+\hypertarget{namespacem_1_1input}{}\doxysection{m\+::input Namespace Reference}
+\label{namespacem_1_1input}\index{m::input@{m::input}}
+
+
+Namespace grouping basic input management.  
+
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structm_1_1input_1_1m_callback_input_manager}{m\+Callback\+Input\+Manager}}
+\begin{DoxyCompactList}\small\item\em Implementation of an input manager. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classm_1_1input_1_1m_i_input_manager}{m\+IInput\+Manager}}
+\begin{DoxyCompactList}\small\item\em Interface core to input management. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structm_1_1input_1_1m_key_action}{m\+Key\+Action}}
+\begin{DoxyCompactList}\small\item\em Structure representing an action executed on a key. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structm_1_1input_1_1m_mouse_action}{m\+Mouse\+Action}}
+\begin{DoxyCompactList}\small\item\em Structure representing an action executed on a mouse button. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespacem_1_1input_a268a65489ab242dff34c08fd7958aae3}\label{namespacem_1_1input_a268a65489ab242dff34c08fd7958aae3}} 
+using {\bfseries m\+Key\+Action\+Callback} = \mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void $>$
+\item 
+\mbox{\Hypertarget{namespacem_1_1input_a4c52da42a15d9208cf703efc78a44d5a}\label{namespacem_1_1input_a4c52da42a15d9208cf703efc78a44d5a}} 
+using {\bfseries m\+Key\+Action\+Signal} = \mbox{\hyperlink{classm_1_1m_signal}{m\+Signal}}$<$$>$
+\item 
+\mbox{\Hypertarget{namespacem_1_1input_a890f6123a3400bf4f7595272cbadfed0}\label{namespacem_1_1input_a890f6123a3400bf4f7595272cbadfed0}} 
+using {\bfseries m\+Mouse\+Action\+Callback} = \mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, const \mbox{\hyperlink{structm_1_1math_1_1m_vec}{math\+::m\+IVec2}} \& $>$
+\item 
+\mbox{\Hypertarget{namespacem_1_1input_a51f1889ddec8a44857aafc2816ba75fe}\label{namespacem_1_1input_a51f1889ddec8a44857aafc2816ba75fe}} 
+using {\bfseries m\+Mouse\+Action\+Signal} = \mbox{\hyperlink{classm_1_1m_signal}{m\+Signal}}$<$ const \mbox{\hyperlink{structm_1_1math_1_1m_vec}{math\+::m\+IVec2}} \& $>$
+\item 
+\mbox{\Hypertarget{namespacem_1_1input_aa32417e7281c1e02d648c4908842c6e2}\label{namespacem_1_1input_aa32417e7281c1e02d648c4908842c6e2}} 
+using {\bfseries m\+Mouse\+State\+Callback} = \mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, m\+Bool $>$
+\item 
+\mbox{\Hypertarget{namespacem_1_1input_a103bc35e98cac507dbabe70eab531ebf}\label{namespacem_1_1input_a103bc35e98cac507dbabe70eab531ebf}} 
+using {\bfseries m\+Mouse\+State\+Signal} = \mbox{\hyperlink{classm_1_1m_signal}{m\+Signal}}$<$ m\+Bool $>$
+\item 
+\mbox{\Hypertarget{namespacem_1_1input_a73c6eefdbb2632f34df91db81e5e0d8d}\label{namespacem_1_1input_a73c6eefdbb2632f34df91db81e5e0d8d}} 
+using {\bfseries m\+Scroll\+Callback} = \mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, m\+Double $>$
+\item 
+\mbox{\Hypertarget{namespacem_1_1input_ab43bb855656572278a2cc5e84015a1fe}\label{namespacem_1_1input_ab43bb855656572278a2cc5e84015a1fe}} 
+using {\bfseries m\+Scroll\+Signal} = \mbox{\hyperlink{classm_1_1m_signal}{m\+Signal}}$<$ m\+Double $>$
+\item 
+\mbox{\Hypertarget{namespacem_1_1input_ac362ca24d233bd7a2dc12a97ae0ad2d4}\label{namespacem_1_1input_ac362ca24d233bd7a2dc12a97ae0ad2d4}} 
+using {\bfseries m\+Mouse\+Move\+Callback} = \mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, const \mbox{\hyperlink{structm_1_1math_1_1m_vec}{math\+::m\+IVec2}} \& $>$
+\item 
+\mbox{\Hypertarget{namespacem_1_1input_ab5cc4c050df4cc2607113aacda9d71ce}\label{namespacem_1_1input_ab5cc4c050df4cc2607113aacda9d71ce}} 
+using {\bfseries m\+Mouse\+Move\+Signal} = \mbox{\hyperlink{classm_1_1m_signal}{m\+Signal}}$<$ const \mbox{\hyperlink{structm_1_1math_1_1m_vec}{math\+::m\+IVec2}} \& $>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}{m\+Key\+Mod}} \{ \newline
+\mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaa334c4a4c42fdb79d7ebc3e73b517e6f8}{none}} = 0
+, \mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaa2ab64f4ee279e5baf7ab7059b15e6d12}{shift}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 0
+, \mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaabbf7ea1d373e03d16d1418909b05eaf6}{ctrl}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 1
+, \mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaa34823136d0dd91d0f5d22db740f7679c}{alt}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 2
+, \newline
+\mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaa1b3231655cebb7a1f783eddf27d254ca}{super}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 3
+, \mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaa7de458398d470d70483d4313f169d808}{caps\+Lock}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 4
+, \mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaaf354c4af4fd2fd82f6064396bee2f293}{num\+Lock}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 5
+ \}
+\begin{DoxyCompactList}\small\item\em Enumerating modulation keys. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{namespacem_1_1input_ab7450ac4b61b5654bc908d4aa4e03ffe}{m\+Mouse\+Button}} \{ \mbox{\hyperlink{namespacem_1_1input_ab7450ac4b61b5654bc908d4aa4e03ffea811882fecd5c7618d7099ebbd39ea254}{left}} = 0
+, \mbox{\hyperlink{namespacem_1_1input_ab7450ac4b61b5654bc908d4aa4e03ffea7c4f29407893c334a6cb7a87bf045c0d}{right}} = 1
+, \mbox{\hyperlink{namespacem_1_1input_ab7450ac4b61b5654bc908d4aa4e03ffea4a548addbfb239bbd12f5afe11a4b6dc}{middle}} = 2
+ \}
+\begin{DoxyCompactList}\small\item\em Enumerating mouse buttons. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474}{m\+Input\+Type}} \{ \mbox{\hyperlink{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474a23690fd759f17135ec9879b56ff2600c}{released}}
+, \mbox{\hyperlink{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474a6375592a2d987630e9bf9afd9e7de973}{pressed}}
+, \mbox{\hyperlink{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474a810d2233ad75a602c921cea08bca312b}{repeated}}
+ \}
+\begin{DoxyCompactList}\small\item\em Enumerating the type of input types. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}\label{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}} 
+enum \mbox{\hyperlink{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}{m\+Key}} \{ \newline
+{\bfseries key\+Unknown} = -\/1
+, {\bfseries key\+Space} = 32
+, {\bfseries key\+Apostrophe} = 39
+, {\bfseries key\+Comma} = 44
+, \newline
+{\bfseries key\+Minus} = 45
+, {\bfseries key\+Period} = 46
+, {\bfseries key\+Slash} = 47
+, {\bfseries key0} = 48
+, \newline
+{\bfseries key1} = 49
+, {\bfseries key2} = 50
+, {\bfseries key3} = 51
+, {\bfseries key4} = 52
+, \newline
+{\bfseries key5} = 53
+, {\bfseries key6} = 54
+, {\bfseries key7} = 55
+, {\bfseries key8} = 56
+, \newline
+{\bfseries key9} = 57
+, {\bfseries key\+Semicolon} = 59
+, {\bfseries key\+Equal} = 61
+, {\bfseries keyA} = 65
+, \newline
+{\bfseries keyB} = 66
+, {\bfseries keyC} = 67
+, {\bfseries keyD} = 68
+, {\bfseries keyE} = 69
+, \newline
+{\bfseries keyF} = 70
+, {\bfseries keyG} = 71
+, {\bfseries keyH} = 72
+, {\bfseries keyI} = 73
+, \newline
+{\bfseries keyJ} = 74
+, {\bfseries keyK} = 75
+, {\bfseries keyL} = 76
+, {\bfseries keyM} = 77
+, \newline
+{\bfseries keyN} = 78
+, {\bfseries keyO} = 79
+, {\bfseries keyP} = 80
+, {\bfseries keyQ} = 81
+, \newline
+{\bfseries keyR} = 82
+, {\bfseries keyS} = 83
+, {\bfseries keyT} = 84
+, {\bfseries keyU} = 85
+, \newline
+{\bfseries keyV} = 86
+, {\bfseries keyW} = 87
+, {\bfseries keyX} = 88
+, {\bfseries keyY} = 89
+, \newline
+{\bfseries keyZ} = 90
+, {\bfseries key\+Left\+Bracket} = 91
+, {\bfseries key\+Backslash} = 92
+, {\bfseries key\+Right\+Bracket} = 93
+, \newline
+{\bfseries key\+Grave\+Accent} = 96
+, {\bfseries key\+World1} = 161
+, {\bfseries key\+World2} = 162
+, {\bfseries key\+Escape} = 256
+, \newline
+{\bfseries key\+Enter} = 257
+, {\bfseries key\+Tab} = 258
+, {\bfseries key\+Backspace} = 259
+, {\bfseries key\+Insert} = 260
+, \newline
+{\bfseries key\+Delete} = 261
+, {\bfseries key\+Right} = 262
+, {\bfseries key\+Left} = 263
+, {\bfseries key\+Down} = 264
+, \newline
+{\bfseries key\+Up} = 265
+, {\bfseries key\+Page\+Up} = 266
+, {\bfseries key\+Page\+Down} = 267
+, {\bfseries key\+Home} = 268
+, \newline
+{\bfseries key\+End} = 269
+, {\bfseries key\+Caps\+Lock} = 280
+, {\bfseries key\+Scroll\+Lock} = 281
+, {\bfseries key\+Num\+Lock} = 282
+, \newline
+{\bfseries key\+Print\+Screen} = 283
+, {\bfseries key\+Pause} = 284
+, {\bfseries key\+F1} = 290
+, {\bfseries key\+F2} = 291
+, \newline
+{\bfseries key\+F3} = 292
+, {\bfseries key\+F4} = 293
+, {\bfseries key\+F5} = 294
+, {\bfseries key\+F6} = 295
+, \newline
+{\bfseries key\+F7} = 296
+, {\bfseries key\+F8} = 297
+, {\bfseries key\+F9} = 298
+, {\bfseries key\+F10} = 299
+, \newline
+{\bfseries key\+F11} = 300
+, {\bfseries key\+F12} = 301
+, {\bfseries key\+F13} = 302
+, {\bfseries key\+F14} = 303
+, \newline
+{\bfseries key\+F15} = 304
+, {\bfseries key\+F16} = 305
+, {\bfseries key\+F17} = 306
+, {\bfseries key\+F18} = 307
+, \newline
+{\bfseries key\+F19} = 308
+, {\bfseries key\+F20} = 309
+, {\bfseries key\+F21} = 310
+, {\bfseries key\+F22} = 311
+, \newline
+{\bfseries key\+F23} = 312
+, {\bfseries key\+F24} = 313
+, {\bfseries key\+F25} = 314
+, {\bfseries key\+KP0} = 320
+, \newline
+{\bfseries key\+KP1} = 321
+, {\bfseries key\+KP2} = 322
+, {\bfseries key\+KP3} = 323
+, {\bfseries key\+KP4} = 324
+, \newline
+{\bfseries key\+KP5} = 325
+, {\bfseries key\+KP6} = 326
+, {\bfseries key\+KP7} = 327
+, {\bfseries key\+KP8} = 328
+, \newline
+{\bfseries key\+KP9} = 329
+, {\bfseries key\+KPDecimal} = 330
+, {\bfseries key\+KPDivide} = 331
+, {\bfseries key\+KPMultiply} = 332
+, \newline
+{\bfseries key\+KPSubstract} = 333
+, {\bfseries key\+KPAdd} = 334
+, {\bfseries key\+KPEnter} = 335
+, {\bfseries key\+KPEqual} = 336
+, \newline
+{\bfseries key\+Left\+Shift} = 340
+, {\bfseries key\+Left\+Control} = 341
+, {\bfseries key\+Left\+Alt} = 342
+, {\bfseries key\+Left\+Super} = 343
+, \newline
+{\bfseries key\+Right\+Shift} = 344
+, {\bfseries key\+Right\+Control} = 345
+, {\bfseries key\+Right\+Alt} = 346
+, {\bfseries key\+Right\+Super} = 347
+, \newline
+{\bfseries key\+Menu} = 348
+, {\bfseries key\+Last} = key\+Menu
+ \}
+\begin{DoxyCompactList}\small\item\em Enumerates some basic key values in the engine. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespacem_1_1input_aa33f0b866d3bbb0476b49054ef9a6602}\label{namespacem_1_1input_aa33f0b866d3bbb0476b49054ef9a6602}} 
+\mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}{m\+Key\+Mod}} {\bfseries operator$\vert$} (\mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}{m\+Key\+Mod}} a\+\_\+lhs, \mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}{m\+Key\+Mod}} a\+\_\+rhs)
+\begin{DoxyCompactList}\small\item\em Or operator for mods. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacem_1_1input_acd8737a13b4a965a7e05fd8c0c04f98e}\label{namespacem_1_1input_acd8737a13b4a965a7e05fd8c0c04f98e}} 
+\mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}{m\+Key\+Mod}} \& {\bfseries operator$\vert$=} (\mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}{m\+Key\+Mod}} \&a\+\_\+lhs, \mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}{m\+Key\+Mod}} a\+\_\+rhs)
+\begin{DoxyCompactList}\small\item\em Or assignment operator for mods. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacem_1_1input_aebab0c1dd5f727ef12b5e6123eb79968}\label{namespacem_1_1input_aebab0c1dd5f727ef12b5e6123eb79968}} 
+\mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}{m\+Key\+Mod}} {\bfseries operator\&} (\mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}{m\+Key\+Mod}} a\+\_\+lhs, \mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}{m\+Key\+Mod}} a\+\_\+rhs)
+\begin{DoxyCompactList}\small\item\em And operator for mods. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacem_1_1input_a5614fe93cf5e38754c19d37455c7659b}\label{namespacem_1_1input_a5614fe93cf5e38754c19d37455c7659b}} 
+\mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}{m\+Key\+Mod}} \& {\bfseries operator\&=} (\mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}{m\+Key\+Mod}} \&a\+\_\+lhs, \mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}{m\+Key\+Mod}} a\+\_\+rhs)
+\begin{DoxyCompactList}\small\item\em And assignment operator for mods. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacem_1_1input_a18cb6e75c0f88421c37c4cf1d9f7ed76}\label{namespacem_1_1input_a18cb6e75c0f88421c37c4cf1d9f7ed76}} 
+\mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}{m\+Key\+Mod}} {\bfseries operator!} (\mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}{m\+Key\+Mod}} a\+\_\+mod)
+\begin{DoxyCompactList}\small\item\em Not operator for mods. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespacem_1_1input_aaf8fd05991dc59fa3bac70e52f778bb0}\label{namespacem_1_1input_aaf8fd05991dc59fa3bac70e52f778bb0}} 
+Mesum\+Core\+Api const \mbox{\hyperlink{namespacem_1_1logging_af807dfba0ed733f24957c0f3d016a15f}{logging\+::m\+Channel\+ID}} {\bfseries g\+\_\+input\+Log\+ID} = \mbox{\hyperlink{group___core_ga9aa869d857bafeb44058596e5ba4b1e6}{m\+Log\+\_\+get\+Id}}()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Namespace grouping basic input management. 
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474}\label{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474}} 
+\index{m::input@{m::input}!mInputType@{mInputType}}
+\index{mInputType@{mInputType}!m::input@{m::input}}
+\doxysubsubsection{\texorpdfstring{mInputType}{mInputType}}
+{\footnotesize\ttfamily enum class \mbox{\hyperlink{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474}{m\+::input\+::m\+Input\+Type}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Enumerating the type of input types. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{released@{released}!m::input@{m::input}}\index{m::input@{m::input}!released@{released}}}\mbox{\Hypertarget{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474a23690fd759f17135ec9879b56ff2600c}\label{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474a23690fd759f17135ec9879b56ff2600c}} 
+released&A key/button is released. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{pressed@{pressed}!m::input@{m::input}}\index{m::input@{m::input}!pressed@{pressed}}}\mbox{\Hypertarget{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474a6375592a2d987630e9bf9afd9e7de973}\label{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474a6375592a2d987630e9bf9afd9e7de973}} 
+pressed&A key/button is pressed. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{repeated@{repeated}!m::input@{m::input}}\index{m::input@{m::input}!repeated@{repeated}}}\mbox{\Hypertarget{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474a810d2233ad75a602c921cea08bca312b}\label{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474a810d2233ad75a602c921cea08bca312b}} 
+repeated&A key/button is hold and repeated by the os. \\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}\label{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}} 
+\index{m::input@{m::input}!mKeyMod@{mKeyMod}}
+\index{mKeyMod@{mKeyMod}!m::input@{m::input}}
+\doxysubsubsection{\texorpdfstring{mKeyMod}{mKeyMod}}
+{\footnotesize\ttfamily enum class \mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}{m\+::input\+::m\+Key\+Mod}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Enumerating modulation keys. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{none@{none}!m::input@{m::input}}\index{m::input@{m::input}!none@{none}}}\mbox{\Hypertarget{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaa334c4a4c42fdb79d7ebc3e73b517e6f8}\label{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaa334c4a4c42fdb79d7ebc3e73b517e6f8}} 
+none&No modulations. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{shift@{shift}!m::input@{m::input}}\index{m::input@{m::input}!shift@{shift}}}\mbox{\Hypertarget{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaa2ab64f4ee279e5baf7ab7059b15e6d12}\label{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaa2ab64f4ee279e5baf7ab7059b15e6d12}} 
+shift&Either shift key. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ctrl@{ctrl}!m::input@{m::input}}\index{m::input@{m::input}!ctrl@{ctrl}}}\mbox{\Hypertarget{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaabbf7ea1d373e03d16d1418909b05eaf6}\label{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaabbf7ea1d373e03d16d1418909b05eaf6}} 
+ctrl&Either control keys. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{alt@{alt}!m::input@{m::input}}\index{m::input@{m::input}!alt@{alt}}}\mbox{\Hypertarget{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaa34823136d0dd91d0f5d22db740f7679c}\label{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaa34823136d0dd91d0f5d22db740f7679c}} 
+alt&Either alt keys. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{super@{super}!m::input@{m::input}}\index{m::input@{m::input}!super@{super}}}\mbox{\Hypertarget{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaa1b3231655cebb7a1f783eddf27d254ca}\label{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaa1b3231655cebb7a1f783eddf27d254ca}} 
+super&Platform key. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{capsLock@{capsLock}!m::input@{m::input}}\index{m::input@{m::input}!capsLock@{capsLock}}}\mbox{\Hypertarget{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaa7de458398d470d70483d4313f169d808}\label{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaa7de458398d470d70483d4313f169d808}} 
+caps\+Lock&Caps lock key. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{numLock@{numLock}!m::input@{m::input}}\index{m::input@{m::input}!numLock@{numLock}}}\mbox{\Hypertarget{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaaf354c4af4fd2fd82f6064396bee2f293}\label{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaaf354c4af4fd2fd82f6064396bee2f293}} 
+num\+Lock&Num lock key. \\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{namespacem_1_1input_ab7450ac4b61b5654bc908d4aa4e03ffe}\label{namespacem_1_1input_ab7450ac4b61b5654bc908d4aa4e03ffe}} 
+\index{m::input@{m::input}!mMouseButton@{mMouseButton}}
+\index{mMouseButton@{mMouseButton}!m::input@{m::input}}
+\doxysubsubsection{\texorpdfstring{mMouseButton}{mMouseButton}}
+{\footnotesize\ttfamily enum class \mbox{\hyperlink{namespacem_1_1input_ab7450ac4b61b5654bc908d4aa4e03ffe}{m\+::input\+::m\+Mouse\+Button}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Enumerating mouse buttons. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{left@{left}!m::input@{m::input}}\index{m::input@{m::input}!left@{left}}}\mbox{\Hypertarget{namespacem_1_1input_ab7450ac4b61b5654bc908d4aa4e03ffea811882fecd5c7618d7099ebbd39ea254}\label{namespacem_1_1input_ab7450ac4b61b5654bc908d4aa4e03ffea811882fecd5c7618d7099ebbd39ea254}} 
+left&Left mouse button. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{right@{right}!m::input@{m::input}}\index{m::input@{m::input}!right@{right}}}\mbox{\Hypertarget{namespacem_1_1input_ab7450ac4b61b5654bc908d4aa4e03ffea7c4f29407893c334a6cb7a87bf045c0d}\label{namespacem_1_1input_ab7450ac4b61b5654bc908d4aa4e03ffea7c4f29407893c334a6cb7a87bf045c0d}} 
+right&Right mouse button. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{middle@{middle}!m::input@{m::input}}\index{m::input@{m::input}!middle@{middle}}}\mbox{\Hypertarget{namespacem_1_1input_ab7450ac4b61b5654bc908d4aa4e03ffea4a548addbfb239bbd12f5afe11a4b6dc}\label{namespacem_1_1input_ab7450ac4b61b5654bc908d4aa4e03ffea4a548addbfb239bbd12f5afe11a4b6dc}} 
+middle&Middle mouse button. \\
+\hline
+
+\end{DoxyEnumFields}

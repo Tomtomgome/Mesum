@@ -1,0 +1,123 @@
+\hypertarget{classm_1_1input_1_1m_i_input_manager}{}\doxysection{m\+::input\+::m\+IInput\+Manager Class Reference}
+\label{classm_1_1input_1_1m_i_input_manager}\index{m::input::mIInputManager@{m::input::mIInputManager}}
+
+
+Interface core to input management.  
+
+
+
+
+{\ttfamily \#include $<$Input.\+hpp$>$}
+
+Inheritance diagram for m\+::input\+::m\+IInput\+Manager\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classm_1_1input_1_1m_i_input_manager}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classm_1_1input_1_1m_i_input_manager_a88bb9969485bf189f3b227d2341308fa}{process\+\_\+key\+Event}} (\mbox{\hyperlink{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}{m\+Key}} a\+\_\+key, \mbox{\hyperlink{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474}{m\+Input\+Type}} a\+\_\+action)
+\begin{DoxyCompactList}\small\item\em Process a key event. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classm_1_1input_1_1m_i_input_manager_a44e14408b79c8f86021917be8fc93f58}{process\+\_\+mouse\+Event}} (\mbox{\hyperlink{namespacem_1_1input_ab7450ac4b61b5654bc908d4aa4e03ffe}{m\+Mouse\+Button}} a\+\_\+button, \mbox{\hyperlink{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474}{m\+Input\+Type}} a\+\_\+action)
+\begin{DoxyCompactList}\small\item\em Process a mouse event. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classm_1_1input_1_1m_i_input_manager_ad37319d2a2f82af161670596f441b002}{process\+\_\+mouse\+Move\+Event}} (m\+Int a\+\_\+x\+Pos, m\+Int a\+\_\+y\+Pos)
+\begin{DoxyCompactList}\small\item\em Process a mouse move event. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classm_1_1input_1_1m_i_input_manager_a0cd864286dc9e9479a60a0b4f2211b0f}{process\+\_\+mouse\+Scroll\+Event}} (m\+Double a\+\_\+offset)
+\begin{DoxyCompactList}\small\item\em Process a scroll event. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Interface core to input management. 
+
+Useless if instantiated 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classm_1_1input_1_1m_i_input_manager_a88bb9969485bf189f3b227d2341308fa}\label{classm_1_1input_1_1m_i_input_manager_a88bb9969485bf189f3b227d2341308fa}} 
+\index{m::input::mIInputManager@{m::input::mIInputManager}!process\_keyEvent@{process\_keyEvent}}
+\index{process\_keyEvent@{process\_keyEvent}!m::input::mIInputManager@{m::input::mIInputManager}}
+\doxysubsubsection{\texorpdfstring{process\_keyEvent()}{process\_keyEvent()}}
+{\footnotesize\ttfamily virtual void m\+::input\+::m\+IInput\+Manager\+::process\+\_\+key\+Event (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}{m\+Key}}}]{a\+\_\+key,  }\item[{\mbox{\hyperlink{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474}{m\+Input\+Type}}}]{a\+\_\+action }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Process a key event. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+key} & The key concerned by the event \\
+\hline
+{\em a\+\_\+action} & The input\+Type of the event \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \mbox{\hyperlink{structm_1_1input_1_1m_callback_input_manager_a2b827625639f99105fa36af9cd80e731}{m\+::input\+::m\+Callback\+Input\+Manager}}.
+
+\mbox{\Hypertarget{classm_1_1input_1_1m_i_input_manager_a44e14408b79c8f86021917be8fc93f58}\label{classm_1_1input_1_1m_i_input_manager_a44e14408b79c8f86021917be8fc93f58}} 
+\index{m::input::mIInputManager@{m::input::mIInputManager}!process\_mouseEvent@{process\_mouseEvent}}
+\index{process\_mouseEvent@{process\_mouseEvent}!m::input::mIInputManager@{m::input::mIInputManager}}
+\doxysubsubsection{\texorpdfstring{process\_mouseEvent()}{process\_mouseEvent()}}
+{\footnotesize\ttfamily virtual void m\+::input\+::m\+IInput\+Manager\+::process\+\_\+mouse\+Event (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacem_1_1input_ab7450ac4b61b5654bc908d4aa4e03ffe}{m\+Mouse\+Button}}}]{a\+\_\+button,  }\item[{\mbox{\hyperlink{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474}{m\+Input\+Type}}}]{a\+\_\+action }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Process a mouse event. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+button} & The mouse button concerned by the event \\
+\hline
+{\em a\+\_\+action} & The input\+Type of the event \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \mbox{\hyperlink{structm_1_1input_1_1m_callback_input_manager_a0ca77905114cf2cb58d3b3dbd7c5b867}{m\+::input\+::m\+Callback\+Input\+Manager}}.
+
+\mbox{\Hypertarget{classm_1_1input_1_1m_i_input_manager_ad37319d2a2f82af161670596f441b002}\label{classm_1_1input_1_1m_i_input_manager_ad37319d2a2f82af161670596f441b002}} 
+\index{m::input::mIInputManager@{m::input::mIInputManager}!process\_mouseMoveEvent@{process\_mouseMoveEvent}}
+\index{process\_mouseMoveEvent@{process\_mouseMoveEvent}!m::input::mIInputManager@{m::input::mIInputManager}}
+\doxysubsubsection{\texorpdfstring{process\_mouseMoveEvent()}{process\_mouseMoveEvent()}}
+{\footnotesize\ttfamily virtual void m\+::input\+::m\+IInput\+Manager\+::process\+\_\+mouse\+Move\+Event (\begin{DoxyParamCaption}\item[{m\+Int}]{a\+\_\+x\+Pos,  }\item[{m\+Int}]{a\+\_\+y\+Pos }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Process a mouse move event. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+x\+Pos} & The position of the cursor on the x axis \\
+\hline
+{\em a\+\_\+y\+Pos} & The position of the cursor on the y axis \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \mbox{\hyperlink{structm_1_1input_1_1m_callback_input_manager_ae2ce0985dd4521f5fcccc1b19556d54e}{m\+::input\+::m\+Callback\+Input\+Manager}}.
+
+\mbox{\Hypertarget{classm_1_1input_1_1m_i_input_manager_a0cd864286dc9e9479a60a0b4f2211b0f}\label{classm_1_1input_1_1m_i_input_manager_a0cd864286dc9e9479a60a0b4f2211b0f}} 
+\index{m::input::mIInputManager@{m::input::mIInputManager}!process\_mouseScrollEvent@{process\_mouseScrollEvent}}
+\index{process\_mouseScrollEvent@{process\_mouseScrollEvent}!m::input::mIInputManager@{m::input::mIInputManager}}
+\doxysubsubsection{\texorpdfstring{process\_mouseScrollEvent()}{process\_mouseScrollEvent()}}
+{\footnotesize\ttfamily virtual void m\+::input\+::m\+IInput\+Manager\+::process\+\_\+mouse\+Scroll\+Event (\begin{DoxyParamCaption}\item[{m\+Double}]{a\+\_\+offset }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Process a scroll event. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+offset} & The delta of the scroll event \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \mbox{\hyperlink{structm_1_1input_1_1m_callback_input_manager_a7f1c2b2f0b4aa8bc158c37cc3a0999d7}{m\+::input\+::m\+Callback\+Input\+Manager}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Core/\+Kernel/Input.\+hpp\end{DoxyCompactItemize}

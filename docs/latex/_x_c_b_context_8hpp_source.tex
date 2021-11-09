@@ -1,0 +1,36 @@
+\hypertarget{_x_c_b_context_8hpp_source}{}\doxysection{XCBContext.\+hpp}
+\label{_x_c_b_context_8hpp_source}\index{MesumGraphics/Unix/XCBContext.hpp@{MesumGraphics/Unix/XCBContext.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_XCBCONTEXT}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_XCBCONTEXT}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <MesumCore/Kernel/Types.hpp>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <MesumCore/Kernel/Input.hpp>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <MesumCore/Kernel/Logger.hpp>}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{keyword}{namespace }m}
+\DoxyCodeLine{10 \{}
+\DoxyCodeLine{11 \textcolor{keyword}{namespace }xcb\_unix}
+\DoxyCodeLine{12 \{}
+\DoxyCodeLine{13 \textcolor{keyword}{extern} \textcolor{keyword}{const} \mbox{\hyperlink{namespacem_1_1logging_af807dfba0ed733f24957c0f3d016a15f}{logging::mChannelID}} PLATFORM\_APP\_ID;}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1xcb__unix_1_1_x_c_b_context}{XCBContext}}}
+\DoxyCodeLine{16 \{}
+\DoxyCodeLine{17     \textcolor{keywordtype}{void} init();}
+\DoxyCodeLine{18     \textcolor{keywordtype}{void} init\_keysLuts();}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20     \textcolor{keywordtype}{void} destroy();}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22     \textcolor{comment}{// Properties}}
+\DoxyCodeLine{23     \mbox{\hyperlink{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}{input::mKey}} m\_lut\_keycodes[256];}
+\DoxyCodeLine{24     mI16       m\_lut\_scancode[input::mKey::keyLast + 1];}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \};}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \}  \textcolor{comment}{// namespace xcb\_unix}}
+\DoxyCodeLine{29 \}  \textcolor{comment}{// namespace m}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_XCBCONTEXT}}
+
+\end{DoxyCode}

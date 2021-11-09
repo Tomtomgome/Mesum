@@ -1,99 +1,107 @@
 #pragma once
 
-//Inspired from : http://www.drdobbs.com/cpp/a-lightweight-logger-for-c/240147505
-#include <MesumCore/Common.hpp>
-#include <Log.hpp>
+// Inspired from :
+// http://www.drdobbs.com/cpp/a-lightweight-logger-for-c/240147505
+#include "../Common/CoreCommon.hpp"
+#include "Log.hpp"
 
-/** \addtogroup Log
-*	@{
-*/
+///////////////////////////////////////////////////////////////////////////////
+/// \addtogroup Core
+/// \{
+///////////////////////////////////////////////////////////////////////////////
 namespace m
 {
 //! The default stream logger
-extern MesumCoreApi logging::Logger<m::logging::StdcoutLogPolicy> log_inst;
-};
+extern MesumCoreApi logging::mLogger<m::logging::mStdcoutLogPolicy> log_inst;
+};  // namespace m
 
 //! Macro used to get a channel ID
-#define mLOG_GET_ID m::log_inst.get_newChannelID
+#define mLog_getId m::log_inst.get_newChannelID
 
 #ifdef M_ENABLE_LOG
 //! Macro used to log simple debug messages
-#define mLOG m::log_inst.print<m::logging::SeverityType::debug>
+#define mLog m::log_inst.print<m::logging::mSeverityType::debug>
 //! Macro used to log simple error messages
-#define mLOG_ERR m::log_inst.print<m::logging::SeverityType::error>
+#define mLog_error m::log_inst.print<m::logging::mSeverityType::error>
 //! Macro used to log simple warning messages
-#define mLOG_WARN m::log_inst.print<m::logging::SeverityType::warning>
+#define mLog_warning m::log_inst.print<m::logging::SeverityType::warning>
 
 //! Macro used to log simple debug messages to a channel
-#define mLOG_TO m::log_inst.print_toChannel<m::logging::SeverityType::debug>
+#define mLog_to m::log_inst.print_toChannel<m::logging::mSeverityType::debug>
 //! Macro used to log simple error messages to a channel
-#define mLOG_ERR_TO m::log_inst.print_toChannel<m::logging::SeverityType::error>
+#define mLog_errorTo \
+    m::log_inst.print_toChannel<m::logging::mSeverityType::error>
 //! Macro used to log simple warning messages to a channel
-#define mLOG_WARN_TO m::log_inst.print_toChannel<m::logging::SeverityType::warning>
+#define mLog_warningTo \
+    m::log_inst.print_toChannel<m::logging::mSeverityType::warning>
 #else
 
 //! Macro used to log simple debug messages
-#define mLOG(...)
+#define mLog(...)
 //! Macro used to log simple error messages
-#define mLOG_ERR(...)
+#define mLog_error(...)
 //! Macro used to log simple warning messages
-#define mLOG_WARN(...)
+#define mLog_warning(...)
 //! Macro used to log simple debug messages to a channel
-#define mLOG_TO(...)
+#define mLog_to(...)
 //! Macro used to log simple error messages to a channel
-#define mLOG_ERR_TO(...)
+#define mLog_errorTo(...)
 //! Macro used to log simple warning messages to a channel
-#define mLOG_WARN_TO(...)
+#define mLog_warningTo(...)
 
 #endif
 
 #ifdef M_ENABLE_VERBOSE_LOG
 
 //! Macro used to log verbose debug messages
-#define mVLOG m::log_inst.print<m::logging::SeverityType::debug>
+#define mLog_verbose m::log_inst.print<m::logging::mSeverityType::debug>
 //! Macro used to log verbose error messages
-#define mVLOG_ERR m::log_inst.print<m::logging::SeverityType::error>
+#define mLog_verboseError m::log_inst.print<m::logging::mSeverityType::error>
 //! Macro used to log verbose warning messages
-#define mVLOG_WARN m::log_inst.print<m::logging::SeverityType::warning>
+#define mLog_verboseWarning m::log_inst.print<m::logging::mSeverityType::warning>
 //! Macro used to log verbose debug messages to a channel
-#define mVLOG_TO m::log_inst.print_toChannel<m::logging::SeverityType::debug>
+#define mLog_verboseTo m::log_inst.print_toChannel<m::logging::mSeverityType::debug>
 //! Macro used to log verbose error messages to a channel
-#define mVLOG_ERR_TO m::log_inst.print_toChannel<m::logging::SeverityType::error>
+#define mLog_verboseErrorTo \
+    m::log_inst.print_toChannel<m::logging::mSeverityType::error>
 //! Macro used to log verbose warning messages to a channel
-#define mVLOG_WARN_TO m::log_inst.print_toChannel<m::logging::SeverityType::warning>
+#define mLog_VerboseWarningTo \
+    m::log_inst.print_toChannel<m::logging::mSeverityType::warning>
 
 #else
 
 //! Macro used to log verbose debug messages
-#define mVLOG(...)
+#define mLog_verbose(...)
 //! Macro used to log verbose error messages
-#define mVLOG_ERR(...)
+#define mLog_verboseError(...)
 //! Macro used to log verbose warning messages
-#define mVLOG_WARN(...)
+#define mLog_verboseWarning(...)
 //! Macro used to log verbose debug messages to a channel
-#define mVLOG_TO(...)
+#define mLog_verboseTo(...)
 //! Macro used to log verbose error messages to a channel
-#define mVLOG_ERR_TO(...)
+#define mLog_verboseErrorTo(...)
 //! Macro used to log verbose warning messages to a channel
-#define mVLOG_WARN_TO(...)
+#define mLog_VerboseWarningTo(...)
 
 #endif
 
 #if (defined M_ENABLE_VERBOSE_LOG) || (defined M_ENABLE_LOG)
 //! Macro used to set filters for the logger
-#define mLOG_FILTER m::log_inst.set_filter
+#define mSet_logFilter m::log_inst.set_filter
 //! Macro used to enable channels of the logger
-#define mLOG_ENABLE m::log_inst.enable_channels
+#define mEnable_logChannels m::log_inst.enable_channels
 //! Macro used to disable channels the logger
-#define mLOG_DISABLE m::log_inst.disable_channels
+#define mDisable_logChannels m::log_inst.disable_channels
 
 #else
 //! Macro used to set filters for the logger
-#define mLOG_FILTER(...)
+#define mSet_logFilter(...)
 //! Macro used to enable channels of the logger
-#define mLOG_ENABLE(...)
+#define mEnable_logChannels(...)
 //! Macro used to disable channels the logger
-#define mLOG_DISABLE(...)
+#define mDisable_logChannels(...)
 #endif
 
-/** @}*/
+///////////////////////////////////////////////////////////////////////////////
+/// \}
+///////////////////////////////////////////////////////////////////////////////

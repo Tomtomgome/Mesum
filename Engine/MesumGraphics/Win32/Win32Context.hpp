@@ -9,7 +9,7 @@
 
 namespace m::win32
 {
-extern const logging::ChannelID PLATFORM_APP_ID;
+extern const logging::mChannelID PLATFORM_APP_ID;
 
 struct WIN32Context
 {
@@ -19,17 +19,17 @@ struct WIN32Context
     void destroy();
 
     // Windows
-    void register_windowClass(const WideChar* a_className, HINSTANCE a_hInstance,
+    void register_windowClass(const mWideChar* a_className, HINSTANCE a_hInstance,
                               WNDPROC a_proc);
-    HWND create_window(const WideChar* a_className, std::string a_windowName,
-                       U32 a_clientWidth, U32 a_clientHeight) const;
+    HWND create_window(const mWideChar* a_className, std::string a_windowName,
+                       mU32 a_clientWidth, mU32 a_clientHeight) const;
 
     // Keys and inputs
-    [[nodiscard]] input::Key get_keyFromParam(WPARAM a_wParam) const;
+    [[nodiscard]] input::mKey get_keyFromParam(WPARAM a_wParam) const;
 
     // Properties
-    input::Key m_lut_keycodes[256];
-    I16        m_lut_scancode[input::Key::KEY_LAST + 1];
+    input::mKey m_lut_keycodes[256];
+    mI16       m_lut_scancode[input::mKey::keyLast + 1];
 
     HINSTANCE m_hInstance;
 };

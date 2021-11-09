@@ -1,0 +1,44 @@
+\hypertarget{_windowed_app_impl_x_c_b_8hpp_source}{}\doxysection{Windowed\+App\+Impl\+XCB.\+hpp}
+\label{_windowed_app_impl_x_c_b_8hpp_source}\index{MesumGraphics/Unix/WindowedAppImplXCB.hpp@{MesumGraphics/Unix/WindowedAppImplXCB.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_WINDOWEDAPPIMPLXCB}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_WINDOWEDAPPIMPLXCB}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <XCBContext.hpp>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <MesumGraphics/WindowedApp.hpp>}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <set>}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{keyword}{namespace }m}
+\DoxyCodeLine{10 \{}
+\DoxyCodeLine{11 \textcolor{keyword}{namespace }xcb\_unix}
+\DoxyCodeLine{12 \{}
+\DoxyCodeLine{13 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_windowed_application_impl}{IWindowedApplicationImpl}} : \textcolor{keyword}{public} \mbox{\hyperlink{classm_1_1application_1_1_i_windowed_application_base}{application::IWindowedApplicationBase}}}
+\DoxyCodeLine{14 \{}
+\DoxyCodeLine{15    \textcolor{keyword}{public}:}
+\DoxyCodeLine{16     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} init\_renderer(}
+\DoxyCodeLine{17         render::RendererApi a\_renderApi = render::RendererApi::Default) \textcolor{keyword}{override};}
+\DoxyCodeLine{18     \textcolor{keyword}{virtual} \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{windows::IWindow}}* add\_newWindow(std::wstring a\_name, mU32 a\_width,}
+\DoxyCodeLine{19                                             mU32 a\_height);}
+\DoxyCodeLine{20     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_processImGuiMultiViewports(mBool a\_supportMultiViewPorts);}
+\DoxyCodeLine{21     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} start\_dearImGuiNewFrame();}
+\DoxyCodeLine{22     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} render();}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24    \textcolor{keyword}{protected}:}
+\DoxyCodeLine{25     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_windowed_application_impl_af51366e2fdd19f1d8d9e8ec99523a850}{init}}(\mbox{\hyperlink{structm_1_1m_cmd_line}{mCmdLine}} \textcolor{keyword}{const}\& a\_cmdLine, \textcolor{keywordtype}{void}* a\_appData) \textcolor{keyword}{override};}
+\DoxyCodeLine{26     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_windowed_application_impl_a8baef1bc4148d903512c731ab3121da5}{destroy}}() \textcolor{keyword}{override};}
+\DoxyCodeLine{27     \textcolor{keyword}{virtual} mBool step(\textcolor{keyword}{const} std::chrono::duration<long long int, std::nano>\&}
+\DoxyCodeLine{28                           a\_deltaTime) \textcolor{keyword}{override};}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30    \textcolor{keyword}{private}:}
+\DoxyCodeLine{31     mBool                       m\_supportImGuiMultiViewPorts = \textcolor{keyword}{false};}
+\DoxyCodeLine{32     \mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{render::IRenderer}}*          m\_renderer = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{33     \mbox{\hyperlink{structm_1_1xcb__unix_1_1_x_c_b_context}{XCBContext}}                  m\_XCBContext;}
+\DoxyCodeLine{34     std::set<windows::IWindow*> m\_windows;}
+\DoxyCodeLine{35 \};}
+\DoxyCodeLine{36 \}  \textcolor{comment}{// namespace xcb\_unix}}
+\DoxyCodeLine{37 \}  \textcolor{comment}{// namespace m}}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_WINDOWEDAPPIMPLXCB}}
+
+\end{DoxyCode}

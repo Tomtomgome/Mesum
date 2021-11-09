@@ -1,0 +1,105 @@
+\hypertarget{_renderer_d_x12_impl_8hpp_source}{}\doxysection{Renderer\+DX12\+Impl.\+hpp}
+\label{_renderer_d_x12_impl_8hpp_source}\index{MesumGraphics/DX12Renderer/RendererDX12Impl.hpp@{MesumGraphics/DX12Renderer/RendererDX12Impl.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_RendererDX12Impl}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_RendererDX12Impl}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <MesumGraphics/DX12Renderer/DX12RendererCommon.hpp>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <MesumGraphics/Renderer.hpp>}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{keyword}{namespace }m::dx12}
+\DoxyCodeLine{9 \{}
+\DoxyCodeLine{10 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{11 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{12 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{13 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1dx12_1_1_d_x12_render_taskset}{DX12RenderTaskset}} : \textcolor{keyword}{public} \mbox{\hyperlink{structm_1_1render_1_1_taskset}{render::Taskset}}}
+\DoxyCodeLine{14 \{}
+\DoxyCodeLine{15     std::vector<render::Task*> m\_set\_tasks;}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17     \mbox{\hyperlink{structm_1_1render_1_1_task}{render::Task}}* add\_task(\mbox{\hyperlink{structm_1_1render_1_1_task_data}{render::TaskData}}* a\_data) \textcolor{keyword}{override};}
+\DoxyCodeLine{18     \textcolor{keywordtype}{void}          clear() \textcolor{keyword}{override};}
+\DoxyCodeLine{19 \};}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{22 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{23 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{24 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_surface}{DX12Surface}} : \textcolor{keyword}{public} \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{render::ISurface}}}
+\DoxyCodeLine{25 \{}
+\DoxyCodeLine{26    \textcolor{keyword}{public}:}
+\DoxyCodeLine{27     \mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_surface}{\string~DX12Surface}}() \textcolor{keyword}{override} = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29     \textcolor{keywordtype}{void} init\_win32(render::Win32SurfaceInitData\& a\_data) \textcolor{keyword}{override};}
+\DoxyCodeLine{30     \textcolor{keywordtype}{void} init\_x11(render::X11SurfaceInitData\& a\_data) \textcolor{keyword}{override};}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32     \mbox{\hyperlink{structm_1_1render_1_1_taskset}{render::Taskset}}* addNew\_renderTaskset() \textcolor{keyword}{override};}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34     \textcolor{keywordtype}{void} render() \textcolor{keyword}{override};}
+\DoxyCodeLine{35     \textcolor{keywordtype}{void} resize(mU32 a\_width, mU32 a\_height) \textcolor{keyword}{override};}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37     \textcolor{keywordtype}{void} destroy() \textcolor{keyword}{override};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39     D3D12\_CPU\_DESCRIPTOR\_HANDLE get\_currentRtvDesc();}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41    \textcolor{keyword}{public}:}
+\DoxyCodeLine{42     \textcolor{comment}{// The number of swap chain back buffers.}}
+\DoxyCodeLine{43     \textcolor{keyword}{static} \textcolor{keyword}{const} mU8 scm\_numFrames = 3;}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45    \textcolor{keyword}{private}:}
+\DoxyCodeLine{46     [[nodiscard]] mUInt get\_syncInterval()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_vSync ? 1 : 0; \}}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48     [[nodiscard]] mUInt get\_presentFlags()\textcolor{keyword}{ const}}
+\DoxyCodeLine{49 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{50         \textcolor{keywordflow}{return} m\_tearingSupported \&\& !m\_vSync ? DXGI\_PRESENT\_ALLOW\_TEARING : 0;}
+\DoxyCodeLine{51     \}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53     \textcolor{keywordtype}{void} update\_renderTargetViews(}
+\DoxyCodeLine{54         ComPtr<ID3D12Device2> a\_device, ComPtr<IDXGISwapChain4> a\_swapChain,}
+\DoxyCodeLine{55         ComPtr<ID3D12DescriptorHeap> a\_descriptorHeap);}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57    \textcolor{keyword}{private}:}
+\DoxyCodeLine{58     \textcolor{comment}{// By default, enable V-\/Sync.}}
+\DoxyCodeLine{59     \textcolor{comment}{// Can be toggled with the V key.}}
+\DoxyCodeLine{60     mBool m\_vSync              = \textcolor{keyword}{true};}
+\DoxyCodeLine{61     mBool m\_tearingSupported   = \textcolor{keyword}{false};}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63     ComPtr<IDXGISwapChain4> m\_swapChain;}
+\DoxyCodeLine{64     ComPtr<ID3D12Resource>  m\_backBuffers[scm\_numFrames];}
+\DoxyCodeLine{65     mUInt                   m\_currentBackBufferIndex;}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67     ComPtr<ID3D12DescriptorHeap> m\_RTVDescriptorHeap;}
+\DoxyCodeLine{68     mUInt                        m\_RTVDescriptorSize;}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70     ComPtr<ID3D12DescriptorHeap> m\_SRVDescriptorHeap;}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72     std::vector<DX12RenderTaskset*>                 m\_renderTasksets;}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74     \textcolor{comment}{// Synchronization objects}}
+\DoxyCodeLine{75     mU64 m\_frameFenceValues[scm\_numFrames] = \{\};}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77     \textcolor{comment}{// Surface description}}
+\DoxyCodeLine{78     mU32 m\_clientWidth;}
+\DoxyCodeLine{79     mU32 m\_clientHeight;}
+\DoxyCodeLine{80 \};}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{83 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{84 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{85 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_renderer}{DX12Renderer}} : \textcolor{keyword}{public} \mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{render::IRenderer}}}
+\DoxyCodeLine{86 \{}
+\DoxyCodeLine{87    \textcolor{keyword}{public}:}
+\DoxyCodeLine{88     \textcolor{keywordtype}{void} init() \textcolor{keyword}{override};}
+\DoxyCodeLine{89     \textcolor{keywordtype}{void} destroy() \textcolor{keyword}{override};}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91     mBool get\_supportDearImGuiMultiViewports()\textcolor{keyword}{ override }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{92     \textcolor{keywordtype}{void} start\_dearImGuiNewFrameRenderer() \textcolor{keyword}{const override};}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94     \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{render::ISurface}}* get\_newSurface() \textcolor{keyword}{override};}
+\DoxyCodeLine{95 \};}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 \}  \textcolor{comment}{// namespace m::dx12}}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_RendererDX12Impl}}
+
+\end{DoxyCode}

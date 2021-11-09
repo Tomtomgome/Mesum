@@ -1,0 +1,392 @@
+\hypertarget{structm_1_1input_1_1m_callback_input_manager}{}\doxysection{m\+::input\+::m\+Callback\+Input\+Manager Struct Reference}
+\label{structm_1_1input_1_1m_callback_input_manager}\index{m::input::mCallbackInputManager@{m::input::mCallbackInputManager}}
+
+
+Implementation of an input manager.  
+
+
+
+
+{\ttfamily \#include $<$Input.\+hpp$>$}
+
+Inheritance diagram for m\+::input\+::m\+Callback\+Input\+Manager\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structm_1_1input_1_1m_callback_input_manager}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{structm_1_1input_1_1m_callback_input_manager_a2b827625639f99105fa36af9cd80e731}{process\+\_\+key\+Event}} (\mbox{\hyperlink{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}{m\+Key}} a\+\_\+key, \mbox{\hyperlink{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474}{m\+Input\+Type}} a\+\_\+action) override
+\begin{DoxyCompactList}\small\item\em Process a key event. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{structm_1_1input_1_1m_callback_input_manager_a0ca77905114cf2cb58d3b3dbd7c5b867}{process\+\_\+mouse\+Event}} (\mbox{\hyperlink{namespacem_1_1input_ab7450ac4b61b5654bc908d4aa4e03ffe}{m\+Mouse\+Button}} a\+\_\+button, \mbox{\hyperlink{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474}{m\+Input\+Type}} a\+\_\+action) override
+\begin{DoxyCompactList}\small\item\em Process a mouse event. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{structm_1_1input_1_1m_callback_input_manager_ae2ce0985dd4521f5fcccc1b19556d54e}{process\+\_\+mouse\+Move\+Event}} (m\+Int a\+\_\+x\+Pos, m\+Int a\+\_\+y\+Pos) override
+\begin{DoxyCompactList}\small\item\em Process a mouse move event. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{structm_1_1input_1_1m_callback_input_manager_a7f1c2b2f0b4aa8bc158c37cc3a0999d7}{process\+\_\+mouse\+Scroll\+Event}} (double a\+\_\+offset) override
+\begin{DoxyCompactList}\small\item\em Process a scroll event. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{structm_1_1input_1_1m_callback_input_manager_a0889ff9fb98f229a4cc4a20efa7d5841}{update\+\_\+key\+Mods}} (\mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}{m\+Key\+Mod}} a\+\_\+mod, \mbox{\hyperlink{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474}{m\+Input\+Type}} a\+\_\+action)
+\begin{DoxyCompactList}\small\item\em Update the current key mods. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{m\+Key\+Action\+Signal\+::m\+Callback\+Handle}} \mbox{\hyperlink{structm_1_1input_1_1m_callback_input_manager_a947a65e425598416affb3aa9a6c45a1f}{attach\+\_\+to\+Key\+Event}} (\mbox{\hyperlink{structm_1_1input_1_1m_key_action}{m\+Key\+Action}} a\+\_\+key\+Action, const \mbox{\hyperlink{classm_1_1m_callback}{m\+Key\+Action\+Callback}} \&a\+\_\+callback)
+\begin{DoxyCompactList}\small\item\em Attach a callback to a key action. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{m\+Mouse\+Action\+Signal\+::m\+Callback\+Handle}} \mbox{\hyperlink{structm_1_1input_1_1m_callback_input_manager_a1054019a8a0f0d3575d222030c5ee574}{attach\+\_\+to\+Mouse\+Event}} (\mbox{\hyperlink{structm_1_1input_1_1m_mouse_action}{m\+Mouse\+Action}} a\+\_\+mouse\+Action, const \mbox{\hyperlink{classm_1_1m_callback}{m\+Mouse\+Action\+Callback}} \&a\+\_\+callback)
+\begin{DoxyCompactList}\small\item\em Attach a callback to a mouse action. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{m\+Mouse\+Move\+Signal\+::m\+Callback\+Handle}} \mbox{\hyperlink{structm_1_1input_1_1m_callback_input_manager_a6ae4f9e1df63341928dc97b08734e585}{attach\+\_\+to\+Mouse\+Move\+Event}} (const \mbox{\hyperlink{classm_1_1m_callback}{m\+Mouse\+Move\+Callback}} \&a\+\_\+callback)
+\begin{DoxyCompactList}\small\item\em Attach a callback to a mouse move event. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{m\+Scroll\+Signal\+::m\+Callback\+Handle}} \mbox{\hyperlink{structm_1_1input_1_1m_callback_input_manager_ad57889b0898d34b0c6cce95af1d35494}{attach\+\_\+to\+Mouse\+Scroll\+Event}} (const \mbox{\hyperlink{classm_1_1m_callback}{m\+Scroll\+Callback}} \&a\+\_\+callback)
+\begin{DoxyCompactList}\small\item\em Attach a callback to a mouse scroll event. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{structm_1_1input_1_1m_callback_input_manager_ac3d68465fd4269da1b2d08440505fb0c}{detach\+\_\+from\+Key\+Event}} (\mbox{\hyperlink{structm_1_1input_1_1m_key_action}{m\+Key\+Action}} a\+\_\+key\+Action, const \mbox{\hyperlink{classm_1_1m_callback}{m\+Key\+Action\+Callback}} \&a\+\_\+callback)
+\begin{DoxyCompactList}\small\item\em Detach a callback to a key action. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{structm_1_1input_1_1m_callback_input_manager_a0060847b39ebd3bf27e0c5b7a17fa45b}{detach\+\_\+from\+Key\+Event}} (\mbox{\hyperlink{structm_1_1input_1_1m_key_action}{m\+Key\+Action}} a\+\_\+key\+Action, const \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{m\+Key\+Action\+Signal\+::m\+Callback\+Handle}} \&a\+\_\+handle)
+\begin{DoxyCompactList}\small\item\em Detach a callback to a key action. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{structm_1_1input_1_1m_callback_input_manager_a18a834680c8ce6e1a1eb5020c0848978}{detach\+\_\+from\+Mouse\+Event}} (\mbox{\hyperlink{structm_1_1input_1_1m_mouse_action}{m\+Mouse\+Action}} a\+\_\+mouse\+Action, const \mbox{\hyperlink{classm_1_1m_callback}{m\+Mouse\+Action\+Callback}} \&a\+\_\+callback)
+\begin{DoxyCompactList}\small\item\em Detach a callback to a mouse action. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{structm_1_1input_1_1m_callback_input_manager_adb3cf35c5b91ea306d98be265dbe7cb0}{detach\+\_\+from\+Mouse\+Event}} (\mbox{\hyperlink{structm_1_1input_1_1m_mouse_action}{m\+Mouse\+Action}} a\+\_\+mouse\+Action, const \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{m\+Mouse\+Action\+Signal\+::m\+Callback\+Handle}} \&a\+\_\+handle)
+\begin{DoxyCompactList}\small\item\em Detach a callback to a mouse action. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{structm_1_1input_1_1m_callback_input_manager_aed4d184782b1e1c181aad8397eb98d69}{detach\+\_\+from\+Mouse\+Move\+Event}} (const \mbox{\hyperlink{classm_1_1m_callback}{m\+Mouse\+Move\+Callback}} \&a\+\_\+callback)
+\begin{DoxyCompactList}\small\item\em Detach a callback to a mouse move event. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{structm_1_1input_1_1m_callback_input_manager_ae4abfabf49a6e159dccdaddb395625fc}{detach\+\_\+from\+Mouse\+Move\+Event}} (const \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{m\+Mouse\+Move\+Signal\+::m\+Callback\+Handle}} \&a\+\_\+handle)
+\begin{DoxyCompactList}\small\item\em Detach a callback to a mouse move event. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{structm_1_1input_1_1m_callback_input_manager_ad2c9faa1f57fbb8547d02cfd1e8dc581}{detach\+\_\+from\+Mouse\+Scroll\+Event}} (const \mbox{\hyperlink{classm_1_1m_callback}{m\+Scroll\+Callback}} \&a\+\_\+callback)
+\begin{DoxyCompactList}\small\item\em Detach a callback to a mouse scroll event. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{structm_1_1input_1_1m_callback_input_manager_aea3d2e1c2a410ce38d5b7fe0ace3a14c}{detach\+\_\+from\+Mouse\+Scroll\+Event}} (const \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{m\+Scroll\+Signal\+::m\+Callback\+Handle}} \&a\+\_\+handle)
+\begin{DoxyCompactList}\small\item\em Detach a callback to a mouse scroll event. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structm_1_1input_1_1m_callback_input_manager_aa41a0c866cfba0189aab1bf8992667f6}\label{structm_1_1input_1_1m_callback_input_manager_aa41a0c866cfba0189aab1bf8992667f6}} 
+\mbox{\hyperlink{structm_1_1math_1_1m_vec}{math\+::m\+IVec2}} {\bfseries current\+Mouse\+Pos} \{0, 0\}
+\begin{DoxyCompactList}\small\item\em Current position of the cursor on screen. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structm_1_1input_1_1m_callback_input_manager_ac94872d10fc5ef86480d3f097393294d}\label{structm_1_1input_1_1m_callback_input_manager_ac94872d10fc5ef86480d3f097393294d}} 
+\mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}{m\+Key\+Mod}} {\bfseries current\+Key\+Mod} = \mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513adaa334c4a4c42fdb79d7ebc3e73b517e6f8}{m\+Key\+Mod\+::none}}
+\begin{DoxyCompactList}\small\item\em Current modulation key pressed. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structm_1_1input_1_1m_callback_input_manager_a0f34094e003a9e605989f80df28f3430}\label{structm_1_1input_1_1m_callback_input_manager_a0f34094e003a9e605989f80df28f3430}} 
+std\+::map$<$ \mbox{\hyperlink{structm_1_1input_1_1m_key_action}{m\+Key\+Action}}, \mbox{\hyperlink{classm_1_1m_signal}{m\+Key\+Action\+Signal}} $>$ {\bfseries key\+Signals}
+\begin{DoxyCompactList}\small\item\em Map of key action signals. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structm_1_1input_1_1m_callback_input_manager_aa0033254bc3fffb397ec5033b67dff2d}\label{structm_1_1input_1_1m_callback_input_manager_aa0033254bc3fffb397ec5033b67dff2d}} 
+std\+::map$<$ \mbox{\hyperlink{structm_1_1input_1_1m_mouse_action}{m\+Mouse\+Action}}, \mbox{\hyperlink{classm_1_1m_signal}{m\+Mouse\+Action\+Signal}} $>$ {\bfseries mouse\+Signals}
+\begin{DoxyCompactList}\small\item\em Map of mouse action signals. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structm_1_1input_1_1m_callback_input_manager_a6156f28db77f9b8ae184670cd2d9a5e7}\label{structm_1_1input_1_1m_callback_input_manager_a6156f28db77f9b8ae184670cd2d9a5e7}} 
+\mbox{\hyperlink{classm_1_1m_signal}{m\+Scroll\+Signal}} {\bfseries scroll\+Signal}
+\begin{DoxyCompactList}\small\item\em Mouse scroll signal. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structm_1_1input_1_1m_callback_input_manager_a930e6756f4885c61db59f6cb78481176}\label{structm_1_1input_1_1m_callback_input_manager_a930e6756f4885c61db59f6cb78481176}} 
+\mbox{\hyperlink{classm_1_1m_signal}{m\+Mouse\+Move\+Signal}} {\bfseries move\+Signal}
+\begin{DoxyCompactList}\small\item\em Mouse move signal. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implementation of an input manager. 
+
+User can attach callbacks to events that will be called immediately when the event is read 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{structm_1_1input_1_1m_callback_input_manager_a947a65e425598416affb3aa9a6c45a1f}\label{structm_1_1input_1_1m_callback_input_manager_a947a65e425598416affb3aa9a6c45a1f}} 
+\index{m::input::mCallbackInputManager@{m::input::mCallbackInputManager}!attach\_toKeyEvent@{attach\_toKeyEvent}}
+\index{attach\_toKeyEvent@{attach\_toKeyEvent}!m::input::mCallbackInputManager@{m::input::mCallbackInputManager}}
+\doxysubsubsection{\texorpdfstring{attach\_toKeyEvent()}{attach\_toKeyEvent()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{m\+Key\+Action\+Signal\+::m\+Callback\+Handle}} m\+::input\+::m\+Callback\+Input\+Manager\+::attach\+\_\+to\+Key\+Event (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structm_1_1input_1_1m_key_action}{m\+Key\+Action}}}]{a\+\_\+key\+Action,  }\item[{const \mbox{\hyperlink{classm_1_1m_callback}{m\+Key\+Action\+Callback}} \&}]{a\+\_\+callback }\end{DoxyParamCaption})}
+
+
+
+Attach a callback to a key action. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+key\+Action} & The key action that will trigger the call \\
+\hline
+{\em a\+\_\+callback} & The callback that will be called \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A handle to the callback (used to remove it) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structm_1_1input_1_1m_callback_input_manager_a1054019a8a0f0d3575d222030c5ee574}\label{structm_1_1input_1_1m_callback_input_manager_a1054019a8a0f0d3575d222030c5ee574}} 
+\index{m::input::mCallbackInputManager@{m::input::mCallbackInputManager}!attach\_toMouseEvent@{attach\_toMouseEvent}}
+\index{attach\_toMouseEvent@{attach\_toMouseEvent}!m::input::mCallbackInputManager@{m::input::mCallbackInputManager}}
+\doxysubsubsection{\texorpdfstring{attach\_toMouseEvent()}{attach\_toMouseEvent()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{m\+Mouse\+Action\+Signal\+::m\+Callback\+Handle}} m\+::input\+::m\+Callback\+Input\+Manager\+::attach\+\_\+to\+Mouse\+Event (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structm_1_1input_1_1m_mouse_action}{m\+Mouse\+Action}}}]{a\+\_\+mouse\+Action,  }\item[{const \mbox{\hyperlink{classm_1_1m_callback}{m\+Mouse\+Action\+Callback}} \&}]{a\+\_\+callback }\end{DoxyParamCaption})}
+
+
+
+Attach a callback to a mouse action. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+key\+Action} & The mouse action that will trigger the call \\
+\hline
+{\em a\+\_\+callback} & The callback that will be called \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A handle to the callback (used to remove it) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structm_1_1input_1_1m_callback_input_manager_a6ae4f9e1df63341928dc97b08734e585}\label{structm_1_1input_1_1m_callback_input_manager_a6ae4f9e1df63341928dc97b08734e585}} 
+\index{m::input::mCallbackInputManager@{m::input::mCallbackInputManager}!attach\_toMouseMoveEvent@{attach\_toMouseMoveEvent}}
+\index{attach\_toMouseMoveEvent@{attach\_toMouseMoveEvent}!m::input::mCallbackInputManager@{m::input::mCallbackInputManager}}
+\doxysubsubsection{\texorpdfstring{attach\_toMouseMoveEvent()}{attach\_toMouseMoveEvent()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{m\+Mouse\+Move\+Signal\+::m\+Callback\+Handle}} m\+::input\+::m\+Callback\+Input\+Manager\+::attach\+\_\+to\+Mouse\+Move\+Event (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classm_1_1m_callback}{m\+Mouse\+Move\+Callback}} \&}]{a\+\_\+callback }\end{DoxyParamCaption})}
+
+
+
+Attach a callback to a mouse move event. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+callback} & The callback that will be called \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A handle to the callback (used to remove it) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structm_1_1input_1_1m_callback_input_manager_ad57889b0898d34b0c6cce95af1d35494}\label{structm_1_1input_1_1m_callback_input_manager_ad57889b0898d34b0c6cce95af1d35494}} 
+\index{m::input::mCallbackInputManager@{m::input::mCallbackInputManager}!attach\_toMouseScrollEvent@{attach\_toMouseScrollEvent}}
+\index{attach\_toMouseScrollEvent@{attach\_toMouseScrollEvent}!m::input::mCallbackInputManager@{m::input::mCallbackInputManager}}
+\doxysubsubsection{\texorpdfstring{attach\_toMouseScrollEvent()}{attach\_toMouseScrollEvent()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{m\+Scroll\+Signal\+::m\+Callback\+Handle}} m\+::input\+::m\+Callback\+Input\+Manager\+::attach\+\_\+to\+Mouse\+Scroll\+Event (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classm_1_1m_callback}{m\+Scroll\+Callback}} \&}]{a\+\_\+callback }\end{DoxyParamCaption})}
+
+
+
+Attach a callback to a mouse scroll event. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+callback} & The callback that will be called \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A handle to the callback (used to remove it) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structm_1_1input_1_1m_callback_input_manager_ac3d68465fd4269da1b2d08440505fb0c}\label{structm_1_1input_1_1m_callback_input_manager_ac3d68465fd4269da1b2d08440505fb0c}} 
+\index{m::input::mCallbackInputManager@{m::input::mCallbackInputManager}!detach\_fromKeyEvent@{detach\_fromKeyEvent}}
+\index{detach\_fromKeyEvent@{detach\_fromKeyEvent}!m::input::mCallbackInputManager@{m::input::mCallbackInputManager}}
+\doxysubsubsection{\texorpdfstring{detach\_fromKeyEvent()}{detach\_fromKeyEvent()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void m\+::input\+::m\+Callback\+Input\+Manager\+::detach\+\_\+from\+Key\+Event (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structm_1_1input_1_1m_key_action}{m\+Key\+Action}}}]{a\+\_\+key\+Action,  }\item[{const \mbox{\hyperlink{classm_1_1m_callback}{m\+Key\+Action\+Callback}} \&}]{a\+\_\+callback }\end{DoxyParamCaption})}
+
+
+
+Detach a callback to a key action. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+key\+Action} & The key action to which the callback is linked \\
+\hline
+{\em a\+\_\+callback} & The callback to remove \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structm_1_1input_1_1m_callback_input_manager_a0060847b39ebd3bf27e0c5b7a17fa45b}\label{structm_1_1input_1_1m_callback_input_manager_a0060847b39ebd3bf27e0c5b7a17fa45b}} 
+\index{m::input::mCallbackInputManager@{m::input::mCallbackInputManager}!detach\_fromKeyEvent@{detach\_fromKeyEvent}}
+\index{detach\_fromKeyEvent@{detach\_fromKeyEvent}!m::input::mCallbackInputManager@{m::input::mCallbackInputManager}}
+\doxysubsubsection{\texorpdfstring{detach\_fromKeyEvent()}{detach\_fromKeyEvent()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void m\+::input\+::m\+Callback\+Input\+Manager\+::detach\+\_\+from\+Key\+Event (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structm_1_1input_1_1m_key_action}{m\+Key\+Action}}}]{a\+\_\+key\+Action,  }\item[{const \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{m\+Key\+Action\+Signal\+::m\+Callback\+Handle}} \&}]{a\+\_\+handle }\end{DoxyParamCaption})}
+
+
+
+Detach a callback to a key action. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+key\+Action} & The key action to which the callback is linked \\
+\hline
+{\em a\+\_\+handle} & The handle to the callback to remove \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structm_1_1input_1_1m_callback_input_manager_a18a834680c8ce6e1a1eb5020c0848978}\label{structm_1_1input_1_1m_callback_input_manager_a18a834680c8ce6e1a1eb5020c0848978}} 
+\index{m::input::mCallbackInputManager@{m::input::mCallbackInputManager}!detach\_fromMouseEvent@{detach\_fromMouseEvent}}
+\index{detach\_fromMouseEvent@{detach\_fromMouseEvent}!m::input::mCallbackInputManager@{m::input::mCallbackInputManager}}
+\doxysubsubsection{\texorpdfstring{detach\_fromMouseEvent()}{detach\_fromMouseEvent()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void m\+::input\+::m\+Callback\+Input\+Manager\+::detach\+\_\+from\+Mouse\+Event (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structm_1_1input_1_1m_mouse_action}{m\+Mouse\+Action}}}]{a\+\_\+mouse\+Action,  }\item[{const \mbox{\hyperlink{classm_1_1m_callback}{m\+Mouse\+Action\+Callback}} \&}]{a\+\_\+callback }\end{DoxyParamCaption})}
+
+
+
+Detach a callback to a mouse action. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+key\+Action} & The mouse action to which the callback is linked \\
+\hline
+{\em a\+\_\+callback} & The callback to remove \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structm_1_1input_1_1m_callback_input_manager_adb3cf35c5b91ea306d98be265dbe7cb0}\label{structm_1_1input_1_1m_callback_input_manager_adb3cf35c5b91ea306d98be265dbe7cb0}} 
+\index{m::input::mCallbackInputManager@{m::input::mCallbackInputManager}!detach\_fromMouseEvent@{detach\_fromMouseEvent}}
+\index{detach\_fromMouseEvent@{detach\_fromMouseEvent}!m::input::mCallbackInputManager@{m::input::mCallbackInputManager}}
+\doxysubsubsection{\texorpdfstring{detach\_fromMouseEvent()}{detach\_fromMouseEvent()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void m\+::input\+::m\+Callback\+Input\+Manager\+::detach\+\_\+from\+Mouse\+Event (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structm_1_1input_1_1m_mouse_action}{m\+Mouse\+Action}}}]{a\+\_\+mouse\+Action,  }\item[{const \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{m\+Mouse\+Action\+Signal\+::m\+Callback\+Handle}} \&}]{a\+\_\+handle }\end{DoxyParamCaption})}
+
+
+
+Detach a callback to a mouse action. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+key\+Action} & The mouse action to which the callback is linked \\
+\hline
+{\em a\+\_\+handle} & The handle to the callback to remove \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structm_1_1input_1_1m_callback_input_manager_aed4d184782b1e1c181aad8397eb98d69}\label{structm_1_1input_1_1m_callback_input_manager_aed4d184782b1e1c181aad8397eb98d69}} 
+\index{m::input::mCallbackInputManager@{m::input::mCallbackInputManager}!detach\_fromMouseMoveEvent@{detach\_fromMouseMoveEvent}}
+\index{detach\_fromMouseMoveEvent@{detach\_fromMouseMoveEvent}!m::input::mCallbackInputManager@{m::input::mCallbackInputManager}}
+\doxysubsubsection{\texorpdfstring{detach\_fromMouseMoveEvent()}{detach\_fromMouseMoveEvent()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void m\+::input\+::m\+Callback\+Input\+Manager\+::detach\+\_\+from\+Mouse\+Move\+Event (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classm_1_1m_callback}{m\+Mouse\+Move\+Callback}} \&}]{a\+\_\+callback }\end{DoxyParamCaption})}
+
+
+
+Detach a callback to a mouse move event. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+callback} & The callback to remove \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structm_1_1input_1_1m_callback_input_manager_ae4abfabf49a6e159dccdaddb395625fc}\label{structm_1_1input_1_1m_callback_input_manager_ae4abfabf49a6e159dccdaddb395625fc}} 
+\index{m::input::mCallbackInputManager@{m::input::mCallbackInputManager}!detach\_fromMouseMoveEvent@{detach\_fromMouseMoveEvent}}
+\index{detach\_fromMouseMoveEvent@{detach\_fromMouseMoveEvent}!m::input::mCallbackInputManager@{m::input::mCallbackInputManager}}
+\doxysubsubsection{\texorpdfstring{detach\_fromMouseMoveEvent()}{detach\_fromMouseMoveEvent()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void m\+::input\+::m\+Callback\+Input\+Manager\+::detach\+\_\+from\+Mouse\+Move\+Event (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{m\+Mouse\+Move\+Signal\+::m\+Callback\+Handle}} \&}]{a\+\_\+handle }\end{DoxyParamCaption})}
+
+
+
+Detach a callback to a mouse move event. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+handle} & The handle to the callback to remove \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structm_1_1input_1_1m_callback_input_manager_ad2c9faa1f57fbb8547d02cfd1e8dc581}\label{structm_1_1input_1_1m_callback_input_manager_ad2c9faa1f57fbb8547d02cfd1e8dc581}} 
+\index{m::input::mCallbackInputManager@{m::input::mCallbackInputManager}!detach\_fromMouseScrollEvent@{detach\_fromMouseScrollEvent}}
+\index{detach\_fromMouseScrollEvent@{detach\_fromMouseScrollEvent}!m::input::mCallbackInputManager@{m::input::mCallbackInputManager}}
+\doxysubsubsection{\texorpdfstring{detach\_fromMouseScrollEvent()}{detach\_fromMouseScrollEvent()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void m\+::input\+::m\+Callback\+Input\+Manager\+::detach\+\_\+from\+Mouse\+Scroll\+Event (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classm_1_1m_callback}{m\+Scroll\+Callback}} \&}]{a\+\_\+callback }\end{DoxyParamCaption})}
+
+
+
+Detach a callback to a mouse scroll event. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+callback} & The callback to remove \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structm_1_1input_1_1m_callback_input_manager_aea3d2e1c2a410ce38d5b7fe0ace3a14c}\label{structm_1_1input_1_1m_callback_input_manager_aea3d2e1c2a410ce38d5b7fe0ace3a14c}} 
+\index{m::input::mCallbackInputManager@{m::input::mCallbackInputManager}!detach\_fromMouseScrollEvent@{detach\_fromMouseScrollEvent}}
+\index{detach\_fromMouseScrollEvent@{detach\_fromMouseScrollEvent}!m::input::mCallbackInputManager@{m::input::mCallbackInputManager}}
+\doxysubsubsection{\texorpdfstring{detach\_fromMouseScrollEvent()}{detach\_fromMouseScrollEvent()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void m\+::input\+::m\+Callback\+Input\+Manager\+::detach\+\_\+from\+Mouse\+Scroll\+Event (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classm_1_1m_signal_aad959466bfb4da3a46ece8eb6608191b}{m\+Scroll\+Signal\+::m\+Callback\+Handle}} \&}]{a\+\_\+handle }\end{DoxyParamCaption})}
+
+
+
+Detach a callback to a mouse scroll event. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+handle} & The handle to the callback to remove \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{structm_1_1input_1_1m_callback_input_manager_a2b827625639f99105fa36af9cd80e731}\label{structm_1_1input_1_1m_callback_input_manager_a2b827625639f99105fa36af9cd80e731}} 
+\index{m::input::mCallbackInputManager@{m::input::mCallbackInputManager}!process\_keyEvent@{process\_keyEvent}}
+\index{process\_keyEvent@{process\_keyEvent}!m::input::mCallbackInputManager@{m::input::mCallbackInputManager}}
+\doxysubsubsection{\texorpdfstring{process\_keyEvent()}{process\_keyEvent()}}
+{\footnotesize\ttfamily void m\+::input\+::m\+Callback\+Input\+Manager\+::process\+\_\+key\+Event (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}{m\+Key}}}]{a\+\_\+key,  }\item[{\mbox{\hyperlink{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474}{m\+Input\+Type}}}]{a\+\_\+action }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Process a key event. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+key} & The key concerned by the event \\
+\hline
+{\em a\+\_\+action} & The input\+Type of the event \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \mbox{\hyperlink{classm_1_1input_1_1m_i_input_manager_a88bb9969485bf189f3b227d2341308fa}{m\+::input\+::m\+IInput\+Manager}}.
+
+\mbox{\Hypertarget{structm_1_1input_1_1m_callback_input_manager_a0ca77905114cf2cb58d3b3dbd7c5b867}\label{structm_1_1input_1_1m_callback_input_manager_a0ca77905114cf2cb58d3b3dbd7c5b867}} 
+\index{m::input::mCallbackInputManager@{m::input::mCallbackInputManager}!process\_mouseEvent@{process\_mouseEvent}}
+\index{process\_mouseEvent@{process\_mouseEvent}!m::input::mCallbackInputManager@{m::input::mCallbackInputManager}}
+\doxysubsubsection{\texorpdfstring{process\_mouseEvent()}{process\_mouseEvent()}}
+{\footnotesize\ttfamily void m\+::input\+::m\+Callback\+Input\+Manager\+::process\+\_\+mouse\+Event (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacem_1_1input_ab7450ac4b61b5654bc908d4aa4e03ffe}{m\+Mouse\+Button}}}]{a\+\_\+button,  }\item[{\mbox{\hyperlink{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474}{m\+Input\+Type}}}]{a\+\_\+action }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Process a mouse event. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+button} & The mouse button concerned by the event \\
+\hline
+{\em a\+\_\+action} & The input\+Type of the event \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \mbox{\hyperlink{classm_1_1input_1_1m_i_input_manager_a44e14408b79c8f86021917be8fc93f58}{m\+::input\+::m\+IInput\+Manager}}.
+
+\mbox{\Hypertarget{structm_1_1input_1_1m_callback_input_manager_ae2ce0985dd4521f5fcccc1b19556d54e}\label{structm_1_1input_1_1m_callback_input_manager_ae2ce0985dd4521f5fcccc1b19556d54e}} 
+\index{m::input::mCallbackInputManager@{m::input::mCallbackInputManager}!process\_mouseMoveEvent@{process\_mouseMoveEvent}}
+\index{process\_mouseMoveEvent@{process\_mouseMoveEvent}!m::input::mCallbackInputManager@{m::input::mCallbackInputManager}}
+\doxysubsubsection{\texorpdfstring{process\_mouseMoveEvent()}{process\_mouseMoveEvent()}}
+{\footnotesize\ttfamily void m\+::input\+::m\+Callback\+Input\+Manager\+::process\+\_\+mouse\+Move\+Event (\begin{DoxyParamCaption}\item[{m\+Int}]{a\+\_\+x\+Pos,  }\item[{m\+Int}]{a\+\_\+y\+Pos }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Process a mouse move event. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+x\+Pos} & The position of the cursor on the x axis \\
+\hline
+{\em a\+\_\+y\+Pos} & The position of the cursor on the y axis \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \mbox{\hyperlink{classm_1_1input_1_1m_i_input_manager_ad37319d2a2f82af161670596f441b002}{m\+::input\+::m\+IInput\+Manager}}.
+
+\mbox{\Hypertarget{structm_1_1input_1_1m_callback_input_manager_a7f1c2b2f0b4aa8bc158c37cc3a0999d7}\label{structm_1_1input_1_1m_callback_input_manager_a7f1c2b2f0b4aa8bc158c37cc3a0999d7}} 
+\index{m::input::mCallbackInputManager@{m::input::mCallbackInputManager}!process\_mouseScrollEvent@{process\_mouseScrollEvent}}
+\index{process\_mouseScrollEvent@{process\_mouseScrollEvent}!m::input::mCallbackInputManager@{m::input::mCallbackInputManager}}
+\doxysubsubsection{\texorpdfstring{process\_mouseScrollEvent()}{process\_mouseScrollEvent()}}
+{\footnotesize\ttfamily void m\+::input\+::m\+Callback\+Input\+Manager\+::process\+\_\+mouse\+Scroll\+Event (\begin{DoxyParamCaption}\item[{double}]{a\+\_\+offset }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Process a scroll event. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+offset} & The delta of the scroll event \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \mbox{\hyperlink{classm_1_1input_1_1m_i_input_manager_a0cd864286dc9e9479a60a0b4f2211b0f}{m\+::input\+::m\+IInput\+Manager}}.
+
+\mbox{\Hypertarget{structm_1_1input_1_1m_callback_input_manager_a0889ff9fb98f229a4cc4a20efa7d5841}\label{structm_1_1input_1_1m_callback_input_manager_a0889ff9fb98f229a4cc4a20efa7d5841}} 
+\index{m::input::mCallbackInputManager@{m::input::mCallbackInputManager}!update\_keyMods@{update\_keyMods}}
+\index{update\_keyMods@{update\_keyMods}!m::input::mCallbackInputManager@{m::input::mCallbackInputManager}}
+\doxysubsubsection{\texorpdfstring{update\_keyMods()}{update\_keyMods()}}
+{\footnotesize\ttfamily void m\+::input\+::m\+Callback\+Input\+Manager\+::update\+\_\+key\+Mods (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacem_1_1input_a4d1cd74bc998f39bd8d6fb8216513ada}{m\+Key\+Mod}}}]{a\+\_\+mod,  }\item[{\mbox{\hyperlink{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474}{m\+Input\+Type}}}]{a\+\_\+action }\end{DoxyParamCaption})}
+
+
+
+Update the current key mods. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+mod} & The key mod to update the status \\
+\hline
+{\em a\+\_\+action} & If the key mod has been pressed of released \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Core/\+Kernel/Input.\+hpp\item 
+Mesum\+Core/\+Kernel/Input.\+cpp\end{DoxyCompactItemize}

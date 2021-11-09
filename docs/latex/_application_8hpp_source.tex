@@ -1,0 +1,63 @@
+\hypertarget{_application_8hpp_source}{}\doxysection{Application.\+hpp}
+\label{_application_8hpp_source}\index{MesumCore/Kernel/Application.hpp@{MesumCore/Kernel/Application.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}Kernel.hpp"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}Types.hpp"{}}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{10 }
+\DoxyCodeLine{14 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacem_1_1application}{m::application}}}
+\DoxyCodeLine{15 \{}
+\DoxyCodeLine{21 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1application_1_1m_i_basic_application}{mIBasicApplication}}}
+\DoxyCodeLine{22 \{}
+\DoxyCodeLine{23    \textcolor{keyword}{public}:}
+\DoxyCodeLine{31     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1application_1_1m_i_basic_application_a10ecb6a45dbf100c037eff46b5a1f161}{launch}}(\mbox{\hyperlink{structm_1_1m_cmd_line}{mCmdLine}} \textcolor{keyword}{const}\& a\_cmdLine, \textcolor{keywordtype}{void}* a\_appData) = 0;}
+\DoxyCodeLine{32 \};}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{40 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1application_1_1m_i_loop_application}{mILoopApplication}} : \textcolor{keyword}{public} \mbox{\hyperlink{classm_1_1application_1_1m_i_basic_application}{mIBasicApplication}}}
+\DoxyCodeLine{41 \{}
+\DoxyCodeLine{42    \textcolor{keyword}{public}:}
+\DoxyCodeLine{50     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1application_1_1m_i_loop_application_ac9606c3ee30894f0694bc390a6c42f0d}{launch}}(\mbox{\hyperlink{structm_1_1m_cmd_line}{mCmdLine}} \textcolor{keyword}{const}\& a\_cmdLine, \textcolor{keywordtype}{void}* a\_appData) \textcolor{keyword}{final};}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52    \textcolor{keyword}{private}:}
+\DoxyCodeLine{60     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1application_1_1m_i_loop_application_aa1f941cca206e4783c7bcc206c85a950}{init}}(\mbox{\hyperlink{structm_1_1m_cmd_line}{mCmdLine}} \textcolor{keyword}{const}\& a\_cmdLine, \textcolor{keywordtype}{void}* a\_appData) = 0;}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{65     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1application_1_1m_i_loop_application_a5a2573e1a7468ce947c800cd6397f5b9}{destroy}}() = 0;}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{73     \textcolor{keyword}{virtual} mBool \mbox{\hyperlink{classm_1_1application_1_1m_i_loop_application_a2a918b6f3eed947f5f75e9affa1e4680}{step}}() = 0;}
+\DoxyCodeLine{74 \};}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{82 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application}{mITimedLoopApplication}} : \textcolor{keyword}{public} \mbox{\hyperlink{classm_1_1application_1_1m_i_basic_application}{mIBasicApplication}}}
+\DoxyCodeLine{83 \{}
+\DoxyCodeLine{84    \textcolor{keyword}{public}:}
+\DoxyCodeLine{92     \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application_a2ec2d8e42fcf88cb05bd8fc6748959b9}{launch}}(\mbox{\hyperlink{structm_1_1m_cmd_line}{mCmdLine}} \textcolor{keyword}{const}\& a\_cmdLine, \textcolor{keywordtype}{void}* a\_appData) \textcolor{keyword}{final};}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{99     \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application_a30915222caf71e7686751485d89194b3}{set\_minimalStepDuration}}(}
+\DoxyCodeLine{100         std::chrono::steady\_clock::duration a\_minStepDuration)}
+\DoxyCodeLine{101     \{}
+\DoxyCodeLine{102         \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application_afffa7f3a19ce07e78e580eed75708139}{m\_minStepDuration}} = a\_minStepDuration;}
+\DoxyCodeLine{103     \}}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{110     \textcolor{keyword}{inline} std::chrono::steady\_clock::duration \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application_aacc12d18ffeae05cdbdbfa2eed7a4376}{get\_minimalStepDuration}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{111 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{112         \textcolor{keywordflow}{return} \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application_afffa7f3a19ce07e78e580eed75708139}{m\_minStepDuration}};}
+\DoxyCodeLine{113     \}}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115    \textcolor{keyword}{private}:}
+\DoxyCodeLine{123     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application_ad4ed9bb275006c340185826f215e6215}{init}}(\mbox{\hyperlink{structm_1_1m_cmd_line}{mCmdLine}} \textcolor{keyword}{const}\& a\_cmdLine, \textcolor{keywordtype}{void}* a\_appData) = 0;}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{128     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application_a7f497a19bcd06e55087a92548550201d}{destroy}}() = 0;}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{137     \textcolor{keyword}{virtual} mBool \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application_a962bd499a87f45a4995832697ee7da9f}{step}}(}
+\DoxyCodeLine{138         std::chrono::steady\_clock::duration \textcolor{keyword}{const}\& a\_deltaTime) = 0;}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140    \textcolor{keyword}{private}:}
+\DoxyCodeLine{144     std::chrono::steady\_clock::duration \mbox{\hyperlink{classm_1_1application_1_1m_i_timed_loop_application_afffa7f3a19ce07e78e580eed75708139}{m\_minStepDuration}}\{0\};}
+\DoxyCodeLine{145 \};}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147 \}  \textcolor{comment}{// namespace m::application}}
+\DoxyCodeLine{148 }
+
+\end{DoxyCode}

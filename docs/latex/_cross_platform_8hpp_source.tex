@@ -1,0 +1,48 @@
+\hypertarget{_cross_platform_8hpp_source}{}\doxysection{Cross\+Platform.\+hpp}
+\label{_cross_platform_8hpp_source}\index{MesumGraphics/CrossPlatform.hpp@{MesumGraphics/CrossPlatform.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_CROSSPLATFORM}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_CROSSPLATFORM}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <MesumCore/Common/CoreCommon.hpp>}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#if defined M\_UNIX}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <Unix/Includes.hpp>}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{keyword}{namespace }m}
+\DoxyCodeLine{12 \{}
+\DoxyCodeLine{13     \textcolor{keyword}{namespace }platform}
+\DoxyCodeLine{14     \{}
+\DoxyCodeLine{15         \textcolor{keyword}{using namespace }xcb\_unix;}
+\DoxyCodeLine{16     \}}
+\DoxyCodeLine{17 \}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#elif defined M\_WIN32}}
+\DoxyCodeLine{20  }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <Win32/Includes.hpp>}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{namespace }m }
+\DoxyCodeLine{24 \{}
+\DoxyCodeLine{25     \textcolor{keyword}{namespace }platform}
+\DoxyCodeLine{26     \{}
+\DoxyCodeLine{27         \textcolor{keyword}{using namespace }win32;}
+\DoxyCodeLine{28     \}}
+\DoxyCodeLine{29 \}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{keyword}{namespace }m}
+\DoxyCodeLine{35 \{}
+\DoxyCodeLine{36 \textcolor{keyword}{namespace }crossPlatform}
+\DoxyCodeLine{37 \{}
+\DoxyCodeLine{38 \textcolor{keyword}{using} IWindowedApplication = platform::IWindowedApplicationImpl;}
+\DoxyCodeLine{39 \}  \textcolor{comment}{// namespace crossPlatform}}
+\DoxyCodeLine{40 \}  \textcolor{comment}{// namespace m}}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//M\_CROSSPLATFORM}}
+
+\end{DoxyCode}

@@ -1,0 +1,144 @@
+\hypertarget{_vec_8hpp_source}{}\doxysection{Vec.\+hpp}
+\label{_vec_8hpp_source}\index{MesumCore/Kernel/Vec.hpp@{MesumCore/Kernel/Vec.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}Types.hpp"{}}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{9 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacem_1_1math}{m::math}}}
+\DoxyCodeLine{10 \{}
+\DoxyCodeLine{14 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_Size>}
+\DoxyCodeLine{15 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1math_1_1m_vec_data}{mVecData}}}
+\DoxyCodeLine{16 \{}
+\DoxyCodeLine{17     t\_T data[t\_Size];}
+\DoxyCodeLine{18 \};}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{23 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T>}
+\DoxyCodeLine{24 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1math_1_1m_vec_data}{mVecData}}<t\_T, 2>}
+\DoxyCodeLine{25 \{}
+\DoxyCodeLine{26     \textcolor{keyword}{union}}
+\DoxyCodeLine{27     \{}
+\DoxyCodeLine{28         t\_T data[2];}
+\DoxyCodeLine{29         \textcolor{keyword}{struct}}
+\DoxyCodeLine{30         \{}
+\DoxyCodeLine{31             t\_T x;}
+\DoxyCodeLine{32             t\_T y;}
+\DoxyCodeLine{33         \};}
+\DoxyCodeLine{34     \};}
+\DoxyCodeLine{35 \};}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{40 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T>}
+\DoxyCodeLine{41 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1math_1_1m_vec_data}{mVecData}}<t\_T, 3>}
+\DoxyCodeLine{42 \{}
+\DoxyCodeLine{43     \textcolor{keyword}{union}}
+\DoxyCodeLine{44     \{}
+\DoxyCodeLine{45         t\_T data[3];}
+\DoxyCodeLine{46         \textcolor{keyword}{struct}}
+\DoxyCodeLine{47         \{}
+\DoxyCodeLine{48             t\_T x;}
+\DoxyCodeLine{49             t\_T y;}
+\DoxyCodeLine{50             t\_T z;}
+\DoxyCodeLine{51         \};}
+\DoxyCodeLine{52     \};}
+\DoxyCodeLine{53 \};}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{58 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T>}
+\DoxyCodeLine{59 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1math_1_1m_vec_data}{mVecData}}<t\_T, 4>}
+\DoxyCodeLine{60 \{}
+\DoxyCodeLine{61     \textcolor{keyword}{union}}
+\DoxyCodeLine{62     \{}
+\DoxyCodeLine{63         t\_T data[4];}
+\DoxyCodeLine{64         \textcolor{keyword}{struct}}
+\DoxyCodeLine{65         \{}
+\DoxyCodeLine{66             t\_T x;}
+\DoxyCodeLine{67             t\_T y;}
+\DoxyCodeLine{68             t\_T z;}
+\DoxyCodeLine{69             t\_T w;}
+\DoxyCodeLine{70         \};}
+\DoxyCodeLine{71     \};}
+\DoxyCodeLine{72 \};}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{80 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_Size>}
+\DoxyCodeLine{81 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec}} : \textcolor{keyword}{public} \mbox{\hyperlink{structm_1_1math_1_1m_vec_data}{mVecData}}<t\_T, t\_Size>}
+\DoxyCodeLine{82 \{}
+\DoxyCodeLine{83     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec}}();}
+\DoxyCodeLine{84     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec}}(\textcolor{keyword}{const} std::initializer\_list<t\_T>\& a\_list);}
+\DoxyCodeLine{85     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec}}(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec_data}{mVecData<t\_T, t\_Size>}}\& a\_data);}
+\DoxyCodeLine{86     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec}}(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec_data}{mVecData<t\_T, t\_Size>}}\&\& a\_data);}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec_data}{mVecData<t\_T, t\_Size>}}\& a\_data);}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90     t\_T\& operator[](mUInt a\_index);}
+\DoxyCodeLine{91     t\_T  operator[](mUInt a\_index) \textcolor{keyword}{const};}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& operator++();}
+\DoxyCodeLine{94     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}  operator++(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{95     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& operator-\/-\/();}
+\DoxyCodeLine{96     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}  operator-\/-\/(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& operator+=(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_v);}
+\DoxyCodeLine{99     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& operator+=(t\_T a\_t);}
+\DoxyCodeLine{100     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& operator-\/=(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_v);}
+\DoxyCodeLine{101     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& operator-\/=(t\_T a\_t);}
+\DoxyCodeLine{102     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& operator*=(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_v);}
+\DoxyCodeLine{103     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& operator*=(t\_T a\_t);}
+\DoxyCodeLine{104     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& operator/=(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_v);}
+\DoxyCodeLine{105     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& operator/=(t\_T a\_t);}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}} operator+() \textcolor{keyword}{const};}
+\DoxyCodeLine{108     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}} operator-\/() \textcolor{keyword}{const};}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110     mBool operator==(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_v) \textcolor{keyword}{const};}
+\DoxyCodeLine{111 \};}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_Size>}
+\DoxyCodeLine{114 \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}} operator+(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_lhs,}
+\DoxyCodeLine{115                             \textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_rhs);}
+\DoxyCodeLine{116 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_Size>}
+\DoxyCodeLine{117 \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}} operator-\/(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_lhs,}
+\DoxyCodeLine{118                             \textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_rhs);}
+\DoxyCodeLine{119 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_Size>}
+\DoxyCodeLine{120 \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}} operator*(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_lhs,}
+\DoxyCodeLine{121                             \textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_rhs);}
+\DoxyCodeLine{122 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_Size>}
+\DoxyCodeLine{123 \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}} operator/(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_lhs,}
+\DoxyCodeLine{124                             \textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_rhs);}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_Size>}
+\DoxyCodeLine{127 \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}} operator+(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_lhs, t\_T a\_rhs);}
+\DoxyCodeLine{128 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_Size>}
+\DoxyCodeLine{129 \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}} operator-\/(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_lhs, t\_T a\_rhs);}
+\DoxyCodeLine{130 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_Size>}
+\DoxyCodeLine{131 \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}} operator*(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_lhs, t\_T a\_rhs);}
+\DoxyCodeLine{132 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_Size>}
+\DoxyCodeLine{133 \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}} operator/(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_lhs, t\_T a\_rhs);}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_Size>}
+\DoxyCodeLine{136 \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}} operator+(t\_T a\_lhs, \textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_rhs);}
+\DoxyCodeLine{137 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_Size>}
+\DoxyCodeLine{138 \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}} operator-\/(t\_T a\_lhs, \textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_rhs);}
+\DoxyCodeLine{139 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_Size>}
+\DoxyCodeLine{140 \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}} operator*(t\_T a\_lhs, \textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_rhs);}
+\DoxyCodeLine{141 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_Size>}
+\DoxyCodeLine{142 \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}} operator/(t\_T a\_lhs, \textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_rhs);}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_Size>}
+\DoxyCodeLine{145 [[nodiscard]] \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}} abs(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_v);}
+\DoxyCodeLine{146 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_Size>}
+\DoxyCodeLine{147 [[nodiscard]] t\_T dot(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_lhs,}
+\DoxyCodeLine{148                       \textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_rhs);}
+\DoxyCodeLine{149 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_Size>}
+\DoxyCodeLine{150 [[nodiscard]] t\_T length(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_v);}
+\DoxyCodeLine{151 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_Size>}
+\DoxyCodeLine{152 [[nodiscard]] t\_T sqlength(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_v);}
+\DoxyCodeLine{153 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_Size>}
+\DoxyCodeLine{154 [[nodiscard]] \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}} normalized(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_Size>}}\& a\_v);}
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156 \};  \textcolor{comment}{// namespace m::math}}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158 \textcolor{preprocessor}{\#include "{}Vec.inl"{}}}
+\DoxyCodeLine{159 }
+\DoxyCodeLine{162 }
+
+\end{DoxyCode}

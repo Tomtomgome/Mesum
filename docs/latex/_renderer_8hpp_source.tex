@@ -1,0 +1,92 @@
+\hypertarget{_renderer_8hpp_source}{}\doxysection{Renderer.\+hpp}
+\label{_renderer_8hpp_source}\index{MesumGraphics/Renderer.hpp@{MesumGraphics/Renderer.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_Renderer}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_Renderer}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <MesumCore/Kernel/Callbacks.hpp>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <MesumCore/Kernel/Types.hpp>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <MesumGraphics/Common.hpp>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <MesumGraphics/RenderTask.hpp>}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{keyword}{namespace }m::render}
+\DoxyCodeLine{11 \{}
+\DoxyCodeLine{12 \textcolor{keyword}{enum class} RendererApi}
+\DoxyCodeLine{13 \{}
+\DoxyCodeLine{14     Default,  \textcolor{comment}{// Given by project generation}}
+\DoxyCodeLine{15     DX12,}
+\DoxyCodeLine{16     Vulkan,}
+\DoxyCodeLine{17     \_count}
+\DoxyCodeLine{18 \};}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#if defined M\_WIN32}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{struct }Win32SurfaceInitData}
+\DoxyCodeLine{23 \{}
+\DoxyCodeLine{24     HWND m\_hwnd;}
+\DoxyCodeLine{25     mU32  m\_width;}
+\DoxyCodeLine{26     mU32  m\_height;}
+\DoxyCodeLine{27 \};}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keyword}{struct }X11SurfaceInitData}
+\DoxyCodeLine{30 \{}
+\DoxyCodeLine{31 \};}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#elif defined M\_UNIX}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{keyword}{struct }Win32SurfaceInitData}
+\DoxyCodeLine{36 \{}
+\DoxyCodeLine{37 \};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{keyword}{struct }X11SurfaceInitData}
+\DoxyCodeLine{40 \{}
+\DoxyCodeLine{41     mU32 m\_width;}
+\DoxyCodeLine{42     mU32 m\_height;}
+\DoxyCodeLine{43 \};}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1render_1_1_i_surface}{ISurface}}}
+\DoxyCodeLine{48 \{}
+\DoxyCodeLine{49    \textcolor{keyword}{public}:}
+\DoxyCodeLine{50     \textcolor{keyword}{virtual} \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{\string~ISurface}}()                                   = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{51     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} init\_win32(Win32SurfaceInitData\& a\_data) = 0;}
+\DoxyCodeLine{52     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} init\_x11(X11SurfaceInitData\& a\_data)     = 0;}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54     \textcolor{keyword}{virtual} \mbox{\hyperlink{structm_1_1render_1_1_taskset}{render::Taskset}}* addNew\_renderTaskset() = 0;}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} render()                          = 0;}
+\DoxyCodeLine{57     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} resize(mU32 a\_width, mU32 a\_height) = 0;}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} destroy() = 0;}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61     \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_i_surface_1_1_handle}{Handle}}}
+\DoxyCodeLine{62     \{}
+\DoxyCodeLine{63         \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{ISurface}}* surface = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{64         mBool     isValid = \textcolor{keyword}{true};}
+\DoxyCodeLine{65     \};}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67     \textcolor{keyword}{using} HdlPtr = std::shared\_ptr<Handle>;}
+\DoxyCodeLine{68 \};}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{IRenderer}}}
+\DoxyCodeLine{71 \{}
+\DoxyCodeLine{72    \textcolor{keyword}{public}:}
+\DoxyCodeLine{73     \textcolor{keyword}{virtual} \mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{\string~IRenderer}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} init()    = 0;}
+\DoxyCodeLine{76     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} destroy() = 0;}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78     \textcolor{keyword}{virtual} mBool get\_supportDearImGuiMultiViewports()    = 0;}
+\DoxyCodeLine{79     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} start\_dearImGuiNewFrameRenderer() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81     \textcolor{keyword}{virtual} \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{ISurface}}* get\_newSurface() = 0;}
+\DoxyCodeLine{82 \};}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 \}  \textcolor{comment}{// namespace m::render}}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_Renderer}}
+
+\end{DoxyCode}

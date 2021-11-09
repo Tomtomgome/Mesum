@@ -1,0 +1,57 @@
+\hypertarget{_asserts_8hpp_source}{}\doxysection{Asserts.\+hpp}
+\label{_asserts_8hpp_source}\index{MesumCore/Kernel/Asserts.hpp@{MesumCore/Kernel/Asserts.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}../Common/CoreCommon.hpp"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}Logger.hpp"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}Types.hpp"{}}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <csignal>}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{comment}{// PLATFORM\_SPECIFIC}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#if defined(SIGTRAP)}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#define mInterrupt raise(SIGTRAP)}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#elif defined \_MSC\_VER}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#define mInterrupt \_\_debugbreak();}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#define mInterrupt}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#define mNotImplemented mInterrupt}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keyword}{namespace }m}
+\DoxyCodeLine{29 \{}
+\DoxyCodeLine{30 \textcolor{keyword}{extern} MesumCoreApi \textcolor{keyword}{const} \mbox{\hyperlink{namespacem_1_1logging_af807dfba0ed733f24957c0f3d016a15f}{logging::mChannelID}} g\_assertLogID;}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{41 \textcolor{keywordtype}{void} manage\_assert(mBool a\_condition, mInt a\_lineNumber, \textcolor{keyword}{const} mChar* a\_file,}
+\DoxyCodeLine{42                    \textcolor{keyword}{const} mChar* a\_message, mBool a\_interrupt = \textcolor{keyword}{true});}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \};  \textcolor{comment}{// namespace m}}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{preprocessor}{\#define WIDE2(x) L\#\#x}}
+\DoxyCodeLine{47 \textcolor{preprocessor}{\#define WIDE1(x) WIDE2(x)}}
+\DoxyCodeLine{48 \textcolor{preprocessor}{\#define WFILE WIDE1(\_\_FILE\_\_)}}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 \textcolor{comment}{// PLATFORM\_SPECIFIC}}
+\DoxyCodeLine{51 \textcolor{preprocessor}{\#ifdef M\_RELEASE}}
+\DoxyCodeLine{52 \textcolor{preprocessor}{\#define mSoftAssert(condition)}}
+\DoxyCodeLine{53 \textcolor{preprocessor}{\#define mAssert(condition)}}
+\DoxyCodeLine{54 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{60 \textcolor{preprocessor}{\#define mSoftAssert(a\_condition)                      \(\backslash\)}}
+\DoxyCodeLine{61 \textcolor{preprocessor}{    m::manage\_assert(a\_condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}}
+\DoxyCodeLine{62 \textcolor{preprocessor}{                     "{}Triggered soft assertion from file : "{}}, false);}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{70 \textcolor{preprocessor}{\#define mAssert(a\_condition)                          \(\backslash\)}}
+\DoxyCodeLine{71 \textcolor{preprocessor}{    m::manage\_assert(a\_condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}}
+\DoxyCodeLine{72 \textcolor{preprocessor}{                     "{}Triggered soft assertion from file : "{}});}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{79 \textcolor{preprocessor}{\#define mExpect(a\_condition)                          \(\backslash\)}}
+\DoxyCodeLine{80 \textcolor{preprocessor}{    m::manage\_assert(a\_condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}}
+\DoxyCodeLine{81 \textcolor{preprocessor}{                     "{}Precondition not matched : "{}});}
+\DoxyCodeLine{82 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{86 }
+
+\end{DoxyCode}

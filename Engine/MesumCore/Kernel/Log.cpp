@@ -1,5 +1,5 @@
 #include <Log.hpp>
 
-namespace logging {
-
+namespace m::logging
+{
 }

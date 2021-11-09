@@ -17,7 +17,7 @@ Task* TaskData3dRender::getNew_dx12Implementation(TaskData* a_data)
 //-----------------------------------------------------------------------------
 Task3dRender::Task3dRender(TaskData3dRender* a_data)
 {
-    mAssert(a_data != nullptr);
+    mSoftAssert(a_data != nullptr);
     m_taskData = *a_data;
 }
 
@@ -101,7 +101,7 @@ Dx12Task3dRender::Dx12Task3dRender(TaskData3dRender* a_data)
     {
         if (errorBlob != nullptr)
         {
-            mLOG((char*)errorBlob->GetBufferPointer());
+            mLog((char*)errorBlob->GetBufferPointer());
         }
     }
     dx12::ComPtr<ID3D12Device> device =

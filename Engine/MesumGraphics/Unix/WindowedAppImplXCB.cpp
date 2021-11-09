@@ -53,8 +53,8 @@ void IWindowedApplicationImpl::init_renderer(render::RendererApi a_renderApi)
 }
 
 windows::IWindow* IWindowedApplicationImpl::add_newWindow(std::wstring a_name,
-                                                          U32          a_width,
-                                                          U32          a_height)
+                                                          mU32         a_width,
+                                                          mU32         a_height)
 {
     IWindowImpl* newWindow = new IWindowImpl();
     m_windows.insert(newWindow);
@@ -69,15 +69,15 @@ windows::IWindow* IWindowedApplicationImpl::add_newWindow(std::wstring a_name,
 }
 
 void IWindowedApplicationImpl::set_processImGuiMultiViewports(
-    Bool a_supportMultiViewPorts)
+    mBool a_supportMultiViewPorts)
 {
-    mHardAssert((!a_supportMultiViewPorts) ||
+    mAssert((!a_supportMultiViewPorts) ||
                 (m_renderer->get_supportDearImGuiMultiViewports() == true));
     m_supportImGuiMultiViewPorts = a_supportMultiViewPorts;
 }
 
 void IWindowedApplicationImpl::start_dearImGuiNewFrame() {
-    mHardAssert(m_renderer != nullptr);
+    mAssert(m_renderer != nullptr);
     m_renderer->start_dearImGuiNewFrame();
 }
 
@@ -99,11 +99,11 @@ void IWindowedApplicationImpl::render()
     }
 }
 
-void IWindowedApplicationImpl::init()
+void IWindowedApplicationImpl::init(mCmdLine const& a_cmdLine, void* a_appData)
 {
-    WindowedLaunchData& data = *(WindowedLaunchData*)m_appData;
+    WindowedLaunchData& data = *(WindowedLaunchData*)a_appData;
 
-    m_W32Context.init(data.m_hInstance);
+    m_W32Context.init(<#initializer #>, nullptr);
 
     // Windows 10 Creators update adds Per Monitor V2 DPI awareness context.
     // Using this awareness context allows the client area of the window
@@ -111,7 +111,7 @@ void IWindowedApplicationImpl::init()
     // be rendered in a DPI sensitive fashion.
     SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
 
-    const Char className[] = L"MainWindowClass";
+    const mChar className[] = L"MainWindowClass";
     // Register the window class.
     m_W32Context.register_windowClass(className, data.m_hInstance, WindowProc);
 }
@@ -136,9 +136,10 @@ void IWindowedApplicationImpl::destroy()
     m_W32Context.destroy();
 }
 
-Bool IWindowedApplicationImpl::step(const Double& a_deltaTime)
+mBool IWindowedApplicationImpl::step(
+    const std::chrono::duration<long long int, std::nano>& a_deltaTime)
 {
-    Bool signalKeepRunning = true;
+    mBool signalKeepRunning = true;
 
     // Run the message loop.
     MSG msg = {};

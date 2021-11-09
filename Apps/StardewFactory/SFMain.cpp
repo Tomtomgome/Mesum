@@ -10,7 +10,7 @@
 
 using namespace m;
 
-math::RandomGenerator g_numberGenerator;
+math::mXoRandomNumberGenerator g_numberGenerator;
 
 // enum ObjectType
 // {
@@ -42,7 +42,7 @@ math::RandomGenerator g_numberGenerator;
 
 // struct CommandAddObjectToInventory : ICommand
 // {
-//     Bool execute()
+//     mBool execute()
 //     {
 //         m_inventory->m_slots[m_objectToAdd.m_type].m_objects.push_back(
 //             m_objectToAdd);
@@ -58,20 +58,20 @@ math::RandomGenerator g_numberGenerator;
 //*****************************************************************************
 // struct AgentNutriment : public IPositionable, public IPermanent
 // {
-//     void update(Double a_deltaTime)
+//     void update(mDouble a_deltaTime)
 //     {
 //         m_nutrientQuantity +=
 //             std::min(s_fieldRegenerationRate *
-//             static_cast<Float>(a_deltaTime),
+//             static_cast<mFloat>(a_deltaTime),
 //                      s_fieldMaxNutiments);
 //     }
 //
-//     Float m_nutrientQuantity = s_fieldMaxNutiments;
+//     mFloat m_nutrientQuantity = s_fieldMaxNutiments;
 // };
 
 // struct AgentPlant : public IPositionable, public IVolatile
 // {
-//     void update(Double a_deltaTime)
+//     void update(mDouble a_deltaTime)
 //     {
 //         if (m_isHarvested)
 //         {
@@ -103,10 +103,10 @@ math::RandomGenerator g_numberGenerator;
 //     void harvest() { m_isHarvested = true; }
 //
 //     Field* m_fieldOfNutriment = nullptr;
-//     Bool   m_isHarvested      = false;
-//     Float  m_consumption      = s_plantBaseConsumptionRate;
-//     Float  m_age              = 0.0f;
-//     Float  m_health           = s_plantBaseHealth;
+//     mBool   m_isHarvested      = false;
+//     mFloat  m_consumption      = s_plantBaseConsumptionRate;
+//     mFloat  m_age              = 0.0f;
+//     mFloat  m_health           = s_plantBaseHealth;
 // };
 
 //*****************************************************************************
@@ -114,7 +114,7 @@ math::RandomGenerator g_numberGenerator;
 //*****************************************************************************
 // struct CommandPlantCrop : public ICommand
 // {
-//     virtual Bool execute() override
+//     virtual mBool execute() override
 //     {
 //         // Look if there is already a plant
 //         Field::Cell& cellContent =
@@ -161,7 +161,7 @@ math::RandomGenerator g_numberGenerator;
 //
 // struct CommandHarvestCrop : public ICommand
 // {
-//     virtual Bool execute() override
+//     virtual mBool execute() override
 //     {
 //         // Look if there is allready a plant
 //         Field::Cell& cellContent =
@@ -208,7 +208,7 @@ math::RandomGenerator g_numberGenerator;
 //         m_instructions.clear();
 //     }
 //
-//     void update(Double a_deltaTime)
+//     void update(mDouble a_deltaTime)
 //     {
 //         if (m_instructions.size() == 0)
 //         {
@@ -228,8 +228,8 @@ math::RandomGenerator g_numberGenerator;
 //             (m_instructionToExecute + 1U) % m_instructions.size();
 //     }
 //
-//     Float                  m_timeBeforeNextStep   = s_machineRefreshTime;
-//     U64                    m_instructionToExecute = 0;
+//     mFloat                  m_timeBeforeNextStep   = s_machineRefreshTime;
+//     mU64                    m_instructionToExecute = 0;
 //     std::vector<ICommand*> m_instructions;
 // };
 
@@ -389,7 +389,7 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
 
     virtual void init() override
     {
-        m::crossPlatform::IWindowedApplication::init();
+        m::crossPlatform::IWindowedApplication::init(<#initializer #>, nullptr);
 
         m_iRenderer = new m::dx12::DX12Renderer();
         m_iRenderer->init();
@@ -409,35 +409,35 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         m_mainWindow->link_inputManager(&m_inputManager);
 
         m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::KEY_F11),
-            m::input::KeyActionCallback(
+            m::input::KeyAction::keyPressed(m::input::keyF11),
+            m::input::mKeyActionCallback(
                 m_mainWindow, &m::windows::IWindow::toggle_fullScreen));
 
         m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::KEY_UP),
-            m::input::KeyActionCallback(this, &StardewFactoryApp::move_up));
+            m::input::KeyAction::keyPressed(m::input::keyUp),
+            m::input::mKeyActionCallback(this, &StardewFactoryApp::move_up));
         m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::KEY_DOWN),
-            m::input::KeyActionCallback(this, &StardewFactoryApp::move_down));
+            m::input::KeyAction::keyPressed(m::input::keyDown),
+            m::input::mKeyActionCallback(this, &StardewFactoryApp::move_down));
         m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::KEY_LEFT),
-            m::input::KeyActionCallback(this, &StardewFactoryApp::move_left));
+            m::input::KeyAction::keyPressed(m::input::keyLeft),
+            m::input::mKeyActionCallback(this, &StardewFactoryApp::move_left));
         m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::KEY_RIGHT),
-            m::input::KeyActionCallback(this, &StardewFactoryApp::move_right));
+            m::input::KeyAction::keyPressed(m::input::keyRight),
+            m::input::mKeyActionCallback(this, &StardewFactoryApp::move_right));
 
         m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::KEY_SPACE),
-            m::input::KeyActionCallback(this,
+            m::input::KeyAction::keyPressed(m::input::keySpace),
+            m::input::mKeyActionCallback(this,
                                         &StardewFactoryApp::player_action));
 
         set_microSecondsLimit(16000);
 
         g_numberGenerator.init(0);
 
-        for (Int i = 0; i < FIELD_SIZE; ++i)
+        for (mInt i = 0; i < FIELD_SIZE; ++i)
         {
-            for (Int j = 0; j < FIELD_SIZE; ++j)
+            for (mInt j = 0; j < FIELD_SIZE; ++j)
             {
                 //                 AgentNutriment* nutriment = new
                 //                 AgentNutriment();
@@ -496,7 +496,7 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         //         m_agentManager.add_agent(m_machine);
         //
         //         command.m_inventory = m_machine;
-        //         for (Int i = 0; i < 100; ++i) { command.execute(); }
+        //         for (mInt i = 0; i < 100; ++i) { command.execute(); }
         //         m_machine->m_orientation                = IOrientable::Right;
         //         CommandPlantCrop* commandPlant          = new
         //         CommandPlantCrop(); commandPlant->m_agentManager            =
@@ -523,14 +523,14 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
         m::dearImGui::destroy();
     }
 
-    virtual m::Bool step(const m::Double& a_deltaTime) override
+    virtual m::mBool step(const m::mDouble& a_deltaTime) override
     {
         if (!m::crossPlatform::IWindowedApplication::step(a_deltaTime))
         {
             return false;
         }
 
-        static Double s_time = 0;
+        static mDouble s_time = 0;
         s_time += a_deltaTime;
 
         m_inputManager.processAndUpdate_States();
@@ -604,7 +604,7 @@ class StardewFactoryApp : public m::crossPlatform::IWindowedApplication
     m::input::InputManager m_inputManager;
     m::windows::IWindow*   m_mainWindow;
 
-    const m::logging::ChannelID m_SFLOG_ID = mLOG_GET_ID();
+    const m::logging::mChannelID m_SFLOG_ID = mLog_getId();
 };
 
 M_EXECUTE_WINDOWED_APP(StardewFactoryApp)

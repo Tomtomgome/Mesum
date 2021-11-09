@@ -8,13 +8,19 @@
 
 namespace m
 {
-MesumCoreApi logging::Logger<m::logging::StdcoutLogPolicy> log_inst("");
+MesumCoreApi logging::mLogger<m::logging::mStdcoutLogPolicy> log_inst("");
 
-void CmdLine::parse_cmdLineAguments(Int argc, Char** argv)
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void mCmdLine::parse_cmdLineAguments(mInt a_argc, mChar** a_argv)
 {
-    for (Int i = 0; i < argc; ++i)
+    for (mInt i = 0; i < a_argc; ++i)
     {
-        std::string arg(argv[i]);
+        std::string arg(a_argv[i]);
         if (std::find(m_listArgs.begin(), m_listArgs.end(), arg) ==
             m_listArgs.end())
         {
@@ -22,7 +28,14 @@ void CmdLine::parse_cmdLineAguments(Int argc, Char** argv)
         }
     }
 }
+
 #if defined M_WIN32
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
 std::wstring convert_string(const std::string& a_as)
 {
     // deal with trivial case of empty string

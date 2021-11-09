@@ -1,15 +1,37 @@
-#ifndef M_File
-#define M_File
 #pragma once
 
+#include "../Common/CoreCommon.hpp"
+#include "Log.hpp"
+#include "Types.hpp"
+#include <filesystem>
 #include <string>
 #include <vector>
 
+///////////////////////////////////////////////////////////////////////////////
+/// \addtogroup Core
+/// \{
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Namespace grouping file related utilities
+///////////////////////////////////////////////////////////////////////////////
 namespace m::files
 {
-void open_fileToString(std::string const& a_fileName, std::string& a_output);
-void open_fileToBinary(std::string const& a_fileName,
-                       std::vector<char>& a_output);
-} //m::files
+extern MesumCoreApi const logging::mChannelID g_fileLogID;
 
-#endif  // M_File
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Open a file and copy it's content as a binary stream
+///
+/// \param a_filePath The path to the file to open
+/// \param a_output The array to copy the data to
+/// \post if a_filePath is a proper filepath, a_output previous content will be
+/// lost
+/// \return true if the file as been successfully open and copied
+///////////////////////////////////////////////////////////////////////////////
+mBool copy_fileToBinary(std::filesystem::path const& a_filePath,
+                        std::vector<char>&           a_output);
+}  // namespace m::files
+
+///////////////////////////////////////////////////////////////////////////////
+/// \}
+///////////////////////////////////////////////////////////////////////////////

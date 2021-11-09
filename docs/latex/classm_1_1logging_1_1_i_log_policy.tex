@@ -1,0 +1,91 @@
+\hypertarget{classm_1_1logging_1_1_i_log_policy}{}\doxysection{m\+::logging\+::ILog\+Policy Class Reference}
+\label{classm_1_1logging_1_1_i_log_policy}\index{m::logging::mILogPolicy@{m::logging::mILogPolicy}}
+
+
+Interface defining a logging policy .  
+
+
+
+
+{\ttfamily \#include $<$Log\+Policies.\+hpp$>$}
+
+Inheritance diagram for m\+::logging\+::ILog\+Policy\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classm_1_1logging_1_1_i_log_policy}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classm_1_1logging_1_1_i_log_policy_a3025648b5054e9230a2f55373358d61a}{open\+\_\+ostream}} (const std\+::string \&a\+\_\+name)=0
+\begin{DoxyCompactList}\small\item\em Open the output stream. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classm_1_1logging_1_1_i_log_policy_a1e20ba94f4b934f93c2ab0bc5da0cbc2}{close\+\_\+ostream}} ()=0
+\begin{DoxyCompactList}\small\item\em close the output stream \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classm_1_1logging_1_1_i_log_policy_aef8601067385aaee19cac6e991b66378}{write}} (const std\+::string \&a\+\_\+msg)=0
+\begin{DoxyCompactList}\small\item\em write into the output steam \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Interface defining a logging policy . 
+
+The policy difines where the logs are outputed (file, stream, etc...). 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classm_1_1logging_1_1_i_log_policy_a1e20ba94f4b934f93c2ab0bc5da0cbc2}\label{classm_1_1logging_1_1_i_log_policy_a1e20ba94f4b934f93c2ab0bc5da0cbc2}} 
+\index{m::logging::mILogPolicy@{m::logging::mILogPolicy}!close\_ostream@{close\_ostream}}
+\index{close\_ostream@{close\_ostream}!m::logging::mILogPolicy@{m::logging::mILogPolicy}}
+\doxysubsubsection{\texorpdfstring{close\_ostream()}{close\_ostream()}}
+{\footnotesize\ttfamily virtual void m\+::logging\+::\+ILog\+Policy\+::close\+\_\+ostream (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+close the output stream 
+
+
+
+Implemented in \mbox{\hyperlink{classm_1_1logging_1_1_file_log_policy_a5f185d7a0c25907f1e036089c867246e}{m\+::logging\+::\+File\+Log\+Policy}}, and \mbox{\hyperlink{classm_1_1logging_1_1_stdcout_log_policy_a00904a294718b8bc7ada42cf746e3d44}{m\+::logging\+::\+Stdcout\+Log\+Policy}}.
+
+\mbox{\Hypertarget{classm_1_1logging_1_1_i_log_policy_a3025648b5054e9230a2f55373358d61a}\label{classm_1_1logging_1_1_i_log_policy_a3025648b5054e9230a2f55373358d61a}} 
+\index{m::logging::mILogPolicy@{m::logging::mILogPolicy}!open\_ostream@{open\_ostream}}
+\index{open\_ostream@{open\_ostream}!m::logging::mILogPolicy@{m::logging::mILogPolicy}}
+\doxysubsubsection{\texorpdfstring{open\_ostream()}{open\_ostream()}}
+{\footnotesize\ttfamily virtual void m\+::logging\+::\+ILog\+Policy\+::open\+\_\+ostream (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{a\+\_\+name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Open the output stream. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+name} & the name of the stream. \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{classm_1_1logging_1_1_file_log_policy_a660971d89cd25b7a11ca2002208f9106}{m\+::logging\+::\+File\+Log\+Policy}}, and \mbox{\hyperlink{classm_1_1logging_1_1_stdcout_log_policy_a8d1dc6329cb18395e76f8c79b38385c9}{m\+::logging\+::\+Stdcout\+Log\+Policy}}.
+
+\mbox{\Hypertarget{classm_1_1logging_1_1_i_log_policy_aef8601067385aaee19cac6e991b66378}\label{classm_1_1logging_1_1_i_log_policy_aef8601067385aaee19cac6e991b66378}} 
+\index{m::logging::mILogPolicy@{m::logging::mILogPolicy}!write@{write}}
+\index{write@{write}!m::logging::mILogPolicy@{m::logging::mILogPolicy}}
+\doxysubsubsection{\texorpdfstring{write()}{write()}}
+{\footnotesize\ttfamily virtual void m\+::logging\+::\+ILog\+Policy\+::write (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{a\+\_\+msg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+write into the output steam 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+msg} & the message to output. \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{classm_1_1logging_1_1_file_log_policy_a62d5f803225bd3e6d2aa356cd0be3d86}{m\+::logging\+::\+File\+Log\+Policy}}, and \mbox{\hyperlink{classm_1_1logging_1_1_stdcout_log_policy_a187ba18cae9538c335b13112ad4f565f}{m\+::logging\+::\+Stdcout\+Log\+Policy}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Core/\+Kernel/Log\+Policies.\+hpp\end{DoxyCompactItemize}

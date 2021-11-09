@@ -13,14 +13,14 @@ WorldToDisplay g_world;
 void WorldToDisplay::display_layer(std::vector<DrawData>& a_layer)
 {
     const ImVec2 p         = ImGui::GetCursorScreenPos();
-    Float        cx        = p.x + 5.0f;
-    Float        cy        = p.y + 5.0f;
+    mFloat        cx        = p.x + 5.0f;
+    mFloat        cy        = p.y + 5.0f;
     ImDrawList*  draw_list = ImGui::GetWindowDrawList();
 
     for (auto drawData : a_layer)
     {
-        Float       tX  = cx + drawData.m_position.x;
-        Float       tY  = cy + drawData.m_position.y;
+        mFloat       tX  = cx + drawData.m_position.x;
+        mFloat       tY  = cy + drawData.m_position.y;
         const ImU32 col = ImColor(drawData.m_color.x, drawData.m_color.y,
                                   drawData.m_color.z, drawData.m_color.w);
         if (drawData.m_filled)
@@ -37,7 +37,7 @@ void WorldToDisplay::display_layer(std::vector<DrawData>& a_layer)
         }
     }
 
-    U64 cap = a_layer.capacity();
+    mU64 cap = a_layer.capacity();
     a_layer.clear();
     a_layer.reserve(cap);
 }
@@ -73,7 +73,7 @@ void render_agent(AgentSoil const* a_soil)
     data.m_position.x = (parcelSize + parcelPadding) * a_soil->m_position.x;
     data.m_position.y = (parcelSize + parcelPadding) * a_soil->m_position.y;
 
-    math::Vec3 color;
+    math::mVec3 color;
     switch (a_soil->m_type)
     {
         case AgentSoil::Dirt:
@@ -112,10 +112,10 @@ void render_agent(AgentSoil const* a_soil)
 //
 //     g_world.m_middleLayer.emplace_back();
 //     DrawData& data = g_world.m_middleLayer.back();
-//     Float     agentSize =
+//     mFloat     agentSize =
 //         math::lerp(agentSizeSmall, agentSizeBig, a_agent->m_age /
 //         s_matureAge);
-//     Float innerCellPadding = parcelSize / 2.0f - agentSize / 2.0f;
+//     mFloat innerCellPadding = parcelSize / 2.0f - agentSize / 2.0f;
 //     data.m_position.x =
 //         (parcelSize + parcelPadding) * a_agent->m_position.x +
 //         innerCellPadding;
@@ -125,7 +125,7 @@ void render_agent(AgentSoil const* a_soil)
 //
 //     data.m_size = {agentSize, agentSize};
 //
-//     Float  death = 1.0f - a_agent->m_health / 100.0f;
+//     mFloat  death = 1.0f - a_agent->m_health / 100.0f;
 //     ImVec4 colf;
 //     if (a_agent->m_age < s_matureAge)
 //     {
@@ -145,7 +145,7 @@ void render_agent(AgentCharacter const* a_player)
     g_world.m_middleLayer.emplace_back();
     DrawData& data = g_world.m_middleLayer.back();
 
-    static Float innerCellPadding = 3;
+    static mFloat innerCellPadding = 3;
     data.m_position = {(parcelSize + parcelPadding) * a_player->m_position.x +
                            innerCellPadding,
                        (parcelSize + parcelPadding) * a_player->m_position.y +
@@ -163,8 +163,8 @@ void render_agent(AgentCharacter const* a_player)
 //     g_world.m_frontLayer.emplace_back();
 //     DrawData& data = g_world.m_frontLayer.back();
 //
-//     static Float innerCellPadding = -1;
-//     static Float machineSize      = parcelSize - 2 * innerCellPadding;
+//     static mFloat innerCellPadding = -1;
+//     static mFloat machineSize      = parcelSize - 2 * innerCellPadding;
 //
 //     data.m_position = {(parcelSize + parcelPadding) * a_machine->m_position.x
 //     +
@@ -180,8 +180,8 @@ void render_agent(AgentCharacter const* a_player)
 //     g_world.m_frontLayer.emplace_back();
 //     DrawData& dataSmall = g_world.m_frontLayer.back();
 //
-//     Float        midPoint  = machineSize / 2.0f;
-//     static Float smallSize = 8.0f;
+//     mFloat        midPoint  = machineSize / 2.0f;
+//     static mFloat smallSize = 8.0f;
 //
 //     dataSmall.m_size  = {smallSize, smallSize};
 //     dataSmall.m_color = {0.5f, 0.5f, 0.5f, 1.0f};

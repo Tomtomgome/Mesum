@@ -1,0 +1,31 @@
+\hypertarget{_mains_8hpp_source}{}\doxysection{Mains.\+hpp}
+\label{_mains_8hpp_source}\index{MesumCore/Kernel/Mains.hpp@{MesumCore/Kernel/Mains.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}../Common/CoreCommon.hpp"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}Kernel.hpp"{}}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}Types.hpp"{}}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{keyword}{namespace }m}
+\DoxyCodeLine{8 \{}
+\DoxyCodeLine{16 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_AppClass>}
+\DoxyCodeLine{17 \textcolor{keywordtype}{void} internal\_run(mCmdLine \textcolor{keyword}{const}\& a\_cmdLine, \textcolor{keywordtype}{void}* a\_data)}
+\DoxyCodeLine{18 \{}
+\DoxyCodeLine{19     t\_AppClass app;}
+\DoxyCodeLine{20     app.launch(a\_cmdLine, a\_data);}
+\DoxyCodeLine{21 \}}
+\DoxyCodeLine{22 \}  \textcolor{comment}{// namespace m}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#define mExecute\_consoleApplication(a\_AppClass)      \(\backslash\)}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{    int main(m::mInt argc, m::mChar** argv)          \(\backslash\)}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{    \{                                                \(\backslash\)}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{        m::mBasicLaunchData data;                    \(\backslash\)}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{        m::mCmdLine         cmdLine;                 \(\backslash\)}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{        cmdLine.parse\_cmdLineAguments(argc, argv);   \(\backslash\)}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{        m::internal\_run<a\_AppClass>(cmdLine, \&data); \(\backslash\)}}
+\DoxyCodeLine{36 \textcolor{preprocessor}{        return 0;                                    \(\backslash\)}}
+\DoxyCodeLine{37 \textcolor{preprocessor}{    \}}}
+
+\end{DoxyCode}

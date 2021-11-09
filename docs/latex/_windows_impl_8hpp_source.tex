@@ -1,0 +1,89 @@
+\hypertarget{_windows_impl_8hpp_source}{}\doxysection{Windows\+Impl.\+hpp}
+\label{_windows_impl_8hpp_source}\index{MesumGraphics/Win32/WindowsImpl.hpp@{MesumGraphics/Win32/WindowsImpl.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_WINDOWSIMPL}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_WINDOWSIMPL}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <MesumCore/Kernel/Types.hpp>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <MesumGraphics/CrossRenderer.hpp>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <MesumGraphics/Windows.hpp>}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{keyword}{namespace }m::win32}
+\DoxyCodeLine{10 \{}
+\DoxyCodeLine{11 \textcolor{keyword}{class }Win32Context;}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl}{IWindowImpl}} : \textcolor{keyword}{public} \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{windows::IWindow}}}
+\DoxyCodeLine{14 \{}
+\DoxyCodeLine{15    \textcolor{keyword}{public}:}
+\DoxyCodeLine{16     \textcolor{comment}{// Platform specific}}
+\DoxyCodeLine{17     LRESULT process\_messages(UINT a\_uMsg, WPARAM a\_wParam, LPARAM a\_lParam);}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19     \textcolor{keywordtype}{void} init() \textcolor{keyword}{override};}
+\DoxyCodeLine{20     \textcolor{keywordtype}{void} destroy() \textcolor{keyword}{override};}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22     \textcolor{keywordtype}{void} link\_inputManager(\mbox{\hyperlink{classm_1_1input_1_1m_i_input_manager}{input::mIInputManager}}* a\_inputManager)\textcolor{keyword}{ override}}
+\DoxyCodeLine{23 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{24         m\_linkedInputManager = a\_inputManager;}
+\DoxyCodeLine{25     \};}
+\DoxyCodeLine{26     render::ISurface::HdlPtr link\_renderer(}
+\DoxyCodeLine{27         \mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{render::IRenderer}}* a\_renderer) \textcolor{keyword}{override};}
+\DoxyCodeLine{28     \textcolor{keywordtype}{void} set\_size(mUInt a\_width, mUInt a\_height)\textcolor{keyword}{ override}}
+\DoxyCodeLine{29 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{30         m\_clientWidth  = a\_width;}
+\DoxyCodeLine{31         m\_clientHeight = a\_height;}
+\DoxyCodeLine{32     \}}
+\DoxyCodeLine{33     \textcolor{keywordtype}{void} set\_windowName(std::string a\_name)\textcolor{keyword}{ override }\{ m\_windowName = a\_name; \}}
+\DoxyCodeLine{34     \textcolor{keywordtype}{void} set\_asMainWindow() \textcolor{keyword}{override};}
+\DoxyCodeLine{35     \textcolor{keywordtype}{void} set\_asImGuiWindow() \textcolor{keyword}{override};}
+\DoxyCodeLine{36     \textcolor{keywordtype}{void} set\_fullScreen(mBool a\_fullscreen) \textcolor{keyword}{override};}
+\DoxyCodeLine{37     \textcolor{keywordtype}{void} toggle\_fullScreen() \textcolor{keyword}{override};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39     \textcolor{keywordtype}{void} attach\_toDestroy(\mbox{\hyperlink{classm_1_1m_callback}{mCallback<void>}} \textcolor{keyword}{const}\& a\_onDestroyCallback) \textcolor{keyword}{override};}
+\DoxyCodeLine{40     \textcolor{keywordtype}{void} attach\_toResize(}
+\DoxyCodeLine{41         \mbox{\hyperlink{classm_1_1m_callback}{mCallback<void, mU32, mU32>}} \textcolor{keyword}{const}\& a\_onResizeCallback) \textcolor{keyword}{override};}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43     \textcolor{keywordtype}{void} set\_winContext(\mbox{\hyperlink{structm_1_1win32_1_1_w_i_n32_context}{WIN32Context}} \textcolor{keyword}{const}\& a\_winContext)}
+\DoxyCodeLine{44     \{}
+\DoxyCodeLine{45         m\_parentContext = \&a\_winContext;}
+\DoxyCodeLine{46     \}}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48     [[nodiscard]] mBool is\_flaggedToBeClosed()\textcolor{keyword}{ const}}
+\DoxyCodeLine{49 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{50         \textcolor{keywordflow}{return} m\_flagToBeClosed;}
+\DoxyCodeLine{51     \}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53    \textcolor{keyword}{private}:}
+\DoxyCodeLine{54     \mbox{\hyperlink{classm_1_1input_1_1m_i_input_manager}{input::mIInputManager}}* m\_linkedInputManager;}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56     HWND m\_hwnd;}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58     \textcolor{comment}{// By default, use windowed mode.}}
+\DoxyCodeLine{59     \textcolor{comment}{// Can be toggled with F11}}
+\DoxyCodeLine{60     mBool m\_fullscreen     = \textcolor{keyword}{false};}
+\DoxyCodeLine{61     mBool m\_flagToBeClosed = \textcolor{keyword}{false};}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63     std::string m\_windowName;}
+\DoxyCodeLine{64     mBool       m\_isMainWindow = \textcolor{keyword}{false};}
+\DoxyCodeLine{65     mU32        m\_clientWidth  = 1280;}
+\DoxyCodeLine{66     mU32        m\_clientHeight = 720;}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68     \textcolor{comment}{// Window rectangle (used to toggle fullscreen state).}}
+\DoxyCodeLine{69     RECT m\_windowRect;}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71     \mbox{\hyperlink{structm_1_1win32_1_1_w_i_n32_context}{WIN32Context}} \textcolor{keyword}{const}* m\_parentContext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73     \textcolor{keyword}{using} \mbox{\hyperlink{classm_1_1m_callback}{CallbackResize}}        = \mbox{\hyperlink{classm_1_1m_callback}{mCallback<void, mU32, mU32>}};}
+\DoxyCodeLine{74     \textcolor{keyword}{using} \mbox{\hyperlink{classm_1_1m_callback}{CallbackWindowDestroy}} = \mbox{\hyperlink{classm_1_1m_callback}{mCallback<void>}};}
+\DoxyCodeLine{75     \textcolor{keyword}{using} \mbox{\hyperlink{classm_1_1m_callback}{CallbackInputProcessing}} =}
+\DoxyCodeLine{76         \mbox{\hyperlink{classm_1_1m_callback}{mCallback<void, mBool*, HWND, UINT, WPARAM, LPARAM>}};}
+\DoxyCodeLine{77     \mbox{\hyperlink{classm_1_1m_signal}{mSignal<mU32, mU32>}}                         m\_signalResize;}
+\DoxyCodeLine{78     \mbox{\hyperlink{classm_1_1m_signal}{mSignal<>}}                                   m\_signalWindowDestroyed;}
+\DoxyCodeLine{79     \mbox{\hyperlink{classm_1_1m_signal}{mSignal<mBool*, HWND, UINT, WPARAM, LPARAM>}} m\_signalOverrideInputProcessing;}
+\DoxyCodeLine{80 \};}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \}  \textcolor{comment}{// namespace m::win32}}
+\DoxyCodeLine{83 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_WINDOWSIMPL}}
+
+\end{DoxyCode}

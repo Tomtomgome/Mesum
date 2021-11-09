@@ -1,0 +1,41 @@
+\hypertarget{structm_1_1win32_1_1_w_i_n32_context}{}\doxysection{m\+::win32\+::WIN32\+Context Struct Reference}
+\label{structm_1_1win32_1_1_w_i_n32_context}\index{m::win32::WIN32Context@{m::win32::WIN32Context}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structm_1_1win32_1_1_w_i_n32_context_a784daf26e39968fa1a6900ecbafaaa16}\label{structm_1_1win32_1_1_w_i_n32_context_a784daf26e39968fa1a6900ecbafaaa16}} 
+void {\bfseries init} (HINSTANCE \&a\+\_\+h\+Instance)
+\item 
+\mbox{\Hypertarget{structm_1_1win32_1_1_w_i_n32_context_aefa12dfb14cce606b0faa2223de333d3}\label{structm_1_1win32_1_1_w_i_n32_context_aefa12dfb14cce606b0faa2223de333d3}} 
+void {\bfseries init\+\_\+keys\+Luts} ()
+\item 
+\mbox{\Hypertarget{structm_1_1win32_1_1_w_i_n32_context_aa6339082635fcb218a725ad8431cec03}\label{structm_1_1win32_1_1_w_i_n32_context_aa6339082635fcb218a725ad8431cec03}} 
+void {\bfseries destroy} ()
+\item 
+\mbox{\Hypertarget{structm_1_1win32_1_1_w_i_n32_context_a90fde692b0e0eb968d5c0f433fc50247}\label{structm_1_1win32_1_1_w_i_n32_context_a90fde692b0e0eb968d5c0f433fc50247}} 
+void {\bfseries register\+\_\+window\+Class} (const m\+Wide\+Char $\ast$a\+\_\+class\+Name, HINSTANCE a\+\_\+h\+Instance, WNDPROC a\+\_\+proc)
+\item 
+\mbox{\Hypertarget{structm_1_1win32_1_1_w_i_n32_context_a7dd5375dd07615190ca4eac7291c534d}\label{structm_1_1win32_1_1_w_i_n32_context_a7dd5375dd07615190ca4eac7291c534d}} 
+HWND {\bfseries create\+\_\+window} (const m\+Wide\+Char $\ast$a\+\_\+class\+Name, std\+::string a\+\_\+window\+Name, m\+U32 a\+\_\+client\+Width, m\+U32 a\+\_\+client\+Height) const
+\item 
+\mbox{\Hypertarget{structm_1_1win32_1_1_w_i_n32_context_a0d5a86681b7d7dcc1bce15db5f3a3f1f}\label{structm_1_1win32_1_1_w_i_n32_context_a0d5a86681b7d7dcc1bce15db5f3a3f1f}} 
+\mbox{\hyperlink{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}{input\+::m\+Key}} {\bfseries get\+\_\+key\+From\+Param} (WPARAM a\+\_\+w\+Param) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structm_1_1win32_1_1_w_i_n32_context_a807cc87fda8cbc31fbcd2fb1b9e24fcc}\label{structm_1_1win32_1_1_w_i_n32_context_a807cc87fda8cbc31fbcd2fb1b9e24fcc}} 
+\mbox{\hyperlink{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}{input\+::m\+Key}} {\bfseries m\+\_\+lut\+\_\+keycodes} \mbox{[}256\mbox{]}
+\item 
+\mbox{\Hypertarget{structm_1_1win32_1_1_w_i_n32_context_ab48900d86eee9788e986a1f1c1c40dcc}\label{structm_1_1win32_1_1_w_i_n32_context_ab48900d86eee9788e986a1f1c1c40dcc}} 
+m\+I16 {\bfseries m\+\_\+lut\+\_\+scancode} \mbox{[}input\+::m\+Key\+::key\+Last+1\mbox{]}
+\item 
+\mbox{\Hypertarget{structm_1_1win32_1_1_w_i_n32_context_a3d234acc6fc0decbf7f4d46775680f7f}\label{structm_1_1win32_1_1_w_i_n32_context_a3d234acc6fc0decbf7f4d46775680f7f}} 
+HINSTANCE {\bfseries m\+\_\+h\+Instance}
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Graphics/\+Win32/Win32\+Context.\+hpp\item 
+Mesum\+Graphics/\+Win32/Win32\+Context.\+cpp\end{DoxyCompactItemize}

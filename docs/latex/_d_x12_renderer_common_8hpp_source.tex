@@ -1,0 +1,105 @@
+\hypertarget{_d_x12_renderer_common_8hpp_source}{}\doxysection{DX12\+Renderer\+Common.\+hpp}
+\label{_d_x12_renderer_common_8hpp_source}\index{MesumGraphics/DX12Renderer/DX12RendererCommon.hpp@{MesumGraphics/DX12Renderer/DX12RendererCommon.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_DX12RendererCommon}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_DX12RendererCommon}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <MesumCore/Kernel/Asserts.hpp>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <MesumGraphics/Common.hpp>}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{comment}{// DirectX 12 specific headers.}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <d3d12.h>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <dxgi1\_6.h>}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <DirectXMath.h>}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{comment}{// D3D12 extension library.}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <d3dx12.h>}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <chrono>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <queue>}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#if defined(min)}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#undef min}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#if defined(max)}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#undef max}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keyword}{namespace }m::dx12}
+\DoxyCodeLine{30 \{}
+\DoxyCodeLine{31 \textcolor{comment}{// Based on https://www.3dgep.com/learning-\/directx-\/12-\/1/}}
+\DoxyCodeLine{32 \textcolor{keyword}{using namespace }Microsoft::WRL;}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{keyword}{extern} MesumGraphicsApi \textcolor{keyword}{const} \mbox{\hyperlink{namespacem_1_1logging_af807dfba0ed733f24957c0f3d016a15f}{logging::mChannelID}} DX\_RENDERER\_ID;}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{keyword}{inline} \textcolor{keywordtype}{void} check\_MicrosoftHRESULT(HRESULT a\_hr)}
+\DoxyCodeLine{37 \{}
+\DoxyCodeLine{38     \textcolor{keywordflow}{if} (FAILED(a\_hr))}
+\DoxyCodeLine{39     \{}
+\DoxyCodeLine{40         \mbox{\hyperlink{group___core_gafd57e4a697cbf7c30e222a868dcdf9e4}{mLog\_errorTo}}(DX\_RENDERER\_ID, \textcolor{stringliteral}{"{}HRESULT FAIL"{}});}
+\DoxyCodeLine{41         \mbox{\hyperlink{group___core_gae68855c8125ce66a9e53e758526c95ca}{mAssert}}(\textcolor{keyword}{false});}
+\DoxyCodeLine{42     \}}
+\DoxyCodeLine{43 \}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 \textcolor{keywordtype}{void} set\_dxgiDebugName(ComPtr<IDXGIObject> a\_dxgiObject, std::string a\_sName,}
+\DoxyCodeLine{46                        \textcolor{keyword}{const} mInt a\_lineNumber, \textcolor{keyword}{const} mChar* a\_file);}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \textcolor{keywordtype}{void} set\_d3g12DebugName(ComPtr<ID3D12Object> a\_d3d12Object, std::string a\_sName,}
+\DoxyCodeLine{49                         \textcolor{keyword}{const} mInt a\_lineNumber, \textcolor{keyword}{const} mChar* a\_file);}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 \textcolor{preprocessor}{\#ifdef M\_DEBUG}}
+\DoxyCodeLine{52 \textcolor{preprocessor}{\#define mDXGIDebugNamed(a\_dxgiObject, a\_name) \(\backslash\)}}
+\DoxyCodeLine{53 \textcolor{preprocessor}{    set\_dxgiDebugName(a\_dxgiObject, a\_name, \_\_LINE\_\_, \_\_FILE\_\_)}}
+\DoxyCodeLine{54 \textcolor{preprocessor}{\#define mD3D12DebugNamed(a\_d3d12Object, a\_name) \(\backslash\)}}
+\DoxyCodeLine{55 \textcolor{preprocessor}{    set\_d3g12DebugName(a\_d3d12Object, a\_name, \_\_LINE\_\_, \_\_FILE\_\_)}}
+\DoxyCodeLine{56 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{57 \textcolor{preprocessor}{\#define mDXGIDebugNamed(...)}}
+\DoxyCodeLine{58 \textcolor{preprocessor}{\#define mD3D12DebugNamed(...)}}
+\DoxyCodeLine{59 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 ComPtr<ID3DBlob> compile\_shader(std::string \textcolor{keyword}{const}\& a\_shaderPath,}
+\DoxyCodeLine{62                                 std::string \textcolor{keyword}{const}\& a\_entryPoint,}
+\DoxyCodeLine{63                                 std::string \textcolor{keyword}{const}\& a\_target);}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 \textcolor{keywordtype}{void} enable\_debugLayer();}
+\DoxyCodeLine{66 \textcolor{keywordtype}{void} report\_liveObjects();}
+\DoxyCodeLine{67 \textcolor{keywordtype}{bool} check\_tearingSupport();}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 ComPtr<IDXGIAdapter4> get\_adapter(mBool a\_useWarp);}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 ComPtr<ID3D12Device2>      create\_device(ComPtr<IDXGIAdapter4> a\_adapter);}
+\DoxyCodeLine{72 ComPtr<ID3D12CommandQueue> create\_commandQueue(ComPtr<ID3D12Device2>   a\_device,}
+\DoxyCodeLine{73                                                D3D12\_COMMAND\_LIST\_TYPE a\_type);}
+\DoxyCodeLine{74 ComPtr<IDXGISwapChain4>    create\_swapChain(}
+\DoxyCodeLine{75        HWND a\_hWnd, ComPtr<ID3D12CommandQueue> a\_commandQueue, uint32\_t a\_width,}
+\DoxyCodeLine{76        uint32\_t a\_height, uint32\_t a\_bufferCount);}
+\DoxyCodeLine{77 ComPtr<ID3D12DescriptorHeap> create\_descriptorHeap(}
+\DoxyCodeLine{78     ComPtr<ID3D12Device2> a\_device, D3D12\_DESCRIPTOR\_HEAP\_TYPE a\_type,}
+\DoxyCodeLine{79     uint32\_t                    a\_numDescriptors,}
+\DoxyCodeLine{80     D3D12\_DESCRIPTOR\_HEAP\_FLAGS a\_flags = D3D12\_DESCRIPTOR\_HEAP\_FLAG\_NONE);}
+\DoxyCodeLine{81 ComPtr<ID3D12CommandAllocator> create\_commandAllocator(}
+\DoxyCodeLine{82     ComPtr<ID3D12Device2> a\_device, D3D12\_COMMAND\_LIST\_TYPE a\_type);}
+\DoxyCodeLine{83 ComPtr<ID3D12GraphicsCommandList2> create\_commandList(}
+\DoxyCodeLine{84     ComPtr<ID3D12Device2>          a\_device,}
+\DoxyCodeLine{85     ComPtr<ID3D12CommandAllocator> a\_commandAllocator,}
+\DoxyCodeLine{86     D3D12\_COMMAND\_LIST\_TYPE        a\_type);}
+\DoxyCodeLine{87 ComPtr<ID3D12Fence> create\_fence(ComPtr<ID3D12Device2> a\_device);}
+\DoxyCodeLine{88 HANDLE              create\_eventHandle();}
+\DoxyCodeLine{89 mU64                signal\_fence(ComPtr<ID3D12CommandQueue> a\_commandQueue,}
+\DoxyCodeLine{90                                  ComPtr<ID3D12Fence> a\_fence, mU64\& a\_fenceValue);}
+\DoxyCodeLine{91 \textcolor{keywordtype}{void}                wait\_fenceValue(}
+\DoxyCodeLine{92                    ComPtr<ID3D12Fence> a\_fence, uint64\_t a\_fenceValue, HANDLE a\_fenceEvent,}
+\DoxyCodeLine{93                    std::chrono::milliseconds a\_duration = std::chrono::milliseconds::max());}
+\DoxyCodeLine{94 \textcolor{keywordtype}{void} flush(ComPtr<ID3D12CommandQueue> a\_commandQueue,}
+\DoxyCodeLine{95            ComPtr<ID3D12Fence> a\_fence, uint64\_t\& a\_fenceValue,}
+\DoxyCodeLine{96            HANDLE a\_fenceEvent);}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 \}  \textcolor{comment}{// namespace m::dx12}}
+\DoxyCodeLine{99 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_DX12RendererCommon}}
+
+\end{DoxyCode}

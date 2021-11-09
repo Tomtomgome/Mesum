@@ -7,7 +7,7 @@
 class CubeMover
 {
    public:
-    void move(m::Float& x, m::Float& y)
+    void move(m::mFloat& x, m::mFloat& y)
     {
         if (m_up)
         {
@@ -25,7 +25,7 @@ class CubeMover
         {
             x += speed;
         }
-        mLOG_TO(m_CUBEMOVER_ID, "Se deplace : ", x, ":", y);
+        mLog_to(m_CUBEMOVER_ID, "Se deplace : ", x, ":", y);
     }
 
     void set_moveUp() { m_up = true; }
@@ -39,13 +39,13 @@ class CubeMover
     void set_notMoveRight() { m_right = false; }
 
    private:
-    m::Float speed   = 0.016f * 100.f;
-    m::Bool  m_up    = false;
-    m::Bool  m_down  = false;
-    m::Bool  m_left  = false;
-    m::Bool  m_right = false;
+    m::mFloat speed   = 0.016f * 100.f;
+    m::mBool  m_up    = false;
+    m::mBool  m_down  = false;
+    m::mBool  m_left  = false;
+    m::mBool  m_right = false;
 
-    const m::logging::ChannelID m_CUBEMOVER_ID = mLOG_GET_ID();
+    const m::logging::mChannelID m_CUBEMOVER_ID = mLog_getId();
 };
 
 class CubeMoverApp : public m::crossPlatform::IWindowedApplication
@@ -59,19 +59,19 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
     void init() override
     {
-        m::crossPlatform::IWindowedApplication::init();
+        m::crossPlatform::IWindowedApplication::init(<#initializer #>, nullptr);
 
-        m::CmdLine const& cmdLine = get_cmdLine();
-        m::UInt           width   = 1280;
-        m::UInt           height  = 720;
+        m::mCmdLine const& cmdLine = get_cmdLine();
+        m::mUInt           width   = 1280;
+        m::mUInt           height  = 720;
         if (!cmdLine.get_parameter("-w", width))
         {
-            mLOG_TO(m_CUBEAPP_ID, "Width not overriden, use default : ", width);
+            mLog_to(m_CUBEAPP_ID, "Width not overriden, use default : ", width);
         }
 
         if (!cmdLine.get_parameter("-h", height))
         {
-            mLOG_TO(m_CUBEAPP_ID,
+            mLog_to(m_CUBEAPP_ID,
                     "Height not overriden, use default : ", height);
         }
 
@@ -101,42 +101,44 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         m_mainDx12Window->link_inputManager(&m_inputManager);
 
-        m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::KEY_F11),
-            m::input::KeyActionCallback(
+        m_inputManager.attach_toKeyEvent(
+            m::input::mKeyAction::keyPressed(m::input::keyF11),
+            m::input::mKeyActionCallback(
                 m_mainDx12Window, &m::windows::IWindow::toggle_fullScreen));
 
-        m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::KEY_W),
-            m::input::KeyActionCallback(this,
-                                        &CubeMoverApp::add_applicationWindow));
+        m_inputManager.attach_toKeyEvent(
+            m::input::mKeyAction::keyPressed(m::input::keyW),
+            m::input::mKeyActionCallback(this,
+                                         &CubeMoverApp::add_applicationWindow));
 
-        m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::KEY_UP),
-            m::input::KeyActionCallback(&m_mover, &CubeMover::set_moveUp));
-        m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::KEY_DOWN),
-            m::input::KeyActionCallback(&m_mover, &CubeMover::set_moveDown));
-        m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::KEY_LEFT),
-            m::input::KeyActionCallback(&m_mover, &CubeMover::set_moveLeft));
-        m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyPressed(m::input::KEY_RIGHT),
-            m::input::KeyActionCallback(&m_mover, &CubeMover::set_moveRight));
+        m_inputManager.attach_toKeyEvent(
+            m::input::mKeyAction::keyPressed(m::input::keyUp),
+            m::input::mKeyActionCallback(&m_mover, &CubeMover::set_moveUp));
+        m_inputManager.attach_toKeyEvent(
+            m::input::mKeyAction::keyPressed(m::input::keyDown),
+            m::input::mKeyActionCallback(&m_mover, &CubeMover::set_moveDown));
+        m_inputManager.attach_toKeyEvent(
+            m::input::mKeyAction::keyPressed(m::input::keyLeft),
+            m::input::mKeyActionCallback(&m_mover, &CubeMover::set_moveLeft));
+        m_inputManager.attach_toKeyEvent(
+            m::input::mKeyAction::keyPressed(m::input::keyRight),
+            m::input::mKeyActionCallback(&m_mover, &CubeMover::set_moveRight));
 
-        m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyReleased(m::input::KEY_UP),
-            m::input::KeyActionCallback(&m_mover, &CubeMover::set_notMoveUp));
-        m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyReleased(m::input::KEY_DOWN),
-            m::input::KeyActionCallback(&m_mover, &CubeMover::set_notMoveDown));
-        m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyReleased(m::input::KEY_LEFT),
-            m::input::KeyActionCallback(&m_mover, &CubeMover::set_notMoveLeft));
-        m_inputManager.attach_ToKeyEvent(
-            m::input::KeyAction::keyReleased(m::input::KEY_RIGHT),
-            m::input::KeyActionCallback(&m_mover,
-                                        &CubeMover::set_notMoveRight));
+        m_inputManager.attach_toKeyEvent(
+            m::input::mKeyAction::keyReleased(m::input::keyUp),
+            m::input::mKeyActionCallback(&m_mover, &CubeMover::set_notMoveUp));
+        m_inputManager.attach_toKeyEvent(
+            m::input::mKeyAction::keyReleased(m::input::keyDown),
+            m::input::mKeyActionCallback(&m_mover,
+                                         &CubeMover::set_notMoveDown));
+        m_inputManager.attach_toKeyEvent(
+            m::input::mKeyAction::keyReleased(m::input::keyLeft),
+            m::input::mKeyActionCallback(&m_mover,
+                                         &CubeMover::set_notMoveLeft));
+        m_inputManager.attach_toKeyEvent(
+            m::input::mKeyAction::keyReleased(m::input::keyRight),
+            m::input::mKeyActionCallback(&m_mover,
+                                         &CubeMover::set_notMoveRight));
 
         set_microSecondsLimit(16000);
     }
@@ -154,7 +156,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m::dearImGui::destroy();
     }
 
-    m::Bool step(const m::Double& a_deltaTime) override
+    m::mBool step(const m::mDouble& a_deltaTime) override
     {
         if (!m::crossPlatform::IWindowedApplication::step(a_deltaTime))
         {
@@ -163,13 +165,13 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         m_inputManager.processAndUpdate_States();
 
-        m::CmdLine const& cmdLine = get_cmdLine();
+        m::mCmdLine const& cmdLine = get_cmdLine();
         if (cmdLine.get_arg("-NoLog"))
         {
-            mLOG_DISABLE(m_CUBEAPP_ID);
+            mDisable_logChannels(m_CUBEAPP_ID);
         }
 
-        mLOG_TO(m_CUBEAPP_ID, "Bonjour !, dt = ", a_deltaTime, "ms");
+        mLog_to(m_CUBEAPP_ID, "Bonjour !, dt = ", a_deltaTime, "ms");
 
         m_mover.move(m_x, m_y);
 
@@ -177,7 +179,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         ImGui::NewFrame();
 
-        m::Bool showDemo = true;
+        m::mBool showDemo = true;
         ImGui::ShowDemoWindow(&showDemo);
         ImGui::Render();
 
@@ -190,19 +192,19 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         return true;
     }
 
-    m::Float m_x = 0.0f;
-    m::Float m_y = 0.0f;
+    m::mFloat m_x = 0.0f;
+    m::mFloat m_y = 0.0f;
 
     m::render::IRenderer*       m_iDx12Renderer;
     m::render::IRenderer*       m_iVulkanRenderer;
     m::render::ISurface::HdlPtr m_hdlDx12Surface;
     m::render::ISurface::HdlPtr m_hdlVulkanSurface;
-    m::input::InputManager      m_inputManager;
+    m::input::mCallbackInputManager m_inputManager;
     m::windows::IWindow*        m_mainDx12Window;
     m::windows::IWindow*        m_mainVulkanWindow;
     CubeMover                   m_mover;
 
-    const m::logging::ChannelID m_CUBEAPP_ID = mLOG_GET_ID();
+    const m::logging::mChannelID m_CUBEAPP_ID = mLog_getId();
 };
 
 M_EXECUTE_WINDOWED_APP(CubeMoverApp)

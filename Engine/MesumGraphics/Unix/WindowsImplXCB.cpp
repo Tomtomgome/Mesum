@@ -28,10 +28,9 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
         {
             if (m_linkedInputManager != nullptr)
             {
-                input::Key k = m_parentContext->get_keyFromParam(a_wParam);
+                input::mKey k = m_parentContext->get_keyFromParam(a_wParam);
 
-                m_linkedInputManager->process_KeyEvent(
-                    k, 0, input::Action::PRESSED, input::KeyMod::NONE);
+                m_linkedInputManager->process_keyEvent(k, 0);
             }
         }
         break;
@@ -40,10 +39,9 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
         {
             if (m_linkedInputManager != nullptr)
             {
-                input::Key k = m_parentContext->get_keyFromParam(a_wParam);
+                input::mKey k = m_parentContext->get_keyFromParam(a_wParam);
 
-                m_linkedInputManager->process_KeyEvent(
-                    k, 0, input::Action::RELEASED, input::KeyMod::NONE);
+                m_linkedInputManager->process_keyEvent(k, 0);
             }
         }
         break;
@@ -64,8 +62,8 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
             RECT clientRect = {};
             ::GetClientRect(m_hwnd, &clientRect);
 
-            U32 width  = clientRect.right - clientRect.left;
-            U32 height = clientRect.bottom - clientRect.top;
+            mU32 width  = clientRect.right - clientRect.left;
+            mU32 height = clientRect.bottom - clientRect.top;
 
             m_renderSurface->resize(width, height);
         }
@@ -77,7 +75,7 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
 
 void IWindowImpl::init()
 {
-    const Char className[] = L"MainWindowClass";
+    const mChar className[] = L"MainWindowClass";
     m_hwnd = m_parentContext->create_window(className, m_windowName,
                                            m_clientWidth,
                                         m_clientHeight);
@@ -125,20 +123,20 @@ void IWindowImpl::destroy()
 
 void IWindowImpl::set_asMainWindow()
 {
-    static m::Bool s_mainWindowIsDefined = false;
+    static m::mBool s_mainWindowIsDefined = false;
 
     //There can only be one main window
-    mHardAssert(s_mainWindowIsDefined == false);
-    mHardAssert(m_isMainWindow == false);
+    mAssert(s_mainWindowIsDefined == false);
+    mAssert(m_isMainWindow == false);
     s_mainWindowIsDefined = true;
     m_isMainWindow = true;
 }
 
-void IWindowImpl::set_asImGuiWindow(Bool a_supportMultiViewports)
+void IWindowImpl::set_asImGuiWindow(mBool a_supportMultiViewports)
 {
     // There can only be one ImGui window, and it's the main one
-    mHardAssert(m_isMainWindow == true);
-    mHardAssert(m_isImGuiWindow == false);
+    mAssert(m_isMainWindow == true);
+    mAssert(m_isImGuiWindow == false);
     m_isImGuiWindow = true;
 
     IMGUI_CHECKVERSION();
@@ -156,11 +154,11 @@ void IWindowImpl::set_asImGuiWindow(Bool a_supportMultiViewports)
     if (m_renderSurface != nullptr)
     {
         m_renderSurface->init_dearImGui(
-            Callback<void>(this, &IWindowImpl::callback_dearImGuiNewFrame));
+            mCallback<void>(this, &IWindowImpl::callback_dearImGuiNewFrame));
     }
 }
 
-void IWindowImpl::set_fullScreen(Bool a_fullscreen)
+void IWindowImpl::set_fullScreen(mBool a_fullscreen)
 {
     if (m_fullscreen != a_fullscreen)
     {

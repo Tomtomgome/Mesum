@@ -38,7 +38,7 @@ void VulkanContext::init()
         throw std::runtime_error("failed to create timeline semaphore");
     }
 
-    U32 queueFamilyIndex;
+    mU32 queueFamilyIndex;
     find_graphicQueueFamilyIndex(m_physicalDevice, queueFamilyIndex);
 
     VkCommandPoolCreateInfo createCommandPool = {};
@@ -71,7 +71,7 @@ void VulkanContext::deinit()
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-void VulkanContext::wait_onMainTimelineTstp(U64 a_tstpToWaitOn, U64 a_timeout)
+void VulkanContext::wait_onMainTimelineTstp(mU64 a_tstpToWaitOn, mU64 a_timeout)
 {
     VkSemaphoreWaitInfo infoWaitSemaphore = {};
     infoWaitSemaphore.sType          = VK_STRUCTURE_TYPE_SEMAPHORE_WAIT_INFO;
@@ -88,27 +88,27 @@ void VulkanContext::wait_onMainTimelineTstp(U64 a_tstpToWaitOn, U64 a_timeout)
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-U64 VulkanContext::submit_onMainTimeline(
+mU64 VulkanContext::submit_onMainTimeline(
     VkCommandBuffer const&          a_commandBuffer,
     std::vector<VkSemaphore> const& a_semaphoresToWait,
     std::vector<VkSemaphore>        a_semaphoresToSignal)
 {
-    U64& finishValueOnTimeline = ++gs_VulkanContexte->m_timeline;
+    mU64& finishValueOnTimeline = ++gs_VulkanContexte->m_timeline;
 
-    std::vector<U64> signalValues;
+    std::vector<mU64> signalValues;
     signalValues.resize(a_semaphoresToSignal.size() + 1, 0);
     signalValues[a_semaphoresToSignal.size()] = finishValueOnTimeline;
 
-    std::vector<U64> dummyWaitValues;
+    std::vector<mU64> dummyWaitValues;
     dummyWaitValues.resize(a_semaphoresToWait.size(), 0);
 
     VkTimelineSemaphoreSubmitInfo timelineInfo = {};
     timelineInfo.sType = VK_STRUCTURE_TYPE_TIMELINE_SEMAPHORE_SUBMIT_INFO;
     timelineInfo.waitSemaphoreValueCount =
-        static_cast<U32>(dummyWaitValues.size());
+        static_cast<mU32>(dummyWaitValues.size());
     timelineInfo.pWaitSemaphoreValues = dummyWaitValues.data();
     timelineInfo.signalSemaphoreValueCount =
-        static_cast<U32>(signalValues.size());
+        static_cast<mU32>(signalValues.size());
     timelineInfo.pSignalSemaphoreValues = signalValues.data();
 
     a_semaphoresToSignal.push_back(gs_VulkanContexte->m_timelineSemaphore);
@@ -116,12 +116,12 @@ U64 VulkanContext::submit_onMainTimeline(
     VkSubmitInfo infoSubmit       = {};
     infoSubmit.sType              = VK_STRUCTURE_TYPE_SUBMIT_INFO;
     infoSubmit.pNext              = &timelineInfo;
-    infoSubmit.waitSemaphoreCount = static_cast<U32>(a_semaphoresToWait.size());
+    infoSubmit.waitSemaphoreCount = static_cast<mU32>(a_semaphoresToWait.size());
     infoSubmit.pWaitSemaphores    = a_semaphoresToWait.data();
     VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT};
     infoSubmit.pWaitDstStageMask      = waitStages;
     infoSubmit.signalSemaphoreCount =
-        static_cast<U32>(a_semaphoresToSignal.size());
+        static_cast<mU32>(a_semaphoresToSignal.size());
     infoSubmit.pSignalSemaphores  = a_semaphoresToSignal.data();
     infoSubmit.commandBufferCount = 1;
     infoSubmit.pCommandBuffers    = &a_commandBuffer;
@@ -145,7 +145,7 @@ void VulkanContext::present(VkPresentInfoKHR const& a_infoPresent)
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-U32 VulkanContext::get_memoryTypeIndex(U32                   a_typeFilter,
+mU32 VulkanContext::get_memoryTypeIndex(mU32                  a_typeFilter,
                                        VkMemoryPropertyFlags a_properties)
 {
     VkPhysicalDeviceMemoryProperties memProperties;
@@ -172,9 +172,9 @@ VkShaderModule VulkanContext::create_shaderModule(
     std::string const& a_shaderPath)
 {
     std::vector<char> binary;
-    files::open_fileToBinary(a_shaderPath, binary);
+    files::copy_fileToBinary(a_shaderPath, binary);
 
-    mHardAssert(a_shaderPath.size() > 0);
+    mAssert(a_shaderPath.size() > 0);
 
     VkShaderModuleCreateInfo createInfo{};
     createInfo.sType    = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;

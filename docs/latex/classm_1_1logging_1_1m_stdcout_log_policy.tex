@@ -1,0 +1,91 @@
+\hypertarget{classm_1_1logging_1_1m_stdcout_log_policy}{}\doxysection{m\+::logging\+::m\+Stdcout\+Log\+Policy Class Reference}
+\label{classm_1_1logging_1_1m_stdcout_log_policy}\index{m::logging::mStdcoutLogPolicy@{m::logging::mStdcoutLogPolicy}}
+
+
+Log policy outputting into the standard output.  
+
+
+
+
+{\ttfamily \#include $<$Log\+Policies.\+hpp$>$}
+
+Inheritance diagram for m\+::logging\+::m\+Stdcout\+Log\+Policy\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classm_1_1logging_1_1m_stdcout_log_policy}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1logging_1_1m_stdcout_log_policy_aed487acf90165eb431b9a2b521d20610}\label{classm_1_1logging_1_1m_stdcout_log_policy_aed487acf90165eb431b9a2b521d20610}} 
+{\bfseries m\+Stdcout\+Log\+Policy} ()=default
+\begin{DoxyCompactList}\small\item\em Constructs the std\+::cout logging policy. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classm_1_1logging_1_1m_stdcout_log_policy_a0e85f9e0971776e900252edd723ec71d}\label{classm_1_1logging_1_1m_stdcout_log_policy_a0e85f9e0971776e900252edd723ec71d}} 
+{\bfseries $\sim$m\+Stdcout\+Log\+Policy} () final=default
+\begin{DoxyCompactList}\small\item\em Destroys a std\+::cout logging policy. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classm_1_1logging_1_1m_stdcout_log_policy_a660197bf0e027922c0fff971ce62bb6e}{open\+\_\+ostream}} (const std\+::string \&a\+\_\+name) override
+\begin{DoxyCompactList}\small\item\em Does nothing. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classm_1_1logging_1_1m_stdcout_log_policy_a974454a8948fefd4e91e34a2667dac20}{close\+\_\+ostream}} () override
+\begin{DoxyCompactList}\small\item\em Does nothing. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classm_1_1logging_1_1m_stdcout_log_policy_a2924572ab56800abb7a3cd08be670f28}{write}} (const std\+::string \&a\+\_\+msg) override
+\begin{DoxyCompactList}\small\item\em Write into the standard output. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Log policy outputting into the standard output. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classm_1_1logging_1_1m_stdcout_log_policy_a974454a8948fefd4e91e34a2667dac20}\label{classm_1_1logging_1_1m_stdcout_log_policy_a974454a8948fefd4e91e34a2667dac20}} 
+\index{m::logging::mStdcoutLogPolicy@{m::logging::mStdcoutLogPolicy}!close\_ostream@{close\_ostream}}
+\index{close\_ostream@{close\_ostream}!m::logging::mStdcoutLogPolicy@{m::logging::mStdcoutLogPolicy}}
+\doxysubsubsection{\texorpdfstring{close\_ostream()}{close\_ostream()}}
+{\footnotesize\ttfamily void m\+::logging\+::m\+Stdcout\+Log\+Policy\+::close\+\_\+ostream (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Does nothing. 
+
+
+
+Implements \mbox{\hyperlink{classm_1_1logging_1_1m_i_log_policy_a5c293a6d7aebf525db12f8ee679c695b}{m\+::logging\+::m\+ILog\+Policy}}.
+
+\mbox{\Hypertarget{classm_1_1logging_1_1m_stdcout_log_policy_a660197bf0e027922c0fff971ce62bb6e}\label{classm_1_1logging_1_1m_stdcout_log_policy_a660197bf0e027922c0fff971ce62bb6e}} 
+\index{m::logging::mStdcoutLogPolicy@{m::logging::mStdcoutLogPolicy}!open\_ostream@{open\_ostream}}
+\index{open\_ostream@{open\_ostream}!m::logging::mStdcoutLogPolicy@{m::logging::mStdcoutLogPolicy}}
+\doxysubsubsection{\texorpdfstring{open\_ostream()}{open\_ostream()}}
+{\footnotesize\ttfamily void m\+::logging\+::m\+Stdcout\+Log\+Policy\+::open\+\_\+ostream (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{a\+\_\+name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Does nothing. 
+
+
+
+Implements \mbox{\hyperlink{classm_1_1logging_1_1m_i_log_policy_a3704d6eae517efe8e9829ada8ea19b28}{m\+::logging\+::m\+ILog\+Policy}}.
+
+\mbox{\Hypertarget{classm_1_1logging_1_1m_stdcout_log_policy_a2924572ab56800abb7a3cd08be670f28}\label{classm_1_1logging_1_1m_stdcout_log_policy_a2924572ab56800abb7a3cd08be670f28}} 
+\index{m::logging::mStdcoutLogPolicy@{m::logging::mStdcoutLogPolicy}!write@{write}}
+\index{write@{write}!m::logging::mStdcoutLogPolicy@{m::logging::mStdcoutLogPolicy}}
+\doxysubsubsection{\texorpdfstring{write()}{write()}}
+{\footnotesize\ttfamily void m\+::logging\+::m\+Stdcout\+Log\+Policy\+::write (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{a\+\_\+msg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Write into the standard output. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+msg} & The message to output \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classm_1_1logging_1_1m_i_log_policy_a52c9f46ec8014dbb1fbe6a5170b04786}{m\+::logging\+::m\+ILog\+Policy}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Core/\+Kernel/Log\+Policies.\+hpp\item 
+Mesum\+Core/\+Kernel/Log\+Policies.\+cpp\end{DoxyCompactItemize}

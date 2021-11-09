@@ -1,0 +1,119 @@
+\hypertarget{classm_1_1math_1_1m_xo_random_number_generator}{}\doxysection{m\+::math\+::m\+Xo\+Random\+Number\+Generator Class Reference}
+\label{classm_1_1math_1_1m_xo_random_number_generator}\index{m::math::mXoRandomNumberGenerator@{m::math::mXoRandomNumberGenerator}}
+
+
+Random\+Number\+Generator using Xor\+Shift.  
+
+
+
+
+{\ttfamily \#include $<$Math.\+hpp$>$}
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state}{m\+Xoshiro256ss\+State}}
+\begin{DoxyCompactList}\small\item\em State of the xoshiro algorithm. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classm_1_1math_1_1m_xo_random_number_generator_a19b46ac054019318c8d2ed23cc710f49}{m\+Xo\+Random\+Number\+Generator}} (m\+U64 a\+\_\+seed)
+\begin{DoxyCompactList}\small\item\em Construct a randonc number generator. \end{DoxyCompactList}\item 
+m\+U64 \mbox{\hyperlink{classm_1_1math_1_1m_xo_random_number_generator_aa6ffaa8fa1f2a3405af81ec9d5166af2}{get\+\_\+next\+U64}} ()
+\begin{DoxyCompactList}\small\item\em get a random number \end{DoxyCompactList}\item 
+m\+U32 \mbox{\hyperlink{classm_1_1math_1_1m_xo_random_number_generator_aebac1aba36bb438d80aed79a124c0274}{get\+\_\+next\+U32}} ()
+\begin{DoxyCompactList}\small\item\em get a random number \end{DoxyCompactList}\item 
+m\+Double \mbox{\hyperlink{classm_1_1math_1_1m_xo_random_number_generator_aa81fdd462a9ef685ce5893925df7d559}{get\+\_\+next\+Double}} ()
+\begin{DoxyCompactList}\small\item\em get a random number \end{DoxyCompactList}\item 
+m\+Float \mbox{\hyperlink{classm_1_1math_1_1m_xo_random_number_generator_a1376ae80f993338db928b0fce5ae1a45}{get\+\_\+next\+Float}} ()
+\begin{DoxyCompactList}\small\item\em get a random number \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1math_1_1m_xo_random_number_generator_a6ba9fdbfc115b7e57914d79cfcd77685}\label{classm_1_1math_1_1m_xo_random_number_generator_a6ba9fdbfc115b7e57914d79cfcd77685}} 
+\mbox{\hyperlink{structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state}{m\+Xoshiro256ss\+State}} {\bfseries m\+\_\+state} = \{0, 0, 0, 0\}
+\begin{DoxyCompactList}\small\item\em Current state of the generator. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Random\+Number\+Generator using Xor\+Shift. 
+
+All numbers generated with this generator are correlated 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classm_1_1math_1_1m_xo_random_number_generator_a19b46ac054019318c8d2ed23cc710f49}\label{classm_1_1math_1_1m_xo_random_number_generator_a19b46ac054019318c8d2ed23cc710f49}} 
+\index{m::math::mXoRandomNumberGenerator@{m::math::mXoRandomNumberGenerator}!mXoRandomNumberGenerator@{mXoRandomNumberGenerator}}
+\index{mXoRandomNumberGenerator@{mXoRandomNumberGenerator}!m::math::mXoRandomNumberGenerator@{m::math::mXoRandomNumberGenerator}}
+\doxysubsubsection{\texorpdfstring{mXoRandomNumberGenerator()}{mXoRandomNumberGenerator()}}
+{\footnotesize\ttfamily m\+::math\+::m\+Xo\+Random\+Number\+Generator\+::m\+Xo\+Random\+Number\+Generator (\begin{DoxyParamCaption}\item[{m\+U64}]{a\+\_\+seed }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Construct a randonc number generator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+seed} & The seed for the number generation \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classm_1_1math_1_1m_xo_random_number_generator_aa81fdd462a9ef685ce5893925df7d559}\label{classm_1_1math_1_1m_xo_random_number_generator_aa81fdd462a9ef685ce5893925df7d559}} 
+\index{m::math::mXoRandomNumberGenerator@{m::math::mXoRandomNumberGenerator}!get\_nextDouble@{get\_nextDouble}}
+\index{get\_nextDouble@{get\_nextDouble}!m::math::mXoRandomNumberGenerator@{m::math::mXoRandomNumberGenerator}}
+\doxysubsubsection{\texorpdfstring{get\_nextDouble()}{get\_nextDouble()}}
+{\footnotesize\ttfamily m\+Double m\+::math\+::m\+Xo\+Random\+Number\+Generator\+::get\+\_\+next\+Double (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+get a random number 
+
+\begin{DoxyReturn}{Returns}
+a random double 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classm_1_1math_1_1m_xo_random_number_generator_a1376ae80f993338db928b0fce5ae1a45}\label{classm_1_1math_1_1m_xo_random_number_generator_a1376ae80f993338db928b0fce5ae1a45}} 
+\index{m::math::mXoRandomNumberGenerator@{m::math::mXoRandomNumberGenerator}!get\_nextFloat@{get\_nextFloat}}
+\index{get\_nextFloat@{get\_nextFloat}!m::math::mXoRandomNumberGenerator@{m::math::mXoRandomNumberGenerator}}
+\doxysubsubsection{\texorpdfstring{get\_nextFloat()}{get\_nextFloat()}}
+{\footnotesize\ttfamily m\+Float m\+::math\+::m\+Xo\+Random\+Number\+Generator\+::get\+\_\+next\+Float (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+get a random number 
+
+\begin{DoxyReturn}{Returns}
+a random float 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classm_1_1math_1_1m_xo_random_number_generator_aebac1aba36bb438d80aed79a124c0274}\label{classm_1_1math_1_1m_xo_random_number_generator_aebac1aba36bb438d80aed79a124c0274}} 
+\index{m::math::mXoRandomNumberGenerator@{m::math::mXoRandomNumberGenerator}!get\_nextU32@{get\_nextU32}}
+\index{get\_nextU32@{get\_nextU32}!m::math::mXoRandomNumberGenerator@{m::math::mXoRandomNumberGenerator}}
+\doxysubsubsection{\texorpdfstring{get\_nextU32()}{get\_nextU32()}}
+{\footnotesize\ttfamily m\+U32 m\+::math\+::m\+Xo\+Random\+Number\+Generator\+::get\+\_\+next\+U32 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+get a random number 
+
+\begin{DoxyReturn}{Returns}
+a random m\+U32 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classm_1_1math_1_1m_xo_random_number_generator_aa6ffaa8fa1f2a3405af81ec9d5166af2}\label{classm_1_1math_1_1m_xo_random_number_generator_aa6ffaa8fa1f2a3405af81ec9d5166af2}} 
+\index{m::math::mXoRandomNumberGenerator@{m::math::mXoRandomNumberGenerator}!get\_nextU64@{get\_nextU64}}
+\index{get\_nextU64@{get\_nextU64}!m::math::mXoRandomNumberGenerator@{m::math::mXoRandomNumberGenerator}}
+\doxysubsubsection{\texorpdfstring{get\_nextU64()}{get\_nextU64()}}
+{\footnotesize\ttfamily m\+U64 m\+::math\+::m\+Xo\+Random\+Number\+Generator\+::get\+\_\+next\+U64 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+get a random number 
+
+\begin{DoxyReturn}{Returns}
+a random m\+U64 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Core/\+Kernel/Math.\+hpp\item 
+Mesum\+Core/\+Kernel/Math.\+cpp\end{DoxyCompactItemize}

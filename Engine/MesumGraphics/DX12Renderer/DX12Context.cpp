@@ -6,7 +6,7 @@ namespace m::dx12
 {
 DX12Context* DX12Context::gs_dx12Contexte;
 
-void DX12Context::init(Bool a_useWarp)
+void DX12Context::init(mBool a_useWarp)
 {
 #ifdef M_DEBUG
     enable_debugLayer();

@@ -1,0 +1,41 @@
+\hypertarget{_mesum_core_2_mesum_core_2_common_8hpp_source}{}\doxysection{Common.\+hpp}
+\label{_mesum_core_2_mesum_core_2_common_8hpp_source}\index{MesumCore/MesumCore/Common.hpp@{MesumCore/MesumCore/Common.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_CORE\_COMMON}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_CORE\_COMMON}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#ifdef \_M\_DLL\_DYNAMIC\_LINK}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#ifdef \_M\_CORE\_EXPORT}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#define MesumCoreApi \_\_declspec(dllexport)}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define MesumCoreApi \_\_declspec(dllimport)}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#define MesumCoreApi}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{comment}{//PLatform specific}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#if defined \_DEBUG || !defined(NDEBUG)}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#define M\_DEBUG}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#define M\_RELEASE}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#define M\_ENABLE\_LOG}}
+\DoxyCodeLine{23 \textcolor{comment}{//\#define M\_ENABLE\_VERBOSE\_LOG}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#if defined \_M\_WIN32}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#define M\_WIN32}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#elif defined \_M\_UNIX}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#define M\_UNIX}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#if defined \_M\_WINDOWED}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#define M\_WINDOWED\_APP}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//\_M\_WINDOWED}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//M\_CORE\_COMMON}}
+
+\end{DoxyCode}

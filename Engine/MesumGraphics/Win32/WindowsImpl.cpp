@@ -28,32 +28,90 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
     }
 
     LRESULT result = 0;
+
+    mBool processed = true;
+    if (m_linkedInputManager == nullptr)
+    {
+        processed = false;
+    }
+    else
+    {
+        switch (a_uMsg)
+        {
+            case WM_KEYDOWN:
+            {
+                input::mKey k = m_parentContext->get_keyFromParam(a_wParam);
+
+                m_linkedInputManager->process_keyEvent(
+                    k, input::mInputType::pressed);
+            }
+            break;
+            case WM_KEYUP:
+            {
+                input::mKey k = m_parentContext->get_keyFromParam(a_wParam);
+
+                m_linkedInputManager->process_keyEvent(
+                    k, input::mInputType::released);
+            }
+            break;
+
+            case WM_LBUTTONDOWN:
+            {
+                m_linkedInputManager->process_mouseEvent(
+                    input::mMouseButton::left, input::mInputType::pressed);
+            }
+            break;
+            case WM_LBUTTONUP:
+            {
+                m_linkedInputManager->process_mouseEvent(
+                    input::mMouseButton::left, input::mInputType::released);
+            }
+            break;
+
+            case WM_RBUTTONDOWN:
+            {
+                m_linkedInputManager->process_mouseEvent(
+                    input::mMouseButton::right, input::mInputType::pressed);
+            }
+            break;
+            case WM_RBUTTONUP:
+            {
+                m_linkedInputManager->process_mouseEvent(
+                    input::mMouseButton::right, input::mInputType::released);
+            }
+            break;
+
+            case WM_MBUTTONDOWN:
+            {
+                m_linkedInputManager->process_mouseEvent(
+                    input::mMouseButton::middle, input::mInputType::pressed);
+            }
+            break;
+            case WM_MBUTTONUP:
+            {
+                m_linkedInputManager->process_mouseEvent(
+                    input::mMouseButton::middle, input::mInputType::released);
+            }
+            break;
+            case WM_MOUSEMOVE:
+            {
+                mInt x = static_cast<mI16>(LOWORD(a_lParam));
+                mInt y = static_cast<mI16>(HIWORD(a_lParam));
+                m_linkedInputManager->process_mouseMoveEvent(x, y);
+            }
+            break;
+            case WM_MOUSEWHEEL:
+            {
+                m_linkedInputManager->process_mouseScrollEvent(
+                    (SHORT)HIWORD(a_wParam) / (double)WHEEL_DELTA);
+            }
+            break;
+            default: processed = false;
+        }
+    }
+
     switch (a_uMsg)
     {
-        case WM_KEYDOWN:
-        {
-            if (m_linkedInputManager != nullptr)
-            {
-                input::Key k = m_parentContext->get_keyFromParam(a_wParam);
-
-                m_linkedInputManager->process_KeyEvent(
-                    k, 0, input::Action::PRESSED, input::KeyMod::NONE);
-            }
-        }
-        break;
-
-        case WM_KEYUP:
-        {
-            if (m_linkedInputManager != nullptr)
-            {
-                input::Key k = m_parentContext->get_keyFromParam(a_wParam);
-
-                m_linkedInputManager->process_KeyEvent(
-                    k, 0, input::Action::RELEASED, input::KeyMod::NONE);
-            }
-        }
-        break;
-
         case WM_DESTROY:
         {
             if (m_isMainWindow)
@@ -70,13 +128,19 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
             RECT clientRect = {};
             ::GetClientRect(m_hwnd, &clientRect);
 
-            U32 width  = clientRect.right - clientRect.left;
-            U32 height = clientRect.bottom - clientRect.top;
+            mU32 width  = clientRect.right - clientRect.left;
+            mU32 height = clientRect.bottom - clientRect.top;
 
             m_signalResize.call(width, height);
         }
         break;
-        default: result = DefWindowProcW(m_hwnd, a_uMsg, a_wParam, a_lParam);
+        default:
+        {
+            if (!processed)
+            {
+                result = DefWindowProcW(m_hwnd, a_uMsg, a_wParam, a_lParam);
+            }
+        }
     }
     return result;
 }
@@ -86,7 +150,7 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
 //-----------------------------------------------------------------------------
 void IWindowImpl::init()
 {
-    const WideChar className[] = L"MainWindowClass";
+    const mWideChar className[] = L"MainWindowClass";
     m_hwnd = m_parentContext->create_window(className, m_windowName,
                                             m_clientWidth, m_clientHeight);
     GetWindowRect(m_hwnd, &m_windowRect);
@@ -113,7 +177,7 @@ void IWindowImpl::destroy()
 render::ISurface::HdlPtr IWindowImpl::link_renderer(
     render::IRenderer* a_renderer)
 {
-    mHardAssert(a_renderer != nullptr);
+    mAssert(a_renderer != nullptr);
     render::ISurface::HdlPtr surfaceHandle =
         std::make_shared<render::ISurface::Handle>();
     surfaceHandle->surface                   = a_renderer->get_newSurface();
@@ -121,11 +185,11 @@ render::ISurface::HdlPtr IWindowImpl::link_renderer(
                                                 m_clientHeight};
     surfaceHandle->surface->init_win32(surfaceData);
 
-    m_signalResize.attach_ToSignal(Callback<void, U32, U32>(
+    m_signalResize.attach_toSignal(mCallback<void, mU32, mU32>(
         surfaceHandle->surface, &render::ISurface::resize));
 
     // TODO : Manage this from the renderer
-    m_signalWindowDestroyed.attach_ToSignal(Callback<void>(
+    m_signalWindowDestroyed.attach_toSignal(mCallback<void>(
         [surfaceHandle]()
         {
             surfaceHandle->isValid = false;
@@ -141,11 +205,11 @@ render::ISurface::HdlPtr IWindowImpl::link_renderer(
 //-----------------------------------------------------------------------------
 void IWindowImpl::set_asMainWindow()
 {
-    static m::Bool s_mainWindowIsDefined = false;
+    static m::mBool s_mainWindowIsDefined = false;
 
     // There can only be one main window
-    mHardAssert(s_mainWindowIsDefined == false);
-    mHardAssert(m_isMainWindow == false);
+    mAssert(s_mainWindowIsDefined == false);
+    mAssert(m_isMainWindow == false);
     s_mainWindowIsDefined = true;
     m_isMainWindow        = true;
 }
@@ -156,15 +220,15 @@ void IWindowImpl::set_asMainWindow()
 void IWindowImpl::set_asImGuiWindow()
 {
     // There can only be one ImGui window, and it's the main one
-    mHardAssert(m_isMainWindow == true);
+    mAssert(m_isMainWindow == true);
 
     ImGui_ImplWin32_Init(m_hwnd);
 
-    m_signalWindowDestroyed.attach_ToSignal(
-        Callback<void>([]() { ImGui_ImplWin32_Shutdown(); }));
+    m_signalWindowDestroyed.attach_toSignal(
+        mCallback<void>([]() { ImGui_ImplWin32_Shutdown(); }));
 
-    m_signalOverrideInputProcessing.attach_ToSignal(CallbackInputProcessing(
-        [](Bool* a_interrupt, HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam,
+    m_signalOverrideInputProcessing.attach_toSignal(CallbackInputProcessing(
+        [](mBool* a_interrupt, HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam,
            LPARAM a_lParam)
         {
             if (!(*a_interrupt))
@@ -178,7 +242,7 @@ void IWindowImpl::set_asImGuiWindow()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void IWindowImpl::set_fullScreen(Bool a_fullscreen)
+void IWindowImpl::set_fullScreen(mBool a_fullscreen)
 {
     if (m_fullscreen != a_fullscreen)
     {
@@ -234,18 +298,18 @@ void IWindowImpl::toggle_fullScreen()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void IWindowImpl::attach_toDestroy(Callback<void> const& a_onDestroyCallback)
+void IWindowImpl::attach_toDestroy(mCallback<void> const& a_onDestroyCallback)
 {
-    m_signalWindowDestroyed.attach_ToSignal(a_onDestroyCallback);
+    m_signalWindowDestroyed.attach_toSignal(a_onDestroyCallback);
 }
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 void IWindowImpl::attach_toResize(
-    Callback<void, U32, U32> const& a_onResizeCallback)
+    mCallback<void, mU32, mU32> const& a_onResizeCallback)
 {
-    m_signalResize.attach_ToSignal(a_onResizeCallback);
+    m_signalResize.attach_toSignal(a_onResizeCallback);
 }
 
 }  // namespace m::win32

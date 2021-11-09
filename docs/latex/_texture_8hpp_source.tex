@@ -1,0 +1,73 @@
+\hypertarget{_texture_8hpp_source}{}\doxysection{Texture.\+hpp}
+\label{_texture_8hpp_source}\index{MesumGraphics/Resources/Texture.hpp@{MesumGraphics/Resources/Texture.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_Texture}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_Texture}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <Kernel/Types.hpp>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <MesumGraphics/Renderer.hpp>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <memory>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{keyword}{namespace }m::render}
+\DoxyCodeLine{11 \{}
+\DoxyCodeLine{12 \textcolor{keyword}{extern} \textcolor{keyword}{const} logging::ChannelID LOG\_ID\_TEXTURE;}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{using} HdlTexture = IResource::Handle;}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_texture_request}{TextureRequest}}}
+\DoxyCodeLine{17 \{}
+\DoxyCodeLine{18     std::string filePath;}
+\DoxyCodeLine{19 \};}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{22 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{23 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{24 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_texture_desc}{TextureDesc}}}
+\DoxyCodeLine{25 \{}
+\DoxyCodeLine{26     U32 width     = 0;}
+\DoxyCodeLine{27     U32 height    = 0;}
+\DoxyCodeLine{28     U32 mipLevels = 1;}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30     std::shared\_ptr<IResource::Handle> hdl;}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#ifdef M\_DEBUG}}
+\DoxyCodeLine{32     std::string m\_nameDebug;}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_DEBUG}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35    \textcolor{keyword}{private}:}
+\DoxyCodeLine{36     std::vector<TextureDesc> s\_textures;}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38    \textcolor{keyword}{public}:}
+\DoxyCodeLine{39     \mbox{\hyperlink{structm_1_1render_1_1_texture_desc}{TextureDesc}} \textcolor{keyword}{const}\& get(IResource::Handle a\_handle);}
+\DoxyCodeLine{40 \};}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{43 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{44 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{45 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_texture_manager}{TextureManager}}}
+\DoxyCodeLine{46 \{}
+\DoxyCodeLine{47     HdlTexture  getNew\_handle();}
+\DoxyCodeLine{48     \mbox{\hyperlink{structm_1_1render_1_1_texture_desc}{TextureDesc}} get\_desc(HdlTexture \textcolor{keyword}{const} a\_hdlTexture);}
+\DoxyCodeLine{49     \textcolor{keywordtype}{void}        load(HdlTexture \textcolor{keyword}{const} a\_hdlTexture);}
+\DoxyCodeLine{50     \textcolor{keywordtype}{void} install(HdlTexture \textcolor{keyword}{const} a\_hdlTexture, \mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{IRenderer}} \textcolor{keyword}{const}* a\_pRenderer);}
+\DoxyCodeLine{51 \};}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{54 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{55 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{56 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_DataType>}
+\DoxyCodeLine{57 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1render_1_1_resource_data_holder}{ResourceDataHolder}}}
+\DoxyCodeLine{58 \{}
+\DoxyCodeLine{59    \textcolor{keyword}{public}:}
+\DoxyCodeLine{60     t\_DataType\& get(IResource::Handle a\_hdl);}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62    \textcolor{keyword}{private}:}
+\DoxyCodeLine{63     std::vector<t\_DataType> m\_listTextureData;}
+\DoxyCodeLine{64 \};}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 \}  \textcolor{comment}{// namespace m::render}}
+\DoxyCodeLine{67 \textcolor{preprocessor}{\#endif M\_Texture}}
+
+\end{DoxyCode}

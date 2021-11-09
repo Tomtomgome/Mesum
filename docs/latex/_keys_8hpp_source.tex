@@ -1,0 +1,139 @@
+\hypertarget{_keys_8hpp_source}{}\doxysection{Keys.\+hpp}
+\label{_keys_8hpp_source}\index{MesumCore/Kernel/Keys.hpp@{MesumCore/Kernel/Keys.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}InputCommon.hpp"{}}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{9 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacem_1_1input}{m::input}}}
+\DoxyCodeLine{10 \{}
+\DoxyCodeLine{14 \textcolor{keyword}{enum} \mbox{\hyperlink{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}{mKey}}}
+\DoxyCodeLine{15 \{}
+\DoxyCodeLine{16     keyUnknown      = -\/1,}
+\DoxyCodeLine{17     keySpace        = 32,}
+\DoxyCodeLine{18     keyApostrophe   = 39 \textcolor{comment}{/* ' */},}
+\DoxyCodeLine{19     keyComma        = 44 \textcolor{comment}{/* , */},}
+\DoxyCodeLine{20     keyMinus        = 45 \textcolor{comment}{/* -\/ */},}
+\DoxyCodeLine{21     keyPeriod       = 46 \textcolor{comment}{/* . */},}
+\DoxyCodeLine{22     keySlash        = 47 \textcolor{comment}{/* / */},}
+\DoxyCodeLine{23     key0            = 48,}
+\DoxyCodeLine{24     key1            = 49,}
+\DoxyCodeLine{25     key2            = 50,}
+\DoxyCodeLine{26     key3            = 51,}
+\DoxyCodeLine{27     key4            = 52,}
+\DoxyCodeLine{28     key5            = 53,}
+\DoxyCodeLine{29     key6            = 54,}
+\DoxyCodeLine{30     key7            = 55,}
+\DoxyCodeLine{31     key8            = 56,}
+\DoxyCodeLine{32     key9            = 57,}
+\DoxyCodeLine{33     keySemicolon    = 59 \textcolor{comment}{/* ; */},}
+\DoxyCodeLine{34     keyEqual        = 61 \textcolor{comment}{/* = */},}
+\DoxyCodeLine{35     keyA            = 65,}
+\DoxyCodeLine{36     keyB            = 66,}
+\DoxyCodeLine{37     keyC            = 67,}
+\DoxyCodeLine{38     keyD            = 68,}
+\DoxyCodeLine{39     keyE            = 69,}
+\DoxyCodeLine{40     keyF            = 70,}
+\DoxyCodeLine{41     keyG            = 71,}
+\DoxyCodeLine{42     keyH            = 72,}
+\DoxyCodeLine{43     keyI            = 73,}
+\DoxyCodeLine{44     keyJ            = 74,}
+\DoxyCodeLine{45     keyK            = 75,}
+\DoxyCodeLine{46     keyL            = 76,}
+\DoxyCodeLine{47     keyM            = 77,}
+\DoxyCodeLine{48     keyN            = 78,}
+\DoxyCodeLine{49     keyO            = 79,}
+\DoxyCodeLine{50     keyP            = 80,}
+\DoxyCodeLine{51     keyQ            = 81,}
+\DoxyCodeLine{52     keyR            = 82,}
+\DoxyCodeLine{53     keyS            = 83,}
+\DoxyCodeLine{54     keyT            = 84,}
+\DoxyCodeLine{55     keyU            = 85,}
+\DoxyCodeLine{56     keyV            = 86,}
+\DoxyCodeLine{57     keyW            = 87,}
+\DoxyCodeLine{58     keyX            = 88,}
+\DoxyCodeLine{59     keyY            = 89,}
+\DoxyCodeLine{60     keyZ            = 90,}
+\DoxyCodeLine{61     keyLeftBracket  = 91 \textcolor{comment}{/* [ */},}
+\DoxyCodeLine{62     keyBackslash    = 92 \textcolor{comment}{/* \(\backslash\) */},}
+\DoxyCodeLine{63     keyRightBracket = 93 \textcolor{comment}{/* ] */},}
+\DoxyCodeLine{64     keyGraveAccent  = 96 \textcolor{comment}{/* ` */},}
+\DoxyCodeLine{65     keyWorld1       = 161 \textcolor{comment}{/* non-\/US \#1 */},}
+\DoxyCodeLine{66     keyWorld2       = 162 \textcolor{comment}{/* non-\/US \#2 */},}
+\DoxyCodeLine{67     keyEscape       = 256,}
+\DoxyCodeLine{68     keyEnter        = 257,}
+\DoxyCodeLine{69     keyTab          = 258,}
+\DoxyCodeLine{70     keyBackspace    = 259,}
+\DoxyCodeLine{71     keyInsert       = 260,}
+\DoxyCodeLine{72     keyDelete       = 261,}
+\DoxyCodeLine{73     keyRight        = 262,}
+\DoxyCodeLine{74     keyLeft         = 263,}
+\DoxyCodeLine{75     keyDown         = 264,}
+\DoxyCodeLine{76     keyUp           = 265,}
+\DoxyCodeLine{77     keyPageUp       = 266,}
+\DoxyCodeLine{78     keyPageDown     = 267,}
+\DoxyCodeLine{79     keyHome         = 268,}
+\DoxyCodeLine{80     keyEnd          = 269,}
+\DoxyCodeLine{81     keyCapsLock     = 280,}
+\DoxyCodeLine{82     keyScrollLock   = 281,}
+\DoxyCodeLine{83     keyNumLock      = 282,}
+\DoxyCodeLine{84     keyPrintScreen  = 283,}
+\DoxyCodeLine{85     keyPause        = 284,}
+\DoxyCodeLine{86     keyF1           = 290,}
+\DoxyCodeLine{87     keyF2           = 291,}
+\DoxyCodeLine{88     keyF3           = 292,}
+\DoxyCodeLine{89     keyF4           = 293,}
+\DoxyCodeLine{90     keyF5           = 294,}
+\DoxyCodeLine{91     keyF6           = 295,}
+\DoxyCodeLine{92     keyF7           = 296,}
+\DoxyCodeLine{93     keyF8           = 297,}
+\DoxyCodeLine{94     keyF9           = 298,}
+\DoxyCodeLine{95     keyF10          = 299,}
+\DoxyCodeLine{96     keyF11          = 300,}
+\DoxyCodeLine{97     keyF12          = 301,}
+\DoxyCodeLine{98     keyF13          = 302,}
+\DoxyCodeLine{99     keyF14          = 303,}
+\DoxyCodeLine{100     keyF15          = 304,}
+\DoxyCodeLine{101     keyF16          = 305,}
+\DoxyCodeLine{102     keyF17          = 306,}
+\DoxyCodeLine{103     keyF18          = 307,}
+\DoxyCodeLine{104     keyF19          = 308,}
+\DoxyCodeLine{105     keyF20          = 309,}
+\DoxyCodeLine{106     keyF21          = 310,}
+\DoxyCodeLine{107     keyF22          = 311,}
+\DoxyCodeLine{108     keyF23          = 312,}
+\DoxyCodeLine{109     keyF24          = 313,}
+\DoxyCodeLine{110     keyF25          = 314,}
+\DoxyCodeLine{111     keyKP0          = 320,}
+\DoxyCodeLine{112     keyKP1          = 321,}
+\DoxyCodeLine{113     keyKP2          = 322,}
+\DoxyCodeLine{114     keyKP3          = 323,}
+\DoxyCodeLine{115     keyKP4          = 324,}
+\DoxyCodeLine{116     keyKP5          = 325,}
+\DoxyCodeLine{117     keyKP6          = 326,}
+\DoxyCodeLine{118     keyKP7          = 327,}
+\DoxyCodeLine{119     keyKP8          = 328,}
+\DoxyCodeLine{120     keyKP9          = 329,}
+\DoxyCodeLine{121     keyKPDecimal    = 330,}
+\DoxyCodeLine{122     keyKPDivide     = 331,}
+\DoxyCodeLine{123     keyKPMultiply   = 332,}
+\DoxyCodeLine{124     keyKPSubstract  = 333,}
+\DoxyCodeLine{125     keyKPAdd        = 334,}
+\DoxyCodeLine{126     keyKPEnter      = 335,}
+\DoxyCodeLine{127     keyKPEqual      = 336,}
+\DoxyCodeLine{128     keyLeftShift    = 340,}
+\DoxyCodeLine{129     keyLeftControl  = 341,}
+\DoxyCodeLine{130     keyLeftAlt      = 342,}
+\DoxyCodeLine{131     keyLeftSuper    = 343,}
+\DoxyCodeLine{132     keyRightShift   = 344,}
+\DoxyCodeLine{133     keyRightControl = 345,}
+\DoxyCodeLine{134     keyRightAlt     = 346,}
+\DoxyCodeLine{135     keyRightSuper   = 347,}
+\DoxyCodeLine{136     keyMenu         = 348,}
+\DoxyCodeLine{137     keyLast         = keyMenu,}
+\DoxyCodeLine{138 \};}
+\DoxyCodeLine{139 \}  \textcolor{comment}{// namespace m::input}}
+\DoxyCodeLine{142 \textcolor{comment}{}}
+
+\end{DoxyCode}

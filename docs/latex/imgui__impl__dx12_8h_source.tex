@@ -1,0 +1,55 @@
+\hypertarget{imgui__impl__dx12_8h_source}{}\doxysection{imgui\+\_\+impl\+\_\+dx12.\+h}
+\label{imgui__impl__dx12_8h_source}\index{MesumGraphics/DX12Renderer/imgui\_impl\_dx12.h@{MesumGraphics/DX12Renderer/imgui\_impl\_dx12.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// dear imgui: Renderer Backend for DirectX12}}
+\DoxyCodeLine{2 \textcolor{comment}{// This needs to be used along with a Platform Backend (e.g. Win32)}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{comment}{// Implemented features:}}
+\DoxyCodeLine{5 \textcolor{comment}{//  [X] Renderer: User texture binding. Use 'D3D12\_GPU\_DESCRIPTOR\_HANDLE' as ImTextureID. Read the FAQ about ImTextureID!}}
+\DoxyCodeLine{6 \textcolor{comment}{//  [X] Renderer: Multi-\/viewport support. Enable with 'io.ConfigFlags |= ImGuiConfigFlags\_ViewportsEnable'.}}
+\DoxyCodeLine{7 \textcolor{comment}{//  [X] Renderer: Support for large meshes (64k+ vertices) with 16-\/bit indices.}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{comment}{// Important: to compile on 32-\/bit systems, this backend requires code to be compiled with '\#define ImTextureID ImU64'.}}
+\DoxyCodeLine{10 \textcolor{comment}{// This is because we need ImTextureID to carry a 64-\/bit value and by default ImTextureID is defined as void*.}}
+\DoxyCodeLine{11 \textcolor{comment}{// This define is set in the example .vcxproj file and need to be replicated in your app or by adding it to your imconfig.h file.}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{comment}{// You can copy and use unmodified imgui\_impl\_* files in your project. See examples/ folder for examples of using this.}}
+\DoxyCodeLine{14 \textcolor{comment}{// If you are new to Dear ImGui, read documentation from the docs/ folder + read the top of imgui.cpp.}}
+\DoxyCodeLine{15 \textcolor{comment}{// Read online: https://github.com/ocornut/imgui/tree/master/docs}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}imgui.h"{}}      \textcolor{comment}{// IMGUI\_IMPL\_API}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#ifdef \_MSC\_VER}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#pragma warning (push)}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#pragma warning (disable: 4471) }\textcolor{comment}{// a forward declaration of an unscoped enumeration must have an underlying type}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{enum} DXGI\_FORMAT;}
+\DoxyCodeLine{26 \textcolor{keyword}{struct }ID3D12Device;}
+\DoxyCodeLine{27 \textcolor{keyword}{struct }ID3D12DescriptorHeap;}
+\DoxyCodeLine{28 \textcolor{keyword}{struct }ID3D12GraphicsCommandList;}
+\DoxyCodeLine{29 \textcolor{keyword}{struct }D3D12\_CPU\_DESCRIPTOR\_HANDLE;}
+\DoxyCodeLine{30 \textcolor{keyword}{struct }D3D12\_GPU\_DESCRIPTOR\_HANDLE;}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{comment}{// cmd\_list is the command list that the implementation will use to render imgui draw lists.}}
+\DoxyCodeLine{33 \textcolor{comment}{// Before calling the render function, caller must prepare cmd\_list by resetting it and setting the appropriate}}
+\DoxyCodeLine{34 \textcolor{comment}{// render target and descriptor heap that contains font\_srv\_cpu\_desc\_handle/font\_srv\_gpu\_desc\_handle.}}
+\DoxyCodeLine{35 \textcolor{comment}{// font\_srv\_cpu\_desc\_handle and font\_srv\_gpu\_desc\_handle are handles to a single SRV descriptor to use for the internal font texture.}}
+\DoxyCodeLine{36 IMGUI\_IMPL\_API \textcolor{keywordtype}{bool}     ImGui\_ImplDX12\_Init(ID3D12Device* device, \textcolor{keywordtype}{int} num\_frames\_in\_flight, DXGI\_FORMAT rtv\_format, ID3D12DescriptorHeap* cbv\_srv\_heap,}
+\DoxyCodeLine{37                                             D3D12\_CPU\_DESCRIPTOR\_HANDLE font\_srv\_cpu\_desc\_handle, D3D12\_GPU\_DESCRIPTOR\_HANDLE font\_srv\_gpu\_desc\_handle);}
+\DoxyCodeLine{38 IMGUI\_IMPL\_API \textcolor{keywordtype}{void}     ImGui\_ImplDX12\_Shutdown();}
+\DoxyCodeLine{39 IMGUI\_IMPL\_API \textcolor{keywordtype}{void}     ImGui\_ImplDX12\_NewFrame();}
+\DoxyCodeLine{40 IMGUI\_IMPL\_API \textcolor{keywordtype}{void}     ImGui\_ImplDX12\_RenderDrawData(\mbox{\hyperlink{struct_im_draw_data}{ImDrawData}}* draw\_data, ID3D12GraphicsCommandList* graphics\_command\_list);}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{comment}{// Use if you want to reset your rendering device without losing Dear ImGui state.}}
+\DoxyCodeLine{43 IMGUI\_IMPL\_API \textcolor{keywordtype}{void}     ImGui\_ImplDX12\_InvalidateDeviceObjects();}
+\DoxyCodeLine{44 IMGUI\_IMPL\_API \textcolor{keywordtype}{bool}     ImGui\_ImplDX12\_CreateDeviceObjects();}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{preprocessor}{\#ifdef \_MSC\_VER}}
+\DoxyCodeLine{47 \textcolor{preprocessor}{\#pragma warning (pop)}}
+\DoxyCodeLine{48 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{49 }
+
+\end{DoxyCode}

@@ -1,36 +1,38 @@
-#ifndef M_INPUTCOMMON
-#define M_INPUTCOMMON
 #pragma once
 
-#include <Logger.hpp>
-#include <Callbacks.hpp>
-#include <Types.hpp>
-#include <MathTypes.hpp>
+#include "Callbacks.hpp"
+#include "Logger.hpp"
+#include "MathTypes.hpp"
+#include "Types.hpp"
 
-namespace m
+///////////////////////////////////////////////////////////////////////////////
+/// \addtogroup Core
+/// \{
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Namespace grouping basic input management
+///////////////////////////////////////////////////////////////////////////////
+namespace m::input
 {
-extern const logging::ChannelID INPUT_LOG_ID;
+extern MesumCoreApi const logging::mChannelID g_inputLogID;
 
-//*****************************************************************************
-//*****************************************************************************
-//*****************************************************************************
-namespace input
-{
-using KeyActionCallback = Callback<void>;
-using KeyActionSignal   = Signal<>;
+using mKeyActionCallback = mCallback<void>;
+using mKeyActionSignal   = mSignal<>;
 
-using MouseActionCallback = Callback<void, const math::DVec2&>;
-using MouseActionSignal   = Signal<const math::DVec2&>;
+using mMouseActionCallback = mCallback<void, const math::mIVec2&>;
+using mMouseActionSignal   = mSignal<const math::mIVec2&>;
 
-using MouseStateCallback = Callback<void, Bool>;
-using MouseStateSignal   = Signal<Bool>;
+using mMouseStateCallback = mCallback<void, mBool>;
+using mMouseStateSignal   = mSignal<mBool>;
 
-using ScrollCallback = Callback<void, const math::DVec2&>;
-using ScrollSignal   = Signal<const math::DVec2&>;
+using mScrollCallback = mCallback<void, mDouble>;
+using mScrollSignal   = mSignal<mDouble>;
 
-using MouseMoveCallback = Callback<void, const math::DVec2&>;
-using MouseMoveSignal   = Signal<const math::DVec2&>;
-}  // namespace input
-}  // namespace m
+using mMouseMoveCallback = mCallback<void, const math::mIVec2&>;
+using mMouseMoveSignal   = mSignal<const math::mIVec2&>;
+}  // namespace m::input
 
-#endif //M_INPUTCOMMON
+///////////////////////////////////////////////////////////////////////////////
+/// \}
+///////////////////////////////////////////////////////////////////////////////

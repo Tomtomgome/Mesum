@@ -1,0 +1,45 @@
+\hypertarget{_math_8hpp_source}{}\doxysection{Math.\+hpp}
+\label{_math_8hpp_source}\index{MesumCore/Kernel/Math.hpp@{MesumCore/Kernel/Math.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}MathTypes.hpp"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}Types.hpp"{}}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{10 }
+\DoxyCodeLine{14 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacem_1_1math}{m::math}}}
+\DoxyCodeLine{15 \{}
+\DoxyCodeLine{25 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T>}
+\DoxyCodeLine{26 t\_T \mbox{\hyperlink{namespacem_1_1math_a666b1ae25814d4956ff8d5266fd4e601}{lerp}}(t\_T \textcolor{keyword}{const}\& a\_a, t\_T \textcolor{keyword}{const}\& a\_b, mDouble a\_ratio)}
+\DoxyCodeLine{27 \{}
+\DoxyCodeLine{28     \textcolor{keywordflow}{return} (1.0 -\/ a\_ratio) * a\_a + a\_ratio * a\_b;}
+\DoxyCodeLine{29 \}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{36 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1math_1_1m_xo_random_number_generator}{mXoRandomNumberGenerator}}}
+\DoxyCodeLine{37 \{}
+\DoxyCodeLine{38    \textcolor{keyword}{public}:}
+\DoxyCodeLine{44     \textcolor{keyword}{explicit} \mbox{\hyperlink{classm_1_1math_1_1m_xo_random_number_generator_a19b46ac054019318c8d2ed23cc710f49}{mXoRandomNumberGenerator}}(mU64 a\_seed);}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{51     mU64 \mbox{\hyperlink{classm_1_1math_1_1m_xo_random_number_generator_aa6ffaa8fa1f2a3405af81ec9d5166af2}{get\_nextU64}}();}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{58     mU32 \mbox{\hyperlink{classm_1_1math_1_1m_xo_random_number_generator_aebac1aba36bb438d80aed79a124c0274}{get\_nextU32}}();}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{65     mDouble \mbox{\hyperlink{classm_1_1math_1_1m_xo_random_number_generator_aa81fdd462a9ef685ce5893925df7d559}{get\_nextDouble}}();}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{72     mFloat \mbox{\hyperlink{classm_1_1math_1_1m_xo_random_number_generator_a1376ae80f993338db928b0fce5ae1a45}{get\_nextFloat}}();}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74    \textcolor{keyword}{private}:}
+\DoxyCodeLine{78     \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state}{mXoshiro256ssState}}}
+\DoxyCodeLine{79     \{}
+\DoxyCodeLine{80         mU64 s[4];}
+\DoxyCodeLine{81     \};}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83    \textcolor{keyword}{private}:}
+\DoxyCodeLine{87     \mbox{\hyperlink{structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state}{mXoshiro256ssState}} \mbox{\hyperlink{classm_1_1math_1_1m_xo_random_number_generator_a6ba9fdbfc115b7e57914d79cfcd77685}{m\_state}} = \{0, 0, 0, 0\};}
+\DoxyCodeLine{88 \};}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 \}  \textcolor{comment}{// namespace m::math}}
+\DoxyCodeLine{91 }
+
+\end{DoxyCode}

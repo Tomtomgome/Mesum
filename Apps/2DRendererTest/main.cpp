@@ -1,5 +1,5 @@
-#include <File.hpp>
-#include <Math.hpp>
+#include <Kernel/File.hpp>
+#include <Kernel/Math.hpp>
 #include <MesumGraphics/CrossPlatform.hpp>
 #include <MesumGraphics/DX12Renderer/DX12Context.hpp>
 #include <MesumGraphics/DearImgui/MesumDearImGui.hpp>
@@ -9,15 +9,15 @@
 
 using namespace m;
 
-math::RandomGenerator g_randomGenerator;
+math::mXoRandomNumberGenerator g_randomGenerator(0);
 
-void add_square(render::DataMeshBuffer<render::BasicVertex, U16>* a_meshBuffer,
-                math::Vec2 const                                  a_position)
+void add_square(render::DataMeshBuffer<render::BasicVertex, mU16>* a_meshBuffer,
+                math::mVec2 const                                  a_position)
 {
-    mAssert(a_meshBuffer != nullptr);
+    mSoftAssert(a_meshBuffer != nullptr);
 
-    UInt                index = a_meshBuffer->m_vertices.size();
-    Float               size  = 0.01;
+    mUInt               index = a_meshBuffer->m_vertices.size();
+    mFloat              size  = 0.01;
     render::BasicVertex vertex;
     vertex.color    = {1.0f, 1.0f, 1.0f, 1.0f};
     vertex.position = {a_position.x - size, a_position.y - size, 0.5f};
@@ -38,21 +38,21 @@ void add_square(render::DataMeshBuffer<render::BasicVertex, U16>* a_meshBuffer,
 
 struct Drawer_2D
 {
-    void add_square(math::Vec2 const a_position)
+    void add_square(math::mVec2 const a_position)
     {
         ::add_square(&m_meshBuffer, a_position);
     }
 
     void reset() { m_meshBuffer.clear(); }
 
-    render::DataMeshBuffer<render::BasicVertex, U16> m_meshBuffer;
+    render::DataMeshBuffer<render::BasicVertex, mU16> m_meshBuffer;
 };
 
 struct BunchOfSquares
 {
     void add_newSquare()
     {
-        math::Vec2 newPosition;
+        math::mVec2 newPosition;
         for (int i = 0; i < 100; i++)
         {
             newPosition.x = g_randomGenerator.get_nextFloat();
@@ -61,10 +61,10 @@ struct BunchOfSquares
         }
     }
 
-    void update(const Double& a_deltaTime)
+    void update(const mDouble& a_deltaTime)
     {
-        static Float time = 0.0;
-        time += Float(a_deltaTime);
+        static mFloat time = 0.0;
+        time += mFloat(a_deltaTime);
         for (auto& position : m_squarePositions)
         {
             position.x += std::sin(time * 10.0) * 0.001f;
@@ -72,20 +72,18 @@ struct BunchOfSquares
         }
     }
 
-    std::vector<math::Vec2> m_squarePositions;
+    std::vector<math::mVec2> m_squarePositions;
 };
 
 class RendererTestApp : public m::crossPlatform::IWindowedApplication
 {
-    void init() override
+    void init(mCmdLine const& a_cmdLine, void* a_appData) override
     {
-        crossPlatform::IWindowedApplication::init();
+        crossPlatform::IWindowedApplication::init(a_cmdLine, a_appData);
         m_iRendererDx12   = new dx12::DX12Renderer();
         m_iRendererVulkan = new vulkan::VulkanRenderer();
         m_iRendererDx12->init();
         m_iRendererVulkan->init();
-
-        g_randomGenerator.init(0);
 
         // SetupDx12 Window
         m_windowDx12 = add_newWindow("Dx12 Window", 1280, 720);
@@ -107,9 +105,9 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         taskData_drawDearImGui.m_hdlOutput = m_hdlSurfaceDx12;
         taskData_drawDearImGui.add_toTaskSet(taskset_renderPipelineDx12);
 
-        m_inputManager.attach_ToKeyEvent(
-            input::KeyAction::keyPressed(input::KEY_N),
-            Callback<void>(&m_bunchOfSquares, &BunchOfSquares::add_newSquare));
+        m_inputManager.attach_toKeyEvent(
+            input::mKeyAction::keyPressed(input::keyN),
+            mCallback<void>(&m_bunchOfSquares, &BunchOfSquares::add_newSquare));
 
         // Setup vulkan window
         m_windowVulkan     = add_newWindow("Vulkan Window", 1280, 720);
@@ -122,9 +120,9 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         taskData_2dRender.m_pMeshBuffer = &m_drawer2d.m_meshBuffer;
         taskData_2dRender.add_toTaskSet(taskset_renderPipelineVulkan);
 
-        m_inputManager.attach_ToKeyEvent(
-            input::KeyAction::keyPressed(input::KEY_N),
-            Callback<void>(&m_bunchOfSquares, &BunchOfSquares::add_newSquare));
+        m_inputManager.attach_toKeyEvent(
+            input::mKeyAction::keyPressed(input::keyN),
+            mCallback<void>(&m_bunchOfSquares, &BunchOfSquares::add_newSquare));
     }
 
     void destroy() override
@@ -140,14 +138,15 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         dearImGui::destroy();
     }
 
-    Bool step(const Double& a_deltaTime) override
+    mBool step(std::chrono::steady_clock::duration const& a_deltaTime) override
     {
         if (!m::crossPlatform::IWindowedApplication::step(a_deltaTime))
         {
             return false;
         }
 
-        m_bunchOfSquares.update(a_deltaTime);
+        mDouble deltaTime = std::chrono::duration<mDouble>(a_deltaTime).count();
+        m_bunchOfSquares.update(deltaTime);
 
         m_drawer2d.reset();
 
@@ -161,8 +160,8 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         ImGui::NewFrame();
         ImGui::Begin("Engine");
         {
-            ImGui::Text("frame time : %f", a_deltaTime);
-            ImGui::Text("frame FPS : %f", 1.0 / a_deltaTime);
+            ImGui::Text("frame time : %f", deltaTime);
+            ImGui::Text("frame FPS : %f", 1.0 / deltaTime);
             ImGui::Text("nbSuqares : %llu",
                         m_bunchOfSquares.m_squarePositions.size());
         }
@@ -189,7 +188,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     Drawer_2D m_drawer2d;
 
     BunchOfSquares      m_bunchOfSquares;
-    input::InputManager m_inputManager;
+    input::mCallbackInputManager m_inputManager;
 };
 
 M_EXECUTE_WINDOWED_APP(RendererTestApp)

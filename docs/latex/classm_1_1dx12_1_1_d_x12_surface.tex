@@ -1,0 +1,135 @@
+\hypertarget{classm_1_1dx12_1_1_d_x12_surface}{}\doxysection{m\+::dx12\+::DX12\+Surface Class Reference}
+\label{classm_1_1dx12_1_1_d_x12_surface}\index{m::dx12::DX12Surface@{m::dx12::DX12Surface}}
+Inheritance diagram for m\+::dx12\+::DX12\+Surface\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classm_1_1dx12_1_1_d_x12_surface}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a7b388d4be535c1ee8f594e6d77ae4ba4}\label{classm_1_1dx12_1_1_d_x12_surface_a7b388d4be535c1ee8f594e6d77ae4ba4}} 
+void {\bfseries init\+\_\+win32} (render\+::\+Win32\+Surface\+Init\+Data \&a\+\_\+data) override
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_aab9cf08497ccf28afeeb77059ae92676}\label{classm_1_1dx12_1_1_d_x12_surface_aab9cf08497ccf28afeeb77059ae92676}} 
+void {\bfseries init\+\_\+x11} (render\+::\+X11\+Surface\+Init\+Data \&a\+\_\+data) override
+\item 
+\mbox{\hyperlink{structm_1_1render_1_1_taskset}{render\+::\+Taskset}} $\ast$ \mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_surface_a5fd285be1fcf9a86738abe75000e9a26}{add\+New\+\_\+render\+Taskset}} () override
+\item 
+void \mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_surface_af585a8c3ffe216370f097d612dfc68ef}{render}} () override
+\item 
+void \mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_surface_a0f855dd3562306d525451fd12c3cb9a1}{resize}} (m\+U32 a\+\_\+width, m\+U32 a\+\_\+height) override
+\item 
+void \mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_surface_abb065d3c757b8858a12a2de73123c856}{destroy}} () override
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a11925b6e34e8707ec178b52933956824}\label{classm_1_1dx12_1_1_d_x12_surface_a11925b6e34e8707ec178b52933956824}} 
+D3\+D12\+\_\+\+CPU\+\_\+\+DESCRIPTOR\+\_\+\+HANDLE {\bfseries get\+\_\+current\+Rtv\+Desc} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_ab4737830f51694b5c907c3d4e63e422d}\label{classm_1_1dx12_1_1_d_x12_surface_ab4737830f51694b5c907c3d4e63e422d}} 
+static const m\+U8 {\bfseries scm\+\_\+num\+Frames} = 3
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_aa859bbf1752ac8fea64665da00ad88e5}\label{classm_1_1dx12_1_1_d_x12_surface_aa859bbf1752ac8fea64665da00ad88e5}} 
+m\+UInt {\bfseries get\+\_\+sync\+Interval} () const
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_aa0685d012dc96a4a2092d72d7142ecb0}\label{classm_1_1dx12_1_1_d_x12_surface_aa0685d012dc96a4a2092d72d7142ecb0}} 
+m\+UInt {\bfseries get\+\_\+present\+Flags} () const
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a9e4412c262735260b4dfc096174267f6}\label{classm_1_1dx12_1_1_d_x12_surface_a9e4412c262735260b4dfc096174267f6}} 
+void {\bfseries update\+\_\+render\+Target\+Views} (Com\+Ptr$<$ ID3\+D12\+Device2 $>$ a\+\_\+device, Com\+Ptr$<$ IDXGISwap\+Chain4 $>$ a\+\_\+swap\+Chain, Com\+Ptr$<$ ID3\+D12\+Descriptor\+Heap $>$ a\+\_\+descriptor\+Heap)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a48610fcb9665312ec937f500101e211a}\label{classm_1_1dx12_1_1_d_x12_surface_a48610fcb9665312ec937f500101e211a}} 
+m\+Bool {\bfseries m\+\_\+v\+Sync} = true
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_acb54bd7d282450d66b3cfd259416818f}\label{classm_1_1dx12_1_1_d_x12_surface_acb54bd7d282450d66b3cfd259416818f}} 
+m\+Bool {\bfseries m\+\_\+tearing\+Supported} = false
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_afd2174b181df6d47ef80ffc08f6aad4b}\label{classm_1_1dx12_1_1_d_x12_surface_afd2174b181df6d47ef80ffc08f6aad4b}} 
+Com\+Ptr$<$ IDXGISwap\+Chain4 $>$ {\bfseries m\+\_\+swap\+Chain}
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a4d72cbd09e624873714ce32aabcb9f18}\label{classm_1_1dx12_1_1_d_x12_surface_a4d72cbd09e624873714ce32aabcb9f18}} 
+Com\+Ptr$<$ ID3\+D12\+Resource $>$ {\bfseries m\+\_\+back\+Buffers} \mbox{[}scm\+\_\+num\+Frames\mbox{]}
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a8167ca92e410f8c6e1021d8e3fbf2d3a}\label{classm_1_1dx12_1_1_d_x12_surface_a8167ca92e410f8c6e1021d8e3fbf2d3a}} 
+m\+UInt {\bfseries m\+\_\+current\+Back\+Buffer\+Index}
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_abea6fdd49aa0819f9fd96991b8ba4afe}\label{classm_1_1dx12_1_1_d_x12_surface_abea6fdd49aa0819f9fd96991b8ba4afe}} 
+Com\+Ptr$<$ ID3\+D12\+Descriptor\+Heap $>$ {\bfseries m\+\_\+\+RTVDescriptor\+Heap}
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a7ce6e74fd3a6ee6afe38d310f635af33}\label{classm_1_1dx12_1_1_d_x12_surface_a7ce6e74fd3a6ee6afe38d310f635af33}} 
+m\+UInt {\bfseries m\+\_\+\+RTVDescriptor\+Size}
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_aea127bcbf36123abf3c05b474700d822}\label{classm_1_1dx12_1_1_d_x12_surface_aea127bcbf36123abf3c05b474700d822}} 
+Com\+Ptr$<$ ID3\+D12\+Descriptor\+Heap $>$ {\bfseries m\+\_\+\+SRVDescriptor\+Heap}
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a4f9ac803ab68829cf2ed307dd37fa440}\label{classm_1_1dx12_1_1_d_x12_surface_a4f9ac803ab68829cf2ed307dd37fa440}} 
+std\+::vector$<$ \mbox{\hyperlink{structm_1_1dx12_1_1_d_x12_render_taskset}{DX12\+Render\+Taskset}} $\ast$ $>$ {\bfseries m\+\_\+render\+Tasksets}
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a2eacb3eb2fb8a24014efec7bf172bf94}\label{classm_1_1dx12_1_1_d_x12_surface_a2eacb3eb2fb8a24014efec7bf172bf94}} 
+m\+U64 {\bfseries m\+\_\+frame\+Fence\+Values} \mbox{[}scm\+\_\+num\+Frames\mbox{]} = \{\}
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a452f4e3e9396c378e256f24c977a77c6}\label{classm_1_1dx12_1_1_d_x12_surface_a452f4e3e9396c378e256f24c977a77c6}} 
+m\+U32 {\bfseries m\+\_\+client\+Width}
+\item 
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a7f198d8f1c3f383bb4e8f16fd117b06a}\label{classm_1_1dx12_1_1_d_x12_surface_a7f198d8f1c3f383bb4e8f16fd117b06a}} 
+m\+U32 {\bfseries m\+\_\+client\+Height}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a5fd285be1fcf9a86738abe75000e9a26}\label{classm_1_1dx12_1_1_d_x12_surface_a5fd285be1fcf9a86738abe75000e9a26}} 
+\index{m::dx12::DX12Surface@{m::dx12::DX12Surface}!addNew\_renderTaskset@{addNew\_renderTaskset}}
+\index{addNew\_renderTaskset@{addNew\_renderTaskset}!m::dx12::DX12Surface@{m::dx12::DX12Surface}}
+\doxysubsubsection{\texorpdfstring{addNew\_renderTaskset()}{addNew\_renderTaskset()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structm_1_1render_1_1_taskset}{render\+::\+Taskset}} $\ast$ m\+::dx12\+::\+DX12\+Surface\+::add\+New\+\_\+render\+Taskset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{m\+::render\+::\+ISurface}}.
+
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_abb065d3c757b8858a12a2de73123c856}\label{classm_1_1dx12_1_1_d_x12_surface_abb065d3c757b8858a12a2de73123c856}} 
+\index{m::dx12::DX12Surface@{m::dx12::DX12Surface}!destroy@{destroy}}
+\index{destroy@{destroy}!m::dx12::DX12Surface@{m::dx12::DX12Surface}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily void m\+::dx12\+::\+DX12\+Surface\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{m\+::render\+::\+ISurface}}.
+
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_af585a8c3ffe216370f097d612dfc68ef}\label{classm_1_1dx12_1_1_d_x12_surface_af585a8c3ffe216370f097d612dfc68ef}} 
+\index{m::dx12::DX12Surface@{m::dx12::DX12Surface}!render@{render}}
+\index{render@{render}!m::dx12::DX12Surface@{m::dx12::DX12Surface}}
+\doxysubsubsection{\texorpdfstring{render()}{render()}}
+{\footnotesize\ttfamily void m\+::dx12\+::\+DX12\+Surface\+::render (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{m\+::render\+::\+ISurface}}.
+
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_surface_a0f855dd3562306d525451fd12c3cb9a1}\label{classm_1_1dx12_1_1_d_x12_surface_a0f855dd3562306d525451fd12c3cb9a1}} 
+\index{m::dx12::DX12Surface@{m::dx12::DX12Surface}!resize@{resize}}
+\index{resize@{resize}!m::dx12::DX12Surface@{m::dx12::DX12Surface}}
+\doxysubsubsection{\texorpdfstring{resize()}{resize()}}
+{\footnotesize\ttfamily void m\+::dx12\+::\+DX12\+Surface\+::resize (\begin{DoxyParamCaption}\item[{m\+U32}]{a\+\_\+width,  }\item[{m\+U32}]{a\+\_\+height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{m\+::render\+::\+ISurface}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Graphics/\+DX12\+Renderer/Renderer\+DX12\+Impl.\+hpp\item 
+Mesum\+Graphics/\+DX12\+Renderer/Renderer\+DX12\+Impl.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,107 @@
+\hypertarget{structm_1_1m_cmd_line}{}\doxysection{m\+::m\+Cmd\+Line Struct Reference}
+\label{structm_1_1m_cmd_line}\index{m::mCmdLine@{m::mCmdLine}}
+
+
+Structure holding a list of command line arguments.  
+
+
+
+
+{\ttfamily \#include $<$Kernel.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{structm_1_1m_cmd_line_ac1d7df6b4bf9ca42161e9177efeaa45a}{parse\+\_\+cmd\+Line\+Aguments}} (m\+Int a\+\_\+argc, m\+Char $\ast$$\ast$a\+\_\+argv)
+\begin{DoxyCompactList}\small\item\em Initialize the structure given classic cmdline structures. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class t\+\_\+\+Value\+Type $>$ }\\m\+Bool \mbox{\hyperlink{structm_1_1m_cmd_line_ab8de7405bf1f0f8a07d9ab3b7647209b}{get\+\_\+parameter}} (const std\+::string a\+\_\+key, t\+\_\+\+Value\+Type \&a\+\_\+result) const
+\begin{DoxyCompactList}\small\item\em Get the value of a command line argument. \end{DoxyCompactList}\item 
+m\+Bool \mbox{\hyperlink{structm_1_1m_cmd_line_a03cf17a95051b7b6f7786ae3469ed4b3}{get\+\_\+arg}} (std\+::string const \&a\+\_\+arg) const
+\begin{DoxyCompactList}\small\item\em Check the presence of a command line argument. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structm_1_1m_cmd_line_a6d806d285ce78eaa5d90f10e55a5609e}\label{structm_1_1m_cmd_line_a6d806d285ce78eaa5d90f10e55a5609e}} 
+std\+::vector$<$ std\+::string $>$ {\bfseries m\+\_\+list\+Args}
+\begin{DoxyCompactList}\small\item\em Holds the list of arguments. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Structure holding a list of command line arguments. 
+
+For exemple holds the line executable -\/w 1080 -\/h 720 -\/full\+Screen will hold an array of strings with \{-\/w, 1080, -\/h, 720, -\/full\+Screen\} 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{structm_1_1m_cmd_line_a03cf17a95051b7b6f7786ae3469ed4b3}\label{structm_1_1m_cmd_line_a03cf17a95051b7b6f7786ae3469ed4b3}} 
+\index{m::mCmdLine@{m::mCmdLine}!get\_arg@{get\_arg}}
+\index{get\_arg@{get\_arg}!m::mCmdLine@{m::mCmdLine}}
+\doxysubsubsection{\texorpdfstring{get\_arg()}{get\_arg()}}
+{\footnotesize\ttfamily m\+Bool m\+::m\+Cmd\+Line\+::get\+\_\+arg (\begin{DoxyParamCaption}\item[{std\+::string const \&}]{a\+\_\+arg }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Check the presence of a command line argument. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+arg} & The argument we want to check the presence of \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the key was found, false otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structm_1_1m_cmd_line_ab8de7405bf1f0f8a07d9ab3b7647209b}\label{structm_1_1m_cmd_line_ab8de7405bf1f0f8a07d9ab3b7647209b}} 
+\index{m::mCmdLine@{m::mCmdLine}!get\_parameter@{get\_parameter}}
+\index{get\_parameter@{get\_parameter}!m::mCmdLine@{m::mCmdLine}}
+\doxysubsubsection{\texorpdfstring{get\_parameter()}{get\_parameter()}}
+{\footnotesize\ttfamily template$<$class t\+\_\+\+Value\+Type $>$ \\
+m\+Bool m\+::m\+Cmd\+Line\+::get\+\_\+parameter (\begin{DoxyParamCaption}\item[{const std\+::string}]{a\+\_\+key,  }\item[{t\+\_\+\+Value\+Type \&}]{a\+\_\+result }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the value of a command line argument. 
+
+for a pair of arguments of the form -\/a\+\_\+key value 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em t\+\_\+\+Value\+Type} & The type of the value to be returned \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+key} & The key we want to check \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPrecond}{Precondition}
+a\+\_\+key should not be empty 
+\end{DoxyPrecond}
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+result} & The value associated with the key \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the key was found, false otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structm_1_1m_cmd_line_ac1d7df6b4bf9ca42161e9177efeaa45a}\label{structm_1_1m_cmd_line_ac1d7df6b4bf9ca42161e9177efeaa45a}} 
+\index{m::mCmdLine@{m::mCmdLine}!parse\_cmdLineAguments@{parse\_cmdLineAguments}}
+\index{parse\_cmdLineAguments@{parse\_cmdLineAguments}!m::mCmdLine@{m::mCmdLine}}
+\doxysubsubsection{\texorpdfstring{parse\_cmdLineAguments()}{parse\_cmdLineAguments()}}
+{\footnotesize\ttfamily void m\+::m\+Cmd\+Line\+::parse\+\_\+cmd\+Line\+Aguments (\begin{DoxyParamCaption}\item[{m\+Int}]{a\+\_\+argc,  }\item[{m\+Char $\ast$$\ast$}]{a\+\_\+argv }\end{DoxyParamCaption})}
+
+
+
+Initialize the structure given classic cmdline structures. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+argc} & The number of arguments \\
+\hline
+{\em a\+\_\+argv} & The array of arguments to parse \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Core/\+Kernel/Kernel.\+hpp\item 
+Mesum\+Core/\+Kernel/Kernel.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,67 @@
+\hypertarget{_render_task_8hpp_source}{}\doxysection{Render\+Task.\+hpp}
+\label{_render_task_8hpp_source}\index{MesumGraphics/RenderTask.hpp@{MesumGraphics/RenderTask.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_RENDERTASK}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_RENDERTASK}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <MesumCore/Kernel/Asserts.hpp>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <MesumGraphics/Common.hpp>}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifdef M\_DX12\_RENDERER}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define mIfDx12Enabled(a\_something) a\_something}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define mIfDx12Enabled(a\_something)}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_DX12\_RENDERER}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifdef M\_VULKAN\_RENDERER}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define mIfVulkanEnabled(a\_something) a\_something}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#define mIfVulkanEnabled(a\_something)}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_VULKAN\_RENDERER}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{namespace }m::render}
+\DoxyCodeLine{21 \{}
+\DoxyCodeLine{22 \textcolor{keyword}{struct }Taskset;}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_task}{Task}}}
+\DoxyCodeLine{25 \{}
+\DoxyCodeLine{26     \textcolor{keyword}{virtual} \mbox{\hyperlink{structm_1_1render_1_1_task}{\string~Task}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} prepare() = 0;}
+\DoxyCodeLine{29     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} execute() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{30 \};}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_task_data}{TaskData}}}
+\DoxyCodeLine{33 \{}
+\DoxyCodeLine{34     \mbox{\hyperlink{structm_1_1render_1_1_task}{Task}}* add\_toTaskSet(\mbox{\hyperlink{structm_1_1render_1_1_taskset}{Taskset}}* a\_taskset);}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36     \textcolor{keyword}{virtual} \mbox{\hyperlink{structm_1_1render_1_1_task}{Task}}* getNew\_dx12Implementation(\mbox{\hyperlink{structm_1_1render_1_1_task_data}{TaskData}}* a\_data)}
+\DoxyCodeLine{37     \{}
+\DoxyCodeLine{38         \mbox{\hyperlink{group___core_ga546b07714c544247ba947aab1bdec5b8}{mNotImplemented}} \textcolor{keywordflow}{return} \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{39     \}}
+\DoxyCodeLine{40     \textcolor{keyword}{virtual} \mbox{\hyperlink{structm_1_1render_1_1_task}{Task}}* getNew\_vulkanImplementation(\mbox{\hyperlink{structm_1_1render_1_1_task_data}{TaskData}}* a\_data)}
+\DoxyCodeLine{41     \{}
+\DoxyCodeLine{42         \mbox{\hyperlink{group___core_ga546b07714c544247ba947aab1bdec5b8}{mNotImplemented}} \textcolor{keywordflow}{return} \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{43     \}}
+\DoxyCodeLine{44 \};}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_taskset}{Taskset}}}
+\DoxyCodeLine{47 \{}
+\DoxyCodeLine{48     \textcolor{keyword}{virtual} \mbox{\hyperlink{structm_1_1render_1_1_taskset}{\string~Taskset}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50     \textcolor{keyword}{virtual} \mbox{\hyperlink{structm_1_1render_1_1_task}{Task}}* add\_task(\mbox{\hyperlink{structm_1_1render_1_1_task_data}{TaskData}}* a\_data) = 0;}
+\DoxyCodeLine{51     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void}  clear()                    = 0;}
+\DoxyCodeLine{52 \};}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 \textcolor{keyword}{inline} \mbox{\hyperlink{structm_1_1render_1_1_task}{Task}}* TaskData::add\_toTaskSet(\mbox{\hyperlink{structm_1_1render_1_1_taskset}{Taskset}}* a\_taskset)}
+\DoxyCodeLine{55 \{}
+\DoxyCodeLine{56     \textcolor{keywordflow}{return} a\_taskset-\/>add\_task(\textcolor{keyword}{this});}
+\DoxyCodeLine{57 \}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 \}  \textcolor{comment}{// namespace m::render}}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_RENDERTASK}}
+
+\end{DoxyCode}

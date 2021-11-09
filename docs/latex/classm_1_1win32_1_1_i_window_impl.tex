@@ -1,0 +1,228 @@
+\hypertarget{classm_1_1win32_1_1_i_window_impl}{}\doxysection{m\+::win32\+::IWindow\+Impl Class Reference}
+\label{classm_1_1win32_1_1_i_window_impl}\index{m::win32::IWindowImpl@{m::win32::IWindowImpl}}
+Inheritance diagram for m\+::win32\+::IWindow\+Impl\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classm_1_1win32_1_1_i_window_impl}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a6a886d3a8d2fd721d5533d91381a175a}\label{classm_1_1win32_1_1_i_window_impl_a6a886d3a8d2fd721d5533d91381a175a}} 
+LRESULT {\bfseries process\+\_\+messages} (UINT a\+\_\+u\+Msg, WPARAM a\+\_\+w\+Param, LPARAM a\+\_\+l\+Param)
+\item 
+void \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a984824d5dded3e62fa08cb6ae15f6015}{init}} () override
+\item 
+void \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a26d34905ecf13596e373247e5da2e25e}{destroy}} () override
+\item 
+void \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_ade9b1f16163c029edbe2787cd246731c}{link\+\_\+input\+Manager}} (\mbox{\hyperlink{classm_1_1input_1_1m_i_input_manager}{input\+::m\+IInput\+Manager}} $\ast$a\+\_\+input\+Manager) override
+\item 
+render\+::\+ISurface\+::\+Hdl\+Ptr \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a933f881509d3cc21907f9199491d85d4}{link\+\_\+renderer}} (\mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{render\+::\+IRenderer}} $\ast$a\+\_\+renderer) override
+\item 
+void \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a95a52af6bdab820c7e1fa19e46c00077}{set\+\_\+size}} (m\+UInt a\+\_\+width, m\+UInt a\+\_\+height) override
+\item 
+void \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a8780bf663961ea435765f822aa20f4e4}{set\+\_\+window\+Name}} (std\+::string a\+\_\+name) override
+\item 
+void \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a149eaa8cfd40f4a8cf4ac9d75e5fab7b}{set\+\_\+as\+Main\+Window}} () override
+\item 
+void \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a9f7e53ef34c1f92b535e2da0199250c8}{set\+\_\+as\+Im\+Gui\+Window}} () override
+\item 
+void \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a767a8385eb3c140538bca6f356acc7dd}{set\+\_\+full\+Screen}} (m\+Bool a\+\_\+fullscreen) override
+\item 
+void \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a573188aff5d26839af24ae3a4c44b663}{toggle\+\_\+full\+Screen}} () override
+\item 
+void \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a3cdd34e9a6fe9d21880b4a37f70e93d1}{attach\+\_\+to\+Destroy}} (\mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void $>$ const \&a\+\_\+on\+Destroy\+Callback) override
+\item 
+void \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a50608422e47a0f1224360d67b6abb1ef}{attach\+\_\+to\+Resize}} (\mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, m\+U32, m\+U32 $>$ const \&a\+\_\+on\+Resize\+Callback) override
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a339a23a1f00e9691103bc2573ff4761d}\label{classm_1_1win32_1_1_i_window_impl_a339a23a1f00e9691103bc2573ff4761d}} 
+void {\bfseries set\+\_\+win\+Context} (\mbox{\hyperlink{structm_1_1win32_1_1_w_i_n32_context}{WIN32\+Context}} const \&a\+\_\+win\+Context)
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a60065989d029b19567e37f8bdaabef75}\label{classm_1_1win32_1_1_i_window_impl_a60065989d029b19567e37f8bdaabef75}} 
+m\+Bool {\bfseries is\+\_\+flagged\+To\+Be\+Closed} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a92eb442b28f43a6bcf1cab82cc4d4332}\label{classm_1_1win32_1_1_i_window_impl_a92eb442b28f43a6bcf1cab82cc4d4332}} 
+using {\bfseries Callback\+Resize} = \mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, m\+U32, m\+U32 $>$
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_ae0543e2e66199cf18407dbe96181f29f}\label{classm_1_1win32_1_1_i_window_impl_ae0543e2e66199cf18407dbe96181f29f}} 
+using {\bfseries Callback\+Window\+Destroy} = \mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void $>$
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a2980ca5be78fdb4530aa2f7e9d2df7ec}\label{classm_1_1win32_1_1_i_window_impl_a2980ca5be78fdb4530aa2f7e9d2df7ec}} 
+using {\bfseries Callback\+Input\+Processing} = \mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, m\+Bool $\ast$, HWND, UINT, WPARAM, LPARAM $>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a6fad556ebe956f4c71baa580c477610e}\label{classm_1_1win32_1_1_i_window_impl_a6fad556ebe956f4c71baa580c477610e}} 
+\mbox{\hyperlink{classm_1_1input_1_1m_i_input_manager}{input\+::m\+IInput\+Manager}} $\ast$ {\bfseries m\+\_\+linked\+Input\+Manager}
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_ad40e324b6c6a8a08a288eaef881ae861}\label{classm_1_1win32_1_1_i_window_impl_ad40e324b6c6a8a08a288eaef881ae861}} 
+HWND {\bfseries m\+\_\+hwnd}
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_affdb4417dd08f773ec98799004c57f6d}\label{classm_1_1win32_1_1_i_window_impl_affdb4417dd08f773ec98799004c57f6d}} 
+m\+Bool {\bfseries m\+\_\+fullscreen} = false
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_ae1f460f5c9a4918f210aa1464ec7825e}\label{classm_1_1win32_1_1_i_window_impl_ae1f460f5c9a4918f210aa1464ec7825e}} 
+m\+Bool {\bfseries m\+\_\+flag\+To\+Be\+Closed} = false
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a535146e94b6020c92ebf3e448dec6997}\label{classm_1_1win32_1_1_i_window_impl_a535146e94b6020c92ebf3e448dec6997}} 
+std\+::string {\bfseries m\+\_\+window\+Name}
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_ada248974ba576028adbf571032d50cdd}\label{classm_1_1win32_1_1_i_window_impl_ada248974ba576028adbf571032d50cdd}} 
+m\+Bool {\bfseries m\+\_\+is\+Main\+Window} = false
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a6e990746b536b35e5d66d39b48ddde12}\label{classm_1_1win32_1_1_i_window_impl_a6e990746b536b35e5d66d39b48ddde12}} 
+m\+U32 {\bfseries m\+\_\+client\+Width} = 1280
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a0444836bec6bd469020f606beeabf76f}\label{classm_1_1win32_1_1_i_window_impl_a0444836bec6bd469020f606beeabf76f}} 
+m\+U32 {\bfseries m\+\_\+client\+Height} = 720
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a5fabd3511dfcb575ccca18810d32da1d}\label{classm_1_1win32_1_1_i_window_impl_a5fabd3511dfcb575ccca18810d32da1d}} 
+RECT {\bfseries m\+\_\+window\+Rect}
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_af894e7bbd0828b72160cfcc012be58ff}\label{classm_1_1win32_1_1_i_window_impl_af894e7bbd0828b72160cfcc012be58ff}} 
+\mbox{\hyperlink{structm_1_1win32_1_1_w_i_n32_context}{WIN32\+Context}} const  $\ast$ {\bfseries m\+\_\+parent\+Context} = nullptr
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_aa5e41daab5ab5484225f983717956946}\label{classm_1_1win32_1_1_i_window_impl_aa5e41daab5ab5484225f983717956946}} 
+\mbox{\hyperlink{classm_1_1m_signal}{m\+Signal}}$<$ m\+U32, m\+U32 $>$ {\bfseries m\+\_\+signal\+Resize}
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a46cf67ee0f3ab68a682c922d41b9f886}\label{classm_1_1win32_1_1_i_window_impl_a46cf67ee0f3ab68a682c922d41b9f886}} 
+\mbox{\hyperlink{classm_1_1m_signal}{m\+Signal}} {\bfseries m\+\_\+signal\+Window\+Destroyed}
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a82a81a85ef4eec280162449333fc83c5}\label{classm_1_1win32_1_1_i_window_impl_a82a81a85ef4eec280162449333fc83c5}} 
+\mbox{\hyperlink{classm_1_1m_signal}{m\+Signal}}$<$ m\+Bool $\ast$, HWND, UINT, WPARAM, LPARAM $>$ {\bfseries m\+\_\+signal\+Override\+Input\+Processing}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a3cdd34e9a6fe9d21880b4a37f70e93d1}\label{classm_1_1win32_1_1_i_window_impl_a3cdd34e9a6fe9d21880b4a37f70e93d1}} 
+\index{m::win32::IWindowImpl@{m::win32::IWindowImpl}!attach\_toDestroy@{attach\_toDestroy}}
+\index{attach\_toDestroy@{attach\_toDestroy}!m::win32::IWindowImpl@{m::win32::IWindowImpl}}
+\doxysubsubsection{\texorpdfstring{attach\_toDestroy()}{attach\_toDestroy()}}
+{\footnotesize\ttfamily void m\+::win32\+::\+IWindow\+Impl\+::attach\+\_\+to\+Destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void $>$ const \&}]{a\+\_\+on\+Destroy\+Callback }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a50608422e47a0f1224360d67b6abb1ef}\label{classm_1_1win32_1_1_i_window_impl_a50608422e47a0f1224360d67b6abb1ef}} 
+\index{m::win32::IWindowImpl@{m::win32::IWindowImpl}!attach\_toResize@{attach\_toResize}}
+\index{attach\_toResize@{attach\_toResize}!m::win32::IWindowImpl@{m::win32::IWindowImpl}}
+\doxysubsubsection{\texorpdfstring{attach\_toResize()}{attach\_toResize()}}
+{\footnotesize\ttfamily void m\+::win32\+::\+IWindow\+Impl\+::attach\+\_\+to\+Resize (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, m\+U32, m\+U32 $>$ const \&}]{a\+\_\+on\+Resize\+Callback }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a26d34905ecf13596e373247e5da2e25e}\label{classm_1_1win32_1_1_i_window_impl_a26d34905ecf13596e373247e5da2e25e}} 
+\index{m::win32::IWindowImpl@{m::win32::IWindowImpl}!destroy@{destroy}}
+\index{destroy@{destroy}!m::win32::IWindowImpl@{m::win32::IWindowImpl}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily void m\+::win32\+::\+IWindow\+Impl\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a984824d5dded3e62fa08cb6ae15f6015}\label{classm_1_1win32_1_1_i_window_impl_a984824d5dded3e62fa08cb6ae15f6015}} 
+\index{m::win32::IWindowImpl@{m::win32::IWindowImpl}!init@{init}}
+\index{init@{init}!m::win32::IWindowImpl@{m::win32::IWindowImpl}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily void m\+::win32\+::\+IWindow\+Impl\+::init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_ade9b1f16163c029edbe2787cd246731c}\label{classm_1_1win32_1_1_i_window_impl_ade9b1f16163c029edbe2787cd246731c}} 
+\index{m::win32::IWindowImpl@{m::win32::IWindowImpl}!link\_inputManager@{link\_inputManager}}
+\index{link\_inputManager@{link\_inputManager}!m::win32::IWindowImpl@{m::win32::IWindowImpl}}
+\doxysubsubsection{\texorpdfstring{link\_inputManager()}{link\_inputManager()}}
+{\footnotesize\ttfamily void m\+::win32\+::\+IWindow\+Impl\+::link\+\_\+input\+Manager (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classm_1_1input_1_1m_i_input_manager}{input\+::m\+IInput\+Manager}} $\ast$}]{a\+\_\+input\+Manager }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a933f881509d3cc21907f9199491d85d4}\label{classm_1_1win32_1_1_i_window_impl_a933f881509d3cc21907f9199491d85d4}} 
+\index{m::win32::IWindowImpl@{m::win32::IWindowImpl}!link\_renderer@{link\_renderer}}
+\index{link\_renderer@{link\_renderer}!m::win32::IWindowImpl@{m::win32::IWindowImpl}}
+\doxysubsubsection{\texorpdfstring{link\_renderer()}{link\_renderer()}}
+{\footnotesize\ttfamily render\+::\+ISurface\+::\+Hdl\+Ptr m\+::win32\+::\+IWindow\+Impl\+::link\+\_\+renderer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{render\+::\+IRenderer}} $\ast$}]{a\+\_\+renderer }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a9f7e53ef34c1f92b535e2da0199250c8}\label{classm_1_1win32_1_1_i_window_impl_a9f7e53ef34c1f92b535e2da0199250c8}} 
+\index{m::win32::IWindowImpl@{m::win32::IWindowImpl}!set\_asImGuiWindow@{set\_asImGuiWindow}}
+\index{set\_asImGuiWindow@{set\_asImGuiWindow}!m::win32::IWindowImpl@{m::win32::IWindowImpl}}
+\doxysubsubsection{\texorpdfstring{set\_asImGuiWindow()}{set\_asImGuiWindow()}}
+{\footnotesize\ttfamily void m\+::win32\+::\+IWindow\+Impl\+::set\+\_\+as\+Im\+Gui\+Window (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a149eaa8cfd40f4a8cf4ac9d75e5fab7b}\label{classm_1_1win32_1_1_i_window_impl_a149eaa8cfd40f4a8cf4ac9d75e5fab7b}} 
+\index{m::win32::IWindowImpl@{m::win32::IWindowImpl}!set\_asMainWindow@{set\_asMainWindow}}
+\index{set\_asMainWindow@{set\_asMainWindow}!m::win32::IWindowImpl@{m::win32::IWindowImpl}}
+\doxysubsubsection{\texorpdfstring{set\_asMainWindow()}{set\_asMainWindow()}}
+{\footnotesize\ttfamily void m\+::win32\+::\+IWindow\+Impl\+::set\+\_\+as\+Main\+Window (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a767a8385eb3c140538bca6f356acc7dd}\label{classm_1_1win32_1_1_i_window_impl_a767a8385eb3c140538bca6f356acc7dd}} 
+\index{m::win32::IWindowImpl@{m::win32::IWindowImpl}!set\_fullScreen@{set\_fullScreen}}
+\index{set\_fullScreen@{set\_fullScreen}!m::win32::IWindowImpl@{m::win32::IWindowImpl}}
+\doxysubsubsection{\texorpdfstring{set\_fullScreen()}{set\_fullScreen()}}
+{\footnotesize\ttfamily void m\+::win32\+::\+IWindow\+Impl\+::set\+\_\+full\+Screen (\begin{DoxyParamCaption}\item[{m\+Bool}]{a\+\_\+fullscreen }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a95a52af6bdab820c7e1fa19e46c00077}\label{classm_1_1win32_1_1_i_window_impl_a95a52af6bdab820c7e1fa19e46c00077}} 
+\index{m::win32::IWindowImpl@{m::win32::IWindowImpl}!set\_size@{set\_size}}
+\index{set\_size@{set\_size}!m::win32::IWindowImpl@{m::win32::IWindowImpl}}
+\doxysubsubsection{\texorpdfstring{set\_size()}{set\_size()}}
+{\footnotesize\ttfamily void m\+::win32\+::\+IWindow\+Impl\+::set\+\_\+size (\begin{DoxyParamCaption}\item[{m\+UInt}]{a\+\_\+width,  }\item[{m\+UInt}]{a\+\_\+height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a8780bf663961ea435765f822aa20f4e4}\label{classm_1_1win32_1_1_i_window_impl_a8780bf663961ea435765f822aa20f4e4}} 
+\index{m::win32::IWindowImpl@{m::win32::IWindowImpl}!set\_windowName@{set\_windowName}}
+\index{set\_windowName@{set\_windowName}!m::win32::IWindowImpl@{m::win32::IWindowImpl}}
+\doxysubsubsection{\texorpdfstring{set\_windowName()}{set\_windowName()}}
+{\footnotesize\ttfamily void m\+::win32\+::\+IWindow\+Impl\+::set\+\_\+window\+Name (\begin{DoxyParamCaption}\item[{std\+::string}]{a\+\_\+name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a573188aff5d26839af24ae3a4c44b663}\label{classm_1_1win32_1_1_i_window_impl_a573188aff5d26839af24ae3a4c44b663}} 
+\index{m::win32::IWindowImpl@{m::win32::IWindowImpl}!toggle\_fullScreen@{toggle\_fullScreen}}
+\index{toggle\_fullScreen@{toggle\_fullScreen}!m::win32::IWindowImpl@{m::win32::IWindowImpl}}
+\doxysubsubsection{\texorpdfstring{toggle\_fullScreen()}{toggle\_fullScreen()}}
+{\footnotesize\ttfamily void m\+::win32\+::\+IWindow\+Impl\+::toggle\+\_\+full\+Screen (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Graphics/\+Win32/Windows\+Impl.\+hpp\item 
+Mesum\+Graphics/\+Unix/Windows\+Impl\+XCB.\+cpp\item 
+Mesum\+Graphics/\+Win32/Windows\+Impl.\+cpp\end{DoxyCompactItemize}

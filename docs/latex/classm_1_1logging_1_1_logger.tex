@@ -1,0 +1,221 @@
+\hypertarget{classm_1_1logging_1_1_logger}{}\doxysection{m\+::logging\+::mLogger\texorpdfstring{$<$}{<} Log\+Policy \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classm_1_1logging_1_1_logger}\index{m::logging::mLogger$<$ t_LogPolicy $>$@{m::logging::mLogger$<$ t_LogPolicy $>$}}
+
+
+Thread safe logger class used to write logs.  
+
+
+
+
+{\ttfamily \#include $<$Log.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classm_1_1logging_1_1_logger_a5dfda4dcd8b2bea3fc48a8852eb7edf8}{mLogger}} (const std\+::string \&a\+\_\+name)
+\begin{DoxyCompactList}\small\item\em Construct a logger. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classm_1_1logging_1_1_logger_a47287bdcab12bc333f8e978be79c0c75}\label{classm_1_1logging_1_1_logger_a47287bdcab12bc333f8e978be79c0c75}} 
+const \mbox{\hyperlink{namespacem_1_1logging_a13f51627936471940ede5666fd047313}{Channel\+ID}} {\bfseries get\+\_\+new\+Channel\+ID} ()
+\begin{DoxyCompactList}\small\item\em Get a new channel ID. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classm_1_1logging_1_1_logger_addcfb00131aac4b1706bdd3b509353bb}{set\+\_\+filter}} (const \mbox{\hyperlink{namespacem_1_1logging_a16bb065e762d9d22730e02ef41a8165f}{Channel\+Filter}} a\+\_\+filters)
+\begin{DoxyCompactList}\small\item\em Set filters on the logger. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classm_1_1logging_1_1_logger_a63b74328f6c81f7ee28958fad4bc874b}{disable\+\_\+channels}} (const \mbox{\hyperlink{namespacem_1_1logging_a16bb065e762d9d22730e02ef41a8165f}{Channel\+Filter}} a\+\_\+filters)
+\begin{DoxyCompactList}\small\item\em Disable channels of the logger. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classm_1_1logging_1_1_logger_af8b43c36de390d048e69e3a7f9391ab0}{enable\+\_\+channels}} (const \mbox{\hyperlink{namespacem_1_1logging_a16bb065e762d9d22730e02ef41a8165f}{Channel\+Filter}} a\+\_\+filters)
+\begin{DoxyCompactList}\small\item\em Enable channels of the logger. \end{DoxyCompactList}\item 
+{\footnotesize template$<$\mbox{\hyperlink{namespacem_1_1logging_af620be757be465af66aa69d08a4f5c8e}{Severity\+Type}} t_Severity, typename... t_Args$>$ }\\void \mbox{\hyperlink{classm_1_1logging_1_1_logger_ab06c4b9527f8da19747c470798fdd124}{print\+\_\+to\+Channel}} (uint64\+\_\+t a\+\_\+channel, t_Args... a\+\_\+args)
+\begin{DoxyCompactList}\small\item\em Print things in the logs using a specified channel. \end{DoxyCompactList}\item 
+{\footnotesize template$<$\mbox{\hyperlink{namespacem_1_1logging_af620be757be465af66aa69d08a4f5c8e}{Severity\+Type}} t_Severity, typename... t_Args$>$ }\\void \mbox{\hyperlink{classm_1_1logging_1_1_logger_ac2c5d26d3b5edd3941f1c6930072a109}{print}} (t_Args... a\+\_\+args)
+\begin{DoxyCompactList}\small\item\em Print things in the logs. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classm_1_1logging_1_1_logger_a65bf48423557daf6361e9273fa3cedcc}\label{classm_1_1logging_1_1_logger_a65bf48423557daf6361e9273fa3cedcc}} 
+{\bfseries $\sim$\+mLogger} ()
+\begin{DoxyCompactList}\small\item\em Destroy a logger. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1logging_1_1_logger_a3e8d8b07780e2a257355602b47f79ff4}\label{classm_1_1logging_1_1_logger_a3e8d8b07780e2a257355602b47f79ff4}} 
+std\+::string {\bfseries get\+\_\+time} ()
+\begin{DoxyCompactList}\small\item\em Get the time of the day into a string format. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classm_1_1logging_1_1_logger_a4f8d02722b9085722cd2babce3c510e4}\label{classm_1_1logging_1_1_logger_a4f8d02722b9085722cd2babce3c510e4}} 
+std\+::string {\bfseries get\+\_\+logline\+Header} ()
+\begin{DoxyCompactList}\small\item\em Construct the header of the log line. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classm_1_1logging_1_1_logger_a5dc93cb7cc1e460f1c1e7fb8c23634f5}\label{classm_1_1logging_1_1_logger_a5dc93cb7cc1e460f1c1e7fb8c23634f5}} 
+void {\bfseries print\+\_\+impl} ()
+\begin{DoxyCompactList}\small\item\em End of the variadic function. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename t_First , typename... t_Args$>$ }\\void \mbox{\hyperlink{classm_1_1logging_1_1_logger_acb466eaee633c4878ad84dd1d53e0faf}{print\+\_\+impl}} (t_First a\+\_\+parm1, t_Args... a\+\_\+parm)
+\begin{DoxyCompactList}\small\item\em Variadic function implementing the writing of the output. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1logging_1_1_logger_a11ebab8edadf2023987c805ce9576b15}\label{classm_1_1logging_1_1_logger_a11ebab8edadf2023987c805ce9576b15}} 
+std\+::stringstream {\bfseries m\+\_\+log\+Stream}
+\begin{DoxyCompactList}\small\item\em The current line to write. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classm_1_1logging_1_1_logger_a109c6d2d50e4a3e8da08a69b38dfbb16}\label{classm_1_1logging_1_1_logger_a109c6d2d50e4a3e8da08a69b38dfbb16}} 
+Log\+Policy $\ast$ {\bfseries m\+\_\+policy}
+\begin{DoxyCompactList}\small\item\em Pointer to the logpolicy to use. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classm_1_1logging_1_1_logger_af2ee2daa8a15910cde5824c736506ae0}\label{classm_1_1logging_1_1_logger_af2ee2daa8a15910cde5824c736506ae0}} 
+std\+::mutex {\bfseries m\+\_\+mutex\+Write}
+\begin{DoxyCompactList}\small\item\em Mutex preventing multiple writes to the output file. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classm_1_1logging_1_1_logger_ac5d048908987c191774d4fa620984968}\label{classm_1_1logging_1_1_logger_ac5d048908987c191774d4fa620984968}} 
+unsigned {\bfseries m\+\_\+line\+Number}
+\begin{DoxyCompactList}\small\item\em Number of the current log line. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classm_1_1logging_1_1_logger_a1200f9c4218e3986e86c515c158fa8db}\label{classm_1_1logging_1_1_logger_a1200f9c4218e3986e86c515c158fa8db}} 
+\mbox{\hyperlink{namespacem_1_1logging_a16bb065e762d9d22730e02ef41a8165f}{Channel\+Filter}} {\bfseries m\+\_\+filter} = -\/1
+\begin{DoxyCompactList}\small\item\em The filter used to filter out specific channels. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classm_1_1logging_1_1_logger_a35d8e6f355599eaf31c2a144780e0cf4}\label{classm_1_1logging_1_1_logger_a35d8e6f355599eaf31c2a144780e0cf4}} 
+\mbox{\hyperlink{namespacem_1_1logging_a13f51627936471940ede5666fd047313}{Channel\+ID}} {\bfseries m\+\_\+next\+Channel\+ID} = 1
+\begin{DoxyCompactList}\small\item\em The next channel id to attribute. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename Log\+Policy$>$\newline
+class m\+::logging\+::\+mLogger$<$ Log\+Policy $>$}
+Thread safe logger class used to write logs. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Log\+Policy} & the logging policy used by the logger. \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classm_1_1logging_1_1_logger_a5dfda4dcd8b2bea3fc48a8852eb7edf8}\label{classm_1_1logging_1_1_logger_a5dfda4dcd8b2bea3fc48a8852eb7edf8}} 
+\index{m::logging::mLogger$<$ t_LogPolicy $>$@{m::logging::mLogger$<$ t_LogPolicy $>$}!mLogger@{mLogger}}
+\index{mLogger@{mLogger}!m::logging::mLogger$<$ t_LogPolicy $>$@{m::logging::mLogger$<$ t_LogPolicy $>$}}
+\doxysubsubsection{\texorpdfstring{mLogger()}{mLogger()}}
+{\footnotesize\ttfamily template$<$typename Log\+Policy $>$ \\
+\mbox{\hyperlink{classm_1_1logging_1_1_logger}{m\+::logging\+::\+mLogger}}$<$ Log\+Policy $>$\+::\mbox{\hyperlink{classm_1_1logging_1_1_logger}{mLogger}} (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{a\+\_\+name }\end{DoxyParamCaption})}
+
+
+
+Construct a logger. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+name} & the output stream name. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classm_1_1logging_1_1_logger_a63b74328f6c81f7ee28958fad4bc874b}\label{classm_1_1logging_1_1_logger_a63b74328f6c81f7ee28958fad4bc874b}} 
+\index{m::logging::mLogger$<$ t_LogPolicy $>$@{m::logging::mLogger$<$ t_LogPolicy $>$}!disable\_channels@{disable\_channels}}
+\index{disable\_channels@{disable\_channels}!m::logging::mLogger$<$ t_LogPolicy $>$@{m::logging::mLogger$<$ t_LogPolicy $>$}}
+\doxysubsubsection{\texorpdfstring{disable\_channels()}{disable\_channels()}}
+{\footnotesize\ttfamily template$<$typename Log\+Policy $>$ \\
+void \mbox{\hyperlink{classm_1_1logging_1_1_logger}{m\+::logging\+::\+mLogger}}$<$ Log\+Policy $>$\+::disable\+\_\+channels (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacem_1_1logging_a16bb065e762d9d22730e02ef41a8165f}{Channel\+Filter}}}]{a\+\_\+filters }\end{DoxyParamCaption})}
+
+
+
+Disable channels of the logger. 
+
+\begin{DoxyVerb} \param a_filters       The channels to disable if
+\end{DoxyVerb}
+ enabled. \mbox{\Hypertarget{classm_1_1logging_1_1_logger_af8b43c36de390d048e69e3a7f9391ab0}\label{classm_1_1logging_1_1_logger_af8b43c36de390d048e69e3a7f9391ab0}} 
+\index{m::logging::mLogger$<$ t_LogPolicy $>$@{m::logging::mLogger$<$ t_LogPolicy $>$}!enable\_channels@{enable\_channels}}
+\index{enable\_channels@{enable\_channels}!m::logging::mLogger$<$ t_LogPolicy $>$@{m::logging::mLogger$<$ t_LogPolicy $>$}}
+\doxysubsubsection{\texorpdfstring{enable\_channels()}{enable\_channels()}}
+{\footnotesize\ttfamily template$<$typename Log\+Policy $>$ \\
+void \mbox{\hyperlink{classm_1_1logging_1_1_logger}{m\+::logging\+::\+mLogger}}$<$ Log\+Policy $>$\+::enable\+\_\+channels (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacem_1_1logging_a16bb065e762d9d22730e02ef41a8165f}{Channel\+Filter}}}]{a\+\_\+filters }\end{DoxyParamCaption})}
+
+
+
+Enable channels of the logger. 
+
+\begin{DoxyVerb} \param a_filters       The channels to enable if
+\end{DoxyVerb}
+ disabled. \mbox{\Hypertarget{classm_1_1logging_1_1_logger_ac2c5d26d3b5edd3941f1c6930072a109}\label{classm_1_1logging_1_1_logger_ac2c5d26d3b5edd3941f1c6930072a109}} 
+\index{m::logging::mLogger$<$ t_LogPolicy $>$@{m::logging::mLogger$<$ t_LogPolicy $>$}!print@{print}}
+\index{print@{print}!m::logging::mLogger$<$ t_LogPolicy $>$@{m::logging::mLogger$<$ t_LogPolicy $>$}}
+\doxysubsubsection{\texorpdfstring{print()}{print()}}
+{\footnotesize\ttfamily template$<$typename Log\+Policy $>$ \\
+template$<$\mbox{\hyperlink{namespacem_1_1logging_af620be757be465af66aa69d08a4f5c8e}{Severity\+Type}} t_Severity, typename... t_Args$>$ \\
+void \mbox{\hyperlink{classm_1_1logging_1_1_logger}{m\+::logging\+::\+mLogger}}$<$ Log\+Policy $>$\+::print (\begin{DoxyParamCaption}\item[{t_Args...}]{a\+\_\+args }\end{DoxyParamCaption})}
+
+
+
+Print things in the logs. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em t_Severity} & the t_Severity of the things to log. \\
+\hline
+{\em t_Args} & the list of things to log. \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+args} & the things to log. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classm_1_1logging_1_1_logger_acb466eaee633c4878ad84dd1d53e0faf}\label{classm_1_1logging_1_1_logger_acb466eaee633c4878ad84dd1d53e0faf}} 
+\index{m::logging::mLogger$<$ t_LogPolicy $>$@{m::logging::mLogger$<$ t_LogPolicy $>$}!print\_impl@{print\_impl}}
+\index{print\_impl@{print\_impl}!m::logging::mLogger$<$ t_LogPolicy $>$@{m::logging::mLogger$<$ t_LogPolicy $>$}}
+\doxysubsubsection{\texorpdfstring{print\_impl()}{print\_impl()}}
+{\footnotesize\ttfamily template$<$typename Log\+Policy $>$ \\
+template$<$typename t_First , typename... t_Args$>$ \\
+void \mbox{\hyperlink{classm_1_1logging_1_1_logger}{m\+::logging\+::\+mLogger}}$<$ Log\+Policy $>$\+::print\+\_\+impl (\begin{DoxyParamCaption}\item[{t_First}]{a\+\_\+parm1,  }\item[{t_Args...}]{a\+\_\+parm }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Variadic function implementing the writing of the output. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em t_First} & type of the first thing to print. \\
+\hline
+{\em t_Args} & the rest of the types of things to print. \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+\+t_First} & the first thing to print. \\
+\hline
+{\em a\+\_\+param} & the rest of things to print. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classm_1_1logging_1_1_logger_ab06c4b9527f8da19747c470798fdd124}\label{classm_1_1logging_1_1_logger_ab06c4b9527f8da19747c470798fdd124}} 
+\index{m::logging::mLogger$<$ t_LogPolicy $>$@{m::logging::mLogger$<$ t_LogPolicy $>$}!print\_toChannel@{print\_toChannel}}
+\index{print\_toChannel@{print\_toChannel}!m::logging::mLogger$<$ t_LogPolicy $>$@{m::logging::mLogger$<$ t_LogPolicy $>$}}
+\doxysubsubsection{\texorpdfstring{print\_toChannel()}{print\_toChannel()}}
+{\footnotesize\ttfamily template$<$typename Log\+Policy $>$ \\
+template$<$\mbox{\hyperlink{namespacem_1_1logging_af620be757be465af66aa69d08a4f5c8e}{Severity\+Type}} t_Severity, typename... t_Args$>$ \\
+void \mbox{\hyperlink{classm_1_1logging_1_1_logger}{m\+::logging\+::\+mLogger}}$<$ Log\+Policy $>$\+::print\+\_\+to\+Channel (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{a\+\_\+channel,  }\item[{t_Args...}]{a\+\_\+args }\end{DoxyParamCaption})}
+
+
+
+Print things in the logs using a specified channel. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em t_Severity} & the t_Severity of the things to log. \\
+\hline
+{\em t_Args} & the list of things to log. \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+args} & the things to log. \\
+\hline
+{\em a\+\_\+channel} & the channel number to print to. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classm_1_1logging_1_1_logger_addcfb00131aac4b1706bdd3b509353bb}\label{classm_1_1logging_1_1_logger_addcfb00131aac4b1706bdd3b509353bb}} 
+\index{m::logging::mLogger$<$ t_LogPolicy $>$@{m::logging::mLogger$<$ t_LogPolicy $>$}!set\_filter@{set\_filter}}
+\index{set\_filter@{set\_filter}!m::logging::mLogger$<$ t_LogPolicy $>$@{m::logging::mLogger$<$ t_LogPolicy $>$}}
+\doxysubsubsection{\texorpdfstring{set\_filter()}{set\_filter()}}
+{\footnotesize\ttfamily template$<$typename Log\+Policy $>$ \\
+void \mbox{\hyperlink{classm_1_1logging_1_1_logger}{m\+::logging\+::\+mLogger}}$<$ Log\+Policy $>$\+::set\+\_\+filter (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{namespacem_1_1logging_a16bb065e762d9d22730e02ef41a8165f}{Channel\+Filter}}}]{a\+\_\+filters }\end{DoxyParamCaption})}
+
+
+
+Set filters on the logger. 
+
+\begin{DoxyVerb} \param a_filters       The channels that will be
+\end{DoxyVerb}
+ allowed. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Core/\+Kernel/Log.\+hpp\end{DoxyCompactItemize}

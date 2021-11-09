@@ -8,34 +8,34 @@ namespace m
 {
 namespace vulkan
 {
-extern const logging::ChannelID VK_RENDERER_ID = mLOG_GET_ID();
+extern const logging::mChannelID VK_RENDERER_ID = mLog_getId();
 
 #ifdef M_DEBUG
-const Bool g_enableValidationLayers = true;
+const mBool g_enableValidationLayers = true;
 #else
-const Bool g_enableValidationLayers = false;
+const mBool g_enableValidationLayers = false;
 #endif
 
-const std::vector<const Char*> validationLayers = {
+const std::vector<const mChar*> validationLayers = {
     "VK_LAYER_KHRONOS_validation"};
 
-const std::vector<const Char*> deviceExtensions = {
+const std::vector<const mChar*> deviceExtensions = {
     VK_KHR_SWAPCHAIN_EXTENSION_NAME};
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-Bool check_validationLayerSupport()
+mBool check_validationLayerSupport()
 {
-    U32 layerCount;
+    mU32 layerCount;
     vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
 
     std::vector<VkLayerProperties> availableLayers(layerCount);
     vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
 
-    for (const Char* layerName : validationLayers)
+    for (const mChar* layerName : validationLayers)
     {
-        Bool layerFound = false;
+        mBool layerFound = false;
 
         for (const auto& layerProperties : availableLayers)
         {
@@ -58,9 +58,9 @@ Bool check_validationLayerSupport()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-std::vector<const Char*> get_requiedExtensions()
+std::vector<const mChar*> get_requiedExtensions()
 {
-    std::vector<const Char*> extensions;
+    std::vector<const mChar*> extensions;
 
     if (g_enableValidationLayers)
     {
@@ -99,13 +99,13 @@ void create_instance(VkInstance& a_InstaceToCreate)
     VkInstanceCreateInfo createInfo    = {};
     createInfo.sType                   = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
     createInfo.pApplicationInfo        = &appInfo;
-    createInfo.enabledExtensionCount   = static_cast<U32>(extensions.size());
+    createInfo.enabledExtensionCount   = static_cast<mU32>(extensions.size());
     createInfo.ppEnabledExtensionNames = extensions.data();
     createInfo.enabledLayerCount       = 0;
     if (g_enableValidationLayers)
     {
         createInfo.enabledLayerCount =
-            static_cast<U32>(validationLayers.size());
+            static_cast<mU32>(validationLayers.size());
         createInfo.ppEnabledLayerNames = validationLayers.data();
     }
     else
@@ -113,7 +113,7 @@ void create_instance(VkInstance& a_InstaceToCreate)
         createInfo.enabledLayerCount = 0;
     }
 
-    U32 extensionCount = 0;
+    mU32 extensionCount = 0;
     vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
 
 #ifdef PRINT_EXTENTIONS
@@ -121,10 +121,10 @@ void create_instance(VkInstance& a_InstaceToCreate)
     vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount,
                                            extensions.data());
 
-    mLOG_TO(VK_RENDERER_ID, "Available extensions");
+    mLog_to(VK_RENDERER_ID, "Available extensions");
     for (const auto& extension : extensions)
     {
-        mLOG_TO(VK_RENDERER_ID, extension.extensionName);
+        mLog_to(VK_RENDERER_ID, extension.extensionName);
     }
 #endif  // PRINT_EXTENTIONS
 
@@ -146,15 +146,15 @@ VKAPI_ATTR VkBool32 VKAPI_CALL callback_logDebugMessage(
     {
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT: break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:
-            mLOG_TO(VK_RENDERER_ID,
+            mLog_to(VK_RENDERER_ID,
                     "Validation layer : ", pCallbackData->pMessage);
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
-            mLOG_WARN_TO(VK_RENDERER_ID,
+            mLog_warningTo(VK_RENDERER_ID,
                          "Validation layer : ", pCallbackData->pMessage);
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
-            mLOG_ERR_TO(VK_RENDERER_ID,
+            mLog_errorTo(VK_RENDERER_ID,
                         "Validation layer : ", pCallbackData->pMessage);
             break;
         default: mInterrupt;
@@ -242,9 +242,9 @@ void destroy_debugMessenger(VkInstance                a_instance,
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-Bool check_deviceExtensionSupport(VkPhysicalDevice a_device)
+mBool check_deviceExtensionSupport(VkPhysicalDevice a_device)
 {
-    U32 extensionCount;
+    mU32 extensionCount;
     vkEnumerateDeviceExtensionProperties(a_device, nullptr, &extensionCount,
                                          nullptr);
 
@@ -266,9 +266,9 @@ Bool check_deviceExtensionSupport(VkPhysicalDevice a_device)
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-Bool check_deviceSuitable(VkPhysicalDevice device)
+mBool check_deviceSuitable(VkPhysicalDevice device)
 {
-    Bool extensionsSupported = check_deviceExtensionSupport(device);
+    mBool extensionsSupported = check_deviceExtensionSupport(device);
     // [TODO] Will do queue families support check later
     // [TODO] Will do swap chain compabilities check later
     return extensionsSupported;
@@ -280,7 +280,7 @@ Bool check_deviceSuitable(VkPhysicalDevice device)
 void select_physicalDevice(VkInstance        a_instance,
                            VkPhysicalDevice& a_physicalDevice)
 {
-    U32 deviceCount = 0;
+    mU32 deviceCount = 0;
     vkEnumeratePhysicalDevices(a_instance, &deviceCount, nullptr);
 
     if (deviceCount == 0)
@@ -309,10 +309,10 @@ void select_physicalDevice(VkInstance        a_instance,
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-Bool find_graphicQueueFamilyIndex(VkPhysicalDevice a_physicalDevice,
-                                  U32&             a_queueFamilyIndex)
+mBool find_graphicQueueFamilyIndex(VkPhysicalDevice a_physicalDevice,
+                                  mU32&             a_queueFamilyIndex)
 {
-    U32 queueFamilyCount = 0;
+    mU32 queueFamilyCount = 0;
     vkGetPhysicalDeviceQueueFamilyProperties(a_physicalDevice,
                                              &queueFamilyCount, nullptr);
 
@@ -346,7 +346,7 @@ Bool find_graphicQueueFamilyIndex(VkPhysicalDevice a_physicalDevice,
 //-----------------------------------------------------------------------------
 void create_logicalDevice(VkPhysicalDevice a_physicalDevice,
                           VkDevice& a_logicalDevice, VkQueue& a_queue,
-                          U32& a_queueFamilyIndex)
+                          mU32& a_queueFamilyIndex)
 {
     find_graphicQueueFamilyIndex(a_physicalDevice, a_queueFamilyIndex);
 
@@ -365,7 +365,7 @@ void create_logicalDevice(VkPhysicalDevice a_physicalDevice,
     createInfo.queueCreateInfoCount = 1;
     createInfo.pEnabledFeatures     = &deviceFeatures;
     createInfo.enabledExtensionCount =
-        static_cast<U32>(deviceExtensions.size());
+        static_cast<mU32>(deviceExtensions.size());
     createInfo.ppEnabledExtensionNames = deviceExtensions.data();
 
     if (vkCreateDevice(a_physicalDevice, &createInfo, nullptr,

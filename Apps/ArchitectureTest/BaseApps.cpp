@@ -3,58 +3,61 @@
 #include <MesumCore/Kernel/Mains.hpp>
 #include <MesumCore/Kernel/Logger.hpp>
 
-class TestBasicApp : public m::application::IBasicApplication
+class TestBasicApp : public m::application::mIBasicApplication
 {
 public:
-    virtual void launch()
-    {
-        m::CmdLine const& cmdLine = get_cmdLine();
-        mAssert(false);
+    virtual void launch(const m::mCmdLine& a_cmdLine, void* a_appData)
+ {
+        m::mCmdLine const& cmdLine = get_cmdLine();
+        mSoftAssert(false);
         if (cmdLine.get_arg("-N"))
         {
-            mLOG("Not Hello world !");
+            mLog("Not Hello world !");
         }
         else
         {
-            mLOG("Hello world !");
+            mLog("Hello world !");
         }
     }
 };
 
-class TestLoopedApp : public m::application::ILoopApplication
+class TestLoopedApp : public m::application::mILoopApplication
 {
-    virtual void    init() { mLOG("Hello world !"); }
-    virtual void    destroy() { mLOG("Bye world !"); }
-    virtual m::Bool step()
+    virtual void init(const m::mCmdLine& a_cmdLine, void* a_appData)
     {
-        mLOG("world !");
+        mLog("Hello world !"); }
+    virtual void    destroy() { mLog("Bye world !"); }
+    virtual m::mBool step()
+    {
+        mLog("world !");
         if (m_MaxSteps-- > 0)
             return true;
         else
             return false;
     }
 
-    m::Int m_MaxSteps = 1000;
+    m::mInt m_MaxSteps = 1000;
 };
 
-class TestTimedLoopedApp : public m::application::ITimedLoopApplication
+class TestTimedLoopedApp : public m::application::mITimedLoopApplication
 {
-    virtual void init()
+    virtual void init(const m::mCmdLine& a_cmdLine, void* a_appData)
     {
         set_microSecondsLimit(16000);
-        mLOG("Hello world !");
+        mLog("Hello world !");
     }
-    virtual void    destroy() { mLOG("Bye world !"); }
-    virtual m::Bool step(const m::Double& a_deltaTime)
+    virtual void    destroy() { mLog("Bye world !"); }
+    virtual m::mBool step(
+        const std::chrono::duration<long long int, std::nano>& a_deltaTime)
     {
-        mLOG("dt =", a_deltaTime);
+        mLog("dt =", a_deltaTime);
         if (m_MaxSteps-- > 0)
             return true;
         else
             return false;
     }
 
-    m::Int m_MaxSteps = 1000;
+    m::mInt m_MaxSteps = 1000;
 };
 
-M_EXECUTE_CONSOLE_APP(TestTimedLoopedApp)
+mExecute_consoleApplication(TestTimedLoopedApp)
