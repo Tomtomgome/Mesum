@@ -1,12 +1,10 @@
-#include <MesumDearImGui.hpp>
-#include <MesumGraphics/Windows.hpp>
+#include "MesumDearImGui.hpp"
+#include <Windows.hpp>
 
 namespace m::dearImGui
 {
-void init(windows::IWindow* a_mainWindow)
+void init(windows::IWindow& a_mainWindow)
 {
-    mSoftAssert(a_mainWindow != nullptr);
-
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
@@ -18,7 +16,7 @@ void init(windows::IWindow* a_mainWindow)
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     ImGui::StyleColorsDark();
 
-    a_mainWindow->set_asImGuiWindow();
+    a_mainWindow.set_asImGuiWindow();
 }
 
 void destroy()

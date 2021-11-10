@@ -91,7 +91,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_hdlSurfaceDx12 = m_windowDx12->link_renderer(m_iRendererDx12);
         m_windowDx12->set_asMainWindow();
 
-        dearImGui::init(m_windowDx12);
+        dearImGui::init(*m_windowDx12);
 
         render::Taskset* taskset_renderPipelineDx12 =
             m_hdlSurfaceDx12->surface->addNew_renderTaskset();

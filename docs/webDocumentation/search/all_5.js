@@ -11,5 +11,6 @@ var searchData=
   ['get_5fnextu32_8',['get_nextU32',['../classm_1_1math_1_1m_xo_random_number_generator.html#aebac1aba36bb438d80aed79a124c0274',1,'m::math::mXoRandomNumberGenerator']]],
   ['get_5fnextu64_9',['get_nextU64',['../classm_1_1math_1_1m_xo_random_number_generator.html#aa6ffaa8fa1f2a3405af81ec9d5166af2',1,'m::math::mXoRandomNumberGenerator']]],
   ['get_5fparameter_10',['get_parameter',['../structm_1_1m_cmd_line.html#ab8de7405bf1f0f8a07d9ab3b7647209b',1,'m::mCmdLine']]],
-  ['get_5ftime_11',['get_time',['../classm_1_1logging_1_1m_logger.html#a29c8fb84e89a835ee13835ba6564435e',1,'m::logging::mLogger']]]
+  ['get_5ftime_11',['get_time',['../classm_1_1logging_1_1m_logger.html#a29c8fb84e89a835ee13835ba6564435e',1,'m::logging::mLogger']]],
+  ['graphics_12',['Graphics',['../group___graphics.html',1,'']]]
 ];

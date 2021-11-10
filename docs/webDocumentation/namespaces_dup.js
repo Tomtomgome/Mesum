@@ -2,6 +2,10 @@ var namespaces_dup =
 [
     [ "m", null, [
       [ "application", "namespacem_1_1application.html", "namespacem_1_1application" ],
+      [ "dearImGui", "namespacem_1_1dear_im_gui.html", [
+        [ "destroy", "namespacem_1_1dear_im_gui.html#a9f85abadfb5371f447f392ac249f90ef", null ],
+        [ "init", "namespacem_1_1dear_im_gui.html#a831ad598116411334e967f96201a87a2", null ]
+      ] ],
       [ "dx12", null, [
         [ "DX12CommandQueue", "classm_1_1dx12_1_1_d_x12_command_queue.html", "classm_1_1dx12_1_1_d_x12_command_queue" ],
         [ "DX12Context", "classm_1_1dx12_1_1_d_x12_context.html", null ],
