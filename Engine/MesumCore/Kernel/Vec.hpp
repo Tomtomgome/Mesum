@@ -25,7 +25,7 @@ struct mVecData<t_T, 2>
 {
     union
     {
-        t_T data[2];
+        t_T data[2] = {};
         struct
         {
             t_T x;
@@ -42,7 +42,7 @@ struct mVecData<t_T, 3>
 {
     union
     {
-        t_T data[3];
+        t_T data[3] = {};
         struct
         {
             t_T x;
@@ -60,7 +60,7 @@ struct mVecData<t_T, 4>
 {
     union
     {
-        t_T data[4];
+        t_T data[4] = {};
         struct
         {
             t_T x;
