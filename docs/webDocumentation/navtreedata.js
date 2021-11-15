@@ -25,6 +25,7 @@
 var NAVTREE =
 [
   [ "Mesum Framework", "index.html", [
+    [ "Todo List", "todo.html", null ],
     [ "Modules", "modules.html", "modules" ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -58,8 +59,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_application_8hpp_source.html",
-"namespacem_1_1input.html#a75650b0303fc6c118edacf0178358753",
-"struct_my_document.html"
+"group___core.html#gaed17c7e2d6fa608a86bd77dbf44de294",
+"struct_im_gui_resize_grip_def.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

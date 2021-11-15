@@ -12,7 +12,7 @@ namespace xcb_unix
 {
 class XCBContext;
 
-class IWindowImpl : public windows::IWindow
+class IWindowImpl : public windows::mIWindow
 {
    public:
     virtual void init() override;

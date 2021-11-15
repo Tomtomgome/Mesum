@@ -12,7 +12,7 @@ namespace m::win32
 class IWindowedApplicationImpl : public application::IWindowedApplicationBase
 {
    public:
-    windows::IWindow* add_newWindow(std::string a_name, mU32 a_width,
+    windows::mIWindow* add_newWindow(std::string a_name, mU32 a_width,
                                     mU32 a_height) override;
 
     void start_dearImGuiNewFrame(
@@ -25,7 +25,7 @@ class IWindowedApplicationImpl : public application::IWindowedApplicationBase
 
    private:
     WIN32Context                m_W32Context;
-    std::set<windows::IWindow*> m_windows;
+    std::set<windows::mIWindow*> m_windows;
 };
 
 }  // namespace m::win32

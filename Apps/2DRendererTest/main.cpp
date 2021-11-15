@@ -89,9 +89,8 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_windowDx12 = add_newWindow("Dx12 Window", 1280, 720);
         m_windowDx12->link_inputManager(&m_inputManager);
         m_hdlSurfaceDx12 = m_windowDx12->link_renderer(m_iRendererDx12);
-        m_windowDx12->set_asMainWindow();
 
-        dearImGui::init(m_windowDx12);
+        dearImGui::init(*m_windowDx12);
 
         render::Taskset* taskset_renderPipelineDx12 =
             m_hdlSurfaceDx12->surface->addNew_renderTaskset();
@@ -168,7 +167,10 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         ImGui::End();
         ImGui::Render();
 
-        m_hdlSurfaceDx12->surface->render();
+        if (m_hdlSurfaceDx12->isValid)
+        {
+            m_hdlSurfaceDx12->surface->render();
+        }
         if (m_hdlSurfaceVulkan->isValid)
         {
             m_hdlSurfaceVulkan->surface->render();
@@ -179,15 +181,15 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
     m::render::IRenderer*       m_iRendererDx12;
     m::render::ISurface::HdlPtr m_hdlSurfaceDx12;
-    windows::IWindow*           m_windowDx12 = nullptr;
+    windows::mIWindow*          m_windowDx12 = nullptr;
 
     m::render::IRenderer*       m_iRendererVulkan;
     m::render::ISurface::HdlPtr m_hdlSurfaceVulkan;
-    windows::IWindow*           m_windowVulkan = nullptr;
+    windows::mIWindow*          m_windowVulkan = nullptr;
 
     Drawer_2D m_drawer2d;
 
-    BunchOfSquares      m_bunchOfSquares;
+    BunchOfSquares               m_bunchOfSquares;
     input::mCallbackInputManager m_inputManager;
 };
 

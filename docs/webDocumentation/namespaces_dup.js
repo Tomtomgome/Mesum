@@ -2,6 +2,10 @@ var namespaces_dup =
 [
     [ "m", null, [
       [ "application", "namespacem_1_1application.html", "namespacem_1_1application" ],
+      [ "dearImGui", "namespacem_1_1dear_im_gui.html", [
+        [ "destroy", "namespacem_1_1dear_im_gui.html#a9f85abadfb5371f447f392ac249f90ef", null ],
+        [ "init", "namespacem_1_1dear_im_gui.html#a8f0ca8ff668f59aa9af97475715b46a1", null ]
+      ] ],
       [ "dx12", null, [
         [ "DX12CommandQueue", "classm_1_1dx12_1_1_d_x12_command_queue.html", "classm_1_1dx12_1_1_d_x12_command_queue" ],
         [ "DX12Context", "classm_1_1dx12_1_1_d_x12_context.html", null ],
@@ -46,15 +50,15 @@ var namespaces_dup =
       ] ],
       [ "win32", null, [
         [ "IWindowedApplicationImpl", "classm_1_1win32_1_1_i_windowed_application_impl.html", "classm_1_1win32_1_1_i_windowed_application_impl" ],
-        [ "IWindowImpl", "classm_1_1win32_1_1_i_window_impl.html", null ],
+        [ "IWindowImpl", "classm_1_1win32_1_1_i_window_impl.html", "classm_1_1win32_1_1_i_window_impl" ],
         [ "WIN32Context", "structm_1_1win32_1_1_w_i_n32_context.html", null ]
       ] ],
       [ "windows", null, [
-        [ "IWindow", "classm_1_1windows_1_1_i_window.html", null ]
+        [ "mIWindow", "classm_1_1windows_1_1m_i_window.html", "classm_1_1windows_1_1m_i_window" ]
       ] ],
       [ "xcb_unix", null, [
         [ "IWindowedApplicationImpl", "classm_1_1xcb__unix_1_1_i_windowed_application_impl.html", "classm_1_1xcb__unix_1_1_i_windowed_application_impl" ],
-        [ "IWindowImpl", "classm_1_1xcb__unix_1_1_i_window_impl.html", null ],
+        [ "IWindowImpl", "classm_1_1xcb__unix_1_1_i_window_impl.html", "classm_1_1xcb__unix_1_1_i_window_impl" ],
         [ "XCBContext", "structm_1_1xcb__unix_1_1_x_c_b_context.html", null ]
       ] ],
       [ "mBasicLaunchData", "structm_1_1m_basic_launch_data.html", null ],

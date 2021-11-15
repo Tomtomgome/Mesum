@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['guidelines_0',['Guidelines',['../group___guidelines.html',1,'']]]
+  ['graphics_0',['Graphics',['../group___graphics.html',1,'']]]
 ];

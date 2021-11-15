@@ -16,12 +16,12 @@
 \DoxyCodeLine{12 \{}
 \DoxyCodeLine{13 \textcolor{keyword}{class }XCBContext;}
 \DoxyCodeLine{14 }
-\DoxyCodeLine{15 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_window_impl}{IWindowImpl}} : \textcolor{keyword}{public} \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{windows::IWindow}}}
+\DoxyCodeLine{15 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_window_impl}{IWindowImpl}} : \textcolor{keyword}{public} \mbox{\hyperlink{classm_1_1windows_1_1m_i_window}{windows::mIWindow}}}
 \DoxyCodeLine{16 \{}
 \DoxyCodeLine{17    \textcolor{keyword}{public}:}
 \DoxyCodeLine{18     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} init() \textcolor{keyword}{override};}
 \DoxyCodeLine{19     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} render() \textcolor{keyword}{override};}
-\DoxyCodeLine{20     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} destroy() \textcolor{keyword}{override};}
+\DoxyCodeLine{20     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_window_impl_a1b8ae947d2408e93b4419f6a1001405d}{destroy}}() \textcolor{keyword}{override};}
 \DoxyCodeLine{21 }
 \DoxyCodeLine{22     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} link\_inputManager(\mbox{\hyperlink{structm_1_1input_1_1m_callback_input_manager}{input::mCallbackInputManager}}* a\_inputManager)}
 \DoxyCodeLine{23     \{}
@@ -38,9 +38,9 @@
 \DoxyCodeLine{34         m\_parentRenderer = a\_renderer;}
 \DoxyCodeLine{35     \}}
 \DoxyCodeLine{36     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_asMainWindow();}
-\DoxyCodeLine{37     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_asImGuiWindow(mBool a\_supportMultiViewports);}
-\DoxyCodeLine{38     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_fullScreen(mBool a\_fullscreen);}
-\DoxyCodeLine{39     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} toggle\_fullScreen();}
+\DoxyCodeLine{37     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1windows_1_1m_i_window_ae832a7b38aefbf97d4d39f9e550e1bd3}{set\_asImGuiWindow}}(mBool a\_supportMultiViewports);}
+\DoxyCodeLine{38     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_window_impl_a57153b21b83e861ec61ab64772646496}{set\_fullScreen}}(mBool a\_fullscreen);}
+\DoxyCodeLine{39     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_window_impl_aed30ce4c065a6c7226094412ab87c690}{toggle\_fullScreen}}();}
 \DoxyCodeLine{40 }
 \DoxyCodeLine{41     \textcolor{keywordtype}{void} set\_winContext(\mbox{\hyperlink{structm_1_1xcb__unix_1_1_x_c_b_context}{XCBContext}} \textcolor{keyword}{const}\& a\_xcbContext)}
 \DoxyCodeLine{42     \{}

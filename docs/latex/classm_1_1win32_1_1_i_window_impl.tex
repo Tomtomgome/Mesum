@@ -12,29 +12,24 @@ Inheritance diagram for m\+::win32\+::IWindow\+Impl\+:\begin{figure}[H]
 \mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a6a886d3a8d2fd721d5533d91381a175a}\label{classm_1_1win32_1_1_i_window_impl_a6a886d3a8d2fd721d5533d91381a175a}} 
 LRESULT {\bfseries process\+\_\+messages} (UINT a\+\_\+u\+Msg, WPARAM a\+\_\+w\+Param, LPARAM a\+\_\+l\+Param)
 \item 
-void \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a984824d5dded3e62fa08cb6ae15f6015}{init}} () override
-\item 
+void \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a4cfffb74b30392a27c0f90e78b872793}{init}} (\mbox{\hyperlink{structm_1_1windows_1_1m_i_window_1_1m_init_data}{m\+Init\+Data}} const \&a\+\_\+init\+Data) override
+\begin{DoxyCompactList}\small\item\em Initialize the window. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a26d34905ecf13596e373247e5da2e25e}{destroy}} () override
-\item 
+\begin{DoxyCompactList}\small\item\em Destroys a window. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_ade9b1f16163c029edbe2787cd246731c}{link\+\_\+input\+Manager}} (\mbox{\hyperlink{classm_1_1input_1_1m_i_input_manager}{input\+::m\+IInput\+Manager}} $\ast$a\+\_\+input\+Manager) override
-\item 
+\begin{DoxyCompactList}\small\item\em Link an input manager to the window. \end{DoxyCompactList}\item 
 render\+::\+ISurface\+::\+Hdl\+Ptr \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a933f881509d3cc21907f9199491d85d4}{link\+\_\+renderer}} (\mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{render\+::\+IRenderer}} $\ast$a\+\_\+renderer) override
-\item 
-void \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a95a52af6bdab820c7e1fa19e46c00077}{set\+\_\+size}} (m\+UInt a\+\_\+width, m\+UInt a\+\_\+height) override
-\item 
-void \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a8780bf663961ea435765f822aa20f4e4}{set\+\_\+window\+Name}} (std\+::string a\+\_\+name) override
-\item 
-void \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a149eaa8cfd40f4a8cf4ac9d75e5fab7b}{set\+\_\+as\+Main\+Window}} () override
-\item 
+\begin{DoxyCompactList}\small\item\em Link a renderer to the window. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a9f7e53ef34c1f92b535e2da0199250c8}{set\+\_\+as\+Im\+Gui\+Window}} () override
-\item 
+\begin{DoxyCompactList}\small\item\em Tells the window that it will be holding the \mbox{\hyperlink{namespacem_1_1dear_im_gui}{dear\+Im\+Gui}} context. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a767a8385eb3c140538bca6f356acc7dd}{set\+\_\+full\+Screen}} (m\+Bool a\+\_\+fullscreen) override
-\item 
+\begin{DoxyCompactList}\small\item\em Explicitly sets the fullscreeness of the window. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a573188aff5d26839af24ae3a4c44b663}{toggle\+\_\+full\+Screen}} () override
-\item 
+\begin{DoxyCompactList}\small\item\em Toggle the fullscreen state of the window. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a3cdd34e9a6fe9d21880b4a37f70e93d1}{attach\+\_\+to\+Destroy}} (\mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void $>$ const \&a\+\_\+on\+Destroy\+Callback) override
-\item 
-void \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a50608422e47a0f1224360d67b6abb1ef}{attach\+\_\+to\+Resize}} (\mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, m\+U32, m\+U32 $>$ const \&a\+\_\+on\+Resize\+Callback) override
+\begin{DoxyCompactList}\small\item\em Attach a callback that will be called when the window is destroyed. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a50608422e47a0f1224360d67b6abb1ef}\label{classm_1_1win32_1_1_i_window_impl_a50608422e47a0f1224360d67b6abb1ef}} 
+void {\bfseries attach\+\_\+to\+Resize} (\mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, m\+U32, m\+U32 $>$ const \&a\+\_\+on\+Resize\+Callback) override
 \item 
 \mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a339a23a1f00e9691103bc2573ff4761d}\label{classm_1_1win32_1_1_i_window_impl_a339a23a1f00e9691103bc2573ff4761d}} 
 void {\bfseries set\+\_\+win\+Context} (\mbox{\hyperlink{structm_1_1win32_1_1_w_i_n32_context}{WIN32\+Context}} const \&a\+\_\+win\+Context)
@@ -72,9 +67,6 @@ m\+Bool {\bfseries m\+\_\+flag\+To\+Be\+Closed} = false
 \mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a535146e94b6020c92ebf3e448dec6997}\label{classm_1_1win32_1_1_i_window_impl_a535146e94b6020c92ebf3e448dec6997}} 
 std\+::string {\bfseries m\+\_\+window\+Name}
 \item 
-\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_ada248974ba576028adbf571032d50cdd}\label{classm_1_1win32_1_1_i_window_impl_ada248974ba576028adbf571032d50cdd}} 
-m\+Bool {\bfseries m\+\_\+is\+Main\+Window} = false
-\item 
 \mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a6e990746b536b35e5d66d39b48ddde12}\label{classm_1_1win32_1_1_i_window_impl_a6e990746b536b35e5d66d39b48ddde12}} 
 m\+U32 {\bfseries m\+\_\+client\+Width} = 1280
 \item 
@@ -96,6 +88,7 @@ RECT {\bfseries m\+\_\+window\+Rect}
 \mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a82a81a85ef4eec280162449333fc83c5}\label{classm_1_1win32_1_1_i_window_impl_a82a81a85ef4eec280162449333fc83c5}} 
 \mbox{\hyperlink{classm_1_1m_signal}{m\+Signal}}$<$ m\+Bool $\ast$, HWND, UINT, WPARAM, LPARAM $>$ {\bfseries m\+\_\+signal\+Override\+Input\+Processing}
 \end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
 
 
 \doxysubsection{Member Function Documentation}
@@ -107,17 +100,16 @@ RECT {\bfseries m\+\_\+window\+Rect}
 
 
 
-Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
-
-\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a50608422e47a0f1224360d67b6abb1ef}\label{classm_1_1win32_1_1_i_window_impl_a50608422e47a0f1224360d67b6abb1ef}} 
-\index{m::win32::IWindowImpl@{m::win32::IWindowImpl}!attach\_toResize@{attach\_toResize}}
-\index{attach\_toResize@{attach\_toResize}!m::win32::IWindowImpl@{m::win32::IWindowImpl}}
-\doxysubsubsection{\texorpdfstring{attach\_toResize()}{attach\_toResize()}}
-{\footnotesize\ttfamily void m\+::win32\+::\+IWindow\+Impl\+::attach\+\_\+to\+Resize (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, m\+U32, m\+U32 $>$ const \&}]{a\+\_\+on\+Resize\+Callback }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+Attach a callback that will be called when the window is destroyed. 
 
 
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+on\+Destroy\+Callback} & The callback to attach \\
+\hline
+\end{DoxyParams}
 
-Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1m_i_window_af8ad9b3f899a405fed9e32c90e0d2b68}{m\+::windows\+::m\+IWindow}}.
 
 \mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a26d34905ecf13596e373247e5da2e25e}\label{classm_1_1win32_1_1_i_window_impl_a26d34905ecf13596e373247e5da2e25e}} 
 \index{m::win32::IWindowImpl@{m::win32::IWindowImpl}!destroy@{destroy}}
@@ -127,17 +119,30 @@ Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IW
 
 
 
-Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+Destroys a window. 
 
-\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a984824d5dded3e62fa08cb6ae15f6015}\label{classm_1_1win32_1_1_i_window_impl_a984824d5dded3e62fa08cb6ae15f6015}} 
+
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1m_i_window_a13d3bc1280d42ad591092a2a51cf6f78}{m\+::windows\+::m\+IWindow}}.
+
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a4cfffb74b30392a27c0f90e78b872793}\label{classm_1_1win32_1_1_i_window_impl_a4cfffb74b30392a27c0f90e78b872793}} 
 \index{m::win32::IWindowImpl@{m::win32::IWindowImpl}!init@{init}}
 \index{init@{init}!m::win32::IWindowImpl@{m::win32::IWindowImpl}}
 \doxysubsubsection{\texorpdfstring{init()}{init()}}
-{\footnotesize\ttfamily void m\+::win32\+::\+IWindow\+Impl\+::init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily void m\+::win32\+::\+IWindow\+Impl\+::init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structm_1_1windows_1_1m_i_window_1_1m_init_data}{m\+Init\+Data}} const \&}]{a\+\_\+init\+Data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
-Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+Initialize the window. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+init\+Data} & The initialization data for the window \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1m_i_window_accada43f032d76ee409de6901354db27}{m\+::windows\+::m\+IWindow}}.
 
 \mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_ade9b1f16163c029edbe2787cd246731c}\label{classm_1_1win32_1_1_i_window_impl_ade9b1f16163c029edbe2787cd246731c}} 
 \index{m::win32::IWindowImpl@{m::win32::IWindowImpl}!link\_inputManager@{link\_inputManager}}
@@ -147,7 +152,18 @@ Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IW
 
 
 
-Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+Link an input manager to the window. 
+
+Only one input manager can be linked to a window
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+input\+Manager} & The input manager to link, passing nullptr is valid and means the window doesn\textquotesingle{}t notify anybody \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1m_i_window_a444a93b9ed041929fa4cee78904be570}{m\+::windows\+::m\+IWindow}}.
 
 \mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a933f881509d3cc21907f9199491d85d4}\label{classm_1_1win32_1_1_i_window_impl_a933f881509d3cc21907f9199491d85d4}} 
 \index{m::win32::IWindowImpl@{m::win32::IWindowImpl}!link\_renderer@{link\_renderer}}
@@ -157,7 +173,20 @@ Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IW
 
 
 
-Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+Link a renderer to the window. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000001}{Todo}}]This logic need to be removed from the window\end{DoxyRefDesc}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+renderer} & The renderer to link to the window \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1m_i_window_ae3a123edbfa96261e601d9dddb77a587}{m\+::windows\+::m\+IWindow}}.
 
 \mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a9f7e53ef34c1f92b535e2da0199250c8}\label{classm_1_1win32_1_1_i_window_impl_a9f7e53ef34c1f92b535e2da0199250c8}} 
 \index{m::win32::IWindowImpl@{m::win32::IWindowImpl}!set\_asImGuiWindow@{set\_asImGuiWindow}}
@@ -167,17 +196,13 @@ Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IW
 
 
 
-Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+Tells the window that it will be holding the \mbox{\hyperlink{namespacem_1_1dear_im_gui}{dear\+Im\+Gui}} context. 
 
-\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a149eaa8cfd40f4a8cf4ac9d75e5fab7b}\label{classm_1_1win32_1_1_i_window_impl_a149eaa8cfd40f4a8cf4ac9d75e5fab7b}} 
-\index{m::win32::IWindowImpl@{m::win32::IWindowImpl}!set\_asMainWindow@{set\_asMainWindow}}
-\index{set\_asMainWindow@{set\_asMainWindow}!m::win32::IWindowImpl@{m::win32::IWindowImpl}}
-\doxysubsubsection{\texorpdfstring{set\_asMainWindow()}{set\_asMainWindow()}}
-{\footnotesize\ttfamily void m\+::win32\+::\+IWindow\+Impl\+::set\+\_\+as\+Main\+Window (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000002}{Todo}}]This logic need to be removed from the window\end{DoxyRefDesc}
 
 
-
-Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+Implements \mbox{\hyperlink{classm_1_1windows_1_1m_i_window_ae832a7b38aefbf97d4d39f9e550e1bd3}{m\+::windows\+::m\+IWindow}}.
 
 \mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a767a8385eb3c140538bca6f356acc7dd}\label{classm_1_1win32_1_1_i_window_impl_a767a8385eb3c140538bca6f356acc7dd}} 
 \index{m::win32::IWindowImpl@{m::win32::IWindowImpl}!set\_fullScreen@{set\_fullScreen}}
@@ -187,27 +212,16 @@ Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IW
 
 
 
-Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
-
-\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a95a52af6bdab820c7e1fa19e46c00077}\label{classm_1_1win32_1_1_i_window_impl_a95a52af6bdab820c7e1fa19e46c00077}} 
-\index{m::win32::IWindowImpl@{m::win32::IWindowImpl}!set\_size@{set\_size}}
-\index{set\_size@{set\_size}!m::win32::IWindowImpl@{m::win32::IWindowImpl}}
-\doxysubsubsection{\texorpdfstring{set\_size()}{set\_size()}}
-{\footnotesize\ttfamily void m\+::win32\+::\+IWindow\+Impl\+::set\+\_\+size (\begin{DoxyParamCaption}\item[{m\+UInt}]{a\+\_\+width,  }\item[{m\+UInt}]{a\+\_\+height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+Explicitly sets the fullscreeness of the window. 
 
 
-
-Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
-
-\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a8780bf663961ea435765f822aa20f4e4}\label{classm_1_1win32_1_1_i_window_impl_a8780bf663961ea435765f822aa20f4e4}} 
-\index{m::win32::IWindowImpl@{m::win32::IWindowImpl}!set\_windowName@{set\_windowName}}
-\index{set\_windowName@{set\_windowName}!m::win32::IWindowImpl@{m::win32::IWindowImpl}}
-\doxysubsubsection{\texorpdfstring{set\_windowName()}{set\_windowName()}}
-{\footnotesize\ttfamily void m\+::win32\+::\+IWindow\+Impl\+::set\+\_\+window\+Name (\begin{DoxyParamCaption}\item[{std\+::string}]{a\+\_\+name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+fullscreen} & Set true to set the window fullscreen, false otherwiser \\
+\hline
+\end{DoxyParams}
 
 
-
-Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+Implements \mbox{\hyperlink{classm_1_1windows_1_1m_i_window_aad20bff8c14bde9559c7ddbd7d3440a2}{m\+::windows\+::m\+IWindow}}.
 
 \mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a573188aff5d26839af24ae3a4c44b663}\label{classm_1_1win32_1_1_i_window_impl_a573188aff5d26839af24ae3a4c44b663}} 
 \index{m::win32::IWindowImpl@{m::win32::IWindowImpl}!toggle\_fullScreen@{toggle\_fullScreen}}
@@ -217,7 +231,11 @@ Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IW
 
 
 
-Implements \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{m\+::windows\+::\+IWindow}}.
+Toggle the fullscreen state of the window. 
+
+
+
+Implements \mbox{\hyperlink{classm_1_1windows_1_1m_i_window_abb5c549389ae265804536be5506a3463}{m\+::windows\+::m\+IWindow}}.
 
 
 

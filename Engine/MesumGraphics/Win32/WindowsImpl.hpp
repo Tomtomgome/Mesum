@@ -2,21 +2,21 @@
 #define M_WINDOWSIMPL
 #pragma once
 
-#include <MesumCore/Kernel/Types.hpp>
-#include <MesumGraphics/CrossRenderer.hpp>
-#include <MesumGraphics/Windows.hpp>
+#include <Kernel/Types.hpp>
+#include "CrossRenderer.hpp"
+#include "Windows.hpp"
 
 namespace m::win32
 {
 class Win32Context;
 
-class IWindowImpl : public windows::IWindow
+class IWindowImpl : public windows::mIWindow
 {
    public:
     // Platform specific
     LRESULT process_messages(UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam);
 
-    void init() override;
+    void init(mInitData const& a_initData) override;
     void destroy() override;
 
     void link_inputManager(input::mIInputManager* a_inputManager) override
@@ -25,13 +25,7 @@ class IWindowImpl : public windows::IWindow
     };
     render::ISurface::HdlPtr link_renderer(
         render::IRenderer* a_renderer) override;
-    void set_size(mUInt a_width, mUInt a_height) override
-    {
-        m_clientWidth  = a_width;
-        m_clientHeight = a_height;
-    }
-    void set_windowName(std::string a_name) override { m_windowName = a_name; }
-    void set_asMainWindow() override;
+
     void set_asImGuiWindow() override;
     void set_fullScreen(mBool a_fullscreen) override;
     void toggle_fullScreen() override;
@@ -61,7 +55,6 @@ class IWindowImpl : public windows::IWindow
     mBool m_flagToBeClosed = false;
 
     std::string m_windowName;
-    mBool       m_isMainWindow = false;
     mU32        m_clientWidth  = 1280;
     mU32        m_clientHeight = 720;
 

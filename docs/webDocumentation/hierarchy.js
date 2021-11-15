@@ -123,10 +123,6 @@ var hierarchy =
       [ "m::dx12::DX12Surface", "classm_1_1dx12_1_1_d_x12_surface.html", null ],
       [ "m::vulkan::VulkanSurface", "classm_1_1vulkan_1_1_vulkan_surface.html", null ]
     ] ],
-    [ "m::windows::IWindow", "classm_1_1windows_1_1_i_window.html", [
-      [ "m::win32::IWindowImpl", "classm_1_1win32_1_1_i_window_impl.html", null ],
-      [ "m::xcb_unix::IWindowImpl", "classm_1_1xcb__unix_1_1_i_window_impl.html", null ]
-    ] ],
     [ "m::mBasicLaunchData", "structm_1_1m_basic_launch_data.html", null ],
     [ "m::mCallback< t_RetType, t_Args >", "classm_1_1m_callback.html", null ],
     [ "m::mCmdLine", "structm_1_1m_cmd_line.html", null ],
@@ -145,6 +141,11 @@ var hierarchy =
     [ "m::logging::mILogPolicy", "classm_1_1logging_1_1m_i_log_policy.html", [
       [ "m::logging::mFileLogPolicy", "classm_1_1logging_1_1m_file_log_policy.html", null ],
       [ "m::logging::mStdcoutLogPolicy", "classm_1_1logging_1_1m_stdcout_log_policy.html", null ]
+    ] ],
+    [ "m::windows::mIWindow::mInitData", "structm_1_1windows_1_1m_i_window_1_1m_init_data.html", null ],
+    [ "m::windows::mIWindow", "classm_1_1windows_1_1m_i_window.html", [
+      [ "m::win32::IWindowImpl", "classm_1_1win32_1_1_i_window_impl.html", null ],
+      [ "m::xcb_unix::IWindowImpl", "classm_1_1xcb__unix_1_1_i_window_impl.html", null ]
     ] ],
     [ "m::input::mKeyAction", "structm_1_1input_1_1m_key_action.html", null ],
     [ "m::logging::mLogger< t_LogPolicy >", "classm_1_1logging_1_1m_logger.html", null ],

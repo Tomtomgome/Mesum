@@ -19,7 +19,7 @@
 \DoxyCodeLine{15    \textcolor{keyword}{public}:}
 \DoxyCodeLine{16     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} init\_renderer(}
 \DoxyCodeLine{17         render::RendererApi a\_renderApi = render::RendererApi::Default) \textcolor{keyword}{override};}
-\DoxyCodeLine{18     \textcolor{keyword}{virtual} \mbox{\hyperlink{classm_1_1windows_1_1_i_window}{windows::IWindow}}* add\_newWindow(std::wstring a\_name, mU32 a\_width,}
+\DoxyCodeLine{18     \textcolor{keyword}{virtual} \mbox{\hyperlink{classm_1_1windows_1_1m_i_window}{windows::mIWindow}}* add\_newWindow(std::wstring a\_name, mU32 a\_width,}
 \DoxyCodeLine{19                                             mU32 a\_height);}
 \DoxyCodeLine{20     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} set\_processImGuiMultiViewports(mBool a\_supportMultiViewPorts);}
 \DoxyCodeLine{21     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} start\_dearImGuiNewFrame();}
@@ -35,7 +35,7 @@
 \DoxyCodeLine{31     mBool                       m\_supportImGuiMultiViewPorts = \textcolor{keyword}{false};}
 \DoxyCodeLine{32     \mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{render::IRenderer}}*          m\_renderer = \textcolor{keyword}{nullptr};}
 \DoxyCodeLine{33     \mbox{\hyperlink{structm_1_1xcb__unix_1_1_x_c_b_context}{XCBContext}}                  m\_XCBContext;}
-\DoxyCodeLine{34     std::set<windows::IWindow*> m\_windows;}
+\DoxyCodeLine{34     std::set<windows::mIWindow*> m\_windows;}
 \DoxyCodeLine{35 \};}
 \DoxyCodeLine{36 \}  \textcolor{comment}{// namespace xcb\_unix}}
 \DoxyCodeLine{37 \}  \textcolor{comment}{// namespace m}}
