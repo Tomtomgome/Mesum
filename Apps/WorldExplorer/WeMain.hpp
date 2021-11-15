@@ -7,7 +7,7 @@
 
 #include "Camera.hpp"
 #include "CameraOrbitController.hpp"
-#include "Kernel/StateInputManager.hpp" // < ou "?
+#include "Kernel/StateInputManager.hpp"  // < ou "?
 
 using namespace m;
 
@@ -21,7 +21,7 @@ class WorldExplorerApp : public m::crossPlatform::IWindowedApplication
     mBool step(std::chrono::steady_clock::duration const& a_deltaTime) override;
 
     std::unique_ptr<m::render::IRenderer> m_iRenderer;
-    m::windows::IWindow*                  m_pWindow;  // gére les inpts
+    m::windows::mIWindow*                 m_pWindow;  // gére les inpts
     m::render::ISurface::HdlPtr m_hdlSurface;  // le truc qui sert au rendu
 
     const m::logging::mChannelID m_WE_LOG_ID = mLog_getId();

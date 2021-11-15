@@ -42,9 +42,8 @@ void WorldExplorerApp::init(mCmdLine const& a_cmdLine, void* a_appData)
     m_pWindow = add_newWindow("WorldExplorer app", 1280, 720);
     m_pWindow->link_inputManager(&m_inputManager);
     m_hdlSurface = m_pWindow->link_renderer(m_iRenderer.get());
-    m_pWindow->set_asMainWindow();
 
-    m::dearImGui::init(m_pWindow);
+    m::dearImGui::init(*m_pWindow);
 
     /* ------- Taskset */
     render::Taskset* pTaskset = m_hdlSurface->surface->addNew_renderTaskset();
