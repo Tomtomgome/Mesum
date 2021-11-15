@@ -52,7 +52,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 {
     void add_applicationWindow()
     {
-        m::windows::IWindow* m_secondWindow =
+        m::windows::mIWindow* m_secondWindow =
             add_newWindow("Test Second window", 600, 400);
         m_secondWindow->link_inputManager(&m_inputManager);
     }
@@ -104,7 +104,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m_inputManager.attach_toKeyEvent(
             m::input::mKeyAction::keyPressed(m::input::keyF11),
             m::input::mKeyActionCallback(
-                m_mainDx12Window, &m::windows::IWindow::toggle_fullScreen));
+                m_mainDx12Window, &m::windows::mIWindow::toggle_fullScreen));
 
         m_inputManager.attach_toKeyEvent(
             m::input::mKeyAction::keyPressed(m::input::keyW),
@@ -200,8 +200,8 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
     m::render::ISurface::HdlPtr m_hdlDx12Surface;
     m::render::ISurface::HdlPtr m_hdlVulkanSurface;
     m::input::mCallbackInputManager m_inputManager;
-    m::windows::IWindow*        m_mainDx12Window;
-    m::windows::IWindow*        m_mainVulkanWindow;
+    m::windows::mIWindow*        m_mainDx12Window;
+    m::windows::mIWindow*        m_mainVulkanWindow;
     CubeMover                   m_mover;
 
     const m::logging::mChannelID m_CUBEAPP_ID = mLog_getId();

@@ -65,15 +65,15 @@ var annotated_dup =
       ] ],
       [ "win32", null, [
         [ "IWindowedApplicationImpl", "classm_1_1win32_1_1_i_windowed_application_impl.html", "classm_1_1win32_1_1_i_windowed_application_impl" ],
-        [ "IWindowImpl", "classm_1_1win32_1_1_i_window_impl.html", null ],
+        [ "IWindowImpl", "classm_1_1win32_1_1_i_window_impl.html", "classm_1_1win32_1_1_i_window_impl" ],
         [ "WIN32Context", "structm_1_1win32_1_1_w_i_n32_context.html", null ]
       ] ],
       [ "windows", null, [
-        [ "IWindow", "classm_1_1windows_1_1_i_window.html", null ]
+        [ "mIWindow", "classm_1_1windows_1_1m_i_window.html", "classm_1_1windows_1_1m_i_window" ]
       ] ],
       [ "xcb_unix", null, [
         [ "IWindowedApplicationImpl", "classm_1_1xcb__unix_1_1_i_windowed_application_impl.html", "classm_1_1xcb__unix_1_1_i_windowed_application_impl" ],
-        [ "IWindowImpl", "classm_1_1xcb__unix_1_1_i_window_impl.html", null ],
+        [ "IWindowImpl", "classm_1_1xcb__unix_1_1_i_window_impl.html", "classm_1_1xcb__unix_1_1_i_window_impl" ],
         [ "XCBContext", "structm_1_1xcb__unix_1_1_x_c_b_context.html", null ]
       ] ],
       [ "mBasicLaunchData", "structm_1_1m_basic_launch_data.html", null ],

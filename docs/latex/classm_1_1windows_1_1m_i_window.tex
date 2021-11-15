@@ -1,0 +1,226 @@
+\hypertarget{classm_1_1windows_1_1m_i_window}{}\doxysection{m\+::windows\+::m\+IWindow Class Reference}
+\label{classm_1_1windows_1_1m_i_window}\index{m::windows::mIWindow@{m::windows::mIWindow}}
+
+
+Interface defining a window.  
+
+
+
+
+{\ttfamily \#include $<$Windows.\+hpp$>$}
+
+Inheritance diagram for m\+::windows\+::m\+IWindow\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classm_1_1windows_1_1m_i_window}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structm_1_1windows_1_1m_i_window_1_1m_init_data}{m\+Init\+Data}}
+\begin{DoxyCompactList}\small\item\em Structure holding initialization data for windows. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1windows_1_1m_i_window_a66c8a73f232356e9964747be216052f0}\label{classm_1_1windows_1_1m_i_window_a66c8a73f232356e9964747be216052f0}} 
+using {\bfseries m\+On\+Resize\+Callback} = \mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, m\+U32, m\+U32 $>$
+\begin{DoxyCompactList}\small\item\em Alias the type of callback when resizing the window. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classm_1_1windows_1_1m_i_window_aac000ba3942a81d421cc885ef647b06b}\label{classm_1_1windows_1_1m_i_window_aac000ba3942a81d421cc885ef647b06b}} 
+using {\bfseries m\+On\+Destroy\+Callback} = \mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void $>$
+\begin{DoxyCompactList}\small\item\em Alias the type of callback when destroying the window. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1windows_1_1m_i_window_a43850f49e88bcf988f4a5864ce5d67c7}\label{classm_1_1windows_1_1m_i_window_a43850f49e88bcf988f4a5864ce5d67c7}} 
+virtual {\bfseries $\sim$m\+IWindow} ()=default
+\begin{DoxyCompactList}\small\item\em Default destructor. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classm_1_1windows_1_1m_i_window_accada43f032d76ee409de6901354db27}{init}} (\mbox{\hyperlink{structm_1_1windows_1_1m_i_window_1_1m_init_data}{m\+Init\+Data}} const \&a\+\_\+init\+Data)=0
+\begin{DoxyCompactList}\small\item\em Initialize the window. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classm_1_1windows_1_1m_i_window_a13d3bc1280d42ad591092a2a51cf6f78}{destroy}} ()=0
+\begin{DoxyCompactList}\small\item\em Destroys a window. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classm_1_1windows_1_1m_i_window_a444a93b9ed041929fa4cee78904be570}{link\+\_\+input\+Manager}} (\mbox{\hyperlink{classm_1_1input_1_1m_i_input_manager}{input\+::m\+IInput\+Manager}} $\ast$a\+\_\+input\+Manager)=0
+\begin{DoxyCompactList}\small\item\em Link an input manager to the window. \end{DoxyCompactList}\item 
+virtual render\+::\+ISurface\+::\+Hdl\+Ptr \mbox{\hyperlink{classm_1_1windows_1_1m_i_window_ae3a123edbfa96261e601d9dddb77a587}{link\+\_\+renderer}} (\mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{render\+::\+IRenderer}} $\ast$a\+\_\+renderer)=0
+\begin{DoxyCompactList}\small\item\em Link a renderer to the window. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classm_1_1windows_1_1m_i_window_ae832a7b38aefbf97d4d39f9e550e1bd3}{set\+\_\+as\+Im\+Gui\+Window}} ()=0
+\begin{DoxyCompactList}\small\item\em Tells the window that it will be holding the \mbox{\hyperlink{namespacem_1_1dear_im_gui}{dear\+Im\+Gui}} context. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classm_1_1windows_1_1m_i_window_aad20bff8c14bde9559c7ddbd7d3440a2}{set\+\_\+full\+Screen}} (m\+Bool a\+\_\+fullscreen)=0
+\begin{DoxyCompactList}\small\item\em Explicitly sets the fullscreeness of the window. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classm_1_1windows_1_1m_i_window_abb5c549389ae265804536be5506a3463}{toggle\+\_\+full\+Screen}} ()=0
+\begin{DoxyCompactList}\small\item\em Toggle the fullscreen state of the window. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classm_1_1windows_1_1m_i_window_af8ad9b3f899a405fed9e32c90e0d2b68}{attach\+\_\+to\+Destroy}} (\mbox{\hyperlink{classm_1_1windows_1_1m_i_window_aac000ba3942a81d421cc885ef647b06b}{m\+On\+Destroy\+Callback}} const \&a\+\_\+on\+Destroy\+Callback)=0
+\begin{DoxyCompactList}\small\item\em Attach a callback that will be called when the window is destroyed. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classm_1_1windows_1_1m_i_window_a213e48befcfbf67383bf9a1961923f9b}{attach\+\_\+to\+Resize}} (\mbox{\hyperlink{classm_1_1windows_1_1m_i_window_a66c8a73f232356e9964747be216052f0}{m\+On\+Resize\+Callback}} const \&a\+\_\+on\+Resize\+Callback)=0
+\begin{DoxyCompactList}\small\item\em Attach a callback that will be called when the window is resized. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Interface defining a window. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classm_1_1windows_1_1m_i_window_af8ad9b3f899a405fed9e32c90e0d2b68}\label{classm_1_1windows_1_1m_i_window_af8ad9b3f899a405fed9e32c90e0d2b68}} 
+\index{m::windows::mIWindow@{m::windows::mIWindow}!attach\_toDestroy@{attach\_toDestroy}}
+\index{attach\_toDestroy@{attach\_toDestroy}!m::windows::mIWindow@{m::windows::mIWindow}}
+\doxysubsubsection{\texorpdfstring{attach\_toDestroy()}{attach\_toDestroy()}}
+{\footnotesize\ttfamily virtual void m\+::windows\+::m\+IWindow\+::attach\+\_\+to\+Destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classm_1_1windows_1_1m_i_window_aac000ba3942a81d421cc885ef647b06b}{m\+On\+Destroy\+Callback}} const \&}]{a\+\_\+on\+Destroy\+Callback }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Attach a callback that will be called when the window is destroyed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+on\+Destroy\+Callback} & The callback to attach \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a3cdd34e9a6fe9d21880b4a37f70e93d1}{m\+::win32\+::\+IWindow\+Impl}}.
+
+\mbox{\Hypertarget{classm_1_1windows_1_1m_i_window_a213e48befcfbf67383bf9a1961923f9b}\label{classm_1_1windows_1_1m_i_window_a213e48befcfbf67383bf9a1961923f9b}} 
+\index{m::windows::mIWindow@{m::windows::mIWindow}!attach\_toResize@{attach\_toResize}}
+\index{attach\_toResize@{attach\_toResize}!m::windows::mIWindow@{m::windows::mIWindow}}
+\doxysubsubsection{\texorpdfstring{attach\_toResize()}{attach\_toResize()}}
+{\footnotesize\ttfamily virtual void m\+::windows\+::m\+IWindow\+::attach\+\_\+to\+Resize (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classm_1_1windows_1_1m_i_window_a66c8a73f232356e9964747be216052f0}{m\+On\+Resize\+Callback}} const \&}]{a\+\_\+on\+Resize\+Callback }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Attach a callback that will be called when the window is resized. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+on\+Resize\+Callback} & The callback to attach \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classm_1_1windows_1_1m_i_window_a13d3bc1280d42ad591092a2a51cf6f78}\label{classm_1_1windows_1_1m_i_window_a13d3bc1280d42ad591092a2a51cf6f78}} 
+\index{m::windows::mIWindow@{m::windows::mIWindow}!destroy@{destroy}}
+\index{destroy@{destroy}!m::windows::mIWindow@{m::windows::mIWindow}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily virtual void m\+::windows\+::m\+IWindow\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Destroys a window. 
+
+
+
+Implemented in \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_window_impl_a1b8ae947d2408e93b4419f6a1001405d}{m\+::xcb\+\_\+unix\+::\+IWindow\+Impl}}, and \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a26d34905ecf13596e373247e5da2e25e}{m\+::win32\+::\+IWindow\+Impl}}.
+
+\mbox{\Hypertarget{classm_1_1windows_1_1m_i_window_accada43f032d76ee409de6901354db27}\label{classm_1_1windows_1_1m_i_window_accada43f032d76ee409de6901354db27}} 
+\index{m::windows::mIWindow@{m::windows::mIWindow}!init@{init}}
+\index{init@{init}!m::windows::mIWindow@{m::windows::mIWindow}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily virtual void m\+::windows\+::m\+IWindow\+::init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structm_1_1windows_1_1m_i_window_1_1m_init_data}{m\+Init\+Data}} const \&}]{a\+\_\+init\+Data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Initialize the window. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+init\+Data} & The initialization data for the window \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a4cfffb74b30392a27c0f90e78b872793}{m\+::win32\+::\+IWindow\+Impl}}.
+
+\mbox{\Hypertarget{classm_1_1windows_1_1m_i_window_a444a93b9ed041929fa4cee78904be570}\label{classm_1_1windows_1_1m_i_window_a444a93b9ed041929fa4cee78904be570}} 
+\index{m::windows::mIWindow@{m::windows::mIWindow}!link\_inputManager@{link\_inputManager}}
+\index{link\_inputManager@{link\_inputManager}!m::windows::mIWindow@{m::windows::mIWindow}}
+\doxysubsubsection{\texorpdfstring{link\_inputManager()}{link\_inputManager()}}
+{\footnotesize\ttfamily virtual void m\+::windows\+::m\+IWindow\+::link\+\_\+input\+Manager (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classm_1_1input_1_1m_i_input_manager}{input\+::m\+IInput\+Manager}} $\ast$}]{a\+\_\+input\+Manager }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Link an input manager to the window. 
+
+Only one input manager can be linked to a window
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+input\+Manager} & The input manager to link, passing nullptr is valid and means the window doesn\textquotesingle{}t notify anybody \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_ade9b1f16163c029edbe2787cd246731c}{m\+::win32\+::\+IWindow\+Impl}}.
+
+\mbox{\Hypertarget{classm_1_1windows_1_1m_i_window_ae3a123edbfa96261e601d9dddb77a587}\label{classm_1_1windows_1_1m_i_window_ae3a123edbfa96261e601d9dddb77a587}} 
+\index{m::windows::mIWindow@{m::windows::mIWindow}!link\_renderer@{link\_renderer}}
+\index{link\_renderer@{link\_renderer}!m::windows::mIWindow@{m::windows::mIWindow}}
+\doxysubsubsection{\texorpdfstring{link\_renderer()}{link\_renderer()}}
+{\footnotesize\ttfamily virtual render\+::\+ISurface\+::\+Hdl\+Ptr m\+::windows\+::m\+IWindow\+::link\+\_\+renderer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{render\+::\+IRenderer}} $\ast$}]{a\+\_\+renderer }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Link a renderer to the window. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000001}{Todo}}]This logic need to be removed from the window\end{DoxyRefDesc}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+renderer} & The renderer to link to the window \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a933f881509d3cc21907f9199491d85d4}{m\+::win32\+::\+IWindow\+Impl}}.
+
+\mbox{\Hypertarget{classm_1_1windows_1_1m_i_window_ae832a7b38aefbf97d4d39f9e550e1bd3}\label{classm_1_1windows_1_1m_i_window_ae832a7b38aefbf97d4d39f9e550e1bd3}} 
+\index{m::windows::mIWindow@{m::windows::mIWindow}!set\_asImGuiWindow@{set\_asImGuiWindow}}
+\index{set\_asImGuiWindow@{set\_asImGuiWindow}!m::windows::mIWindow@{m::windows::mIWindow}}
+\doxysubsubsection{\texorpdfstring{set\_asImGuiWindow()}{set\_asImGuiWindow()}}
+{\footnotesize\ttfamily virtual void m\+::windows\+::m\+IWindow\+::set\+\_\+as\+Im\+Gui\+Window (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Tells the window that it will be holding the \mbox{\hyperlink{namespacem_1_1dear_im_gui}{dear\+Im\+Gui}} context. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000002}{Todo}}]This logic need to be removed from the window\end{DoxyRefDesc}
+
+
+Implemented in \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a9f7e53ef34c1f92b535e2da0199250c8}{m\+::win32\+::\+IWindow\+Impl}}.
+
+\mbox{\Hypertarget{classm_1_1windows_1_1m_i_window_aad20bff8c14bde9559c7ddbd7d3440a2}\label{classm_1_1windows_1_1m_i_window_aad20bff8c14bde9559c7ddbd7d3440a2}} 
+\index{m::windows::mIWindow@{m::windows::mIWindow}!set\_fullScreen@{set\_fullScreen}}
+\index{set\_fullScreen@{set\_fullScreen}!m::windows::mIWindow@{m::windows::mIWindow}}
+\doxysubsubsection{\texorpdfstring{set\_fullScreen()}{set\_fullScreen()}}
+{\footnotesize\ttfamily virtual void m\+::windows\+::m\+IWindow\+::set\+\_\+full\+Screen (\begin{DoxyParamCaption}\item[{m\+Bool}]{a\+\_\+fullscreen }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Explicitly sets the fullscreeness of the window. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+fullscreen} & Set true to set the window fullscreen, false otherwiser \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_window_impl_a57153b21b83e861ec61ab64772646496}{m\+::xcb\+\_\+unix\+::\+IWindow\+Impl}}, and \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a767a8385eb3c140538bca6f356acc7dd}{m\+::win32\+::\+IWindow\+Impl}}.
+
+\mbox{\Hypertarget{classm_1_1windows_1_1m_i_window_abb5c549389ae265804536be5506a3463}\label{classm_1_1windows_1_1m_i_window_abb5c549389ae265804536be5506a3463}} 
+\index{m::windows::mIWindow@{m::windows::mIWindow}!toggle\_fullScreen@{toggle\_fullScreen}}
+\index{toggle\_fullScreen@{toggle\_fullScreen}!m::windows::mIWindow@{m::windows::mIWindow}}
+\doxysubsubsection{\texorpdfstring{toggle\_fullScreen()}{toggle\_fullScreen()}}
+{\footnotesize\ttfamily virtual void m\+::windows\+::m\+IWindow\+::toggle\+\_\+full\+Screen (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Toggle the fullscreen state of the window. 
+
+
+
+Implemented in \mbox{\hyperlink{classm_1_1xcb__unix_1_1_i_window_impl_aed30ce4c065a6c7226094412ab87c690}{m\+::xcb\+\_\+unix\+::\+IWindow\+Impl}}, and \mbox{\hyperlink{classm_1_1win32_1_1_i_window_impl_a573188aff5d26839af24ae3a4c44b663}{m\+::win32\+::\+IWindow\+Impl}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Graphics/Windows.\+hpp\end{DoxyCompactItemize}

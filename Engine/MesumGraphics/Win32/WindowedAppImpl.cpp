@@ -28,17 +28,15 @@ LRESULT CALLBACK WindowProc(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam,
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-windows::IWindow* IWindowedApplicationImpl::add_newWindow(std::string a_name,
+windows::mIWindow* IWindowedApplicationImpl::add_newWindow(std::string a_name,
                                                           mU32        a_width,
                                                           mU32        a_height)
 {
     IWindowImpl* newWindow = new IWindowImpl();
     m_windows.insert(newWindow);
 
-    newWindow->set_size(a_width, a_height);
-    newWindow->set_windowName(a_name);
     newWindow->set_winContext(m_W32Context);
-    newWindow->init();
+    newWindow->init({a_name, {a_width, a_height}});
 
     return newWindow;
 }
@@ -81,7 +79,7 @@ void IWindowedApplicationImpl::destroy()
     for (auto element = m_windows.begin(); element != m_windows.end();
          ++element)
     {
-        windows::IWindow* window = (*element);
+        windows::mIWindow* window = (*element);
         window->destroy();
         delete window;
     }
@@ -114,7 +112,7 @@ mBool IWindowedApplicationImpl::step(
     auto element = m_windows.begin();
     while (element != m_windows.end())
     {
-        windows::IWindow* window = (*element);
+        windows::mIWindow* window = (*element);
         if (static_cast<IWindowImpl*>(window)->is_flaggedToBeClosed())
         {
             window->destroy();

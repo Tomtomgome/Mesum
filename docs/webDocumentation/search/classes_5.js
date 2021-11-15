@@ -100,8 +100,7 @@ var searchData=
   ['imvector_97',['ImVector',['../struct_im_vector.html',1,'']]],
   ['irenderer_98',['IRenderer',['../classm_1_1render_1_1_i_renderer.html',1,'m::render']]],
   ['isurface_99',['ISurface',['../classm_1_1render_1_1_i_surface.html',1,'m::render']]],
-  ['iwindow_100',['IWindow',['../classm_1_1windows_1_1_i_window.html',1,'m::windows']]],
-  ['iwindowedapplicationbase_101',['IWindowedApplicationBase',['../classm_1_1application_1_1_i_windowed_application_base.html',1,'m::application']]],
-  ['iwindowedapplicationimpl_102',['IWindowedApplicationImpl',['../classm_1_1win32_1_1_i_windowed_application_impl.html',1,'m::win32::IWindowedApplicationImpl'],['../classm_1_1xcb__unix_1_1_i_windowed_application_impl.html',1,'m::xcb_unix::IWindowedApplicationImpl']]],
-  ['iwindowimpl_103',['IWindowImpl',['../classm_1_1win32_1_1_i_window_impl.html',1,'m::win32::IWindowImpl'],['../classm_1_1xcb__unix_1_1_i_window_impl.html',1,'m::xcb_unix::IWindowImpl']]]
+  ['iwindowedapplicationbase_100',['IWindowedApplicationBase',['../classm_1_1application_1_1_i_windowed_application_base.html',1,'m::application']]],
+  ['iwindowedapplicationimpl_101',['IWindowedApplicationImpl',['../classm_1_1win32_1_1_i_windowed_application_impl.html',1,'m::win32::IWindowedApplicationImpl'],['../classm_1_1xcb__unix_1_1_i_windowed_application_impl.html',1,'m::xcb_unix::IWindowedApplicationImpl']]],
+  ['iwindowimpl_102',['IWindowImpl',['../classm_1_1win32_1_1_i_window_impl.html',1,'m::win32::IWindowImpl'],['../classm_1_1xcb__unix_1_1_i_window_impl.html',1,'m::xcb_unix::IWindowImpl']]]
 ];

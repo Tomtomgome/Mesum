@@ -52,7 +52,7 @@ void IWindowedApplicationImpl::init_renderer(render::RendererApi a_renderApi)
     m_renderer->init();
 }
 
-windows::IWindow* IWindowedApplicationImpl::add_newWindow(std::wstring a_name,
+windows::mIWindow* IWindowedApplicationImpl::add_newWindow(std::wstring a_name,
                                                           mU32         a_width,
                                                           mU32         a_height)
 {
@@ -87,7 +87,7 @@ void IWindowedApplicationImpl::render()
     for (auto element = m_windows.begin(); element != m_windows.end();
          ++element)
     {
-        windows::IWindow* window = (*element);
+        windows::mIWindow* window = (*element);
         window->render();
     }
 
@@ -121,7 +121,7 @@ void IWindowedApplicationImpl::destroy()
     for (auto element = m_windows.begin(); element != m_windows.end();
          ++element)
     {
-        windows::IWindow* window = (*element);
+        windows::mIWindow* window = (*element);
         window->destroy();
         delete window;
     }
@@ -157,7 +157,7 @@ mBool IWindowedApplicationImpl::step(
     auto element = m_windows.begin();
     while (element != m_windows.end())
     {
-        windows::IWindow* window = (*element);
+        windows::mIWindow* window = (*element);
         if (static_cast<IWindowImpl*>(window)->is_flaggedToBeClosed())
         {
             window->destroy();

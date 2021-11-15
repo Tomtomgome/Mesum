@@ -3,7 +3,7 @@
 
 namespace m::dearImGui
 {
-void init(windows::IWindow& a_mainWindow)
+void init(windows::mIWindow& a_mainWindow)
 {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();

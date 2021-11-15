@@ -90,92 +90,93 @@ $(document).ready(function(){initNavTree('_windows_impl_8hpp_source.html',''); i
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define M_WINDOWSIMPL</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;MesumCore/Kernel/Types.hpp&gt;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;MesumGraphics/CrossRenderer.hpp&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;MesumGraphics/Windows.hpp&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;Kernel/Types.hpp&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;CrossRenderer.hpp&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;Windows.hpp&quot;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">namespace </span>m::win32</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>{</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">class </span>Win32Context;</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="classm_1_1win32_1_1_i_window_impl.html">   13</a></span><span class="keyword">class </span><a class="code hl_class" href="classm_1_1win32_1_1_i_window_impl.html">IWindowImpl</a> : <span class="keyword">public</span> <a class="code hl_class" href="classm_1_1windows_1_1_i_window.html">windows::IWindow</a></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="classm_1_1win32_1_1_i_window_impl.html">   13</a></span><span class="keyword">class </span><a class="code hl_class" href="classm_1_1win32_1_1_i_window_impl.html">IWindowImpl</a> : <span class="keyword">public</span> <a class="code hl_class" href="classm_1_1windows_1_1m_i_window.html">windows::mIWindow</a></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>{</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>   <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="comment">// Platform specific</span></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    LRESULT process_messages(UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam);</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keywordtype">void</span> init() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keywordtype">void</span> destroy() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classm_1_1win32_1_1_i_window_impl.html#a4cfffb74b30392a27c0f90e78b872793">init</a>(<a class="code hl_struct" href="structm_1_1windows_1_1m_i_window_1_1m_init_data.html">mInitData</a> <span class="keyword">const</span>&amp; a_initData) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classm_1_1win32_1_1_i_window_impl.html#a26d34905ecf13596e373247e5da2e25e">destroy</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keywordtype">void</span> link_inputManager(<a class="code hl_class" href="classm_1_1input_1_1m_i_input_manager.html">input::mIInputManager</a>* a_inputManager)<span class="keyword"> override</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="classm_1_1win32_1_1_i_window_impl.html#ade9b1f16163c029edbe2787cd246731c">   22</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classm_1_1win32_1_1_i_window_impl.html#ade9b1f16163c029edbe2787cd246731c">link_inputManager</a>(<a class="code hl_class" href="classm_1_1input_1_1m_i_input_manager.html">input::mIInputManager</a>* a_inputManager)<span class="keyword"> override</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        m_linkedInputManager = a_inputManager;</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    };</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    render::ISurface::HdlPtr link_renderer(</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    render::ISurface::HdlPtr <a class="code hl_function" href="classm_1_1win32_1_1_i_window_impl.html#a933f881509d3cc21907f9199491d85d4">link_renderer</a>(</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        <a class="code hl_class" href="classm_1_1render_1_1_i_renderer.html">render::IRenderer</a>* a_renderer) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keywordtype">void</span> set_size(mUInt a_width, mUInt a_height)<span class="keyword"> override</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">    </span>{</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        m_clientWidth  = a_width;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        m_clientHeight = a_height;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    }</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordtype">void</span> set_windowName(std::string a_name)<span class="keyword"> override </span>{ m_windowName = a_name; }</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordtype">void</span> set_asMainWindow() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordtype">void</span> set_asImGuiWindow() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordtype">void</span> set_fullScreen(mBool a_fullscreen) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordtype">void</span> toggle_fullScreen() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordtype">void</span> attach_toDestroy(<a class="code hl_class" href="classm_1_1m_callback.html">mCallback&lt;void&gt;</a> <span class="keyword">const</span>&amp; a_onDestroyCallback) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordtype">void</span> attach_toResize(</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        <a class="code hl_class" href="classm_1_1m_callback.html">mCallback&lt;void, mU32, mU32&gt;</a> <span class="keyword">const</span>&amp; a_onResizeCallback) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordtype">void</span> set_winContext(<a class="code hl_struct" href="structm_1_1win32_1_1_w_i_n32_context.html">WIN32Context</a> <span class="keyword">const</span>&amp; a_winContext)</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    {</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        m_parentContext = &amp;a_winContext;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    }</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    [[nodiscard]] mBool is_flaggedToBeClosed()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keyword">    </span>{</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <span class="keywordflow">return</span> m_flagToBeClosed;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    }</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>   <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <a class="code hl_class" href="classm_1_1input_1_1m_i_input_manager.html">input::mIInputManager</a>* m_linkedInputManager;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    HWND m_hwnd;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="comment">// By default, use windowed mode.</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="comment">// Can be toggled with F11</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    mBool m_fullscreen     = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    mBool m_flagToBeClosed = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    std::string m_windowName;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    mBool       m_isMainWindow = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    mU32        m_clientWidth  = 1280;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    mU32        m_clientHeight = 720;</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="comment">// Window rectangle (used to toggle fullscreen state).</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    RECT m_windowRect;</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <a class="code hl_struct" href="structm_1_1win32_1_1_w_i_n32_context.html">WIN32Context</a> <span class="keyword">const</span>* m_parentContext = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keyword">using</span> <a class="code hl_class" href="classm_1_1m_callback.html">CallbackResize</a>        = <a class="code hl_class" href="classm_1_1m_callback.html">mCallback&lt;void, mU32, mU32&gt;</a>;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keyword">using</span> <a class="code hl_class" href="classm_1_1m_callback.html">CallbackWindowDestroy</a> = <a class="code hl_class" href="classm_1_1m_callback.html">mCallback&lt;void&gt;</a>;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keyword">using</span> <a class="code hl_class" href="classm_1_1m_callback.html">CallbackInputProcessing</a> =</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        <a class="code hl_class" href="classm_1_1m_callback.html">mCallback&lt;void, mBool*, HWND, UINT, WPARAM, LPARAM&gt;</a>;</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <a class="code hl_class" href="classm_1_1m_signal.html">mSignal&lt;mU32, mU32&gt;</a>                         m_signalResize;</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <a class="code hl_class" href="classm_1_1m_signal.html">mSignal&lt;&gt;</a>                                   m_signalWindowDestroyed;</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <a class="code hl_class" href="classm_1_1m_signal.html">mSignal&lt;mBool*, HWND, UINT, WPARAM, LPARAM&gt;</a> m_signalOverrideInputProcessing;</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>};</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>}  <span class="comment">// namespace m::win32</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="preprocessor">#endif  </span><span class="comment">// M_WINDOWSIMPL</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classm_1_1win32_1_1_i_window_impl.html#a9f7e53ef34c1f92b535e2da0199250c8">set_asImGuiWindow</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classm_1_1win32_1_1_i_window_impl.html#a767a8385eb3c140538bca6f356acc7dd">set_fullScreen</a>(mBool a_fullscreen) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classm_1_1win32_1_1_i_window_impl.html#a573188aff5d26839af24ae3a4c44b663">toggle_fullScreen</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classm_1_1win32_1_1_i_window_impl.html#a3cdd34e9a6fe9d21880b4a37f70e93d1">attach_toDestroy</a>(<a class="code hl_class" href="classm_1_1m_callback.html">mCallback&lt;void&gt;</a> <span class="keyword">const</span>&amp; a_onDestroyCallback) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordtype">void</span> attach_toResize(</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <a class="code hl_class" href="classm_1_1m_callback.html">mCallback&lt;void, mU32, mU32&gt;</a> <span class="keyword">const</span>&amp; a_onResizeCallback) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordtype">void</span> set_winContext(<a class="code hl_struct" href="structm_1_1win32_1_1_w_i_n32_context.html">WIN32Context</a> <span class="keyword">const</span>&amp; a_winContext)</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    {</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        m_parentContext = &amp;a_winContext;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    }</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    [[nodiscard]] mBool is_flaggedToBeClosed()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keyword">    </span>{</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keywordflow">return</span> m_flagToBeClosed;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    }</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>   <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    input::mIInputManager* m_linkedInputManager;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    HWND m_hwnd;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="comment">// By default, use windowed mode.</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="comment">// Can be toggled with F11</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    mBool m_fullscreen     = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    mBool m_flagToBeClosed = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    std::string m_windowName;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    mU32        m_clientWidth  = 1280;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    mU32        m_clientHeight = 720;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="comment">// Window rectangle (used to toggle fullscreen state).</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    RECT m_windowRect;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    WIN32Context <span class="keyword">const</span>* m_parentContext = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keyword">using</span> CallbackResize        = mCallback&lt;void, mU32, mU32&gt;;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keyword">using</span> CallbackWindowDestroy = mCallback&lt;void&gt;;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keyword">using</span> CallbackInputProcessing =</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        mCallback&lt;void, mBool*, HWND, UINT, WPARAM, LPARAM&gt;;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    mSignal&lt;mU32, mU32&gt;                         m_signalResize;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    mSignal&lt;&gt;                                   m_signalWindowDestroyed;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    mSignal&lt;mBool*, HWND, UINT, WPARAM, LPARAM&gt; m_signalOverrideInputProcessing;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>};</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>}  <span class="comment">// namespace m::win32</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="preprocessor">#endif  </span><span class="comment">// M_WINDOWSIMPL</span></div>
 <div class="ttc" id="aclassm_1_1input_1_1m_i_input_manager_html"><div class="ttname"><a href="classm_1_1input_1_1m_i_input_manager.html">m::input::mIInputManager</a></div><div class="ttdoc">Interface core to input management.</div><div class="ttdef"><b>Definition:</b> Input.hpp:100</div></div>
 <div class="ttc" id="aclassm_1_1m_callback_html"><div class="ttname"><a href="classm_1_1m_callback.html">m::mCallback</a></div><div class="ttdoc">Class encapsulating a callback.</div><div class="ttdef"><b>Definition:</b> Callbacks.hpp:27</div></div>
-<div class="ttc" id="aclassm_1_1m_signal_html"><div class="ttname"><a href="classm_1_1m_signal.html">m::mSignal</a></div><div class="ttdoc">Class encapsulating a signal.</div><div class="ttdef"><b>Definition:</b> Callbacks.hpp:182</div></div>
 <div class="ttc" id="aclassm_1_1render_1_1_i_renderer_html"><div class="ttname"><a href="classm_1_1render_1_1_i_renderer.html">m::render::IRenderer</a></div><div class="ttdef"><b>Definition:</b> Renderer.hpp:71</div></div>
 <div class="ttc" id="aclassm_1_1win32_1_1_i_window_impl_html"><div class="ttname"><a href="classm_1_1win32_1_1_i_window_impl.html">m::win32::IWindowImpl</a></div><div class="ttdef"><b>Definition:</b> WindowsImpl.hpp:14</div></div>
-<div class="ttc" id="aclassm_1_1windows_1_1_i_window_html"><div class="ttname"><a href="classm_1_1windows_1_1_i_window.html">m::windows::IWindow</a></div><div class="ttdef"><b>Definition:</b> Windows.hpp:19</div></div>
+<div class="ttc" id="aclassm_1_1win32_1_1_i_window_impl_html_a26d34905ecf13596e373247e5da2e25e"><div class="ttname"><a href="classm_1_1win32_1_1_i_window_impl.html#a26d34905ecf13596e373247e5da2e25e">m::win32::IWindowImpl::destroy</a></div><div class="ttdeci">void destroy() override</div><div class="ttdoc">Destroys a window.</div><div class="ttdef"><b>Definition:</b> WindowsImpl.cpp:165</div></div>
+<div class="ttc" id="aclassm_1_1win32_1_1_i_window_impl_html_a3cdd34e9a6fe9d21880b4a37f70e93d1"><div class="ttname"><a href="classm_1_1win32_1_1_i_window_impl.html#a3cdd34e9a6fe9d21880b4a37f70e93d1">m::win32::IWindowImpl::attach_toDestroy</a></div><div class="ttdeci">void attach_toDestroy(mCallback&lt; void &gt; const &amp;a_onDestroyCallback) override</div><div class="ttdoc">Attach a callback that will be called when the window is destroyed.</div><div class="ttdef"><b>Definition:</b> WindowsImpl.cpp:283</div></div>
+<div class="ttc" id="aclassm_1_1win32_1_1_i_window_impl_html_a4cfffb74b30392a27c0f90e78b872793"><div class="ttname"><a href="classm_1_1win32_1_1_i_window_impl.html#a4cfffb74b30392a27c0f90e78b872793">m::win32::IWindowImpl::init</a></div><div class="ttdeci">void init(mInitData const &amp;a_initData) override</div><div class="ttdoc">Initialize the window.</div><div class="ttdef"><b>Definition:</b> WindowsImpl.cpp:146</div></div>
+<div class="ttc" id="aclassm_1_1win32_1_1_i_window_impl_html_a573188aff5d26839af24ae3a4c44b663"><div class="ttname"><a href="classm_1_1win32_1_1_i_window_impl.html#a573188aff5d26839af24ae3a4c44b663">m::win32::IWindowImpl::toggle_fullScreen</a></div><div class="ttdeci">void toggle_fullScreen() override</div><div class="ttdoc">Toggle the fullscreen state of the window.</div><div class="ttdef"><b>Definition:</b> WindowsImpl.cpp:238</div></div>
+<div class="ttc" id="aclassm_1_1win32_1_1_i_window_impl_html_a767a8385eb3c140538bca6f356acc7dd"><div class="ttname"><a href="classm_1_1win32_1_1_i_window_impl.html#a767a8385eb3c140538bca6f356acc7dd">m::win32::IWindowImpl::set_fullScreen</a></div><div class="ttdeci">void set_fullScreen(mBool a_fullscreen) override</div><div class="ttdoc">Explicitly sets the fullscreeness of the window.</div><div class="ttdef"><b>Definition:</b> WindowsImpl.cpp:227</div></div>
+<div class="ttc" id="aclassm_1_1win32_1_1_i_window_impl_html_a933f881509d3cc21907f9199491d85d4"><div class="ttname"><a href="classm_1_1win32_1_1_i_window_impl.html#a933f881509d3cc21907f9199491d85d4">m::win32::IWindowImpl::link_renderer</a></div><div class="ttdeci">render::ISurface::HdlPtr link_renderer(render::IRenderer *a_renderer) override</div><div class="ttdoc">Link a renderer to the window.</div><div class="ttdef"><b>Definition:</b> WindowsImpl.cpp:176</div></div>
+<div class="ttc" id="aclassm_1_1win32_1_1_i_window_impl_html_a9f7e53ef34c1f92b535e2da0199250c8"><div class="ttname"><a href="classm_1_1win32_1_1_i_window_impl.html#a9f7e53ef34c1f92b535e2da0199250c8">m::win32::IWindowImpl::set_asImGuiWindow</a></div><div class="ttdeci">void set_asImGuiWindow() override</div><div class="ttdoc">Tells the window that it will be holding the dearImGui context.</div><div class="ttdef"><b>Definition:</b> WindowsImpl.cpp:205</div></div>
+<div class="ttc" id="aclassm_1_1win32_1_1_i_window_impl_html_ade9b1f16163c029edbe2787cd246731c"><div class="ttname"><a href="classm_1_1win32_1_1_i_window_impl.html#ade9b1f16163c029edbe2787cd246731c">m::win32::IWindowImpl::link_inputManager</a></div><div class="ttdeci">void link_inputManager(input::mIInputManager *a_inputManager) override</div><div class="ttdoc">Link an input manager to the window.</div><div class="ttdef"><b>Definition:</b> WindowsImpl.hpp:22</div></div>
+<div class="ttc" id="aclassm_1_1windows_1_1m_i_window_html"><div class="ttname"><a href="classm_1_1windows_1_1m_i_window.html">m::windows::mIWindow</a></div><div class="ttdoc">Interface defining a window.</div><div class="ttdef"><b>Definition:</b> Windows.hpp:31</div></div>
 <div class="ttc" id="astructm_1_1win32_1_1_w_i_n32_context_html"><div class="ttname"><a href="structm_1_1win32_1_1_w_i_n32_context.html">m::win32::WIN32Context</a></div><div class="ttdef"><b>Definition:</b> Win32Context.hpp:15</div></div>
+<div class="ttc" id="astructm_1_1windows_1_1m_i_window_1_1m_init_data_html"><div class="ttname"><a href="structm_1_1windows_1_1m_i_window_1_1m_init_data.html">m::windows::mIWindow::mInitData</a></div><div class="ttdoc">Structure holding initialization data for windows.</div><div class="ttdef"><b>Definition:</b> Windows.hpp:37</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

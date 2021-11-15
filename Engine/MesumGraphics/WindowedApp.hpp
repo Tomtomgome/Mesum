@@ -14,14 +14,14 @@ namespace m
 {
 namespace windows
 {
-class IWindow;
+class mIWindow;
 }
 namespace application
 {
 class IWindowedApplicationBase : public mITimedLoopApplication
 {
    public:
-    virtual windows::IWindow* add_newWindow(std::string a_name, mU32 a_width,
+    virtual windows::mIWindow* add_newWindow(std::string a_name, mU32 a_width,
                                             mU32 a_height) = 0;
 
     virtual void start_dearImGuiNewFrame(

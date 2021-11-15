@@ -15,7 +15,7 @@ class IWindowedApplicationImpl : public application::IWindowedApplicationBase
    public:
     virtual void init_renderer(
         render::RendererApi a_renderApi = render::RendererApi::Default) override;
-    virtual windows::IWindow* add_newWindow(std::wstring a_name, mU32 a_width,
+    virtual windows::mIWindow* add_newWindow(std::wstring a_name, mU32 a_width,
                                             mU32 a_height);
     virtual void set_processImGuiMultiViewports(mBool a_supportMultiViewPorts);
     virtual void start_dearImGuiNewFrame();
@@ -31,7 +31,7 @@ class IWindowedApplicationImpl : public application::IWindowedApplicationBase
     mBool                       m_supportImGuiMultiViewPorts = false;
     render::IRenderer*          m_renderer = nullptr;
     XCBContext                  m_XCBContext;
-    std::set<windows::IWindow*> m_windows;
+    std::set<windows::mIWindow*> m_windows;
 };
 }  // namespace xcb_unix
 }  // namespace m

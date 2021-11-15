@@ -114,11 +114,6 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
     {
         case WM_DESTROY:
         {
-            if (m_isMainWindow)
-            {
-                PostQuitMessage(0);
-            }
-
             m_flagToBeClosed = true;
         }
         break;
@@ -148,8 +143,12 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void IWindowImpl::init()
+void IWindowImpl::init(mInitData const& a_initData)
 {
+    m_clientWidth  = a_initData.size.x;
+    m_clientHeight = a_initData.size.y;
+    m_windowName = a_initData.name;
+
     const mWideChar className[] = L"MainWindowClass";
     m_hwnd = m_parentContext->create_window(className, m_windowName,
                                             m_clientWidth, m_clientHeight);
@@ -203,25 +202,8 @@ render::ISurface::HdlPtr IWindowImpl::link_renderer(
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void IWindowImpl::set_asMainWindow()
-{
-    static m::mBool s_mainWindowIsDefined = false;
-
-    // There can only be one main window
-    mAssert(s_mainWindowIsDefined == false);
-    mAssert(m_isMainWindow == false);
-    s_mainWindowIsDefined = true;
-    m_isMainWindow        = true;
-}
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
 void IWindowImpl::set_asImGuiWindow()
 {
-    // There can only be one ImGui window, and it's the main one
-    mAssert(m_isMainWindow == true);
-
     ImGui_ImplWin32_Init(m_hwnd);
 
     m_signalWindowDestroyed.attach_toSignal(
