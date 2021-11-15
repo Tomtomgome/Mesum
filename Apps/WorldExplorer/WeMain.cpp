@@ -1,4 +1,4 @@
-#include "WeMain.h"
+#include "WeMain.hpp"
 
 #include <MesumGraphics/DearImgui/imgui.h>
 #include <RenderTasks/RenderTask3dRender.h>
@@ -20,11 +20,11 @@ static m::render::BasicVertex g_Vertices[8] = {
     {{{1.0f, -1.0f, 1.0f}}, {{1.0f, 0.0f, 1.0f, 1.0f}}}     // 7
 };
 
-static U32 g_Indices[36] = {0, 1, 2, 0, 2, 3, 4, 6, 5, 4, 7, 6,
-                            4, 5, 1, 4, 1, 0, 3, 2, 6, 3, 6, 7,
-                            1, 5, 6, 1, 6, 2, 4, 0, 3, 4, 3, 7};
+static mU32 g_Indices[36] = {0, 1, 2, 0, 2, 3, 4, 6, 5, 4, 7, 6,
+                             4, 5, 1, 4, 1, 0, 3, 2, 6, 3, 6, 7,
+                             1, 5, 6, 1, 6, 2, 4, 0, 3, 4, 3, 7};
 
-render::DataMeshBuffer<render::BasicVertex, U16> g_meshBuffer;
+render::DataMeshBuffer<render::BasicVertex, mU16> g_meshBuffer;
 
 using namespace DirectX;
 DirectX::XMMATRIX mvpMatrix;
@@ -32,9 +32,9 @@ DirectX::XMMATRIX mvpMatrix;
 //*****************************************************************************
 //
 //*****************************************************************************
-void WorldExplorerApp::init()
+void WorldExplorerApp::init(mCmdLine const& a_cmdLine, void* a_appData)
 {
-    m::crossPlatform::IWindowedApplication::init();
+    m::crossPlatform::IWindowedApplication::init(a_cmdLine, a_appData);
 
     m_iRenderer = std::make_unique<m::dx12::DX12Renderer>();
     m_iRenderer->init();
@@ -66,13 +66,6 @@ void WorldExplorerApp::init()
     render::TaskDataDrawDearImGui taskData_drawDearImGui;
     taskData_drawDearImGui.m_hdlOutput = m_hdlSurface;
     taskData_drawDearImGui.add_toTaskSet(pTaskset);
-
-    m_inputManager.attach_ToKeyEvent(
-        input::KeyAction::keyPressed(input::KEY_DOWN),
-        Callback<void>(this, &WorldExplorerApp::goDown));
-    m_inputManager.attach_ToKeyEvent(
-        input::KeyAction::keyPressed(input::KEY_UP),
-        Callback<void>(this, &WorldExplorerApp::goUp));
 }
 
 //*****************************************************************************
@@ -90,63 +83,47 @@ void WorldExplorerApp::destroy()
 //*****************************************************************************
 //
 //*****************************************************************************
-m::Bool WorldExplorerApp::step(const m::Double& a_deltaTime)
+mBool WorldExplorerApp::step(
+    std::chrono::steady_clock::duration const& a_deltaTime)
 {
     if (!m::crossPlatform::IWindowedApplication::step(a_deltaTime))
     {
         return false;
     }
 
+    mDouble deltaTime = std::chrono::duration<mDouble>(a_deltaTime).count();
+
     start_dearImGuiNewFrame(m_iRenderer.get());
 
     ImGui::NewFrame();
     ImGui::Begin("Engine");
     {
-        ImGui::Text("frame time : %f", a_deltaTime);
-        ImGui::Text("frame FPS : %f", 1.0 / a_deltaTime);
+        ImGui::Text("frame time : %f", deltaTime);
+        ImGui::Text("frame FPS : %f", 1.0 / deltaTime);
     }
     ImGui::End();
     ImGui::Render();
 
-    m_fAngle                    = m_fAngle + a_deltaTime * 90.0f;
+    m_cameraOrbitController.update(a_deltaTime, m_inputManager);
+    m_cameraOrbitController.update_camera(m_camera);
+
+    m_angle                     = m_angle + deltaTime * 90.0f;
     const XMVECTOR rotationAxis = XMVectorSet(0, 1, 0, 0);
     XMMATRIX       modelMatrix =
-        XMMatrixRotationAxis(rotationAxis, XMConvertToRadians(m_fAngle));
+        XMMatrixRotationAxis(rotationAxis, XMConvertToRadians(m_angle));
 
-    // Update the view matrix.
-    const XMVECTOR eyePosition = XMVectorSet(-5, 10, m_zPos, 1);
-    const XMVECTOR focusPoint  = XMVectorSet(0, 0, 0, 1);
-    const XMVECTOR upDirection = XMVectorSet(0, 1, 0, 0);
-    XMMATRIX       viewMatrix =
-        XMMatrixLookAtLH(eyePosition, focusPoint, upDirection);
+    mvpMatrix = XMMatrixMultiply(modelMatrix, m_camera.get_viewMatrix());
 
-    // Update the projection matrix.
-    float    aspectRatio      = 1280.0f / 720.0f;
-    float    fieldOfView      = 45.0f;
-    XMMATRIX projectionMatrix = XMMatrixPerspectiveFovLH(
-        XMConvertToRadians(fieldOfView), aspectRatio, 0.1f, 100.0f);
-    mvpMatrix = XMMatrixMultiply(modelMatrix, viewMatrix);
-    mvpMatrix = XMMatrixMultiply(mvpMatrix, projectionMatrix);
+    mFloat aspectRatio = 1280.0f / 720.0f;
+    mvpMatrix =
+        XMMatrixMultiply(mvpMatrix, m_camera.get_projectionMatrix(aspectRatio));
 
     m_hdlSurface->surface->render();
 
-    mLOG_TO(m_WE_LOG_ID, "dt = ", a_deltaTime, "ms");
+    // mLog_to(m_WE_LOG_ID, "dt = ", deltaTime, "ms");
+
+    // mLog_to(m_WE_LOG_ID, " ", orientation.x, " ", orientation.y, " ",
+    // orientation.z);
 
     return true;
-}
-
-//*****************************************************************************
-//
-//*****************************************************************************
-void WorldExplorerApp::goDown()
-{
-    m_zPos -= 1;
-}
-
-//*****************************************************************************
-//
-//*****************************************************************************
-void WorldExplorerApp::goUp()
-{
-    m_zPos += 1;
 }

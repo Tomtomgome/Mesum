@@ -30,7 +30,11 @@ set(HEADERS Types.hpp
             Input.hpp
             File.hpp
             InputCommon.hpp
-        ../Common/CoreCommon.hpp)
+        ../Common/CoreCommon.hpp
+			Spherical.cpp
+			Spherical.hpp
+			StateInputManager.cpp
+			StateInputManager.hpp)
 
 add_library(${MODULE_NAME} OBJECT ${SOURCES} ${HEADERS})
 

@@ -3,7 +3,9 @@ set(APP_NAME WorldExplorer)
 project(${APP_NAME} VERSION 1.0.0 DESCRIPTION "World Explorer")
 
 set(SOURCES
-		WeMain.cpp WeMain.h)
+		WeMain.cpp WeMain.hpp
+		Camera.cpp Camera.hpp
+		CameraOrbitController.cpp CameraOrbitController.hpp)
 
 add_executable(${APP_NAME} ${BM_APP_WINDOWED} ${SOURCES})
 

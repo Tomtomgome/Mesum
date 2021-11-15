@@ -5,6 +5,10 @@
 #include <MesumGraphics/WindowedApp.hpp>
 #include <memory>
 
+#include "Camera.hpp"
+#include "CameraOrbitController.hpp"
+#include "Kernel/StateInputManager.hpp" // < ou "?
+
 using namespace m;
 
 //*****************************************************************************
@@ -12,21 +16,21 @@ using namespace m;
 //*****************************************************************************
 class WorldExplorerApp : public m::crossPlatform::IWindowedApplication
 {
-    void    init() override;
-    void    destroy() override;
-    m::Bool step(const m::Double& a_deltaTime) override;
+    void  init(mCmdLine const& a_cmdLine, void* a_appData) override;
+    void  destroy() override;
+    mBool step(std::chrono::steady_clock::duration const& a_deltaTime) override;
 
     std::unique_ptr<m::render::IRenderer> m_iRenderer;
     m::windows::IWindow*                  m_pWindow;  // gére les inpts
     m::render::ISurface::HdlPtr m_hdlSurface;  // le truc qui sert au rendu
 
-    const m::logging::ChannelID m_WE_LOG_ID = mLOG_GET_ID();
+    const m::logging::mChannelID m_WE_LOG_ID = mLog_getId();
 
-    float               m_fAngle = 0.0f;
-    float               m_zPos   = -10;
-    input::InputManager m_inputManager;
-    void                goDown();
-    void                goUp();
+    mFloat                    m_angle = 0.0f;
+    input::mStateInputManager m_inputManager;
+
+    render::mCamera              m_camera;
+    game::mCameraOrbitController m_cameraOrbitController;
 };
 
 #endif  // WE_MAIN_H
