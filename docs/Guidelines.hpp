@@ -72,14 +72,14 @@ class mClassesContainsInvariants
     ///
     /// \return and it returns the length of the object
     ///////////////////////////////////////////////////////////////////////////
-    mFloat get_length() { return m_length; }
+    mFloat get_length() const { return m_length; }
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief This is a function
     ///
     /// \return And it returns the perimeter of the object
     ///////////////////////////////////////////////////////////////////////////
-    mFloat get_perimeter() { return m_perimeter; }
+    mFloat get_perimeter() const { return m_perimeter; }
 
    private:
     mFloat m_length    = 0.0f;  //!< Length affect

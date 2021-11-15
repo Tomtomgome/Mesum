@@ -1,9 +1,10 @@
 #pragma once
 
-#include "InputCommon.hpp"
-#include "Keys.hpp"
 #include <array>
 #include <map>
+
+#include "InputCommon.hpp"
+#include "Keys.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \addtogroup Core
@@ -162,6 +163,14 @@ struct mMouseAction
     /// \param a_MouseAction The mouse action to copy from
     ///////////////////////////////////////////////////////////////////////////
     mMouseAction(const mMouseAction& a_MouseAction) = default;
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Constructor
+    ///
+    /// \param a_action The type of input of the action
+    /// \param a_keyMod The modulation of the action
+    /// \param a_button The button of the action
+    ///////////////////////////////////////////////////////////////////////////
+    mMouseAction(mInputType a_action, mKeyMod a_keyMod, mMouseButton a_button);
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Comparison operator allowing sorting
@@ -171,25 +180,25 @@ struct mMouseAction
     ///////////////////////////////////////////////////////////////////////////
     friend bool operator<(const mMouseAction& a_l, const mMouseAction& a_r)
     {
-        return std::tie(a_l.action, a_l.keyMod, a_l.button) <
-               std::tie(a_r.action, a_r.keyMod, a_r.button);
+        return std::tie(a_l.m_action, a_l.m_keyMod, a_l.m_button) <
+               std::tie(a_r.m_action, a_r.m_keyMod, a_r.m_button);
     }
 
    public:
     ///////////////////////////////////////////////////////////////////////////
     /// \brief The type of input of the action
     ///////////////////////////////////////////////////////////////////////////
-    mInputType action = mInputType::released;
+    mInputType m_action = mInputType::released;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief The modulation of the action
     ///////////////////////////////////////////////////////////////////////////
-    mKeyMod keyMod = mKeyMod::none;
+    mKeyMod m_keyMod = mKeyMod::none;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief The button of the action
     ///////////////////////////////////////////////////////////////////////////
-    mMouseButton button = mMouseButton::left;
+    mMouseButton m_button = mMouseButton::left;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -223,6 +232,14 @@ struct mKeyAction
     /// \param a_KeyAction The mouse action to copy from
     ///////////////////////////////////////////////////////////////////////////
     mKeyAction(const mKeyAction& a_KeyAction) = default;
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Constructor
+    ///
+    /// \param a_action The type of input of the action
+    /// \param a_keyMod The modulation of the action
+    /// \param a_key The button of the action
+    ///////////////////////////////////////////////////////////////////////////
+    mKeyAction(mInputType a_action, mKeyMod a_keyMod, mKey a_key);
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Comparison operator allowing sorting
