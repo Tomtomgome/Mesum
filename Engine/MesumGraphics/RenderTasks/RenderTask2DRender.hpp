@@ -371,6 +371,9 @@ mIfDx12Enabled(struct Dx12Task2dRender : public Task2dRender
 
     dx12::ComPtr<ID3D12Resource> m_pCbMatrices = nullptr;
     void* m_pCbMatricesData = nullptr;
+    dx12::ComPtr<ID3D12Resource> m_pCbMaterial = nullptr;
+    void* m_pCbMaterialData = nullptr;
+    dx12::ComPtr<ID3D12Resource> m_pTextureResource = nullptr;
 };)
 
 //-----------------------------------------------------------------------------
