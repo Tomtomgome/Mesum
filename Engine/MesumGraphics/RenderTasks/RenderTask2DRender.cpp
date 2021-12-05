@@ -1,5 +1,4 @@
 #include <RenderTask2DRender.hpp>
-
 #include <array>
 
 namespace m::render
@@ -73,9 +72,14 @@ Dx12Task2dRender::Dx12Task2dRender(TaskData2dRender* a_data)
     pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
     pipelineDesc.SampleDesc.Count      = 1;
 
+    std::vector<CD3DX12_ROOT_PARAMETER> vRootParameters;
+    vRootParameters.emplace_back();
+    vRootParameters[0].InitAsConstantBufferView(0, 0,
+                                                D3D12_SHADER_VISIBILITY_VERTEX);
+
     CD3DX12_ROOT_SIGNATURE_DESC descRootSignature;
     descRootSignature.Init(
-        0, nullptr, 0, nullptr,
+        vRootParameters.size(), vRootParameters.data(), 0, nullptr,
         D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
     dx12::ComPtr<ID3DBlob> rootBlob;
@@ -103,6 +107,19 @@ Dx12Task2dRender::Dx12Task2dRender(TaskData2dRender* a_data)
 
     dx12::check_MicrosoftHRESULT(device->CreateGraphicsPipelineState(
         &pipelineDesc, IID_PPV_ARGS(&m_pso)));
+
+    auto oHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+    auto oResourceDesc =
+        CD3DX12_RESOURCE_DESC::Buffer(sizeof(DirectX::XMMATRIX));
+    dx12::check_MicrosoftHRESULT(device->CreateCommittedResource(
+        &oHeapProperties, D3D12_HEAP_FLAG_NONE, &oResourceDesc,
+        D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+        IID_PPV_ARGS(m_pCbMatrices.GetAddressOf())));
+    m_pCbMatrices->SetName(L"3D Mega Constant Buffer");
+
+    CD3DX12_RANGE oReadRange(0, 0);
+    dx12::check_MicrosoftHRESULT(
+        m_pCbMatrices->Map(0, &oReadRange, &m_pCbMatricesData));
 }
 
 //-----------------------------------------------------------------------------
@@ -117,17 +134,19 @@ void Dx12Task2dRender::execute() const
     auto currentSurface =
         static_cast<dx12::DX12Surface*>(m_taskData.m_hdlOutput->surface);
 
+    mInt screenWidth  = 1280;
+    mInt screenHeight = 720;
+
     D3D12_CPU_DESCRIPTOR_HANDLE rtv;
     rtv = currentSurface->get_currentRtvDesc();
     graphicCommandList->OMSetRenderTargets(1, &rtv, FALSE, nullptr);
-
     D3D12_VIEWPORT viewport = {};
     viewport.MaxDepth       = 1.0f;
-    viewport.Width          = 1280;
-    viewport.Height         = 720;
+    viewport.Width          = screenWidth;
+    viewport.Height         = screenHeight;
     D3D12_RECT scissorRect  = {};
-    scissorRect.right       = 1280;
-    scissorRect.bottom      = 720;
+    scissorRect.right       = screenWidth;
+    scissorRect.bottom      = screenHeight;
 
     graphicCommandList->RSSetViewports(1, &viewport);
     graphicCommandList->RSSetScissorRects(1, &scissorRect);
@@ -141,9 +160,18 @@ void Dx12Task2dRender::execute() const
     graphicCommandList->IASetPrimitiveTopology(
         D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-    DataMeshBuffer meshBuffer = *m_taskData.m_pMeshBuffer;
+    DirectX::XMMATRIX& mvpMatrix = *((DirectX::XMMATRIX*)(m_pCbMatricesData));
 
-    auto& buffer = m_buffers[(m_i) % dx12::DX12Surface::scm_numFrames];
+    mvpMatrix = XMMatrixMultiply(
+        DirectX::XMMatrixTranslation(-screenWidth / 2.0, -screenHeight / 2.0,
+                                     0.0f),
+        DirectX::XMMatrixOrthographicLH(screenWidth, screenHeight, 0.0f, 1.0f));
+
+    graphicCommandList->SetGraphicsRootConstantBufferView(
+        0, m_pCbMatrices->GetGPUVirtualAddress());
+
+    DataMeshBuffer meshBuffer = *m_taskData.m_pMeshBuffer;
+    auto&          buffer = m_buffers[(m_i) % dx12::DX12Surface::scm_numFrames];
     record_bind(buffer, graphicCommandList);
     graphicCommandList->DrawIndexedInstanced(meshBuffer.m_indices.size(), 1, 0,
                                              0, 0);
@@ -418,8 +446,7 @@ void VulkanTask2dRender::prepare()
 {
     DataMeshBuffer meshBuffer = *m_taskData.m_pMeshBuffer;
 
-    auto& buffer =
-        m_buffers[(++m_i) % vulkan::VulkanSurface::scm_numFrames];
+    auto& buffer = m_buffers[(++m_i) % vulkan::VulkanSurface::scm_numFrames];
     render::upload_data(buffer, meshBuffer.m_vertices, meshBuffer.m_indices);
 }
 
@@ -430,8 +457,8 @@ void VulkanTask2dRender::execute() const
 {
     DataMeshBuffer meshBuffer = *m_taskData.m_pMeshBuffer;
 
-    auto currentSurface = static_cast<vulkan::VulkanSurface*>(
-        m_taskData.m_hdlOutput->surface);
+    auto currentSurface =
+        static_cast<vulkan::VulkanSurface*>(m_taskData.m_hdlOutput->surface);
     auto framebuffer   = currentSurface->get_currentFramebuffer();
     auto commandBuffer = currentSurface->get_currentCommandBuffer();
 
@@ -439,18 +466,17 @@ void VulkanTask2dRender::execute() const
     mDouble height = currentSurface->get_height();
 
     {
-        VkRenderPassBeginInfo info = {};
-        info.sType       = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-        info.renderPass  = m_renderPass;
-        info.framebuffer = framebuffer;
-        info.renderArea.extent.width  = width;
+        VkRenderPassBeginInfo info   = {};
+        info.sType                   = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+        info.renderPass              = m_renderPass;
+        info.framebuffer             = framebuffer;
+        info.renderArea.extent.width = width;
         info.renderArea.extent.height = height;
         VkClearValue clearValues[1]   = {};
         clearValues[0].color          = {0.4f, 0.6f, 0.9f, 1.0f};
         info.clearValueCount          = 1;
         info.pClearValues             = clearValues;
-        vkCmdBeginRenderPass(commandBuffer, &info,
-                             VK_SUBPASS_CONTENTS_INLINE);
+        vkCmdBeginRenderPass(commandBuffer, &info, VK_SUBPASS_CONTENTS_INLINE);
     }
 
     if (meshBuffer.m_indices.size() > 0)
@@ -458,8 +484,7 @@ void VulkanTask2dRender::execute() const
         vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
                           m_graphicsPipeline);
 
-        auto& buffer =
-            m_buffers[(m_i) % vulkan::VulkanSurface::scm_numFrames];
+        auto& buffer = m_buffers[(m_i) % vulkan::VulkanSurface::scm_numFrames];
         VkBuffer     vertexBuffers[] = {buffer.vertexBuffer};
         VkDeviceSize offsets[]       = {0};
         vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffers, offsets);
@@ -481,8 +506,8 @@ void VulkanTask2dRender::execute() const
         vkCmdSetViewport(commandBuffer, 0, 1, &viewport);
         vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
 
-        vkCmdDrawIndexed(commandBuffer, meshBuffer.m_indices.size(), 1, 0,
-                         0, 0);
+        vkCmdDrawIndexed(commandBuffer, meshBuffer.m_indices.size(), 1, 0, 0,
+                         0);
     }
 
     // Submit command buffer

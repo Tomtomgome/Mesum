@@ -2,10 +2,9 @@
 #define M_RenderTask2DRender
 #pragma once
 
+#include <MesumCore/Kernel/MathTypes.hpp>
 #include <MesumGraphics/RenderTask.hpp>
 #include <MesumGraphics/Renderer.hpp>
-
-#include <MesumCore/Kernel/MathTypes.hpp>
 
 #ifdef M_DX12_RENDERER
 #include <MesumGraphics/DX12Renderer/DX12Context.hpp>
@@ -333,7 +332,7 @@ struct DataMeshBuffer
 struct TaskData2dRender : public TaskData
 {
     DataMeshBuffer<BasicVertex, mU16>* m_pMeshBuffer;
-    ISurface::HdlPtr                  m_hdlOutput;
+    ISurface::HdlPtr                   m_hdlOutput;
 
     mIfDx12Enabled(Task* getNew_dx12Implementation(TaskData* a_data) override);
     mIfVulkanEnabled(Task* getNew_vulkanImplementation(TaskData* a_data)
@@ -369,6 +368,9 @@ mIfDx12Enabled(struct Dx12Task2dRender : public Task2dRender
 
     dx12::ComPtr<ID3D12RootSignature> m_rootSignature = nullptr;
     dx12::ComPtr<ID3D12PipelineState> m_pso           = nullptr;
+
+    dx12::ComPtr<ID3D12Resource> m_pCbMatrices = nullptr;
+    void* m_pCbMatricesData = nullptr;
 };)
 
 //-----------------------------------------------------------------------------

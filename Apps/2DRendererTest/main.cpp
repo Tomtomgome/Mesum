@@ -17,7 +17,7 @@ void add_square(render::DataMeshBuffer<render::BasicVertex, mU16>* a_meshBuffer,
     mSoftAssert(a_meshBuffer != nullptr);
 
     mUInt               index = a_meshBuffer->m_vertices.size();
-    mFloat              size  = 0.01;
+    mFloat              size  = 10;
     render::BasicVertex vertex;
     vertex.color    = {1.0f, 1.0f, 1.0f, 1.0f};
     vertex.position = {a_position.x - size, a_position.y - size, 0.5f};
@@ -55,8 +55,8 @@ struct BunchOfSquares
         math::mVec2 newPosition;
         for (int i = 0; i < 100; i++)
         {
-            newPosition.x = g_randomGenerator.get_nextFloat();
-            newPosition.y = g_randomGenerator.get_nextFloat();
+            newPosition.x = g_randomGenerator.get_nextFloat()*1280;
+            newPosition.y = g_randomGenerator.get_nextFloat()*720;
             m_squarePositions.push_back(newPosition);
         }
     }
@@ -115,9 +115,9 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         render::Taskset* taskset_renderPipelineVulkan =
             m_hdlSurfaceVulkan->surface->addNew_renderTaskset();
 
-        taskData_2dRender.m_hdlOutput   = m_hdlSurfaceVulkan;
-        taskData_2dRender.m_pMeshBuffer = &m_drawer2d.m_meshBuffer;
-        taskData_2dRender.add_toTaskSet(taskset_renderPipelineVulkan);
+//        taskData_2dRender.m_hdlOutput   = m_hdlSurfaceVulkan;
+//        taskData_2dRender.m_pMeshBuffer = &m_drawer2d.m_meshBuffer;
+//        taskData_2dRender.add_toTaskSet(taskset_renderPipelineVulkan);
 
         m_inputManager.attach_toKeyEvent(
             input::mKeyAction::keyPressed(input::keyN),

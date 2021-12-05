@@ -10,11 +10,17 @@ struct VertexShaderOutput
   float4 color : COLOR0;
 };
 
+struct Vs2DMatrices
+{
+  matrix MVP;
+};
+ConstantBuffer<Vs2DMatrices> CBMatrices : register(b0);
+
 VertexShaderOutput vs_main(Vertex a_in)
 {
   VertexShaderOutput output;
 
-  output.position = a_in.position;
+  output.position = mul(CBMatrices.MVP, float4(a_in.position.xy, 0.0, 1.0));
   output.color = a_in.color;
 
   return output;
