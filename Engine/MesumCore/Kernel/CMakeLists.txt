@@ -11,6 +11,8 @@ set(SOURCES Kernel.cpp
             Application.cpp
             Input.cpp
             File.cpp
+            Image.cpp
+            Profile.cpp
             )
 set(HEADERS Types.hpp
             Asserts.hpp
@@ -29,6 +31,8 @@ set(HEADERS Types.hpp
             Keys.hpp
             Input.hpp
             File.hpp
+            Image.hpp
+            Profile.hpp
             InputCommon.hpp
         ../Common/CoreCommon.hpp
 			Spherical.cpp
@@ -44,6 +48,7 @@ set_target_properties(${MODULE_NAME} PROPERTIES FOLDER "MesumCore")
 set_target_properties(${MODULE_NAME} PROPERTIES UNITY_BUILD ON)
 
 target_include_directories(${MODULE_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(${MODULE_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../../../Externals)
 
 if(BM_DYNAMIC_LINK)
 target_compile_definitions(${MODULE_NAME} PRIVATE _M_CORE_EXPORT)

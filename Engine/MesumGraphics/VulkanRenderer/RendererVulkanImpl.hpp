@@ -107,7 +107,8 @@ class VulkanRenderer : public render::IRenderer
     mBool get_supportDearImGuiMultiViewports() override { return false; }
     void start_dearImGuiNewFrameRenderer() const override;
 
-    render::ISurface* get_newSurface() override;
+    render::ISurface* getNew_surface() override;
+    render::IResource* getNew_texture() override;
 };
 
 }  // namespace m::vulkan

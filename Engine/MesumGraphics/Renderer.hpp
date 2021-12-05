@@ -44,6 +44,27 @@ struct X11SurfaceInitData
 
 #endif
 
+struct IResource
+{
+    virtual void install()   = 0;
+    virtual void uninstall() = 0;
+
+    enum class State
+    {
+        Empty,
+        Loading,
+        Loaded,
+        Installing,
+        Installed
+    };
+
+    struct Handle
+    {
+        std::atomic<State>* m_pState          = nullptr;
+        mU32                 m_resourceNumber = 0;
+    };
+};
+
 class ISurface
 {
    public:
@@ -78,7 +99,8 @@ class IRenderer
     virtual mBool get_supportDearImGuiMultiViewports()    = 0;
     virtual void start_dearImGuiNewFrameRenderer() const = 0;
 
-    virtual ISurface* get_newSurface() = 0;
+    virtual ISurface*  getNew_surface() = 0;
+    virtual IResource* getNew_texture() = 0;
 };
 
 }  // namespace m::render

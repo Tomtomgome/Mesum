@@ -85,7 +85,7 @@ void IWindowImpl::init()
 
     if (m_parentRenderer != nullptr)
     {
-        m_renderSurface = m_parentRenderer->get_newSurface();
+        m_renderSurface = m_parentRenderer->getNew_surface();
         render::Win32SurfaceInitData surfaceData = {m_hwnd, m_clientWidth,
                                                     m_clientHeight};
         m_renderSurface->init_win32(surfaceData);

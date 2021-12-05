@@ -167,7 +167,7 @@ void IWindowImpl::destroy()
     m_signalWindowDestroyed.call();
 
     ::DestroyWindow(m_hwnd);
-    m_hwnd = NULL;
+    m_hwnd = nullptr;
 }
 
 //-----------------------------------------------------------------------------
@@ -179,7 +179,7 @@ render::ISurface::HdlPtr IWindowImpl::link_renderer(
     mAssert(a_renderer != nullptr);
     render::ISurface::HdlPtr surfaceHandle =
         std::make_shared<render::ISurface::Handle>();
-    surfaceHandle->surface                   = a_renderer->get_newSurface();
+    surfaceHandle->surface                   = a_renderer->getNew_surface();
     render::Win32SurfaceInitData surfaceData = {m_hwnd, m_clientWidth,
                                                 m_clientHeight};
     surfaceHandle->surface->init_win32(surfaceData);
