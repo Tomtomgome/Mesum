@@ -159,7 +159,7 @@ class mLogger
     /// \brief The current filter used to filter out specific channels
     ///////////////////////////////////////////////////////////////////////////
     mChannelFilter m_filter        = g_allChannelsFilter;
-    mChannelID     m_nextChannelID = 1;  //!< The next channel id to attribute
+    mChannelID     m_nextChannelID;  //!< The next channel id to attribute
 };
 
 //-----------------------------------------------------------------------------
@@ -168,7 +168,6 @@ class mLogger
 template <typename t_LogPolicy>
 mLogger<t_LogPolicy>::mLogger(const std::string& a_name)
 {
-    m_nextChannelID = 1;
     m_filter        = -1;
     m_lineNumber    = 0;
     m_policy        = new t_LogPolicy;
@@ -200,8 +199,11 @@ template <typename t_LogPolicy>
 mChannelID mLogger<t_LogPolicy>::get_newChannelID()
 {
     // TODO : Fix this ID generation problem
-    static mChannelID nextChannelID = 1;
-    return nextChannelID <<= 1;
+    if(m_nextChannelID == 0)
+    {
+        m_nextChannelID = 1;
+    }
+    return m_nextChannelID <<= 1;
 }
 
 //-----------------------------------------------------------------------------

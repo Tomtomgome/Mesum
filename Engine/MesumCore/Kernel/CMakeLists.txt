@@ -38,7 +38,7 @@ set(HEADERS Types.hpp
 
 add_library(${MODULE_NAME} OBJECT ${SOURCES} ${HEADERS})
 
-target_precompile_headers(${MODULE_NAME} PUBLIC Kernel_pch.hpp)
+#target_precompile_headers(${MODULE_NAME} PUBLIC Kernel_pch.hpp)
 set_target_properties(${MODULE_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(${MODULE_NAME} PROPERTIES FOLDER "MesumCore")
 set_target_properties(${MODULE_NAME} PROPERTIES UNITY_BUILD ON)
