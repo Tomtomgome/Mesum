@@ -139,6 +139,7 @@ class mClassesCanInherit : public mIClassesMightBeInterfaces
 
    private:
     mInt m_classDataMember;  //!< This is some data members
+    static sm_staticDataMember; //!< Static data member have the sm_ prefix
 };
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -19,6 +19,7 @@ struct BasicVertex
 {
     math::mVec3 position;
     math::mVec4 color;
+    math::mVec2 uv;
 };
 
 template <typename tt_Vertex, typename tt_Index>
@@ -374,6 +375,16 @@ mIfDx12Enabled(struct Dx12Task2dRender : public Task2dRender
     dx12::ComPtr<ID3D12Resource> m_pCbMaterial = nullptr;
     void* m_pCbMaterialData = nullptr;
     dx12::ComPtr<ID3D12Resource> m_pTextureResource = nullptr;
+    D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlTexture{};
+
+    D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlSampler{};
+
+    dx12::ComPtr<ID3D12DescriptorHeap> m_pSrvHeap = nullptr;
+    mUInt m_incrementSizeSrv = 0;
+    static const mUInt sm_sizeSrvHeap = 32;
+    dx12::ComPtr<ID3D12DescriptorHeap> m_pSamplerHeap = nullptr;
+    mUInt m_incrementSizeSampler = 0;
+    static const mUInt sm_sizeSamplerHeap = 8;
 };)
 
 //-----------------------------------------------------------------------------

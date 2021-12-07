@@ -19,16 +19,20 @@ void add_square(render::DataMeshBuffer<render::BasicVertex, mU16>* a_meshBuffer,
     mSoftAssert(a_meshBuffer != nullptr);
 
     mUInt               index = a_meshBuffer->m_vertices.size();
-    mFloat              size  = 10;
+    mFloat              size  = 16;
     render::BasicVertex vertex;
     vertex.color    = {1.0f, 1.0f, 1.0f, 1.0f};
     vertex.position = {a_position.x - size, a_position.y - size, 0.5f};
+    vertex.uv = {0.0f, 1.0f};
     a_meshBuffer->m_vertices.push_back(vertex);
     vertex.position = {a_position.x - size, a_position.y + size, 0.5f};
+    vertex.uv = {0.0f, 0.0f};
     a_meshBuffer->m_vertices.push_back(vertex);
     vertex.position = {a_position.x + size, a_position.y - size, 0.5f};
+    vertex.uv = {1.0f, 1.0f};
     a_meshBuffer->m_vertices.push_back(vertex);
     vertex.position = {a_position.x + size, a_position.y + size, 0.5f};
+    vertex.uv = {1.0f, 0.0f};
     a_meshBuffer->m_vertices.push_back(vertex);
 
     a_meshBuffer->m_indices.push_back(index);
@@ -83,9 +87,9 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     {
         crossPlatform::IWindowedApplication::init(a_cmdLine, a_appData);
         m_iRendererDx12   = new dx12::DX12Renderer();
-        m_iRendererVulkan = new vulkan::VulkanRenderer();
+        //m_iRendererVulkan = new vulkan::VulkanRenderer();
         m_iRendererDx12->init();
-        m_iRendererVulkan->init();
+        //m_iRendererVulkan->init();
 
         // SetupDx12 Window
         m_windowDx12 = add_newWindow("Dx12 Window", 1280, 720);
@@ -111,11 +115,11 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             mCallback<void>(&m_bunchOfSquares, &BunchOfSquares::add_newSquare));
 
         // Setup vulkan window
-        m_windowVulkan     = add_newWindow("Vulkan Window", 1280, 720);
-        m_hdlSurfaceVulkan = m_windowVulkan->link_renderer(m_iRendererVulkan);
-
-        render::Taskset* taskset_renderPipelineVulkan =
-            m_hdlSurfaceVulkan->surface->addNew_renderTaskset();
+//        m_windowVulkan     = add_newWindow("Vulkan Window", 1280, 720);
+//        m_hdlSurfaceVulkan = m_windowVulkan->link_renderer(m_iRendererVulkan);
+//
+//        render::Taskset* taskset_renderPipelineVulkan =
+//            m_hdlSurfaceVulkan->surface->addNew_renderTaskset();
 
         //        taskData_2dRender.m_hdlOutput   = m_hdlSurfaceVulkan;
         //        taskData_2dRender.m_pMeshBuffer = &m_drawer2d.m_meshBuffer;
@@ -150,8 +154,8 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_iRendererDx12->destroy();
         delete m_iRendererDx12;
 
-        m_iRendererVulkan->destroy();
-        delete m_iRendererVulkan;
+//        m_iRendererVulkan->destroy();
+//        delete m_iRendererVulkan;
 
         dearImGui::destroy();
     }
@@ -190,10 +194,10 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         {
             m_hdlSurfaceDx12->surface->render();
         }
-        if (m_hdlSurfaceVulkan->isValid)
-        {
-            m_hdlSurfaceVulkan->surface->render();
-        }
+//        if (m_hdlSurfaceVulkan->isValid)
+//        {
+//            m_hdlSurfaceVulkan->surface->render();
+//        }
 
         return true;
     }
@@ -202,9 +206,9 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     m::render::ISurface::HdlPtr m_hdlSurfaceDx12;
     windows::mIWindow*          m_windowDx12 = nullptr;
 
-    m::render::IRenderer*       m_iRendererVulkan;
-    m::render::ISurface::HdlPtr m_hdlSurfaceVulkan;
-    windows::mIWindow*          m_windowVulkan = nullptr;
+//    m::render::IRenderer*       m_iRendererVulkan;
+//    m::render::ISurface::HdlPtr m_hdlSurfaceVulkan;
+//    windows::mIWindow*          m_windowVulkan = nullptr;
 
     Drawer_2D m_drawer2d;
 

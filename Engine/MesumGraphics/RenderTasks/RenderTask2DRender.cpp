@@ -321,9 +321,9 @@ Dx12Task2dRender::Dx12Task2dRender(TaskData2dRender* a_data)
         {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0,
          D3D12_APPEND_ALIGNED_ELEMENT,
          D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
-         {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
-          D3D12_APPEND_ALIGNED_ELEMENT,
-          D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0}};
+        {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
+         D3D12_APPEND_ALIGNED_ELEMENT,
+         D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0}};
 
     pipelineDesc.InputLayout.pInputElementDescs = inputElements;
     pipelineDesc.InputLayout.NumElements        = std::size(inputElements);
@@ -516,6 +516,9 @@ Dx12Task2dRender::Dx12Task2dRender(TaskData2dRender* a_data)
         m_pTextureResource.Get(), D3D12_RESOURCE_STATE_COPY_DEST, eAfterState);
     pUploadCommandList->ResourceBarrier(1, &oResourceBarrier);
 
+    dx12::DX12Context::gs_dx12Contexte->get_commandQueue().execute_commandList(
+        pUploadCommandList.Get());
+
     // Sampler
     D3D12_SAMPLER_DESC descSampler{};
     descSampler.Filter         = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
@@ -539,6 +542,64 @@ Dx12Task2dRender::Dx12Task2dRender(TaskData2dRender* a_data)
     descSampler.AddressU = eDx12AddressMode;
     descSampler.AddressV = eDx12AddressMode;
     descSampler.AddressW = eDx12AddressMode;
+
+    // HEAPS ------------------------------------------------------------------
+    m_incrementSizeSrv = pDevice->GetDescriptorHandleIncrementSize(
+        D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+    D3D12_DESCRIPTOR_HEAP_DESC sSrvHeapDesc = {};
+    sSrvHeapDesc.NumDescriptors             = sm_sizeSrvHeap;
+    sSrvHeapDesc.Type     = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+    sSrvHeapDesc.NodeMask = 0;
+    sSrvHeapDesc.Flags    = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+
+    hr = pDevice->CreateDescriptorHeap(&sSrvHeapDesc,
+                                       IID_PPV_ARGS(m_pSrvHeap.GetAddressOf()));
+    mAssert(hr == S_OK);
+    m_pSrvHeap.Get()->SetName(L"Texture SRV Heap");
+
+    m_incrementSizeSampler = pDevice->GetDescriptorHandleIncrementSize(
+        D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER);
+    D3D12_DESCRIPTOR_HEAP_DESC sSamplerHeapDesc = {};
+    sSamplerHeapDesc.NumDescriptors             = sm_sizeSamplerHeap;
+    sSamplerHeapDesc.Type     = D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER;
+    sSamplerHeapDesc.NodeMask = 0;
+    sSamplerHeapDesc.Flags    = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+
+    hr = pDevice->CreateDescriptorHeap(
+        &sSamplerHeapDesc, IID_PPV_ARGS(m_pSamplerHeap.GetAddressOf()));
+    mAssert(hr == S_OK);
+    m_pSamplerHeap.Get()->SetName(L"Texture Sampler Heap");
+
+    // Descriptors ------------------------------------------------------------
+    D3D12_SHADER_RESOURCE_VIEW_DESC descShaderResourceView = {};
+    descShaderResourceView.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+    descShaderResourceView.Shader4ComponentMapping =
+        D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+    descShaderResourceView.Format                    = descTexture.Format;
+    descShaderResourceView.Texture2D.MipLevels       = descTexture.MipLevels;
+    descShaderResourceView.Texture2D.MostDetailedMip = 0;
+    descShaderResourceView.Texture2D.ResourceMinLODClamp = 0.0f;
+
+    CD3DX12_CPU_DESCRIPTOR_HANDLE const hdlCPUSrv(
+        m_pSrvHeap->GetCPUDescriptorHandleForHeapStart(), 0,
+        m_incrementSizeSrv);
+
+    pDevice->CreateShaderResourceView(m_pTextureResource.Get(),
+                                      &descShaderResourceView, hdlCPUSrv);
+
+    m_GPUDescHdlTexture = CD3DX12_GPU_DESCRIPTOR_HANDLE(
+        m_pSrvHeap->GetGPUDescriptorHandleForHeapStart(), 0,
+        m_incrementSizeSrv);
+
+    CD3DX12_CPU_DESCRIPTOR_HANDLE const hldCPUSampler(
+        m_pSamplerHeap->GetCPUDescriptorHandleForHeapStart(), 0,
+        m_incrementSizeSampler);
+
+    pDevice->CreateSampler(&descSampler, hldCPUSampler);
+
+    m_GPUDescHdlSampler = CD3DX12_GPU_DESCRIPTOR_HANDLE(
+        m_pSamplerHeap->GetGPUDescriptorHandleForHeapStart(), 0,
+        m_incrementSizeSampler);
 }
 
 //-----------------------------------------------------------------------------
@@ -549,6 +610,11 @@ void Dx12Task2dRender::execute() const
     dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
         dx12::DX12Context::gs_dx12Contexte->get_commandQueue()
             .get_commandList();
+
+    ID3D12DescriptorHeap* const aHeaps[2] = {m_pSrvHeap.Get(),
+                                             m_pSamplerHeap.Get()};
+
+    graphicCommandList->SetDescriptorHeaps(2, aHeaps);
 
     auto currentSurface =
         static_cast<dx12::DX12Surface*>(m_taskData.m_hdlOutput->surface);
@@ -594,10 +660,8 @@ void Dx12Task2dRender::execute() const
     graphicCommandList->SetGraphicsRootConstantBufferView(
         1, m_pCbMaterial->GetGPUVirtualAddress());
 
-//    graphicCommandList->SetGraphicsRootDescriptorTable(2,
-//                                                       rDxTex.m_pSrvGPUHandle);
-//    graphicCommandList->SetGraphicsRootDescriptorTable(
-//        3, rDxTex.m_pSamplerGPUHandle);
+    graphicCommandList->SetGraphicsRootDescriptorTable(2, m_GPUDescHdlSampler);
+    graphicCommandList->SetGraphicsRootDescriptorTable(3, m_GPUDescHdlTexture);
 
     DataMeshBuffer meshBuffer = *m_taskData.m_pMeshBuffer;
     auto&          buffer = m_buffers[(m_i) % dx12::DX12Surface::scm_numFrames];
