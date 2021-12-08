@@ -14,7 +14,7 @@ const logging::mChannelID g_logIDImage = mLog_getId();
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-mImage load_image(mRequestImage const& a_request)
+mOutput<mImage> load_image(mRequestImage const& a_request)
 {
     mExpect(!a_request.path.empty());
 
@@ -26,7 +26,7 @@ mImage load_image(mRequestImage const& a_request)
     if (pPixels == nullptr)
     {
         mLog_errorTo(g_logIDImage, "Could not load image at ", a_request.path);
-        return result;
+        return {ecCouldNotLoad, std::move(result)};
     }
 
     mAssert(result.width * result.height > 0);
@@ -34,6 +34,6 @@ mImage load_image(mRequestImage const& a_request)
     result.data.clear();
     result.data.insert(result.data.begin(), &pPixels[0],
                        &pPixels[result.width * result.height * 4]);
-    return std::move(result);
+    return {ecSuccess, std::move(result)};
 }
 }  // namespace m::resource

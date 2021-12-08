@@ -15,6 +15,27 @@
 namespace m
 {
 ///////////////////////////////////////////////////////////////////////////////
+/// \brief Aliases an error code
+///////////////////////////////////////////////////////////////////////////////
+using mErrorCode = mU64;
+static const mErrorCode ecSuccess = 0; //!< default success code
+
+#define mNotSuccess(ec) ec != 0 //!< alias a not success condition
+#define mIsSuccess(ec) ec == 0 //!< alias a success condition
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Structure that defines an output accompanied with a result
+///
+/// \tparam The type of the output
+///////////////////////////////////////////////////////////////////////////////
+template<typename t_Output>
+struct mOutput
+{
+    mErrorCode res; //!< The potential output error
+    t_Output output; //!< The actual output
+};
+
+///////////////////////////////////////////////////////////////////////////////
 /// \brief Structure holding a list of command line arguments
 ///
 /// For exemple holds the line executable -w 1080 -h 720 -fullScreen

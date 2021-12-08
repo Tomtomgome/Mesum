@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Kernel.hpp"
 #include "Logger.hpp"
 #include "Types.hpp"
 
@@ -15,6 +16,11 @@
 namespace m::resource
 {
 MesumCoreApi extern const logging::mChannelID g_logIDImage;
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Defines a basic error code
+///////////////////////////////////////////////////////////////////////////////
+static const mErrorCode ecCouldNotLoad = 1;
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \brief Structure used to request the loading of an image on disk
@@ -46,6 +52,6 @@ struct mImage
 /// \pre The path of the request must not be empty
 /// \return The data of the loaded image
 ///////////////////////////////////////////////////////////////////////////////
-mImage load_image(mRequestImage const& a_request);
+mOutput<mImage> load_image(mRequestImage const& a_request);
 
 };  // namespace m::resource

@@ -13,6 +13,11 @@
 #include <MesumGraphics/VulkanRenderer/VulkanContext.hpp>
 #endif  // M_VULKAN_RENDERER
 
+namespace m::resource
+{
+struct mRequestImage;
+}
+
 namespace m::render
 {
 struct BasicVertex
@@ -332,7 +337,8 @@ struct DataMeshBuffer
 //-----------------------------------------------------------------------------
 struct TaskData2dRender : public TaskData
 {
-    DataMeshBuffer<BasicVertex, mU16>* m_pMeshBuffer;
+    DataMeshBuffer<BasicVertex, mU16>* m_pMeshBuffer = nullptr;
+    mInt*                              m_pMaterialID = nullptr;
     ISurface::HdlPtr                   m_hdlOutput;
 
     mIfDx12Enabled(Task* getNew_dx12Implementation(TaskData* a_data) override);
@@ -347,6 +353,8 @@ struct Task2dRender : public Task
 {
     explicit Task2dRender(TaskData2dRender* a_data);
 
+    virtual mBool add_texture(resource::mRequestImage const& a_request) = 0;
+
     void prepare() override {}
 
     TaskData2dRender m_taskData;
@@ -358,6 +366,8 @@ struct Task2dRender : public Task
 mIfDx12Enabled(struct Dx12Task2dRender : public Task2dRender
 {
     explicit Dx12Task2dRender(TaskData2dRender* a_data);
+
+    mBool add_texture(resource::mRequestImage const& a_request) override;
 
     void prepare() override;
 
@@ -374,7 +384,8 @@ mIfDx12Enabled(struct Dx12Task2dRender : public Task2dRender
     void* m_pCbMatricesData = nullptr;
     dx12::ComPtr<ID3D12Resource> m_pCbMaterial = nullptr;
     void* m_pCbMaterialData = nullptr;
-    dx12::ComPtr<ID3D12Resource> m_pTextureResource = nullptr;
+    std::vector<dx12::ComPtr<ID3D12Resource>> m_pTextureResources{};
+
     D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlTexture{};
 
     D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlSampler{};
@@ -394,6 +405,8 @@ mIfVulkanEnabled(struct VulkanTask2dRender : public Task2dRender
 {
     explicit VulkanTask2dRender(TaskData2dRender* a_data);
     ~VulkanTask2dRender() override;
+
+    mBool add_texture(resource::mRequestImage const& a_request) override { return true;}
 
     void create_renderPassAndPipeline(mU32 a_width, mU32 a_height);
 

@@ -439,8 +439,10 @@ Dx12Task2dRender::Dx12Task2dRender(TaskData2dRender* a_data)
 
     // LOAD THE TEXTURE -------------------------------------------------------
     resource::mRequestImage request;
-    request.path           = "data/textures/Test.png";
-    resource::mImage image = resource::load_image(request);
+    request.path      = "data/textures/Test.png";
+    auto [msg, image] = resource::load_image(request);
+
+    mAssert(mIsSuccess(msg));
 
     D3D12_RESOURCE_DESC descTexture{};
     descTexture.MipLevels          = 1;
@@ -455,26 +457,29 @@ Dx12Task2dRender::Dx12Task2dRender(TaskData2dRender* a_data)
 
     ID3D12Device2* pDevice = dx12::DX12Context::gs_dx12Contexte->m_device.Get();
 
+    m_pTextureResources.emplace_back();
+    ID3D12Resource* pTextureResources = m_pTextureResources[0].Get();
+
     auto    oHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
     HRESULT hr              = pDevice->CreateCommittedResource(
                      &oHeapProperties, D3D12_HEAP_FLAG_NONE, &descTexture,
                      D3D12_RESOURCE_STATE_COPY_DEST, nullptr,
-                     IID_PPV_ARGS(&m_pTextureResource));
+                     IID_PPV_ARGS(&pTextureResources));
     if (hr != S_OK)
     {
         mLog_error("Fail to create resource for texture");
         return;
     }
 
-    m_pTextureResource->SetName(L"defaultName");
+    pTextureResources->SetName(L"defaultName");
 
     ID3D12Resource* pUploadTextureResource;
     const UINT      subresourceCount =
         descTexture.DepthOrArraySize * descTexture.MipLevels;
 
     // CREATE UPLOAD (CPU SIDE) RESOURCE
-    const UINT64 uploadBufferSize = GetRequiredIntermediateSize(
-        m_pTextureResource.Get(), 0, subresourceCount);
+    const UINT64 uploadBufferSize =
+        GetRequiredIntermediateSize(pTextureResources, 0, subresourceCount);
 
     oHeapProperties    = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
     auto oResourceDesc = CD3DX12_RESOURCE_DESC::Buffer(uploadBufferSize);
@@ -484,7 +489,7 @@ Dx12Task2dRender::Dx12Task2dRender(TaskData2dRender* a_data)
                         IID_PPV_ARGS(&pUploadTextureResource));
     if (hr != S_OK)
     {
-        m_pTextureResource->Release();
+        pTextureResources->Release();
         mLog_error("Fail to create upload resource for texture");
         return;
     }
@@ -506,14 +511,14 @@ Dx12Task2dRender::Dx12Task2dRender(TaskData2dRender* a_data)
         dx12::DX12Context::gs_dx12Contexte->get_commandQueue()
             .get_commandList();
 
-    UpdateSubresources(pUploadCommandList.Get(), m_pTextureResource.Get(),
+    UpdateSubresources(pUploadCommandList.Get(), pTextureResources,
                        pUploadTextureResource, 0, 0, subresourceCount,
                        vSubresources.data());
 
     D3D12_RESOURCE_STATES eAfterState =
         D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
     auto oResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
-        m_pTextureResource.Get(), D3D12_RESOURCE_STATE_COPY_DEST, eAfterState);
+        pTextureResources, D3D12_RESOURCE_STATE_COPY_DEST, eAfterState);
     pUploadCommandList->ResourceBarrier(1, &oResourceBarrier);
 
     dx12::DX12Context::gs_dx12Contexte->get_commandQueue().execute_commandList(
@@ -584,7 +589,7 @@ Dx12Task2dRender::Dx12Task2dRender(TaskData2dRender* a_data)
         m_pSrvHeap->GetCPUDescriptorHandleForHeapStart(), 0,
         m_incrementSizeSrv);
 
-    pDevice->CreateShaderResourceView(m_pTextureResource.Get(),
+    pDevice->CreateShaderResourceView(pTextureResources,
                                       &descShaderResourceView, hdlCPUSrv);
 
     m_GPUDescHdlTexture = CD3DX12_GPU_DESCRIPTOR_HANDLE(
@@ -600,6 +605,128 @@ Dx12Task2dRender::Dx12Task2dRender(TaskData2dRender* a_data)
     m_GPUDescHdlSampler = CD3DX12_GPU_DESCRIPTOR_HANDLE(
         m_pSamplerHeap->GetGPUDescriptorHandleForHeapStart(), 0,
         m_incrementSizeSampler);
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+mBool Dx12Task2dRender::add_texture(resource::mRequestImage const& a_request)
+{
+    auto [msg, image] = resource::load_image(a_request);
+
+    if (mNotSuccess(msg))
+    {
+        return false;
+    }
+
+    D3D12_RESOURCE_DESC descTexture{};
+    descTexture.MipLevels          = 1;
+    descTexture.Width              = image.width;
+    descTexture.Height             = image.height;
+    descTexture.Flags              = D3D12_RESOURCE_FLAG_NONE;
+    descTexture.DepthOrArraySize   = 1;
+    descTexture.SampleDesc.Count   = 1;
+    descTexture.SampleDesc.Quality = 0;
+    descTexture.Dimension          = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+    descTexture.Format             = DXGI_FORMAT_R8G8B8A8_UNORM;
+
+    ID3D12Device2* pDevice = dx12::DX12Context::gs_dx12Contexte->m_device.Get();
+
+    m_pTextureResources.emplace_back();
+    ID3D12Resource* pTextureResource = m_pTextureResources.back().Get();
+
+    auto    oHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+    HRESULT hr              = pDevice->CreateCommittedResource(
+                     &oHeapProperties, D3D12_HEAP_FLAG_NONE, &descTexture,
+                     D3D12_RESOURCE_STATE_COPY_DEST, nullptr,
+                     IID_PPV_ARGS(&pTextureResource));
+    if (hr != S_OK)
+    {
+        mLog_error("Fail to create resource for texture");
+        return false;
+    }
+
+    pTextureResource->SetName(L"defaultName");
+
+    ID3D12Resource* pUploadTextureResource;
+    const UINT      subresourceCount =
+        descTexture.DepthOrArraySize * descTexture.MipLevels;
+
+    // CREATE UPLOAD (CPU SIDE) RESOURCE
+    const UINT64 uploadBufferSize =
+        GetRequiredIntermediateSize(pTextureResource, 0, subresourceCount);
+
+    oHeapProperties    = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+    auto oResourceDesc = CD3DX12_RESOURCE_DESC::Buffer(uploadBufferSize);
+    hr                 = pDevice->CreateCommittedResource(
+                        &oHeapProperties, D3D12_HEAP_FLAG_NONE, &oResourceDesc,
+                        D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+                        IID_PPV_ARGS(&pUploadTextureResource));
+    if (hr != S_OK)
+    {
+        pTextureResource->Release();
+        mLog_error("Fail to create upload resource for texture");
+        return false;
+    }
+
+    std::vector<D3D12_SUBRESOURCE_DATA> vSubresources(descTexture.MipLevels);
+    // mip level 0
+    size_t stNumBytes;
+    size_t stRowBytes;
+    size_t stNumRows;
+    get_dxgiSurfaceInfo(size_t(descTexture.Width), size_t(descTexture.Height),
+                        descTexture.Format, &stNumBytes, &stRowBytes,
+                        &stNumRows);
+    D3D12_SUBRESOURCE_DATA& oTextureData = vSubresources[0];
+    oTextureData.pData                   = image.data.data();
+    oTextureData.SlicePitch              = stNumBytes;
+    oTextureData.RowPitch                = stRowBytes;
+
+    dx12::ComPtr<ID3D12GraphicsCommandList2> pUploadCommandList =
+        dx12::DX12Context::gs_dx12Contexte->get_commandQueue()
+            .get_commandList();
+
+    UpdateSubresources(pUploadCommandList.Get(), pTextureResource,
+                       pUploadTextureResource, 0, 0, subresourceCount,
+                       vSubresources.data());
+
+    D3D12_RESOURCE_STATES eAfterState =
+        D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+    auto oResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
+        pTextureResource, D3D12_RESOURCE_STATE_COPY_DEST, eAfterState);
+    pUploadCommandList->ResourceBarrier(1, &oResourceBarrier);
+
+    dx12::DX12Context::gs_dx12Contexte->get_commandQueue().execute_commandList(
+        pUploadCommandList.Get());
+
+    D3D12_SHADER_RESOURCE_VIEW_DESC descShaderResourceView = {};
+    descShaderResourceView.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+    descShaderResourceView.Shader4ComponentMapping =
+        D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+    descShaderResourceView.Format                    = descTexture.Format;
+    descShaderResourceView.Texture2D.MipLevels       = descTexture.MipLevels;
+    descShaderResourceView.Texture2D.MostDetailedMip = 0;
+    descShaderResourceView.Texture2D.ResourceMinLODClamp = 0.0f;
+
+    CD3DX12_CPU_DESCRIPTOR_HANDLE const hdlCPUSrv(
+        m_pSrvHeap->GetCPUDescriptorHandleForHeapStart(),
+        m_pTextureResources.size() - 1, m_incrementSizeSrv);
+
+    pDevice->CreateShaderResourceView(pTextureResource, &descShaderResourceView,
+                                      hdlCPUSrv);
+
+    return true;
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void Dx12Task2dRender::prepare()
+{
+    DataMeshBuffer meshBuffer = *m_taskData.m_pMeshBuffer;
+
+    auto& buffer = m_buffers[(++m_i) % dx12::DX12Surface::scm_numFrames];
+    render::upload_data(buffer, meshBuffer.m_vertices, meshBuffer.m_indices);
 }
 
 //-----------------------------------------------------------------------------
@@ -653,7 +780,7 @@ void Dx12Task2dRender::execute() const
         DirectX::XMMatrixOrthographicLH(screenWidth, screenHeight, 0.0f, 1.0f));
 
     mInt& materialID = *((mInt*)(m_pCbMaterialData));
-    materialID       = 0;
+    materialID       = *m_taskData.m_pMaterialID;
 
     graphicCommandList->SetGraphicsRootConstantBufferView(
         0, m_pCbMatrices->GetGPUVirtualAddress());
@@ -671,17 +798,6 @@ void Dx12Task2dRender::execute() const
 
     dx12::DX12Context::gs_dx12Contexte->get_commandQueue().execute_commandList(
         graphicCommandList.Get());
-}
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-void Dx12Task2dRender::prepare()
-{
-    DataMeshBuffer meshBuffer = *m_taskData.m_pMeshBuffer;
-
-    auto& buffer = m_buffers[(++m_i) % dx12::DX12Surface::scm_numFrames];
-    render::upload_data(buffer, meshBuffer.m_vertices, meshBuffer.m_indices);
 }
 
 //-----------------------------------------------------------------------------
