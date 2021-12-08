@@ -67,6 +67,14 @@ struct BunchOfSquares
         }
     }
 
+    void add_oneNewSquare(const math::mIVec2& a_position)
+    {
+        math::mVec2 newPosition;
+        newPosition.x = a_position.x;
+        newPosition.y = 720 - a_position.y;
+        m_squarePositions.push_back(newPosition);
+    }
+
     void update(const mDouble& a_deltaTime)
     {
         static mFloat time = 0.0;
@@ -115,6 +123,11 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_inputManager.attach_toKeyEvent(
             input::mKeyAction::keyPressed(input::keyN),
             mCallback<void>(&m_bunchOfSquares, &BunchOfSquares::add_newSquare));
+
+        m_inputManager.attach_toMouseEvent(
+            input::mMouseAction::mousePressed(input::mMouseButton::left),
+            input::mMouseActionCallback(&m_bunchOfSquares,
+                                        &BunchOfSquares::add_oneNewSquare));
 
         // Setup vulkan window
         //        m_windowVulkan     = add_newWindow("Vulkan Window", 1280,
