@@ -183,10 +183,6 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         //
         //        TextureBankDx12.upload(hdl);
         //        TextureBankVulkan.upload(hdl);
-
-        m_inputManager.attach_toKeyEvent(
-            input::mKeyAction::keyPressed(input::keyN),
-            mCallback<void>(&m_bunchOfSquares, &BunchOfSquares::add_newSquare));
     }
 
     void destroy() override
@@ -257,7 +253,10 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         {
             for (mUInt i = 0; i < m_imageRequested.size() - 1; ++i)
             {
-                ImGui::Text("%d : %s", i, m_imageRequested[i].path.c_str());
+                if(ImGui::Button(m_imageRequested[i].path.c_str()))
+                {
+                    m_bunchOfSquares.currentMaterialID = i;
+                }
             }
         }
         ImGui::End();
@@ -276,9 +275,9 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
                 }
             }
 
-            ImGui::SliderInt(
-                "Current Texture :", &m_bunchOfSquares.currentMaterialID, 0,
-                m_imageRequested.size() - 2);
+//            ImGui::SliderInt(
+//                "Current Texture :", &m_bunchOfSquares.currentMaterialID, 0,
+//                m_imageRequested.size() - 2);
         }
         ImGui::End();
 
