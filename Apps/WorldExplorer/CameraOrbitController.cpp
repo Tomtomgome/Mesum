@@ -100,7 +100,7 @@ void mCameraOrbitController::update_camera(render::mCamera& a_camera) const
     mVec3 lookAt;
     m_orbit.compute_cartesianCoordinates(lookAt);
 
-    /* mLog_to(m_CAM_LOG_ID, " m_orbit latitude: ", m_orbit.get_latitude(), "
+    /* mLog_infoTo(m_CAM_LOG_ID, " m_orbit latitude: ", m_orbit.get_latitude(), "
      * m_orbit longitude: ", m_orbit.get_longitude()); */
 
     a_camera.set_fromLookAt(m_pivot, (m_pivot + lookAt),

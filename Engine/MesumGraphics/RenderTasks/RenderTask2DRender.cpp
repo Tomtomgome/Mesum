@@ -398,7 +398,7 @@ Dx12Task2dRender::Dx12Task2dRender(TaskData2dRender* a_data)
     {
         if (errorBlob != nullptr)
         {
-            mLog((char*)errorBlob->GetBufferPointer());
+            mLog_info((char*)errorBlob->GetBufferPointer());
         }
     }
     dx12::ComPtr<ID3D12Device> device =

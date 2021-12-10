@@ -144,7 +144,7 @@ static input::mKey translateKeys(mInt a_keyCode)
 
 void WIN32Context::init(HINSTANCE& a_hInstance)
 {
-    mLog_to(PLATFORM_APP_ID, "Initializing Win32Context");
+    mLog_infoTo(PLATFORM_APP_ID, "Initializing Win32Context");
     m_hInstance = a_hInstance;
     init_keysLuts();
 }

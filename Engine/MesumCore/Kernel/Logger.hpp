@@ -20,14 +20,15 @@ extern MesumCoreApi logging::mLogger<m::logging::mStdcoutLogPolicy> log_inst;
 
 #ifdef M_ENABLE_LOG
 //! Macro used to log simple debug messages
-#define mLog m::log_inst.print<m::logging::mSeverityType::debug>
+#define mLog_info m::log_inst.print<m::logging::mSeverityType::debug>
 //! Macro used to log simple error messages
 #define mLog_error m::log_inst.print<m::logging::mSeverityType::error>
 //! Macro used to log simple warning messages
 #define mLog_warning m::log_inst.print<m::logging::SeverityType::warning>
 
 //! Macro used to log simple debug messages to a channel
-#define mLog_to m::log_inst.print_toChannel<m::logging::mSeverityType::debug>
+#define mLog_infoTo \
+    m::log_inst.print_toChannel<m::logging::mSeverityType::debug>
 //! Macro used to log simple error messages to a channel
 #define mLog_errorTo \
     m::log_inst.print_toChannel<m::logging::mSeverityType::error>
@@ -37,13 +38,13 @@ extern MesumCoreApi logging::mLogger<m::logging::mStdcoutLogPolicy> log_inst;
 #else
 
 //! Macro used to log simple debug messages
-#define mLog(...)
+#define mLog_info(...)
 //! Macro used to log simple error messages
 #define mLog_error(...)
 //! Macro used to log simple warning messages
 #define mLog_warning(...)
 //! Macro used to log simple debug messages to a channel
-#define mLog_to(...)
+#define mLog_infoTo(...)
 //! Macro used to log simple error messages to a channel
 #define mLog_errorTo(...)
 //! Macro used to log simple warning messages to a channel
@@ -54,13 +55,13 @@ extern MesumCoreApi logging::mLogger<m::logging::mStdcoutLogPolicy> log_inst;
 #ifdef M_ENABLE_VERBOSE_LOG
 
 //! Macro used to log verbose debug messages
-#define mLog_verbose m::log_inst.print<m::logging::mSeverityType::debug>
+#define mLog_verboseInfo m::log_inst.print<m::logging::mSeverityType::debug>
 //! Macro used to log verbose error messages
 #define mLog_verboseError m::log_inst.print<m::logging::mSeverityType::error>
 //! Macro used to log verbose warning messages
 #define mLog_verboseWarning m::log_inst.print<m::logging::mSeverityType::warning>
 //! Macro used to log verbose debug messages to a channel
-#define mLog_verboseTo m::log_inst.print_toChannel<m::logging::mSeverityType::debug>
+#define mLog_verboseInfoTo m::log_inst.print_toChannel<m::logging::mSeverityType::debug>
 //! Macro used to log verbose error messages to a channel
 #define mLog_verboseErrorTo \
     m::log_inst.print_toChannel<m::logging::mSeverityType::error>
@@ -71,13 +72,13 @@ extern MesumCoreApi logging::mLogger<m::logging::mStdcoutLogPolicy> log_inst;
 #else
 
 //! Macro used to log verbose debug messages
-#define mLog_verbose(...)
+#define mLog_verboseInfo(...)
 //! Macro used to log verbose error messages
 #define mLog_verboseError(...)
 //! Macro used to log verbose warning messages
 #define mLog_verboseWarning(...)
 //! Macro used to log verbose debug messages to a channel
-#define mLog_verboseTo(...)
+#define mLog_verboseInfoTo(...)
 //! Macro used to log verbose error messages to a channel
 #define mLog_verboseErrorTo(...)
 //! Macro used to log verbose warning messages to a channel

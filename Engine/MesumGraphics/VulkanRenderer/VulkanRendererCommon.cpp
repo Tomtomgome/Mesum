@@ -121,10 +121,10 @@ void create_instance(VkInstance& a_InstaceToCreate)
     vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount,
                                            extensions.data());
 
-    mLog_to(VK_RENDERER_ID, "Available extensions");
+    mLog_infoTo(VK_RENDERER_ID, "Available extensions");
     for (const auto& extension : extensions)
     {
-        mLog_to(VK_RENDERER_ID, extension.extensionName);
+        mLog_infoTo(VK_RENDERER_ID, extension.extensionName);
     }
 #endif  // PRINT_EXTENTIONS
 
@@ -146,7 +146,7 @@ VKAPI_ATTR VkBool32 VKAPI_CALL callback_logDebugMessage(
     {
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT: break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:
-            mLog_to(VK_RENDERER_ID,
+            mLog_infoTo(VK_RENDERER_ID,
                     "Validation layer : ", pCallbackData->pMessage);
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:

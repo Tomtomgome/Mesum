@@ -25,7 +25,7 @@ class CubeMover
         {
             x += speed;
         }
-        mLog_to(m_CUBEMOVER_ID, "Se deplace : ", x, ":", y);
+        mLog_infoTo(m_CUBEMOVER_ID, "Se deplace : ", x, ":", y);
     }
 
     void set_moveUp() { m_up = true; }
@@ -66,12 +66,12 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m::mUInt           height  = 720;
         if (!cmdLine.get_parameter("-w", width))
         {
-            mLog_to(m_CUBEAPP_ID, "Width not overriden, use default : ", width);
+            mLog_infoTo(m_CUBEAPP_ID, "Width not overriden, use default : ", width);
         }
 
         if (!cmdLine.get_parameter("-h", height))
         {
-            mLog_to(m_CUBEAPP_ID,
+            mLog_infoTo(m_CUBEAPP_ID,
                     "Height not overriden, use default : ", height);
         }
 
@@ -171,7 +171,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
             mDisable_logChannels(m_CUBEAPP_ID);
         }
 
-        mLog_to(m_CUBEAPP_ID, "Bonjour !, dt = ", a_deltaTime, "ms");
+        mLog_infoTo(m_CUBEAPP_ID, "Bonjour !, dt = ", a_deltaTime, "ms");
 
         m_mover.move(m_x, m_y);
 

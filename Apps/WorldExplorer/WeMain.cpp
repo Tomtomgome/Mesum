@@ -119,9 +119,9 @@ mBool WorldExplorerApp::step(
 
     m_hdlSurface->surface->render();
 
-    // mLog_to(m_WE_LOG_ID, "dt = ", deltaTime, "ms");
+    // mLog_infoTo(m_WE_LOG_ID, "dt = ", deltaTime, "ms");
 
-    // mLog_to(m_WE_LOG_ID, " ", orientation.x, " ", orientation.y, " ",
+    // mLog_infoTo(m_WE_LOG_ID, " ", orientation.x, " ", orientation.y, " ",
     // orientation.z);
 
     return true;
