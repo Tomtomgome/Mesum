@@ -87,20 +87,6 @@ struct BunchOfSquares
         m_squarePositions[currentMaterialID].push_back(newPosition);
     }
 
-    void update(const mDouble& a_deltaTime)
-    {
-        static mFloat time = 0.0;
-        time += mFloat(a_deltaTime);
-        for (auto& positions : m_squarePositions)
-        {
-            for (auto& position : positions)
-            {
-                position.x += std::sin(time * 10.0) * 0.001f;
-                position.y += std::cos(time * 10.0) * 0.001f;
-            }
-        }
-    }
-
     mInt                                  currentMaterialID = 0;
     std::vector<std::vector<math::mVec2>> m_squarePositions;
 };
@@ -110,10 +96,10 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     void init(mCmdLine const& a_cmdLine, void* a_appData) override
     {
         crossPlatform::IWindowedApplication::init(a_cmdLine, a_appData);
-        m_iRendererDx12 = new dx12::DX12Renderer();
-        // m_iRendererVulkan = new vulkan::VulkanRenderer();
+        m_iRendererDx12   = new dx12::DX12Renderer();
+        m_iRendererVulkan = new vulkan::VulkanRenderer();
         m_iRendererDx12->init();
-        // m_iRendererVulkan->init();
+        m_iRendererVulkan->init();
 
         // SetupDx12 Window
         m_windowDx12 = add_newWindow("Dx12 Window", 1280, 720);
@@ -148,16 +134,15 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
                                         &BunchOfSquares::add_oneNewSquare));
 
         // Setup vulkan window
-        //        m_windowVulkan     = add_newWindow("Vulkan Window", 1280,
-        //        720); m_hdlSurfaceVulkan =
-        //        m_windowVulkan->link_renderer(m_iRendererVulkan);
-        //
-        //        render::Taskset* taskset_renderPipelineVulkan =
-        //            m_hdlSurfaceVulkan->surface->addNew_renderTaskset();
+        m_windowVulkan     = add_newWindow("Vulkan Window", 1280, 720);
+        m_hdlSurfaceVulkan = m_windowVulkan->link_renderer(m_iRendererVulkan);
 
-        //        taskData_2dRender.m_hdlOutput   = m_hdlSurfaceVulkan;
-        //        taskData_2dRender.m_pMeshBuffer = &m_drawer2d.m_meshBuffer;
-        //        taskData_2dRender.add_toTaskSet(taskset_renderPipelineVulkan);
+        render::Taskset* taskset_renderPipelineVulkan =
+            m_hdlSurfaceVulkan->surface->addNew_renderTaskset();
+
+        taskData_2dRender.m_hdlOutput   = m_hdlSurfaceVulkan;
+        taskData_2dRender.m_pMeshBuffer = &m_drawer2d.m_meshBuffer;
+        taskData_2dRender.add_toTaskSet(taskset_renderPipelineVulkan);
 
         m_imageRequested.emplace_back();
         m_imageRequested.back().path = "data/textures/Test.png";
@@ -192,8 +177,8 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_iRendererDx12->destroy();
         delete m_iRendererDx12;
 
-        //        m_iRendererVulkan->destroy();
-        //        delete m_iRendererVulkan;
+        m_iRendererVulkan->destroy();
+        delete m_iRendererVulkan;
 
         dearImGui::destroy();
     }
@@ -206,7 +191,6 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         }
 
         mDouble deltaTime = std::chrono::duration<mDouble>(a_deltaTime).count();
-        m_bunchOfSquares.update(deltaTime);
 
         m_drawer2d.reset();
         m_ranges.clear();
@@ -253,7 +237,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         {
             for (mUInt i = 0; i < m_imageRequested.size() - 1; ++i)
             {
-                if(ImGui::Button(m_imageRequested[i].path.c_str()))
+                if (ImGui::Button(m_imageRequested[i].path.c_str()))
                 {
                     m_bunchOfSquares.currentMaterialID = i;
                 }
@@ -274,10 +258,6 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
                     m_imageRequested.back().path.resize(512);
                 }
             }
-
-//            ImGui::SliderInt(
-//                "Current Texture :", &m_bunchOfSquares.currentMaterialID, 0,
-//                m_imageRequested.size() - 2);
         }
         ImGui::End();
 
@@ -287,10 +267,10 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         {
             m_hdlSurfaceDx12->surface->render();
         }
-        //        if (m_hdlSurfaceVulkan->isValid)
-        //        {
-        //            m_hdlSurfaceVulkan->surface->render();
-        //        }
+        if (m_hdlSurfaceVulkan->isValid)
+        {
+            m_hdlSurfaceVulkan->surface->render();
+        }
 
         return true;
     }
@@ -299,9 +279,9 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     m::render::ISurface::HdlPtr m_hdlSurfaceDx12;
     windows::mIWindow*          m_windowDx12 = nullptr;
 
-    //    m::render::IRenderer*       m_iRendererVulkan;
-    //    m::render::ISurface::HdlPtr m_hdlSurfaceVulkan;
-    //    windows::mIWindow*          m_windowVulkan = nullptr;
+    m::render::IRenderer*       m_iRendererVulkan;
+    m::render::ISurface::HdlPtr m_hdlSurfaceVulkan;
+    windows::mIWindow*          m_windowVulkan = nullptr;
 
     render::Task2dRender*                         m_pTaskRender = nullptr;
     std::vector<resource::mRequestImage>          m_imageRequested;
