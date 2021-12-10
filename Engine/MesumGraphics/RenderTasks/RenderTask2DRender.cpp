@@ -427,7 +427,8 @@ Dx12Task2dRender::Dx12Task2dRender(TaskData2dRender* a_data)
     dx12::check_MicrosoftHRESULT(
         m_pCbMatrices->Map(0, &readRange, &m_pCbMatricesData));
 
-    resourceDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeof(mInt));
+    resourceDesc =
+        CD3DX12_RESOURCE_DESC::Buffer(sm_nbMaxMaterial * sm_minimalCBSize);
     dx12::check_MicrosoftHRESULT(device->CreateCommittedResource(
         &heapProperties, D3D12_HEAP_FLAG_NONE, &resourceDesc,
         D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
@@ -783,13 +784,8 @@ void Dx12Task2dRender::execute() const
                                      0.0f),
         DirectX::XMMatrixOrthographicLH(screenWidth, screenHeight, 0.0f, 1.0f));
 
-    mInt& materialID = *((mInt*)(m_pCbMaterialData));
-    materialID       = *m_taskData.m_pMaterialID;
-
     graphicCommandList->SetGraphicsRootConstantBufferView(
         0, m_pCbMatrices->GetGPUVirtualAddress());
-    graphicCommandList->SetGraphicsRootConstantBufferView(
-        1, m_pCbMaterial->GetGPUVirtualAddress());
 
     graphicCommandList->SetGraphicsRootDescriptorTable(2, m_GPUDescHdlSampler);
     graphicCommandList->SetGraphicsRootDescriptorTable(3, m_GPUDescHdlTexture);
@@ -798,9 +794,16 @@ void Dx12Task2dRender::execute() const
     auto&          buffer = m_buffers[(m_i) % dx12::DX12Surface::scm_numFrames];
     record_bind(buffer, graphicCommandList);
 
-    for (auto range : *m_taskData.m_pRanges)
+    for (mUInt i = 0; i < m_taskData.m_pRanges->size(); i++)
     {
+        auto& range = (*m_taskData.m_pRanges)[i];
         // upload constant buffer
+        mInt& materialID =
+            *((mInt*)((mU8*)(m_pCbMaterialData) + i * sm_minimalCBSize));
+        materialID = range.materialID;
+
+        graphicCommandList->SetGraphicsRootConstantBufferView(
+            1, m_pCbMaterial->GetGPUVirtualAddress() + i * sm_minimalCBSize);
 
         // draw
         graphicCommandList->DrawIndexedInstanced(

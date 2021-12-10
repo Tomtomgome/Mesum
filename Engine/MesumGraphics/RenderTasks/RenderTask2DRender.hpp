@@ -365,6 +365,8 @@ struct Task2dRender : public Task
     void prepare() override {}
 
     TaskData2dRender m_taskData;
+    static const mUInt sm_nbMaxMaterial = 32;
+    static const mUInt sm_minimalCBSize = 256;
 };
 
 //-----------------------------------------------------------------------------
