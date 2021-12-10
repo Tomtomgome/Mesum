@@ -734,6 +734,10 @@ void Dx12Task2dRender::prepare()
 //-----------------------------------------------------------------------------
 void Dx12Task2dRender::execute() const
 {
+    if (m_taskData.m_pRanges->size() == 0)
+    {
+        return;
+    }
     dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
         dx12::DX12Context::gs_dx12Contexte->get_commandQueue()
             .get_commandList();
@@ -793,8 +797,15 @@ void Dx12Task2dRender::execute() const
     DataMeshBuffer meshBuffer = *m_taskData.m_pMeshBuffer;
     auto&          buffer = m_buffers[(m_i) % dx12::DX12Surface::scm_numFrames];
     record_bind(buffer, graphicCommandList);
-    graphicCommandList->DrawIndexedInstanced(meshBuffer.m_indices.size(), 1, 0,
-                                             0, 0);
+
+    for (auto range : *m_taskData.m_pRanges)
+    {
+        // upload constant buffer
+
+        // draw
+        graphicCommandList->DrawIndexedInstanced(
+            range.indexCount, 1, range.indexStartLocation, 0, 0);
+    }
 
     dx12::DX12Context::gs_dx12Contexte->get_commandQueue().execute_commandList(
         graphicCommandList.Get());

@@ -51,6 +51,7 @@ void manage_assert(mBool a_condition, mInt a_lineNumber, const mChar* a_file,
 #ifdef M_RELEASE
 #define mSoftAssert(condition)
 #define mAssert(condition)
+#define mExpect(condition)
 #else
 ///////////////////////////////////////////////////////////////////////////////
 /// \brief A soft assert is non blocking

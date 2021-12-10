@@ -56,37 +56,53 @@ struct Drawer_2D
 
 struct BunchOfSquares
 {
+    void prepare_add()
+    {
+        if (m_squarePositions.size() < currentMaterialID + 1)
+        {
+            m_squarePositions.resize(currentMaterialID + 1);
+        }
+    }
+
     void add_newSquare()
     {
+        prepare_add();
+
         math::mVec2 newPosition;
         for (int i = 0; i < 100; i++)
         {
             newPosition.x = g_randomGenerator.get_nextFloat() * 1280;
             newPosition.y = g_randomGenerator.get_nextFloat() * 720;
-            m_squarePositions.push_back(newPosition);
+            m_squarePositions[currentMaterialID].push_back(newPosition);
         }
     }
 
     void add_oneNewSquare(const math::mIVec2& a_position)
     {
+        prepare_add();
+
         math::mVec2 newPosition;
         newPosition.x = a_position.x;
         newPosition.y = 720 - a_position.y;
-        m_squarePositions.push_back(newPosition);
+        m_squarePositions[currentMaterialID].push_back(newPosition);
     }
 
     void update(const mDouble& a_deltaTime)
     {
         static mFloat time = 0.0;
         time += mFloat(a_deltaTime);
-        for (auto& position : m_squarePositions)
+        for (auto& positions : m_squarePositions)
         {
-            position.x += std::sin(time * 10.0) * 0.001f;
-            position.y += std::cos(time * 10.0) * 0.001f;
+            for (auto& position : positions)
+            {
+                position.x += std::sin(time * 10.0) * 0.001f;
+                position.y += std::cos(time * 10.0) * 0.001f;
+            }
         }
     }
 
-    std::vector<math::mVec2> m_squarePositions;
+    mInt                                  currentMaterialID = 0;
+    std::vector<std::vector<math::mVec2>> m_squarePositions;
 };
 
 class RendererTestApp : public m::crossPlatform::IWindowedApplication
@@ -113,6 +129,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         taskData_2dRender.m_hdlOutput   = m_hdlSurfaceDx12;
         taskData_2dRender.m_pMeshBuffer = &m_drawer2d.m_meshBuffer;
         taskData_2dRender.m_pMaterialID = &m_currentMatID;
+        taskData_2dRender.m_pRanges     = &m_ranges;
         m_pTaskRender = (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
             taskset_renderPipelineDx12));
 
@@ -120,9 +137,10 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         taskData_drawDearImGui.m_hdlOutput = m_hdlSurfaceDx12;
         taskData_drawDearImGui.add_toTaskSet(taskset_renderPipelineDx12);
 
-        m_inputManager.attach_toKeyEvent(
-            input::mKeyAction::keyPressed(input::keyN),
-            mCallback<void>(&m_bunchOfSquares, &BunchOfSquares::add_newSquare));
+        //        m_inputManager.attach_toKeyEvent(
+        //            input::mKeyAction::keyPressed(input::keyN),
+        //            mCallback<void>(&m_bunchOfSquares,
+        //            &BunchOfSquares::add_newSquare));
 
         m_inputManager.attach_toMouseEvent(
             input::mMouseAction::mousePressed(input::mMouseButton::left),
@@ -195,10 +213,29 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_bunchOfSquares.update(deltaTime);
 
         m_drawer2d.reset();
+        m_ranges.clear();
+        static const mUInt indexPerQuad  = 5;
+        static const mUInt vertexPerQuad = 4;
 
-        for (auto position : m_bunchOfSquares.m_squarePositions)
+        mUInt totalNbPositions = 0;
+        for (mUInt j = 0; j < m_bunchOfSquares.m_squarePositions.size(); ++j)
         {
-            m_drawer2d.add_square(position);
+            auto& positions = m_bunchOfSquares.m_squarePositions[j];
+            if (positions.size() == 0)
+            {
+                continue;
+            }
+
+            m_ranges.emplace_back();
+            m_ranges.back().materialID = j;
+            m_ranges.back().indexCount = positions.size() * indexPerQuad;
+            m_ranges.back().indexStartLocation =
+                totalNbPositions * indexPerQuad;
+            for (mUInt i = 0; i < positions.size(); ++i)
+            {
+                m_drawer2d.add_square(positions[i]);
+            }
+            totalNbPositions += positions.size();
         }
 
         start_dearImGuiNewFrame(m_iRendererDx12);
@@ -212,8 +249,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         {
             ImGui::Text("frame time : %f", deltaTime);
             ImGui::Text("frame FPS : %f", 1.0 / deltaTime);
-            ImGui::Text("nbSuqares : %llu",
-                        m_bunchOfSquares.m_squarePositions.size());
+            ImGui::Text("nbSuqares : %llu", totalNbPositions);
         }
         ImGui::End();
 
@@ -240,8 +276,9 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
                 }
             }
 
-            ImGui::SliderInt("Current Texture :", &m_currentMatID, 0,
-                             m_imageRequested.size() - 2);
+            ImGui::SliderInt(
+                "Current Texture :", &m_bunchOfSquares.currentMaterialID, 0,
+                m_imageRequested.size() - 2);
         }
         ImGui::End();
 
@@ -267,9 +304,10 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     //    m::render::ISurface::HdlPtr m_hdlSurfaceVulkan;
     //    windows::mIWindow*          m_windowVulkan = nullptr;
 
-    render::Task2dRender*                m_pTaskRender = nullptr;
-    std::vector<resource::mRequestImage> m_imageRequested;
-    mInt                                 m_currentMatID = 0;
+    render::Task2dRender*                         m_pTaskRender = nullptr;
+    std::vector<resource::mRequestImage>          m_imageRequested;
+    mInt                                          m_currentMatID = 0;
+    std::vector<render::TaskData2dRender::mRange> m_ranges;
 
     Drawer_2D m_drawer2d;
 

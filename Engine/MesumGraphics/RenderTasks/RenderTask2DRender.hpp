@@ -337,8 +337,15 @@ struct DataMeshBuffer
 //-----------------------------------------------------------------------------
 struct TaskData2dRender : public TaskData
 {
+    struct mRange
+    {
+        mInt  materialID          = 0;
+        mUInt indexStartLocation  = 0;
+        mUInt indexCount          = 0;
+    };
     DataMeshBuffer<BasicVertex, mU16>* m_pMeshBuffer = nullptr;
     mInt*                              m_pMaterialID = nullptr;
+    std::vector<mRange>*               m_pRanges = nullptr;
     ISurface::HdlPtr                   m_hdlOutput;
 
     mIfDx12Enabled(Task* getNew_dx12Implementation(TaskData* a_data) override);
