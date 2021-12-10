@@ -86,10 +86,15 @@ $(document).ready(function(){initNavTree('group___core.html',''); initResizable(
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#define-members">Macros</a>  </div>
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">Core</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Namespace grouping file resoures.  
+<a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
@@ -126,6 +131,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1m_signal.html">m::mSignal&lt; t_Args &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class encapsulating a signal.  <a href="classm_1_1m_signal.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structm_1_1resource_1_1m_request_image.html">m::resource::mRequestImage</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure used to request the loading of an image on disk.  <a href="structm_1_1resource_1_1m_request_image.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structm_1_1resource_1_1m_image.html">m::resource::mImage</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class representing the data of an image.  <a href="structm_1_1resource_1_1m_image.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1input_1_1m_i_input_manager.html">m::input::mIInputManager</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface core to input management.  <a href="classm_1_1input_1_1m_i_input_manager.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -137,6 +148,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structm_1_1input_1_1m_callback_input_manager.html">m::input::mCallbackInputManager</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of an input manager.  <a href="structm_1_1input_1_1m_callback_input_manager.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structm_1_1m_output.html">m::mOutput&lt; t_Output &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure that defines an output accompanied with a result.  <a href="structm_1_1m_output.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structm_1_1m_cmd_line.html">m::mCmdLine</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure holding a list of command line arguments.  <a href="structm_1_1m_cmd_line.html#details">More...</a><br /></td></tr>
@@ -161,6 +175,20 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state.html">m::math::mXoRandomNumberGenerator::mXoshiro256ssState</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">State of the xoshiro algorithm.  <a href="structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1profile_1_1m_i_profiler.html">m::profile::mIProfiler</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface core to profiling.  <a href="classm_1_1profile_1_1m_i_profiler.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1profile_1_1m_profiler_multi_sampling.html">m::profile::mProfilerMultiSampling&lt; t_SampleCount &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of a profiler that averages times accross multiple samples.  <a href="classm_1_1profile_1_1m_profiler_multi_sampling.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1profile_1_1m_r_a_i_i_timing.html">m::profile::mRAIITiming</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">RAII Timming that sends the elapsed time between its creation and destruction to its parent profiler.  <a href="classm_1_1profile_1_1m_r_a_i_i_timing.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1math_1_1m_spherical.html">m::math::mSpherical</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1input_1_1m_state_input_manager.html">m::input::mStateInputManager</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of an input manager.  <a href="classm_1_1input_1_1m_state_input_manager.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structm_1_1math_1_1m_vec_data.html">m::math::mVecData&lt; t_T, t_Size &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds the data for a math vector.  <a href="structm_1_1math_1_1m_vec_data.html#details">More...</a><br /></td></tr>
@@ -210,10 +238,10 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_getId</b>&#160;&#160;&#160;m::log_inst.get_newChannelID</td></tr>
 <tr class="memdesc:ga9aa869d857bafeb44058596e5ba4b1e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to get a channel ID. <br /></td></tr>
 <tr class="separator:ga9aa869d857bafeb44058596e5ba4b1e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gada5e219866231b861b496e86d47e1e78"><td class="memItemLeft" align="right" valign="top"><a id="gada5e219866231b861b496e86d47e1e78" name="gada5e219866231b861b496e86d47e1e78"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog</b>&#160;&#160;&#160;m::log_inst.print&lt;<a class="el" href="namespacem_1_1logging.html#ad98e602820072dd69a260765a95bd387abfecbf648c2deaa801f62e8dad71e361">m::logging::mSeverityType::debug</a>&gt;</td></tr>
-<tr class="memdesc:gada5e219866231b861b496e86d47e1e78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log simple debug messages. <br /></td></tr>
-<tr class="separator:gada5e219866231b861b496e86d47e1e78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga021da14d65641a84a9c5e76479b68890"><td class="memItemLeft" align="right" valign="top"><a id="ga021da14d65641a84a9c5e76479b68890" name="ga021da14d65641a84a9c5e76479b68890"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_info</b>&#160;&#160;&#160;m::log_inst.print&lt;<a class="el" href="namespacem_1_1logging.html#ad98e602820072dd69a260765a95bd387abfecbf648c2deaa801f62e8dad71e361">m::logging::mSeverityType::debug</a>&gt;</td></tr>
+<tr class="memdesc:ga021da14d65641a84a9c5e76479b68890"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log simple debug messages. <br /></td></tr>
+<tr class="separator:ga021da14d65641a84a9c5e76479b68890"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0bcecb82138d5f42db4089c93554f5a2"><td class="memItemLeft" align="right" valign="top"><a id="ga0bcecb82138d5f42db4089c93554f5a2" name="ga0bcecb82138d5f42db4089c93554f5a2"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_error</b>&#160;&#160;&#160;m::log_inst.print&lt;<a class="el" href="namespacem_1_1logging.html#ad98e602820072dd69a260765a95bd387ad564300fbfad44fd5b83f8ba9441ba5d">m::logging::mSeverityType::error</a>&gt;</td></tr>
 <tr class="memdesc:ga0bcecb82138d5f42db4089c93554f5a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log simple error messages. <br /></td></tr>
@@ -222,10 +250,10 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_warning</b>&#160;&#160;&#160;m::log_inst.print&lt;<a class="el" href="namespacem_1_1logging.html#ad98e602820072dd69a260765a95bd387a52b9f3af43a3f80e4a62548382b2c04b">m::logging::SeverityType::warning</a>&gt;</td></tr>
 <tr class="memdesc:gadb3d189e9cbe46dd3620a641763cdf6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log simple warning messages. <br /></td></tr>
 <tr class="separator:gadb3d189e9cbe46dd3620a641763cdf6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab009950df9db21d808d3c36818dde4bf"><td class="memItemLeft" align="right" valign="top"><a id="gab009950df9db21d808d3c36818dde4bf" name="gab009950df9db21d808d3c36818dde4bf"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_to</b>&#160;&#160;&#160;m::log_inst.print_toChannel&lt;<a class="el" href="namespacem_1_1logging.html#ad98e602820072dd69a260765a95bd387abfecbf648c2deaa801f62e8dad71e361">m::logging::mSeverityType::debug</a>&gt;</td></tr>
-<tr class="memdesc:gab009950df9db21d808d3c36818dde4bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log simple debug messages to a channel. <br /></td></tr>
-<tr class="separator:gab009950df9db21d808d3c36818dde4bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga085be68cff0dec560a6f390949fcf61b"><td class="memItemLeft" align="right" valign="top"><a id="ga085be68cff0dec560a6f390949fcf61b" name="ga085be68cff0dec560a6f390949fcf61b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_infoTo</b>&#160;&#160;&#160;    m::log_inst.print_toChannel&lt;<a class="el" href="namespacem_1_1logging.html#ad98e602820072dd69a260765a95bd387abfecbf648c2deaa801f62e8dad71e361">m::logging::mSeverityType::debug</a>&gt;</td></tr>
+<tr class="memdesc:ga085be68cff0dec560a6f390949fcf61b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log simple debug messages to a channel. <br /></td></tr>
+<tr class="separator:ga085be68cff0dec560a6f390949fcf61b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafd57e4a697cbf7c30e222a868dcdf9e4"><td class="memItemLeft" align="right" valign="top"><a id="gafd57e4a697cbf7c30e222a868dcdf9e4" name="gafd57e4a697cbf7c30e222a868dcdf9e4"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_errorTo</b>&#160;&#160;&#160;    m::log_inst.print_toChannel&lt;<a class="el" href="namespacem_1_1logging.html#ad98e602820072dd69a260765a95bd387ad564300fbfad44fd5b83f8ba9441ba5d">m::logging::mSeverityType::error</a>&gt;</td></tr>
 <tr class="memdesc:gafd57e4a697cbf7c30e222a868dcdf9e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log simple error messages to a channel. <br /></td></tr>
@@ -234,10 +262,10 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_warningTo</b>&#160;&#160;&#160;    m::log_inst.print_toChannel&lt;<a class="el" href="namespacem_1_1logging.html#ad98e602820072dd69a260765a95bd387a52b9f3af43a3f80e4a62548382b2c04b">m::logging::mSeverityType::warning</a>&gt;</td></tr>
 <tr class="memdesc:ga8fdc6b16f7a09c13d9ee1ba499d181ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log simple warning messages to a channel. <br /></td></tr>
 <tr class="separator:ga8fdc6b16f7a09c13d9ee1ba499d181ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga60b018f1e6e00b588d2bd8f0cd42b0a7"><td class="memItemLeft" align="right" valign="top"><a id="ga60b018f1e6e00b588d2bd8f0cd42b0a7" name="ga60b018f1e6e00b588d2bd8f0cd42b0a7"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_verbose</b>(...)</td></tr>
-<tr class="memdesc:ga60b018f1e6e00b588d2bd8f0cd42b0a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log verbose debug messages. <br /></td></tr>
-<tr class="separator:ga60b018f1e6e00b588d2bd8f0cd42b0a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2aa322925604d56df06fcfdd2160c3d7"><td class="memItemLeft" align="right" valign="top"><a id="ga2aa322925604d56df06fcfdd2160c3d7" name="ga2aa322925604d56df06fcfdd2160c3d7"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_verboseInfo</b>(...)</td></tr>
+<tr class="memdesc:ga2aa322925604d56df06fcfdd2160c3d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log verbose debug messages. <br /></td></tr>
+<tr class="separator:ga2aa322925604d56df06fcfdd2160c3d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1848e387de750cedfad1837fc97f9937"><td class="memItemLeft" align="right" valign="top"><a id="ga1848e387de750cedfad1837fc97f9937" name="ga1848e387de750cedfad1837fc97f9937"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_verboseError</b>(...)</td></tr>
 <tr class="memdesc:ga1848e387de750cedfad1837fc97f9937"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log verbose error messages. <br /></td></tr>
@@ -246,10 +274,10 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_verboseWarning</b>(...)</td></tr>
 <tr class="memdesc:ga65bb68d733e34685ff0488ad2d8659cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log verbose warning messages. <br /></td></tr>
 <tr class="separator:ga65bb68d733e34685ff0488ad2d8659cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8897d907fd045fa4ed41484db869be19"><td class="memItemLeft" align="right" valign="top"><a id="ga8897d907fd045fa4ed41484db869be19" name="ga8897d907fd045fa4ed41484db869be19"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_verboseTo</b>(...)</td></tr>
-<tr class="memdesc:ga8897d907fd045fa4ed41484db869be19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log verbose debug messages to a channel. <br /></td></tr>
-<tr class="separator:ga8897d907fd045fa4ed41484db869be19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa0ed51faa457373a5901502868059cc6"><td class="memItemLeft" align="right" valign="top"><a id="gaa0ed51faa457373a5901502868059cc6" name="gaa0ed51faa457373a5901502868059cc6"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_verboseInfoTo</b>(...)</td></tr>
+<tr class="memdesc:gaa0ed51faa457373a5901502868059cc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log verbose debug messages to a channel. <br /></td></tr>
+<tr class="separator:gaa0ed51faa457373a5901502868059cc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga063b3285c370c05ba0c8922d725a88d8"><td class="memItemLeft" align="right" valign="top"><a id="ga063b3285c370c05ba0c8922d725a88d8" name="ga063b3285c370c05ba0c8922d725a88d8"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>mLog_verboseErrorTo</b>(...)</td></tr>
 <tr class="memdesc:ga063b3285c370c05ba0c8922d725a88d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to log verbose error messages to a channel. <br /></td></tr>
@@ -270,8 +298,68 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>mDisable_logChannels</b>&#160;&#160;&#160;m::log_inst.disable_channels</td></tr>
 <tr class="memdesc:gac92102d2681a9eb9e2d7f2cc7079190a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to disable channels the logger. <br /></td></tr>
 <tr class="separator:gac92102d2681a9eb9e2d7f2cc7079190a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ga757ca8491b5337650385dc5453332407"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structm_1_1m_output.html">mOutput</a>&lt; <a class="el" href="structm_1_1resource_1_1m_image.html">mImage</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#ga757ca8491b5337650385dc5453332407">m::resource::load_image</a> (<a class="el" href="structm_1_1resource_1_1m_request_image.html">mRequestImage</a> const  &amp;a_request)</td></tr>
+<tr class="memdesc:ga757ca8491b5337650385dc5453332407"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads an image from the disk through a request.  <a href="group___core.html#ga757ca8491b5337650385dc5453332407">More...</a><br /></td></tr>
+<tr class="separator:ga757ca8491b5337650385dc5453332407"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac6293026c2b1a3029978393784f14e45"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#gac6293026c2b1a3029978393784f14e45">m::profile::mIProfiler::add_timing</a> (std::chrono::steady_clock::duration a_timming)=0</td></tr>
+<tr class="memdesc:gac6293026c2b1a3029978393784f14e45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a timming data to a profiler.  <a href="group___core.html#gac6293026c2b1a3029978393784f14e45">More...</a><br /></td></tr>
+<tr class="separator:gac6293026c2b1a3029978393784f14e45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9cb2380c73ae20a4b1a7cd6a854d66b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#ga9cb2380c73ae20a4b1a7cd6a854d66b8">m::profile::mProfilerMultiSampling&lt; t_SampleCount &gt;::add_timing</a> (std::chrono::steady_clock::duration a_timming) override</td></tr>
+<tr class="memdesc:ga9cb2380c73ae20a4b1a7cd6a854d66b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a timming data to a profiler.  <a href="group___core.html#ga9cb2380c73ae20a4b1a7cd6a854d66b8">More...</a><br /></td></tr>
+<tr class="separator:ga9cb2380c73ae20a4b1a7cd6a854d66b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaaf041dfbc9dd69e41422e8e1debd649a"><td class="memTemplParams" colspan="2"><a id="gaaf041dfbc9dd69e41422e8e1debd649a" name="gaaf041dfbc9dd69e41422e8e1debd649a"></a>
+template&lt;typename t_RetType , typename t_Preiod &gt; </td></tr>
+<tr class="memitem:gaaf041dfbc9dd69e41422e8e1debd649a"><td class="memTemplItemLeft" align="right" valign="top">t_RetType&#160;</td><td class="memTemplItemRight" valign="bottom"><b>m::profile::mProfilerMultiSampling&lt; t_SampleCount &gt;::get_average</b> ()</td></tr>
+<tr class="separator:gaaf041dfbc9dd69e41422e8e1debd649a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga848799fdd49850bb562058bbe7ca8897"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#ga848799fdd49850bb562058bbe7ca8897">m::profile::mRAIITiming::mRAIITiming</a> (<a class="el" href="classm_1_1profile_1_1m_i_profiler.html">mIProfiler</a> &amp;a_parent)</td></tr>
+<tr class="memdesc:ga848799fdd49850bb562058bbe7ca8897"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a Timming with its associated parent.  <a href="group___core.html#ga848799fdd49850bb562058bbe7ca8897">More...</a><br /></td></tr>
+<tr class="separator:ga848799fdd49850bb562058bbe7ca8897"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7ee6d3967363eec5ab00aba61b521ce6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#ga7ee6d3967363eec5ab00aba61b521ce6">m::profile::mRAIITiming::~mRAIITiming</a> ()</td></tr>
+<tr class="memdesc:ga7ee6d3967363eec5ab00aba61b521ce6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends the time elapsed between this and the construction of the object to the parent profiler.  <a href="group___core.html#ga7ee6d3967363eec5ab00aba61b521ce6">More...</a><br /></td></tr>
+<tr class="separator:ga7ee6d3967363eec5ab00aba61b521ce6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ga7e5ebb73b7d020af0132d3288403552d"><td class="memItemLeft" align="right" valign="top"><a id="ga7e5ebb73b7d020af0132d3288403552d" name="ga7e5ebb73b7d020af0132d3288403552d"></a>
+const <a class="el" href="namespacem_1_1logging.html#af807dfba0ed733f24957c0f3d016a15f">logging::mChannelID</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m::resource::g_logIDImage</b> = <a class="el" href="group___core.html#ga9aa869d857bafeb44058596e5ba4b1e6">mLog_getId</a>()</td></tr>
+<tr class="separator:ga7e5ebb73b7d020af0132d3288403552d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga999843d5346e8e26c48f8ee3d41a423a"><td class="memItemLeft" align="right" valign="top"><a id="ga999843d5346e8e26c48f8ee3d41a423a" name="ga999843d5346e8e26c48f8ee3d41a423a"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>m::resource::mRequestImage::path</b></td></tr>
+<tr class="memdesc:ga999843d5346e8e26c48f8ee3d41a423a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The path of the image to load. <br /></td></tr>
+<tr class="separator:ga999843d5346e8e26c48f8ee3d41a423a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6fc74eceb5f8cfc9d13ce112291811de"><td class="memItemLeft" align="right" valign="top"><a id="ga6fc74eceb5f8cfc9d13ce112291811de" name="ga6fc74eceb5f8cfc9d13ce112291811de"></a>
+mInt&#160;</td><td class="memItemRight" valign="bottom"><b>m::resource::mImage::width</b> {0}</td></tr>
+<tr class="memdesc:ga6fc74eceb5f8cfc9d13ce112291811de"><td class="mdescLeft">&#160;</td><td class="mdescRight">The width of the image. <br /></td></tr>
+<tr class="separator:ga6fc74eceb5f8cfc9d13ce112291811de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab81a19fd597b9546705bb9ffefad10dc"><td class="memItemLeft" align="right" valign="top"><a id="gab81a19fd597b9546705bb9ffefad10dc" name="gab81a19fd597b9546705bb9ffefad10dc"></a>
+mInt&#160;</td><td class="memItemRight" valign="bottom"><b>m::resource::mImage::height</b> {0}</td></tr>
+<tr class="memdesc:gab81a19fd597b9546705bb9ffefad10dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The height of the image. <br /></td></tr>
+<tr class="separator:gab81a19fd597b9546705bb9ffefad10dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga002ad0b6468e36a0292f869a845c3c49"><td class="memItemLeft" align="right" valign="top"><a id="ga002ad0b6468e36a0292f869a845c3c49" name="ga002ad0b6468e36a0292f869a845c3c49"></a>
+std::vector&lt; mU8 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m::resource::mImage::data</b> {}</td></tr>
+<tr class="memdesc:ga002ad0b6468e36a0292f869a845c3c49"><td class="mdescLeft">&#160;</td><td class="mdescRight">The array of values for each channel of each pixel. <br /></td></tr>
+<tr class="separator:ga002ad0b6468e36a0292f869a845c3c49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab2103dfb51d9336e5b2eacf14e1c159c"><td class="memItemLeft" align="right" valign="top"><a id="gab2103dfb51d9336e5b2eacf14e1c159c" name="gab2103dfb51d9336e5b2eacf14e1c159c"></a>
+std::array&lt; std::chrono::steady_clock::duration, t_SampleCount &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m::profile::mProfilerMultiSampling&lt; t_SampleCount &gt;::m_samples</b> {}</td></tr>
+<tr class="separator:gab2103dfb51d9336e5b2eacf14e1c159c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac07c136f3225e23ca7ea193aaf397b55"><td class="memItemLeft" align="right" valign="top"><a id="gac07c136f3225e23ca7ea193aaf397b55" name="gac07c136f3225e23ca7ea193aaf397b55"></a>
+mUInt&#160;</td><td class="memItemRight" valign="bottom"><b>m::profile::mProfilerMultiSampling&lt; t_SampleCount &gt;::m_currentCount</b> {0}</td></tr>
+<tr class="separator:gac07c136f3225e23ca7ea193aaf397b55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1e6f6172605e1987636758efada6ee92"><td class="memItemLeft" align="right" valign="top"><a id="ga1e6f6172605e1987636758efada6ee92" name="ga1e6f6172605e1987636758efada6ee92"></a>
+<a class="el" href="classm_1_1profile_1_1m_i_profiler.html">mIProfiler</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m::profile::mRAIITiming::m_pParent</b> = nullptr</td></tr>
+<tr class="memdesc:ga1e6f6172605e1987636758efada6ee92"><td class="mdescLeft">&#160;</td><td class="mdescRight">The profiler to send the data to. <br /></td></tr>
+<tr class="separator:ga1e6f6172605e1987636758efada6ee92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga16881a589345bcb0ce7de57fc989e811"><td class="memItemLeft" align="right" valign="top"><a id="ga16881a589345bcb0ce7de57fc989e811" name="ga16881a589345bcb0ce7de57fc989e811"></a>
+std::chrono::time_point&lt; std::chrono::steady_clock &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m::profile::mRAIITiming::m_start</b></td></tr>
+<tr class="memdesc:ga16881a589345bcb0ce7de57fc989e811"><td class="mdescLeft">&#160;</td><td class="mdescRight">The starting point of the sampling data. <br /></td></tr>
+<tr class="separator:ga16881a589345bcb0ce7de57fc989e811"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<p >Namespace grouping file resoures. </p>
+<p >Namespace grouping basic profiling tools.</p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="gae68855c8125ce66a9e53e758526c95ca" name="gae68855c8125ce66a9e53e758526c95ca"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gae68855c8125ce66a9e53e758526c95ca">&#9670;&nbsp;</a></span>mAssert</h2>
@@ -354,6 +442,164 @@ Macros</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="ga9cb2380c73ae20a4b1a7cd6a854d66b8" name="ga9cb2380c73ae20a4b1a7cd6a854d66b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9cb2380c73ae20a4b1a7cd6a854d66b8">&#9670;&nbsp;</a></span>add_timing() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;mUInt t_SampleCount&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classm_1_1profile_1_1m_profiler_multi_sampling.html">m::profile::mProfilerMultiSampling</a>&lt; t_SampleCount &gt;::add_timing </td>
+          <td>(</td>
+          <td class="paramtype">std::chrono::steady_clock::duration&#160;</td>
+          <td class="paramname"><em>a_timming</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Add a timming data to a profiler. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a_timming</td><td>The timming data for the thing we want to measure </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="group___core.html#gac6293026c2b1a3029978393784f14e45">m::profile::mIProfiler</a>.</p>
+
+</div>
+</div>
+<a id="gac6293026c2b1a3029978393784f14e45" name="gac6293026c2b1a3029978393784f14e45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac6293026c2b1a3029978393784f14e45">&#9670;&nbsp;</a></span>add_timing() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void m::profile::mIProfiler::add_timing </td>
+          <td>(</td>
+          <td class="paramtype">std::chrono::steady_clock::duration&#160;</td>
+          <td class="paramname"><em>a_timming</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Add a timming data to a profiler. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a_timming</td><td>The timming data for the thing we want to measure </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="group___core.html#ga9cb2380c73ae20a4b1a7cd6a854d66b8">m::profile::mProfilerMultiSampling&lt; t_SampleCount &gt;</a>.</p>
+
+</div>
+</div>
+<a id="ga757ca8491b5337650385dc5453332407" name="ga757ca8491b5337650385dc5453332407"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga757ca8491b5337650385dc5453332407">&#9670;&nbsp;</a></span>load_image()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structm_1_1m_output.html">mOutput</a>&lt; <a class="el" href="structm_1_1resource_1_1m_image.html">mImage</a> &gt; m::resource::load_image </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structm_1_1resource_1_1m_request_image.html">mRequestImage</a> const &amp;&#160;</td>
+          <td class="paramname"><em>a_request</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Loads an image from the disk through a request. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a_request</td><td>The request to load the image </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section pre"><dt>Precondition</dt><dd>The path of the request must not be empty </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The data of the loaded image </dd></dl>
+
+</div>
+</div>
+<a id="ga848799fdd49850bb562058bbe7ca8897" name="ga848799fdd49850bb562058bbe7ca8897"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga848799fdd49850bb562058bbe7ca8897">&#9670;&nbsp;</a></span>mRAIITiming()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">m::profile::mRAIITiming::mRAIITiming </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classm_1_1profile_1_1m_i_profiler.html">mIProfiler</a> &amp;&#160;</td>
+          <td class="paramname"><em>a_parent</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Construct a Timming with its associated parent. </p>
+<p >This gets a timestamps of this call</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a_parent</td><td>The parent profiler to send the data to </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga7ee6d3967363eec5ab00aba61b521ce6" name="ga7ee6d3967363eec5ab00aba61b521ce6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7ee6d3967363eec5ab00aba61b521ce6">&#9670;&nbsp;</a></span>~mRAIITiming()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">m::profile::mRAIITiming::~mRAIITiming </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sends the time elapsed between this and the construction of the object to the parent profiler. </p>
+<dl class="section pre"><dt>Precondition</dt><dd>The parent must not be nullptr </dd></dl>
 
 </div>
 </div>

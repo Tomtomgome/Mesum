@@ -20,19 +20,25 @@ var namespaces_dup =
       [ "input", "namespacem_1_1input.html", "namespacem_1_1input" ],
       [ "logging", "namespacem_1_1logging.html", "namespacem_1_1logging" ],
       [ "math", "namespacem_1_1math.html", "namespacem_1_1math" ],
+      [ "profile", null, [
+        [ "mIProfiler", "classm_1_1profile_1_1m_i_profiler.html", "classm_1_1profile_1_1m_i_profiler" ],
+        [ "mProfilerMultiSampling", "classm_1_1profile_1_1m_profiler_multi_sampling.html", "classm_1_1profile_1_1m_profiler_multi_sampling" ],
+        [ "mRAIITiming", "classm_1_1profile_1_1m_r_a_i_i_timing.html", "classm_1_1profile_1_1m_r_a_i_i_timing" ]
+      ] ],
       [ "render", null, [
         [ "BasicVertex", "structm_1_1render_1_1_basic_vertex.html", null ],
         [ "BufferBase", "structm_1_1render_1_1_buffer_base.html", null ],
         [ "DataMeshBuffer", "structm_1_1render_1_1_data_mesh_buffer.html", null ],
         [ "Dx12BufferBase", "structm_1_1render_1_1_dx12_buffer_base.html", null ],
         [ "IRenderer", "classm_1_1render_1_1_i_renderer.html", null ],
+        [ "IResource", "structm_1_1render_1_1_i_resource.html", "structm_1_1render_1_1_i_resource" ],
         [ "ISurface", "classm_1_1render_1_1_i_surface.html", "classm_1_1render_1_1_i_surface" ],
         [ "ResourceDataHolder", "classm_1_1render_1_1_resource_data_holder.html", null ],
         [ "Task", "structm_1_1render_1_1_task.html", null ],
         [ "Task2dRender", "structm_1_1render_1_1_task2d_render.html", null ],
         [ "Task3dRender", "structm_1_1render_1_1_task3d_render.html", null ],
         [ "TaskData", "structm_1_1render_1_1_task_data.html", null ],
-        [ "TaskData2dRender", "structm_1_1render_1_1_task_data2d_render.html", null ],
+        [ "TaskData2dRender", "structm_1_1render_1_1_task_data2d_render.html", "structm_1_1render_1_1_task_data2d_render" ],
         [ "TaskData3dRender", "structm_1_1render_1_1_task_data3d_render.html", null ],
         [ "TaskDataDrawDearImGui", "structm_1_1render_1_1_task_data_draw_dear_im_gui.html", null ],
         [ "TaskDrawDearImGui", "structm_1_1render_1_1_task_draw_dear_im_gui.html", null ],
@@ -41,6 +47,11 @@ var namespaces_dup =
         [ "TextureManager", "structm_1_1render_1_1_texture_manager.html", null ],
         [ "TextureRequest", "structm_1_1render_1_1_texture_request.html", null ],
         [ "VulkanBufferBase", "structm_1_1render_1_1_vulkan_buffer_base.html", null ]
+      ] ],
+      [ "resource", null, [
+        [ "mImage", "structm_1_1resource_1_1m_image.html", "structm_1_1resource_1_1m_image" ],
+        [ "mRequestImage", "structm_1_1resource_1_1m_request_image.html", "structm_1_1resource_1_1m_request_image" ],
+        [ "load_image", "group___core.html#ga757ca8491b5337650385dc5453332407", null ]
       ] ],
       [ "vulkan", null, [
         [ "VulkanContext", "classm_1_1vulkan_1_1_vulkan_context.html", null ],
@@ -64,6 +75,7 @@ var namespaces_dup =
       [ "mBasicLaunchData", "structm_1_1m_basic_launch_data.html", null ],
       [ "mCallback", "classm_1_1m_callback.html", "classm_1_1m_callback" ],
       [ "mCmdLine", "structm_1_1m_cmd_line.html", "structm_1_1m_cmd_line" ],
+      [ "mOutput", "structm_1_1m_output.html", "structm_1_1m_output" ],
       [ "mSignal", "classm_1_1m_signal.html", "classm_1_1m_signal" ]
     ] ]
 ];

@@ -1,0 +1,34 @@
+\hypertarget{classm_1_1profile_1_1m_r_a_i_i_timing}{}\doxysection{m\+::profile\+::m\+RAIITiming Class Reference}
+\label{classm_1_1profile_1_1m_r_a_i_i_timing}\index{m::profile::mRAIITiming@{m::profile::mRAIITiming}}
+
+
+RAII Timming that sends the elapsed time between its creation and destruction to its parent profiler.  
+
+
+
+
+{\ttfamily \#include $<$Profile.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{group___core_ga848799fdd49850bb562058bbe7ca8897}{m\+RAIITiming}} (\mbox{\hyperlink{classm_1_1profile_1_1m_i_profiler}{m\+IProfiler}} \&a\+\_\+parent)
+\begin{DoxyCompactList}\small\item\em Construct a Timming with its associated parent. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{group___core_ga7ee6d3967363eec5ab00aba61b521ce6}{$\sim$m\+RAIITiming}} ()
+\begin{DoxyCompactList}\small\item\em Sends the time elapsed between this and the construction of the object to the parent profiler. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classm_1_1profile_1_1m_i_profiler}{m\+IProfiler}} $\ast$ {\bfseries m\+\_\+p\+Parent} = nullptr
+\begin{DoxyCompactList}\small\item\em The profiler to send the data to. \end{DoxyCompactList}\item 
+std\+::chrono\+::time\+\_\+point$<$ std\+::chrono\+::steady\+\_\+clock $>$ {\bfseries m\+\_\+start}
+\begin{DoxyCompactList}\small\item\em The starting point of the sampling data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+RAII Timming that sends the elapsed time between its creation and destruction to its parent profiler. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Core/\+Kernel/Profile.\+hpp\item 
+Mesum\+Core/\+Kernel/Profile.\+cpp\end{DoxyCompactItemize}

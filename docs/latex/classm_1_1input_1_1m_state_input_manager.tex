@@ -1,0 +1,66 @@
+\hypertarget{classm_1_1input_1_1m_state_input_manager}{}\doxysection{m\+::input\+::m\+State\+Input\+Manager Class Reference}
+\label{classm_1_1input_1_1m_state_input_manager}\index{m::input::mStateInputManager@{m::input::mStateInputManager}}
+
+
+Implementation of an input manager.  
+
+
+
+
+{\ttfamily \#include $<$State\+Input\+Manager.\+hpp$>$}
+
+Inheritance diagram for m\+::input\+::m\+State\+Input\+Manager\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classm_1_1input_1_1m_state_input_manager}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classm_1_1input_1_1m_state_input_manager_ad0978592c3f769288e5ed6fef1350dc5}{process\+\_\+key\+Event}} (\mbox{\hyperlink{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}{m\+Key}} a\+\_\+key, \mbox{\hyperlink{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474}{m\+Input\+Type}} a\+\_\+action) override
+\begin{DoxyCompactList}\small\item\em Process a key event. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classm_1_1input_1_1m_state_input_manager_ae52932230516ba1d10d9506121a70ad6}\label{classm_1_1input_1_1m_state_input_manager_ae52932230516ba1d10d9506121a70ad6}} 
+\mbox{\hyperlink{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474}{m\+Input\+Type}} {\bfseries get\+\_\+key\+State} (\mbox{\hyperlink{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}{m\+Key}} a\+\_\+key) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1input_1_1m_state_input_manager_a32f8e51206bb016adca6e1b218ea130c}\label{classm_1_1input_1_1m_state_input_manager_a32f8e51206bb016adca6e1b218ea130c}} 
+std\+::array$<$ \mbox{\hyperlink{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474}{m\+Input\+Type}}, m\+Key\+::key\+Last $>$ {\bfseries m\+\_\+key\+State}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implementation of an input manager. 
+
+User can attach callbacks to events that will be called immediately when the event is read 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classm_1_1input_1_1m_state_input_manager_ad0978592c3f769288e5ed6fef1350dc5}\label{classm_1_1input_1_1m_state_input_manager_ad0978592c3f769288e5ed6fef1350dc5}} 
+\index{m::input::mStateInputManager@{m::input::mStateInputManager}!process\_keyEvent@{process\_keyEvent}}
+\index{process\_keyEvent@{process\_keyEvent}!m::input::mStateInputManager@{m::input::mStateInputManager}}
+\doxysubsubsection{\texorpdfstring{process\_keyEvent()}{process\_keyEvent()}}
+{\footnotesize\ttfamily void m\+::input\+::m\+State\+Input\+Manager\+::process\+\_\+key\+Event (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}{m\+Key}}}]{a\+\_\+key,  }\item[{\mbox{\hyperlink{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474}{m\+Input\+Type}}}]{a\+\_\+action }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Process a key event. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+key} & The key concerned by the event \\
+\hline
+{\em a\+\_\+action} & The input\+Type of the event \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \mbox{\hyperlink{classm_1_1input_1_1m_i_input_manager_a88bb9969485bf189f3b227d2341308fa}{m\+::input\+::m\+IInput\+Manager}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Core/\+Kernel/State\+Input\+Manager.\+hpp\item 
+Mesum\+Core/\+Kernel/State\+Input\+Manager.\+cpp\end{DoxyCompactItemize}

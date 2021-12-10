@@ -154,7 +154,7 @@ $(document).ready(function(){initNavTree('_log_8hpp_source.html',''); initResiza
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#a6f8a344c00f2070681691a3d7422a588">  156</a></span>    <span class="keywordtype">unsigned</span>          <a class="code hl_variable" href="classm_1_1logging_1_1m_logger.html#a6f8a344c00f2070681691a3d7422a588">m_lineNumber</a> = 0;    </div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#acdddf0d18b89b8040850cf0ae3fbc2a3">  161</a></span>    <a class="code hl_typedef" href="namespacem_1_1logging.html#a0fa5af708b452e8c58088597cdea8392">mChannelFilter</a> <a class="code hl_variable" href="classm_1_1logging_1_1m_logger.html#acdddf0d18b89b8040850cf0ae3fbc2a3">m_filter</a>        = <a class="code hl_variable" href="namespacem_1_1logging.html#ac3d7342b9694fe25c6f2119fe2886a46">g_allChannelsFilter</a>;</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#a5a0049f9abdded520fdc9b1218569c6d">  162</a></span>    <a class="code hl_typedef" href="namespacem_1_1logging.html#af807dfba0ed733f24957c0f3d016a15f">mChannelID</a>     <a class="code hl_variable" href="classm_1_1logging_1_1m_logger.html#a5a0049f9abdded520fdc9b1218569c6d">m_nextChannelID</a> = 1;  </div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#a5a0049f9abdded520fdc9b1218569c6d">  162</a></span>    <a class="code hl_typedef" href="namespacem_1_1logging.html#af807dfba0ed733f24957c0f3d016a15f">mChannelID</a>     <a class="code hl_variable" href="classm_1_1logging_1_1m_logger.html#a5a0049f9abdded520fdc9b1218569c6d">m_nextChannelID</a>;  </div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>};</div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
@@ -163,180 +163,182 @@ $(document).ready(function(){initNavTree('_log_8hpp_source.html',''); initResiza
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_LogPolicy&gt;</div>
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#a730cd6c6dd614b84ff66216e85b7977a">  169</a></span><a class="code hl_function" href="classm_1_1logging_1_1m_logger.html#a730cd6c6dd614b84ff66216e85b7977a">mLogger&lt;t_LogPolicy&gt;::mLogger</a>(<span class="keyword">const</span> std::string&amp; a_name)</div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>{</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    m_nextChannelID = 1;</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    m_filter        = -1;</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    m_lineNumber    = 0;</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    m_policy        = <span class="keyword">new</span> t_LogPolicy;</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    <span class="keywordflow">if</span> (!m_policy)</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    {</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>            <span class="stringliteral">&quot;LOGGER: Unable to create the logger instance&quot;</span>);</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    }</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    m_policy-&gt;open_ostream(a_name);</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>}</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span><span class="comment">//</span></div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_LogPolicy&gt;</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#a290891ccb1be92d2912fdbdfe3b04e5a">  187</a></span><a class="code hl_function" href="classm_1_1logging_1_1m_logger.html#a290891ccb1be92d2912fdbdfe3b04e5a">mLogger&lt;t_LogPolicy&gt;::~mLogger</a>()</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>{</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    <span class="keywordflow">if</span> (m_policy)</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    {</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>        m_policy-&gt;close_ostream();</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>        <span class="keyword">delete</span> m_policy;</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    }</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>}</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span> </div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="comment">//</span></div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_LogPolicy&gt;</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#a59961a6eebe198f19bb95a5000f6373c">  200</a></span><a class="code hl_typedef" href="namespacem_1_1logging.html#af807dfba0ed733f24957c0f3d016a15f">mChannelID</a> <a class="code hl_function" href="classm_1_1logging_1_1m_logger.html#a59961a6eebe198f19bb95a5000f6373c">mLogger&lt;t_LogPolicy&gt;::get_newChannelID</a>()</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>{</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    <span class="comment">// TODO : Fix this ID generation problem</span></div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    <span class="keyword">static</span> <a class="code hl_typedef" href="namespacem_1_1logging.html#af807dfba0ed733f24957c0f3d016a15f">mChannelID</a> nextChannelID = 1;</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    <span class="keywordflow">return</span> nextChannelID &lt;&lt;= 1;</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>}</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="comment">//</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    m_filter        = -1;</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    m_lineNumber    = 0;</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    m_policy        = <span class="keyword">new</span> t_LogPolicy;</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    <span class="keywordflow">if</span> (!m_policy)</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    {</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        <span class="keywordflow">throw</span> std::runtime_error(</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>            <span class="stringliteral">&quot;LOGGER: Unable to create the logger instance&quot;</span>);</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    }</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    m_policy-&gt;open_ostream(a_name);</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>}</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span><span class="comment">//</span></div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_LogPolicy&gt;</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#a290891ccb1be92d2912fdbdfe3b04e5a">  186</a></span><a class="code hl_function" href="classm_1_1logging_1_1m_logger.html#a290891ccb1be92d2912fdbdfe3b04e5a">mLogger&lt;t_LogPolicy&gt;::~mLogger</a>()</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>{</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    <span class="keywordflow">if</span> (m_policy)</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    {</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        m_policy-&gt;close_ostream();</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>        <span class="keyword">delete</span> m_policy;</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    }</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>}</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="comment">//</span></div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_LogPolicy&gt;</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#a59961a6eebe198f19bb95a5000f6373c">  199</a></span><a class="code hl_typedef" href="namespacem_1_1logging.html#af807dfba0ed733f24957c0f3d016a15f">mChannelID</a> <a class="code hl_function" href="classm_1_1logging_1_1m_logger.html#a59961a6eebe198f19bb95a5000f6373c">mLogger&lt;t_LogPolicy&gt;::get_newChannelID</a>()</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>{</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    <span class="comment">// TODO : Fix this ID generation problem</span></div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    <span class="keywordflow">if</span>(m_nextChannelID == 0)</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    {</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>        m_nextChannelID = 1;</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    }</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    <span class="keywordflow">return</span> m_nextChannelID &lt;&lt;= 1;</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>}</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span> </div>
 <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_LogPolicy&gt;</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#ab72e23ec1dee710ae547720bcebe446d">  211</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classm_1_1logging_1_1m_logger.html#ab72e23ec1dee710ae547720bcebe446d">mLogger&lt;t_LogPolicy&gt;::set_filter</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespacem_1_1logging.html#a0fa5af708b452e8c58088597cdea8392">mChannelFilter</a> a_filter)</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>{</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>    m_filter = a_filter;</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>}</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span><span class="comment">//</span></div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span><span class="comment">//</span></div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_LogPolicy&gt;</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#ab72e23ec1dee710ae547720bcebe446d">  213</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classm_1_1logging_1_1m_logger.html#ab72e23ec1dee710ae547720bcebe446d">mLogger&lt;t_LogPolicy&gt;::set_filter</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespacem_1_1logging.html#a0fa5af708b452e8c58088597cdea8392">mChannelFilter</a> a_filter)</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>{</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    m_filter = a_filter;</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>}</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span> </div>
 <div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_LogPolicy&gt;</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#a8447286a207b62778ea2fd3c2fd1cb10">  220</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classm_1_1logging_1_1m_logger.html#a8447286a207b62778ea2fd3c2fd1cb10">mLogger&lt;t_LogPolicy&gt;::disable_channels</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespacem_1_1logging.html#a0fa5af708b452e8c58088597cdea8392">mChannelFilter</a> a_filter)</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>{</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    m_filter = m_filter &amp; ~a_filter;</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>}</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span><span class="comment">//</span></div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span><span class="comment">//</span></div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_LogPolicy&gt;</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#a8447286a207b62778ea2fd3c2fd1cb10">  222</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classm_1_1logging_1_1m_logger.html#a8447286a207b62778ea2fd3c2fd1cb10">mLogger&lt;t_LogPolicy&gt;::disable_channels</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespacem_1_1logging.html#a0fa5af708b452e8c58088597cdea8392">mChannelFilter</a> a_filter)</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>{</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    m_filter = m_filter &amp; ~a_filter;</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>}</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_LogPolicy&gt;</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#a83c957baadaf5ad52f112fdc36f58d83">  229</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classm_1_1logging_1_1m_logger.html#a83c957baadaf5ad52f112fdc36f58d83">mLogger&lt;t_LogPolicy&gt;::enable_channels</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespacem_1_1logging.html#a0fa5af708b452e8c58088597cdea8392">mChannelFilter</a> a_filter)</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>{</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    m_filter = m_filter | a_filter;</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>}</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span><span class="comment">//</span></div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="comment">//</span></div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_LogPolicy&gt;</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#a83c957baadaf5ad52f112fdc36f58d83">  231</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classm_1_1logging_1_1m_logger.html#a83c957baadaf5ad52f112fdc36f58d83">mLogger&lt;t_LogPolicy&gt;::enable_channels</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespacem_1_1logging.html#a0fa5af708b452e8c58088597cdea8392">mChannelFilter</a> a_filter)</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>{</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    m_filter = m_filter | a_filter;</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>}</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span> </div>
 <div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_LogPolicy&gt;</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span><span class="keyword">template</span> &lt;<a class="code hl_enumeration" href="namespacem_1_1logging.html#ad98e602820072dd69a260765a95bd387">mSeverityType</a> t_Severity, <span class="keyword">typename</span>... t_Args&gt;</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#ac6fe0dc8b19e8e94eac606d71838befd">  239</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classm_1_1logging_1_1m_logger.html#ac6fe0dc8b19e8e94eac606d71838befd">mLogger&lt;t_LogPolicy&gt;::print_toChannel</a>(uint64_t a_channel, t_Args... a_args)</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>{</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    <span class="keywordflow">if</span> (a_channel &amp; m_filter)</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    {</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>        print&lt;t_Severity&gt;(a_args...);</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    }</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>}</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span> </div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span><span class="comment">//</span></div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span><span class="comment">//</span></div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_LogPolicy&gt;</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span><span class="keyword">template</span> &lt;<a class="code hl_enumeration" href="namespacem_1_1logging.html#ad98e602820072dd69a260765a95bd387">mSeverityType</a> t_Severity, <span class="keyword">typename</span>... t_Args&gt;</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#ac6fe0dc8b19e8e94eac606d71838befd">  241</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classm_1_1logging_1_1m_logger.html#ac6fe0dc8b19e8e94eac606d71838befd">mLogger&lt;t_LogPolicy&gt;::print_toChannel</a>(uint64_t a_channel, t_Args... a_args)</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>{</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    <span class="keywordflow">if</span> (a_channel &amp; m_filter)</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    {</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        print&lt;t_Severity&gt;(a_args...);</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    }</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>}</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
 <div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_LogPolicy&gt;</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="keyword">template</span> &lt;<a class="code hl_enumeration" href="namespacem_1_1logging.html#ad98e602820072dd69a260765a95bd387">mSeverityType</a> t_Severity, <span class="keyword">typename</span>... t_Args&gt;</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#a940569f3a073ca1809417b787c916927">  252</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classm_1_1logging_1_1m_logger.html#a940569f3a073ca1809417b787c916927">mLogger&lt;t_LogPolicy&gt;::print</a>(t_Args... a_args)</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>{</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    m_mutexWrite.lock();</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>    <span class="keywordflow">switch</span> (t_Severity)</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    {</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>        <span class="keywordflow">case</span> mSeverityType::debug: m_logStream &lt;&lt; <span class="stringliteral">&quot;&lt;DEBUG&gt; :&quot;</span>; <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        <span class="keywordflow">case</span> mSeverityType::warning: m_logStream &lt;&lt; <span class="stringliteral">&quot;&lt;WARNING&gt; :&quot;</span>; <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>        <span class="keywordflow">case</span> mSeverityType::error: m_logStream &lt;&lt; <span class="stringliteral">&quot;&lt;ERROR&gt; :&quot;</span>; <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>    };</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    print_impl(a_args...);</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    m_mutexWrite.unlock();</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>}</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span> </div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span><span class="comment">//</span></div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_LogPolicy&gt;</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span><span class="keyword">template</span> &lt;<a class="code hl_enumeration" href="namespacem_1_1logging.html#ad98e602820072dd69a260765a95bd387">mSeverityType</a> t_Severity, <span class="keyword">typename</span>... t_Args&gt;</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#a940569f3a073ca1809417b787c916927">  254</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classm_1_1logging_1_1m_logger.html#a940569f3a073ca1809417b787c916927">mLogger&lt;t_LogPolicy&gt;::print</a>(t_Args... a_args)</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>{</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    m_mutexWrite.lock();</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    <span class="keywordflow">switch</span> (t_Severity)</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    {</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>        <span class="keywordflow">case</span> mSeverityType::debug: m_logStream &lt;&lt; <span class="stringliteral">&quot;&lt;DEBUG&gt; :&quot;</span>; <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>        <span class="keywordflow">case</span> mSeverityType::warning: m_logStream &lt;&lt; <span class="stringliteral">&quot;&lt;WARNING&gt; :&quot;</span>; <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>        <span class="keywordflow">case</span> mSeverityType::error: m_logStream &lt;&lt; <span class="stringliteral">&quot;&lt;ERROR&gt; :&quot;</span>; <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    };</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    print_impl(a_args...);</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>    m_mutexWrite.unlock();</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>}</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span> </div>
 <div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_LogPolicy&gt;</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#a29c8fb84e89a835ee13835ba6564435e">  269</a></span>std::string <a class="code hl_function" href="classm_1_1logging_1_1m_logger.html#a29c8fb84e89a835ee13835ba6564435e">mLogger&lt;t_LogPolicy&gt;::get_time</a>()</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>{</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>    time_t raw_time;</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>    time(&amp;raw_time);</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span> </div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    <span class="keyword">struct </span>tm* timeInfo;</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span><span class="preprocessor">#ifdef M_WIN32</span></div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>    timeInfo = localtime(&amp;raw_time);</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_LogPolicy&gt;</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#a29c8fb84e89a835ee13835ba6564435e">  271</a></span>std::string <a class="code hl_function" href="classm_1_1logging_1_1m_logger.html#a29c8fb84e89a835ee13835ba6564435e">mLogger&lt;t_LogPolicy&gt;::get_time</a>()</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>{</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>    time_t raw_time;</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    time(&amp;raw_time);</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span> </div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>    <span class="keyword">struct </span>tm* timeInfo;</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span><span class="preprocessor">#ifdef M_WIN32</span></div>
 <div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>    timeInfo = localtime(&amp;raw_time);</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    mChar buffer[80];</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    strftime(buffer, 80, <span class="stringliteral">&quot;%d/%m/%y - %H/%M/%S&quot;</span>, timeInfo);</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    std::string time_str(buffer);</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    <span class="keywordflow">return</span> time_str.substr(0, time_str.size() - 1);</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>}</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> </div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    timeInfo = localtime(&amp;raw_time);</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    mChar buffer[80];</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    strftime(buffer, 80, <span class="stringliteral">&quot;%d/%m/%y - %H/%M/%S&quot;</span>, timeInfo);</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span> </div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    std::string time_str(buffer);</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    <span class="keywordflow">return</span> time_str.substr(0, time_str.size() - 1);</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>}</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span> </div>
 <div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_LogPolicy&gt;</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#a50e120099e0ee4066b31fa29512f06c1">  291</a></span>std::string <a class="code hl_function" href="classm_1_1logging_1_1m_logger.html#a50e120099e0ee4066b31fa29512f06c1">mLogger&lt;t_LogPolicy&gt;::get_loglineHeader</a>()</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>{</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>    std::stringstream header;</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>    header.str(<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>    header.fill(<span class="charliteral">&#39;0&#39;</span>);</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>    header.width(7);</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>    header &lt;&lt; m_lineNumber++ &lt;&lt; <span class="stringliteral">&quot; &lt; &quot;</span> &lt;&lt; get_time() &lt;&lt; <span class="stringliteral">&quot; - &quot;</span>;</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>    header.fill(<span class="charliteral">&#39;0&#39;</span>);</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>    header.width(7);</div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>    header &lt;&lt; clock() &lt;&lt; <span class="stringliteral">&quot; &gt; ~ &quot;</span>;</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    <span class="keywordflow">return</span> header.str();</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>}</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span> </div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_LogPolicy&gt;</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#a50e120099e0ee4066b31fa29512f06c1">  293</a></span>std::string <a class="code hl_function" href="classm_1_1logging_1_1m_logger.html#a50e120099e0ee4066b31fa29512f06c1">mLogger&lt;t_LogPolicy&gt;::get_loglineHeader</a>()</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>{</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>    std::stringstream header;</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>    header.str(<span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>    header.fill(<span class="charliteral">&#39;0&#39;</span>);</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>    header.width(7);</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>    header &lt;&lt; m_lineNumber++ &lt;&lt; <span class="stringliteral">&quot; &lt; &quot;</span> &lt;&lt; get_time() &lt;&lt; <span class="stringliteral">&quot; - &quot;</span>;</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>    header.fill(<span class="charliteral">&#39;0&#39;</span>);</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    header.width(7);</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>    header &lt;&lt; clock() &lt;&lt; <span class="stringliteral">&quot; &gt; ~ &quot;</span>;</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>    <span class="keywordflow">return</span> header.str();</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>}</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span> </div>
 <div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_LogPolicy&gt;</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#aff49d3cca0255f46624c4011715db24b">  308</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classm_1_1logging_1_1m_logger.html#aff49d3cca0255f46624c4011715db24b">mLogger&lt;t_LogPolicy&gt;::print_impl</a>()</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>{</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>    m_policy-&gt;write(get_loglineHeader() + m_logStream.str());</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>    m_logStream.str(<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>}</div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span> </div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_LogPolicy&gt;</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#aff49d3cca0255f46624c4011715db24b">  310</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classm_1_1logging_1_1m_logger.html#aff49d3cca0255f46624c4011715db24b">mLogger&lt;t_LogPolicy&gt;::print_impl</a>()</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>{</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>    m_policy-&gt;write(get_loglineHeader() + m_logStream.str());</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>    m_logStream.str(<span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>}</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span> </div>
 <div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_LogPolicy&gt;</div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_First, <span class="keyword">typename</span>... t_Rest&gt;</div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#a328181cfff3445e97cd2376358ff79ca">  319</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classm_1_1logging_1_1m_logger.html#aff49d3cca0255f46624c4011715db24b">mLogger&lt;t_LogPolicy&gt;::print_impl</a>(t_First a_parm1, t_Rest... a_parm)</div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>{</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>    m_logStream &lt;&lt; a_parm1;</div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>    print_impl(a_parm...);</div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>}</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span> </div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>}  <span class="comment">// namespace m::logging</span></div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span><span class="comment"></span> </div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_LogPolicy&gt;</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> t_First, <span class="keyword">typename</span>... t_Rest&gt;</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno"><a class="line" href="classm_1_1logging_1_1m_logger.html#a328181cfff3445e97cd2376358ff79ca">  321</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classm_1_1logging_1_1m_logger.html#aff49d3cca0255f46624c4011715db24b">mLogger&lt;t_LogPolicy&gt;::print_impl</a>(t_First a_parm1, t_Rest... a_parm)</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>{</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>    m_logStream &lt;&lt; a_parm1;</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>    print_impl(a_parm...);</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>}</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span> </div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>}  <span class="comment">// namespace m::logging</span></div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span><span class="comment"></span> </div>
 <div class="ttc" id="aclassm_1_1logging_1_1m_logger_html"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html">m::logging::mLogger</a></div><div class="ttdoc">Thread safe logger class used to write logs.</div><div class="ttdef"><b>Definition:</b> Log.hpp:61</div></div>
-<div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_a290891ccb1be92d2912fdbdfe3b04e5a"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#a290891ccb1be92d2912fdbdfe3b04e5a">m::logging::mLogger::~mLogger</a></div><div class="ttdeci">~mLogger()</div><div class="ttdoc">Destroy a logger.</div><div class="ttdef"><b>Definition:</b> Log.hpp:187</div></div>
-<div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_a29c8fb84e89a835ee13835ba6564435e"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#a29c8fb84e89a835ee13835ba6564435e">m::logging::mLogger::get_time</a></div><div class="ttdeci">std::string get_time()</div><div class="ttdoc">Get the time of the day into a string format.</div><div class="ttdef"><b>Definition:</b> Log.hpp:269</div></div>
-<div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_a50e120099e0ee4066b31fa29512f06c1"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#a50e120099e0ee4066b31fa29512f06c1">m::logging::mLogger::get_loglineHeader</a></div><div class="ttdeci">std::string get_loglineHeader()</div><div class="ttdoc">Construct the header of the log line.</div><div class="ttdef"><b>Definition:</b> Log.hpp:291</div></div>
-<div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_a59961a6eebe198f19bb95a5000f6373c"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#a59961a6eebe198f19bb95a5000f6373c">m::logging::mLogger::get_newChannelID</a></div><div class="ttdeci">mChannelID get_newChannelID()</div><div class="ttdoc">Get a new channel ID for this logger.</div><div class="ttdef"><b>Definition:</b> Log.hpp:200</div></div>
+<div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_a290891ccb1be92d2912fdbdfe3b04e5a"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#a290891ccb1be92d2912fdbdfe3b04e5a">m::logging::mLogger::~mLogger</a></div><div class="ttdeci">~mLogger()</div><div class="ttdoc">Destroy a logger.</div><div class="ttdef"><b>Definition:</b> Log.hpp:186</div></div>
+<div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_a29c8fb84e89a835ee13835ba6564435e"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#a29c8fb84e89a835ee13835ba6564435e">m::logging::mLogger::get_time</a></div><div class="ttdeci">std::string get_time()</div><div class="ttdoc">Get the time of the day into a string format.</div><div class="ttdef"><b>Definition:</b> Log.hpp:271</div></div>
+<div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_a50e120099e0ee4066b31fa29512f06c1"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#a50e120099e0ee4066b31fa29512f06c1">m::logging::mLogger::get_loglineHeader</a></div><div class="ttdeci">std::string get_loglineHeader()</div><div class="ttdoc">Construct the header of the log line.</div><div class="ttdef"><b>Definition:</b> Log.hpp:293</div></div>
+<div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_a59961a6eebe198f19bb95a5000f6373c"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#a59961a6eebe198f19bb95a5000f6373c">m::logging::mLogger::get_newChannelID</a></div><div class="ttdeci">mChannelID get_newChannelID()</div><div class="ttdoc">Get a new channel ID for this logger.</div><div class="ttdef"><b>Definition:</b> Log.hpp:199</div></div>
 <div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_a5a0049f9abdded520fdc9b1218569c6d"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#a5a0049f9abdded520fdc9b1218569c6d">m::logging::mLogger::m_nextChannelID</a></div><div class="ttdeci">mChannelID m_nextChannelID</div><div class="ttdoc">The next channel id to attribute.</div><div class="ttdef"><b>Definition:</b> Log.hpp:162</div></div>
 <div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_a6f8a344c00f2070681691a3d7422a588"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#a6f8a344c00f2070681691a3d7422a588">m::logging::mLogger::m_lineNumber</a></div><div class="ttdeci">unsigned m_lineNumber</div><div class="ttdoc">Number of the current log line.</div><div class="ttdef"><b>Definition:</b> Log.hpp:156</div></div>
 <div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_a730cd6c6dd614b84ff66216e85b7977a"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#a730cd6c6dd614b84ff66216e85b7977a">m::logging::mLogger::mLogger</a></div><div class="ttdeci">mLogger(const std::string &amp;a_name)</div><div class="ttdoc">Construct a logger.</div><div class="ttdef"><b>Definition:</b> Log.hpp:169</div></div>
 <div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_a7cdf26de1340fc616c6bade585ce9ff5"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#a7cdf26de1340fc616c6bade585ce9ff5">m::logging::mLogger::m_policy</a></div><div class="ttdeci">t_LogPolicy * m_policy</div><div class="ttdoc">Pointer to the logpolicy to use.</div><div class="ttdef"><b>Definition:</b> Log.hpp:155</div></div>
 <div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_a7ecbe36815d81c81e57291ce89a3b769"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#a7ecbe36815d81c81e57291ce89a3b769">m::logging::mLogger::m_logStream</a></div><div class="ttdeci">std::stringstream m_logStream</div><div class="ttdoc">The current line to write.</div><div class="ttdef"><b>Definition:</b> Log.hpp:154</div></div>
-<div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_a83c957baadaf5ad52f112fdc36f58d83"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#a83c957baadaf5ad52f112fdc36f58d83">m::logging::mLogger::enable_channels</a></div><div class="ttdeci">void enable_channels(mChannelFilter a_filter)</div><div class="ttdoc">Enable channels of the logger.</div><div class="ttdef"><b>Definition:</b> Log.hpp:229</div></div>
-<div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_a8447286a207b62778ea2fd3c2fd1cb10"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#a8447286a207b62778ea2fd3c2fd1cb10">m::logging::mLogger::disable_channels</a></div><div class="ttdeci">void disable_channels(mChannelFilter a_filter)</div><div class="ttdoc">Disable channels of the logger.</div><div class="ttdef"><b>Definition:</b> Log.hpp:220</div></div>
-<div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_a940569f3a073ca1809417b787c916927"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#a940569f3a073ca1809417b787c916927">m::logging::mLogger::print</a></div><div class="ttdeci">void print(t_Args... a_args)</div><div class="ttdoc">Print things in the logs.</div><div class="ttdef"><b>Definition:</b> Log.hpp:252</div></div>
-<div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_ab72e23ec1dee710ae547720bcebe446d"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#ab72e23ec1dee710ae547720bcebe446d">m::logging::mLogger::set_filter</a></div><div class="ttdeci">void set_filter(mChannelFilter a_filter)</div><div class="ttdoc">Set filters on the logger.</div><div class="ttdef"><b>Definition:</b> Log.hpp:211</div></div>
-<div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_ac6fe0dc8b19e8e94eac606d71838befd"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#ac6fe0dc8b19e8e94eac606d71838befd">m::logging::mLogger::print_toChannel</a></div><div class="ttdeci">void print_toChannel(uint64_t a_channel, t_Args... a_args)</div><div class="ttdoc">Print things in the logs using a specified channel.</div><div class="ttdef"><b>Definition:</b> Log.hpp:239</div></div>
+<div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_a83c957baadaf5ad52f112fdc36f58d83"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#a83c957baadaf5ad52f112fdc36f58d83">m::logging::mLogger::enable_channels</a></div><div class="ttdeci">void enable_channels(mChannelFilter a_filter)</div><div class="ttdoc">Enable channels of the logger.</div><div class="ttdef"><b>Definition:</b> Log.hpp:231</div></div>
+<div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_a8447286a207b62778ea2fd3c2fd1cb10"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#a8447286a207b62778ea2fd3c2fd1cb10">m::logging::mLogger::disable_channels</a></div><div class="ttdeci">void disable_channels(mChannelFilter a_filter)</div><div class="ttdoc">Disable channels of the logger.</div><div class="ttdef"><b>Definition:</b> Log.hpp:222</div></div>
+<div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_a940569f3a073ca1809417b787c916927"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#a940569f3a073ca1809417b787c916927">m::logging::mLogger::print</a></div><div class="ttdeci">void print(t_Args... a_args)</div><div class="ttdoc">Print things in the logs.</div><div class="ttdef"><b>Definition:</b> Log.hpp:254</div></div>
+<div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_ab72e23ec1dee710ae547720bcebe446d"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#ab72e23ec1dee710ae547720bcebe446d">m::logging::mLogger::set_filter</a></div><div class="ttdeci">void set_filter(mChannelFilter a_filter)</div><div class="ttdoc">Set filters on the logger.</div><div class="ttdef"><b>Definition:</b> Log.hpp:213</div></div>
+<div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_ac6fe0dc8b19e8e94eac606d71838befd"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#ac6fe0dc8b19e8e94eac606d71838befd">m::logging::mLogger::print_toChannel</a></div><div class="ttdeci">void print_toChannel(uint64_t a_channel, t_Args... a_args)</div><div class="ttdoc">Print things in the logs using a specified channel.</div><div class="ttdef"><b>Definition:</b> Log.hpp:241</div></div>
 <div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_ac8d7f6e8fdf27307de2e7e753be530d7"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#ac8d7f6e8fdf27307de2e7e753be530d7">m::logging::mLogger::m_mutexWrite</a></div><div class="ttdeci">std::mutex m_mutexWrite</div><div class="ttdoc">Mutex preventing multiple writes to the output file.</div><div class="ttdef"><b>Definition:</b> Log.hpp:153</div></div>
 <div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_acdddf0d18b89b8040850cf0ae3fbc2a3"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#acdddf0d18b89b8040850cf0ae3fbc2a3">m::logging::mLogger::m_filter</a></div><div class="ttdeci">mChannelFilter m_filter</div><div class="ttdoc">The current filter used to filter out specific channels.</div><div class="ttdef"><b>Definition:</b> Log.hpp:161</div></div>
-<div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_aff49d3cca0255f46624c4011715db24b"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#aff49d3cca0255f46624c4011715db24b">m::logging::mLogger::print_impl</a></div><div class="ttdeci">void print_impl()</div><div class="ttdoc">End of the variadic function.</div><div class="ttdef"><b>Definition:</b> Log.hpp:308</div></div>
+<div class="ttc" id="aclassm_1_1logging_1_1m_logger_html_aff49d3cca0255f46624c4011715db24b"><div class="ttname"><a href="classm_1_1logging_1_1m_logger.html#aff49d3cca0255f46624c4011715db24b">m::logging::mLogger::print_impl</a></div><div class="ttdeci">void print_impl()</div><div class="ttdoc">End of the variadic function.</div><div class="ttdef"><b>Definition:</b> Log.hpp:310</div></div>
 <div class="ttc" id="anamespacem_1_1logging_html"><div class="ttname"><a href="namespacem_1_1logging.html">m::logging</a></div><div class="ttdoc">Namespace grouping all logging tools.</div><div class="ttdef"><b>Definition:</b> Log.cpp:4</div></div>
 <div class="ttc" id="anamespacem_1_1logging_html_a0fa5af708b452e8c58088597cdea8392"><div class="ttname"><a href="namespacem_1_1logging.html#a0fa5af708b452e8c58088597cdea8392">m::logging::mChannelFilter</a></div><div class="ttdeci">mU64 mChannelFilter</div><div class="ttdoc">Channel filters are an aggregation of channel ids.</div><div class="ttdef"><b>Definition:</b> Log.hpp:32</div></div>
 <div class="ttc" id="anamespacem_1_1logging_html_a201855eccf18d6c2e13758836e1bc31e"><div class="ttname"><a href="namespacem_1_1logging.html#a201855eccf18d6c2e13758836e1bc31e">m::logging::g_noChannelsFilter</a></div><div class="ttdeci">constexpr mChannelFilter g_noChannelsFilter</div><div class="ttdoc">Filter that disallows all channels.</div><div class="ttdef"><b>Definition:</b> Log.hpp:42</div></div>

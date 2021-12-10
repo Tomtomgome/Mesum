@@ -4,5 +4,6 @@ var searchData=
   ['left_1',['left',['../namespacem_1_1input.html#ab7450ac4b61b5654bc908d4aa4e03ffea811882fecd5c7618d7099ebbd39ea254',1,'m::input']]],
   ['lerp_2',['lerp',['../namespacem_1_1math.html#a666b1ae25814d4956ff8d5266fd4e601',1,'m::math']]],
   ['link_5finputmanager_3',['link_inputManager',['../classm_1_1win32_1_1_i_window_impl.html#ade9b1f16163c029edbe2787cd246731c',1,'m::win32::IWindowImpl::link_inputManager()'],['../classm_1_1windows_1_1m_i_window.html#a444a93b9ed041929fa4cee78904be570',1,'m::windows::mIWindow::link_inputManager()']]],
-  ['link_5frenderer_4',['link_renderer',['../classm_1_1win32_1_1_i_window_impl.html#a933f881509d3cc21907f9199491d85d4',1,'m::win32::IWindowImpl::link_renderer()'],['../classm_1_1windows_1_1m_i_window.html#ae3a123edbfa96261e601d9dddb77a587',1,'m::windows::mIWindow::link_renderer()']]]
+  ['link_5frenderer_4',['link_renderer',['../classm_1_1win32_1_1_i_window_impl.html#a933f881509d3cc21907f9199491d85d4',1,'m::win32::IWindowImpl::link_renderer()'],['../classm_1_1windows_1_1m_i_window.html#ae3a123edbfa96261e601d9dddb77a587',1,'m::windows::mIWindow::link_renderer()']]],
+  ['load_5fimage_5',['load_image',['../group___core.html#ga757ca8491b5337650385dc5453332407',1,'m::resource']]]
 ];

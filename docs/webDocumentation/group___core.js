@@ -47,6 +47,14 @@ var group___core =
       [ "detach_fromSignal", "classm_1_1m_signal.html#a9f2353d6e412ca07f8cd555d607b9dba", null ],
       [ "m_callbacks", "classm_1_1m_signal.html#a7d0937df96ca9773d0086d423a0f0e33", null ]
     ] ],
+    [ "m::resource::mRequestImage", "structm_1_1resource_1_1m_request_image.html", [
+      [ "path", "group___core.html#ga999843d5346e8e26c48f8ee3d41a423a", null ]
+    ] ],
+    [ "m::resource::mImage", "structm_1_1resource_1_1m_image.html", [
+      [ "data", "group___core.html#ga002ad0b6468e36a0292f869a845c3c49", null ],
+      [ "height", "group___core.html#gab81a19fd597b9546705bb9ffefad10dc", null ],
+      [ "width", "group___core.html#ga6fc74eceb5f8cfc9d13ce112291811de", null ]
+    ] ],
     [ "m::input::mIInputManager", "classm_1_1input_1_1m_i_input_manager.html", [
       [ "process_keyEvent", "classm_1_1input_1_1m_i_input_manager.html#a88bb9969485bf189f3b227d2341308fa", null ],
       [ "process_mouseEvent", "classm_1_1input_1_1m_i_input_manager.html#a44e14408b79c8f86021917be8fc93f58", null ],
@@ -56,14 +64,16 @@ var group___core =
     [ "m::input::mMouseAction", "structm_1_1input_1_1m_mouse_action.html", [
       [ "mMouseAction", "structm_1_1input_1_1m_mouse_action.html#a28d097d5f3db0fd78e8948d4c95aac0d", null ],
       [ "mMouseAction", "structm_1_1input_1_1m_mouse_action.html#a8ffb6cc294108ca0db6039732a9d5a5e", null ],
+      [ "mMouseAction", "structm_1_1input_1_1m_mouse_action.html#a9c6ee0bfd836f9b25d496d49a4ddea53", null ],
       [ "operator<", "structm_1_1input_1_1m_mouse_action.html#a333397a6df788eb42faab94d303c91f2", null ],
-      [ "action", "structm_1_1input_1_1m_mouse_action.html#a8f3319c686d82087eb860e70da3a3b8b", null ],
-      [ "button", "structm_1_1input_1_1m_mouse_action.html#acf5b91ac9a45938c25dfbe0383109ade", null ],
-      [ "keyMod", "structm_1_1input_1_1m_mouse_action.html#a52e3da955ec26aafc7158b17cf2d4dfe", null ]
+      [ "m_action", "structm_1_1input_1_1m_mouse_action.html#aa396d21d733b5f382ddc4507758d1cd5", null ],
+      [ "m_button", "structm_1_1input_1_1m_mouse_action.html#a358f06b81f42dd9dacb5bb1e4e66b9fd", null ],
+      [ "m_keyMod", "structm_1_1input_1_1m_mouse_action.html#a42c088cbdc2e06891a082f25cef40f7a", null ]
     ] ],
     [ "m::input::mKeyAction", "structm_1_1input_1_1m_key_action.html", [
       [ "mKeyAction", "structm_1_1input_1_1m_key_action.html#a4c7fc6d6c86cfbdbec092c80519f86bd", null ],
       [ "mKeyAction", "structm_1_1input_1_1m_key_action.html#a328704e1c3becefd02823ce622bdd43c", null ],
+      [ "mKeyAction", "structm_1_1input_1_1m_key_action.html#ad11a1666949f59fcc573216fa2154a8f", null ],
       [ "operator<", "structm_1_1input_1_1m_key_action.html#a50c44198ad57c65c9e5ac071596e21bc", null ],
       [ "m_action", "structm_1_1input_1_1m_key_action.html#a57e778fbac68e8d381397aba93a14112", null ],
       [ "m_key", "structm_1_1input_1_1m_key_action.html#a3cd8fc44ec33abfa7a41f6dc3eb2d251", null ],
@@ -93,6 +103,10 @@ var group___core =
       [ "mouseSignals", "structm_1_1input_1_1m_callback_input_manager.html#aa0033254bc3fffb397ec5033b67dff2d", null ],
       [ "moveSignal", "structm_1_1input_1_1m_callback_input_manager.html#a930e6756f4885c61db59f6cb78481176", null ],
       [ "scrollSignal", "structm_1_1input_1_1m_callback_input_manager.html#a6156f28db77f9b8ae184670cd2d9a5e7", null ]
+    ] ],
+    [ "m::mOutput< t_Output >", "structm_1_1m_output.html", [
+      [ "output", "structm_1_1m_output.html#a008ee40a6c4d83474241a4eedef62b3d", null ],
+      [ "res", "structm_1_1m_output.html#ab9100046701aae962e04aace649cb601", null ]
     ] ],
     [ "m::mCmdLine", "structm_1_1m_cmd_line.html", [
       [ "get_arg", "structm_1_1m_cmd_line.html#a03cf17a95051b7b6f7786ae3469ed4b3", null ],
@@ -151,6 +165,22 @@ var group___core =
       [ "m_state", "classm_1_1math_1_1m_xo_random_number_generator.html#a6ba9fdbfc115b7e57914d79cfcd77685", null ]
     ] ],
     [ "m::math::mXoRandomNumberGenerator::mXoshiro256ssState", "structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state.html", null ],
+    [ "m::profile::mIProfiler", "classm_1_1profile_1_1m_i_profiler.html", [
+      [ "add_timing", "group___core.html#gac6293026c2b1a3029978393784f14e45", null ]
+    ] ],
+    [ "m::profile::mProfilerMultiSampling< t_SampleCount >", "classm_1_1profile_1_1m_profiler_multi_sampling.html", [
+      [ "add_timing", "group___core.html#ga9cb2380c73ae20a4b1a7cd6a854d66b8", null ]
+    ] ],
+    [ "m::profile::mRAIITiming", "classm_1_1profile_1_1m_r_a_i_i_timing.html", [
+      [ "mRAIITiming", "group___core.html#ga848799fdd49850bb562058bbe7ca8897", null ],
+      [ "~mRAIITiming", "group___core.html#ga7ee6d3967363eec5ab00aba61b521ce6", null ],
+      [ "m_pParent", "group___core.html#ga1e6f6172605e1987636758efada6ee92", null ],
+      [ "m_start", "group___core.html#ga16881a589345bcb0ce7de57fc989e811", null ]
+    ] ],
+    [ "m::math::mSpherical", "classm_1_1math_1_1m_spherical.html", null ],
+    [ "m::input::mStateInputManager", "classm_1_1input_1_1m_state_input_manager.html", [
+      [ "process_keyEvent", "classm_1_1input_1_1m_state_input_manager.html#ad0978592c3f769288e5ed6fef1350dc5", null ]
+    ] ],
     [ "m::math::mVecData< t_T, t_Size >", "structm_1_1math_1_1m_vec_data.html", null ],
     [ "m::math::mVecData< t_T, 2 >", "structm_1_1math_1_1m_vec_data_3_01t___t_00_012_01_4.html", null ],
     [ "m::math::mVecData< t_T, 3 >", "structm_1_1math_1_1m_vec_data_3_01t___t_00_013_01_4.html", null ],
@@ -161,20 +191,31 @@ var group___core =
     [ "mEnable_logChannels", "group___core.html#ga1ffa20cdc73fef0927476b0142dbfbeb", null ],
     [ "mExpect", "group___core.html#ga85d6f0f15b7e1ab2f6a30c07054c8904", null ],
     [ "mInterrupt", "group___core.html#ga5123b201bc1b15852430f15fd0a495d6", null ],
-    [ "mLog", "group___core.html#gada5e219866231b861b496e86d47e1e78", null ],
     [ "mLog_error", "group___core.html#ga0bcecb82138d5f42db4089c93554f5a2", null ],
     [ "mLog_errorTo", "group___core.html#gafd57e4a697cbf7c30e222a868dcdf9e4", null ],
     [ "mLog_getId", "group___core.html#ga9aa869d857bafeb44058596e5ba4b1e6", null ],
-    [ "mLog_to", "group___core.html#gab009950df9db21d808d3c36818dde4bf", null ],
-    [ "mLog_verbose", "group___core.html#ga60b018f1e6e00b588d2bd8f0cd42b0a7", null ],
+    [ "mLog_info", "group___core.html#ga021da14d65641a84a9c5e76479b68890", null ],
+    [ "mLog_infoTo", "group___core.html#ga085be68cff0dec560a6f390949fcf61b", null ],
     [ "mLog_verboseError", "group___core.html#ga1848e387de750cedfad1837fc97f9937", null ],
     [ "mLog_verboseErrorTo", "group___core.html#ga063b3285c370c05ba0c8922d725a88d8", null ],
-    [ "mLog_verboseTo", "group___core.html#ga8897d907fd045fa4ed41484db869be19", null ],
+    [ "mLog_verboseInfo", "group___core.html#ga2aa322925604d56df06fcfdd2160c3d7", null ],
+    [ "mLog_verboseInfoTo", "group___core.html#gaa0ed51faa457373a5901502868059cc6", null ],
     [ "mLog_verboseWarning", "group___core.html#ga65bb68d733e34685ff0488ad2d8659cd", null ],
     [ "mLog_VerboseWarningTo", "group___core.html#gafc6799da5ed7131d606efa488f0b06ed", null ],
     [ "mLog_warning", "group___core.html#gadb3d189e9cbe46dd3620a641763cdf6c", null ],
     [ "mLog_warningTo", "group___core.html#ga8fdc6b16f7a09c13d9ee1ba499d181ff", null ],
     [ "mNotImplemented", "group___core.html#ga546b07714c544247ba947aab1bdec5b8", null ],
     [ "mSet_logFilter", "group___core.html#ga8ed93f4b384ddb9ce37e98d7092e04d4", null ],
-    [ "mSoftAssert", "group___core.html#gaed17c7e2d6fa608a86bd77dbf44de294", null ]
+    [ "mSoftAssert", "group___core.html#gaed17c7e2d6fa608a86bd77dbf44de294", null ],
+    [ "m::profile::mProfilerMultiSampling::add_timing", "group___core.html#ga9cb2380c73ae20a4b1a7cd6a854d66b8", null ],
+    [ "m::profile::mIProfiler::add_timing", "group___core.html#gac6293026c2b1a3029978393784f14e45", null ],
+    [ "m::resource::load_image", "group___core.html#ga757ca8491b5337650385dc5453332407", null ],
+    [ "m::profile::mRAIITiming::mRAIITiming", "group___core.html#ga848799fdd49850bb562058bbe7ca8897", null ],
+    [ "m::profile::mRAIITiming::~mRAIITiming", "group___core.html#ga7ee6d3967363eec5ab00aba61b521ce6", null ],
+    [ "m::resource::mImage::data", "group___core.html#ga002ad0b6468e36a0292f869a845c3c49", null ],
+    [ "m::resource::mImage::height", "group___core.html#gab81a19fd597b9546705bb9ffefad10dc", null ],
+    [ "m::profile::mRAIITiming::m_pParent", "group___core.html#ga1e6f6172605e1987636758efada6ee92", null ],
+    [ "m::profile::mRAIITiming::m_start", "group___core.html#ga16881a589345bcb0ce7de57fc989e811", null ],
+    [ "m::resource::mRequestImage::path", "group___core.html#ga999843d5346e8e26c48f8ee3d41a423a", null ],
+    [ "m::resource::mImage::width", "group___core.html#ga6fc74eceb5f8cfc9d13ce112291811de", null ]
 ];

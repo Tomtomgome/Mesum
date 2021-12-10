@@ -12,6 +12,7 @@ var hierarchy =
     [ "ExampleAppConsole", "struct_example_app_console.html", null ],
     [ "ExampleAppDocuments", "struct_example_app_documents.html", null ],
     [ "ExampleAppLog", "struct_example_app_log.html", null ],
+    [ "m::render::IResource::Handle", "structm_1_1render_1_1_i_resource_1_1_handle.html", null ],
     [ "m::render::ISurface::Handle", "structm_1_1render_1_1_i_surface_1_1_handle.html", null ],
     [ "ImBitArray< BITCOUNT >", "struct_im_bit_array.html", null ],
     [ "ImBitVector", "struct_im_bit_vector.html", null ],
@@ -116,7 +117,7 @@ var hierarchy =
       [ "m::dx12::DX12Renderer", "classm_1_1dx12_1_1_d_x12_renderer.html", null ],
       [ "m::vulkan::VulkanRenderer", "classm_1_1vulkan_1_1_vulkan_renderer.html", null ]
     ] ],
-    [ "render::IResource", null, [
+    [ "m::render::IResource", "structm_1_1render_1_1_i_resource.html", [
       [ "m::dx12::DX12Texture", "structm_1_1dx12_1_1_d_x12_texture.html", null ]
     ] ],
     [ "m::render::ISurface", "classm_1_1render_1_1_i_surface.html", [
@@ -136,13 +137,18 @@ var hierarchy =
       ] ]
     ] ],
     [ "m::input::mIInputManager", "classm_1_1input_1_1m_i_input_manager.html", [
-      [ "m::input::mCallbackInputManager", "structm_1_1input_1_1m_callback_input_manager.html", null ]
+      [ "m::input::mCallbackInputManager", "structm_1_1input_1_1m_callback_input_manager.html", null ],
+      [ "m::input::mStateInputManager", "classm_1_1input_1_1m_state_input_manager.html", null ]
     ] ],
     [ "m::logging::mILogPolicy", "classm_1_1logging_1_1m_i_log_policy.html", [
       [ "m::logging::mFileLogPolicy", "classm_1_1logging_1_1m_file_log_policy.html", null ],
       [ "m::logging::mStdcoutLogPolicy", "classm_1_1logging_1_1m_stdcout_log_policy.html", null ]
     ] ],
+    [ "m::resource::mImage", "structm_1_1resource_1_1m_image.html", null ],
     [ "m::windows::mIWindow::mInitData", "structm_1_1windows_1_1m_i_window_1_1m_init_data.html", null ],
+    [ "m::profile::mIProfiler", "classm_1_1profile_1_1m_i_profiler.html", [
+      [ "m::profile::mProfilerMultiSampling< t_SampleCount >", "classm_1_1profile_1_1m_profiler_multi_sampling.html", null ]
+    ] ],
     [ "m::windows::mIWindow", "classm_1_1windows_1_1m_i_window.html", [
       [ "m::win32::IWindowImpl", "classm_1_1win32_1_1_i_window_impl.html", null ],
       [ "m::xcb_unix::IWindowImpl", "classm_1_1xcb__unix_1_1_i_window_impl.html", null ]
@@ -150,9 +156,14 @@ var hierarchy =
     [ "m::input::mKeyAction", "structm_1_1input_1_1m_key_action.html", null ],
     [ "m::logging::mLogger< t_LogPolicy >", "classm_1_1logging_1_1m_logger.html", null ],
     [ "m::input::mMouseAction", "structm_1_1input_1_1m_mouse_action.html", null ],
+    [ "m::mOutput< t_Output >", "structm_1_1m_output.html", null ],
+    [ "m::profile::mRAIITiming", "classm_1_1profile_1_1m_r_a_i_i_timing.html", null ],
+    [ "m::render::TaskData2dRender::mRange", "structm_1_1render_1_1_task_data2d_render_1_1m_range.html", null ],
+    [ "m::resource::mRequestImage", "structm_1_1resource_1_1m_request_image.html", null ],
     [ "m::mSignal< t_Args >", "classm_1_1m_signal.html", null ],
     [ "m::mSignal< const math::mIVec2 & >", "classm_1_1m_signal.html", null ],
     [ "m::mSignal< mDouble >", "classm_1_1m_signal.html", null ],
+    [ "m::math::mSpherical", "classm_1_1math_1_1m_spherical.html", null ],
     [ "m::math::mVecData< t_T, t_Size >", "structm_1_1math_1_1m_vec_data.html", [
       [ "m::math::mVec< t_T, t_Size >", "structm_1_1math_1_1m_vec.html", null ]
     ] ],

@@ -4,6 +4,16 @@ var searchData=
   ['mchannelfilter_1',['mChannelFilter',['../namespacem_1_1logging.html#a0fa5af708b452e8c58088597cdea8392',1,'m::logging']]],
   ['mchannelid_2',['mChannelID',['../namespacem_1_1logging.html#af807dfba0ed733f24957c0f3d016a15f',1,'m::logging']]],
   ['mfunctiontype_3',['mFunctionType',['../classm_1_1m_callback.html#ade0c31357b0e4d1f33ba842cb2e41b04',1,'m::mCallback']]],
-  ['mondestroycallback_4',['mOnDestroyCallback',['../classm_1_1windows_1_1m_i_window.html#aac000ba3942a81d421cc885ef647b06b',1,'m::windows::mIWindow']]],
-  ['monresizecallback_5',['mOnResizeCallback',['../classm_1_1windows_1_1m_i_window.html#a66c8a73f232356e9964747be216052f0',1,'m::windows::mIWindow']]]
+  ['mkeyactioncallback_4',['mKeyActionCallback',['../namespacem_1_1input.html#a268a65489ab242dff34c08fd7958aae3',1,'m::input']]],
+  ['mkeyactionsignal_5',['mKeyActionSignal',['../namespacem_1_1input.html#a4c52da42a15d9208cf703efc78a44d5a',1,'m::input']]],
+  ['mmouseactioncallback_6',['mMouseActionCallback',['../namespacem_1_1input.html#a890f6123a3400bf4f7595272cbadfed0',1,'m::input']]],
+  ['mmouseactionsignal_7',['mMouseActionSignal',['../namespacem_1_1input.html#a51f1889ddec8a44857aafc2816ba75fe',1,'m::input']]],
+  ['mmousemovecallback_8',['mMouseMoveCallback',['../namespacem_1_1input.html#ac362ca24d233bd7a2dc12a97ae0ad2d4',1,'m::input']]],
+  ['mmousemovesignal_9',['mMouseMoveSignal',['../namespacem_1_1input.html#ab5cc4c050df4cc2607113aacda9d71ce',1,'m::input']]],
+  ['mmousestatecallback_10',['mMouseStateCallback',['../namespacem_1_1input.html#aa32417e7281c1e02d648c4908842c6e2',1,'m::input']]],
+  ['mmousestatesignal_11',['mMouseStateSignal',['../namespacem_1_1input.html#a103bc35e98cac507dbabe70eab531ebf',1,'m::input']]],
+  ['mondestroycallback_12',['mOnDestroyCallback',['../classm_1_1windows_1_1m_i_window.html#aac000ba3942a81d421cc885ef647b06b',1,'m::windows::mIWindow']]],
+  ['monresizecallback_13',['mOnResizeCallback',['../classm_1_1windows_1_1m_i_window.html#a66c8a73f232356e9964747be216052f0',1,'m::windows::mIWindow']]],
+  ['mscrollcallback_14',['mScrollCallback',['../namespacem_1_1input.html#a73c6eefdbb2632f34df91db81e5e0d8d',1,'m::input']]],
+  ['mscrollsignal_15',['mScrollSignal',['../namespacem_1_1input.html#ab43bb855656572278a2cc5e84015a1fe',1,'m::input']]]
 ];

@@ -1,0 +1,41 @@
+\hypertarget{classm_1_1profile_1_1m_profiler_multi_sampling}{}\doxysection{m\+::profile\+::m\+Profiler\+Multi\+Sampling\texorpdfstring{$<$}{<} t\+\_\+\+Sample\+Count \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classm_1_1profile_1_1m_profiler_multi_sampling}\index{m::profile::mProfilerMultiSampling$<$ t\_SampleCount $>$@{m::profile::mProfilerMultiSampling$<$ t\_SampleCount $>$}}
+
+
+Implementation of a profiler that averages times accross multiple samples.  
+
+
+
+
+{\ttfamily \#include $<$Profile.\+hpp$>$}
+
+Inheritance diagram for m\+::profile\+::m\+Profiler\+Multi\+Sampling\texorpdfstring{$<$}{<} t\+\_\+\+Sample\+Count \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classm_1_1profile_1_1m_profiler_multi_sampling}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{group___core_ga9cb2380c73ae20a4b1a7cd6a854d66b8}{add\+\_\+timing}} (std\+::chrono\+::steady\+\_\+clock\+::duration a\+\_\+timming) override
+\begin{DoxyCompactList}\small\item\em Add a timming data to a profiler. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename t\+\_\+\+Ret\+Type , typename t\+\_\+\+Preiod $>$ }\\t\+\_\+\+Ret\+Type {\bfseries get\+\_\+average} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::array$<$ std\+::chrono\+::steady\+\_\+clock\+::duration, t\+\_\+\+Sample\+Count $>$ {\bfseries m\+\_\+samples} \{\}
+\item 
+m\+UInt {\bfseries m\+\_\+current\+Count} \{0\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$m\+UInt t\+\_\+\+Sample\+Count$>$\newline
+class m\+::profile\+::m\+Profiler\+Multi\+Sampling$<$ t\+\_\+\+Sample\+Count $>$}
+Implementation of a profiler that averages times accross multiple samples. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Core/\+Kernel/Profile.\+hpp\end{DoxyCompactItemize}

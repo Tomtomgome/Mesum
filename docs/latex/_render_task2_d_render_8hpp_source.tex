@@ -6,404 +6,442 @@
 \DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_RenderTask2DRender}}
 \DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
 \DoxyCodeLine{4 }
-\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <MesumGraphics/RenderTask.hpp>}}
-\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <MesumGraphics/Renderer.hpp>}}
-\DoxyCodeLine{7 }
-\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <MesumCore/Kernel/MathTypes.hpp>}}
-\DoxyCodeLine{9 }
-\DoxyCodeLine{10 \textcolor{preprocessor}{\#ifdef M\_DX12\_RENDERER}}
-\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <MesumGraphics/DX12Renderer/DX12Context.hpp>}}
-\DoxyCodeLine{12 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_DX12\_RENDERER}}
-\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifdef M\_VULKAN\_RENDERER}}
-\DoxyCodeLine{14 \textcolor{preprocessor}{\#include <MesumGraphics/VulkanRenderer/VulkanContext.hpp>}}
-\DoxyCodeLine{15 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_VULKAN\_RENDERER}}
-\DoxyCodeLine{16 }
-\DoxyCodeLine{17 \textcolor{keyword}{namespace }m::render}
-\DoxyCodeLine{18 \{}
-\DoxyCodeLine{19 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_basic_vertex}{BasicVertex}}}
-\DoxyCodeLine{20 \{}
-\DoxyCodeLine{21     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{math::mVec3}} position;}
-\DoxyCodeLine{22     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{math::mVec4}} color;}
-\DoxyCodeLine{23 \};}
-\DoxyCodeLine{24 }
-\DoxyCodeLine{25 \textcolor{keyword}{template} <\textcolor{keyword}{typename} tt\_Vertex, \textcolor{keyword}{typename} tt\_Index>}
-\DoxyCodeLine{26 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_buffer_base}{BufferBase}}}
-\DoxyCodeLine{27 \{}
-\DoxyCodeLine{28     mUInt                  vertexBufferSize = 0;}
-\DoxyCodeLine{29     \textcolor{keyword}{static} \textcolor{keyword}{constexpr} mUInt vertexSize       = \textcolor{keyword}{sizeof}(tt\_Vertex);}
-\DoxyCodeLine{30     mUInt                  indexBufferSize  = 0;}
-\DoxyCodeLine{31     \textcolor{keyword}{static} \textcolor{keyword}{constexpr} mUInt indexSize        = \textcolor{keyword}{sizeof}(tt\_Index);}
-\DoxyCodeLine{32 \};}
-\DoxyCodeLine{33 }
-\DoxyCodeLine{34 \textcolor{keyword}{template} <\textcolor{keyword}{typename} tt\_Vertex, \textcolor{keyword}{typename} tt\_Index>}
-\DoxyCodeLine{35 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_dx12_buffer_base}{Dx12BufferBase}} : \textcolor{keyword}{public} \mbox{\hyperlink{structm_1_1render_1_1_buffer_base}{BufferBase}}<tt\_Vertex, tt\_Index>}
-\DoxyCodeLine{36 \{}
-\DoxyCodeLine{37     dx12::ComPtr<ID3D12Resource> vertexBuffer = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{38     dx12::ComPtr<ID3D12Resource> indexBuffer  = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{39 \};}
-\DoxyCodeLine{40 }
-\DoxyCodeLine{41 \textcolor{keyword}{template} <\textcolor{keyword}{typename} tt\_Vertex, \textcolor{keyword}{typename} tt\_Index>}
-\DoxyCodeLine{42 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_vulkan_buffer_base}{VulkanBufferBase}} : \textcolor{keyword}{public} \mbox{\hyperlink{structm_1_1render_1_1_buffer_base}{BufferBase}}<tt\_Vertex, tt\_Index>}
-\DoxyCodeLine{43 \{}
-\DoxyCodeLine{44     VkBuffer       vertexBuffer             = VK\_NULL\_HANDLE;}
-\DoxyCodeLine{45     VkDeviceMemory vertexBufferDeviceMemory = VK\_NULL\_HANDLE;}
-\DoxyCodeLine{46     VkBuffer       indexBuffer              = VK\_NULL\_HANDLE;}
-\DoxyCodeLine{47     VkDeviceMemory indexBufferDeviceMemory  = VK\_NULL\_HANDLE;}
-\DoxyCodeLine{48 \};}
-\DoxyCodeLine{49 }
-\DoxyCodeLine{50 \textcolor{keyword}{template} <\textcolor{keyword}{typename} tt\_Vertex, \textcolor{keyword}{typename} tt\_Index>}
-\DoxyCodeLine{51 \textcolor{keywordtype}{void} init\_buffer(\mbox{\hyperlink{structm_1_1render_1_1_vulkan_buffer_base}{VulkanBufferBase<tt\_Vertex, tt\_Index>}}\& a\_buffer)}
-\DoxyCodeLine{52 \{}
-\DoxyCodeLine{53     std::vector<tt\_Vertex> vertices;}
-\DoxyCodeLine{54     std::vector<tt\_Index>  indices;}
-\DoxyCodeLine{55     upload\_data(a\_buffer, vertices, indices);}
-\DoxyCodeLine{56 \}}
-\DoxyCodeLine{57 }
-\DoxyCodeLine{58 \textcolor{keyword}{template} <\textcolor{keyword}{typename} tt\_Vertex, \textcolor{keyword}{typename} tt\_Index>}
-\DoxyCodeLine{59 \textcolor{keywordtype}{void} destroy\_buffer(VulkanBufferBase<tt\_Vertex, tt\_Index>\& a\_buffer)}
-\DoxyCodeLine{60 \{}
-\DoxyCodeLine{61     VkDevice device = vulkan::VulkanContext::get\_logDevice();}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <MesumCore/Kernel/MathTypes.hpp>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <MesumGraphics/RenderTask.hpp>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <MesumGraphics/Renderer.hpp>}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#ifdef M\_DX12\_RENDERER}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <MesumGraphics/DX12Renderer/DX12Context.hpp>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_DX12\_RENDERER}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifdef M\_VULKAN\_RENDERER}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include <MesumGraphics/VulkanRenderer/VulkanContext.hpp>}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_VULKAN\_RENDERER}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{namespace }m::resource}
+\DoxyCodeLine{17 \{}
+\DoxyCodeLine{18 \textcolor{keyword}{struct }mRequestImage;}
+\DoxyCodeLine{19 \}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }m::render}
+\DoxyCodeLine{22 \{}
+\DoxyCodeLine{23 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_basic_vertex}{BasicVertex}}}
+\DoxyCodeLine{24 \{}
+\DoxyCodeLine{25     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{math::mVec3}} position;}
+\DoxyCodeLine{26     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{math::mVec4}} color;}
+\DoxyCodeLine{27     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{math::mVec2}} uv;}
+\DoxyCodeLine{28 \};}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{keyword}{template} <\textcolor{keyword}{typename} tt\_Vertex, \textcolor{keyword}{typename} tt\_Index>}
+\DoxyCodeLine{31 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_buffer_base}{BufferBase}}}
+\DoxyCodeLine{32 \{}
+\DoxyCodeLine{33     mUInt                  vertexBufferSize = 0;}
+\DoxyCodeLine{34     \textcolor{keyword}{static} \textcolor{keyword}{constexpr} mUInt vertexSize       = \textcolor{keyword}{sizeof}(tt\_Vertex);}
+\DoxyCodeLine{35     mUInt                  indexBufferSize  = 0;}
+\DoxyCodeLine{36     \textcolor{keyword}{static} \textcolor{keyword}{constexpr} mUInt indexSize        = \textcolor{keyword}{sizeof}(tt\_Index);}
+\DoxyCodeLine{37 \};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{keyword}{template} <\textcolor{keyword}{typename} tt\_Vertex, \textcolor{keyword}{typename} tt\_Index>}
+\DoxyCodeLine{40 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_dx12_buffer_base}{Dx12BufferBase}} : \textcolor{keyword}{public} \mbox{\hyperlink{structm_1_1render_1_1_buffer_base}{BufferBase}}<tt\_Vertex, tt\_Index>}
+\DoxyCodeLine{41 \{}
+\DoxyCodeLine{42     dx12::ComPtr<ID3D12Resource> vertexBuffer = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{43     dx12::ComPtr<ID3D12Resource> indexBuffer  = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{44 \};}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{keyword}{template} <\textcolor{keyword}{typename} tt\_Vertex, \textcolor{keyword}{typename} tt\_Index>}
+\DoxyCodeLine{47 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_vulkan_buffer_base}{VulkanBufferBase}} : \textcolor{keyword}{public} \mbox{\hyperlink{structm_1_1render_1_1_buffer_base}{BufferBase}}<tt\_Vertex, tt\_Index>}
+\DoxyCodeLine{48 \{}
+\DoxyCodeLine{49     VkBuffer       vertexBuffer             = VK\_NULL\_HANDLE;}
+\DoxyCodeLine{50     VkDeviceMemory vertexBufferDeviceMemory = VK\_NULL\_HANDLE;}
+\DoxyCodeLine{51     VkBuffer       indexBuffer              = VK\_NULL\_HANDLE;}
+\DoxyCodeLine{52     VkDeviceMemory indexBufferDeviceMemory  = VK\_NULL\_HANDLE;}
+\DoxyCodeLine{53 \};}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 \textcolor{keyword}{template} <\textcolor{keyword}{typename} tt\_Vertex, \textcolor{keyword}{typename} tt\_Index>}
+\DoxyCodeLine{56 \textcolor{keywordtype}{void} init\_buffer(\mbox{\hyperlink{structm_1_1render_1_1_vulkan_buffer_base}{VulkanBufferBase<tt\_Vertex, tt\_Index>}}\& a\_buffer)}
+\DoxyCodeLine{57 \{}
+\DoxyCodeLine{58     std::vector<tt\_Vertex> vertices;}
+\DoxyCodeLine{59     std::vector<tt\_Index>  indices;}
+\DoxyCodeLine{60     upload\_data(a\_buffer, vertices, indices);}
+\DoxyCodeLine{61 \}}
 \DoxyCodeLine{62 }
-\DoxyCodeLine{63     \textcolor{keywordflow}{if} (a\_buffer.vertexBuffer != VK\_NULL\_HANDLE)}
-\DoxyCodeLine{64     \{}
-\DoxyCodeLine{65         vkDestroyBuffer(device, a\_buffer.vertexBuffer, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{66         vkFreeMemory(device, a\_buffer.vertexBufferDeviceMemory, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{67     \}}
-\DoxyCodeLine{68 }
-\DoxyCodeLine{69     \textcolor{keywordflow}{if} (a\_buffer.indexBuffer != VK\_NULL\_HANDLE)}
-\DoxyCodeLine{70     \{}
-\DoxyCodeLine{71         vkDestroyBuffer(device, a\_buffer.indexBuffer, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{72         vkFreeMemory(device, a\_buffer.indexBufferDeviceMemory, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{73     \}}
-\DoxyCodeLine{74 \}}
-\DoxyCodeLine{75 }
-\DoxyCodeLine{76 \textcolor{keyword}{template} <\textcolor{keyword}{typename} tt\_Vertex, \textcolor{keyword}{typename} tt\_Index>}
-\DoxyCodeLine{77 \textcolor{keywordtype}{void} upload\_data(VulkanBufferBase<tt\_Vertex, tt\_Index>\& a\_buffer,}
-\DoxyCodeLine{78                  std::vector<tt\_Vertex> \textcolor{keyword}{const}\&          a\_vertices,}
-\DoxyCodeLine{79                  std::vector<tt\_Index> \textcolor{keyword}{const}\&           a\_indices)}
-\DoxyCodeLine{80 \{}
-\DoxyCodeLine{81     \textcolor{keywordflow}{if} (a\_vertices.size() == 0 || a\_indices.size() == 0)}
-\DoxyCodeLine{82     \{}
-\DoxyCodeLine{83         \textcolor{keywordflow}{return};}
-\DoxyCodeLine{84     \}}
-\DoxyCodeLine{85 }
-\DoxyCodeLine{86     VkDevice device = vulkan::VulkanContext::get\_logDevice();}
-\DoxyCodeLine{87 }
-\DoxyCodeLine{88     \textcolor{keywordflow}{if} (a\_buffer.vertexBufferSize < a\_vertices.size())}
-\DoxyCodeLine{89     \{}
-\DoxyCodeLine{90         \textcolor{keywordflow}{if} (a\_buffer.vertexBuffer != VK\_NULL\_HANDLE)}
-\DoxyCodeLine{91         \{}
-\DoxyCodeLine{92             vkDestroyBuffer(device, a\_buffer.vertexBuffer, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{93             vkFreeMemory(device, a\_buffer.vertexBufferDeviceMemory, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{94         \}}
-\DoxyCodeLine{95         a\_buffer.vertexBufferSize = a\_vertices.size() + 4000;}
-\DoxyCodeLine{96 }
-\DoxyCodeLine{97         VkBufferCreateInfo bufferInfo\{\};}
-\DoxyCodeLine{98         bufferInfo.sType = VK\_STRUCTURE\_TYPE\_BUFFER\_CREATE\_INFO;}
-\DoxyCodeLine{99         bufferInfo.size  = a\_buffer.vertexSize * a\_buffer.vertexBufferSize;}
-\DoxyCodeLine{100         bufferInfo.usage = VK\_BUFFER\_USAGE\_VERTEX\_BUFFER\_BIT;}
-\DoxyCodeLine{101         bufferInfo.sharingMode = VK\_SHARING\_MODE\_EXCLUSIVE;}
-\DoxyCodeLine{102         \textcolor{keywordflow}{if} (vkCreateBuffer(device, \&bufferInfo, \textcolor{keyword}{nullptr},}
-\DoxyCodeLine{103                            \&a\_buffer.vertexBuffer) != VK\_SUCCESS)}
-\DoxyCodeLine{104         \{}
-\DoxyCodeLine{105             \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"{}failed to create vertex buffer!"{}});}
-\DoxyCodeLine{106         \}}
-\DoxyCodeLine{107 }
-\DoxyCodeLine{108         VkMemoryRequirements memRequirements;}
-\DoxyCodeLine{109         vkGetBufferMemoryRequirements(device, a\_buffer.vertexBuffer,}
-\DoxyCodeLine{110                                       \&memRequirements);}
-\DoxyCodeLine{111 }
-\DoxyCodeLine{112         VkMemoryAllocateInfo allocInfo\{\};}
-\DoxyCodeLine{113         allocInfo.sType           = VK\_STRUCTURE\_TYPE\_MEMORY\_ALLOCATE\_INFO;}
-\DoxyCodeLine{114         allocInfo.allocationSize  = memRequirements.size;}
-\DoxyCodeLine{115         allocInfo.memoryTypeIndex = vulkan::VulkanContext::get\_memoryTypeIndex(}
-\DoxyCodeLine{116             memRequirements.memoryTypeBits,}
-\DoxyCodeLine{117             VK\_MEMORY\_PROPERTY\_HOST\_VISIBLE\_BIT |}
-\DoxyCodeLine{118                 VK\_MEMORY\_PROPERTY\_HOST\_COHERENT\_BIT);}
-\DoxyCodeLine{119 }
-\DoxyCodeLine{120         \textcolor{keywordflow}{if} (vkAllocateMemory(device, \&allocInfo, \textcolor{keyword}{nullptr},}
-\DoxyCodeLine{121                              \&a\_buffer.vertexBufferDeviceMemory) != VK\_SUCCESS)}
-\DoxyCodeLine{122         \{}
-\DoxyCodeLine{123             \textcolor{keywordflow}{throw} std::runtime\_error(}
-\DoxyCodeLine{124                 \textcolor{stringliteral}{"{}failed to allocate vertex buffer memory!"{}});}
-\DoxyCodeLine{125         \}}
-\DoxyCodeLine{126 }
-\DoxyCodeLine{127         vkBindBufferMemory(device, a\_buffer.vertexBuffer,}
-\DoxyCodeLine{128                            a\_buffer.vertexBufferDeviceMemory, 0);}
-\DoxyCodeLine{129     \}}
-\DoxyCodeLine{130 }
-\DoxyCodeLine{131     \textcolor{keywordflow}{if} (a\_buffer.indexBufferSize < a\_indices.size())}
-\DoxyCodeLine{132     \{}
-\DoxyCodeLine{133         \textcolor{keywordflow}{if} (a\_buffer.indexBuffer != VK\_NULL\_HANDLE)}
-\DoxyCodeLine{134         \{}
-\DoxyCodeLine{135             vkDestroyBuffer(device, a\_buffer.indexBuffer, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{136             vkFreeMemory(device, a\_buffer.indexBufferDeviceMemory, \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{137         \}}
-\DoxyCodeLine{138         a\_buffer.indexBufferSize = a\_indices.size() + 6000;}
-\DoxyCodeLine{139 }
-\DoxyCodeLine{140         VkBufferCreateInfo bufferInfo\{\};}
-\DoxyCodeLine{141         bufferInfo.sType       = VK\_STRUCTURE\_TYPE\_BUFFER\_CREATE\_INFO;}
-\DoxyCodeLine{142         bufferInfo.size        = a\_buffer.indexSize * a\_buffer.indexBufferSize;}
-\DoxyCodeLine{143         bufferInfo.usage       = VK\_BUFFER\_USAGE\_INDEX\_BUFFER\_BIT;}
-\DoxyCodeLine{144         bufferInfo.sharingMode = VK\_SHARING\_MODE\_EXCLUSIVE;}
-\DoxyCodeLine{145         \textcolor{keywordflow}{if} (vkCreateBuffer(device, \&bufferInfo, \textcolor{keyword}{nullptr},}
-\DoxyCodeLine{146                            \&a\_buffer.indexBuffer) != VK\_SUCCESS)}
-\DoxyCodeLine{147         \{}
-\DoxyCodeLine{148             \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"{}failed to create index buffer!"{}});}
-\DoxyCodeLine{149         \}}
-\DoxyCodeLine{150 }
-\DoxyCodeLine{151         VkMemoryRequirements memRequirements;}
-\DoxyCodeLine{152         vkGetBufferMemoryRequirements(device, a\_buffer.indexBuffer,}
-\DoxyCodeLine{153                                       \&memRequirements);}
-\DoxyCodeLine{154 }
-\DoxyCodeLine{155         VkMemoryAllocateInfo allocInfo\{\};}
-\DoxyCodeLine{156         allocInfo.sType           = VK\_STRUCTURE\_TYPE\_MEMORY\_ALLOCATE\_INFO;}
-\DoxyCodeLine{157         allocInfo.allocationSize  = memRequirements.size;}
-\DoxyCodeLine{158         allocInfo.memoryTypeIndex = vulkan::VulkanContext::get\_memoryTypeIndex(}
-\DoxyCodeLine{159             memRequirements.memoryTypeBits,}
-\DoxyCodeLine{160             VK\_MEMORY\_PROPERTY\_HOST\_VISIBLE\_BIT |}
-\DoxyCodeLine{161                 VK\_MEMORY\_PROPERTY\_HOST\_COHERENT\_BIT);}
-\DoxyCodeLine{162 }
-\DoxyCodeLine{163         \textcolor{keywordflow}{if} (vkAllocateMemory(device, \&allocInfo, \textcolor{keyword}{nullptr},}
-\DoxyCodeLine{164                              \&a\_buffer.indexBufferDeviceMemory) != VK\_SUCCESS)}
-\DoxyCodeLine{165         \{}
-\DoxyCodeLine{166             \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"{}failed to allocate index buffer memory!"{}});}
-\DoxyCodeLine{167         \}}
-\DoxyCodeLine{168 }
-\DoxyCodeLine{169         vkBindBufferMemory(device, a\_buffer.indexBuffer,}
-\DoxyCodeLine{170                            a\_buffer.indexBufferDeviceMemory, 0);}
-\DoxyCodeLine{171     \}}
-\DoxyCodeLine{172 }
-\DoxyCodeLine{173     \textcolor{comment}{// Upload vertex/index data into a single contiguous GPU buffer}}
-\DoxyCodeLine{174     \textcolor{keywordtype}{void} *pVtxResource, *pIdxResource;}
-\DoxyCodeLine{175 }
-\DoxyCodeLine{176     vkMapMemory(device, a\_buffer.vertexBufferDeviceMemory, 0,}
-\DoxyCodeLine{177                 a\_vertices.size() * a\_buffer.vertexSize, 0, \&pVtxResource);}
-\DoxyCodeLine{178     vkMapMemory(device, a\_buffer.indexBufferDeviceMemory, 0,}
-\DoxyCodeLine{179                 a\_indices.size() * a\_buffer.indexSize, 0, \&pIdxResource);}
+\DoxyCodeLine{63 \textcolor{keyword}{template} <\textcolor{keyword}{typename} tt\_Vertex, \textcolor{keyword}{typename} tt\_Index>}
+\DoxyCodeLine{64 \textcolor{keywordtype}{void} destroy\_buffer(VulkanBufferBase<tt\_Vertex, tt\_Index>\& a\_buffer)}
+\DoxyCodeLine{65 \{}
+\DoxyCodeLine{66     VkDevice device = vulkan::VulkanContext::get\_logDevice();}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68     \textcolor{keywordflow}{if} (a\_buffer.vertexBuffer != VK\_NULL\_HANDLE)}
+\DoxyCodeLine{69     \{}
+\DoxyCodeLine{70         vkDestroyBuffer(device, a\_buffer.vertexBuffer, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{71         vkFreeMemory(device, a\_buffer.vertexBufferDeviceMemory, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{72     \}}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74     \textcolor{keywordflow}{if} (a\_buffer.indexBuffer != VK\_NULL\_HANDLE)}
+\DoxyCodeLine{75     \{}
+\DoxyCodeLine{76         vkDestroyBuffer(device, a\_buffer.indexBuffer, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{77         vkFreeMemory(device, a\_buffer.indexBufferDeviceMemory, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{78     \}}
+\DoxyCodeLine{79 \}}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 \textcolor{keyword}{template} <\textcolor{keyword}{typename} tt\_Vertex, \textcolor{keyword}{typename} tt\_Index>}
+\DoxyCodeLine{82 \textcolor{keywordtype}{void} upload\_data(VulkanBufferBase<tt\_Vertex, tt\_Index>\& a\_buffer,}
+\DoxyCodeLine{83                  std::vector<tt\_Vertex> \textcolor{keyword}{const}\&          a\_vertices,}
+\DoxyCodeLine{84                  std::vector<tt\_Index> \textcolor{keyword}{const}\&           a\_indices)}
+\DoxyCodeLine{85 \{}
+\DoxyCodeLine{86     \textcolor{keywordflow}{if} (a\_vertices.size() == 0 || a\_indices.size() == 0)}
+\DoxyCodeLine{87     \{}
+\DoxyCodeLine{88         \textcolor{keywordflow}{return};}
+\DoxyCodeLine{89     \}}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91     VkDevice device = vulkan::VulkanContext::get\_logDevice();}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93     \textcolor{keywordflow}{if} (a\_buffer.vertexBufferSize < a\_vertices.size())}
+\DoxyCodeLine{94     \{}
+\DoxyCodeLine{95         \textcolor{keywordflow}{if} (a\_buffer.vertexBuffer != VK\_NULL\_HANDLE)}
+\DoxyCodeLine{96         \{}
+\DoxyCodeLine{97             vkDestroyBuffer(device, a\_buffer.vertexBuffer, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{98             vkFreeMemory(device, a\_buffer.vertexBufferDeviceMemory, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{99         \}}
+\DoxyCodeLine{100         a\_buffer.vertexBufferSize = a\_vertices.size() + 4000;}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102         VkBufferCreateInfo bufferInfo\{\};}
+\DoxyCodeLine{103         bufferInfo.sType = VK\_STRUCTURE\_TYPE\_BUFFER\_CREATE\_INFO;}
+\DoxyCodeLine{104         bufferInfo.size  = a\_buffer.vertexSize * a\_buffer.vertexBufferSize;}
+\DoxyCodeLine{105         bufferInfo.usage = VK\_BUFFER\_USAGE\_VERTEX\_BUFFER\_BIT;}
+\DoxyCodeLine{106         bufferInfo.sharingMode = VK\_SHARING\_MODE\_EXCLUSIVE;}
+\DoxyCodeLine{107         \textcolor{keywordflow}{if} (vkCreateBuffer(device, \&bufferInfo, \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{108                            \&a\_buffer.vertexBuffer) != VK\_SUCCESS)}
+\DoxyCodeLine{109         \{}
+\DoxyCodeLine{110             \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"{}failed to create vertex buffer!"{}});}
+\DoxyCodeLine{111         \}}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113         VkMemoryRequirements memRequirements;}
+\DoxyCodeLine{114         vkGetBufferMemoryRequirements(device, a\_buffer.vertexBuffer,}
+\DoxyCodeLine{115                                       \&memRequirements);}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117         VkMemoryAllocateInfo allocInfo\{\};}
+\DoxyCodeLine{118         allocInfo.sType           = VK\_STRUCTURE\_TYPE\_MEMORY\_ALLOCATE\_INFO;}
+\DoxyCodeLine{119         allocInfo.allocationSize  = memRequirements.size;}
+\DoxyCodeLine{120         allocInfo.memoryTypeIndex = vulkan::VulkanContext::get\_memoryTypeIndex(}
+\DoxyCodeLine{121             memRequirements.memoryTypeBits,}
+\DoxyCodeLine{122             VK\_MEMORY\_PROPERTY\_HOST\_VISIBLE\_BIT |}
+\DoxyCodeLine{123                 VK\_MEMORY\_PROPERTY\_HOST\_COHERENT\_BIT);}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125         \textcolor{keywordflow}{if} (vkAllocateMemory(device, \&allocInfo, \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{126                              \&a\_buffer.vertexBufferDeviceMemory) != VK\_SUCCESS)}
+\DoxyCodeLine{127         \{}
+\DoxyCodeLine{128             \textcolor{keywordflow}{throw} std::runtime\_error(}
+\DoxyCodeLine{129                 \textcolor{stringliteral}{"{}failed to allocate vertex buffer memory!"{}});}
+\DoxyCodeLine{130         \}}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132         vkBindBufferMemory(device, a\_buffer.vertexBuffer,}
+\DoxyCodeLine{133                            a\_buffer.vertexBufferDeviceMemory, 0);}
+\DoxyCodeLine{134     \}}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136     \textcolor{keywordflow}{if} (a\_buffer.indexBufferSize < a\_indices.size())}
+\DoxyCodeLine{137     \{}
+\DoxyCodeLine{138         \textcolor{keywordflow}{if} (a\_buffer.indexBuffer != VK\_NULL\_HANDLE)}
+\DoxyCodeLine{139         \{}
+\DoxyCodeLine{140             vkDestroyBuffer(device, a\_buffer.indexBuffer, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{141             vkFreeMemory(device, a\_buffer.indexBufferDeviceMemory, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{142         \}}
+\DoxyCodeLine{143         a\_buffer.indexBufferSize = a\_indices.size() + 6000;}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145         VkBufferCreateInfo bufferInfo\{\};}
+\DoxyCodeLine{146         bufferInfo.sType       = VK\_STRUCTURE\_TYPE\_BUFFER\_CREATE\_INFO;}
+\DoxyCodeLine{147         bufferInfo.size        = a\_buffer.indexSize * a\_buffer.indexBufferSize;}
+\DoxyCodeLine{148         bufferInfo.usage       = VK\_BUFFER\_USAGE\_INDEX\_BUFFER\_BIT;}
+\DoxyCodeLine{149         bufferInfo.sharingMode = VK\_SHARING\_MODE\_EXCLUSIVE;}
+\DoxyCodeLine{150         \textcolor{keywordflow}{if} (vkCreateBuffer(device, \&bufferInfo, \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{151                            \&a\_buffer.indexBuffer) != VK\_SUCCESS)}
+\DoxyCodeLine{152         \{}
+\DoxyCodeLine{153             \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"{}failed to create index buffer!"{}});}
+\DoxyCodeLine{154         \}}
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156         VkMemoryRequirements memRequirements;}
+\DoxyCodeLine{157         vkGetBufferMemoryRequirements(device, a\_buffer.indexBuffer,}
+\DoxyCodeLine{158                                       \&memRequirements);}
+\DoxyCodeLine{159 }
+\DoxyCodeLine{160         VkMemoryAllocateInfo allocInfo\{\};}
+\DoxyCodeLine{161         allocInfo.sType           = VK\_STRUCTURE\_TYPE\_MEMORY\_ALLOCATE\_INFO;}
+\DoxyCodeLine{162         allocInfo.allocationSize  = memRequirements.size;}
+\DoxyCodeLine{163         allocInfo.memoryTypeIndex = vulkan::VulkanContext::get\_memoryTypeIndex(}
+\DoxyCodeLine{164             memRequirements.memoryTypeBits,}
+\DoxyCodeLine{165             VK\_MEMORY\_PROPERTY\_HOST\_VISIBLE\_BIT |}
+\DoxyCodeLine{166                 VK\_MEMORY\_PROPERTY\_HOST\_COHERENT\_BIT);}
+\DoxyCodeLine{167 }
+\DoxyCodeLine{168         \textcolor{keywordflow}{if} (vkAllocateMemory(device, \&allocInfo, \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{169                              \&a\_buffer.indexBufferDeviceMemory) != VK\_SUCCESS)}
+\DoxyCodeLine{170         \{}
+\DoxyCodeLine{171             \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"{}failed to allocate index buffer memory!"{}});}
+\DoxyCodeLine{172         \}}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174         vkBindBufferMemory(device, a\_buffer.indexBuffer,}
+\DoxyCodeLine{175                            a\_buffer.indexBufferDeviceMemory, 0);}
+\DoxyCodeLine{176     \}}
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178     \textcolor{comment}{// Upload vertex/index data into a single contiguous GPU buffer}}
+\DoxyCodeLine{179     \textcolor{keywordtype}{void} *pVtxResource, *pIdxResource;}
 \DoxyCodeLine{180 }
-\DoxyCodeLine{181     \textcolor{keyword}{auto} vtxDest = (tt\_Vertex*)pVtxResource;}
-\DoxyCodeLine{182     \textcolor{keyword}{auto} idxDest = (tt\_Index*)pIdxResource;}
-\DoxyCodeLine{183 }
-\DoxyCodeLine{184     memcpy(vtxDest, a\_vertices.data(), a\_vertices.size() * a\_buffer.vertexSize);}
-\DoxyCodeLine{185     memcpy(idxDest, a\_indices.data(), a\_indices.size() * a\_buffer.indexSize);}
-\DoxyCodeLine{186 }
-\DoxyCodeLine{187     VkMappedMemoryRange ranges[2];}
-\DoxyCodeLine{188     ranges[0]        = \{\};}
-\DoxyCodeLine{189     ranges[0].sType  = VK\_STRUCTURE\_TYPE\_MAPPED\_MEMORY\_RANGE;}
-\DoxyCodeLine{190     ranges[0].memory = a\_buffer.vertexBufferDeviceMemory;}
-\DoxyCodeLine{191     ranges[0].size   = VK\_WHOLE\_SIZE;}
-\DoxyCodeLine{192     ranges[1]        = \{\};}
-\DoxyCodeLine{193     ranges[1].sType  = VK\_STRUCTURE\_TYPE\_MAPPED\_MEMORY\_RANGE;}
-\DoxyCodeLine{194     ranges[1].memory = a\_buffer.indexBufferDeviceMemory;}
-\DoxyCodeLine{195     ranges[1].size   = VK\_WHOLE\_SIZE;}
-\DoxyCodeLine{196     vkFlushMappedMemoryRanges(device, 2, ranges);}
-\DoxyCodeLine{197 }
-\DoxyCodeLine{198     vkUnmapMemory(device, a\_buffer.vertexBufferDeviceMemory);}
-\DoxyCodeLine{199     vkUnmapMemory(device, a\_buffer.indexBufferDeviceMemory);}
-\DoxyCodeLine{200 \}}
-\DoxyCodeLine{201 }
-\DoxyCodeLine{202 \textcolor{keyword}{template} <\textcolor{keyword}{typename} tt\_Vertex, \textcolor{keyword}{typename} tt\_Index>}
-\DoxyCodeLine{203 \textcolor{keywordtype}{void} upload\_data(Dx12BufferBase<tt\_Vertex, tt\_Index>\& a\_buffer,}
-\DoxyCodeLine{204                  std::vector<tt\_Vertex> \textcolor{keyword}{const}\&        a\_vertices,}
-\DoxyCodeLine{205                  std::vector<tt\_Index> \textcolor{keyword}{const}\&         a\_indices)}
-\DoxyCodeLine{206 \{}
-\DoxyCodeLine{207     dx12::ComPtr<ID3D12Device> device =}
-\DoxyCodeLine{208         dx12::DX12Context::gs\_dx12Contexte-\/>m\_device;}
-\DoxyCodeLine{209 }
-\DoxyCodeLine{210     \textcolor{keywordflow}{if} (a\_buffer.vertexBuffer == \textcolor{keyword}{nullptr} ||}
-\DoxyCodeLine{211         a\_buffer.vertexBufferSize < a\_vertices.size())}
-\DoxyCodeLine{212     \{}
-\DoxyCodeLine{213         a\_buffer.vertexBuffer     = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{214         a\_buffer.vertexBufferSize = a\_vertices.size() + 5000;}
-\DoxyCodeLine{215         D3D12\_HEAP\_PROPERTIES props;}
-\DoxyCodeLine{216         memset(\&props, 0, \textcolor{keyword}{sizeof}(D3D12\_HEAP\_PROPERTIES));}
-\DoxyCodeLine{217         props.Type                 = D3D12\_HEAP\_TYPE\_UPLOAD;}
-\DoxyCodeLine{218         props.CPUPageProperty      = D3D12\_CPU\_PAGE\_PROPERTY\_UNKNOWN;}
-\DoxyCodeLine{219         props.MemoryPoolPreference = D3D12\_MEMORY\_POOL\_UNKNOWN;}
-\DoxyCodeLine{220         D3D12\_RESOURCE\_DESC desc;}
-\DoxyCodeLine{221         memset(\&desc, 0, \textcolor{keyword}{sizeof}(D3D12\_RESOURCE\_DESC));}
-\DoxyCodeLine{222         desc.Dimension        = D3D12\_RESOURCE\_DIMENSION\_BUFFER;}
-\DoxyCodeLine{223         desc.Width            = a\_buffer.vertexBufferSize * a\_buffer.vertexSize;}
-\DoxyCodeLine{224         desc.Height           = 1;}
-\DoxyCodeLine{225         desc.DepthOrArraySize = 1;}
-\DoxyCodeLine{226         desc.MipLevels        = 1;}
-\DoxyCodeLine{227         desc.Format           = DXGI\_FORMAT\_UNKNOWN;}
-\DoxyCodeLine{228         desc.SampleDesc.Count = 1;}
-\DoxyCodeLine{229         desc.Layout           = D3D12\_TEXTURE\_LAYOUT\_ROW\_MAJOR;}
-\DoxyCodeLine{230         desc.Flags            = D3D12\_RESOURCE\_FLAG\_NONE;}
-\DoxyCodeLine{231         \textcolor{keywordflow}{if} (device-\/>CreateCommittedResource(}
-\DoxyCodeLine{232                 \&props, D3D12\_HEAP\_FLAG\_NONE, \&desc,}
-\DoxyCodeLine{233                 D3D12\_RESOURCE\_STATE\_GENERIC\_READ, \textcolor{keyword}{nullptr},}
-\DoxyCodeLine{234                 IID\_PPV\_ARGS(\&a\_buffer.vertexBuffer)) < 0)}
-\DoxyCodeLine{235             \textcolor{keywordflow}{return};}
-\DoxyCodeLine{236     \}}
-\DoxyCodeLine{237 }
-\DoxyCodeLine{238     \textcolor{keywordflow}{if} (a\_buffer.indexBuffer == \textcolor{keyword}{nullptr} ||}
-\DoxyCodeLine{239         a\_buffer.indexBufferSize < a\_indices.size())}
-\DoxyCodeLine{240     \{}
-\DoxyCodeLine{241         a\_buffer.indexBuffer     = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{242         a\_buffer.indexBufferSize = a\_indices.size() + 10000;}
-\DoxyCodeLine{243         D3D12\_HEAP\_PROPERTIES props;}
-\DoxyCodeLine{244         memset(\&props, 0, \textcolor{keyword}{sizeof}(D3D12\_HEAP\_PROPERTIES));}
-\DoxyCodeLine{245         props.Type                 = D3D12\_HEAP\_TYPE\_UPLOAD;}
-\DoxyCodeLine{246         props.CPUPageProperty      = D3D12\_CPU\_PAGE\_PROPERTY\_UNKNOWN;}
-\DoxyCodeLine{247         props.MemoryPoolPreference = D3D12\_MEMORY\_POOL\_UNKNOWN;}
-\DoxyCodeLine{248         D3D12\_RESOURCE\_DESC desc;}
-\DoxyCodeLine{249         memset(\&desc, 0, \textcolor{keyword}{sizeof}(D3D12\_RESOURCE\_DESC));}
-\DoxyCodeLine{250         desc.Dimension        = D3D12\_RESOURCE\_DIMENSION\_BUFFER;}
-\DoxyCodeLine{251         desc.Width            = a\_buffer.indexBufferSize * a\_buffer.indexSize;}
-\DoxyCodeLine{252         desc.Height           = 1;}
-\DoxyCodeLine{253         desc.DepthOrArraySize = 1;}
-\DoxyCodeLine{254         desc.MipLevels        = 1;}
-\DoxyCodeLine{255         desc.Format           = DXGI\_FORMAT\_UNKNOWN;}
-\DoxyCodeLine{256         desc.SampleDesc.Count = 1;}
-\DoxyCodeLine{257         desc.Layout           = D3D12\_TEXTURE\_LAYOUT\_ROW\_MAJOR;}
-\DoxyCodeLine{258         desc.Flags            = D3D12\_RESOURCE\_FLAG\_NONE;}
-\DoxyCodeLine{259         \textcolor{keywordflow}{if} (device-\/>CreateCommittedResource(}
-\DoxyCodeLine{260                 \&props, D3D12\_HEAP\_FLAG\_NONE, \&desc,}
-\DoxyCodeLine{261                 D3D12\_RESOURCE\_STATE\_GENERIC\_READ, \textcolor{keyword}{nullptr},}
-\DoxyCodeLine{262                 IID\_PPV\_ARGS(\&a\_buffer.indexBuffer)) < 0)}
-\DoxyCodeLine{263             \textcolor{keywordflow}{return};}
-\DoxyCodeLine{264     \}}
-\DoxyCodeLine{265 }
-\DoxyCodeLine{266     \textcolor{comment}{// Upload vertex/index data into a single contiguous GPU buffer}}
-\DoxyCodeLine{267     \textcolor{keywordtype}{void} *      vtxResource, *idxResource;}
-\DoxyCodeLine{268     D3D12\_RANGE range;}
-\DoxyCodeLine{269     memset(\&range, 0, \textcolor{keyword}{sizeof}(D3D12\_RANGE));}
-\DoxyCodeLine{270     \textcolor{keywordflow}{if} (a\_buffer.vertexBuffer-\/>Map(0, \&range, \&vtxResource) != S\_OK)}
-\DoxyCodeLine{271     \{}
-\DoxyCodeLine{272         \mbox{\hyperlink{group___core_ga0bcecb82138d5f42db4089c93554f5a2}{mLog\_error}}(\textcolor{stringliteral}{"{}Could not map vertex buffer"{}});}
-\DoxyCodeLine{273         \textcolor{keywordflow}{return};}
-\DoxyCodeLine{274     \}}
-\DoxyCodeLine{275     \textcolor{keywordflow}{if} (a\_buffer.indexBuffer-\/>Map(0, \&range, \&idxResource) != S\_OK)}
+\DoxyCodeLine{181     vkMapMemory(device, a\_buffer.vertexBufferDeviceMemory, 0,}
+\DoxyCodeLine{182                 a\_vertices.size() * a\_buffer.vertexSize, 0, \&pVtxResource);}
+\DoxyCodeLine{183     vkMapMemory(device, a\_buffer.indexBufferDeviceMemory, 0,}
+\DoxyCodeLine{184                 a\_indices.size() * a\_buffer.indexSize, 0, \&pIdxResource);}
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186     \textcolor{keyword}{auto} vtxDest = (tt\_Vertex*)pVtxResource;}
+\DoxyCodeLine{187     \textcolor{keyword}{auto} idxDest = (tt\_Index*)pIdxResource;}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{189     memcpy(vtxDest, a\_vertices.data(), a\_vertices.size() * a\_buffer.vertexSize);}
+\DoxyCodeLine{190     memcpy(idxDest, a\_indices.data(), a\_indices.size() * a\_buffer.indexSize);}
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192     VkMappedMemoryRange ranges[2];}
+\DoxyCodeLine{193     ranges[0]        = \{\};}
+\DoxyCodeLine{194     ranges[0].sType  = VK\_STRUCTURE\_TYPE\_MAPPED\_MEMORY\_RANGE;}
+\DoxyCodeLine{195     ranges[0].memory = a\_buffer.vertexBufferDeviceMemory;}
+\DoxyCodeLine{196     ranges[0].size   = VK\_WHOLE\_SIZE;}
+\DoxyCodeLine{197     ranges[1]        = \{\};}
+\DoxyCodeLine{198     ranges[1].sType  = VK\_STRUCTURE\_TYPE\_MAPPED\_MEMORY\_RANGE;}
+\DoxyCodeLine{199     ranges[1].memory = a\_buffer.indexBufferDeviceMemory;}
+\DoxyCodeLine{200     ranges[1].size   = VK\_WHOLE\_SIZE;}
+\DoxyCodeLine{201     vkFlushMappedMemoryRanges(device, 2, ranges);}
+\DoxyCodeLine{202 }
+\DoxyCodeLine{203     vkUnmapMemory(device, a\_buffer.vertexBufferDeviceMemory);}
+\DoxyCodeLine{204     vkUnmapMemory(device, a\_buffer.indexBufferDeviceMemory);}
+\DoxyCodeLine{205 \}}
+\DoxyCodeLine{206 }
+\DoxyCodeLine{207 \textcolor{keyword}{template} <\textcolor{keyword}{typename} tt\_Vertex, \textcolor{keyword}{typename} tt\_Index>}
+\DoxyCodeLine{208 \textcolor{keywordtype}{void} upload\_data(Dx12BufferBase<tt\_Vertex, tt\_Index>\& a\_buffer,}
+\DoxyCodeLine{209                  std::vector<tt\_Vertex> \textcolor{keyword}{const}\&        a\_vertices,}
+\DoxyCodeLine{210                  std::vector<tt\_Index> \textcolor{keyword}{const}\&         a\_indices)}
+\DoxyCodeLine{211 \{}
+\DoxyCodeLine{212     dx12::ComPtr<ID3D12Device> device =}
+\DoxyCodeLine{213         dx12::DX12Context::gs\_dx12Contexte-\/>m\_device;}
+\DoxyCodeLine{214 }
+\DoxyCodeLine{215     \textcolor{keywordflow}{if} (a\_buffer.vertexBuffer == \textcolor{keyword}{nullptr} ||}
+\DoxyCodeLine{216         a\_buffer.vertexBufferSize < a\_vertices.size())}
+\DoxyCodeLine{217     \{}
+\DoxyCodeLine{218         a\_buffer.vertexBuffer     = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{219         a\_buffer.vertexBufferSize = a\_vertices.size() + 5000;}
+\DoxyCodeLine{220         D3D12\_HEAP\_PROPERTIES props;}
+\DoxyCodeLine{221         memset(\&props, 0, \textcolor{keyword}{sizeof}(D3D12\_HEAP\_PROPERTIES));}
+\DoxyCodeLine{222         props.Type                 = D3D12\_HEAP\_TYPE\_UPLOAD;}
+\DoxyCodeLine{223         props.CPUPageProperty      = D3D12\_CPU\_PAGE\_PROPERTY\_UNKNOWN;}
+\DoxyCodeLine{224         props.MemoryPoolPreference = D3D12\_MEMORY\_POOL\_UNKNOWN;}
+\DoxyCodeLine{225         D3D12\_RESOURCE\_DESC desc;}
+\DoxyCodeLine{226         memset(\&desc, 0, \textcolor{keyword}{sizeof}(D3D12\_RESOURCE\_DESC));}
+\DoxyCodeLine{227         desc.Dimension        = D3D12\_RESOURCE\_DIMENSION\_BUFFER;}
+\DoxyCodeLine{228         desc.Width            = a\_buffer.vertexBufferSize * a\_buffer.vertexSize;}
+\DoxyCodeLine{229         desc.Height           = 1;}
+\DoxyCodeLine{230         desc.DepthOrArraySize = 1;}
+\DoxyCodeLine{231         desc.MipLevels        = 1;}
+\DoxyCodeLine{232         desc.Format           = DXGI\_FORMAT\_UNKNOWN;}
+\DoxyCodeLine{233         desc.SampleDesc.Count = 1;}
+\DoxyCodeLine{234         desc.Layout           = D3D12\_TEXTURE\_LAYOUT\_ROW\_MAJOR;}
+\DoxyCodeLine{235         desc.Flags            = D3D12\_RESOURCE\_FLAG\_NONE;}
+\DoxyCodeLine{236         \textcolor{keywordflow}{if} (device-\/>CreateCommittedResource(}
+\DoxyCodeLine{237                 \&props, D3D12\_HEAP\_FLAG\_NONE, \&desc,}
+\DoxyCodeLine{238                 D3D12\_RESOURCE\_STATE\_GENERIC\_READ, \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{239                 IID\_PPV\_ARGS(\&a\_buffer.vertexBuffer)) < 0)}
+\DoxyCodeLine{240             \textcolor{keywordflow}{return};}
+\DoxyCodeLine{241     \}}
+\DoxyCodeLine{242 }
+\DoxyCodeLine{243     \textcolor{keywordflow}{if} (a\_buffer.indexBuffer == \textcolor{keyword}{nullptr} ||}
+\DoxyCodeLine{244         a\_buffer.indexBufferSize < a\_indices.size())}
+\DoxyCodeLine{245     \{}
+\DoxyCodeLine{246         a\_buffer.indexBuffer     = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{247         a\_buffer.indexBufferSize = a\_indices.size() + 10000;}
+\DoxyCodeLine{248         D3D12\_HEAP\_PROPERTIES props;}
+\DoxyCodeLine{249         memset(\&props, 0, \textcolor{keyword}{sizeof}(D3D12\_HEAP\_PROPERTIES));}
+\DoxyCodeLine{250         props.Type                 = D3D12\_HEAP\_TYPE\_UPLOAD;}
+\DoxyCodeLine{251         props.CPUPageProperty      = D3D12\_CPU\_PAGE\_PROPERTY\_UNKNOWN;}
+\DoxyCodeLine{252         props.MemoryPoolPreference = D3D12\_MEMORY\_POOL\_UNKNOWN;}
+\DoxyCodeLine{253         D3D12\_RESOURCE\_DESC desc;}
+\DoxyCodeLine{254         memset(\&desc, 0, \textcolor{keyword}{sizeof}(D3D12\_RESOURCE\_DESC));}
+\DoxyCodeLine{255         desc.Dimension        = D3D12\_RESOURCE\_DIMENSION\_BUFFER;}
+\DoxyCodeLine{256         desc.Width            = a\_buffer.indexBufferSize * a\_buffer.indexSize;}
+\DoxyCodeLine{257         desc.Height           = 1;}
+\DoxyCodeLine{258         desc.DepthOrArraySize = 1;}
+\DoxyCodeLine{259         desc.MipLevels        = 1;}
+\DoxyCodeLine{260         desc.Format           = DXGI\_FORMAT\_UNKNOWN;}
+\DoxyCodeLine{261         desc.SampleDesc.Count = 1;}
+\DoxyCodeLine{262         desc.Layout           = D3D12\_TEXTURE\_LAYOUT\_ROW\_MAJOR;}
+\DoxyCodeLine{263         desc.Flags            = D3D12\_RESOURCE\_FLAG\_NONE;}
+\DoxyCodeLine{264         \textcolor{keywordflow}{if} (device-\/>CreateCommittedResource(}
+\DoxyCodeLine{265                 \&props, D3D12\_HEAP\_FLAG\_NONE, \&desc,}
+\DoxyCodeLine{266                 D3D12\_RESOURCE\_STATE\_GENERIC\_READ, \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{267                 IID\_PPV\_ARGS(\&a\_buffer.indexBuffer)) < 0)}
+\DoxyCodeLine{268             \textcolor{keywordflow}{return};}
+\DoxyCodeLine{269     \}}
+\DoxyCodeLine{270 }
+\DoxyCodeLine{271     \textcolor{comment}{// Upload vertex/index data into a single contiguous GPU buffer}}
+\DoxyCodeLine{272     \textcolor{keywordtype}{void} *      vtxResource, *idxResource;}
+\DoxyCodeLine{273     D3D12\_RANGE range;}
+\DoxyCodeLine{274     memset(\&range, 0, \textcolor{keyword}{sizeof}(D3D12\_RANGE));}
+\DoxyCodeLine{275     \textcolor{keywordflow}{if} (a\_buffer.vertexBuffer-\/>Map(0, \&range, \&vtxResource) != S\_OK)}
 \DoxyCodeLine{276     \{}
-\DoxyCodeLine{277         \mbox{\hyperlink{group___core_ga0bcecb82138d5f42db4089c93554f5a2}{mLog\_error}}(\textcolor{stringliteral}{"{}Could not map index buffer"{}});}
+\DoxyCodeLine{277         \mbox{\hyperlink{group___core_ga0bcecb82138d5f42db4089c93554f5a2}{mLog\_error}}(\textcolor{stringliteral}{"{}Could not map vertex buffer"{}});}
 \DoxyCodeLine{278         \textcolor{keywordflow}{return};}
 \DoxyCodeLine{279     \}}
-\DoxyCodeLine{280 }
-\DoxyCodeLine{281     \textcolor{keyword}{auto} vtxDest = (tt\_Vertex*)vtxResource;}
-\DoxyCodeLine{282     \textcolor{keyword}{auto} idxDest = (tt\_Index*)idxResource;}
-\DoxyCodeLine{283 }
-\DoxyCodeLine{284     memcpy(vtxDest, a\_vertices.data(), a\_vertices.size() * a\_buffer.vertexSize);}
-\DoxyCodeLine{285     memcpy(idxDest, a\_indices.data(), a\_indices.size() * a\_buffer.indexSize);}
-\DoxyCodeLine{286 }
-\DoxyCodeLine{287     a\_buffer.vertexBuffer-\/>Unmap(0, \&range);}
-\DoxyCodeLine{288     a\_buffer.indexBuffer-\/>Unmap(0, \&range);}
-\DoxyCodeLine{289 \}}
-\DoxyCodeLine{290 }
-\DoxyCodeLine{291 \textcolor{keyword}{template} <\textcolor{keyword}{typename} tt\_Vertex, \textcolor{keyword}{typename} tt\_Index>}
-\DoxyCodeLine{292 \textcolor{keywordtype}{void} record\_bind(}
-\DoxyCodeLine{293     Dx12BufferBase<tt\_Vertex, tt\_Index> \textcolor{keyword}{const}\&         a\_buffer,}
-\DoxyCodeLine{294     Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList2> a\_commandList)}
-\DoxyCodeLine{295 \{}
-\DoxyCodeLine{296     D3D12\_VERTEX\_BUFFER\_VIEW vbv;}
-\DoxyCodeLine{297     memset(\&vbv, 0, \textcolor{keyword}{sizeof}(D3D12\_VERTEX\_BUFFER\_VIEW));}
-\DoxyCodeLine{298     vbv.BufferLocation = a\_buffer.vertexBuffer-\/>GetGPUVirtualAddress();}
-\DoxyCodeLine{299     vbv.SizeInBytes    = a\_buffer.vertexBufferSize * a\_buffer.vertexSize;}
-\DoxyCodeLine{300     vbv.StrideInBytes  = a\_buffer.vertexSize;}
-\DoxyCodeLine{301     a\_commandList-\/>IASetVertexBuffers(0, 1, \&vbv);}
-\DoxyCodeLine{302     D3D12\_INDEX\_BUFFER\_VIEW ibv;}
-\DoxyCodeLine{303     memset(\&ibv, 0, \textcolor{keyword}{sizeof}(D3D12\_INDEX\_BUFFER\_VIEW));}
-\DoxyCodeLine{304     ibv.BufferLocation = a\_buffer.indexBuffer-\/>GetGPUVirtualAddress();}
-\DoxyCodeLine{305     ibv.SizeInBytes    = a\_buffer.indexBufferSize * a\_buffer.indexSize;}
-\DoxyCodeLine{306     ibv.Format =}
-\DoxyCodeLine{307         a\_buffer.indexSize == 2 ? DXGI\_FORMAT\_R16\_UINT : DXGI\_FORMAT\_R32\_UINT;}
-\DoxyCodeLine{308     a\_commandList-\/>IASetIndexBuffer(\&ibv);}
-\DoxyCodeLine{309 \}}
-\DoxyCodeLine{310 }
-\DoxyCodeLine{311 \textcolor{keyword}{using} uploadBuffers =}
-\DoxyCodeLine{312     Dx12BufferBase<BasicVertex, mU16>[dx12::DX12Surface::scm\_numFrames];}
-\DoxyCodeLine{313 }
-\DoxyCodeLine{314 \textcolor{keyword}{using} vulkanUploadBuffers =}
-\DoxyCodeLine{315     VulkanBufferBase<BasicVertex, mU16>[vulkan::VulkanSurface::scm\_numFrames];}
-\DoxyCodeLine{316 }
-\DoxyCodeLine{317 \textcolor{keyword}{template} <\textcolor{keyword}{typename} tt\_Vertex, \textcolor{keyword}{typename} tt\_Index>}
-\DoxyCodeLine{318 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_data_mesh_buffer}{DataMeshBuffer}}}
-\DoxyCodeLine{319 \{}
-\DoxyCodeLine{320     std::vector<tt\_Vertex> m\_vertices;}
-\DoxyCodeLine{321     std::vector<tt\_Index>  m\_indices;}
-\DoxyCodeLine{322 }
-\DoxyCodeLine{323     \textcolor{keywordtype}{void} clear()}
-\DoxyCodeLine{324     \{}
-\DoxyCodeLine{325         m\_vertices.clear();}
-\DoxyCodeLine{326         m\_indices.clear();}
-\DoxyCodeLine{327     \}}
-\DoxyCodeLine{328 \};}
-\DoxyCodeLine{329 }
-\DoxyCodeLine{330 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{331 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{332 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{333 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_task_data2d_render}{TaskData2dRender}} : \textcolor{keyword}{public} \mbox{\hyperlink{structm_1_1render_1_1_task_data}{TaskData}}}
-\DoxyCodeLine{334 \{}
-\DoxyCodeLine{335     \mbox{\hyperlink{structm_1_1render_1_1_data_mesh_buffer}{DataMeshBuffer<BasicVertex, mU16>}}* m\_pMeshBuffer;}
-\DoxyCodeLine{336     ISurface::HdlPtr                  m\_hdlOutput;}
-\DoxyCodeLine{337 }
-\DoxyCodeLine{338     mIfDx12Enabled(\mbox{\hyperlink{structm_1_1render_1_1_task}{Task}}* getNew\_dx12Implementation(\mbox{\hyperlink{structm_1_1render_1_1_task_data}{TaskData}}* a\_data) \textcolor{keyword}{override});}
-\DoxyCodeLine{339     mIfVulkanEnabled(\mbox{\hyperlink{structm_1_1render_1_1_task}{Task}}* getNew\_vulkanImplementation(\mbox{\hyperlink{structm_1_1render_1_1_task_data}{TaskData}}* a\_data)}
-\DoxyCodeLine{340                          \textcolor{keyword}{override});}
-\DoxyCodeLine{341 \};}
-\DoxyCodeLine{342 }
-\DoxyCodeLine{343 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{344 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{345 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{346 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_task2d_render}{Task2dRender}} : \textcolor{keyword}{public} \mbox{\hyperlink{structm_1_1render_1_1_task}{Task}}}
-\DoxyCodeLine{347 \{}
-\DoxyCodeLine{348     \textcolor{keyword}{explicit} \mbox{\hyperlink{structm_1_1render_1_1_task2d_render}{Task2dRender}}(\mbox{\hyperlink{structm_1_1render_1_1_task_data2d_render}{TaskData2dRender}}* a\_data);}
-\DoxyCodeLine{349 }
-\DoxyCodeLine{350     \textcolor{keywordtype}{void} prepare()\textcolor{keyword}{ override }\{\}}
-\DoxyCodeLine{351 }
-\DoxyCodeLine{352     \mbox{\hyperlink{structm_1_1render_1_1_task_data2d_render}{TaskData2dRender}} m\_taskData;}
-\DoxyCodeLine{353 \};}
-\DoxyCodeLine{354 }
-\DoxyCodeLine{355 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{280     \textcolor{keywordflow}{if} (a\_buffer.indexBuffer-\/>Map(0, \&range, \&idxResource) != S\_OK)}
+\DoxyCodeLine{281     \{}
+\DoxyCodeLine{282         \mbox{\hyperlink{group___core_ga0bcecb82138d5f42db4089c93554f5a2}{mLog\_error}}(\textcolor{stringliteral}{"{}Could not map index buffer"{}});}
+\DoxyCodeLine{283         \textcolor{keywordflow}{return};}
+\DoxyCodeLine{284     \}}
+\DoxyCodeLine{285 }
+\DoxyCodeLine{286     \textcolor{keyword}{auto} vtxDest = (tt\_Vertex*)vtxResource;}
+\DoxyCodeLine{287     \textcolor{keyword}{auto} idxDest = (tt\_Index*)idxResource;}
+\DoxyCodeLine{288 }
+\DoxyCodeLine{289     memcpy(vtxDest, a\_vertices.data(), a\_vertices.size() * a\_buffer.vertexSize);}
+\DoxyCodeLine{290     memcpy(idxDest, a\_indices.data(), a\_indices.size() * a\_buffer.indexSize);}
+\DoxyCodeLine{291 }
+\DoxyCodeLine{292     a\_buffer.vertexBuffer-\/>Unmap(0, \&range);}
+\DoxyCodeLine{293     a\_buffer.indexBuffer-\/>Unmap(0, \&range);}
+\DoxyCodeLine{294 \}}
+\DoxyCodeLine{295 }
+\DoxyCodeLine{296 \textcolor{keyword}{template} <\textcolor{keyword}{typename} tt\_Vertex, \textcolor{keyword}{typename} tt\_Index>}
+\DoxyCodeLine{297 \textcolor{keywordtype}{void} record\_bind(}
+\DoxyCodeLine{298     Dx12BufferBase<tt\_Vertex, tt\_Index> \textcolor{keyword}{const}\&         a\_buffer,}
+\DoxyCodeLine{299     Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList2> a\_commandList)}
+\DoxyCodeLine{300 \{}
+\DoxyCodeLine{301     D3D12\_VERTEX\_BUFFER\_VIEW vbv;}
+\DoxyCodeLine{302     memset(\&vbv, 0, \textcolor{keyword}{sizeof}(D3D12\_VERTEX\_BUFFER\_VIEW));}
+\DoxyCodeLine{303     vbv.BufferLocation = a\_buffer.vertexBuffer-\/>GetGPUVirtualAddress();}
+\DoxyCodeLine{304     vbv.SizeInBytes    = a\_buffer.vertexBufferSize * a\_buffer.vertexSize;}
+\DoxyCodeLine{305     vbv.StrideInBytes  = a\_buffer.vertexSize;}
+\DoxyCodeLine{306     a\_commandList-\/>IASetVertexBuffers(0, 1, \&vbv);}
+\DoxyCodeLine{307     D3D12\_INDEX\_BUFFER\_VIEW ibv;}
+\DoxyCodeLine{308     memset(\&ibv, 0, \textcolor{keyword}{sizeof}(D3D12\_INDEX\_BUFFER\_VIEW));}
+\DoxyCodeLine{309     ibv.BufferLocation = a\_buffer.indexBuffer-\/>GetGPUVirtualAddress();}
+\DoxyCodeLine{310     ibv.SizeInBytes    = a\_buffer.indexBufferSize * a\_buffer.indexSize;}
+\DoxyCodeLine{311     ibv.Format =}
+\DoxyCodeLine{312         a\_buffer.indexSize == 2 ? DXGI\_FORMAT\_R16\_UINT : DXGI\_FORMAT\_R32\_UINT;}
+\DoxyCodeLine{313     a\_commandList-\/>IASetIndexBuffer(\&ibv);}
+\DoxyCodeLine{314 \}}
+\DoxyCodeLine{315 }
+\DoxyCodeLine{316 \textcolor{keyword}{using} uploadBuffers =}
+\DoxyCodeLine{317     Dx12BufferBase<BasicVertex, mU16>[dx12::DX12Surface::scm\_numFrames];}
+\DoxyCodeLine{318 }
+\DoxyCodeLine{319 \textcolor{keyword}{using} vulkanUploadBuffers =}
+\DoxyCodeLine{320     VulkanBufferBase<BasicVertex, mU16>[vulkan::VulkanSurface::scm\_numFrames];}
+\DoxyCodeLine{321 }
+\DoxyCodeLine{322 \textcolor{keyword}{template} <\textcolor{keyword}{typename} tt\_Vertex, \textcolor{keyword}{typename} tt\_Index>}
+\DoxyCodeLine{323 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_data_mesh_buffer}{DataMeshBuffer}}}
+\DoxyCodeLine{324 \{}
+\DoxyCodeLine{325     std::vector<tt\_Vertex> m\_vertices;}
+\DoxyCodeLine{326     std::vector<tt\_Index>  m\_indices;}
+\DoxyCodeLine{327 }
+\DoxyCodeLine{328     \textcolor{keywordtype}{void} clear()}
+\DoxyCodeLine{329     \{}
+\DoxyCodeLine{330         m\_vertices.clear();}
+\DoxyCodeLine{331         m\_indices.clear();}
+\DoxyCodeLine{332     \}}
+\DoxyCodeLine{333 \};}
+\DoxyCodeLine{334 }
+\DoxyCodeLine{335 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{336 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{337 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{338 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_task_data2d_render}{TaskData2dRender}} : \textcolor{keyword}{public} \mbox{\hyperlink{structm_1_1render_1_1_task_data}{TaskData}}}
+\DoxyCodeLine{339 \{}
+\DoxyCodeLine{340     \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_task_data2d_render_1_1m_range}{mRange}}}
+\DoxyCodeLine{341     \{}
+\DoxyCodeLine{342         mInt  materialID          = 0;}
+\DoxyCodeLine{343         mUInt indexStartLocation  = 0;}
+\DoxyCodeLine{344         mUInt indexCount          = 0;}
+\DoxyCodeLine{345     \};}
+\DoxyCodeLine{346     \mbox{\hyperlink{structm_1_1render_1_1_data_mesh_buffer}{DataMeshBuffer<BasicVertex, mU16>}}* m\_pMeshBuffer = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{347     mInt*                              m\_pMaterialID = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{348     std::vector<mRange>*               m\_pRanges = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{349     ISurface::HdlPtr                   m\_hdlOutput;}
+\DoxyCodeLine{350 }
+\DoxyCodeLine{351     mIfDx12Enabled(\mbox{\hyperlink{structm_1_1render_1_1_task}{Task}}* getNew\_dx12Implementation(\mbox{\hyperlink{structm_1_1render_1_1_task_data}{TaskData}}* a\_data) \textcolor{keyword}{override});}
+\DoxyCodeLine{352     mIfVulkanEnabled(\mbox{\hyperlink{structm_1_1render_1_1_task}{Task}}* getNew\_vulkanImplementation(\mbox{\hyperlink{structm_1_1render_1_1_task_data}{TaskData}}* a\_data)}
+\DoxyCodeLine{353                          \textcolor{keyword}{override});}
+\DoxyCodeLine{354 \};}
+\DoxyCodeLine{355 }
 \DoxyCodeLine{356 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
 \DoxyCodeLine{357 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{358 mIfDx12Enabled(\textcolor{keyword}{struct} Dx12Task2dRender : \textcolor{keyword}{public} \mbox{\hyperlink{structm_1_1render_1_1_task2d_render}{Task2dRender}}}
-\DoxyCodeLine{359 \{}
-\DoxyCodeLine{360     \textcolor{keyword}{explicit} Dx12Task2dRender(\mbox{\hyperlink{structm_1_1render_1_1_task_data2d_render}{TaskData2dRender}}* a\_data);}
-\DoxyCodeLine{361 }
-\DoxyCodeLine{362     \textcolor{keywordtype}{void} prepare() \textcolor{keyword}{override};}
-\DoxyCodeLine{363 }
-\DoxyCodeLine{364     \textcolor{keywordtype}{void} execute() \textcolor{keyword}{const override};}
-\DoxyCodeLine{365 }
-\DoxyCodeLine{366    \textcolor{keyword}{private}:}
-\DoxyCodeLine{367     mUInt         m\_i = 0;}
-\DoxyCodeLine{368     uploadBuffers m\_buffers;}
-\DoxyCodeLine{369 }
-\DoxyCodeLine{370     dx12::ComPtr<ID3D12RootSignature> m\_rootSignature = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{371     dx12::ComPtr<ID3D12PipelineState> m\_pso           = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{372 \};)}
-\DoxyCodeLine{373 }
+\DoxyCodeLine{358 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{359 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_task2d_render}{Task2dRender}} : \textcolor{keyword}{public} \mbox{\hyperlink{structm_1_1render_1_1_task}{Task}}}
+\DoxyCodeLine{360 \{}
+\DoxyCodeLine{361     \textcolor{keyword}{explicit} \mbox{\hyperlink{structm_1_1render_1_1_task2d_render}{Task2dRender}}(\mbox{\hyperlink{structm_1_1render_1_1_task_data2d_render}{TaskData2dRender}}* a\_data);}
+\DoxyCodeLine{362 }
+\DoxyCodeLine{363     \textcolor{keyword}{virtual} mBool add\_texture(\mbox{\hyperlink{structm_1_1resource_1_1m_request_image}{resource::mRequestImage}} \textcolor{keyword}{const}\& a\_request) = 0;}
+\DoxyCodeLine{364 }
+\DoxyCodeLine{365     \textcolor{keywordtype}{void} prepare()\textcolor{keyword}{ override }\{\}}
+\DoxyCodeLine{366 }
+\DoxyCodeLine{367     \mbox{\hyperlink{structm_1_1render_1_1_task_data2d_render}{TaskData2dRender}} m\_taskData;}
+\DoxyCodeLine{368     \textcolor{keyword}{static} \textcolor{keyword}{const} mUInt sm\_nbMaxMaterial = 32;}
+\DoxyCodeLine{369     \textcolor{keyword}{static} \textcolor{keyword}{const} mUInt sm\_minimalCBSize = 256;}
+\DoxyCodeLine{370 \};}
+\DoxyCodeLine{371 }
+\DoxyCodeLine{372 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{373 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
 \DoxyCodeLine{374 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{375 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{376 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{377 mIfVulkanEnabled(\textcolor{keyword}{struct} VulkanTask2dRender : \textcolor{keyword}{public} Task2dRender}
-\DoxyCodeLine{378 \{}
-\DoxyCodeLine{379     \textcolor{keyword}{explicit} VulkanTask2dRender(TaskData2dRender* a\_data);}
-\DoxyCodeLine{380     \string~VulkanTask2dRender() \textcolor{keyword}{override};}
-\DoxyCodeLine{381 }
-\DoxyCodeLine{382     \textcolor{keywordtype}{void} create\_renderPassAndPipeline(mU32 a\_width, mU32 a\_height);}
-\DoxyCodeLine{383 }
-\DoxyCodeLine{384     \textcolor{keywordtype}{void} prepare() \textcolor{keyword}{override};}
-\DoxyCodeLine{385 }
-\DoxyCodeLine{386     \textcolor{keywordtype}{void} execute() \textcolor{keyword}{const override};}
-\DoxyCodeLine{387 }
-\DoxyCodeLine{388    \textcolor{keyword}{private}:}
-\DoxyCodeLine{389     vulkanUploadBuffers m\_buffers;}
-\DoxyCodeLine{390 }
-\DoxyCodeLine{391     VkShaderModule m\_vertShaderModule;}
-\DoxyCodeLine{392     VkShaderModule m\_fragShaderModule;}
-\DoxyCodeLine{393 }
-\DoxyCodeLine{394     VkPipelineLayout m\_pipelineLayout;}
-\DoxyCodeLine{395     VkRenderPass     m\_renderPass;}
-\DoxyCodeLine{396     VkPipeline       m\_graphicsPipeline;}
+\DoxyCodeLine{375 mIfDx12Enabled(\textcolor{keyword}{struct} Dx12Task2dRender : \textcolor{keyword}{public} \mbox{\hyperlink{structm_1_1render_1_1_task2d_render}{Task2dRender}}}
+\DoxyCodeLine{376 \{}
+\DoxyCodeLine{377     \textcolor{keyword}{explicit} Dx12Task2dRender(\mbox{\hyperlink{structm_1_1render_1_1_task_data2d_render}{TaskData2dRender}}* a\_data);}
+\DoxyCodeLine{378 }
+\DoxyCodeLine{379     mBool add\_texture(\mbox{\hyperlink{structm_1_1resource_1_1m_request_image}{resource::mRequestImage}} \textcolor{keyword}{const}\& a\_request) \textcolor{keyword}{override};}
+\DoxyCodeLine{380 }
+\DoxyCodeLine{381     \textcolor{keywordtype}{void} prepare() \textcolor{keyword}{override};}
+\DoxyCodeLine{382 }
+\DoxyCodeLine{383     \textcolor{keywordtype}{void} execute() \textcolor{keyword}{const override};}
+\DoxyCodeLine{384 }
+\DoxyCodeLine{385    \textcolor{keyword}{private}:}
+\DoxyCodeLine{386     mUInt         m\_i = 0;}
+\DoxyCodeLine{387     uploadBuffers m\_buffers;}
+\DoxyCodeLine{388 }
+\DoxyCodeLine{389     dx12::ComPtr<ID3D12RootSignature> m\_rootSignature = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{390     dx12::ComPtr<ID3D12PipelineState> m\_pso           = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{391 }
+\DoxyCodeLine{392     dx12::ComPtr<ID3D12Resource> m\_pCbMatrices = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{393     \textcolor{keywordtype}{void}* m\_pCbMatricesData = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{394     dx12::ComPtr<ID3D12Resource> m\_pCbMaterial = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{395     \textcolor{keywordtype}{void}* m\_pCbMaterialData = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{396     std::vector<dx12::ComPtr<ID3D12Resource>> m\_pTextureResources\{\};}
 \DoxyCodeLine{397 }
-\DoxyCodeLine{398     mUInt m\_i = 0;}
-\DoxyCodeLine{399 \};)}
-\DoxyCodeLine{400 }
-\DoxyCodeLine{401 \}  \textcolor{comment}{// namespace m::render}}
-\DoxyCodeLine{402 }
-\DoxyCodeLine{403 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_RenderTaskDearImGui}}
+\DoxyCodeLine{398     D3D12\_GPU\_DESCRIPTOR\_HANDLE m\_GPUDescHdlTexture\{\};}
+\DoxyCodeLine{399 }
+\DoxyCodeLine{400     D3D12\_GPU\_DESCRIPTOR\_HANDLE m\_GPUDescHdlSampler\{\};}
+\DoxyCodeLine{401 }
+\DoxyCodeLine{402     dx12::ComPtr<ID3D12DescriptorHeap> m\_pSrvHeap = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{403     mUInt m\_incrementSizeSrv = 0;}
+\DoxyCodeLine{404     \textcolor{keyword}{static} \textcolor{keyword}{const} mUInt sm\_sizeSrvHeap = 32;}
+\DoxyCodeLine{405     dx12::ComPtr<ID3D12DescriptorHeap> m\_pSamplerHeap = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{406     mUInt m\_incrementSizeSampler = 0;}
+\DoxyCodeLine{407     \textcolor{keyword}{static} \textcolor{keyword}{const} mUInt sm\_sizeSamplerHeap = 8;}
+\DoxyCodeLine{408 \};)}
+\DoxyCodeLine{409 }
+\DoxyCodeLine{410 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{411 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{412 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{413 mIfVulkanEnabled(\textcolor{keyword}{struct} VulkanTask2dRender : \textcolor{keyword}{public} Task2dRender}
+\DoxyCodeLine{414 \{}
+\DoxyCodeLine{415     \textcolor{keyword}{explicit} VulkanTask2dRender(TaskData2dRender* a\_data);}
+\DoxyCodeLine{416     \string~VulkanTask2dRender() \textcolor{keyword}{override};}
+\DoxyCodeLine{417 }
+\DoxyCodeLine{418     mBool add\_texture(resource::mRequestImage \textcolor{keyword}{const}\& a\_request)\textcolor{keyword}{ override }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{true};\}}
+\DoxyCodeLine{419 }
+\DoxyCodeLine{420     \textcolor{keywordtype}{void} create\_renderPassAndPipeline(mU32 a\_width, mU32 a\_height);}
+\DoxyCodeLine{421 }
+\DoxyCodeLine{422     \textcolor{keywordtype}{void} prepare() \textcolor{keyword}{override};}
+\DoxyCodeLine{423 }
+\DoxyCodeLine{424     \textcolor{keywordtype}{void} execute() \textcolor{keyword}{const override};}
+\DoxyCodeLine{425 }
+\DoxyCodeLine{426    \textcolor{keyword}{private}:}
+\DoxyCodeLine{427     vulkanUploadBuffers m\_buffers;}
+\DoxyCodeLine{428 }
+\DoxyCodeLine{429     VkShaderModule m\_vertShaderModule;}
+\DoxyCodeLine{430     VkShaderModule m\_fragShaderModule;}
+\DoxyCodeLine{431 }
+\DoxyCodeLine{432     VkPipelineLayout m\_pipelineLayout;}
+\DoxyCodeLine{433     VkRenderPass     m\_renderPass;}
+\DoxyCodeLine{434     VkPipeline       m\_graphicsPipeline;}
+\DoxyCodeLine{435 }
+\DoxyCodeLine{436     mUInt m\_i = 0;}
+\DoxyCodeLine{437 \};)}
+\DoxyCodeLine{438 }
+\DoxyCodeLine{439 \}  \textcolor{comment}{// namespace m::render}}
+\DoxyCodeLine{440 }
+\DoxyCodeLine{441 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_RenderTaskDearImGui}}
 
 \end{DoxyCode}

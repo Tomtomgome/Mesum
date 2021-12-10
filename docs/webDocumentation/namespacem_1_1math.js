@@ -1,5 +1,6 @@
 var namespacem_1_1math =
 [
+    [ "mSpherical", "classm_1_1math_1_1m_spherical.html", null ],
     [ "mVec", "structm_1_1math_1_1m_vec.html", null ],
     [ "mVecData", "structm_1_1math_1_1m_vec_data.html", null ],
     [ "mVecData< t_T, 2 >", "structm_1_1math_1_1m_vec_data_3_01t___t_00_012_01_4.html", null ],

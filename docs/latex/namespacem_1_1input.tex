@@ -15,40 +15,42 @@ class \mbox{\hyperlink{classm_1_1input_1_1m_i_input_manager}{m\+IInput\+Manager}
 struct \mbox{\hyperlink{structm_1_1input_1_1m_key_action}{m\+Key\+Action}}
 \begin{DoxyCompactList}\small\item\em Structure representing an action executed on a key. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structm_1_1input_1_1m_mouse_action}{m\+Mouse\+Action}}
-\begin{DoxyCompactList}\small\item\em Structure representing an action executed on a mouse button. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Structure representing an action executed on a mouse button. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classm_1_1input_1_1m_state_input_manager}{m\+State\+Input\+Manager}}
+\begin{DoxyCompactList}\small\item\em Implementation of an input manager. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{namespacem_1_1input_a268a65489ab242dff34c08fd7958aae3}\label{namespacem_1_1input_a268a65489ab242dff34c08fd7958aae3}} 
 using {\bfseries m\+Key\+Action\+Callback} = \mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void $>$
-\item 
+\begin{DoxyCompactList}\small\item\em Alias a keyaction callback. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{namespacem_1_1input_a4c52da42a15d9208cf703efc78a44d5a}\label{namespacem_1_1input_a4c52da42a15d9208cf703efc78a44d5a}} 
 using {\bfseries m\+Key\+Action\+Signal} = \mbox{\hyperlink{classm_1_1m_signal}{m\+Signal}}$<$$>$
-\item 
+\begin{DoxyCompactList}\small\item\em Alias a keyaction signal. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{namespacem_1_1input_a890f6123a3400bf4f7595272cbadfed0}\label{namespacem_1_1input_a890f6123a3400bf4f7595272cbadfed0}} 
 using {\bfseries m\+Mouse\+Action\+Callback} = \mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, const \mbox{\hyperlink{structm_1_1math_1_1m_vec}{math\+::m\+IVec2}} \& $>$
-\item 
+\begin{DoxyCompactList}\small\item\em Alias a m\+Mouse\+Action\+Callback. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{namespacem_1_1input_a51f1889ddec8a44857aafc2816ba75fe}\label{namespacem_1_1input_a51f1889ddec8a44857aafc2816ba75fe}} 
 using {\bfseries m\+Mouse\+Action\+Signal} = \mbox{\hyperlink{classm_1_1m_signal}{m\+Signal}}$<$ const \mbox{\hyperlink{structm_1_1math_1_1m_vec}{math\+::m\+IVec2}} \& $>$
-\item 
+\begin{DoxyCompactList}\small\item\em Alias a m\+Mouse\+Action\+Signal. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{namespacem_1_1input_aa32417e7281c1e02d648c4908842c6e2}\label{namespacem_1_1input_aa32417e7281c1e02d648c4908842c6e2}} 
 using {\bfseries m\+Mouse\+State\+Callback} = \mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, m\+Bool $>$
-\item 
+\begin{DoxyCompactList}\small\item\em Alias a m\+Mouse\+State\+Callback. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{namespacem_1_1input_a103bc35e98cac507dbabe70eab531ebf}\label{namespacem_1_1input_a103bc35e98cac507dbabe70eab531ebf}} 
 using {\bfseries m\+Mouse\+State\+Signal} = \mbox{\hyperlink{classm_1_1m_signal}{m\+Signal}}$<$ m\+Bool $>$
-\item 
+\begin{DoxyCompactList}\small\item\em Alias a m\+Mouse\+Action\+Signal. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{namespacem_1_1input_a73c6eefdbb2632f34df91db81e5e0d8d}\label{namespacem_1_1input_a73c6eefdbb2632f34df91db81e5e0d8d}} 
 using {\bfseries m\+Scroll\+Callback} = \mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, m\+Double $>$
-\item 
+\begin{DoxyCompactList}\small\item\em Alias a m\+Scroll\+Callback. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{namespacem_1_1input_ab43bb855656572278a2cc5e84015a1fe}\label{namespacem_1_1input_ab43bb855656572278a2cc5e84015a1fe}} 
 using {\bfseries m\+Scroll\+Signal} = \mbox{\hyperlink{classm_1_1m_signal}{m\+Signal}}$<$ m\+Double $>$
-\item 
+\begin{DoxyCompactList}\small\item\em Alias a m\+Scroll\+Signal. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{namespacem_1_1input_ac362ca24d233bd7a2dc12a97ae0ad2d4}\label{namespacem_1_1input_ac362ca24d233bd7a2dc12a97ae0ad2d4}} 
 using {\bfseries m\+Mouse\+Move\+Callback} = \mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, const \mbox{\hyperlink{structm_1_1math_1_1m_vec}{math\+::m\+IVec2}} \& $>$
-\item 
+\begin{DoxyCompactList}\small\item\em Alias a m\+Mouse\+Move\+Callback. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{namespacem_1_1input_ab5cc4c050df4cc2607113aacda9d71ce}\label{namespacem_1_1input_ab5cc4c050df4cc2607113aacda9d71ce}} 
 using {\bfseries m\+Mouse\+Move\+Signal} = \mbox{\hyperlink{classm_1_1m_signal}{m\+Signal}}$<$ const \mbox{\hyperlink{structm_1_1math_1_1m_vec}{math\+::m\+IVec2}} \& $>$
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Alias a m\+Mouse\+Move\+Signal. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Enumerations}
 \begin{DoxyCompactItemize}
 \item 

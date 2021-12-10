@@ -86,8 +86,9 @@ $(document).ready(function(){initNavTree('structm_1_1render_1_1_task2d_render.ht
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="structm_1_1render_1_1_task2d_render-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">m::render::Task2dRender Struct Reference</div></div>
+  <div class="headertitle"><div class="title">m::render::Task2dRender Struct Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
 </div><!--header-->
 <div class="contents">
 <div class="dynheader">
@@ -105,6 +106,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adecad4e79de6abefe094c4d360dca6e1"><td class="memItemLeft" align="right" valign="top"><a id="adecad4e79de6abefe094c4d360dca6e1" name="adecad4e79de6abefe094c4d360dca6e1"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Task2dRender</b> (<a class="el" href="structm_1_1render_1_1_task_data2d_render.html">TaskData2dRender</a> *a_data)</td></tr>
 <tr class="separator:adecad4e79de6abefe094c4d360dca6e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a704a71e459d786a46604c098b8d581d3"><td class="memItemLeft" align="right" valign="top"><a id="a704a71e459d786a46604c098b8d581d3" name="a704a71e459d786a46604c098b8d581d3"></a>
+virtual mBool&#160;</td><td class="memItemRight" valign="bottom"><b>add_texture</b> (<a class="el" href="structm_1_1resource_1_1m_request_image.html">resource::mRequestImage</a> const &amp;a_request)=0</td></tr>
+<tr class="separator:a704a71e459d786a46604c098b8d581d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f13ffbbaa8da59fae1165b3b5f8a65c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structm_1_1render_1_1_task2d_render.html#a8f13ffbbaa8da59fae1165b3b5f8a65c">prepare</a> () override</td></tr>
 <tr class="separator:a8f13ffbbaa8da59fae1165b3b5f8a65c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structm_1_1render_1_1_task"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structm_1_1render_1_1_task')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structm_1_1render_1_1_task.html">m::render::Task</a></td></tr>
@@ -117,6 +121,15 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a4dcc8f13f1da7ef57b5eee760dc9ad70"><td class="memItemLeft" align="right" valign="top"><a id="a4dcc8f13f1da7ef57b5eee760dc9ad70" name="a4dcc8f13f1da7ef57b5eee760dc9ad70"></a>
 <a class="el" href="structm_1_1render_1_1_task_data2d_render.html">TaskData2dRender</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_taskData</b></td></tr>
 <tr class="separator:a4dcc8f13f1da7ef57b5eee760dc9ad70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a0b2a483a18dad2d3c6aa9c445d42d50d"><td class="memItemLeft" align="right" valign="top"><a id="a0b2a483a18dad2d3c6aa9c445d42d50d" name="a0b2a483a18dad2d3c6aa9c445d42d50d"></a>
+static const mUInt&#160;</td><td class="memItemRight" valign="bottom"><b>sm_nbMaxMaterial</b> = 32</td></tr>
+<tr class="separator:a0b2a483a18dad2d3c6aa9c445d42d50d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbfce44422179fa88e7692f606187ae0"><td class="memItemLeft" align="right" valign="top"><a id="acbfce44422179fa88e7692f606187ae0" name="acbfce44422179fa88e7692f606187ae0"></a>
+static const mUInt&#160;</td><td class="memItemRight" valign="bottom"><b>sm_minimalCBSize</b> = 256</td></tr>
+<tr class="separator:acbfce44422179fa88e7692f606187ae0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a8f13ffbbaa8da59fae1165b3b5f8a65c" name="a8f13ffbbaa8da59fae1165b3b5f8a65c"></a>

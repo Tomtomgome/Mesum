@@ -38,20 +38,21 @@
 \DoxyCodeLine{51 \textcolor{preprocessor}{\#ifdef M\_RELEASE}}
 \DoxyCodeLine{52 \textcolor{preprocessor}{\#define mSoftAssert(condition)}}
 \DoxyCodeLine{53 \textcolor{preprocessor}{\#define mAssert(condition)}}
-\DoxyCodeLine{54 \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{60 \textcolor{preprocessor}{\#define mSoftAssert(a\_condition)                      \(\backslash\)}}
-\DoxyCodeLine{61 \textcolor{preprocessor}{    m::manage\_assert(a\_condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}}
-\DoxyCodeLine{62 \textcolor{preprocessor}{                     "{}Triggered soft assertion from file : "{}}, false);}
-\DoxyCodeLine{63 }
-\DoxyCodeLine{70 \textcolor{preprocessor}{\#define mAssert(a\_condition)                          \(\backslash\)}}
-\DoxyCodeLine{71 \textcolor{preprocessor}{    m::manage\_assert(a\_condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}}
-\DoxyCodeLine{72 \textcolor{preprocessor}{                     "{}Triggered soft assertion from file : "{}});}
-\DoxyCodeLine{73 }
-\DoxyCodeLine{79 \textcolor{preprocessor}{\#define mExpect(a\_condition)                          \(\backslash\)}}
-\DoxyCodeLine{80 \textcolor{preprocessor}{    m::manage\_assert(a\_condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}}
-\DoxyCodeLine{81 \textcolor{preprocessor}{                     "{}Precondition not matched : "{}});}
-\DoxyCodeLine{82 \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{83 }
-\DoxyCodeLine{86 }
+\DoxyCodeLine{54 \textcolor{preprocessor}{\#define mExpect(condition)}}
+\DoxyCodeLine{55 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{61 \textcolor{preprocessor}{\#define mSoftAssert(a\_condition)                      \(\backslash\)}}
+\DoxyCodeLine{62 \textcolor{preprocessor}{    m::manage\_assert(a\_condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}}
+\DoxyCodeLine{63 \textcolor{preprocessor}{                     "{}Triggered soft assertion from file : "{}}, false);}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{71 \textcolor{preprocessor}{\#define mAssert(a\_condition)                          \(\backslash\)}}
+\DoxyCodeLine{72 \textcolor{preprocessor}{    m::manage\_assert(a\_condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}}
+\DoxyCodeLine{73 \textcolor{preprocessor}{                     "{}Triggered soft assertion from file : "{}});}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{80 \textcolor{preprocessor}{\#define mExpect(a\_condition)                          \(\backslash\)}}
+\DoxyCodeLine{81 \textcolor{preprocessor}{    m::manage\_assert(a\_condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}}
+\DoxyCodeLine{82 \textcolor{preprocessor}{                     "{}Precondition not matched : "{}});}
+\DoxyCodeLine{83 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{87 }
 
 \end{DoxyCode}

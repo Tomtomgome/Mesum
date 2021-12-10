@@ -1,0 +1,73 @@
+\hypertarget{_profile_8hpp_source}{}\doxysection{Profile.\+hpp}
+\label{_profile_8hpp_source}\index{MesumCore/Kernel/Profile.hpp@{MesumCore/Kernel/Profile.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <array>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <chrono>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <numeric>}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{14 \textcolor{keyword}{namespace }m::profile}
+\DoxyCodeLine{15 \{}
+\DoxyCodeLine{19 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1profile_1_1m_i_profiler}{mIProfiler}}}
+\DoxyCodeLine{20 \{}
+\DoxyCodeLine{21    \textcolor{keyword}{public}:}
+\DoxyCodeLine{27     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{group___core_gac6293026c2b1a3029978393784f14e45}{add\_timing}}(std::chrono::steady\_clock::duration a\_timming) = 0;}
+\DoxyCodeLine{28 \};}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{34 \textcolor{keyword}{template} <mUInt t\_SampleCount>}
+\DoxyCodeLine{35 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1profile_1_1m_profiler_multi_sampling}{mProfilerMultiSampling}} : \textcolor{keyword}{public} \mbox{\hyperlink{classm_1_1profile_1_1m_i_profiler}{mIProfiler}}}
+\DoxyCodeLine{36 \{}
+\DoxyCodeLine{37    \textcolor{keyword}{public}:}
+\DoxyCodeLine{38     \textcolor{keywordtype}{void} \mbox{\hyperlink{group___core_ga9cb2380c73ae20a4b1a7cd6a854d66b8}{add\_timing}}(std::chrono::steady\_clock::duration a\_timming) \textcolor{keyword}{override};}
+\DoxyCodeLine{39     \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_RetType, \textcolor{keyword}{typename} t\_Preiod>}
+\DoxyCodeLine{40     t\_RetType get\_average();}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42    \textcolor{keyword}{private}:}
+\DoxyCodeLine{43     std::array<std::chrono::steady\_clock::duration, t\_SampleCount> m\_samples\{\};}
+\DoxyCodeLine{44     mUInt m\_currentCount\{0\};}
+\DoxyCodeLine{45 \};}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{51 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1profile_1_1m_r_a_i_i_timing}{mRAIITiming}}}
+\DoxyCodeLine{52 \{}
+\DoxyCodeLine{53    \textcolor{keyword}{public}:}
+\DoxyCodeLine{54     \mbox{\hyperlink{classm_1_1profile_1_1m_r_a_i_i_timing}{mRAIITiming}}() = \textcolor{keyword}{delete};}
+\DoxyCodeLine{62     \textcolor{keyword}{explicit} \mbox{\hyperlink{classm_1_1profile_1_1m_r_a_i_i_timing}{mRAIITiming}}(\mbox{\hyperlink{classm_1_1profile_1_1m_i_profiler}{mIProfiler}}\& a\_parent);}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{70     \mbox{\hyperlink{group___core_ga7ee6d3967363eec5ab00aba61b521ce6}{\string~mRAIITiming}}();}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72    \textcolor{keyword}{private}:}
+\DoxyCodeLine{76     \mbox{\hyperlink{classm_1_1profile_1_1m_i_profiler}{mIProfiler}}* \mbox{\hyperlink{group___core_ga1e6f6172605e1987636758efada6ee92}{m\_pParent}} = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{80     std::chrono::time\_point<std::chrono::steady\_clock> \mbox{\hyperlink{group___core_ga16881a589345bcb0ce7de57fc989e811}{m\_start}};}
+\DoxyCodeLine{81 \};}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{84 \textcolor{comment}{//}}
+\DoxyCodeLine{85 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{86 \textcolor{keyword}{template} <mUInt t\_SampleCount>}
+\DoxyCodeLine{87 \textcolor{keywordtype}{void} \mbox{\hyperlink{group___core_ga9cb2380c73ae20a4b1a7cd6a854d66b8}{mProfilerMultiSampling<t\_SampleCount>::add\_timing}}(}
+\DoxyCodeLine{88     std::chrono::steady\_clock::duration a\_timming)}
+\DoxyCodeLine{89 \{}
+\DoxyCodeLine{90     m\_samples[m\_currentCount \% t\_SampleCount] = a\_timming;}
+\DoxyCodeLine{91     m\_currentCount++;}
+\DoxyCodeLine{92 \}}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{95 \textcolor{comment}{//}}
+\DoxyCodeLine{96 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{97 \textcolor{keyword}{template} <mUInt t\_SampleCount>}
+\DoxyCodeLine{98 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_RetType, \textcolor{keyword}{typename} t\_Preiod>}
+\DoxyCodeLine{99 t\_RetType \mbox{\hyperlink{classm_1_1profile_1_1m_profiler_multi_sampling}{mProfilerMultiSampling<t\_SampleCount>::get\_average}}()}
+\DoxyCodeLine{100 \{}
+\DoxyCodeLine{101     \textcolor{keyword}{auto} allTimings = std::accumulate(m\_samples.begin(), m\_samples.end(),}
+\DoxyCodeLine{102                                       std::chrono::steady\_clock::duration(0));}
+\DoxyCodeLine{103     \textcolor{keywordflow}{return} std::chrono::duration\_cast<}
+\DoxyCodeLine{104                std::chrono::duration<t\_RetType, t\_Preiod>>(allTimings)}
+\DoxyCodeLine{105                .count() /}
+\DoxyCodeLine{106            std::max(1u, std::min(t\_SampleCount, m\_currentCount));}
+\DoxyCodeLine{107 \}}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 \};  \textcolor{comment}{// namespace m::profile}}
+
+\end{DoxyCode}

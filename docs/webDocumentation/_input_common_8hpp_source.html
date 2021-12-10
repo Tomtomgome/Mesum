@@ -98,23 +98,30 @@ $(document).ready(function(){initNavTree('_input_common_8hpp_source.html',''); i
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>{</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">extern</span> MesumCoreApi <span class="keyword">const</span> <a class="code hl_typedef" href="namespacem_1_1logging.html#af807dfba0ed733f24957c0f3d016a15f">logging::mChannelID</a> g_inputLogID;</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">using</span> mKeyActionCallback = mCallback&lt;void&gt;;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">using</span> mKeyActionSignal   = mSignal&lt;&gt;;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="namespacem_1_1input.html#a268a65489ab242dff34c08fd7958aae3">   20</a></span><span class="keyword">using</span> <a class="code hl_class" href="classm_1_1m_callback.html">mKeyActionCallback</a> = <a class="code hl_class" href="classm_1_1m_callback.html">mCallback&lt;void&gt;</a>;  </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="namespacem_1_1input.html#a4c52da42a15d9208cf703efc78a44d5a">   21</a></span><span class="keyword">using</span> <a class="code hl_class" href="classm_1_1m_signal.html">mKeyActionSignal</a>   = <a class="code hl_class" href="classm_1_1m_signal.html">mSignal&lt;&gt;</a>;        </div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">using</span> mMouseActionCallback = mCallback&lt;void, const math::mIVec2&amp;&gt;;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">using</span> mMouseActionSignal   = mSignal&lt;const math::mIVec2&amp;&gt;;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">using</span> mMouseStateCallback = mCallback&lt;void, mBool&gt;;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">using</span> mMouseStateSignal   = mSignal&lt;mBool&gt;;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">using</span> mScrollCallback = mCallback&lt;void, mDouble&gt;;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">using</span> mScrollSignal   = mSignal&lt;mDouble&gt;;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="namespacem_1_1input.html#a890f6123a3400bf4f7595272cbadfed0">   23</a></span><span class="keyword">using</span> <a class="code hl_class" href="classm_1_1m_callback.html">mMouseActionCallback</a> =</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <a class="code hl_class" href="classm_1_1m_callback.html">mCallback&lt;void, const math::mIVec2&amp;&gt;</a>;  </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="namespacem_1_1input.html#a51f1889ddec8a44857aafc2816ba75fe">   25</a></span><span class="keyword">using</span> <a class="code hl_class" href="classm_1_1m_signal.html">mMouseActionSignal</a> =</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <a class="code hl_class" href="classm_1_1m_signal.html">mSignal&lt;const math::mIVec2&amp;&gt;</a>;  </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="namespacem_1_1input.html#aa32417e7281c1e02d648c4908842c6e2">   28</a></span><span class="keyword">using</span> <a class="code hl_class" href="classm_1_1m_callback.html">mMouseStateCallback</a> =</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <a class="code hl_class" href="classm_1_1m_callback.html">mCallback&lt;void, mBool&gt;</a>;                </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="namespacem_1_1input.html#a103bc35e98cac507dbabe70eab531ebf">   30</a></span><span class="keyword">using</span> <a class="code hl_class" href="classm_1_1m_signal.html">mMouseStateSignal</a> = <a class="code hl_class" href="classm_1_1m_signal.html">mSignal&lt;mBool&gt;</a>;  </div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="keyword">using</span> mMouseMoveCallback = mCallback&lt;void, const math::mIVec2&amp;&gt;;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">using</span> mMouseMoveSignal   = mSignal&lt;const math::mIVec2&amp;&gt;;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>}  <span class="comment">// namespace m::input</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="namespacem_1_1input.html#a73c6eefdbb2632f34df91db81e5e0d8d">   32</a></span><span class="keyword">using</span> <a class="code hl_class" href="classm_1_1m_callback.html">mScrollCallback</a> = <a class="code hl_class" href="classm_1_1m_callback.html">mCallback&lt;void, mDouble&gt;</a>;  </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="namespacem_1_1input.html#ab43bb855656572278a2cc5e84015a1fe">   33</a></span><span class="keyword">using</span> <a class="code hl_class" href="classm_1_1m_signal.html">mScrollSignal</a>   = <a class="code hl_class" href="classm_1_1m_signal.html">mSignal&lt;mDouble&gt;</a>;          </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="namespacem_1_1input.html#ac362ca24d233bd7a2dc12a97ae0ad2d4">   35</a></span><span class="keyword">using</span> <a class="code hl_class" href="classm_1_1m_callback.html">mMouseMoveCallback</a> =</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <a class="code hl_class" href="classm_1_1m_callback.html">mCallback&lt;void, const math::mIVec2&amp;&gt;</a>;  </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="namespacem_1_1input.html#ab5cc4c050df4cc2607113aacda9d71ce">   37</a></span><span class="keyword">using</span> <a class="code hl_class" href="classm_1_1m_signal.html">mMouseMoveSignal</a> =</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <a class="code hl_class" href="classm_1_1m_signal.html">mSignal&lt;const math::mIVec2&amp;&gt;</a>;  </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>}  <span class="comment">// namespace m::input</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="ttc" id="aclassm_1_1m_callback_html"><div class="ttname"><a href="classm_1_1m_callback.html">m::mCallback</a></div><div class="ttdoc">Class encapsulating a callback.</div><div class="ttdef"><b>Definition:</b> Callbacks.hpp:27</div></div>
+<div class="ttc" id="aclassm_1_1m_signal_html"><div class="ttname"><a href="classm_1_1m_signal.html">m::mSignal</a></div><div class="ttdoc">Class encapsulating a signal.</div><div class="ttdef"><b>Definition:</b> Callbacks.hpp:182</div></div>
 <div class="ttc" id="anamespacem_1_1input_html"><div class="ttname"><a href="namespacem_1_1input.html">m::input</a></div><div class="ttdoc">Namespace grouping basic input management.</div><div class="ttdef"><b>Definition:</b> Input.cpp:4</div></div>
 <div class="ttc" id="anamespacem_1_1logging_html_af807dfba0ed733f24957c0f3d016a15f"><div class="ttname"><a href="namespacem_1_1logging.html#af807dfba0ed733f24957c0f3d016a15f">m::logging::mChannelID</a></div><div class="ttdeci">mU64 mChannelID</div><div class="ttdoc">ChannelIDs are defined by a bit.</div><div class="ttdef"><b>Definition:</b> Log.hpp:27</div></div>
 </div><!-- fragment --></div><!-- contents -->

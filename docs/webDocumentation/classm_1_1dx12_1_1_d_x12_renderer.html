@@ -109,8 +109,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af9169b259ecb3e4a8c2ced3abfd193d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51db340d74a5a21138e0d52b274f23d1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1dx12_1_1_d_x12_renderer.html#a51db340d74a5a21138e0d52b274f23d1">start_dearImGuiNewFrameRenderer</a> () const override</td></tr>
 <tr class="separator:a51db340d74a5a21138e0d52b274f23d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad084852b3d94842f2dc025bf9d462850"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classm_1_1render_1_1_i_surface.html">render::ISurface</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1dx12_1_1_d_x12_renderer.html#ad084852b3d94842f2dc025bf9d462850">get_newSurface</a> () override</td></tr>
-<tr class="separator:ad084852b3d94842f2dc025bf9d462850"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f50cfd4a98226eda09ca12f30a2c305"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classm_1_1render_1_1_i_surface.html">render::ISurface</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1dx12_1_1_d_x12_renderer.html#a1f50cfd4a98226eda09ca12f30a2c305">getNew_surface</a> () override</td></tr>
+<tr class="separator:a1f50cfd4a98226eda09ca12f30a2c305"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9fe0cffcc9d34b44ba2146784fcfc22"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structm_1_1render_1_1_i_resource.html">render::IResource</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1dx12_1_1_d_x12_renderer.html#ac9fe0cffcc9d34b44ba2146784fcfc22">getNew_texture</a> () override</td></tr>
+<tr class="separator:ac9fe0cffcc9d34b44ba2146784fcfc22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a8a640092204631c42e21a88840f1a5cc" name="a8a640092204631c42e21a88840f1a5cc"></a>
@@ -124,33 +126,6 @@ Public Member Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">void m::dx12::DX12Renderer::destroy </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Implements <a class="el" href="classm_1_1render_1_1_i_renderer.html">m::render::IRenderer</a>.</p>
-
-</div>
-</div>
-<a id="ad084852b3d94842f2dc025bf9d462850" name="ad084852b3d94842f2dc025bf9d462850"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad084852b3d94842f2dc025bf9d462850">&#9670;&nbsp;</a></span>get_newSurface()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classm_1_1render_1_1_i_surface.html">render::ISurface</a> * m::dx12::DX12Renderer::get_newSurface </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -186,6 +161,60 @@ Public Member Functions</h2></td></tr>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classm_1_1render_1_1_i_renderer.html">m::render::IRenderer</a>.</p>
+
+</div>
+</div>
+<a id="a1f50cfd4a98226eda09ca12f30a2c305" name="a1f50cfd4a98226eda09ca12f30a2c305"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f50cfd4a98226eda09ca12f30a2c305">&#9670;&nbsp;</a></span>getNew_surface()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classm_1_1render_1_1_i_surface.html">render::ISurface</a> * m::dx12::DX12Renderer::getNew_surface </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classm_1_1render_1_1_i_renderer.html">m::render::IRenderer</a>.</p>
+
+</div>
+</div>
+<a id="ac9fe0cffcc9d34b44ba2146784fcfc22" name="ac9fe0cffcc9d34b44ba2146784fcfc22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9fe0cffcc9d34b44ba2146784fcfc22">&#9670;&nbsp;</a></span>getNew_texture()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structm_1_1render_1_1_i_resource.html">render::IResource</a> * m::dx12::DX12Renderer::getNew_texture </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

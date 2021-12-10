@@ -17,7 +17,9 @@ m\+Bool \mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_renderer_af9169b259ecb3e4a8c2c
 \item 
 void \mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_renderer_a51db340d74a5a21138e0d52b274f23d1}{start\+\_\+dear\+Im\+Gui\+New\+Frame\+Renderer}} () const override
 \item 
-\mbox{\hyperlink{classm_1_1render_1_1_i_surface}{render\+::\+ISurface}} $\ast$ \mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_renderer_ad084852b3d94842f2dc025bf9d462850}{get\+\_\+new\+Surface}} () override
+\mbox{\hyperlink{classm_1_1render_1_1_i_surface}{render\+::\+ISurface}} $\ast$ \mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_renderer_a1f50cfd4a98226eda09ca12f30a2c305}{get\+New\+\_\+surface}} () override
+\item 
+\mbox{\hyperlink{structm_1_1render_1_1_i_resource}{render\+::\+IResource}} $\ast$ \mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_renderer_ac9fe0cffcc9d34b44ba2146784fcfc22}{get\+New\+\_\+texture}} () override
 \end{DoxyCompactItemize}
 
 
@@ -32,21 +34,31 @@ void \mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_renderer_a51db340d74a5a21138e0d52
 
 Implements \mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{m\+::render\+::\+IRenderer}}.
 
-\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_renderer_ad084852b3d94842f2dc025bf9d462850}\label{classm_1_1dx12_1_1_d_x12_renderer_ad084852b3d94842f2dc025bf9d462850}} 
-\index{m::dx12::DX12Renderer@{m::dx12::DX12Renderer}!get\_newSurface@{get\_newSurface}}
-\index{get\_newSurface@{get\_newSurface}!m::dx12::DX12Renderer@{m::dx12::DX12Renderer}}
-\doxysubsubsection{\texorpdfstring{get\_newSurface()}{get\_newSurface()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{render\+::\+ISurface}} $\ast$ m\+::dx12\+::\+DX12\+Renderer\+::get\+\_\+new\+Surface (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
-
-
-
-Implements \mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{m\+::render\+::\+IRenderer}}.
-
 \mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_renderer_af9169b259ecb3e4a8c2ced3abfd193d3}\label{classm_1_1dx12_1_1_d_x12_renderer_af9169b259ecb3e4a8c2ced3abfd193d3}} 
 \index{m::dx12::DX12Renderer@{m::dx12::DX12Renderer}!get\_supportDearImGuiMultiViewports@{get\_supportDearImGuiMultiViewports}}
 \index{get\_supportDearImGuiMultiViewports@{get\_supportDearImGuiMultiViewports}!m::dx12::DX12Renderer@{m::dx12::DX12Renderer}}
 \doxysubsubsection{\texorpdfstring{get\_supportDearImGuiMultiViewports()}{get\_supportDearImGuiMultiViewports()}}
 {\footnotesize\ttfamily m\+Bool m\+::dx12\+::\+DX12\+Renderer\+::get\+\_\+support\+Dear\+Im\+Gui\+Multi\+Viewports (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{m\+::render\+::\+IRenderer}}.
+
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_renderer_a1f50cfd4a98226eda09ca12f30a2c305}\label{classm_1_1dx12_1_1_d_x12_renderer_a1f50cfd4a98226eda09ca12f30a2c305}} 
+\index{m::dx12::DX12Renderer@{m::dx12::DX12Renderer}!getNew\_surface@{getNew\_surface}}
+\index{getNew\_surface@{getNew\_surface}!m::dx12::DX12Renderer@{m::dx12::DX12Renderer}}
+\doxysubsubsection{\texorpdfstring{getNew\_surface()}{getNew\_surface()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{render\+::\+ISurface}} $\ast$ m\+::dx12\+::\+DX12\+Renderer\+::get\+New\+\_\+surface (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{m\+::render\+::\+IRenderer}}.
+
+\mbox{\Hypertarget{classm_1_1dx12_1_1_d_x12_renderer_ac9fe0cffcc9d34b44ba2146784fcfc22}\label{classm_1_1dx12_1_1_d_x12_renderer_ac9fe0cffcc9d34b44ba2146784fcfc22}} 
+\index{m::dx12::DX12Renderer@{m::dx12::DX12Renderer}!getNew\_texture@{getNew\_texture}}
+\index{getNew\_texture@{getNew\_texture}!m::dx12::DX12Renderer@{m::dx12::DX12Renderer}}
+\doxysubsubsection{\texorpdfstring{getNew\_texture()}{getNew\_texture()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structm_1_1render_1_1_i_resource}{render\+::\+IResource}} $\ast$ m\+::dx12\+::\+DX12\+Renderer\+::get\+New\+\_\+texture (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 

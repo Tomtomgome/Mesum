@@ -143,7 +143,7 @@ static input::mKey translateKeys(mInt a_keyCode)
 
 void XCBContext::init(HINSTANCE& a_hInstance)
 {
-    mLog_to(PLATFORM_APP_ID, "Initializing XcbContext");
+    mLog_infoTo(PLATFORM_APP_ID, "Initializing XcbContext");
     init_keysLuts();
 }
 

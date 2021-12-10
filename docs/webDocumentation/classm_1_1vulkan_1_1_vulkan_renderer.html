@@ -109,8 +109,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4ce01ebacc12bcad0ac4ebab27fc01df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7bf5d096b5a61356caf0ff887631ab4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1vulkan_1_1_vulkan_renderer.html#ac7bf5d096b5a61356caf0ff887631ab4">start_dearImGuiNewFrameRenderer</a> () const override</td></tr>
 <tr class="separator:ac7bf5d096b5a61356caf0ff887631ab4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b2e244ddc7f6e7b1de5b605a7ad98bf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classm_1_1render_1_1_i_surface.html">render::ISurface</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1vulkan_1_1_vulkan_renderer.html#a9b2e244ddc7f6e7b1de5b605a7ad98bf">get_newSurface</a> () override</td></tr>
-<tr class="separator:a9b2e244ddc7f6e7b1de5b605a7ad98bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab97ef0b20042a699591193e02e99511c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classm_1_1render_1_1_i_surface.html">render::ISurface</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1vulkan_1_1_vulkan_renderer.html#ab97ef0b20042a699591193e02e99511c">getNew_surface</a> () override</td></tr>
+<tr class="separator:ab97ef0b20042a699591193e02e99511c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7c2fcd3e9f3756f1dc6f336913ae821"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structm_1_1render_1_1_i_resource.html">render::IResource</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1vulkan_1_1_vulkan_renderer.html#ab7c2fcd3e9f3756f1dc6f336913ae821">getNew_texture</a> () override</td></tr>
+<tr class="separator:ab7c2fcd3e9f3756f1dc6f336913ae821"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a0c16cef24677d08c1f8602759b3c9dea" name="a0c16cef24677d08c1f8602759b3c9dea"></a>
@@ -124,33 +126,6 @@ Public Member Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">void m::vulkan::VulkanRenderer::destroy </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Implements <a class="el" href="classm_1_1render_1_1_i_renderer.html">m::render::IRenderer</a>.</p>
-
-</div>
-</div>
-<a id="a9b2e244ddc7f6e7b1de5b605a7ad98bf" name="a9b2e244ddc7f6e7b1de5b605a7ad98bf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b2e244ddc7f6e7b1de5b605a7ad98bf">&#9670;&nbsp;</a></span>get_newSurface()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classm_1_1render_1_1_i_surface.html">render::ISurface</a> * m::vulkan::VulkanRenderer::get_newSurface </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -186,6 +161,60 @@ Public Member Functions</h2></td></tr>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classm_1_1render_1_1_i_renderer.html">m::render::IRenderer</a>.</p>
+
+</div>
+</div>
+<a id="ab97ef0b20042a699591193e02e99511c" name="ab97ef0b20042a699591193e02e99511c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab97ef0b20042a699591193e02e99511c">&#9670;&nbsp;</a></span>getNew_surface()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classm_1_1render_1_1_i_surface.html">render::ISurface</a> * m::vulkan::VulkanRenderer::getNew_surface </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classm_1_1render_1_1_i_renderer.html">m::render::IRenderer</a>.</p>
+
+</div>
+</div>
+<a id="ab7c2fcd3e9f3756f1dc6f336913ae821" name="ab7c2fcd3e9f3756f1dc6f336913ae821"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7c2fcd3e9f3756f1dc6f336913ae821">&#9670;&nbsp;</a></span>getNew_texture()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structm_1_1render_1_1_i_resource.html">render::IResource</a> * m::vulkan::VulkanRenderer::getNew_texture </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

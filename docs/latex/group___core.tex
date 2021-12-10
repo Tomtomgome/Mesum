@@ -1,5 +1,10 @@
 \hypertarget{group___core}{}\doxysection{Core}
 \label{group___core}\index{Core@{Core}}
+
+
+Namespace grouping file resoures.  
+
+
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
@@ -26,6 +31,10 @@ class \mbox{\hyperlink{classm_1_1m_callback}{m\+::m\+Callback$<$ t\+\_\+\+Ret\+T
 \begin{DoxyCompactList}\small\item\em Class encapsulating a callback. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classm_1_1m_signal}{m\+::m\+Signal$<$ t\+\_\+\+Args $>$}}
 \begin{DoxyCompactList}\small\item\em Class encapsulating a signal. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structm_1_1resource_1_1m_request_image}{m\+::resource\+::m\+Request\+Image}}
+\begin{DoxyCompactList}\small\item\em Structure used to request the loading of an image on disk. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structm_1_1resource_1_1m_image}{m\+::resource\+::m\+Image}}
+\begin{DoxyCompactList}\small\item\em Class representing the data of an image. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classm_1_1input_1_1m_i_input_manager}{m\+::input\+::m\+IInput\+Manager}}
 \begin{DoxyCompactList}\small\item\em Interface core to input management. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structm_1_1input_1_1m_mouse_action}{m\+::input\+::m\+Mouse\+Action}}
@@ -34,6 +43,8 @@ struct \mbox{\hyperlink{structm_1_1input_1_1m_key_action}{m\+::input\+::m\+Key\+
 \begin{DoxyCompactList}\small\item\em Structure representing an action executed on a key. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structm_1_1input_1_1m_callback_input_manager}{m\+::input\+::m\+Callback\+Input\+Manager}}
 \begin{DoxyCompactList}\small\item\em Implementation of an input manager. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structm_1_1m_output}{m\+::m\+Output$<$ t\+\_\+\+Output $>$}}
+\begin{DoxyCompactList}\small\item\em Structure that defines an output accompanied with a result. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structm_1_1m_cmd_line}{m\+::m\+Cmd\+Line}}
 \begin{DoxyCompactList}\small\item\em Structure holding a list of command line arguments. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structm_1_1m_basic_launch_data}{m\+::m\+Basic\+Launch\+Data}}
@@ -50,6 +61,16 @@ class \mbox{\hyperlink{classm_1_1math_1_1m_xo_random_number_generator}{m\+::math
 \begin{DoxyCompactList}\small\item\em Random\+Number\+Generator using Xor\+Shift. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state}{m\+::math\+::m\+Xo\+Random\+Number\+Generator\+::m\+Xoshiro256ss\+State}}
 \begin{DoxyCompactList}\small\item\em State of the xoshiro algorithm. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classm_1_1profile_1_1m_i_profiler}{m\+::profile\+::m\+IProfiler}}
+\begin{DoxyCompactList}\small\item\em Interface core to profiling. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classm_1_1profile_1_1m_profiler_multi_sampling}{m\+::profile\+::m\+Profiler\+Multi\+Sampling$<$ t\+\_\+\+Sample\+Count $>$}}
+\begin{DoxyCompactList}\small\item\em Implementation of a profiler that averages times accross multiple samples. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classm_1_1profile_1_1m_r_a_i_i_timing}{m\+::profile\+::m\+RAIITiming}}
+\begin{DoxyCompactList}\small\item\em RAII Timming that sends the elapsed time between its creation and destruction to its parent profiler. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classm_1_1math_1_1m_spherical}{m\+::math\+::m\+Spherical}}
+\item 
+class \mbox{\hyperlink{classm_1_1input_1_1m_state_input_manager}{m\+::input\+::m\+State\+Input\+Manager}}
+\begin{DoxyCompactList}\small\item\em Implementation of an input manager. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structm_1_1math_1_1m_vec_data}{m\+::math\+::m\+Vec\+Data$<$ t\+\_\+\+T, t\+\_\+\+Size $>$}}
 \begin{DoxyCompactList}\small\item\em Holds the data for a math vector. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structm_1_1math_1_1m_vec_data_3_01t___t_00_012_01_4}{m\+::math\+::m\+Vec\+Data$<$ t\+\_\+\+T, 2 $>$}}
@@ -87,8 +108,8 @@ struct \mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+::math\+::m\+Vec$<$ t\+\_\+
 \mbox{\Hypertarget{group___core_ga9aa869d857bafeb44058596e5ba4b1e6}\label{group___core_ga9aa869d857bafeb44058596e5ba4b1e6}} 
 \#define {\bfseries m\+Log\+\_\+get\+Id}~m\+::log\+\_\+inst.\+get\+\_\+new\+Channel\+ID
 \begin{DoxyCompactList}\small\item\em Macro used to get a channel ID. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{group___core_gada5e219866231b861b496e86d47e1e78}\label{group___core_gada5e219866231b861b496e86d47e1e78}} 
-\#define {\bfseries m\+Log}~m\+::log\+\_\+inst.\+print$<$\mbox{\hyperlink{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387abfecbf648c2deaa801f62e8dad71e361}{m\+::logging\+::m\+Severity\+Type\+::debug}}$>$
+\mbox{\Hypertarget{group___core_ga021da14d65641a84a9c5e76479b68890}\label{group___core_ga021da14d65641a84a9c5e76479b68890}} 
+\#define {\bfseries m\+Log\+\_\+info}~m\+::log\+\_\+inst.\+print$<$\mbox{\hyperlink{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387abfecbf648c2deaa801f62e8dad71e361}{m\+::logging\+::m\+Severity\+Type\+::debug}}$>$
 \begin{DoxyCompactList}\small\item\em Macro used to log simple debug messages. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{group___core_ga0bcecb82138d5f42db4089c93554f5a2}\label{group___core_ga0bcecb82138d5f42db4089c93554f5a2}} 
 \#define {\bfseries m\+Log\+\_\+error}~m\+::log\+\_\+inst.\+print$<$\mbox{\hyperlink{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387ad564300fbfad44fd5b83f8ba9441ba5d}{m\+::logging\+::m\+Severity\+Type\+::error}}$>$
@@ -96,8 +117,8 @@ struct \mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+::math\+::m\+Vec$<$ t\+\_\+
 \mbox{\Hypertarget{group___core_gadb3d189e9cbe46dd3620a641763cdf6c}\label{group___core_gadb3d189e9cbe46dd3620a641763cdf6c}} 
 \#define {\bfseries m\+Log\+\_\+warning}~m\+::log\+\_\+inst.\+print$<$\mbox{\hyperlink{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387a52b9f3af43a3f80e4a62548382b2c04b}{m\+::logging\+::\+Severity\+Type\+::warning}}$>$
 \begin{DoxyCompactList}\small\item\em Macro used to log simple warning messages. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{group___core_gab009950df9db21d808d3c36818dde4bf}\label{group___core_gab009950df9db21d808d3c36818dde4bf}} 
-\#define {\bfseries m\+Log\+\_\+to}~m\+::log\+\_\+inst.\+print\+\_\+to\+Channel$<$\mbox{\hyperlink{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387abfecbf648c2deaa801f62e8dad71e361}{m\+::logging\+::m\+Severity\+Type\+::debug}}$>$
+\mbox{\Hypertarget{group___core_ga085be68cff0dec560a6f390949fcf61b}\label{group___core_ga085be68cff0dec560a6f390949fcf61b}} 
+\#define {\bfseries m\+Log\+\_\+info\+To}~    m\+::log\+\_\+inst.\+print\+\_\+to\+Channel$<$\mbox{\hyperlink{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387abfecbf648c2deaa801f62e8dad71e361}{m\+::logging\+::m\+Severity\+Type\+::debug}}$>$
 \begin{DoxyCompactList}\small\item\em Macro used to log simple debug messages to a channel. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{group___core_gafd57e4a697cbf7c30e222a868dcdf9e4}\label{group___core_gafd57e4a697cbf7c30e222a868dcdf9e4}} 
 \#define {\bfseries m\+Log\+\_\+error\+To}~    m\+::log\+\_\+inst.\+print\+\_\+to\+Channel$<$\mbox{\hyperlink{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387ad564300fbfad44fd5b83f8ba9441ba5d}{m\+::logging\+::m\+Severity\+Type\+::error}}$>$
@@ -105,8 +126,8 @@ struct \mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+::math\+::m\+Vec$<$ t\+\_\+
 \mbox{\Hypertarget{group___core_ga8fdc6b16f7a09c13d9ee1ba499d181ff}\label{group___core_ga8fdc6b16f7a09c13d9ee1ba499d181ff}} 
 \#define {\bfseries m\+Log\+\_\+warning\+To}~    m\+::log\+\_\+inst.\+print\+\_\+to\+Channel$<$\mbox{\hyperlink{namespacem_1_1logging_ad98e602820072dd69a260765a95bd387a52b9f3af43a3f80e4a62548382b2c04b}{m\+::logging\+::m\+Severity\+Type\+::warning}}$>$
 \begin{DoxyCompactList}\small\item\em Macro used to log simple warning messages to a channel. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{group___core_ga60b018f1e6e00b588d2bd8f0cd42b0a7}\label{group___core_ga60b018f1e6e00b588d2bd8f0cd42b0a7}} 
-\#define {\bfseries m\+Log\+\_\+verbose}(...)
+\mbox{\Hypertarget{group___core_ga2aa322925604d56df06fcfdd2160c3d7}\label{group___core_ga2aa322925604d56df06fcfdd2160c3d7}} 
+\#define {\bfseries m\+Log\+\_\+verbose\+Info}(...)
 \begin{DoxyCompactList}\small\item\em Macro used to log verbose debug messages. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{group___core_ga1848e387de750cedfad1837fc97f9937}\label{group___core_ga1848e387de750cedfad1837fc97f9937}} 
 \#define {\bfseries m\+Log\+\_\+verbose\+Error}(...)
@@ -114,8 +135,8 @@ struct \mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+::math\+::m\+Vec$<$ t\+\_\+
 \mbox{\Hypertarget{group___core_ga65bb68d733e34685ff0488ad2d8659cd}\label{group___core_ga65bb68d733e34685ff0488ad2d8659cd}} 
 \#define {\bfseries m\+Log\+\_\+verbose\+Warning}(...)
 \begin{DoxyCompactList}\small\item\em Macro used to log verbose warning messages. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{group___core_ga8897d907fd045fa4ed41484db869be19}\label{group___core_ga8897d907fd045fa4ed41484db869be19}} 
-\#define {\bfseries m\+Log\+\_\+verbose\+To}(...)
+\mbox{\Hypertarget{group___core_gaa0ed51faa457373a5901502868059cc6}\label{group___core_gaa0ed51faa457373a5901502868059cc6}} 
+\#define {\bfseries m\+Log\+\_\+verbose\+Info\+To}(...)
 \begin{DoxyCompactList}\small\item\em Macro used to log verbose debug messages to a channel. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{group___core_ga063b3285c370c05ba0c8922d725a88d8}\label{group___core_ga063b3285c370c05ba0c8922d725a88d8}} 
 \#define {\bfseries m\+Log\+\_\+verbose\+Error\+To}(...)
@@ -132,10 +153,58 @@ struct \mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+::math\+::m\+Vec$<$ t\+\_\+
 \mbox{\Hypertarget{group___core_gac92102d2681a9eb9e2d7f2cc7079190a}\label{group___core_gac92102d2681a9eb9e2d7f2cc7079190a}} 
 \#define {\bfseries m\+Disable\+\_\+log\+Channels}~m\+::log\+\_\+inst.\+disable\+\_\+channels
 \begin{DoxyCompactList}\small\item\em Macro used to disable channels the logger. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structm_1_1m_output}{m\+Output}}$<$ \mbox{\hyperlink{structm_1_1resource_1_1m_image}{m\+Image}} $>$ \mbox{\hyperlink{group___core_ga757ca8491b5337650385dc5453332407}{m\+::resource\+::load\+\_\+image}} (\mbox{\hyperlink{structm_1_1resource_1_1m_request_image}{m\+Request\+Image}} const  \&a\+\_\+request)
+\begin{DoxyCompactList}\small\item\em Loads an image from the disk through a request. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{group___core_gac6293026c2b1a3029978393784f14e45}{m\+::profile\+::m\+IProfiler\+::add\+\_\+timing}} (std\+::chrono\+::steady\+\_\+clock\+::duration a\+\_\+timming)=0
+\begin{DoxyCompactList}\small\item\em Add a timming data to a profiler. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group___core_ga9cb2380c73ae20a4b1a7cd6a854d66b8}{m\+::profile\+::m\+Profiler\+Multi\+Sampling$<$ t\+\_\+\+Sample\+Count $>$\+::add\+\_\+timing}} (std\+::chrono\+::steady\+\_\+clock\+::duration a\+\_\+timming) override
+\begin{DoxyCompactList}\small\item\em Add a timming data to a profiler. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_gaaf041dfbc9dd69e41422e8e1debd649a}\label{group___core_gaaf041dfbc9dd69e41422e8e1debd649a}} 
+{\footnotesize template$<$typename t\+\_\+\+Ret\+Type , typename t\+\_\+\+Preiod $>$ }\\t\+\_\+\+Ret\+Type {\bfseries m\+::profile\+::m\+Profiler\+Multi\+Sampling$<$ t\+\_\+\+Sample\+Count $>$\+::get\+\_\+average} ()
+\item 
+\mbox{\hyperlink{group___core_ga848799fdd49850bb562058bbe7ca8897}{m\+::profile\+::m\+RAIITiming\+::m\+RAIITiming}} (\mbox{\hyperlink{classm_1_1profile_1_1m_i_profiler}{m\+IProfiler}} \&a\+\_\+parent)
+\begin{DoxyCompactList}\small\item\em Construct a Timming with its associated parent. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{group___core_ga7ee6d3967363eec5ab00aba61b521ce6}{m\+::profile\+::m\+RAIITiming\+::$\sim$m\+RAIITiming}} ()
+\begin{DoxyCompactList}\small\item\em Sends the time elapsed between this and the construction of the object to the parent profiler. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{group___core_ga7e5ebb73b7d020af0132d3288403552d}\label{group___core_ga7e5ebb73b7d020af0132d3288403552d}} 
+const \mbox{\hyperlink{namespacem_1_1logging_af807dfba0ed733f24957c0f3d016a15f}{logging\+::m\+Channel\+ID}} {\bfseries m\+::resource\+::g\+\_\+log\+IDImage} = \mbox{\hyperlink{group___core_ga9aa869d857bafeb44058596e5ba4b1e6}{m\+Log\+\_\+get\+Id}}()
+\item 
+\mbox{\Hypertarget{group___core_ga999843d5346e8e26c48f8ee3d41a423a}\label{group___core_ga999843d5346e8e26c48f8ee3d41a423a}} 
+std\+::string {\bfseries m\+::resource\+::m\+Request\+Image\+::path}
+\begin{DoxyCompactList}\small\item\em The path of the image to load. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_ga6fc74eceb5f8cfc9d13ce112291811de}\label{group___core_ga6fc74eceb5f8cfc9d13ce112291811de}} 
+m\+Int {\bfseries m\+::resource\+::m\+Image\+::width} \{0\}
+\begin{DoxyCompactList}\small\item\em The width of the image. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_gab81a19fd597b9546705bb9ffefad10dc}\label{group___core_gab81a19fd597b9546705bb9ffefad10dc}} 
+m\+Int {\bfseries m\+::resource\+::m\+Image\+::height} \{0\}
+\begin{DoxyCompactList}\small\item\em The height of the image. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_ga002ad0b6468e36a0292f869a845c3c49}\label{group___core_ga002ad0b6468e36a0292f869a845c3c49}} 
+std\+::vector$<$ m\+U8 $>$ {\bfseries m\+::resource\+::m\+Image\+::data} \{\}
+\begin{DoxyCompactList}\small\item\em The array of values for each channel of each pixel. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_gab2103dfb51d9336e5b2eacf14e1c159c}\label{group___core_gab2103dfb51d9336e5b2eacf14e1c159c}} 
+std\+::array$<$ std\+::chrono\+::steady\+\_\+clock\+::duration, t\+\_\+\+Sample\+Count $>$ {\bfseries m\+::profile\+::m\+Profiler\+Multi\+Sampling$<$ t\+\_\+\+Sample\+Count $>$\+::m\+\_\+samples} \{\}
+\item 
+\mbox{\Hypertarget{group___core_gac07c136f3225e23ca7ea193aaf397b55}\label{group___core_gac07c136f3225e23ca7ea193aaf397b55}} 
+m\+UInt {\bfseries m\+::profile\+::m\+Profiler\+Multi\+Sampling$<$ t\+\_\+\+Sample\+Count $>$\+::m\+\_\+current\+Count} \{0\}
+\item 
+\mbox{\Hypertarget{group___core_ga1e6f6172605e1987636758efada6ee92}\label{group___core_ga1e6f6172605e1987636758efada6ee92}} 
+\mbox{\hyperlink{classm_1_1profile_1_1m_i_profiler}{m\+IProfiler}} $\ast$ {\bfseries m\+::profile\+::m\+RAIITiming\+::m\+\_\+p\+Parent} = nullptr
+\begin{DoxyCompactList}\small\item\em The profiler to send the data to. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_ga16881a589345bcb0ce7de57fc989e811}\label{group___core_ga16881a589345bcb0ce7de57fc989e811}} 
+std\+::chrono\+::time\+\_\+point$<$ std\+::chrono\+::steady\+\_\+clock $>$ {\bfseries m\+::profile\+::m\+RAIITiming\+::m\+\_\+start}
+\begin{DoxyCompactList}\small\item\em The starting point of the sampling data. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
+Namespace grouping file resoures. 
 
+Namespace grouping basic profiling tools.
 
 \doxysubsection{Macro Definition Documentation}
 \mbox{\Hypertarget{group___core_gae68855c8125ce66a9e53e758526c95ca}\label{group___core_gae68855c8125ce66a9e53e758526c95ca}} 
@@ -201,3 +270,96 @@ A soft assert is non blocking.
 {\em a\+\_\+condition} & The condition to check \\
 \hline
 \end{DoxyParams}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{group___core_ga9cb2380c73ae20a4b1a7cd6a854d66b8}\label{group___core_ga9cb2380c73ae20a4b1a7cd6a854d66b8}} 
+\index{Core@{Core}!add\_timing@{add\_timing}}
+\index{add\_timing@{add\_timing}!Core@{Core}}
+\doxysubsubsection{\texorpdfstring{add\_timing()}{add\_timing()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$m\+UInt t\+\_\+\+Sample\+Count$>$ \\
+void \mbox{\hyperlink{classm_1_1profile_1_1m_profiler_multi_sampling}{m\+::profile\+::m\+Profiler\+Multi\+Sampling}}$<$ t\+\_\+\+Sample\+Count $>$\+::add\+\_\+timing (\begin{DoxyParamCaption}\item[{std\+::chrono\+::steady\+\_\+clock\+::duration}]{a\+\_\+timming }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Add a timming data to a profiler. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+timming} & The timming data for the thing we want to measure \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{group___core_gac6293026c2b1a3029978393784f14e45}{m\+::profile\+::m\+IProfiler}}.
+
+\mbox{\Hypertarget{group___core_gac6293026c2b1a3029978393784f14e45}\label{group___core_gac6293026c2b1a3029978393784f14e45}} 
+\index{Core@{Core}!add\_timing@{add\_timing}}
+\index{add\_timing@{add\_timing}!Core@{Core}}
+\doxysubsubsection{\texorpdfstring{add\_timing()}{add\_timing()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily virtual void m\+::profile\+::m\+IProfiler\+::add\+\_\+timing (\begin{DoxyParamCaption}\item[{std\+::chrono\+::steady\+\_\+clock\+::duration}]{a\+\_\+timming }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Add a timming data to a profiler. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+timming} & The timming data for the thing we want to measure \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{group___core_ga9cb2380c73ae20a4b1a7cd6a854d66b8}{m\+::profile\+::m\+Profiler\+Multi\+Sampling$<$ t\+\_\+\+Sample\+Count $>$}}.
+
+\mbox{\Hypertarget{group___core_ga757ca8491b5337650385dc5453332407}\label{group___core_ga757ca8491b5337650385dc5453332407}} 
+\index{Core@{Core}!load\_image@{load\_image}}
+\index{load\_image@{load\_image}!Core@{Core}}
+\doxysubsubsection{\texorpdfstring{load\_image()}{load\_image()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structm_1_1m_output}{m\+Output}}$<$ \mbox{\hyperlink{structm_1_1resource_1_1m_image}{m\+Image}} $>$ m\+::resource\+::load\+\_\+image (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structm_1_1resource_1_1m_request_image}{m\+Request\+Image}} const \&}]{a\+\_\+request }\end{DoxyParamCaption})}
+
+
+
+Loads an image from the disk through a request. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+request} & The request to load the image \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPrecond}{Precondition}
+The path of the request must not be empty 
+\end{DoxyPrecond}
+\begin{DoxyReturn}{Returns}
+The data of the loaded image 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group___core_ga848799fdd49850bb562058bbe7ca8897}\label{group___core_ga848799fdd49850bb562058bbe7ca8897}} 
+\index{Core@{Core}!mRAIITiming@{mRAIITiming}}
+\index{mRAIITiming@{mRAIITiming}!Core@{Core}}
+\doxysubsubsection{\texorpdfstring{mRAIITiming()}{mRAIITiming()}}
+{\footnotesize\ttfamily m\+::profile\+::m\+RAIITiming\+::m\+RAIITiming (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classm_1_1profile_1_1m_i_profiler}{m\+IProfiler}} \&}]{a\+\_\+parent }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Construct a Timming with its associated parent. 
+
+This gets a timestamps of this call
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+parent} & The parent profiler to send the data to \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group___core_ga7ee6d3967363eec5ab00aba61b521ce6}\label{group___core_ga7ee6d3967363eec5ab00aba61b521ce6}} 
+\index{Core@{Core}!````~mRAIITiming@{$\sim$mRAIITiming}}
+\index{````~mRAIITiming@{$\sim$mRAIITiming}!Core@{Core}}
+\doxysubsubsection{\texorpdfstring{$\sim$mRAIITiming()}{~mRAIITiming()}}
+{\footnotesize\ttfamily m\+::profile\+::m\+RAIITiming\+::$\sim$m\+RAIITiming (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Sends the time elapsed between this and the construction of the object to the parent profiler. 
+
+\begin{DoxyPrecond}{Precondition}
+The parent must not be nullptr 
+\end{DoxyPrecond}

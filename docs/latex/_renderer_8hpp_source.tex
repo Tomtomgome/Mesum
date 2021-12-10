@@ -48,45 +48,67 @@
 \DoxyCodeLine{44 }
 \DoxyCodeLine{45 \textcolor{preprocessor}{\#endif}}
 \DoxyCodeLine{46 }
-\DoxyCodeLine{47 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1render_1_1_i_surface}{ISurface}}}
+\DoxyCodeLine{47 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_i_resource}{IResource}}}
 \DoxyCodeLine{48 \{}
-\DoxyCodeLine{49    \textcolor{keyword}{public}:}
-\DoxyCodeLine{50     \textcolor{keyword}{virtual} \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{\string~ISurface}}()                                   = \textcolor{keywordflow}{default};}
-\DoxyCodeLine{51     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} init\_win32(Win32SurfaceInitData\& a\_data) = 0;}
-\DoxyCodeLine{52     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} init\_x11(X11SurfaceInitData\& a\_data)     = 0;}
-\DoxyCodeLine{53 }
-\DoxyCodeLine{54     \textcolor{keyword}{virtual} \mbox{\hyperlink{structm_1_1render_1_1_taskset}{render::Taskset}}* addNew\_renderTaskset() = 0;}
-\DoxyCodeLine{55 }
-\DoxyCodeLine{56     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} render()                          = 0;}
-\DoxyCodeLine{57     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} resize(mU32 a\_width, mU32 a\_height) = 0;}
-\DoxyCodeLine{58 }
-\DoxyCodeLine{59     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} destroy() = 0;}
+\DoxyCodeLine{49     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} install()   = 0;}
+\DoxyCodeLine{50     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} uninstall() = 0;}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52     \textcolor{keyword}{enum class} State}
+\DoxyCodeLine{53     \{}
+\DoxyCodeLine{54         Empty,}
+\DoxyCodeLine{55         Loading,}
+\DoxyCodeLine{56         Loaded,}
+\DoxyCodeLine{57         Installing,}
+\DoxyCodeLine{58         Installed}
+\DoxyCodeLine{59     \};}
 \DoxyCodeLine{60 }
-\DoxyCodeLine{61     \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_i_surface_1_1_handle}{Handle}}}
+\DoxyCodeLine{61     \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_i_resource_1_1_handle}{Handle}}}
 \DoxyCodeLine{62     \{}
-\DoxyCodeLine{63         \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{ISurface}}* surface = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{64         mBool     isValid = \textcolor{keyword}{true};}
+\DoxyCodeLine{63         std::atomic<State>* m\_pState          = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{64         mU32                 m\_resourceNumber = 0;}
 \DoxyCodeLine{65     \};}
-\DoxyCodeLine{66 }
-\DoxyCodeLine{67     \textcolor{keyword}{using} HdlPtr = std::shared\_ptr<Handle>;}
-\DoxyCodeLine{68 \};}
-\DoxyCodeLine{69 }
-\DoxyCodeLine{70 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{IRenderer}}}
-\DoxyCodeLine{71 \{}
-\DoxyCodeLine{72    \textcolor{keyword}{public}:}
-\DoxyCodeLine{73     \textcolor{keyword}{virtual} \mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{\string~IRenderer}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{66 \};}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1render_1_1_i_surface}{ISurface}}}
+\DoxyCodeLine{69 \{}
+\DoxyCodeLine{70    \textcolor{keyword}{public}:}
+\DoxyCodeLine{71     \textcolor{keyword}{virtual} \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{\string~ISurface}}()                                   = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{72     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} init\_win32(Win32SurfaceInitData\& a\_data) = 0;}
+\DoxyCodeLine{73     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} init\_x11(X11SurfaceInitData\& a\_data)     = 0;}
 \DoxyCodeLine{74 }
-\DoxyCodeLine{75     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} init()    = 0;}
-\DoxyCodeLine{76     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} destroy() = 0;}
-\DoxyCodeLine{77 }
-\DoxyCodeLine{78     \textcolor{keyword}{virtual} mBool get\_supportDearImGuiMultiViewports()    = 0;}
-\DoxyCodeLine{79     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} start\_dearImGuiNewFrameRenderer() \textcolor{keyword}{const} = 0;}
-\DoxyCodeLine{80 }
-\DoxyCodeLine{81     \textcolor{keyword}{virtual} \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{ISurface}}* get\_newSurface() = 0;}
-\DoxyCodeLine{82 \};}
-\DoxyCodeLine{83 }
-\DoxyCodeLine{84 \}  \textcolor{comment}{// namespace m::render}}
-\DoxyCodeLine{85 }
-\DoxyCodeLine{86 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_Renderer}}
+\DoxyCodeLine{75     \textcolor{keyword}{virtual} \mbox{\hyperlink{structm_1_1render_1_1_taskset}{render::Taskset}}* addNew\_renderTaskset() = 0;}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} render()                          = 0;}
+\DoxyCodeLine{78     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} resize(mU32 a\_width, mU32 a\_height) = 0;}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} destroy() = 0;}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82     \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_i_surface_1_1_handle}{Handle}}}
+\DoxyCodeLine{83     \{}
+\DoxyCodeLine{84         \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{ISurface}}* surface = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{85         mBool     isValid = \textcolor{keyword}{true};}
+\DoxyCodeLine{86     \};}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88     \textcolor{keyword}{using} HdlPtr = std::shared\_ptr<Handle>;}
+\DoxyCodeLine{89 \};}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{IRenderer}}}
+\DoxyCodeLine{92 \{}
+\DoxyCodeLine{93    \textcolor{keyword}{public}:}
+\DoxyCodeLine{94     \textcolor{keyword}{virtual} \mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{\string~IRenderer}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} init()    = 0;}
+\DoxyCodeLine{97     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} destroy() = 0;}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99     \textcolor{keyword}{virtual} mBool get\_supportDearImGuiMultiViewports()    = 0;}
+\DoxyCodeLine{100     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} start\_dearImGuiNewFrameRenderer() \textcolor{keyword}{const} = 0;}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102     \textcolor{keyword}{virtual} \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{ISurface}}*  getNew\_surface() = 0;}
+\DoxyCodeLine{103     \textcolor{keyword}{virtual} \mbox{\hyperlink{structm_1_1render_1_1_i_resource}{IResource}}* getNew\_texture() = 0;}
+\DoxyCodeLine{104 \};}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 \}  \textcolor{comment}{// namespace m::render}}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_Renderer}}
 
 \end{DoxyCode}

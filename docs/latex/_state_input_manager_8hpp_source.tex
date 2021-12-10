@@ -1,0 +1,27 @@
+\hypertarget{_state_input_manager_8hpp_source}{}\doxysection{State\+Input\+Manager.\+hpp}
+\label{_state_input_manager_8hpp_source}\index{MesumCore/Kernel/StateInputManager.hpp@{MesumCore/Kernel/StateInputManager.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}Input.hpp"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}Keys.hpp"{}}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{10 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacem_1_1input}{m::input}}}
+\DoxyCodeLine{11 \{}
+\DoxyCodeLine{18 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1input_1_1m_state_input_manager}{mStateInputManager}} : \textcolor{keyword}{public} \mbox{\hyperlink{classm_1_1input_1_1m_i_input_manager}{mIInputManager}}}
+\DoxyCodeLine{19 \{}
+\DoxyCodeLine{20    \textcolor{keyword}{public}:}
+\DoxyCodeLine{21     \mbox{\hyperlink{classm_1_1input_1_1m_state_input_manager}{mStateInputManager}}();}
+\DoxyCodeLine{22     \mbox{\hyperlink{classm_1_1input_1_1m_state_input_manager}{\string~mStateInputManager}}();}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24     \textcolor{keywordtype}{void}       \mbox{\hyperlink{classm_1_1input_1_1m_state_input_manager_ad0978592c3f769288e5ed6fef1350dc5}{process\_keyEvent}}(\mbox{\hyperlink{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}{mKey}} a\_key, \mbox{\hyperlink{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474}{mInputType}} a\_action) \textcolor{keyword}{override};}
+\DoxyCodeLine{25     \mbox{\hyperlink{namespacem_1_1input_a4b445365a4b10be8bf18496dcdb68474}{mInputType}} get\_keyState(\mbox{\hyperlink{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}{mKey}} a\_key) \textcolor{keyword}{const};}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27    \textcolor{keyword}{private}:}
+\DoxyCodeLine{28     std::array<mInputType, mKey::keyLast> m\_keyState;}
+\DoxyCodeLine{29 \};}
+\DoxyCodeLine{30 \}  \textcolor{comment}{// namespace m::input}}
+\DoxyCodeLine{33 \textcolor{comment}{}}
+
+\end{DoxyCode}
