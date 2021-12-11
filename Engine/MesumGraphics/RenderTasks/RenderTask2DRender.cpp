@@ -1,5 +1,6 @@
 #include <RenderTask2DRender.hpp>
 #include <Kernel/Image.hpp>
+#include <Kernel/MatHelpers.hpp>
 #include <array>
 
 namespace m::render
@@ -415,8 +416,7 @@ Dx12Task2dRender::Dx12Task2dRender(TaskData2dRender* a_data)
 
     // LOAD THE CONSTANT BUFFERS ----------------------------------------------
     auto heapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-    auto resourceDesc =
-        CD3DX12_RESOURCE_DESC::Buffer(sizeof(DirectX::XMMATRIX));
+    auto resourceDesc   = CD3DX12_RESOURCE_DESC::Buffer(sizeof(math::mMat4x4));
     dx12::check_MicrosoftHRESULT(device->CreateCommittedResource(
         &heapProperties, D3D12_HEAP_FLAG_NONE, &resourceDesc,
         D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
@@ -777,12 +777,13 @@ void Dx12Task2dRender::execute() const
     graphicCommandList->IASetPrimitiveTopology(
         D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-    DirectX::XMMATRIX& mvpMatrix = *((DirectX::XMMATRIX*)(m_pCbMatricesData));
+    math::mMat4x4& mvpMatrix = *((math::mMat4x4*)(m_pCbMatricesData));
 
-    mvpMatrix = XMMatrixMultiply(
-        DirectX::XMMatrixTranslation(-screenWidth / 2.0, -screenHeight / 2.0,
-                                     0.0f),
-        DirectX::XMMatrixOrthographicLH(screenWidth, screenHeight, 0.0f, 1.0f));
+    mvpMatrix =
+        math::generate_projectionOrthoLH(screenWidth, screenHeight, 0.0f, 1.0f)*
+        math::generate_translation(-screenWidth / 2.0, -screenHeight / 2.0,
+                                   0.0f);
+    mvpMatrix.transpose();
 
     graphicCommandList->SetGraphicsRootConstantBufferView(
         0, m_pCbMatrices->GetGPUVirtualAddress());

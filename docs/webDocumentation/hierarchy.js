@@ -155,6 +155,9 @@ var hierarchy =
     ] ],
     [ "m::input::mKeyAction", "structm_1_1input_1_1m_key_action.html", null ],
     [ "m::logging::mLogger< t_LogPolicy >", "classm_1_1logging_1_1m_logger.html", null ],
+    [ "m::math::mMatData< t_T, t_N, t_M >", "structm_1_1math_1_1m_mat_data.html", [
+      [ "m::math::mMat< t_T, t_N, t_M >", "structm_1_1math_1_1m_mat.html", null ]
+    ] ],
     [ "m::input::mMouseAction", "structm_1_1input_1_1m_mouse_action.html", null ],
     [ "m::mOutput< t_Output >", "structm_1_1m_output.html", null ],
     [ "m::profile::mRAIITiming", "classm_1_1profile_1_1m_r_a_i_i_timing.html", null ],

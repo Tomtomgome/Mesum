@@ -8,3 +8,4 @@
 ### Engine
 - Refacto Graphics module to conform to the Guidelines
 - Have a layer system for inputs (and plug DearImGui to it)
+- Do a proper math library (with SIMD and everything)

@@ -59,8 +59,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_application_8hpp_source.html",
-"group___core.html#ga1ffa20cdc73fef0927476b0142dbfbeb",
-"struct_im_gui_color_mod.html"
+"group___core.html#ga1848e387de750cedfad1837fc97f9937",
+"struct_im_gui___impl_vulkan_h___frame_render_buffers.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

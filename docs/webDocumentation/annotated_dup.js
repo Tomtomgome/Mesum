@@ -29,6 +29,8 @@ var annotated_dup =
         [ "mStdcoutLogPolicy", "classm_1_1logging_1_1m_stdcout_log_policy.html", "classm_1_1logging_1_1m_stdcout_log_policy" ]
       ] ],
       [ "math", "namespacem_1_1math.html", [
+        [ "mMat", "structm_1_1math_1_1m_mat.html", null ],
+        [ "mMatData", "structm_1_1math_1_1m_mat_data.html", null ],
         [ "mSpherical", "classm_1_1math_1_1m_spherical.html", null ],
         [ "mVec", "structm_1_1math_1_1m_vec.html", null ],
         [ "mVecData", "structm_1_1math_1_1m_vec_data.html", null ],

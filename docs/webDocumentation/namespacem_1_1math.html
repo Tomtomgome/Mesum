@@ -96,6 +96,12 @@ $(document).ready(function(){initNavTree('namespacem_1_1math.html',''); initResi
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structm_1_1math_1_1m_mat.html">mMat</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure representing a generic matrix.  <a href="structm_1_1math_1_1m_mat.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structm_1_1math_1_1m_mat_data.html">mMatData</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds the data for a matrix.  <a href="structm_1_1math_1_1m_mat_data.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1math_1_1m_spherical.html">mSpherical</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structm_1_1math_1_1m_vec.html">mVec</a></td></tr>
@@ -155,9 +161,16 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>mUIVec3</b> = <a cla
 <tr class="memitem:a1727a29121fb624c326d7d79ed817ac3"><td class="memItemLeft" align="right" valign="top"><a id="a1727a29121fb624c326d7d79ed817ac3" name="a1727a29121fb624c326d7d79ed817ac3"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>mUIVec4</b> = <a class="el" href="structm_1_1math_1_1m_vec.html">mVec</a>&lt; mUInt, 4 &gt;</td></tr>
 <tr class="separator:a1727a29121fb624c326d7d79ed817ac3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a631d01a91da22eddb29c088d8a57780a"><td class="memItemLeft" align="right" valign="top"><a id="a631d01a91da22eddb29c088d8a57780a" name="a631d01a91da22eddb29c088d8a57780a"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>mMat4x4</b> = <a class="el" href="structm_1_1math_1_1m_mat.html">mMat</a>&lt; mFloat, 4, 4 &gt;</td></tr>
+<tr class="separator:a631d01a91da22eddb29c088d8a57780a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a828ef15fade4391567eccb572d9d1776"><td class="memTemplParams" colspan="2"><a id="a828ef15fade4391567eccb572d9d1776" name="a828ef15fade4391567eccb572d9d1776"></a>
+template&lt;typename t_T , mUInt t_N, mUInt t_M&gt; </td></tr>
+<tr class="memitem:a828ef15fade4391567eccb572d9d1776"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structm_1_1math_1_1m_mat.html">mMat</a>&lt; t_T, t_N, t_M &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator*</b> (const <a class="el" href="structm_1_1math_1_1m_mat.html">mMat</a>&lt; t_T, t_N, t_M &gt; &amp;a_lhs, const <a class="el" href="structm_1_1math_1_1m_mat.html">mMat</a>&lt; t_T, t_N, t_M &gt; &amp;a_rhs)</td></tr>
+<tr class="separator:a828ef15fade4391567eccb572d9d1776"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5675a511f3cd3bb572b252b3d538142e"><td class="memItemLeft" align="right" valign="top"><a id="a5675a511f3cd3bb572b252b3d538142e" name="a5675a511f3cd3bb572b252b3d538142e"></a>
 mU64&#160;</td><td class="memItemRight" valign="bottom"><b>splitmix64</b> (mU64 *a_state)</td></tr>
 <tr class="separator:a5675a511f3cd3bb572b252b3d538142e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -168,6 +181,12 @@ mU64&#160;</td><td class="memItemRight" valign="bottom"><b>rol64</b> (mU64 a_x, 
 <tr class="memitem:a666b1ae25814d4956ff8d5266fd4e601"><td class="memTemplItemLeft" align="right" valign="top">t_T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacem_1_1math.html#a666b1ae25814d4956ff8d5266fd4e601">lerp</a> (t_T const &amp;a_a, t_T const &amp;a_b, mDouble a_ratio)</td></tr>
 <tr class="memdesc:a666b1ae25814d4956ff8d5266fd4e601"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linearly interpolate two numerical values.  <a href="namespacem_1_1math.html#a666b1ae25814d4956ff8d5266fd4e601">More...</a><br /></td></tr>
 <tr class="separator:a666b1ae25814d4956ff8d5266fd4e601"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a155656d6f8b7c1a7e4e6c30b11764be2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structm_1_1math_1_1m_mat.html">mMat4x4</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacem_1_1math.html#a155656d6f8b7c1a7e4e6c30b11764be2">generate_translation</a> (mFloat a_x, mFloat a_y, mFloat a_z)</td></tr>
+<tr class="memdesc:a155656d6f8b7c1a7e4e6c30b11764be2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a basic translation matrix.  <a href="namespacem_1_1math.html#a155656d6f8b7c1a7e4e6c30b11764be2">More...</a><br /></td></tr>
+<tr class="separator:a155656d6f8b7c1a7e4e6c30b11764be2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bb2a799b2969206368773fe6e4d316f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structm_1_1math_1_1m_mat.html">mMat4x4</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacem_1_1math.html#a9bb2a799b2969206368773fe6e4d316f">generate_projectionOrthoLH</a> (mFloat a_width, mFloat a_height, mFloat a_near, mFloat a_far)</td></tr>
+<tr class="memdesc:a9bb2a799b2969206368773fe6e4d316f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a basic left handed orthographic projection matrix.  <a href="namespacem_1_1math.html#a9bb2a799b2969206368773fe6e4d316f">More...</a><br /></td></tr>
+<tr class="separator:a9bb2a799b2969206368773fe6e4d316f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0f2c73b130dcb948785c2301c9cb4b4"><td class="memTemplParams" colspan="2"><a id="ad0f2c73b130dcb948785c2301c9cb4b4" name="ad0f2c73b130dcb948785c2301c9cb4b4"></a>
 template&lt;typename t_T , mUInt t_Size&gt; </td></tr>
 <tr class="memitem:ad0f2c73b130dcb948785c2301c9cb4b4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structm_1_1math_1_1m_vec.html">mVec</a>&lt; t_T, t_Size &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator+</b> (const <a class="el" href="structm_1_1math_1_1m_vec.html">mVec</a>&lt; t_T, t_Size &gt; &amp;a_lhs, const <a class="el" href="structm_1_1math_1_1m_vec.html">mVec</a>&lt; t_T, t_Size &gt; &amp;a_rhs)</td></tr>
@@ -240,6 +259,101 @@ template&lt;typename t_T , mUInt t_Size&gt; </td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Namespace for math related utils. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="a9bb2a799b2969206368773fe6e4d316f" name="a9bb2a799b2969206368773fe6e4d316f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9bb2a799b2969206368773fe6e4d316f">&#9670;&nbsp;</a></span>generate_projectionOrthoLH()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structm_1_1math_1_1m_mat.html">mMat4x4</a> m::math::generate_projectionOrthoLH </td>
+          <td>(</td>
+          <td class="paramtype">mFloat&#160;</td>
+          <td class="paramname"><em>a_width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">mFloat&#160;</td>
+          <td class="paramname"><em>a_height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">mFloat&#160;</td>
+          <td class="paramname"><em>a_near</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">mFloat&#160;</td>
+          <td class="paramname"><em>a_far</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns a basic left handed orthographic projection matrix. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a_width</td><td>Width of the view </td></tr>
+    <tr><td class="paramname">a_height</td><td>Height of the view </td></tr>
+    <tr><td class="paramname">a_near</td><td>The near of the projection </td></tr>
+    <tr><td class="paramname">a_far</td><td>The far of the projection </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a155656d6f8b7c1a7e4e6c30b11764be2" name="a155656d6f8b7c1a7e4e6c30b11764be2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a155656d6f8b7c1a7e4e6c30b11764be2">&#9670;&nbsp;</a></span>generate_translation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structm_1_1math_1_1m_mat.html">mMat4x4</a> m::math::generate_translation </td>
+          <td>(</td>
+          <td class="paramtype">mFloat&#160;</td>
+          <td class="paramname"><em>a_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">mFloat&#160;</td>
+          <td class="paramname"><em>a_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">mFloat&#160;</td>
+          <td class="paramname"><em>a_z</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns a basic translation matrix. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a_x</td><td>Translation in the x axis </td></tr>
+    <tr><td class="paramname">a_y</td><td>Translation in the y axis </td></tr>
+    <tr><td class="paramname">a_z</td><td>Translation in the z axis </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a666b1ae25814d4956ff8d5266fd4e601" name="a666b1ae25814d4956ff8d5266fd4e601"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a666b1ae25814d4956ff8d5266fd4e601">&#9670;&nbsp;</a></span>lerp()</h2>
 

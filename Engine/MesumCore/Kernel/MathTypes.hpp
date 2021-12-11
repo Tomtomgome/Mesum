@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Vec.hpp"
-#include <cstring>
+#include "Mat.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \addtogroup Core
@@ -24,6 +24,8 @@ using mIVec4 = mVec<mInt, 4>;
 using mUIVec2 = mVec<mUInt, 2>;
 using mUIVec3 = mVec<mUInt, 3>;
 using mUIVec4 = mVec<mUInt, 4>;
+
+using mMat4x4 = mMat<mFloat, 4, 4>;
 };  // namespace m::math
 ///////////////////////////////////////////////////////////////////////////////
 /// \}

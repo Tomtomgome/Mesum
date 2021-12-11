@@ -156,6 +156,8 @@ var group___core =
       [ "open_ostream", "classm_1_1logging_1_1m_stdcout_log_policy.html#a660197bf0e027922c0fff971ce62bb6e", null ],
       [ "write", "classm_1_1logging_1_1m_stdcout_log_policy.html#a2924572ab56800abb7a3cd08be670f28", null ]
     ] ],
+    [ "m::math::mMatData< t_T, t_N, t_M >", "structm_1_1math_1_1m_mat_data.html", null ],
+    [ "m::math::mMat< t_T, t_N, t_M >", "structm_1_1math_1_1m_mat.html", null ],
     [ "m::math::mXoRandomNumberGenerator", "classm_1_1math_1_1m_xo_random_number_generator.html", [
       [ "mXoRandomNumberGenerator", "classm_1_1math_1_1m_xo_random_number_generator.html#a19b46ac054019318c8d2ed23cc710f49", null ],
       [ "get_nextDouble", "classm_1_1math_1_1m_xo_random_number_generator.html#aa81fdd462a9ef685ce5893925df7d559", null ],

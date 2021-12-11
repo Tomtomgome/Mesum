@@ -3,42 +3,45 @@ set(MODULE_NAME Kernel)
 project(${MODULE_NAME} VERSION 1.0.0 DESCRIPTION "Types, logs, asserts")
 
 set(SOURCES Kernel.cpp
-            Log.cpp
-            LogPolicies.cpp
-            Asserts.cpp
-            Mains.cpp
-            Math.cpp
-            Application.cpp
-            Input.cpp
-            File.cpp
-            Image.cpp
-            Profile.cpp
-            )
+        Log.cpp
+        LogPolicies.cpp
+        Asserts.cpp
+        Mains.cpp
+        Math.cpp
+        Application.cpp
+        Input.cpp
+        File.cpp
+        Image.cpp
+        Profile.cpp
+        MatHelpers.cpp
+        )
 set(HEADERS Types.hpp
-            Asserts.hpp
-            Callbacks.hpp
-            Kernel.hpp
-            Logger.hpp
-            Log.hpp
-            LogPolicies.hpp
-            Vec.hpp
-            Vec.inl
-            MathTypes.hpp
-            Math.hpp
-            Mains.hpp
-            Application.hpp
-            Kernel_pch.hpp
-            Keys.hpp
-            Input.hpp
-            File.hpp
-            Image.hpp
-            Profile.hpp
-            InputCommon.hpp
+        Asserts.hpp
+        Callbacks.hpp
+        Kernel.hpp
+        Logger.hpp
+        Log.hpp
+        LogPolicies.hpp
+        Vec.hpp
+        Vec.inl
+        MathTypes.hpp
+        Math.hpp
+        Mains.hpp
+        Application.hpp
+        Kernel_pch.hpp
+        Keys.hpp
+        Input.hpp
+        File.hpp
+        Image.hpp
+        Profile.hpp
+        InputCommon.hpp
         ../Common/CoreCommon.hpp
-			Spherical.cpp
-			Spherical.hpp
-			StateInputManager.cpp
-			StateInputManager.hpp)
+        Spherical.cpp
+        Spherical.hpp
+        StateInputManager.cpp
+        StateInputManager.hpp
+        Mat.hpp
+        MatHelpers.hpp)
 
 add_library(${MODULE_NAME} OBJECT ${SOURCES} ${HEADERS})
 
@@ -50,6 +53,6 @@ set_target_properties(${MODULE_NAME} PROPERTIES UNITY_BUILD ON)
 target_include_directories(${MODULE_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(${MODULE_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../../../Externals)
 
-if(BM_DYNAMIC_LINK)
-target_compile_definitions(${MODULE_NAME} PRIVATE _M_CORE_EXPORT)
-endif()
+if (BM_DYNAMIC_LINK)
+    target_compile_definitions(${MODULE_NAME} PRIVATE _M_CORE_EXPORT)
+endif ()

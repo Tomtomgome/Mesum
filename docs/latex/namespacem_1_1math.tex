@@ -8,6 +8,10 @@ Namespace for math related utils.
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
+struct \mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat}}
+\begin{DoxyCompactList}\small\item\em Structure representing a generic matrix. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structm_1_1math_1_1m_mat_data}{m\+Mat\+Data}}
+\begin{DoxyCompactList}\small\item\em Holds the data for a matrix. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classm_1_1math_1_1m_spherical}{m\+Spherical}}
 \item 
 struct \mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+Vec}}
@@ -60,9 +64,15 @@ using {\bfseries m\+UIVec3} = \mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+Vec}
 \item 
 \mbox{\Hypertarget{namespacem_1_1math_a1727a29121fb624c326d7d79ed817ac3}\label{namespacem_1_1math_a1727a29121fb624c326d7d79ed817ac3}} 
 using {\bfseries m\+UIVec4} = \mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+Vec}}$<$ m\+UInt, 4 $>$
+\item 
+\mbox{\Hypertarget{namespacem_1_1math_a631d01a91da22eddb29c088d8a57780a}\label{namespacem_1_1math_a631d01a91da22eddb29c088d8a57780a}} 
+using {\bfseries m\+Mat4x4} = \mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat}}$<$ m\+Float, 4, 4 $>$
 \end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespacem_1_1math_a828ef15fade4391567eccb572d9d1776}\label{namespacem_1_1math_a828ef15fade4391567eccb572d9d1776}} 
+{\footnotesize template$<$typename t\+\_\+T , m\+UInt t\+\_\+N, m\+UInt t\+\_\+M$>$ }\\\mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat}}$<$ t\+\_\+T, t\+\_\+N, t\+\_\+M $>$ {\bfseries operator$\ast$} (const \mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat}}$<$ t\+\_\+T, t\+\_\+N, t\+\_\+M $>$ \&a\+\_\+lhs, const \mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat}}$<$ t\+\_\+T, t\+\_\+N, t\+\_\+M $>$ \&a\+\_\+rhs)
 \item 
 \mbox{\Hypertarget{namespacem_1_1math_a5675a511f3cd3bb572b252b3d538142e}\label{namespacem_1_1math_a5675a511f3cd3bb572b252b3d538142e}} 
 m\+U64 {\bfseries splitmix64} (m\+U64 $\ast$a\+\_\+state)
@@ -72,6 +82,10 @@ m\+U64 {\bfseries rol64} (m\+U64 a\+\_\+x, m\+Int a\+\_\+k)
 \item 
 {\footnotesize template$<$typename t\+\_\+T $>$ }\\t\+\_\+T \mbox{\hyperlink{namespacem_1_1math_a666b1ae25814d4956ff8d5266fd4e601}{lerp}} (t\+\_\+T const \&a\+\_\+a, t\+\_\+T const \&a\+\_\+b, m\+Double a\+\_\+ratio)
 \begin{DoxyCompactList}\small\item\em Linearly interpolate two numerical values. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat4x4}} \mbox{\hyperlink{namespacem_1_1math_a155656d6f8b7c1a7e4e6c30b11764be2}{generate\+\_\+translation}} (m\+Float a\+\_\+x, m\+Float a\+\_\+y, m\+Float a\+\_\+z)
+\begin{DoxyCompactList}\small\item\em Returns a basic translation matrix. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat4x4}} \mbox{\hyperlink{namespacem_1_1math_a9bb2a799b2969206368773fe6e4d316f}{generate\+\_\+projection\+Ortho\+LH}} (m\+Float a\+\_\+width, m\+Float a\+\_\+height, m\+Float a\+\_\+near, m\+Float a\+\_\+far)
+\begin{DoxyCompactList}\small\item\em Returns a basic left handed orthographic projection matrix. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{namespacem_1_1math_ad0f2c73b130dcb948785c2301c9cb4b4}\label{namespacem_1_1math_ad0f2c73b130dcb948785c2301c9cb4b4}} 
 {\footnotesize template$<$typename t\+\_\+T , m\+UInt t\+\_\+\+Size$>$ }\\\mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+Vec}}$<$ t\+\_\+T, t\+\_\+\+Size $>$ {\bfseries operator+} (const \mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+Vec}}$<$ t\+\_\+T, t\+\_\+\+Size $>$ \&a\+\_\+lhs, const \mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+Vec}}$<$ t\+\_\+T, t\+\_\+\+Size $>$ \&a\+\_\+rhs)
 \item 
@@ -129,6 +143,46 @@ m\+U64 {\bfseries rol64} (m\+U64 a\+\_\+x, m\+Int a\+\_\+k)
 Namespace for math related utils. 
 
 \doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacem_1_1math_a9bb2a799b2969206368773fe6e4d316f}\label{namespacem_1_1math_a9bb2a799b2969206368773fe6e4d316f}} 
+\index{m::math@{m::math}!generate\_projectionOrthoLH@{generate\_projectionOrthoLH}}
+\index{generate\_projectionOrthoLH@{generate\_projectionOrthoLH}!m::math@{m::math}}
+\doxysubsubsection{\texorpdfstring{generate\_projectionOrthoLH()}{generate\_projectionOrthoLH()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat4x4}} m\+::math\+::generate\+\_\+projection\+Ortho\+LH (\begin{DoxyParamCaption}\item[{m\+Float}]{a\+\_\+width,  }\item[{m\+Float}]{a\+\_\+height,  }\item[{m\+Float}]{a\+\_\+near,  }\item[{m\+Float}]{a\+\_\+far }\end{DoxyParamCaption})}
+
+
+
+Returns a basic left handed orthographic projection matrix. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+width} & Width of the view \\
+\hline
+{\em a\+\_\+height} & Height of the view \\
+\hline
+{\em a\+\_\+near} & The near of the projection \\
+\hline
+{\em a\+\_\+far} & The far of the projection \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacem_1_1math_a155656d6f8b7c1a7e4e6c30b11764be2}\label{namespacem_1_1math_a155656d6f8b7c1a7e4e6c30b11764be2}} 
+\index{m::math@{m::math}!generate\_translation@{generate\_translation}}
+\index{generate\_translation@{generate\_translation}!m::math@{m::math}}
+\doxysubsubsection{\texorpdfstring{generate\_translation()}{generate\_translation()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat4x4}} m\+::math\+::generate\+\_\+translation (\begin{DoxyParamCaption}\item[{m\+Float}]{a\+\_\+x,  }\item[{m\+Float}]{a\+\_\+y,  }\item[{m\+Float}]{a\+\_\+z }\end{DoxyParamCaption})}
+
+
+
+Returns a basic translation matrix. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+x} & Translation in the x axis \\
+\hline
+{\em a\+\_\+y} & Translation in the y axis \\
+\hline
+{\em a\+\_\+z} & Translation in the z axis \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{namespacem_1_1math_a666b1ae25814d4956ff8d5266fd4e601}\label{namespacem_1_1math_a666b1ae25814d4956ff8d5266fd4e601}} 
 \index{m::math@{m::math}!lerp@{lerp}}
 \index{lerp@{lerp}!m::math@{m::math}}

@@ -343,6 +343,7 @@ struct TaskData2dRender : public TaskData
         mUInt indexStartLocation  = 0;
         mUInt indexCount          = 0;
     };
+
     DataMeshBuffer<BasicVertex, mU16>* m_pMeshBuffer = nullptr;
     mInt*                              m_pMaterialID = nullptr;
     std::vector<mRange>*               m_pRanges = nullptr;

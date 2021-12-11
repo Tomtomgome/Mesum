@@ -1,0 +1,80 @@
+\hypertarget{_mat_8hpp_source}{}\doxysection{Mat.\+hpp}
+\label{_mat_8hpp_source}\index{MesumCore/Kernel/Mat.hpp@{MesumCore/Kernel/Mat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}Vec.hpp"{}}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{9 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacem_1_1math}{m::math}}}
+\DoxyCodeLine{10 \{}
+\DoxyCodeLine{14 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_N, mUInt t\_M>}
+\DoxyCodeLine{15 \textcolor{keyword}{struct }\textcolor{keyword}{alignas}(sizeof(t\_T) * t\_N * t\_M) \mbox{\hyperlink{structm_1_1math_1_1m_mat_data}{mMatData}}}
+\DoxyCodeLine{16 \{}
+\DoxyCodeLine{17     \textcolor{keyword}{union}}
+\DoxyCodeLine{18     \{}
+\DoxyCodeLine{19         t\_T            data[t\_N][t\_M];}
+\DoxyCodeLine{20         \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec<t\_T, t\_M>}} row[t\_N];}
+\DoxyCodeLine{21     \};}
+\DoxyCodeLine{22 \};}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{31 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_N, mUInt t\_M>}
+\DoxyCodeLine{32 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1math_1_1m_mat}{mMat}} : \textcolor{keyword}{public} \mbox{\hyperlink{structm_1_1math_1_1m_mat_data}{mMatData}}<t\_T, t\_N, t\_M>}
+\DoxyCodeLine{33 \{}
+\DoxyCodeLine{34     \mbox{\hyperlink{structm_1_1math_1_1m_mat}{mMat<t\_T, t\_N, t\_M>}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_mat}{mMat<t\_T, t\_N, t\_M>}}\& a\_data);}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36     \textcolor{keywordtype}{void} transpose();}
+\DoxyCodeLine{37 \};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_N, mUInt t\_M>}
+\DoxyCodeLine{40 \mbox{\hyperlink{structm_1_1math_1_1m_mat}{mMat<t\_T, t\_N, t\_M>}} operator*(\textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_mat}{mMat<t\_T, t\_N, t\_M>}}\& a\_lhs,}
+\DoxyCodeLine{41                               \textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_mat}{mMat<t\_T, t\_N, t\_M>}}\& a\_rhs);}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 \textcolor{preprocessor}{\#define M\_INTERNAL\_FOR\_EACH         \(\backslash\)}}
+\DoxyCodeLine{44 \textcolor{preprocessor}{    for (mUInt i = 0; i < t\_N; ++i) \(\backslash\)}}
+\DoxyCodeLine{45 \textcolor{preprocessor}{        for (mUInt j = 0; j < t\_M; ++j)}}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{preprocessor}{\#define M\_INTERNAL\_FOR\_EACH\_ROW for (mUInt i = 0; i < t\_N; ++i)}}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#define M\_INTERNAL\_FOR\_EACH\_COLUMN for (mUInt j = 0; j < t\_M; ++j)}}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_N, mUInt t\_M>}
+\DoxyCodeLine{52 \mbox{\hyperlink{structm_1_1math_1_1m_mat}{mMat<t\_T, t\_N, t\_M>}}\& \mbox{\hyperlink{structm_1_1math_1_1m_mat}{mMat<t\_T, t\_N, t\_M>::operator=}}(}
+\DoxyCodeLine{53     \textcolor{keyword}{const} \mbox{\hyperlink{structm_1_1math_1_1m_mat}{mMat<t\_T, t\_N, t\_M>}}\& a\_data)}
+\DoxyCodeLine{54 \{}
+\DoxyCodeLine{55     std::memcpy(\textcolor{keyword}{this}, \&a\_data, \textcolor{keyword}{sizeof}(t\_T) * t\_N * t\_M);}
+\DoxyCodeLine{56     \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{57 \}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_N, mUInt t\_M>}
+\DoxyCodeLine{60 \textcolor{keywordtype}{void} mMat<t\_T, t\_N, t\_M>::transpose()}
+\DoxyCodeLine{61 \{}
+\DoxyCodeLine{62     \textcolor{keywordflow}{for} (mUInt i = 0; i < t\_N; ++i)}
+\DoxyCodeLine{63     \textcolor{keywordflow}{for} (mUInt j = 0; j < i; ++j)}
+\DoxyCodeLine{64     \{}
+\DoxyCodeLine{65         t\_T tmp    = mMatData<t\_T, t\_N, t\_M>::data[i][j];}
+\DoxyCodeLine{66         mMatData<t\_T, t\_N, t\_M>::data[i][j] = mMatData<t\_T, t\_N, t\_M>::data[j][i];}
+\DoxyCodeLine{67         mMatData<t\_T, t\_N, t\_M>::data[j][i] = tmp;}
+\DoxyCodeLine{68     \}}
+\DoxyCodeLine{69 \}}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_T, mUInt t\_N, mUInt t\_M>}
+\DoxyCodeLine{72 mMat<t\_T, t\_N, t\_M> operator*(\textcolor{keyword}{const} mMat<t\_T, t\_N, t\_M>\& a\_lhs,}
+\DoxyCodeLine{73                               \textcolor{keyword}{const} mMat<t\_T, t\_N, t\_M>\& a\_rhs)}
+\DoxyCodeLine{74 \{}
+\DoxyCodeLine{75     mMat<t\_T, t\_N, t\_M> result\{\};}
+\DoxyCodeLine{76     M\_INTERNAL\_FOR\_EACH}
+\DoxyCodeLine{77     \{}
+\DoxyCodeLine{78         t\_T tmpRes\{\};}
+\DoxyCodeLine{79         \textcolor{keywordflow}{for} (mUInt k = 0; k < t\_M; ++k) \{ tmpRes += a\_lhs.data[i][k] * a\_rhs.data[k][j]; \}}
+\DoxyCodeLine{80         result.data[i][j] = tmpRes;}
+\DoxyCodeLine{81     \}}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83     \textcolor{keywordflow}{return} result;}
+\DoxyCodeLine{84 \}}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 \};  \textcolor{comment}{// namespace m::math}}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{90 }
+
+\end{DoxyCode}
