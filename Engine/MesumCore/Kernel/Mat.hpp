@@ -59,6 +59,7 @@ mMat<t_T, t_N, t_M>& mMat<t_T, t_N, t_M>::operator=(
 template <typename t_T, mUInt t_N, mUInt t_M>
 void mMat<t_T, t_N, t_M>::transpose()
 {
+    mExpect(t_N == t_M);
     for (mUInt i = 0; i < t_N; ++i)
     for (mUInt j = 0; j < i; ++j)
     {

@@ -1,5 +1,6 @@
 #include <Kernel/File.hpp>
 #include <Kernel/Math.hpp>
+#include <Kernel/MatHelpers.hpp>
 #include <MesumCore/Kernel/Image.hpp>
 #include <MesumGraphics/CrossPlatform.hpp>
 #include <MesumGraphics/DX12Renderer/DX12Context.hpp>
@@ -10,6 +11,9 @@
 #include <MesumGraphics/VulkanRenderer/VulkanContext.hpp>
 
 using namespace m;
+
+static const mUInt screenWidth  = 1280;
+static const mUInt screenHeight = 720;
 
 math::mXoRandomNumberGenerator g_randomGenerator(0);
 
@@ -71,8 +75,8 @@ struct BunchOfSquares
         math::mVec2 newPosition;
         for (int i = 0; i < 100; i++)
         {
-            newPosition.x = g_randomGenerator.get_nextFloat() * 1280;
-            newPosition.y = g_randomGenerator.get_nextFloat() * 720;
+            newPosition.x = g_randomGenerator.get_nextFloat() * screenWidth;
+            newPosition.y = g_randomGenerator.get_nextFloat() * screenHeight;
             m_squarePositions[currentMaterialID].push_back(newPosition);
         }
     }
@@ -83,7 +87,7 @@ struct BunchOfSquares
 
         math::mVec2 newPosition;
         newPosition.x = a_position.x;
-        newPosition.y = 720 - a_position.y;
+        newPosition.y = screenHeight - a_position.y;
         m_squarePositions[currentMaterialID].push_back(newPosition);
     }
 
@@ -102,7 +106,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_iRendererVulkan->init();
 
         // SetupDx12 Window
-        m_windowDx12 = add_newWindow("Dx12 Window", 1280, 720);
+        m_windowDx12 = add_newWindow("Dx12 Window", screenWidth, screenHeight);
         m_windowDx12->link_inputManager(&m_inputManager);
         m_hdlSurfaceDx12 = m_windowDx12->link_renderer(m_iRendererDx12);
 
@@ -114,7 +118,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         render::TaskData2dRender taskData_2dRender;
         taskData_2dRender.m_hdlOutput   = m_hdlSurfaceDx12;
         taskData_2dRender.m_pMeshBuffer = &m_drawer2d.m_meshBuffer;
-        taskData_2dRender.m_pMaterialID = &m_currentMatID;
+        taskData_2dRender.m_pMatrix     = &m_matrix;
         taskData_2dRender.m_pRanges     = &m_ranges;
         m_pTaskRender = (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
             taskset_renderPipelineDx12));
@@ -134,7 +138,8 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
                                         &BunchOfSquares::add_oneNewSquare));
 
         // Setup vulkan window
-        m_windowVulkan     = add_newWindow("Vulkan Window", 1280, 720);
+        m_windowVulkan =
+            add_newWindow("Vulkan Window", screenWidth, screenHeight);
         m_hdlSurfaceVulkan = m_windowVulkan->link_renderer(m_iRendererVulkan);
 
         render::Taskset* taskset_renderPipelineVulkan =
@@ -218,6 +223,10 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             totalNbPositions += positions.size();
         }
 
+        m_matrix = math::generate_translation(-1, -1, 0.0f) *
+                   math::generate_projectionOrthoLH(screenWidth, screenHeight,
+                                                    0.0f, 1.0f);
+
         start_dearImGuiNewFrame(m_iRendererDx12);
 
         ImGui::NewFrame();
@@ -285,7 +294,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
     render::Task2dRender*                         m_pTaskRender = nullptr;
     std::vector<resource::mRequestImage>          m_imageRequested;
-    mInt                                          m_currentMatID = 0;
+    math::mMat4x4                                 m_matrix{};
     std::vector<render::TaskData2dRender::mRange> m_ranges;
 
     Drawer_2D m_drawer2d;

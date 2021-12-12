@@ -339,14 +339,14 @@ struct TaskData2dRender : public TaskData
 {
     struct mRange
     {
-        mInt  materialID          = 0;
-        mUInt indexStartLocation  = 0;
-        mUInt indexCount          = 0;
+        mInt  materialID         = 0;
+        mUInt indexStartLocation = 0;
+        mUInt indexCount         = 0;
     };
 
     DataMeshBuffer<BasicVertex, mU16>* m_pMeshBuffer = nullptr;
-    mInt*                              m_pMaterialID = nullptr;
-    std::vector<mRange>*               m_pRanges = nullptr;
+    math::mMat4x4*                     m_pMatrix     = nullptr;
+    std::vector<mRange>*               m_pRanges     = nullptr;
     ISurface::HdlPtr                   m_hdlOutput;
 
     mIfDx12Enabled(Task* getNew_dx12Implementation(TaskData* a_data) override);
@@ -365,7 +365,7 @@ struct Task2dRender : public Task
 
     void prepare() override {}
 
-    TaskData2dRender m_taskData;
+    TaskData2dRender   m_taskData;
     static const mUInt sm_nbMaxMaterial = 32;
     static const mUInt sm_minimalCBSize = 256;
 };

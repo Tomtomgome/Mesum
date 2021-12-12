@@ -1,6 +1,5 @@
 #include <RenderTask2DRender.hpp>
 #include <Kernel/Image.hpp>
-#include <Kernel/MatHelpers.hpp>
 #include <array>
 
 namespace m::render
@@ -779,10 +778,7 @@ void Dx12Task2dRender::execute() const
 
     math::mMat4x4& mvpMatrix = *((math::mMat4x4*)(m_pCbMatricesData));
 
-    mvpMatrix =
-        math::generate_projectionOrthoLH(screenWidth, screenHeight, 0.0f, 1.0f)*
-        math::generate_translation(-screenWidth / 2.0, -screenHeight / 2.0,
-                                   0.0f);
+    mvpMatrix = *m_taskData.m_pMatrix;
     mvpMatrix.transpose();
 
     graphicCommandList->SetGraphicsRootConstantBufferView(
