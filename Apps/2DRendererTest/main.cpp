@@ -12,8 +12,8 @@
 
 using namespace m;
 
-static const mUInt screenWidth  = 1280;
-static const mUInt screenHeight = 720;
+static const mInt screenWidth  = 1280;
+static const mInt screenHeight = 720;
 
 math::mXoRandomNumberGenerator g_randomGenerator(0);
 
@@ -27,16 +27,16 @@ void add_square(render::DataMeshBuffer<render::BasicVertex, mU16>* a_meshBuffer,
     render::BasicVertex vertex;
     vertex.color    = {1.0f, 1.0f, 1.0f, 1.0f};
     vertex.position = {a_position.x - size, a_position.y - size, 0.5f};
-    vertex.uv       = {0.0f, 1.0f};
-    a_meshBuffer->m_vertices.push_back(vertex);
-    vertex.position = {a_position.x - size, a_position.y + size, 0.5f};
     vertex.uv       = {0.0f, 0.0f};
     a_meshBuffer->m_vertices.push_back(vertex);
+    vertex.position = {a_position.x - size, a_position.y + size, 0.5f};
+    vertex.uv       = {0.0f, 1.0f};
+    a_meshBuffer->m_vertices.push_back(vertex);
     vertex.position = {a_position.x + size, a_position.y - size, 0.5f};
-    vertex.uv       = {1.0f, 1.0f};
+    vertex.uv       = {1.0f, 0.0f};
     a_meshBuffer->m_vertices.push_back(vertex);
     vertex.position = {a_position.x + size, a_position.y + size, 0.5f};
-    vertex.uv       = {1.0f, 0.0f};
+    vertex.uv       = {1.0f, 1.0f};
     a_meshBuffer->m_vertices.push_back(vertex);
 
     a_meshBuffer->m_indices.push_back(index);
@@ -95,6 +95,43 @@ struct BunchOfSquares
     std::vector<std::vector<math::mVec2>> m_squarePositions;
 };
 
+class mPainter
+{
+   public:
+    void add_paintedPosition(const math::mIVec2& a_position)
+    {
+        m_paintedPositions.push_back(a_position);
+    }
+
+    std::vector<math::mIVec2> m_paintedPositions;
+};
+
+class mTargetController
+{
+   public:
+    void activate_moveMode(const math::mIVec2& a_position)
+    {
+        m_middleButtonPressed = true;
+    }
+
+    void deactivate_moveMode(const math::mIVec2& a_position)
+    {
+        m_middleButtonPressed = false;
+    }
+
+    void move_target(const math::mIVec2& a_position)
+    {
+        if (m_middleButtonPressed)
+        {
+            m_targetPoint.x -= a_position.x;
+            m_targetPoint.y += a_position.y;
+        }
+    }
+
+    mBool        m_middleButtonPressed = false;
+    math::mIVec2 m_targetPoint{0, 0};
+};
+
 class RendererTestApp : public m::crossPlatform::IWindowedApplication
 {
     void init(mCmdLine const& a_cmdLine, void* a_appData) override
@@ -134,8 +171,20 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         m_inputManager.attach_toMouseEvent(
             input::mMouseAction::mousePressed(input::mMouseButton::left),
-            input::mMouseActionCallback(&m_bunchOfSquares,
-                                        &BunchOfSquares::add_oneNewSquare));
+            input::mMouseActionCallback(&m_painter,
+                                        &mPainter::add_paintedPosition));
+
+        m_inputManager.attach_toMouseEvent(
+            input::mMouseAction::mousePressed(input::mMouseButton::middle),
+            input::mMouseActionCallback(&m_targetController,
+                                        &mTargetController::activate_moveMode));
+        m_inputManager.attach_toMouseEvent(
+            input::mMouseAction::mouseReleased(input::mMouseButton::middle),
+            input::mMouseActionCallback(
+                &m_targetController, &mTargetController::deactivate_moveMode));
+
+        m_inputManager.attach_toMouseMoveEvent(input::mMouseActionCallback(
+            &m_targetController, &mTargetController::move_target));
 
         // Setup vulkan window
         m_windowVulkan =
@@ -197,6 +246,19 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         mDouble deltaTime = std::chrono::duration<mDouble>(a_deltaTime).count();
 
+        static math::mIVec2 lastPosRegPos;
+        static math::mIVec2 lastPlaced;
+        for (auto position : m_painter.m_paintedPositions)
+        {
+            lastPosRegPos = position;
+            lastPlaced = math::mIVec2{position.x, screenHeight - position.y} +
+                         m_targetController.m_targetPoint;
+            m_bunchOfSquares.add_oneNewSquare(
+                math::mIVec2{position.x, screenHeight - position.y} +
+                m_targetController.m_targetPoint);
+        }
+        m_painter.m_paintedPositions.clear();
+
         m_drawer2d.reset();
         m_ranges.clear();
         static const mUInt indexPerQuad  = 5;
@@ -223,9 +285,13 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             totalNbPositions += positions.size();
         }
 
-        m_matrix = math::generate_translation(-1, -1, 0.0f) *
-                   math::generate_projectionOrthoLH(screenWidth, screenHeight,
-                                                    0.0f, 1.0f);
+        m_matrix =
+            math::generate_projectionOrthoLH(screenWidth, -screenHeight, 0.0f,
+                                             1.0f) *
+            math::generate_translation(
+                mFloat(-screenWidth / 2 - m_targetController.m_targetPoint.x),
+                mFloat(-screenHeight / 2 + m_targetController.m_targetPoint.y),
+                0.0f);
 
         start_dearImGuiNewFrame(m_iRendererDx12);
 
@@ -239,6 +305,13 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             ImGui::Text("frame time : %f", deltaTime);
             ImGui::Text("frame FPS : %f", 1.0 / deltaTime);
             ImGui::Text("nbSuqares : %llu", totalNbPositions);
+            ImGui::Text("Camera offset : %dx;%dy",
+                        m_targetController.m_targetPoint.x,
+                        m_targetController.m_targetPoint.y);
+            ImGui::Text("Last clicked position : %dx;%dy", lastPosRegPos.x,
+                        lastPosRegPos.y);
+            ImGui::Text("Last placed position : %dx;%dy", lastPlaced.x,
+                        lastPlaced.y);
         }
         ImGui::End();
 
@@ -297,8 +370,9 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     math::mMat4x4                                 m_matrix{};
     std::vector<render::TaskData2dRender::mRange> m_ranges;
 
-    Drawer_2D m_drawer2d;
-
+    Drawer_2D                    m_drawer2d;
+    mPainter                     m_painter;
+    mTargetController            m_targetController;
     BunchOfSquares               m_bunchOfSquares;
     input::mCallbackInputManager m_inputManager;
 };
