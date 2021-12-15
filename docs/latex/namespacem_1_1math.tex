@@ -74,6 +74,9 @@ using {\bfseries m\+Mat4x4} = \mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat}
 \mbox{\Hypertarget{namespacem_1_1math_a828ef15fade4391567eccb572d9d1776}\label{namespacem_1_1math_a828ef15fade4391567eccb572d9d1776}} 
 {\footnotesize template$<$typename t\+\_\+T , m\+UInt t\+\_\+N, m\+UInt t\+\_\+M$>$ }\\\mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat}}$<$ t\+\_\+T, t\+\_\+N, t\+\_\+M $>$ {\bfseries operator$\ast$} (const \mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat}}$<$ t\+\_\+T, t\+\_\+N, t\+\_\+M $>$ \&a\+\_\+lhs, const \mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat}}$<$ t\+\_\+T, t\+\_\+N, t\+\_\+M $>$ \&a\+\_\+rhs)
 \item 
+\mbox{\Hypertarget{namespacem_1_1math_a75bfbdbd375b0d08a8896d3ddac22c5b}\label{namespacem_1_1math_a75bfbdbd375b0d08a8896d3ddac22c5b}} 
+{\footnotesize template$<$typename t\+\_\+T , m\+UInt t\+\_\+N, m\+UInt t\+\_\+M$>$ }\\\mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+Vec}}$<$ t\+\_\+T, t\+\_\+N $>$ {\bfseries operator$\ast$} (const \mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat}}$<$ t\+\_\+T, t\+\_\+N, t\+\_\+M $>$ \&a\+\_\+lhs, const \mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+Vec}}$<$ t\+\_\+T, t\+\_\+M $>$ \&a\+\_\+rhs)
+\item 
 \mbox{\Hypertarget{namespacem_1_1math_a5675a511f3cd3bb572b252b3d538142e}\label{namespacem_1_1math_a5675a511f3cd3bb572b252b3d538142e}} 
 m\+U64 {\bfseries splitmix64} (m\+U64 $\ast$a\+\_\+state)
 \item 
@@ -82,10 +85,12 @@ m\+U64 {\bfseries rol64} (m\+U64 a\+\_\+x, m\+Int a\+\_\+k)
 \item 
 {\footnotesize template$<$typename t\+\_\+T $>$ }\\t\+\_\+T \mbox{\hyperlink{namespacem_1_1math_a666b1ae25814d4956ff8d5266fd4e601}{lerp}} (t\+\_\+T const \&a\+\_\+a, t\+\_\+T const \&a\+\_\+b, m\+Double a\+\_\+ratio)
 \begin{DoxyCompactList}\small\item\em Linearly interpolate two numerical values. \end{DoxyCompactList}\item 
-\mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat4x4}} \mbox{\hyperlink{namespacem_1_1math_a155656d6f8b7c1a7e4e6c30b11764be2}{generate\+\_\+translation}} (m\+Float a\+\_\+x, m\+Float a\+\_\+y, m\+Float a\+\_\+z)
+\mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat4x4}} \mbox{\hyperlink{namespacem_1_1math_a268efff5722a74b30b41f9e5b7aff515}{generate\+\_\+translation\+Matrix}} (m\+Float a\+\_\+x, m\+Float a\+\_\+y, m\+Float a\+\_\+z)
 \begin{DoxyCompactList}\small\item\em Returns a basic translation matrix. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat4x4}} \mbox{\hyperlink{namespacem_1_1math_a9bb2a799b2969206368773fe6e4d316f}{generate\+\_\+projection\+Ortho\+LH}} (m\+Float a\+\_\+width, m\+Float a\+\_\+height, m\+Float a\+\_\+near, m\+Float a\+\_\+far)
 \begin{DoxyCompactList}\small\item\em Returns a basic left handed orthographic projection matrix. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat4x4}} \mbox{\hyperlink{namespacem_1_1math_a81feb414941156da2c50224e2cb8cae0}{generate\+\_\+scale\+Matrix}} (m\+Float a\+\_\+x, m\+Float a\+\_\+y, m\+Float a\+\_\+z)
+\begin{DoxyCompactList}\small\item\em Returns a basic scaling matrix. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{namespacem_1_1math_ad0f2c73b130dcb948785c2301c9cb4b4}\label{namespacem_1_1math_ad0f2c73b130dcb948785c2301c9cb4b4}} 
 {\footnotesize template$<$typename t\+\_\+T , m\+UInt t\+\_\+\+Size$>$ }\\\mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+Vec}}$<$ t\+\_\+T, t\+\_\+\+Size $>$ {\bfseries operator+} (const \mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+Vec}}$<$ t\+\_\+T, t\+\_\+\+Size $>$ \&a\+\_\+lhs, const \mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+Vec}}$<$ t\+\_\+T, t\+\_\+\+Size $>$ \&a\+\_\+rhs)
 \item 
@@ -164,11 +169,30 @@ Returns a basic left handed orthographic projection matrix.
 {\em a\+\_\+far} & The far of the projection \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{namespacem_1_1math_a155656d6f8b7c1a7e4e6c30b11764be2}\label{namespacem_1_1math_a155656d6f8b7c1a7e4e6c30b11764be2}} 
-\index{m::math@{m::math}!generate\_translation@{generate\_translation}}
-\index{generate\_translation@{generate\_translation}!m::math@{m::math}}
-\doxysubsubsection{\texorpdfstring{generate\_translation()}{generate\_translation()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat4x4}} m\+::math\+::generate\+\_\+translation (\begin{DoxyParamCaption}\item[{m\+Float}]{a\+\_\+x,  }\item[{m\+Float}]{a\+\_\+y,  }\item[{m\+Float}]{a\+\_\+z }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{namespacem_1_1math_a81feb414941156da2c50224e2cb8cae0}\label{namespacem_1_1math_a81feb414941156da2c50224e2cb8cae0}} 
+\index{m::math@{m::math}!generate\_scaleMatrix@{generate\_scaleMatrix}}
+\index{generate\_scaleMatrix@{generate\_scaleMatrix}!m::math@{m::math}}
+\doxysubsubsection{\texorpdfstring{generate\_scaleMatrix()}{generate\_scaleMatrix()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat4x4}} m\+::math\+::generate\+\_\+scale\+Matrix (\begin{DoxyParamCaption}\item[{m\+Float}]{a\+\_\+x,  }\item[{m\+Float}]{a\+\_\+y,  }\item[{m\+Float}]{a\+\_\+z }\end{DoxyParamCaption})}
+
+
+
+Returns a basic scaling matrix. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+x} & Scale on the x axis \\
+\hline
+{\em a\+\_\+y} & Scale on in the y axis \\
+\hline
+{\em a\+\_\+z} & Scale on in the z axis \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacem_1_1math_a268efff5722a74b30b41f9e5b7aff515}\label{namespacem_1_1math_a268efff5722a74b30b41f9e5b7aff515}} 
+\index{m::math@{m::math}!generate\_translationMatrix@{generate\_translationMatrix}}
+\index{generate\_translationMatrix@{generate\_translationMatrix}!m::math@{m::math}}
+\doxysubsubsection{\texorpdfstring{generate\_translationMatrix()}{generate\_translationMatrix()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat4x4}} m\+::math\+::generate\+\_\+translation\+Matrix (\begin{DoxyParamCaption}\item[{m\+Float}]{a\+\_\+x,  }\item[{m\+Float}]{a\+\_\+y,  }\item[{m\+Float}]{a\+\_\+z }\end{DoxyParamCaption})}
 
 
 

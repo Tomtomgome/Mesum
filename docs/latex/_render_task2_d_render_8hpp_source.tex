@@ -343,14 +343,14 @@
 \DoxyCodeLine{339 \{}
 \DoxyCodeLine{340     \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_task_data2d_render_1_1m_range}{mRange}}}
 \DoxyCodeLine{341     \{}
-\DoxyCodeLine{342         mInt  materialID          = 0;}
-\DoxyCodeLine{343         mUInt indexStartLocation  = 0;}
-\DoxyCodeLine{344         mUInt indexCount          = 0;}
+\DoxyCodeLine{342         mInt  materialID         = 0;}
+\DoxyCodeLine{343         mUInt indexStartLocation = 0;}
+\DoxyCodeLine{344         mUInt indexCount         = 0;}
 \DoxyCodeLine{345     \};}
 \DoxyCodeLine{346 }
 \DoxyCodeLine{347     \mbox{\hyperlink{structm_1_1render_1_1_data_mesh_buffer}{DataMeshBuffer<BasicVertex, mU16>}}* m\_pMeshBuffer = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{348     mInt*                              m\_pMaterialID = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{349     std::vector<mRange>*               m\_pRanges = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{348     \mbox{\hyperlink{structm_1_1math_1_1m_mat}{math::mMat4x4}}*                     m\_pMatrix     = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{349     std::vector<mRange>*               m\_pRanges     = \textcolor{keyword}{nullptr};}
 \DoxyCodeLine{350     ISurface::HdlPtr                   m\_hdlOutput;}
 \DoxyCodeLine{351 }
 \DoxyCodeLine{352     mIfDx12Enabled(\mbox{\hyperlink{structm_1_1render_1_1_task}{Task}}* getNew\_dx12Implementation(\mbox{\hyperlink{structm_1_1render_1_1_task_data}{TaskData}}* a\_data) \textcolor{keyword}{override});}
@@ -369,7 +369,7 @@
 \DoxyCodeLine{365 }
 \DoxyCodeLine{366     \textcolor{keywordtype}{void} prepare()\textcolor{keyword}{ override }\{\}}
 \DoxyCodeLine{367 }
-\DoxyCodeLine{368     \mbox{\hyperlink{structm_1_1render_1_1_task_data2d_render}{TaskData2dRender}} m\_taskData;}
+\DoxyCodeLine{368     \mbox{\hyperlink{structm_1_1render_1_1_task_data2d_render}{TaskData2dRender}}   m\_taskData;}
 \DoxyCodeLine{369     \textcolor{keyword}{static} \textcolor{keyword}{const} mUInt sm\_nbMaxMaterial = 32;}
 \DoxyCodeLine{370     \textcolor{keyword}{static} \textcolor{keyword}{const} mUInt sm\_minimalCBSize = 256;}
 \DoxyCodeLine{371 \};}

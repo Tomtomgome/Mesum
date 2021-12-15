@@ -15,7 +15,7 @@ namespace m::math
 /// \param a_y Translation in the y axis
 /// \param a_z Translation in the z axis
 ///////////////////////////////////////////////////////////////////////////////
-mMat4x4 generate_translation(mFloat a_x, mFloat a_y, mFloat a_z);
+mMat4x4 generate_translationMatrix(mFloat a_x, mFloat a_y, mFloat a_z);
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \brief Returns a basic left handed orthographic projection matrix
@@ -27,6 +27,15 @@ mMat4x4 generate_translation(mFloat a_x, mFloat a_y, mFloat a_z);
 ///////////////////////////////////////////////////////////////////////////////
 mMat4x4 generate_projectionOrthoLH(mFloat a_width, mFloat a_height,
                                    mFloat a_near, mFloat a_far);
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Returns a basic scaling matrix
+///
+/// \param a_x Scale on the x axis
+/// \param a_y Scale on in the y axis
+/// \param a_z Scale on in the z axis
+///////////////////////////////////////////////////////////////////////////////
+mMat4x4 generate_scaleMatrix(mFloat a_x, mFloat a_y, mFloat a_z);
 
 };  // namespace m::math
 

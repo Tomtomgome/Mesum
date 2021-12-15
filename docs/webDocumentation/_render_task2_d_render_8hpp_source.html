@@ -427,14 +427,14 @@ $(document).ready(function(){initNavTree('_render_task2_d_render_8hpp_source.htm
 <div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>{</div>
 <div class="line"><a id="l00340" name="l00340"></a><span class="lineno"><a class="line" href="structm_1_1render_1_1_task_data2d_render_1_1m_range.html">  340</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structm_1_1render_1_1_task_data2d_render_1_1m_range.html">mRange</a></div>
 <div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>    {</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>        mInt  materialID          = 0;</div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>        mUInt indexStartLocation  = 0;</div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>        mUInt indexCount          = 0;</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>        mInt  materialID         = 0;</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>        mUInt indexStartLocation = 0;</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>        mUInt indexCount         = 0;</div>
 <div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>    };</div>
 <div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span> </div>
 <div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>    <a class="code hl_struct" href="structm_1_1render_1_1_data_mesh_buffer.html">DataMeshBuffer&lt;BasicVertex, mU16&gt;</a>* m_pMeshBuffer = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>    mInt*                              m_pMaterialID = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>    std::vector&lt;mRange&gt;*               m_pRanges = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>    <a class="code hl_struct" href="structm_1_1math_1_1m_mat.html">math::mMat4x4</a>*                     m_pMatrix     = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>    std::vector&lt;mRange&gt;*               m_pRanges     = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>    ISurface::HdlPtr                   m_hdlOutput;</div>
 <div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span> </div>
 <div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>    mIfDx12Enabled(<a class="code hl_struct" href="structm_1_1render_1_1_task.html">Task</a>* getNew_dx12Implementation(<a class="code hl_struct" href="structm_1_1render_1_1_task_data.html">TaskData</a>* a_data) <span class="keyword">override</span>);</div>
@@ -453,7 +453,7 @@ $(document).ready(function(){initNavTree('_render_task2_d_render_8hpp_source.htm
 <div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span> </div>
 <div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>    <span class="keywordtype">void</span> prepare()<span class="keyword"> override </span>{}</div>
 <div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span> </div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>    <a class="code hl_struct" href="structm_1_1render_1_1_task_data2d_render.html">TaskData2dRender</a> m_taskData;</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>    <a class="code hl_struct" href="structm_1_1render_1_1_task_data2d_render.html">TaskData2dRender</a>   m_taskData;</div>
 <div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>    <span class="keyword">static</span> <span class="keyword">const</span> mUInt sm_nbMaxMaterial = 32;</div>
 <div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>    <span class="keyword">static</span> <span class="keyword">const</span> mUInt sm_minimalCBSize = 256;</div>
 <div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>};</div>
@@ -529,6 +529,7 @@ $(document).ready(function(){initNavTree('_render_task2_d_render_8hpp_source.htm
 <div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span> </div>
 <div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span><span class="preprocessor">#endif  </span><span class="comment">// M_RenderTaskDearImGui</span></div>
 <div class="ttc" id="agroup___core_html_ga0bcecb82138d5f42db4089c93554f5a2"><div class="ttname"><a href="group___core.html#ga0bcecb82138d5f42db4089c93554f5a2">mLog_error</a></div><div class="ttdeci">#define mLog_error</div><div class="ttdoc">Macro used to log simple error messages.</div><div class="ttdef"><b>Definition:</b> Logger.hpp:25</div></div>
+<div class="ttc" id="astructm_1_1math_1_1m_mat_html"><div class="ttname"><a href="structm_1_1math_1_1m_mat.html">m::math::mMat</a></div><div class="ttdoc">Structure representing a generic matrix.</div><div class="ttdef"><b>Definition:</b> Mat.hpp:33</div></div>
 <div class="ttc" id="astructm_1_1math_1_1m_vec_html"><div class="ttname"><a href="structm_1_1math_1_1m_vec.html">m::math::mVec</a></div><div class="ttdoc">Structure representing a generic math vector.</div><div class="ttdef"><b>Definition:</b> Vec.hpp:83</div></div>
 <div class="ttc" id="astructm_1_1render_1_1_basic_vertex_html"><div class="ttname"><a href="structm_1_1render_1_1_basic_vertex.html">m::render::BasicVertex</a></div><div class="ttdef"><b>Definition:</b> RenderTask2DRender.hpp:24</div></div>
 <div class="ttc" id="astructm_1_1render_1_1_buffer_base_html"><div class="ttname"><a href="structm_1_1render_1_1_buffer_base.html">m::render::BufferBase</a></div><div class="ttdef"><b>Definition:</b> RenderTask2DRender.hpp:32</div></div>

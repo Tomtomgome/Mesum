@@ -40,6 +40,10 @@ template <typename t_T, mUInt t_N, mUInt t_M>
 mMat<t_T, t_N, t_M> operator*(const mMat<t_T, t_N, t_M>& a_lhs,
                               const mMat<t_T, t_N, t_M>& a_rhs);
 
+template <typename t_T, mUInt t_N, mUInt t_M>
+mVec<t_T, t_N> operator*(const mMat<t_T, t_N, t_M>& a_lhs,
+                         const mVec<t_T, t_M>&      a_rhs);
+
 #define M_INTERNAL_FOR_EACH         \
     for (mUInt i = 0; i < t_N; ++i) \
         for (mUInt j = 0; j < t_M; ++j)
@@ -61,12 +65,13 @@ void mMat<t_T, t_N, t_M>::transpose()
 {
     mExpect(t_N == t_M);
     for (mUInt i = 0; i < t_N; ++i)
-    for (mUInt j = 0; j < i; ++j)
-    {
-        t_T tmp    = mMatData<t_T, t_N, t_M>::data[i][j];
-        mMatData<t_T, t_N, t_M>::data[i][j] = mMatData<t_T, t_N, t_M>::data[j][i];
-        mMatData<t_T, t_N, t_M>::data[j][i] = tmp;
-    }
+        for (mUInt j = 0; j < i; ++j)
+        {
+            t_T tmp = mMatData<t_T, t_N, t_M>::data[i][j];
+            mMatData<t_T, t_N, t_M>::data[i][j] =
+                mMatData<t_T, t_N, t_M>::data[j][i];
+            mMatData<t_T, t_N, t_M>::data[j][i] = tmp;
+        }
 }
 
 template <typename t_T, mUInt t_N, mUInt t_M>
@@ -77,10 +82,25 @@ mMat<t_T, t_N, t_M> operator*(const mMat<t_T, t_N, t_M>& a_lhs,
     M_INTERNAL_FOR_EACH
     {
         t_T tmpRes{};
-        for (mUInt k = 0; k < t_M; ++k) { tmpRes += a_lhs.data[i][k] * a_rhs.data[k][j]; }
+        for (mUInt k = 0; k < t_M; ++k)
+        {
+            tmpRes += a_lhs.data[i][k] * a_rhs.data[k][j];
+        }
         result.data[i][j] = tmpRes;
     }
 
+    return result;
+}
+
+template <typename t_T, mUInt t_N, mUInt t_M>
+mVec<t_T, t_N> operator*(const mMat<t_T, t_N, t_M>& a_lhs,
+                         const mVec<t_T, t_M>&      a_rhs)
+{
+    mVec<t_T, t_N> result{};
+    M_INTERNAL_FOR_EACH_ROW
+    {
+        M_INTERNAL_FOR_EACH_COLUMN { result[i] += a_lhs.data[i][j] * a_rhs[j]; };
+    }
     return result;
 }
 

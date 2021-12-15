@@ -60,7 +60,7 @@ var NAVTREEINDEX =
 [
 "_application_8hpp_source.html",
 "group___core.html#ga1848e387de750cedfad1837fc97f9937",
-"struct_im_gui___impl_vulkan_h___frame_render_buffers.html"
+"struct_im_gui___impl_vulkan_h___frame.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

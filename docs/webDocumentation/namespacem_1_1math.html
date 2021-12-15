@@ -171,6 +171,10 @@ Functions</h2></td></tr>
 template&lt;typename t_T , mUInt t_N, mUInt t_M&gt; </td></tr>
 <tr class="memitem:a828ef15fade4391567eccb572d9d1776"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structm_1_1math_1_1m_mat.html">mMat</a>&lt; t_T, t_N, t_M &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator*</b> (const <a class="el" href="structm_1_1math_1_1m_mat.html">mMat</a>&lt; t_T, t_N, t_M &gt; &amp;a_lhs, const <a class="el" href="structm_1_1math_1_1m_mat.html">mMat</a>&lt; t_T, t_N, t_M &gt; &amp;a_rhs)</td></tr>
 <tr class="separator:a828ef15fade4391567eccb572d9d1776"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75bfbdbd375b0d08a8896d3ddac22c5b"><td class="memTemplParams" colspan="2"><a id="a75bfbdbd375b0d08a8896d3ddac22c5b" name="a75bfbdbd375b0d08a8896d3ddac22c5b"></a>
+template&lt;typename t_T , mUInt t_N, mUInt t_M&gt; </td></tr>
+<tr class="memitem:a75bfbdbd375b0d08a8896d3ddac22c5b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structm_1_1math_1_1m_vec.html">mVec</a>&lt; t_T, t_N &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator*</b> (const <a class="el" href="structm_1_1math_1_1m_mat.html">mMat</a>&lt; t_T, t_N, t_M &gt; &amp;a_lhs, const <a class="el" href="structm_1_1math_1_1m_vec.html">mVec</a>&lt; t_T, t_M &gt; &amp;a_rhs)</td></tr>
+<tr class="separator:a75bfbdbd375b0d08a8896d3ddac22c5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5675a511f3cd3bb572b252b3d538142e"><td class="memItemLeft" align="right" valign="top"><a id="a5675a511f3cd3bb572b252b3d538142e" name="a5675a511f3cd3bb572b252b3d538142e"></a>
 mU64&#160;</td><td class="memItemRight" valign="bottom"><b>splitmix64</b> (mU64 *a_state)</td></tr>
 <tr class="separator:a5675a511f3cd3bb572b252b3d538142e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -181,12 +185,15 @@ mU64&#160;</td><td class="memItemRight" valign="bottom"><b>rol64</b> (mU64 a_x, 
 <tr class="memitem:a666b1ae25814d4956ff8d5266fd4e601"><td class="memTemplItemLeft" align="right" valign="top">t_T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacem_1_1math.html#a666b1ae25814d4956ff8d5266fd4e601">lerp</a> (t_T const &amp;a_a, t_T const &amp;a_b, mDouble a_ratio)</td></tr>
 <tr class="memdesc:a666b1ae25814d4956ff8d5266fd4e601"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linearly interpolate two numerical values.  <a href="namespacem_1_1math.html#a666b1ae25814d4956ff8d5266fd4e601">More...</a><br /></td></tr>
 <tr class="separator:a666b1ae25814d4956ff8d5266fd4e601"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a155656d6f8b7c1a7e4e6c30b11764be2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structm_1_1math_1_1m_mat.html">mMat4x4</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacem_1_1math.html#a155656d6f8b7c1a7e4e6c30b11764be2">generate_translation</a> (mFloat a_x, mFloat a_y, mFloat a_z)</td></tr>
-<tr class="memdesc:a155656d6f8b7c1a7e4e6c30b11764be2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a basic translation matrix.  <a href="namespacem_1_1math.html#a155656d6f8b7c1a7e4e6c30b11764be2">More...</a><br /></td></tr>
-<tr class="separator:a155656d6f8b7c1a7e4e6c30b11764be2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a268efff5722a74b30b41f9e5b7aff515"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structm_1_1math_1_1m_mat.html">mMat4x4</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacem_1_1math.html#a268efff5722a74b30b41f9e5b7aff515">generate_translationMatrix</a> (mFloat a_x, mFloat a_y, mFloat a_z)</td></tr>
+<tr class="memdesc:a268efff5722a74b30b41f9e5b7aff515"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a basic translation matrix.  <a href="namespacem_1_1math.html#a268efff5722a74b30b41f9e5b7aff515">More...</a><br /></td></tr>
+<tr class="separator:a268efff5722a74b30b41f9e5b7aff515"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9bb2a799b2969206368773fe6e4d316f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structm_1_1math_1_1m_mat.html">mMat4x4</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacem_1_1math.html#a9bb2a799b2969206368773fe6e4d316f">generate_projectionOrthoLH</a> (mFloat a_width, mFloat a_height, mFloat a_near, mFloat a_far)</td></tr>
 <tr class="memdesc:a9bb2a799b2969206368773fe6e4d316f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a basic left handed orthographic projection matrix.  <a href="namespacem_1_1math.html#a9bb2a799b2969206368773fe6e4d316f">More...</a><br /></td></tr>
 <tr class="separator:a9bb2a799b2969206368773fe6e4d316f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81feb414941156da2c50224e2cb8cae0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structm_1_1math_1_1m_mat.html">mMat4x4</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacem_1_1math.html#a81feb414941156da2c50224e2cb8cae0">generate_scaleMatrix</a> (mFloat a_x, mFloat a_y, mFloat a_z)</td></tr>
+<tr class="memdesc:a81feb414941156da2c50224e2cb8cae0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a basic scaling matrix.  <a href="namespacem_1_1math.html#a81feb414941156da2c50224e2cb8cae0">More...</a><br /></td></tr>
+<tr class="separator:a81feb414941156da2c50224e2cb8cae0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0f2c73b130dcb948785c2301c9cb4b4"><td class="memTemplParams" colspan="2"><a id="ad0f2c73b130dcb948785c2301c9cb4b4" name="ad0f2c73b130dcb948785c2301c9cb4b4"></a>
 template&lt;typename t_T , mUInt t_Size&gt; </td></tr>
 <tr class="memitem:ad0f2c73b130dcb948785c2301c9cb4b4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structm_1_1math_1_1m_vec.html">mVec</a>&lt; t_T, t_Size &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator+</b> (const <a class="el" href="structm_1_1math_1_1m_vec.html">mVec</a>&lt; t_T, t_Size &gt; &amp;a_lhs, const <a class="el" href="structm_1_1math_1_1m_vec.html">mVec</a>&lt; t_T, t_Size &gt; &amp;a_rhs)</td></tr>
@@ -310,14 +317,58 @@ template&lt;typename t_T , mUInt t_Size&gt; </td></tr>
 
 </div>
 </div>
-<a id="a155656d6f8b7c1a7e4e6c30b11764be2" name="a155656d6f8b7c1a7e4e6c30b11764be2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a155656d6f8b7c1a7e4e6c30b11764be2">&#9670;&nbsp;</a></span>generate_translation()</h2>
+<a id="a81feb414941156da2c50224e2cb8cae0" name="a81feb414941156da2c50224e2cb8cae0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81feb414941156da2c50224e2cb8cae0">&#9670;&nbsp;</a></span>generate_scaleMatrix()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structm_1_1math_1_1m_mat.html">mMat4x4</a> m::math::generate_translation </td>
+          <td class="memname"><a class="el" href="structm_1_1math_1_1m_mat.html">mMat4x4</a> m::math::generate_scaleMatrix </td>
+          <td>(</td>
+          <td class="paramtype">mFloat&#160;</td>
+          <td class="paramname"><em>a_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">mFloat&#160;</td>
+          <td class="paramname"><em>a_y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">mFloat&#160;</td>
+          <td class="paramname"><em>a_z</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns a basic scaling matrix. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a_x</td><td>Scale on the x axis </td></tr>
+    <tr><td class="paramname">a_y</td><td>Scale on in the y axis </td></tr>
+    <tr><td class="paramname">a_z</td><td>Scale on in the z axis </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a268efff5722a74b30b41f9e5b7aff515" name="a268efff5722a74b30b41f9e5b7aff515"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a268efff5722a74b30b41f9e5b7aff515">&#9670;&nbsp;</a></span>generate_translationMatrix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structm_1_1math_1_1m_mat.html">mMat4x4</a> m::math::generate_translationMatrix </td>
           <td>(</td>
           <td class="paramtype">mFloat&#160;</td>
           <td class="paramname"><em>a_x</em>, </td>

@@ -210,8 +210,9 @@ var NAVTREEINDEX1 =
 "namespacem_1_1logging.html#ad98e602820072dd69a260765a95bd387ad564300fbfad44fd5b83f8ba9441ba5d":[2,0,0,5,6,1],
 "namespacem_1_1logging.html#af807dfba0ed733f24957c0f3d016a15f":[2,0,0,5,5],
 "namespacem_1_1math.html":[1,0,4],
-"namespacem_1_1math.html#a155656d6f8b7c1a7e4e6c30b11764be2":[2,0,0,6,10],
-"namespacem_1_1math.html#a666b1ae25814d4956ff8d5266fd4e601":[2,0,0,6,11],
+"namespacem_1_1math.html#a268efff5722a74b30b41f9e5b7aff515":[2,0,0,6,11],
+"namespacem_1_1math.html#a666b1ae25814d4956ff8d5266fd4e601":[2,0,0,6,12],
+"namespacem_1_1math.html#a81feb414941156da2c50224e2cb8cae0":[2,0,0,6,10],
 "namespacem_1_1math.html#a9bb2a799b2969206368773fe6e4d316f":[2,0,0,6,9],
 "namespacemembers.html":[2,1,0],
 "namespacemembers_enum.html":[2,1,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "struct_im_font_glyph_ranges_builder.html":[3,0,25],
 "struct_im_gui___impl_d_x12___frame_context.html":[3,0,26],
 "struct_im_gui___impl_d_x12___render_buffers.html":[3,0,27],
-"struct_im_gui___impl_vulkan___init_info.html":[3,0,28],
-"struct_im_gui___impl_vulkan_h___frame.html":[3,0,29]
+"struct_im_gui___impl_vulkan___init_info.html":[3,0,28]
 };

@@ -27,16 +27,16 @@ void add_square(render::DataMeshBuffer<render::BasicVertex, mU16>* a_meshBuffer,
     render::BasicVertex vertex;
     vertex.color    = {1.0f, 1.0f, 1.0f, 1.0f};
     vertex.position = {a_position.x - size, a_position.y - size, 0.5f};
-    vertex.uv       = {0.0f, 0.0f};
-    a_meshBuffer->m_vertices.push_back(vertex);
-    vertex.position = {a_position.x - size, a_position.y + size, 0.5f};
     vertex.uv       = {0.0f, 1.0f};
     a_meshBuffer->m_vertices.push_back(vertex);
+    vertex.position = {a_position.x - size, a_position.y + size, 0.5f};
+    vertex.uv       = {0.0f, 0.0f};
+    a_meshBuffer->m_vertices.push_back(vertex);
     vertex.position = {a_position.x + size, a_position.y - size, 0.5f};
-    vertex.uv       = {1.0f, 0.0f};
+    vertex.uv       = {1.0f, 1.0f};
     a_meshBuffer->m_vertices.push_back(vertex);
     vertex.position = {a_position.x + size, a_position.y + size, 0.5f};
-    vertex.uv       = {1.0f, 1.0f};
+    vertex.uv       = {1.0f, 0.0f};
     a_meshBuffer->m_vertices.push_back(vertex);
 
     a_meshBuffer->m_indices.push_back(index);
@@ -87,7 +87,7 @@ struct BunchOfSquares
 
         math::mVec2 newPosition;
         newPosition.x = a_position.x;
-        newPosition.y = screenHeight - a_position.y;
+        newPosition.y = a_position.y;
         m_squarePositions[currentMaterialID].push_back(newPosition);
     }
 
@@ -100,7 +100,9 @@ class mPainter
    public:
     void add_paintedPosition(const math::mIVec2& a_position)
     {
-        m_paintedPositions.push_back(a_position);
+        m_paintedPositions.push_back(
+            math::mIVec2{mInt(a_position.x - screenWidth / 2),
+                         mInt(screenHeight / 2 - a_position.y)});
     }
 
     std::vector<math::mIVec2> m_paintedPositions;
@@ -123,14 +125,46 @@ class mTargetController
     {
         if (m_middleButtonPressed)
         {
-            m_targetPoint.x -= a_position.x;
-            m_targetPoint.y += a_position.y;
+            m_targetPoint.x += a_position.x / m_zoomLevel;
+            m_targetPoint.y -= a_position.y / m_zoomLevel;
+            update_worldToViewMatrix();
         }
     }
 
-    mBool        m_middleButtonPressed = false;
-    math::mIVec2 m_targetPoint{0, 0};
+    void update_zoomLevel(mDouble a_update)
+    {
+        m_zoomPower -= a_update;
+        m_zoomLevel = 1 * std::pow(m_speed, m_zoomPower);
+        update_worldToViewMatrix();
+    }
+
+    void update_worldToViewMatrix()
+    {
+        m_worldToView =
+            math::generate_scaleMatrix(m_zoomLevel, m_zoomLevel, 1.0) *
+            math::generate_translationMatrix(m_targetPoint.x, m_targetPoint.y,
+                                             0.0f);
+
+        m_viewToWorld =
+            math::generate_translationMatrix(-m_targetPoint.x, -m_targetPoint.y,
+                                             0.0f) *
+            math::generate_scaleMatrix(1 / m_zoomLevel, 1 / m_zoomLevel, 1.0);
+    }
+
+    mBool         m_middleButtonPressed = false;
+    mFloat        m_speed{0.75};
+    mFloat        m_zoomPower{0};
+    mFloat        m_zoomLevel{1};
+    math::mIVec2  m_zoomOffset{0, 0};
+    math::mIVec2  m_targetPoint{0, 0};
+    math::mIVec2  m_finalPoint{0, 0};
+    math::mMat4x4 m_worldToView{1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+                                0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    math::mMat4x4 m_viewToWorld{1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+                                0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
 };
+
+// void convert_2DscreenPosToWorldPos(mIVec2 a_screenPos)
 
 class RendererTestApp : public m::crossPlatform::IWindowedApplication
 {
@@ -182,9 +216,11 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             input::mMouseAction::mouseReleased(input::mMouseButton::middle),
             input::mMouseActionCallback(
                 &m_targetController, &mTargetController::deactivate_moveMode));
-
         m_inputManager.attach_toMouseMoveEvent(input::mMouseActionCallback(
             &m_targetController, &mTargetController::move_target));
+
+        m_inputManager.attach_toMouseScrollEvent(input::mScrollCallback(
+            &m_targetController, &mTargetController::update_zoomLevel));
 
         // Setup vulkan window
         m_windowVulkan =
@@ -248,14 +284,19 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         static math::mIVec2 lastPosRegPos;
         static math::mIVec2 lastPlaced;
+        mFloat              fact = 1.0 / m_targetController.m_zoomLevel;
+        math::mVec4         floatPosition{0.0f, 0.0f, 0.0f, 1.0f};
+        math::mVec4         transPosition{};
         for (auto position : m_painter.m_paintedPositions)
         {
-            lastPosRegPos = position;
-            lastPlaced = math::mIVec2{position.x, screenHeight - position.y} +
-                         m_targetController.m_targetPoint;
+            floatPosition.x = position.x;
+            floatPosition.y = position.y;
+            transPosition   = m_targetController.m_viewToWorld * floatPosition;
+            lastPosRegPos   = position;
+            lastPlaced =
+                math::mIVec2{mInt(transPosition.x), mInt(transPosition.y)};
             m_bunchOfSquares.add_oneNewSquare(
-                math::mIVec2{position.x, screenHeight - position.y} +
-                m_targetController.m_targetPoint);
+                math::mIVec2{mInt(transPosition.x), mInt(transPosition.y)});
         }
         m_painter.m_paintedPositions.clear();
 
@@ -285,13 +326,9 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             totalNbPositions += positions.size();
         }
 
-        m_matrix =
-            math::generate_projectionOrthoLH(screenWidth, -screenHeight, 0.0f,
-                                             1.0f) *
-            math::generate_translation(
-                mFloat(-screenWidth / 2 - m_targetController.m_targetPoint.x),
-                mFloat(-screenHeight / 2 + m_targetController.m_targetPoint.y),
-                0.0f);
+        m_matrix = math::generate_projectionOrthoLH(screenWidth, screenHeight,
+                                                    0.0f, 1.0f) *
+                   m_targetController.m_worldToView;
 
         start_dearImGuiNewFrame(m_iRendererDx12);
 
@@ -312,6 +349,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
                         lastPosRegPos.y);
             ImGui::Text("Last placed position : %dx;%dy", lastPlaced.x,
                         lastPlaced.y);
+            ImGui::Text("Zoom : %f", m_targetController.m_zoomLevel);
         }
         ImGui::End();
 
