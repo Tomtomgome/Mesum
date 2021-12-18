@@ -834,7 +834,105 @@ VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
     m_fragShaderModule =
         vulkan::VulkanContext::create_shaderModule("data/squareShader.fs.spv");
 
+    VkDevice device = vulkan::VulkanContext::get_logDevice();
+
+    VkDescriptorSetLayoutBinding binding{};
+    binding.binding         = 0;
+    binding.descriptorType  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+    binding.descriptorCount = 1;
+    binding.stageFlags      = VK_SHADER_STAGE_VERTEX_BIT;
+
+    VkDescriptorSetLayoutCreateInfo createInfoLayout{};
+    createInfoLayout.sType =
+        VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+    createInfoLayout.bindingCount = 1;
+    createInfoLayout.pBindings    = &binding;
+
+    vulkan::check_vkResult(vkCreateDescriptorSetLayout(
+        device, &createInfoLayout, nullptr, &m_descriptorLayout));
+
     create_renderPassAndPipeline(1280, 720);
+
+    VkDeviceSize bufferSize = sizeof(math::mMat4x4);
+
+    for (size_t i = 0; i < vulkan::VulkanSurface::scm_numFrames; i++)
+    {
+        VkBufferCreateInfo bufferInfo{};
+        bufferInfo.sType       = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+        bufferInfo.size        = bufferSize;
+        bufferInfo.usage       = VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
+        bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+        if (vkCreateBuffer(device, &bufferInfo, nullptr, &m_cbMatrices[i]) !=
+            VK_SUCCESS)
+        {
+            throw std::runtime_error("failed to create vertex buffer!");
+        }
+
+        VkMemoryRequirements memRequirements;
+        vkGetBufferMemoryRequirements(device, m_cbMatrices[i],
+                                      &memRequirements);
+
+        VkMemoryAllocateInfo allocInfo{};
+        allocInfo.sType           = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+        allocInfo.allocationSize  = memRequirements.size;
+        allocInfo.memoryTypeIndex = vulkan::VulkanContext::get_memoryTypeIndex(
+            memRequirements.memoryTypeBits,
+            VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
+                VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+
+        vulkan::check_vkResult(vkAllocateMemory(device, &allocInfo, nullptr,
+                                                &m_cbMatricesMemory[i]));
+
+        vkBindBufferMemory(device, m_cbMatrices[i], m_cbMatricesMemory[i], 0);
+    }
+
+    VkDescriptorPoolSize poolSize{};
+    poolSize.type            = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+    poolSize.descriptorCount = vulkan::VulkanSurface::scm_numFrames;
+
+    VkDescriptorPoolCreateInfo poolInfo{};
+    poolInfo.sType         = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+    poolInfo.poolSizeCount = 1;
+    poolInfo.pPoolSizes    = &poolSize;
+    poolInfo.maxSets       = vulkan::VulkanSurface::scm_numFrames;
+
+    vulkan::check_vkResult(
+        vkCreateDescriptorPool(device, &poolInfo, nullptr, &m_descriptorPool));
+
+    VkDescriptorSetLayout layouts[vulkan::VulkanSurface::scm_numFrames] = {
+        m_descriptorLayout, m_descriptorLayout, m_descriptorLayout};
+
+    VkDescriptorSetAllocateInfo descriptorSetAllocInfo{};
+    descriptorSetAllocInfo.sType =
+        VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+    descriptorSetAllocInfo.descriptorPool = m_descriptorPool;
+    descriptorSetAllocInfo.descriptorSetCount =
+        vulkan::VulkanSurface::scm_numFrames;
+    descriptorSetAllocInfo.pSetLayouts = layouts;
+
+    vulkan::check_vkResult(vkAllocateDescriptorSets(
+        device, &descriptorSetAllocInfo, m_cbMatricesSets));
+
+    for (size_t i = 0; i < vulkan::VulkanSurface::scm_numFrames; i++)
+    {
+        VkDescriptorBufferInfo bufferInfo{};
+        bufferInfo.buffer = m_cbMatrices[i];
+        bufferInfo.offset = 0;
+        bufferInfo.range  = sizeof(math::mMat4x4);
+
+        VkWriteDescriptorSet descriptorWrite{};
+        descriptorWrite.sType      = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+        descriptorWrite.dstSet     = m_cbMatricesSets[i];
+        descriptorWrite.dstBinding = 0;
+        descriptorWrite.dstArrayElement  = 0;
+        descriptorWrite.descriptorType   = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+        descriptorWrite.descriptorCount  = 1;
+        descriptorWrite.pBufferInfo      = &bufferInfo;
+        descriptorWrite.pImageInfo       = nullptr;
+        descriptorWrite.pTexelBufferView = nullptr;
+
+        vkUpdateDescriptorSets(device, 1, &descriptorWrite, 0, nullptr);
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -846,9 +944,23 @@ VulkanTask2dRender::~VulkanTask2dRender()
 
     VkDevice device = vulkan::VulkanContext::get_logDevice();
 
+    for (size_t i = 0; i < vulkan::VulkanSurface::scm_numFrames; i++)
+    {
+        vkDestroyBuffer(device, m_cbMatrices[i], nullptr);
+        vkFreeMemory(device, m_cbMatricesMemory[i], nullptr);
+    }
+
+    vkFreeDescriptorSets(device, m_descriptorPool,
+                         vulkan::VulkanSurface::scm_numFrames,
+                         m_cbMatricesSets);
+
+    vkDestroyDescriptorPool(device, m_descriptorPool, nullptr);
+
     vkDestroyPipeline(device, m_graphicsPipeline, nullptr);
     vkDestroyPipelineLayout(device, m_pipelineLayout, nullptr);
     vkDestroyRenderPass(device, m_renderPass, nullptr);
+
+    vkDestroyDescriptorSetLayout(device, m_descriptorLayout, nullptr);
 
     vkDestroyShaderModule(device, m_vertShaderModule, nullptr);
     vkDestroyShaderModule(device, m_fragShaderModule, nullptr);
@@ -884,7 +996,7 @@ void VulkanTask2dRender::create_renderPassAndPipeline(mU32 a_width,
     bindingDescription.stride    = sizeof(BasicVertex);
     bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
 
-    std::array<VkVertexInputAttributeDescription, 2> attributeDescriptions = {};
+    std::array<VkVertexInputAttributeDescription, 3> attributeDescriptions = {};
     attributeDescriptions[0].binding                                       = 0;
     attributeDescriptions[0].location                                      = 0;
     attributeDescriptions[0].format   = VK_FORMAT_R32G32B32A32_SFLOAT;
@@ -893,6 +1005,10 @@ void VulkanTask2dRender::create_renderPassAndPipeline(mU32 a_width,
     attributeDescriptions[1].location = 1;
     attributeDescriptions[1].format   = VK_FORMAT_R32G32B32A32_SFLOAT;
     attributeDescriptions[1].offset   = offsetof(BasicVertex, color);
+    attributeDescriptions[2].binding  = 0;
+    attributeDescriptions[2].location = 2;
+    attributeDescriptions[2].format   = VK_FORMAT_R32G32_SFLOAT;
+    attributeDescriptions[2].offset   = offsetof(BasicVertex, uv);
 
     VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
     vertexInputInfo.sType =
@@ -900,7 +1016,8 @@ void VulkanTask2dRender::create_renderPassAndPipeline(mU32 a_width,
     vertexInputInfo.vertexBindingDescriptionCount = 1;
     vertexInputInfo.pVertexBindingDescriptions =
         &bindingDescription;  // Optional
-    vertexInputInfo.vertexAttributeDescriptionCount = 2;
+    vertexInputInfo.vertexAttributeDescriptionCount =
+        attributeDescriptions.size();
     vertexInputInfo.pVertexAttributeDescriptions =
         attributeDescriptions.data();  // Optional
 
@@ -936,7 +1053,7 @@ void VulkanTask2dRender::create_renderPassAndPipeline(mU32 a_width,
     rasterizer.rasterizerDiscardEnable = VK_FALSE;
     rasterizer.polygonMode             = VK_POLYGON_MODE_FILL;
     rasterizer.lineWidth               = 1.0f;
-    rasterizer.cullMode                = VK_CULL_MODE_BACK_BIT;
+    rasterizer.cullMode                = D3D12_CULL_MODE_NONE;
     rasterizer.frontFace               = VK_FRONT_FACE_COUNTER_CLOCKWISE;
     rasterizer.depthBiasEnable         = VK_FALSE;
     rasterizer.depthBiasConstantFactor = 0.0f;  // Optional
@@ -981,10 +1098,10 @@ void VulkanTask2dRender::create_renderPassAndPipeline(mU32 a_width,
 
     VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
     pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-    pipelineLayoutInfo.setLayoutCount         = 0;        // Optional
-    pipelineLayoutInfo.pSetLayouts            = nullptr;  // Optional
-    pipelineLayoutInfo.pushConstantRangeCount = 0;        // Optional
-    pipelineLayoutInfo.pPushConstantRanges    = nullptr;  // Optional
+    pipelineLayoutInfo.setLayoutCount = 1;                    // Optional
+    pipelineLayoutInfo.pSetLayouts    = &m_descriptorLayout;  // Optional
+    pipelineLayoutInfo.pushConstantRangeCount = 0;            // Optional
+    pipelineLayoutInfo.pPushConstantRanges    = nullptr;      // Optional
 
     if (vkCreatePipelineLayout(device, &pipelineLayoutInfo, nullptr,
                                &m_pipelineLayout) != VK_SUCCESS)
@@ -1085,6 +1202,8 @@ void VulkanTask2dRender::execute() const
     mDouble width  = currentSurface->get_width();
     mDouble height = currentSurface->get_height();
 
+    mInt currentImage = (m_i) % vulkan::VulkanSurface::scm_numFrames;
+
     {
         VkRenderPassBeginInfo info   = {};
         info.sType                   = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
@@ -1101,10 +1220,12 @@ void VulkanTask2dRender::execute() const
 
     if (meshBuffer.m_indices.size() > 0)
     {
+        VkDevice device = vulkan::VulkanContext::get_logDevice();
+
         vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
                           m_graphicsPipeline);
 
-        auto& buffer = m_buffers[(m_i) % vulkan::VulkanSurface::scm_numFrames];
+        auto&        buffer          = m_buffers[currentImage];
         VkBuffer     vertexBuffers[] = {buffer.vertexBuffer};
         VkDeviceSize offsets[]       = {0};
         vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffers, offsets);
@@ -1125,6 +1246,17 @@ void VulkanTask2dRender::execute() const
 
         vkCmdSetViewport(commandBuffer, 0, 1, &viewport);
         vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
+
+        void* data;
+        vkMapMemory(device, m_cbMatricesMemory[currentImage], 0,
+                    sizeof(math::mMat4x4), 0, &data);
+        math::mMat4x4& mvpMatrix = *((math::mMat4x4*)(data));
+        mvpMatrix                = *m_taskData.m_pMatrix;
+        vkUnmapMemory(device, m_cbMatricesMemory[currentImage]);
+
+        vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
+                                m_pipelineLayout, 0, 1,
+                                &m_cbMatricesSets[currentImage], 0, nullptr);
 
         vkCmdDrawIndexed(commandBuffer, meshBuffer.m_indices.size(), 1, 0, 0,
                          0);

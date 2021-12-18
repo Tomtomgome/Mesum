@@ -390,6 +390,7 @@ mIfDx12Enabled(struct Dx12Task2dRender : public Task2dRender
     dx12::ComPtr<ID3D12RootSignature> m_rootSignature = nullptr;
     dx12::ComPtr<ID3D12PipelineState> m_pso           = nullptr;
 
+    /// \todo Put a buffer per frame !!! This is bad !!
     dx12::ComPtr<ID3D12Resource> m_pCbMatrices = nullptr;
     void* m_pCbMatricesData = nullptr;
     dx12::ComPtr<ID3D12Resource> m_pCbMaterial = nullptr;
@@ -430,9 +431,16 @@ mIfVulkanEnabled(struct VulkanTask2dRender : public Task2dRender
     VkShaderModule m_vertShaderModule;
     VkShaderModule m_fragShaderModule;
 
+    VkDescriptorSetLayout m_descriptorLayout;
+
     VkPipelineLayout m_pipelineLayout;
     VkRenderPass     m_renderPass;
     VkPipeline       m_graphicsPipeline;
+
+    VkBuffer m_cbMatrices[vulkan::VulkanSurface::scm_numFrames];
+    VkDeviceMemory m_cbMatricesMemory[vulkan::VulkanSurface::scm_numFrames];
+    VkDescriptorPool m_descriptorPool;
+    VkDescriptorSet m_cbMatricesSets[vulkan::VulkanSurface::scm_numFrames];
 
     mUInt m_i = 0;
 };)

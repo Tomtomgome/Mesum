@@ -189,7 +189,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         render::TaskData2dRender taskData_2dRender;
         taskData_2dRender.m_hdlOutput   = m_hdlSurfaceDx12;
         taskData_2dRender.m_pMeshBuffer = &m_drawer2d.m_meshBuffer;
-        taskData_2dRender.m_pMatrix     = &m_matrix;
+        taskData_2dRender.m_pMatrix     = &m_dx12Matrix;
         taskData_2dRender.m_pRanges     = &m_ranges;
         m_pTaskRender = (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
             taskset_renderPipelineDx12));
@@ -231,7 +231,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             m_hdlSurfaceVulkan->surface->addNew_renderTaskset();
 
         taskData_2dRender.m_hdlOutput   = m_hdlSurfaceVulkan;
-        taskData_2dRender.m_pMeshBuffer = &m_drawer2d.m_meshBuffer;
+        taskData_2dRender.m_pMatrix     = &m_vkMatrix;
         taskData_2dRender.add_toTaskSet(taskset_renderPipelineVulkan);
 
         m_imageRequested.emplace_back();
@@ -326,9 +326,12 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             totalNbPositions += positions.size();
         }
 
-        m_matrix = math::generate_projectionOrthoLH(screenWidth, screenHeight,
+        m_dx12Matrix = math::generate_projectionOrthoLH(screenWidth, screenHeight,
                                                     0.0f, 1.0f) *
                    m_targetController.m_worldToView;
+        m_vkMatrix = math::generate_projectionOrthoLH(screenWidth, -screenHeight,
+                                                        0.0f, 1.0f) *
+                       m_targetController.m_worldToView;
 
         start_dearImGuiNewFrame(m_iRendererDx12);
 
@@ -405,7 +408,8 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
     render::Task2dRender*                         m_pTaskRender = nullptr;
     std::vector<resource::mRequestImage>          m_imageRequested;
-    math::mMat4x4                                 m_matrix{};
+    math::mMat4x4                                 m_dx12Matrix{};
+    math::mMat4x4                                 m_vkMatrix{};
     std::vector<render::TaskData2dRender::mRange> m_ranges;
 
     Drawer_2D                    m_drawer2d;
