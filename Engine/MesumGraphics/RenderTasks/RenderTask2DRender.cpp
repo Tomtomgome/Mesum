@@ -437,92 +437,7 @@ Dx12Task2dRender::Dx12Task2dRender(TaskData2dRender* a_data)
     dx12::check_MicrosoftHRESULT(
         m_pCbMaterial->Map(0, &readRange, &m_pCbMaterialData));
 
-    // LOAD THE TEXTURE -------------------------------------------------------
-    resource::mRequestImage request;
-    request.path      = "data/textures/Test.png";
-    auto [msg, image] = resource::load_image(request);
-
-    mAssert(mIsSuccess(msg));
-
-    D3D12_RESOURCE_DESC descTexture{};
-    descTexture.MipLevels          = 1;
-    descTexture.Width              = image.width;
-    descTexture.Height             = image.height;
-    descTexture.Flags              = D3D12_RESOURCE_FLAG_NONE;
-    descTexture.DepthOrArraySize   = 1;
-    descTexture.SampleDesc.Count   = 1;
-    descTexture.SampleDesc.Quality = 0;
-    descTexture.Dimension          = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-    descTexture.Format             = DXGI_FORMAT_R8G8B8A8_UNORM;
-
     ID3D12Device2* pDevice = dx12::DX12Context::gs_dx12Contexte->m_device.Get();
-
-    m_pTextureResources.emplace_back();
-    ID3D12Resource* pTextureResources = m_pTextureResources[0].Get();
-
-    auto    oHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
-    HRESULT hr              = pDevice->CreateCommittedResource(
-                     &oHeapProperties, D3D12_HEAP_FLAG_NONE, &descTexture,
-                     D3D12_RESOURCE_STATE_COPY_DEST, nullptr,
-                     IID_PPV_ARGS(&pTextureResources));
-    if (hr != S_OK)
-    {
-        mLog_error("Fail to create resource for texture");
-        return;
-    }
-
-    pTextureResources->SetName(L"defaultName");
-
-    ID3D12Resource* pUploadTextureResource;
-    const UINT      subresourceCount =
-        descTexture.DepthOrArraySize * descTexture.MipLevels;
-
-    // CREATE UPLOAD (CPU SIDE) RESOURCE
-    const UINT64 uploadBufferSize =
-        GetRequiredIntermediateSize(pTextureResources, 0, subresourceCount);
-
-    oHeapProperties    = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-    auto oResourceDesc = CD3DX12_RESOURCE_DESC::Buffer(uploadBufferSize);
-    hr                 = pDevice->CreateCommittedResource(
-                        &oHeapProperties, D3D12_HEAP_FLAG_NONE, &oResourceDesc,
-                        D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
-                        IID_PPV_ARGS(&pUploadTextureResource));
-    if (hr != S_OK)
-    {
-        pTextureResources->Release();
-        mLog_error("Fail to create upload resource for texture");
-        return;
-    }
-
-    std::vector<D3D12_SUBRESOURCE_DATA> vSubresources(descTexture.MipLevels);
-    // mip level 0
-    size_t stNumBytes;
-    size_t stRowBytes;
-    size_t stNumRows;
-    get_dxgiSurfaceInfo(size_t(descTexture.Width), size_t(descTexture.Height),
-                        descTexture.Format, &stNumBytes, &stRowBytes,
-                        &stNumRows);
-    D3D12_SUBRESOURCE_DATA& oTextureData = vSubresources[0];
-    oTextureData.pData                   = image.data.data();
-    oTextureData.SlicePitch              = stNumBytes;
-    oTextureData.RowPitch                = stRowBytes;
-
-    dx12::ComPtr<ID3D12GraphicsCommandList2> pUploadCommandList =
-        dx12::DX12Context::gs_dx12Contexte->get_commandQueue()
-            .get_commandList();
-
-    UpdateSubresources(pUploadCommandList.Get(), pTextureResources,
-                       pUploadTextureResource, 0, 0, subresourceCount,
-                       vSubresources.data());
-
-    D3D12_RESOURCE_STATES eAfterState =
-        D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
-    auto oResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
-        pTextureResources, D3D12_RESOURCE_STATE_COPY_DEST, eAfterState);
-    pUploadCommandList->ResourceBarrier(1, &oResourceBarrier);
-
-    dx12::DX12Context::gs_dx12Contexte->get_commandQueue().execute_commandList(
-        pUploadCommandList.Get());
 
     // Sampler
     D3D12_SAMPLER_DESC descSampler{};
@@ -557,7 +472,7 @@ Dx12Task2dRender::Dx12Task2dRender(TaskData2dRender* a_data)
     sSrvHeapDesc.NodeMask = 0;
     sSrvHeapDesc.Flags    = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 
-    hr = pDevice->CreateDescriptorHeap(&sSrvHeapDesc,
+    HRESULT hr = pDevice->CreateDescriptorHeap(&sSrvHeapDesc,
                                        IID_PPV_ARGS(m_pSrvHeap.GetAddressOf()));
     mAssert(hr == S_OK);
     m_pSrvHeap.Get()->SetName(L"Texture SRV Heap");
@@ -576,22 +491,6 @@ Dx12Task2dRender::Dx12Task2dRender(TaskData2dRender* a_data)
     m_pSamplerHeap.Get()->SetName(L"Texture Sampler Heap");
 
     // Descriptors ------------------------------------------------------------
-    D3D12_SHADER_RESOURCE_VIEW_DESC descShaderResourceView = {};
-    descShaderResourceView.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
-    descShaderResourceView.Shader4ComponentMapping =
-        D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-    descShaderResourceView.Format                    = descTexture.Format;
-    descShaderResourceView.Texture2D.MipLevels       = descTexture.MipLevels;
-    descShaderResourceView.Texture2D.MostDetailedMip = 0;
-    descShaderResourceView.Texture2D.ResourceMinLODClamp = 0.0f;
-
-    CD3DX12_CPU_DESCRIPTOR_HANDLE const hdlCPUSrv(
-        m_pSrvHeap->GetCPUDescriptorHandleForHeapStart(), 0,
-        m_incrementSizeSrv);
-
-    pDevice->CreateShaderResourceView(pTextureResources,
-                                      &descShaderResourceView, hdlCPUSrv);
-
     m_GPUDescHdlTexture = CD3DX12_GPU_DESCRIPTOR_HANDLE(
         m_pSrvHeap->GetGPUDescriptorHandleForHeapStart(), 0,
         m_incrementSizeSrv);
@@ -836,6 +735,28 @@ VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
 
     VkDevice device = vulkan::VulkanContext::get_logDevice();
 
+    // Sampler ----------------------------------------------------------------
+    VkSamplerCreateInfo samplerInfo{};
+    samplerInfo.sType                   = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
+    samplerInfo.magFilter               = VK_FILTER_LINEAR;
+    samplerInfo.minFilter               = VK_FILTER_LINEAR;
+    samplerInfo.addressModeU            = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+    samplerInfo.addressModeV            = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+    samplerInfo.addressModeW            = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+    samplerInfo.anisotropyEnable        = VK_FALSE;
+    samplerInfo.maxAnisotropy           = 1.0f;
+    samplerInfo.borderColor             = VK_BORDER_COLOR_INT_OPAQUE_BLACK;
+    samplerInfo.unnormalizedCoordinates = VK_FALSE;
+    samplerInfo.compareEnable           = VK_FALSE;
+    samplerInfo.compareOp               = VK_COMPARE_OP_ALWAYS;
+    samplerInfo.mipmapMode              = VK_SAMPLER_MIPMAP_MODE_LINEAR;
+    samplerInfo.mipLodBias              = 0.0f;
+    samplerInfo.minLod                  = 0.0f;
+    samplerInfo.maxLod                  = 0.0f;
+
+    vulkan::check_vkResult(
+        vkCreateSampler(device, &samplerInfo, nullptr, &textureSampler));
+
     // Bindings and layout ----------------------------------------------------
     VkDescriptorSetLayoutBinding binding{};
     binding.binding         = 0;
@@ -1019,6 +940,7 @@ VulkanTask2dRender::~VulkanTask2dRender()
 
     for (mUInt i = 0; i < m_pTextureImages.size(); ++i)
     {
+        vkDestroyImageView(device, m_imageViews[i], nullptr);
         vkDestroyImage(device, m_pTextureImages[i], nullptr);
         vkFreeMemory(device, m_pTextureMemory[i], nullptr);
     }
@@ -1189,6 +1111,42 @@ mBool VulkanTask2dRender::add_texture(resource::mRequestImage const& a_request)
     vkDestroyBuffer(device, stagingBuffer, nullptr);
     vkFreeMemory(device, stagingBufferMemory, nullptr);
 
+    // Create imageView -------------------------------------------------------
+    m_imageViews.emplace_back();
+    VkImageView& imageView = m_imageViews.back();
+
+    VkImageViewCreateInfo viewInfo{};
+    viewInfo.sType    = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+    viewInfo.image    = textureImage;
+    viewInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
+    viewInfo.format   = VK_FORMAT_R8G8B8A8_SRGB;
+    viewInfo.subresourceRange.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT;
+    viewInfo.subresourceRange.baseMipLevel   = 0;
+    viewInfo.subresourceRange.levelCount     = 1;
+    viewInfo.subresourceRange.baseArrayLayer = 0;
+    viewInfo.subresourceRange.layerCount     = 1;
+
+    vulkan::check_vkResult(
+        vkCreateImageView(device, &viewInfo, nullptr, &imageView));
+
+    // Update Descriptors -----------------------------------------------------
+    VkDescriptorImageInfo descriptorImageInfo{};
+    descriptorImageInfo.sampler     = textureSampler;
+    descriptorImageInfo.imageView   = imageView;
+    descriptorImageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+
+    VkWriteDescriptorSet bindlessDescriptorWrite{
+        VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET};
+    bindlessDescriptorWrite.descriptorCount = 1;
+    bindlessDescriptorWrite.dstArrayElement = m_imageViews.size() - 1;
+    bindlessDescriptorWrite.descriptorType =
+        VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+    bindlessDescriptorWrite.dstSet     = m_bindlessTextureDescriptorSet;
+    bindlessDescriptorWrite.dstBinding = 0;
+    bindlessDescriptorWrite.pImageInfo = &descriptorImageInfo;
+
+    vkUpdateDescriptorSets(device, 1, &bindlessDescriptorWrite, 0, nullptr);
+
     return true;
 }
 
@@ -1300,14 +1258,16 @@ void VulkanTask2dRender::create_renderPassAndPipeline(mU32 a_width,
     colorBlendAttachment.colorWriteMask =
         VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT |
         VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
-    colorBlendAttachment.blendEnable         = VK_FALSE;
-    colorBlendAttachment.srcColorBlendFactor = VK_BLEND_FACTOR_ONE;  // Optional
+    colorBlendAttachment.blendEnable = VK_TRUE;
+    colorBlendAttachment.srcColorBlendFactor =
+        VK_BLEND_FACTOR_SRC_ALPHA;  // Optional
     colorBlendAttachment.dstColorBlendFactor =
-        VK_BLEND_FACTOR_ZERO;                                        // Optional
-    colorBlendAttachment.colorBlendOp        = VK_BLEND_OP_ADD;      // Optional
-    colorBlendAttachment.srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE;  // Optional
+        VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;              // Optional
+    colorBlendAttachment.colorBlendOp = VK_BLEND_OP_ADD;  // Optional
+    colorBlendAttachment.srcAlphaBlendFactor =
+        VK_BLEND_FACTOR_SRC_ALPHA;  // Optional
     colorBlendAttachment.dstAlphaBlendFactor =
-        VK_BLEND_FACTOR_ZERO;                             // Optional
+        VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;              // Optional
     colorBlendAttachment.alphaBlendOp = VK_BLEND_OP_ADD;  // Optional
 
     VkPipelineColorBlendStateCreateInfo colorBlending{};

@@ -164,44 +164,79 @@ class mTargetController
                                 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
 };
 
-// void convert_2DscreenPosToWorldPos(mIVec2 a_screenPos)
-
 class RendererTestApp : public m::crossPlatform::IWindowedApplication
 {
-    void init(mCmdLine const& a_cmdLine, void* a_appData) override
+    static const mBool dx12Windw = true;
+    static const mBool vkWindw   = true;
+
+    void         init(mCmdLine const& a_cmdLine, void* a_appData) override
     {
         crossPlatform::IWindowedApplication::init(a_cmdLine, a_appData);
-        m_iRendererDx12   = new dx12::DX12Renderer();
-        m_iRendererVulkan = new vulkan::VulkanRenderer();
-        m_iRendererDx12->init();
-        m_iRendererVulkan->init();
 
-        // SetupDx12 Window
-        m_windowDx12 = add_newWindow("Dx12 Window", screenWidth, screenHeight);
-        m_windowDx12->link_inputManager(&m_inputManager);
-        m_hdlSurfaceDx12 = m_windowDx12->link_renderer(m_iRendererDx12);
-
-        dearImGui::init(*m_windowDx12);
-
-        render::Taskset* taskset_renderPipelineDx12 =
-            m_hdlSurfaceDx12->surface->addNew_renderTaskset();
+        m_imageRequested.emplace_back();
+        m_imageRequested.back().path = "data/textures/Test.png";
+        m_imageRequested.emplace_back();
+        m_imageRequested.back().path = "data/textures/Test2.png";
+        m_imageRequested.emplace_back();
+        m_imageRequested.back().path.resize(512);  // prep for imGui
 
         render::TaskData2dRender taskData_2dRender;
-        taskData_2dRender.m_hdlOutput   = m_hdlSurfaceDx12;
         taskData_2dRender.m_pMeshBuffer = &m_drawer2d.m_meshBuffer;
-        taskData_2dRender.m_pMatrix     = &m_dx12Matrix;
         taskData_2dRender.m_pRanges     = &m_ranges;
-        m_pTaskRender = (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
-            taskset_renderPipelineDx12));
 
-        render::TaskDataDrawDearImGui taskData_drawDearImGui;
-        taskData_drawDearImGui.m_hdlOutput = m_hdlSurfaceDx12;
-        taskData_drawDearImGui.add_toTaskSet(taskset_renderPipelineDx12);
+        if (dx12Windw)
+        {
+            m_iRendererDx12 = new dx12::DX12Renderer();
+            m_iRendererDx12->init();
 
-        //        m_inputManager.attach_toKeyEvent(
-        //            input::mKeyAction::keyPressed(input::keyN),
-        //            mCallback<void>(&m_bunchOfSquares,
-        //            &BunchOfSquares::add_newSquare));
+            // SetupDx12 Window
+            m_windowDx12 =
+                add_newWindow("Dx12 Window", screenWidth, screenHeight);
+            m_windowDx12->link_inputManager(&m_inputManager);
+            m_hdlSurfaceDx12 = m_windowDx12->link_renderer(m_iRendererDx12);
+
+            dearImGui::init(*m_windowDx12);
+
+            render::Taskset* taskset_renderPipelineDx12 =
+                m_hdlSurfaceDx12->surface->addNew_renderTaskset();
+
+            taskData_2dRender.m_hdlOutput   = m_hdlSurfaceDx12;
+            taskData_2dRender.m_pMatrix     = &m_dx12Matrix;
+            m_pDx12TaskRender =
+                (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
+                    taskset_renderPipelineDx12));
+
+            m_pDx12TaskRender->add_texture(m_imageRequested[0]);
+            m_pDx12TaskRender->add_texture(m_imageRequested[1]);
+
+            render::TaskDataDrawDearImGui taskData_drawDearImGui;
+            taskData_drawDearImGui.m_hdlOutput = m_hdlSurfaceDx12;
+            taskData_drawDearImGui.add_toTaskSet(taskset_renderPipelineDx12);
+        }
+
+        if (vkWindw)
+        {
+            m_iRendererVulkan = new vulkan::VulkanRenderer();
+            m_iRendererVulkan->init();
+            // Setup vulkan window
+            m_windowVulkan =
+                add_newWindow("Vulkan Window", screenWidth, screenHeight);
+            m_windowVulkan->link_inputManager(&m_inputManager);
+            m_hdlSurfaceVulkan =
+                m_windowVulkan->link_renderer(m_iRendererVulkan);
+
+            render::Taskset* taskset_renderPipelineVulkan =
+                m_hdlSurfaceVulkan->surface->addNew_renderTaskset();
+
+            taskData_2dRender.m_hdlOutput = m_hdlSurfaceVulkan;
+            taskData_2dRender.m_pMatrix   = &m_vkMatrix;
+            m_pVkTaskRender =
+                (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
+                    taskset_renderPipelineVulkan));
+
+            m_pVkTaskRender->add_texture(m_imageRequested[0]);
+            m_pVkTaskRender->add_texture(m_imageRequested[1]);
+        }
 
         m_inputManager.attach_toMouseEvent(
             input::mMouseAction::mousePressed(input::mMouseButton::left),
@@ -222,30 +257,6 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_inputManager.attach_toMouseScrollEvent(input::mScrollCallback(
             &m_targetController, &mTargetController::update_zoomLevel));
 
-        // Setup vulkan window
-        m_windowVulkan =
-            add_newWindow("Vulkan Window", screenWidth, screenHeight);
-        m_hdlSurfaceVulkan = m_windowVulkan->link_renderer(m_iRendererVulkan);
-
-        render::Taskset* taskset_renderPipelineVulkan =
-            m_hdlSurfaceVulkan->surface->addNew_renderTaskset();
-
-        taskData_2dRender.m_hdlOutput   = m_hdlSurfaceVulkan;
-        taskData_2dRender.m_pMatrix     = &m_vkMatrix;
-        taskData_2dRender.add_toTaskSet(taskset_renderPipelineVulkan);
-
-        m_imageRequested.emplace_back();
-        m_imageRequested.back().path = "data/textures/Test.png";
-        auto [msg, image] = resource::load_image(m_imageRequested.back());
-        mAssert(mIsSuccess(msg));
-
-        m_imageRequested.emplace_back();
-        m_imageRequested.back().path = "data/textures/Test2.png";
-        m_pTaskRender->add_texture(m_imageRequested.back());
-
-        m_imageRequested.emplace_back();
-        m_imageRequested.back().path.resize(512);  // prep for imGui
-
         //        render::ManagerTexture managerTexture;
         //        GpuTextureBank TextureBankDx12 =
         //        managerTexture.link_renderer(rendererDx12); GpuTextureBank
@@ -263,13 +274,16 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     void destroy() override
     {
         crossPlatform::IWindowedApplication::destroy();
-
-        m_iRendererDx12->destroy();
-        delete m_iRendererDx12;
-
-        m_iRendererVulkan->destroy();
-        delete m_iRendererVulkan;
-
+        if (dx12Windw)
+        {
+            m_iRendererDx12->destroy();
+            delete m_iRendererDx12;
+        }
+        if (vkWindw)
+        {
+            m_iRendererVulkan->destroy();
+            delete m_iRendererVulkan;
+        }
         dearImGui::destroy();
     }
 
@@ -326,71 +340,76 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             totalNbPositions += positions.size();
         }
 
-        m_dx12Matrix = math::generate_projectionOrthoLH(screenWidth, screenHeight,
-                                                    0.0f, 1.0f) *
-                   m_targetController.m_worldToView;
-        m_vkMatrix = math::generate_projectionOrthoLH(screenWidth, -screenHeight,
-                                                        0.0f, 1.0f) *
+        m_dx12Matrix = math::generate_projectionOrthoLH(
+                           screenWidth, screenHeight, 0.0f, 1.0f) *
                        m_targetController.m_worldToView;
-
-        start_dearImGuiNewFrame(m_iRendererDx12);
-
-        ImGui::NewFrame();
-
-        ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(),
-                                     ImGuiDockNodeFlags_PassthruCentralNode);
-
-        ImGui::Begin("Engine");
+        m_vkMatrix = math::generate_projectionOrthoLH(
+                         screenWidth, -screenHeight, 0.0f, 1.0f) *
+                     m_targetController.m_worldToView;
+        if (dx12Windw)
         {
-            ImGui::Text("frame time : %f", deltaTime);
-            ImGui::Text("frame FPS : %f", 1.0 / deltaTime);
-            ImGui::Text("nbSuqares : %llu", totalNbPositions);
-            ImGui::Text("Camera offset : %dx;%dy",
-                        m_targetController.m_targetPoint.x,
-                        m_targetController.m_targetPoint.y);
-            ImGui::Text("Last clicked position : %dx;%dy", lastPosRegPos.x,
-                        lastPosRegPos.y);
-            ImGui::Text("Last placed position : %dx;%dy", lastPlaced.x,
-                        lastPlaced.y);
-            ImGui::Text("Zoom : %f", m_targetController.m_zoomLevel);
-        }
-        ImGui::End();
+            start_dearImGuiNewFrame(m_iRendererDx12);
 
-        ImGui::Begin("Resource List");
-        {
-            for (mUInt i = 0; i < m_imageRequested.size() - 1; ++i)
+            ImGui::NewFrame();
+
+            ImGui::DockSpaceOverViewport(
+                ImGui::GetMainViewport(),
+                ImGuiDockNodeFlags_PassthruCentralNode);
+
+            ImGui::Begin("Engine");
             {
-                if (ImGui::Button(m_imageRequested[i].path.c_str()))
+                ImGui::Text("frame time : %f", deltaTime);
+                ImGui::Text("frame FPS : %f", 1.0 / deltaTime);
+                ImGui::Text("nbSuqares : %llu", totalNbPositions);
+                ImGui::Text("Camera offset : %dx;%dy",
+                            m_targetController.m_targetPoint.x,
+                            m_targetController.m_targetPoint.y);
+                ImGui::Text("Last clicked position : %dx;%dy", lastPosRegPos.x,
+                            lastPosRegPos.y);
+                ImGui::Text("Last placed position : %dx;%dy", lastPlaced.x,
+                            lastPlaced.y);
+                ImGui::Text("Zoom : %f", m_targetController.m_zoomLevel);
+            }
+            ImGui::End();
+
+            ImGui::Begin("Resource List");
+            {
+                for (mUInt i = 0; i < m_imageRequested.size() - 1; ++i)
                 {
-                    m_bunchOfSquares.currentMaterialID = i;
+                    if (ImGui::Button(m_imageRequested[i].path.c_str()))
+                    {
+                        m_bunchOfSquares.currentMaterialID = i;
+                    }
                 }
             }
-        }
-        ImGui::End();
+            ImGui::End();
 
-        ImGui::Begin("Material");
-        {
-            ImGui::InputText("path", m_imageRequested.back().path.data(),
-                             m_imageRequested.back().path.capacity());
-
-            if (ImGui::Button("Add Image"))
+            ImGui::Begin("Material");
             {
-                if (m_pTaskRender->add_texture(m_imageRequested.back()))
+                ImGui::InputText("path", m_imageRequested.back().path.data(),
+                                 m_imageRequested.back().path.capacity());
+
+                if (ImGui::Button("Add Image"))
                 {
-                    m_imageRequested.emplace_back();
-                    m_imageRequested.back().path.resize(512);
+                    if (m_pDx12TaskRender->add_texture(
+                            m_imageRequested.back()) ||
+                        m_pVkTaskRender->add_texture(m_imageRequested.back()))
+                    {
+                        m_imageRequested.emplace_back();
+                        m_imageRequested.back().path.resize(512);
+                    }
                 }
             }
+            ImGui::End();
+
+            ImGui::Render();
         }
-        ImGui::End();
 
-        ImGui::Render();
-
-        if (m_hdlSurfaceDx12->isValid)
+        if (dx12Windw && m_hdlSurfaceDx12->isValid)
         {
             m_hdlSurfaceDx12->surface->render();
         }
-        if (m_hdlSurfaceVulkan->isValid)
+        if (vkWindw && m_hdlSurfaceVulkan->isValid)
         {
             m_hdlSurfaceVulkan->surface->render();
         }
@@ -406,7 +425,8 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     m::render::ISurface::HdlPtr m_hdlSurfaceVulkan;
     windows::mIWindow*          m_windowVulkan = nullptr;
 
-    render::Task2dRender*                         m_pTaskRender = nullptr;
+    render::Task2dRender*                         m_pDx12TaskRender = nullptr;
+    render::Task2dRender*                         m_pVkTaskRender   = nullptr;
     std::vector<resource::mRequestImage>          m_imageRequested;
     math::mMat4x4                                 m_dx12Matrix{};
     math::mMat4x4                                 m_vkMatrix{};

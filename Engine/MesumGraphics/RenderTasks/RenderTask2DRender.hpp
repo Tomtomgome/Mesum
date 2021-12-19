@@ -450,6 +450,10 @@ mIfVulkanEnabled(struct VulkanTask2dRender : public Task2dRender
     std::vector<VkImage> m_pTextureImages{};
     std::vector<VkDeviceMemory> m_pTextureMemory{};
 
+    std::vector<VkImageView> m_imageViews{};
+
+    VkSampler textureSampler;
+
     mUInt m_i = 0;
 };)
 
