@@ -836,6 +836,7 @@ VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
 
     VkDevice device = vulkan::VulkanContext::get_logDevice();
 
+    // Bindings and layout ----------------------------------------------------
     VkDescriptorSetLayoutBinding binding{};
     binding.binding         = 0;
     binding.descriptorType  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
@@ -849,10 +850,36 @@ VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
     createInfoLayout.pBindings    = &binding;
 
     vulkan::check_vkResult(vkCreateDescriptorSetLayout(
-        device, &createInfoLayout, nullptr, &m_descriptorLayout));
+        device, &createInfoLayout, nullptr, &m_cbDescriptorLayout));
 
+    VkDescriptorBindingFlags bindingFlagsBindless =
+        VK_DESCRIPTOR_BINDING_PARTIALLY_BOUND_BIT_EXT |
+        VK_DESCRIPTOR_BINDING_VARIABLE_DESCRIPTOR_COUNT_BIT_EXT |
+        VK_DESCRIPTOR_BINDING_UPDATE_AFTER_BIND_BIT_EXT;
+
+    binding.binding         = 0;
+    binding.descriptorType  = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+    binding.descriptorCount = sm_sizeDescriptorPool;
+    binding.stageFlags      = VK_SHADER_STAGE_FRAGMENT_BIT;
+
+    createInfoLayout.flags =
+        VK_DESCRIPTOR_SET_LAYOUT_CREATE_UPDATE_AFTER_BIND_POOL_BIT_EXT;
+
+    VkDescriptorSetLayoutBindingFlagsCreateInfoEXT extendedCreateInfoLayout{
+        VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_BINDING_FLAGS_CREATE_INFO_EXT,
+        nullptr};
+    extendedCreateInfoLayout.bindingCount  = 1;
+    extendedCreateInfoLayout.pBindingFlags = &bindingFlagsBindless;
+
+    createInfoLayout.pNext = &extendedCreateInfoLayout;
+    vulkan::check_vkResult(
+        vkCreateDescriptorSetLayout(device, &createInfoLayout, nullptr,
+                                    &m_bindlessTextureDescriptorLayout));
+
+    // Create pipeline --------------------------------------------------------
     create_renderPassAndPipeline(1280, 720);
 
+    // Allocate Constant buffers ----------------------------------------------
     VkDeviceSize bufferSize = sizeof(math::mMat4x4);
 
     for (size_t i = 0; i < vulkan::VulkanSurface::scm_numFrames; i++)
@@ -886,6 +913,7 @@ VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
         vkBindBufferMemory(device, m_cbMatrices[i], m_cbMatricesMemory[i], 0);
     }
 
+    // Descriptror pools ------------------------------------------------------
     VkDescriptorPoolSize poolSize{};
     poolSize.type            = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
     poolSize.descriptorCount = vulkan::VulkanSurface::scm_numFrames;
@@ -899,8 +927,19 @@ VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
     vulkan::check_vkResult(
         vkCreateDescriptorPool(device, &poolInfo, nullptr, &m_descriptorPool));
 
+    // Bindless
+    std::array<VkDescriptorPoolSize, 1> poolSizesBindless = {
+        {VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, sm_sizeDescriptorPool}};
+    poolInfo.poolSizeCount = poolSizesBindless.size();
+    poolInfo.pPoolSizes    = poolSizesBindless.data();
+    poolInfo.maxSets       = sm_sizeDescriptorPool * poolSizesBindless.size();
+    poolInfo.flags = VK_DESCRIPTOR_POOL_CREATE_UPDATE_AFTER_BIND_BIT_EXT;
+    vulkan::check_vkResult(vkCreateDescriptorPool(device, &poolInfo, nullptr,
+                                                  &m_textureDescriptorPool));
+
+    // Descriptors allocation -------------------------------------------------
     VkDescriptorSetLayout layouts[vulkan::VulkanSurface::scm_numFrames] = {
-        m_descriptorLayout, m_descriptorLayout, m_descriptorLayout};
+        m_cbDescriptorLayout, m_cbDescriptorLayout, m_cbDescriptorLayout};
 
     VkDescriptorSetAllocateInfo descriptorSetAllocInfo{};
     descriptorSetAllocInfo.sType =
@@ -913,6 +952,23 @@ VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
     vulkan::check_vkResult(vkAllocateDescriptorSets(
         device, &descriptorSetAllocInfo, m_cbMatricesSets));
 
+    // Bindless
+    descriptorSetAllocInfo.descriptorPool     = m_textureDescriptorPool;
+    descriptorSetAllocInfo.descriptorSetCount = 1;
+    descriptorSetAllocInfo.pSetLayouts = &m_bindlessTextureDescriptorLayout;
+
+    VkDescriptorSetVariableDescriptorCountAllocateInfoEXT countInfo{
+        VK_STRUCTURE_TYPE_DESCRIPTOR_SET_VARIABLE_DESCRIPTOR_COUNT_ALLOCATE_INFO_EXT};
+    mU32 maxBinding              = sm_sizeDescriptorPool - 1;
+    countInfo.descriptorSetCount = 1;
+    // This number is the max allocatable count
+    countInfo.pDescriptorCounts  = &maxBinding;
+    descriptorSetAllocInfo.pNext = &countInfo;
+
+    vulkan::check_vkResult(vkAllocateDescriptorSets(
+        device, &descriptorSetAllocInfo, &m_bindlessTextureDescriptorSet));
+
+    // Descriptor mapping -----------------------------------------------------
     for (size_t i = 0; i < vulkan::VulkanSurface::scm_numFrames; i++)
     {
         VkDescriptorBufferInfo bufferInfo{};
@@ -950,17 +1006,16 @@ VulkanTask2dRender::~VulkanTask2dRender()
         vkFreeMemory(device, m_cbMatricesMemory[i], nullptr);
     }
 
-    vkFreeDescriptorSets(device, m_descriptorPool,
-                         vulkan::VulkanSurface::scm_numFrames,
-                         m_cbMatricesSets);
-
     vkDestroyDescriptorPool(device, m_descriptorPool, nullptr);
+    vkDestroyDescriptorPool(device, m_textureDescriptorPool, nullptr);
 
     vkDestroyPipeline(device, m_graphicsPipeline, nullptr);
     vkDestroyPipelineLayout(device, m_pipelineLayout, nullptr);
     vkDestroyRenderPass(device, m_renderPass, nullptr);
 
-    vkDestroyDescriptorSetLayout(device, m_descriptorLayout, nullptr);
+    vkDestroyDescriptorSetLayout(device, m_cbDescriptorLayout, nullptr);
+    vkDestroyDescriptorSetLayout(device, m_bindlessTextureDescriptorLayout,
+                                 nullptr);
 
     vkDestroyShaderModule(device, m_vertShaderModule, nullptr);
     vkDestroyShaderModule(device, m_fragShaderModule, nullptr);
@@ -1096,12 +1151,15 @@ void VulkanTask2dRender::create_renderPassAndPipeline(mU32 a_width,
     colorBlending.blendConstants[2] = 0.0f;  // Optional
     colorBlending.blendConstants[3] = 0.0f;  // Optional
 
+    std::array<VkDescriptorSetLayout, 2> layouts = {
+        m_cbDescriptorLayout, m_bindlessTextureDescriptorLayout};
+
     VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
     pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-    pipelineLayoutInfo.setLayoutCount = 1;                    // Optional
-    pipelineLayoutInfo.pSetLayouts    = &m_descriptorLayout;  // Optional
-    pipelineLayoutInfo.pushConstantRangeCount = 0;            // Optional
-    pipelineLayoutInfo.pPushConstantRanges    = nullptr;      // Optional
+    pipelineLayoutInfo.setLayoutCount         = layouts.size();  // Optional
+    pipelineLayoutInfo.pSetLayouts            = layouts.data();  // Optional
+    pipelineLayoutInfo.pushConstantRangeCount = 0;               // Optional
+    pipelineLayoutInfo.pPushConstantRanges    = nullptr;         // Optional
 
     if (vkCreatePipelineLayout(device, &pipelineLayoutInfo, nullptr,
                                &m_pipelineLayout) != VK_SUCCESS)
@@ -1257,6 +1315,10 @@ void VulkanTask2dRender::execute() const
         vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
                                 m_pipelineLayout, 0, 1,
                                 &m_cbMatricesSets[currentImage], 0, nullptr);
+
+        vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
+                                m_pipelineLayout, 1, 1,
+                                &m_bindlessTextureDescriptorSet, 0, nullptr);
 
         vkCmdDrawIndexed(commandBuffer, meshBuffer.m_indices.size(), 1, 0, 0,
                          0);

@@ -431,7 +431,7 @@ mIfVulkanEnabled(struct VulkanTask2dRender : public Task2dRender
     VkShaderModule m_vertShaderModule;
     VkShaderModule m_fragShaderModule;
 
-    VkDescriptorSetLayout m_descriptorLayout;
+    VkDescriptorSetLayout m_cbDescriptorLayout;
 
     VkPipelineLayout m_pipelineLayout;
     VkRenderPass     m_renderPass;
@@ -441,6 +441,12 @@ mIfVulkanEnabled(struct VulkanTask2dRender : public Task2dRender
     VkDeviceMemory m_cbMatricesMemory[vulkan::VulkanSurface::scm_numFrames];
     VkDescriptorPool m_descriptorPool;
     VkDescriptorSet m_cbMatricesSets[vulkan::VulkanSurface::scm_numFrames];
+
+    VkDescriptorSetLayout m_bindlessTextureDescriptorLayout;
+    static const mUInt sm_sizeDescriptorPool = 32;
+    VkDescriptorPool m_textureDescriptorPool;
+    VkDescriptorSet m_bindlessTextureDescriptorSet;
+
 
     mUInt m_i = 0;
 };)

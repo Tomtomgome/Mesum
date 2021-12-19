@@ -147,15 +147,15 @@ VKAPI_ATTR VkBool32 VKAPI_CALL callback_logDebugMessage(
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT: break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:
             mLog_infoTo(VK_RENDERER_ID,
-                    "Validation layer : ", pCallbackData->pMessage);
+                        "Validation layer : ", pCallbackData->pMessage);
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
             mLog_warningTo(VK_RENDERER_ID,
-                         "Validation layer : ", pCallbackData->pMessage);
+                           "Validation layer : ", pCallbackData->pMessage);
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
             mLog_errorTo(VK_RENDERER_ID,
-                        "Validation layer : ", pCallbackData->pMessage);
+                         "Validation layer : ", pCallbackData->pMessage);
             break;
         default: mInterrupt;
     }
@@ -310,7 +310,7 @@ void select_physicalDevice(VkInstance        a_instance,
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 mBool find_graphicQueueFamilyIndex(VkPhysicalDevice a_physicalDevice,
-                                  mU32&             a_queueFamilyIndex)
+                                   mU32&            a_queueFamilyIndex)
 {
     mU32 queueFamilyCount = 0;
     vkGetPhysicalDeviceQueueFamilyProperties(a_physicalDevice,
@@ -357,17 +357,42 @@ void create_logicalDevice(VkPhysicalDevice a_physicalDevice,
     queueCreateInfo.queueCount       = 1;
     queueCreateInfo.pQueuePriorities = &queuePriority;
 
-    VkPhysicalDeviceFeatures deviceFeatures = {};
+    // Bindless textures
+    VkPhysicalDeviceDescriptorIndexingFeatures dstIndexingFeatures{
+        VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_INDEXING_FEATURES_EXT,
+        nullptr};
+    VkPhysicalDeviceFeatures2 dstDeviceFeatures{
+        VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2, &dstIndexingFeatures};
+
+    vkGetPhysicalDeviceFeatures2(a_physicalDevice, &dstDeviceFeatures);
+
+    bool bindless_supported =
+        dstIndexingFeatures.descriptorBindingPartiallyBound &&
+        dstIndexingFeatures.runtimeDescriptorArray;
+
+    VkPhysicalDeviceFeatures2 reqPhysicalFeatures = {
+        VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2};
+    vkGetPhysicalDeviceFeatures2(a_physicalDevice, &reqPhysicalFeatures);
+
+    //Tmp
+    mExpect(bindless_supported);
+
+    if(bindless_supported)
+    {
+        reqPhysicalFeatures.pNext = &dstIndexingFeatures;
+    }
+    //End of bindless feature request
+
 
     VkDeviceCreateInfo createInfo{};
     createInfo.sType                = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
     createInfo.pQueueCreateInfos    = &queueCreateInfo;
     createInfo.queueCreateInfoCount = 1;
-    createInfo.pEnabledFeatures     = &deviceFeatures;
+    createInfo.pEnabledFeatures     = nullptr;
     createInfo.enabledExtensionCount =
         static_cast<mU32>(deviceExtensions.size());
     createInfo.ppEnabledExtensionNames = deviceExtensions.data();
-
+    createInfo.pNext                   = &reqPhysicalFeatures;
     if (vkCreateDevice(a_physicalDevice, &createInfo, nullptr,
                        &a_logicalDevice) != VK_SUCCESS)
     {
