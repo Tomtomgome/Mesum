@@ -392,7 +392,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
                 if (ImGui::Button("Add Image"))
                 {
                     if (m_pDx12TaskRender->add_texture(
-                            m_imageRequested.back()) ||
+                            m_imageRequested.back()) &&
                         m_pVkTaskRender->add_texture(m_imageRequested.back()))
                     {
                         m_imageRequested.emplace_back();

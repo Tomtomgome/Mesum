@@ -472,8 +472,8 @@ Dx12Task2dRender::Dx12Task2dRender(TaskData2dRender* a_data)
     sSrvHeapDesc.NodeMask = 0;
     sSrvHeapDesc.Flags    = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 
-    HRESULT hr = pDevice->CreateDescriptorHeap(&sSrvHeapDesc,
-                                       IID_PPV_ARGS(m_pSrvHeap.GetAddressOf()));
+    HRESULT hr = pDevice->CreateDescriptorHeap(
+        &sSrvHeapDesc, IID_PPV_ARGS(m_pSrvHeap.GetAddressOf()));
     mAssert(hr == S_OK);
     m_pSrvHeap.Get()->SetName(L"Texture SRV Heap");
 
@@ -755,34 +755,44 @@ VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
     samplerInfo.maxLod                  = 0.0f;
 
     vulkan::check_vkResult(
-        vkCreateSampler(device, &samplerInfo, nullptr, &textureSampler));
+        vkCreateSampler(device, &samplerInfo, nullptr, &m_textureSampler));
 
     // Bindings and layout ----------------------------------------------------
-    VkDescriptorSetLayoutBinding binding{};
-    binding.binding         = 0;
-    binding.descriptorType  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-    binding.descriptorCount = 1;
-    binding.stageFlags      = VK_SHADER_STAGE_VERTEX_BIT;
+    std::array<VkDescriptorSetLayoutBinding, 2> bindings;
+    bindings[0]                 = {};
+    bindings[0].binding         = 0;
+    bindings[0].descriptorType  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+    bindings[0].descriptorCount = 1;
+    bindings[0].stageFlags      = VK_SHADER_STAGE_VERTEX_BIT;
+    bindings[1]                 = {};
+    bindings[1].binding         = 1;
+    bindings[1].descriptorType  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
+    bindings[1].descriptorCount = 1;
+    bindings[1].stageFlags      = VK_SHADER_STAGE_FRAGMENT_BIT;
 
     VkDescriptorSetLayoutCreateInfo createInfoLayout{};
     createInfoLayout.sType =
         VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-    createInfoLayout.bindingCount = 1;
-    createInfoLayout.pBindings    = &binding;
+    createInfoLayout.bindingCount = bindings.size();
+    createInfoLayout.pBindings    = bindings.data();
 
     vulkan::check_vkResult(vkCreateDescriptorSetLayout(
         device, &createInfoLayout, nullptr, &m_cbDescriptorLayout));
 
+    // Bindless
     VkDescriptorBindingFlags bindingFlagsBindless =
         VK_DESCRIPTOR_BINDING_PARTIALLY_BOUND_BIT_EXT |
         VK_DESCRIPTOR_BINDING_VARIABLE_DESCRIPTOR_COUNT_BIT_EXT |
         VK_DESCRIPTOR_BINDING_UPDATE_AFTER_BIND_BIT_EXT;
 
+    VkDescriptorSetLayoutBinding binding{};
     binding.binding         = 0;
     binding.descriptorType  = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
     binding.descriptorCount = sm_sizeDescriptorPool;
     binding.stageFlags      = VK_SHADER_STAGE_FRAGMENT_BIT;
 
+    createInfoLayout.bindingCount = 1;
+    createInfoLayout.pBindings    = &binding;
     createInfoLayout.flags =
         VK_DESCRIPTOR_SET_LAYOUT_CREATE_UPDATE_AFTER_BIND_POOL_BIT_EXT;
 
@@ -802,6 +812,8 @@ VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
 
     // Allocate Constant buffers ----------------------------------------------
     VkDeviceSize bufferSize = sizeof(math::mMat4x4);
+    VkDeviceSize materialBufferSize =
+        sm_minimalCBSize * sm_nbMaxMaterial * sizeof(mInt);
 
     for (size_t i = 0; i < vulkan::VulkanSurface::scm_numFrames; i++)
     {
@@ -810,11 +822,8 @@ VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
         bufferInfo.size        = bufferSize;
         bufferInfo.usage       = VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
         bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-        if (vkCreateBuffer(device, &bufferInfo, nullptr, &m_cbMatrices[i]) !=
-            VK_SUCCESS)
-        {
-            throw std::runtime_error("failed to create vertex buffer!");
-        }
+        vulkan::check_vkResult(
+            vkCreateBuffer(device, &bufferInfo, nullptr, &m_cbMatrices[i]));
 
         VkMemoryRequirements memRequirements;
         vkGetBufferMemoryRequirements(device, m_cbMatrices[i],
@@ -832,17 +841,42 @@ VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
                                                 &m_cbMatricesMemory[i]));
 
         vkBindBufferMemory(device, m_cbMatrices[i], m_cbMatricesMemory[i], 0);
+
+        // Materials buffer
+        bufferInfo.size = materialBufferSize;
+        ;
+        bufferInfo.usage       = VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
+        bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+        vulkan::check_vkResult(
+            vkCreateBuffer(device, &bufferInfo, nullptr, &m_cbMaterials[i]));
+
+        vkGetBufferMemoryRequirements(device, m_cbMaterials[i],
+                                      &memRequirements);
+
+        allocInfo.sType           = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+        allocInfo.allocationSize  = memRequirements.size;
+        allocInfo.memoryTypeIndex = vulkan::VulkanContext::get_memoryTypeIndex(
+            memRequirements.memoryTypeBits,
+            VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
+                VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+
+        vulkan::check_vkResult(vkAllocateMemory(device, &allocInfo, nullptr,
+                                                &m_cbMaterialsMemory[i]));
+
+        vkBindBufferMemory(device, m_cbMaterials[i], m_cbMaterialsMemory[i], 0);
     }
 
     // Descriptror pools ------------------------------------------------------
-    VkDescriptorPoolSize poolSize{};
-    poolSize.type            = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-    poolSize.descriptorCount = vulkan::VulkanSurface::scm_numFrames;
+    std::vector<VkDescriptorPoolSize> poolSizes = {
+        {VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
+         vulkan::VulkanSurface::scm_numFrames},
+        {VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC,
+         sm_nbMaxMaterial * vulkan::VulkanSurface::scm_numFrames}};
 
     VkDescriptorPoolCreateInfo poolInfo{};
     poolInfo.sType         = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-    poolInfo.poolSizeCount = 1;
-    poolInfo.pPoolSizes    = &poolSize;
+    poolInfo.poolSizeCount = poolSizes.size();
+    poolInfo.pPoolSizes    = poolSizes.data();
     poolInfo.maxSets       = vulkan::VulkanSurface::scm_numFrames;
 
     vulkan::check_vkResult(
@@ -908,7 +942,27 @@ VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
         descriptorWrite.pImageInfo       = nullptr;
         descriptorWrite.pTexelBufferView = nullptr;
 
-        vkUpdateDescriptorSets(device, 1, &descriptorWrite, 0, nullptr);
+        VkDescriptorBufferInfo materialBufferInfo{};
+        materialBufferInfo.buffer = m_cbMaterials[i];
+        materialBufferInfo.offset = 0;
+        materialBufferInfo.range  = sizeof(mInt);
+
+        VkWriteDescriptorSet materialDescriptorWrite{};
+        materialDescriptorWrite.sType  = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+        materialDescriptorWrite.dstSet = m_cbMatricesSets[i];
+        materialDescriptorWrite.dstBinding      = 1;
+        materialDescriptorWrite.dstArrayElement = 0;
+        materialDescriptorWrite.descriptorType =
+            VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
+        materialDescriptorWrite.descriptorCount  = 1;
+        materialDescriptorWrite.pBufferInfo      = &materialBufferInfo;
+        materialDescriptorWrite.pImageInfo       = nullptr;
+        materialDescriptorWrite.pTexelBufferView = nullptr;
+
+        VkWriteDescriptorSet setWrites[] = {descriptorWrite,
+                                            materialDescriptorWrite};
+
+        vkUpdateDescriptorSets(device, 2, setWrites, 0, nullptr);
     }
 }
 
@@ -925,6 +979,9 @@ VulkanTask2dRender::~VulkanTask2dRender()
     {
         vkDestroyBuffer(device, m_cbMatrices[i], nullptr);
         vkFreeMemory(device, m_cbMatricesMemory[i], nullptr);
+
+        vkDestroyBuffer(device, m_cbMaterials[i], nullptr);
+        vkFreeMemory(device, m_cbMaterialsMemory[i], nullptr);
     }
 
     vkDestroyDescriptorPool(device, m_descriptorPool, nullptr);
@@ -938,6 +995,7 @@ VulkanTask2dRender::~VulkanTask2dRender()
     vkDestroyDescriptorSetLayout(device, m_bindlessTextureDescriptorLayout,
                                  nullptr);
 
+    vkDestroySampler(device, m_textureSampler, nullptr);
     for (mUInt i = 0; i < m_pTextureImages.size(); ++i)
     {
         vkDestroyImageView(device, m_imageViews[i], nullptr);
@@ -1017,7 +1075,7 @@ mBool VulkanTask2dRender::add_texture(resource::mRequestImage const& a_request)
     imageInfo.extent.depth  = 1;
     imageInfo.mipLevels     = 1;
     imageInfo.arrayLayers   = 1;
-    imageInfo.format        = VK_FORMAT_R8G8B8A8_SRGB;
+    imageInfo.format        = VK_FORMAT_R8G8B8A8_UNORM;
     imageInfo.tiling        = VK_IMAGE_TILING_OPTIMAL;
     imageInfo.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
     imageInfo.usage =
@@ -1119,7 +1177,7 @@ mBool VulkanTask2dRender::add_texture(resource::mRequestImage const& a_request)
     viewInfo.sType    = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
     viewInfo.image    = textureImage;
     viewInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
-    viewInfo.format   = VK_FORMAT_R8G8B8A8_SRGB;
+    viewInfo.format   = VK_FORMAT_R8G8B8A8_UNORM;
     viewInfo.subresourceRange.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT;
     viewInfo.subresourceRange.baseMipLevel   = 0;
     viewInfo.subresourceRange.levelCount     = 1;
@@ -1131,7 +1189,7 @@ mBool VulkanTask2dRender::add_texture(resource::mRequestImage const& a_request)
 
     // Update Descriptors -----------------------------------------------------
     VkDescriptorImageInfo descriptorImageInfo{};
-    descriptorImageInfo.sampler     = textureSampler;
+    descriptorImageInfo.sampler     = m_textureSampler;
     descriptorImageInfo.imageView   = imageView;
     descriptorImageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 
@@ -1444,15 +1502,32 @@ void VulkanTask2dRender::execute() const
         vkUnmapMemory(device, m_cbMatricesMemory[currentImage]);
 
         vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
-                                m_pipelineLayout, 0, 1,
-                                &m_cbMatricesSets[currentImage], 0, nullptr);
-
-        vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
                                 m_pipelineLayout, 1, 1,
                                 &m_bindlessTextureDescriptorSet, 0, nullptr);
 
-        vkCmdDrawIndexed(commandBuffer, meshBuffer.m_indices.size(), 1, 0, 0,
-                         0);
+        for (mUInt i = 0; i < m_taskData.m_pRanges->size(); i++)
+        {
+            auto& range = (*m_taskData.m_pRanges)[i];
+            // upload constant buffer
+
+            void* materialData;
+            vkMapMemory(device, m_cbMaterialsMemory[currentImage],
+                        i * sm_minimalCBSize, sizeof(mInt), 0, &materialData);
+            mInt& materialID = *((mInt*)(materialData));
+            materialID       = range.materialID;
+            vkUnmapMemory(device, m_cbMaterialsMemory[currentImage]);
+
+            mU32 materialOffset = sm_minimalCBSize * i;
+
+            vkCmdBindDescriptorSets(
+                commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
+                m_pipelineLayout, 0, 1, &m_cbMatricesSets[currentImage], 1,
+                &materialOffset);
+
+            // draw
+            vkCmdDrawIndexed(commandBuffer, range.indexCount, 1,
+                             range.indexStartLocation, 0, 0);
+        }
     }
 
     // Submit command buffer

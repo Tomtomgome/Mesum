@@ -9,6 +9,11 @@ layout(location = 0) out vec4 outColor;
 
 layout(set = 1, binding = 0) uniform sampler2D textures[];
 
+layout(binding = 1) uniform PsTextureID
+{
+  int textureIndex;
+} CBMaterial;
+
 void main() {
-    outColor = inColor * texture(textures[0], inUv);
+    outColor = inColor * texture(textures[CBMaterial.textureIndex], inUv);
 }

@@ -439,8 +439,12 @@ mIfVulkanEnabled(struct VulkanTask2dRender : public Task2dRender
 
     VkBuffer m_cbMatrices[vulkan::VulkanSurface::scm_numFrames];
     VkDeviceMemory m_cbMatricesMemory[vulkan::VulkanSurface::scm_numFrames];
+
+    VkBuffer m_cbMaterials[vulkan::VulkanSurface::scm_numFrames];
+    VkDeviceMemory m_cbMaterialsMemory[vulkan::VulkanSurface::scm_numFrames];
+
     VkDescriptorPool m_descriptorPool;
-    VkDescriptorSet m_cbMatricesSets[vulkan::VulkanSurface::scm_numFrames];
+    VkDescriptorSet  m_cbSets[vulkan::VulkanSurface::scm_numFrames];
 
     VkDescriptorSetLayout m_bindlessTextureDescriptorLayout;
     static const mUInt sm_sizeDescriptorPool = 32;
@@ -452,7 +456,7 @@ mIfVulkanEnabled(struct VulkanTask2dRender : public Task2dRender
 
     std::vector<VkImageView> m_imageViews{};
 
-    VkSampler textureSampler;
+    VkSampler m_textureSampler;
 
     mUInt m_i = 0;
 };)
