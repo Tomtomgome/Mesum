@@ -138,7 +138,7 @@ VulkanTaskDrawDearImGui::VulkanTaskDrawDearImGui(TaskDataDrawDearImGui* a_data)
 
     ImGui_ImplVulkan_CreateFontsTexture(command_buffer);
 
-    vulkan::VulkanContext::gs_VulkanContexte->submit_signleUseCommandBuffer(
+    vulkan::VulkanContext::gs_VulkanContexte->submit_singleUseCommandBuffer(
         command_buffer);
 
     ImGui_ImplVulkan_DestroyFontUploadObjects();

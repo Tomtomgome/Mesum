@@ -216,7 +216,7 @@ VkCommandBuffer VulkanContext::get_singleUseCommandBuffer()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void VulkanContext::submit_signleUseCommandBuffer(
+void VulkanContext::submit_singleUseCommandBuffer(
     VkCommandBuffer a_commandBuffer)
 {
     vkEndCommandBuffer(a_commandBuffer);

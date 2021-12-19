@@ -29,7 +29,7 @@ class VulkanContext
     static void present(VkPresentInfoKHR const& a_infoPresent);
 
     VkCommandBuffer get_singleUseCommandBuffer();
-    void submit_signleUseCommandBuffer(VkCommandBuffer a_commandBuffer);
+    void submit_singleUseCommandBuffer(VkCommandBuffer a_commandBuffer);
 
     static VkInstance get_instance() { return gs_VulkanContexte->m_instance; }
     static VkPhysicalDevice get_physDevice()

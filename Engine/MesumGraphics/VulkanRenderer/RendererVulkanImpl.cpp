@@ -395,7 +395,7 @@ void VulkanSurface::init_swapChain()
                              VK_PIPELINE_STAGE_ALL_GRAPHICS_BIT, 0, 0, nullptr,
                              0, nullptr, 1, &barrier);
 
-        VulkanContext::gs_VulkanContexte->submit_signleUseCommandBuffer(
+        VulkanContext::gs_VulkanContexte->submit_singleUseCommandBuffer(
             commandBuffer);
     }
 

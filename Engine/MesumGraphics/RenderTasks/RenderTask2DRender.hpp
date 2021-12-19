@@ -417,7 +417,7 @@ mIfVulkanEnabled(struct VulkanTask2dRender : public Task2dRender
     explicit VulkanTask2dRender(TaskData2dRender* a_data);
     ~VulkanTask2dRender() override;
 
-    mBool add_texture(resource::mRequestImage const& a_request) override { return true;}
+    mBool add_texture(resource::mRequestImage const& a_request) override;
 
     void create_renderPassAndPipeline(mU32 a_width, mU32 a_height);
 
@@ -447,6 +447,8 @@ mIfVulkanEnabled(struct VulkanTask2dRender : public Task2dRender
     VkDescriptorPool m_textureDescriptorPool;
     VkDescriptorSet m_bindlessTextureDescriptorSet;
 
+    std::vector<VkImage> m_pTextureImages{};
+    std::vector<VkDeviceMemory> m_pTextureMemory{};
 
     mUInt m_i = 0;
 };)
