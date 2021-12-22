@@ -478,56 +478,79 @@ $(document).ready(function(){initNavTree('_render_task2_d_render_8hpp_source.htm
 <div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>    dx12::ComPtr&lt;ID3D12RootSignature&gt; m_rootSignature = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>    dx12::ComPtr&lt;ID3D12PipelineState&gt; m_pso           = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span> </div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>    dx12::ComPtr&lt;ID3D12Resource&gt; m_pCbMatrices = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>    <span class="keywordtype">void</span>* m_pCbMatricesData = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>    dx12::ComPtr&lt;ID3D12Resource&gt; m_pCbMaterial = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>    <span class="keywordtype">void</span>* m_pCbMaterialData = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>    std::vector&lt;dx12::ComPtr&lt;ID3D12Resource&gt;&gt; m_pTextureResources{};</div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span> </div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>    D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlTexture{};</div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span> </div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>    D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlSampler{};</div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span> </div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>    dx12::ComPtr&lt;ID3D12DescriptorHeap&gt; m_pSrvHeap = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>    mUInt m_incrementSizeSrv = 0;</div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>    <span class="keyword">static</span> <span class="keyword">const</span> mUInt sm_sizeSrvHeap = 32;</div>
-<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>    dx12::ComPtr&lt;ID3D12DescriptorHeap&gt; m_pSamplerHeap = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>    mUInt m_incrementSizeSampler = 0;</div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>    <span class="keyword">static</span> <span class="keyword">const</span> mUInt sm_sizeSamplerHeap = 8;</div>
-<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>};)</div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span> </div>
-<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>    dx12::ComPtr&lt;ID3D12Resource&gt; m_pCbMatrices = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>    <span class="keywordtype">void</span>* m_pCbMatricesData = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>    dx12::ComPtr&lt;ID3D12Resource&gt; m_pCbMaterial = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>    <span class="keywordtype">void</span>* m_pCbMaterialData = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>    std::vector&lt;dx12::ComPtr&lt;ID3D12Resource&gt;&gt; m_pTextureResources{};</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span> </div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>    D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlTexture{};</div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span> </div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>    D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlSampler{};</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span> </div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>    dx12::ComPtr&lt;ID3D12DescriptorHeap&gt; m_pSrvHeap = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>    mUInt m_incrementSizeSrv = 0;</div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>    <span class="keyword">static</span> <span class="keyword">const</span> mUInt sm_sizeSrvHeap = 32;</div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>    dx12::ComPtr&lt;ID3D12DescriptorHeap&gt; m_pSamplerHeap = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>    mUInt m_incrementSizeSampler = 0;</div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>    <span class="keyword">static</span> <span class="keyword">const</span> mUInt sm_sizeSamplerHeap = 8;</div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>};)</div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span> </div>
 <div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
 <div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>mIfVulkanEnabled(<span class="keyword">struct</span> VulkanTask2dRender : <span class="keyword">public</span> Task2dRender</div>
-<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>{</div>
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>    <span class="keyword">explicit</span> VulkanTask2dRender(TaskData2dRender* a_data);</div>
-<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>    ~VulkanTask2dRender() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span> </div>
-<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>    mBool add_texture(resource::mRequestImage <span class="keyword">const</span>&amp; a_request)<span class="keyword"> override </span>{ <span class="keywordflow">return</span> <span class="keyword">true</span>;}</div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span> </div>
-<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>    <span class="keywordtype">void</span> create_renderPassAndPipeline(mU32 a_width, mU32 a_height);</div>
-<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span> </div>
-<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>    <span class="keywordtype">void</span> prepare() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span> </div>
-<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>    <span class="keywordtype">void</span> execute() <span class="keyword">const override</span>;</div>
-<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span> </div>
-<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>   <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>    vulkanUploadBuffers m_buffers;</div>
-<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span> </div>
-<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>    VkShaderModule m_vertShaderModule;</div>
-<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>    VkShaderModule m_fragShaderModule;</div>
-<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span> </div>
-<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>    VkPipelineLayout m_pipelineLayout;</div>
-<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>    VkRenderPass     m_renderPass;</div>
-<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>    VkPipeline       m_graphicsPipeline;</div>
-<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span> </div>
-<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>    mUInt m_i = 0;</div>
-<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>};)</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span><span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>mIfVulkanEnabled(<span class="keyword">struct</span> VulkanTask2dRender : <span class="keyword">public</span> Task2dRender</div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>{</div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>    <span class="keyword">explicit</span> VulkanTask2dRender(TaskData2dRender* a_data);</div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>    ~VulkanTask2dRender() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span> </div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>    mBool add_texture(resource::mRequestImage <span class="keyword">const</span>&amp; a_request) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span> </div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>    <span class="keywordtype">void</span> create_renderPassAndPipeline(mU32 a_width, mU32 a_height);</div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span> </div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>    <span class="keywordtype">void</span> prepare() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span> </div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>    <span class="keywordtype">void</span> execute() <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span> </div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>   <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>    vulkanUploadBuffers m_buffers;</div>
+<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span> </div>
+<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>    VkShaderModule m_vertShaderModule;</div>
+<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>    VkShaderModule m_fragShaderModule;</div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span> </div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>    VkDescriptorSetLayout m_cbDescriptorLayout;</div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span> </div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>    VkPipelineLayout m_pipelineLayout;</div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>    VkRenderPass     m_renderPass;</div>
+<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>    VkPipeline       m_graphicsPipeline;</div>
 <div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span> </div>
-<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>}  <span class="comment">// namespace m::render</span></div>
-<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span> </div>
-<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span><span class="preprocessor">#endif  </span><span class="comment">// M_RenderTaskDearImGui</span></div>
+<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>    VkBuffer m_cbMatrices[vulkan::VulkanSurface::scm_numFrames];</div>
+<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>    VkDeviceMemory m_cbMatricesMemory[vulkan::VulkanSurface::scm_numFrames];</div>
+<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span> </div>
+<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span>    VkBuffer m_cbMaterials[vulkan::VulkanSurface::scm_numFrames];</div>
+<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span>    VkDeviceMemory m_cbMaterialsMemory[vulkan::VulkanSurface::scm_numFrames];</div>
+<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span> </div>
+<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span>    VkDescriptorPool m_descriptorPool;</div>
+<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>    VkDescriptorSet  m_cbSets[vulkan::VulkanSurface::scm_numFrames];</div>
+<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span> </div>
+<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>    VkDescriptorSetLayout m_bindlessTextureDescriptorLayout;</div>
+<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span>    <span class="keyword">static</span> <span class="keyword">const</span> mUInt sm_sizeDescriptorPool = 32;</div>
+<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>    VkDescriptorPool m_textureDescriptorPool;</div>
+<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>    VkDescriptorSet m_bindlessTextureDescriptorSet;</div>
+<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span> </div>
+<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>    std::vector&lt;VkImage&gt; m_pTextureImages{};</div>
+<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span>    std::vector&lt;VkDeviceMemory&gt; m_pTextureMemory{};</div>
+<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span> </div>
+<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>    std::vector&lt;VkImageView&gt; m_imageViews{};</div>
+<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span> </div>
+<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span>    VkSampler m_textureSampler;</div>
+<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span> </div>
+<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span>    mUInt m_i = 0;</div>
+<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span>};)</div>
+<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span> </div>
+<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span>}  <span class="comment">// namespace m::render</span></div>
+<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span> </div>
+<div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span><span class="preprocessor">#endif  </span><span class="comment">// M_RenderTaskDearImGui</span></div>
 <div class="ttc" id="agroup___core_html_ga0bcecb82138d5f42db4089c93554f5a2"><div class="ttname"><a href="group___core.html#ga0bcecb82138d5f42db4089c93554f5a2">mLog_error</a></div><div class="ttdeci">#define mLog_error</div><div class="ttdoc">Macro used to log simple error messages.</div><div class="ttdef"><b>Definition:</b> Logger.hpp:25</div></div>
 <div class="ttc" id="astructm_1_1math_1_1m_mat_html"><div class="ttname"><a href="structm_1_1math_1_1m_mat.html">m::math::mMat</a></div><div class="ttdoc">Structure representing a generic matrix.</div><div class="ttdef"><b>Definition:</b> Mat.hpp:33</div></div>
 <div class="ttc" id="astructm_1_1math_1_1m_vec_html"><div class="ttname"><a href="structm_1_1math_1_1m_vec.html">m::math::mVec</a></div><div class="ttdoc">Structure representing a generic math vector.</div><div class="ttdef"><b>Definition:</b> Vec.hpp:83</div></div>
