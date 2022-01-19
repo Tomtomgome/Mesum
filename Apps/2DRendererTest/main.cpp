@@ -12,8 +12,8 @@
 
 using namespace m;
 
-static const mInt screenWidth  = 1280;
-static const mInt screenHeight = 720;
+static const mInt screenWidth  = 400;
+static const mInt screenHeight = 300;
 
 math::mXoRandomNumberGenerator g_randomGenerator(0);
 
@@ -166,10 +166,10 @@ class mTargetController
 
 class RendererTestApp : public m::crossPlatform::IWindowedApplication
 {
-    static const mBool dx12Windw = true;
+    static const mBool dx12Windw = false;
     static const mBool vkWindw   = true;
 
-    void         init(mCmdLine const& a_cmdLine, void* a_appData) override
+    void init(mCmdLine const& a_cmdLine, void* a_appData) override
     {
         crossPlatform::IWindowedApplication::init(a_cmdLine, a_appData);
 
@@ -200,8 +200,8 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             render::Taskset* taskset_renderPipelineDx12 =
                 m_hdlSurfaceDx12->surface->addNew_renderTaskset();
 
-            taskData_2dRender.m_hdlOutput   = m_hdlSurfaceDx12;
-            taskData_2dRender.m_pMatrix     = &m_dx12Matrix;
+            taskData_2dRender.m_hdlOutput = m_hdlSurfaceDx12;
+            taskData_2dRender.m_pMatrix   = &m_dx12Matrix;
             m_pDx12TaskRender =
                 (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
                     taskset_renderPipelineDx12));
@@ -212,6 +212,12 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             render::TaskDataDrawDearImGui taskData_drawDearImGui;
             taskData_drawDearImGui.m_hdlOutput = m_hdlSurfaceDx12;
             taskData_drawDearImGui.add_toTaskSet(taskset_renderPipelineDx12);
+
+//            ((win32::IWindowImpl*)(m_windowDx12))
+//                ->attach_toSpecialUpdate(
+//                    mCallback(this, &RendererTestApp::render));
+            ::GetWindowRect(((win32::IWindowImpl*)(m_windowDx12))->get_hwnd(),
+                            &m_initialClientRect);
         }
 
         if (vkWindw)
@@ -236,6 +242,12 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
             m_pVkTaskRender->add_texture(m_imageRequested[0]);
             m_pVkTaskRender->add_texture(m_imageRequested[1]);
+
+            ((win32::IWindowImpl*)(m_windowVulkan))
+                ->attach_toSpecialUpdate(
+                    mCallback(this, &RendererTestApp::render));
+            ::GetWindowRect(((win32::IWindowImpl*)(m_windowVulkan))->get_hwnd(),
+                            &m_initialClientRect);
         }
 
         m_inputManager.attach_toMouseEvent(
@@ -269,7 +281,12 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         //
         //        TextureBankDx12.upload(hdl);
         //        TextureBankVulkan.upload(hdl);
+
+        m_painter.add_paintedPosition(math::mIVec2{500, 500});
+
+        m_start = std::chrono::high_resolution_clock::now();
     }
+
 
     void destroy() override
     {
@@ -287,14 +304,13 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         dearImGui::destroy();
     }
 
-    mBool step(std::chrono::steady_clock::duration const& a_deltaTime) override
+    void render(std::chrono::steady_clock::duration const& a_deltaTime)
     {
-        if (!m::crossPlatform::IWindowedApplication::step(a_deltaTime))
-        {
-            return false;
-        }
+        m_end  = std::chrono::high_resolution_clock::now();
+        std::chrono::steady_clock::duration ddeltaTime = m_end-m_start;
+        m_start = std::chrono::high_resolution_clock::now();
 
-        mDouble deltaTime = std::chrono::duration<mDouble>(a_deltaTime).count();
+        mDouble deltaTime = std::chrono::duration<mDouble>(ddeltaTime).count();
 
         static math::mIVec2 lastPosRegPos;
         static math::mIVec2 lastPlaced;
@@ -319,6 +335,16 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         static const mUInt indexPerQuad  = 5;
         static const mUInt vertexPerQuad = 4;
 
+        static mFloat  addPos     = 0;
+        static mDouble globalTime = 0;
+        globalTime += deltaTime;
+        addPos = 100.0f * std::sin(globalTime);
+
+        RECT clientRect = {};
+        ::GetWindowRect(((win32::IWindowImpl*)(m_windowVulkan))->get_hwnd(),
+                        &clientRect);
+        float addPosx = m_initialClientRect.left - clientRect.left;
+        float addPosy = m_initialClientRect.top - clientRect.top;
         mUInt totalNbPositions = 0;
         for (mUInt j = 0; j < m_bunchOfSquares.m_squarePositions.size(); ++j)
         {
@@ -335,7 +361,8 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
                 totalNbPositions * indexPerQuad;
             for (mUInt i = 0; i < positions.size(); ++i)
             {
-                m_drawer2d.add_square(positions[i]);
+                auto modifPos = positions[i] + math::mVec2{addPosx + addPos, -addPosy};
+                m_drawer2d.add_square(modifPos);
             }
             totalNbPositions += positions.size();
         }
@@ -413,6 +440,16 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         {
             m_hdlSurfaceVulkan->surface->render();
         }
+    }
+
+    mBool step(std::chrono::steady_clock::duration const& a_deltaTime) override
+    {
+        if (!m::crossPlatform::IWindowedApplication::step(a_deltaTime))
+        {
+            return false;
+        }
+
+        render(a_deltaTime);
 
         return true;
     }
@@ -437,6 +474,11 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     mTargetController            m_targetController;
     BunchOfSquares               m_bunchOfSquares;
     input::mCallbackInputManager m_inputManager;
+
+    std::chrono::time_point<std::chrono::steady_clock> m_start;
+    std::chrono::time_point<std::chrono::steady_clock> m_end;
+
+    RECT m_initialClientRect{};
 };
 
 M_EXECUTE_WINDOWED_APP(RendererTestApp)

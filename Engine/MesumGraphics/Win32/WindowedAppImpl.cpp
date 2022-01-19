@@ -29,8 +29,8 @@ LRESULT CALLBACK WindowProc(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam,
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 windows::mIWindow* IWindowedApplicationImpl::add_newWindow(std::string a_name,
-                                                          mU32        a_width,
-                                                          mU32        a_height)
+                                                           mU32        a_width,
+                                                           mU32        a_height)
 {
     IWindowImpl* newWindow = new IWindowImpl();
     m_windows.insert(newWindow);
@@ -89,25 +89,31 @@ void IWindowedApplicationImpl::destroy()
 }
 
 //-----------------------------------------------------------------------------
+//
 //-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-mBool IWindowedApplicationImpl::step(
-    std::chrono::steady_clock::duration const& a_deltaTime)
+void IWindowedApplicationImpl::process_messages()
 {
-    mBool signalKeepRunning = true;
-
     // Run the message loop.
     MSG msg = {};
     while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
     {
         if (msg.message == WM_QUIT)
         {
-            signalKeepRunning = false;
+            m_signalKeepRunning = false;
         }
 
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+mBool IWindowedApplicationImpl::step(
+    std::chrono::steady_clock::duration const& a_deltaTime)
+{
+    process_messages();
 
     auto element = m_windows.begin();
     while (element != m_windows.end())
@@ -130,9 +136,9 @@ mBool IWindowedApplicationImpl::step(
 
     if (m_windows.size() == 0)
     {
-        signalKeepRunning = false;
+        m_signalKeepRunning = false;
     }
 
-    return signalKeepRunning;
+    return m_signalKeepRunning;
 }
 };  // namespace m::win32

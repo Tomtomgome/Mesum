@@ -105,6 +105,11 @@ render::Taskset* DX12Surface::addNew_renderTaskset()
 //-----------------------------------------------------------------------------
 void DX12Surface::render()
 {
+    m_currentBackBufferIndex = m_swapChain->GetCurrentBackBufferIndex();
+
+    DX12Context::gs_dx12Contexte->get_commandQueue().wait_fenceValue(
+        m_frameFenceValues[m_currentBackBufferIndex]);
+
     auto backBuffer = m_backBuffers[m_currentBackBufferIndex];
 
     ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
@@ -117,7 +122,7 @@ void DX12Surface::render()
 
         graphicCommandList->ResourceBarrier(1, &barrier);
 
-        mFloat clearColor[] = {0.4f, 0.6f, 0.9f, 1.0f};
+        mFloat clearColor[] = {0.4f, 0.6f, 0.9f, 0.0f};
 
         CD3DX12_CPU_DESCRIPTOR_HANDLE rtv(
             m_RTVDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
@@ -156,12 +161,7 @@ void DX12Surface::render()
 
         m_frameFenceValues[m_currentBackBufferIndex] =
             DX12Context::gs_dx12Contexte->get_commandQueue().signal_fence();
-
-        m_currentBackBufferIndex = m_swapChain->GetCurrentBackBufferIndex();
     }
-
-    DX12Context::gs_dx12Contexte->get_commandQueue().wait_fenceValue(
-        m_frameFenceValues[m_currentBackBufferIndex]);
 }
 
 //-----------------------------------------------------------------------------
