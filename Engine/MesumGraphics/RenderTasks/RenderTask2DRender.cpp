@@ -808,7 +808,11 @@ VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
                                     &m_bindlessTextureDescriptorLayout));
 
     // Create pipeline --------------------------------------------------------
-    create_renderPassAndPipeline(1280, 720);
+    vulkan::VulkanSurface* pSurface =
+        ((vulkan::VulkanSurface*)(a_data->m_hdlOutput->surface));
+    mU32 width  = pSurface->get_width();
+    mU32 height = pSurface->get_height();
+    create_renderPassAndPipeline(width, height);
 
     // Allocate Constant buffers ----------------------------------------------
     VkDeviceSize bufferSize = sizeof(math::mMat4x4);
@@ -904,8 +908,8 @@ VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
         vulkan::VulkanSurface::scm_numFrames;
     descriptorSetAllocInfo.pSetLayouts = layouts;
 
-    vulkan::check_vkResult(vkAllocateDescriptorSets(
-        device, &descriptorSetAllocInfo, m_cbMatricesSets));
+    vulkan::check_vkResult(
+        vkAllocateDescriptorSets(device, &descriptorSetAllocInfo, m_cbSets));
 
     // Bindless
     descriptorSetAllocInfo.descriptorPool     = m_textureDescriptorPool;
@@ -933,7 +937,7 @@ VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
 
         VkWriteDescriptorSet descriptorWrite{};
         descriptorWrite.sType      = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-        descriptorWrite.dstSet     = m_cbMatricesSets[i];
+        descriptorWrite.dstSet     = m_cbSets[i];
         descriptorWrite.dstBinding = 0;
         descriptorWrite.dstArrayElement  = 0;
         descriptorWrite.descriptorType   = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
@@ -949,7 +953,7 @@ VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
 
         VkWriteDescriptorSet materialDescriptorWrite{};
         materialDescriptorWrite.sType  = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-        materialDescriptorWrite.dstSet = m_cbMatricesSets[i];
+        materialDescriptorWrite.dstSet = m_cbSets[i];
         materialDescriptorWrite.dstBinding      = 1;
         materialDescriptorWrite.dstArrayElement = 0;
         materialDescriptorWrite.descriptorType =
@@ -1459,7 +1463,7 @@ void VulkanTask2dRender::execute() const
         info.renderArea.extent.width = width;
         info.renderArea.extent.height = height;
         VkClearValue clearValues[1]   = {};
-        clearValues[0].color          = {0.4f, 0.6f, 0.9f, 1.0f};
+        clearValues[0].color          = {1.0f, 1.0f, 1.0f, 0.0f};
         info.clearValueCount          = 1;
         info.pClearValues             = clearValues;
         vkCmdBeginRenderPass(commandBuffer, &info, VK_SUBPASS_CONTENTS_INLINE);
@@ -1521,7 +1525,7 @@ void VulkanTask2dRender::execute() const
 
             vkCmdBindDescriptorSets(
                 commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
-                m_pipelineLayout, 0, 1, &m_cbMatricesSets[currentImage], 1,
+                m_pipelineLayout, 0, 1, &m_cbSets[currentImage], 1,
                 &materialOffset);
 
             // draw
