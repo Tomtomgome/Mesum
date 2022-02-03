@@ -1,15 +1,20 @@
 #include "WeMain.hpp"
 
+#include "SrtmHm.hpp"
+
 #include <MesumGraphics/DearImgui/imgui.h>
-#include <RenderTasks/RenderTask3dRender.h>
+#include <RenderTasks/RenderTask3dRender.hpp>
 
 #include <MesumCore/Kernel/Math.hpp>
 #include <MesumDearImGui.hpp>
 #include <RenderTasks/RenderTaskDearImGui.hpp>
 
+#include <MesumCore/Kernel/FbxImporter.hpp>
+#include "Mesh.hpp"
+
 M_EXECUTE_WINDOWED_APP(WorldExplorerApp)
 
-static m::render::BasicVertex g_Vertices[8] = {
+static m::render::mBasicVertex g_Vertices[8] = {
     {{{-1.0f, -1.0f, -1.0f}}, {{0.0f, 0.0f, 0.0f, 1.0f}}},  // 0
     {{{-1.0f, 1.0f, -1.0f}}, {{0.0f, 1.0f, 0.0f, 1.0f}}},   // 1
     {{{1.0f, 1.0f, -1.0f}}, {{1.0f, 1.0f, 0.0f, 1.0f}}},    // 2
@@ -24,7 +29,7 @@ static mU32 g_Indices[36] = {0, 1, 2, 0, 2, 3, 4, 6, 5, 4, 7, 6,
                              4, 5, 1, 4, 1, 0, 3, 2, 6, 3, 6, 7,
                              1, 5, 6, 1, 6, 2, 4, 0, 3, 4, 3, 7};
 
-render::DataMeshBuffer<render::BasicVertex, mU16> g_meshBuffer;
+render::DataMeshBuffer<render::mBasicVertex, mU16> g_meshBuffer;
 
 using namespace DirectX;
 DirectX::XMMATRIX mvpMatrix;
@@ -34,7 +39,33 @@ DirectX::XMMATRIX mvpMatrix;
 //*****************************************************************************
 void WorldExplorerApp::init(mCmdLine const& a_cmdLine, void* a_appData)
 {
+    m::render::mMesh cube;
+    cube.vertices.insert(cube.vertices.end(), &g_Vertices[0], &g_Vertices[8]);
+    cube.triangles.insert(cube.triangles.end(), &g_Indices[0], &g_Indices[36]);
+
     m::crossPlatform::IWindowedApplication::init(a_cmdLine, a_appData);
+
+    /*m::file::mFbxImporter importer;
+    importer.PrintFile(
+        "C:"
+        "\\Perforce\\oProjectSmurfs\\SmurfsResources\\Graph\\Characters\\Smurfs"
+        "\\Smurf_Hefty.fbx");*/
+
+    mSrtmHm          srtmHm;
+    m::render::mMesh terrain = srtmHm._UpdateMesh();
+
+    mLog_infoTo(m_WE_LOG_ID, "terrain vertices = ", terrain.vertices.size(),
+                " | x = ", terrain.vertices[0].position.x,
+                " y = ", terrain.vertices[0].position.y,
+                " z = ", terrain.vertices[0].position.z);
+
+    mLog_infoTo(
+        m_WE_LOG_ID, "terrain vertices = ", terrain.vertices.size(),
+        " | x = ", terrain.vertices[terrain.vertices.size() - 1].position.x,
+        " y = ", terrain.vertices[terrain.vertices.size() - 1].position.y,
+        " z = ", terrain.vertices[terrain.vertices.size() - 1].position.z);
+
+    // m_cameraOrbitController.m_pivot = terrain.m_vertices[0].position;
 
     m_iRenderer = std::make_unique<m::dx12::DX12Renderer>();
     m_iRenderer->init();
@@ -48,12 +79,15 @@ void WorldExplorerApp::init(mCmdLine const& a_cmdLine, void* a_appData)
     /* ------- Taskset */
     render::Taskset* pTaskset = m_hdlSurface->surface->addNew_renderTaskset();
 
+    m::render::mMesh& meshToDraw = terrain;
+
     // 3dRender task
     g_meshBuffer.m_vertices.insert(g_meshBuffer.m_vertices.begin(),
-                                   std::begin(g_Vertices),
-                                   std::end(g_Vertices));
+                                   std::begin(meshToDraw.vertices),
+                                   std::end(meshToDraw.vertices));
     g_meshBuffer.m_indices.insert(g_meshBuffer.m_indices.begin(),
-                                  std::begin(g_Indices), std::end(g_Indices));
+                                  std::begin(meshToDraw.triangles),
+                                  std::end(meshToDraw.triangles));
 
     render::TaskData3dRender taskData_3dRender;
     taskData_3dRender.m_hdlOutput   = m_hdlSurface;

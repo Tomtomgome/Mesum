@@ -11,6 +11,12 @@ Camera.hpp
 CameraOrbitController.cpp
 CameraOrbitController.hpp
 
+SrtmHm.cpp
+SrtmHm.hpp
+
+HgtPosition.cpp
+HgtPosition.hpp
+
 Kernel/Spherical.cpp
 Kernel/Spherical.hpp
 
