@@ -109,6 +109,7 @@ struct mVec : public mVecData<t_T, t_Size>
     mVec<t_T, t_Size> operator-() const;
 
     mBool operator==(const mVec<t_T, t_Size>& a_v) const;
+    mBool operator<(const mVec<t_T, t_Size>& a_v) const;
 };
 
 template <typename t_T, mUInt t_Size>
