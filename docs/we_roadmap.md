@@ -23,6 +23,9 @@ Kernel/Spherical.hpp
 Kernel/StateInputManager.cpp
 Kernel/StateInputManager.hpp
 
+Kernel/FbxImporter.cpp
+Kernel/FbxImporter.hpp
+
 **WIP Files**
 
 MesumGraphics/RenderTasks/RenderTask3dRender.hpp
