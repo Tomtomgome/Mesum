@@ -165,9 +165,6 @@ class mTargetController
 
 class RendererTestApp : public m::crossPlatform::IWindowedApplication
 {
-    static const mBool dx12Windw = false;
-    static const mBool vkWindw   = true;
-
     void init(mCmdLine const& a_cmdLine, void* a_appData) override
     {
         crossPlatform::IWindowedApplication::init(a_cmdLine, a_appData);
@@ -183,71 +180,29 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         taskData_2dRender.m_pMeshBuffer = &m_drawer2d.m_meshBuffer;
         taskData_2dRender.m_pRanges     = &m_ranges;
 
-        if (dx12Windw)
-        {
-            m_iRendererDx12 = new dx12::DX12Renderer();
-            m_iRendererDx12->init();
+        m_iRendererVulkan = new vulkan::VulkanRenderer();
+        m_iRendererVulkan->init();
+        // Setup vulkan window
+        m_windowVulkan = static_cast<win32::IWindowImpl*>(
+            add_newWindow("Vulkan Window", screenWidth, screenHeight));
+        m_windowVulkan->link_inputManager(&m_inputManager);
+        m_hdlSurfaceVulkan = m_windowVulkan->link_renderer(m_iRendererVulkan);
 
-            // SetupDx12 Window
-            m_windowDx12 =
-                add_newWindow("Dx12 Window", screenWidth, screenHeight);
-            m_windowDx12->link_inputManager(&m_inputManager);
-            m_hdlSurfaceDx12 = m_windowDx12->link_renderer(m_iRendererDx12);
+        render::Taskset* taskset_renderPipelineVulkan =
+            m_hdlSurfaceVulkan->surface->addNew_renderTaskset();
 
-            dearImGui::init(*m_windowDx12);
+        taskData_2dRender.m_hdlOutput = m_hdlSurfaceVulkan;
+        taskData_2dRender.m_pMatrix   = &m_vkMatrix;
+        m_pVkTaskRender =
+            (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
+                taskset_renderPipelineVulkan));
 
-            render::Taskset* taskset_renderPipelineDx12 =
-                m_hdlSurfaceDx12->surface->addNew_renderTaskset();
+        m_pVkTaskRender->add_texture(m_imageRequested[0]);
+        m_pVkTaskRender->add_texture(m_imageRequested[1]);
 
-            taskData_2dRender.m_hdlOutput = m_hdlSurfaceDx12;
-            taskData_2dRender.m_pMatrix   = &m_dx12Matrix;
-            m_pDx12TaskRender =
-                (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
-                    taskset_renderPipelineDx12));
-
-            m_pDx12TaskRender->add_texture(m_imageRequested[0]);
-            m_pDx12TaskRender->add_texture(m_imageRequested[1]);
-
-            render::TaskDataDrawDearImGui taskData_drawDearImGui;
-            taskData_drawDearImGui.m_hdlOutput = m_hdlSurfaceDx12;
-            taskData_drawDearImGui.add_toTaskSet(taskset_renderPipelineDx12);
-
-//            ((win32::IWindowImpl*)(m_windowDx12))
-//                ->attach_toSpecialUpdate(
-//                    mCallback(this, &RendererTestApp::render));
-            ::GetWindowRect(((win32::IWindowImpl*)(m_windowDx12))->get_hwnd(),
-                            &m_initialClientRect);
-        }
-
-        if (vkWindw)
-        {
-            m_iRendererVulkan = new vulkan::VulkanRenderer();
-            m_iRendererVulkan->init();
-            // Setup vulkan window
-            m_windowVulkan =
-                add_newWindow("Vulkan Window", screenWidth, screenHeight);
-            m_windowVulkan->link_inputManager(&m_inputManager);
-            m_hdlSurfaceVulkan =
-                m_windowVulkan->link_renderer(m_iRendererVulkan);
-
-            render::Taskset* taskset_renderPipelineVulkan =
-                m_hdlSurfaceVulkan->surface->addNew_renderTaskset();
-
-            taskData_2dRender.m_hdlOutput = m_hdlSurfaceVulkan;
-            taskData_2dRender.m_pMatrix   = &m_vkMatrix;
-            m_pVkTaskRender =
-                (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
-                    taskset_renderPipelineVulkan));
-
-            m_pVkTaskRender->add_texture(m_imageRequested[0]);
-            m_pVkTaskRender->add_texture(m_imageRequested[1]);
-
-            ((win32::IWindowImpl*)(m_windowVulkan))
-                ->attach_toSpecialUpdate(
-                    mCallback(this, &RendererTestApp::render));
-            ::GetWindowRect(((win32::IWindowImpl*)(m_windowVulkan))->get_hwnd(),
-                            &m_initialClientRect);
-        }
+        ((win32::IWindowImpl*)(m_windowVulkan))
+            ->attach_toSpecialUpdate(mCallback(this, &RendererTestApp::render));
+        ::GetWindowRect(m_windowVulkan->get_hwnd(), &m_initialClientRect);
 
         m_inputManager.attach_toMouseEvent(
             input::mMouseAction::mousePressed(input::mMouseButton::left),
@@ -268,45 +223,38 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_inputManager.attach_toMouseScrollEvent(input::mScrollCallback(
             &m_targetController, &mTargetController::update_zoomLevel));
 
-        //        render::ManagerTexture managerTexture;
-        //        GpuTextureBank TextureBankDx12 =
-        //        managerTexture.link_renderer(rendererDx12); GpuTextureBank
-        //        TextureBankVulkan =
-        //        managerTexture.link_renderer(rendererVulkan);
-        //
-        //        HdlTexture hdl = managerTexture.create_handle();
-        //
-        //        managerTexture.install_metaData(hdl, image);
-        //
-        //        TextureBankDx12.upload(hdl);
-        //        TextureBankVulkan.upload(hdl);
-
         m_painter.add_paintedPosition(math::mIVec2{500, 500});
 
         m_start = std::chrono::high_resolution_clock::now();
-    }
 
+        MONITORINFO monitorInfo = {};
+        monitorInfo.cbSize      = sizeof(MONITORINFO);
+
+        ::GetMonitorInfo(::MonitorFromWindow(m_windowVulkan->get_hwnd(),
+                                             MONITOR_DEFAULTTONEAREST),
+                         &monitorInfo);
+
+        mInt xPos = (monitorInfo.rcMonitor.right - screenWidth) / 2;
+        mInt yPos = (monitorInfo.rcMonitor.bottom - screenHeight) / 2;
+
+        SetWindowPos(m_windowVulkan->get_hwnd(), NULL, xPos, yPos, screenWidth,
+                     screenHeight, SWP_SHOWWINDOW | SWP_DRAWFRAME);
+    }
 
     void destroy() override
     {
         crossPlatform::IWindowedApplication::destroy();
-        if (dx12Windw)
-        {
-            m_iRendererDx12->destroy();
-            delete m_iRendererDx12;
-        }
-        if (vkWindw)
-        {
-            m_iRendererVulkan->destroy();
-            delete m_iRendererVulkan;
-        }
+
+        m_iRendererVulkan->destroy();
+        delete m_iRendererVulkan;
+
         dearImGui::destroy();
     }
 
     void render(std::chrono::steady_clock::duration const& a_deltaTime)
     {
-        m_end  = std::chrono::high_resolution_clock::now();
-        std::chrono::steady_clock::duration ddeltaTime = m_end-m_start;
+        m_end = std::chrono::high_resolution_clock::now();
+        std::chrono::steady_clock::duration ddeltaTime = m_end - m_start;
         m_start = std::chrono::high_resolution_clock::now();
 
         mDouble deltaTime = std::chrono::duration<mDouble>(ddeltaTime).count();
@@ -342,8 +290,8 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         RECT clientRect = {};
         ::GetWindowRect(((win32::IWindowImpl*)(m_windowVulkan))->get_hwnd(),
                         &clientRect);
-        float addPosx = m_initialClientRect.left - clientRect.left;
-        float addPosy = m_initialClientRect.top - clientRect.top;
+        float addPosx          = m_initialClientRect.left - clientRect.left;
+        float addPosy          = m_initialClientRect.top - clientRect.top;
         mUInt totalNbPositions = 0;
         for (mUInt j = 0; j < m_bunchOfSquares.m_squarePositions.size(); ++j)
         {
@@ -360,82 +308,18 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
                 totalNbPositions * indexPerQuad;
             for (mUInt i = 0; i < positions.size(); ++i)
             {
-                auto modifPos = positions[i] + math::mVec2{addPosx + addPos, -addPosy};
+                auto modifPos =
+                    positions[i] + math::mVec2{addPosx + addPos, -addPosy};
                 m_drawer2d.add_square(modifPos);
             }
             totalNbPositions += positions.size();
         }
 
-        m_dx12Matrix = math::generate_projectionOrthoLH(
-                           screenWidth, screenHeight, 0.0f, 1.0f) *
-                       m_targetController.m_worldToView;
         m_vkMatrix = math::generate_projectionOrthoLH(
                          screenWidth, -screenHeight, 0.0f, 1.0f) *
                      m_targetController.m_worldToView;
-        if (dx12Windw)
-        {
-            start_dearImGuiNewFrame(m_iRendererDx12);
 
-            ImGui::NewFrame();
-
-            ImGui::DockSpaceOverViewport(
-                ImGui::GetMainViewport(),
-                ImGuiDockNodeFlags_PassthruCentralNode);
-
-            ImGui::Begin("Engine");
-            {
-                ImGui::Text("frame time : %f", deltaTime);
-                ImGui::Text("frame FPS : %f", 1.0 / deltaTime);
-                ImGui::Text("nbSuqares : %llu", totalNbPositions);
-                ImGui::Text("Camera offset : %dx;%dy",
-                            m_targetController.m_targetPoint.x,
-                            m_targetController.m_targetPoint.y);
-                ImGui::Text("Last clicked position : %dx;%dy", lastPosRegPos.x,
-                            lastPosRegPos.y);
-                ImGui::Text("Last placed position : %dx;%dy", lastPlaced.x,
-                            lastPlaced.y);
-                ImGui::Text("Zoom : %f", m_targetController.m_zoomLevel);
-            }
-            ImGui::End();
-
-            ImGui::Begin("Resource List");
-            {
-                for (mUInt i = 0; i < m_imageRequested.size() - 1; ++i)
-                {
-                    if (ImGui::Button(m_imageRequested[i].path.c_str()))
-                    {
-                        m_bunchOfSquares.currentMaterialID = i;
-                    }
-                }
-            }
-            ImGui::End();
-
-            ImGui::Begin("Material");
-            {
-                ImGui::InputText("path", m_imageRequested.back().path.data(),
-                                 m_imageRequested.back().path.capacity());
-
-                if (ImGui::Button("Add Image"))
-                {
-                    if (m_pDx12TaskRender->add_texture(
-                            m_imageRequested.back()) &&
-                        m_pVkTaskRender->add_texture(m_imageRequested.back()))
-                    {
-                        m_imageRequested.emplace_back();
-                        m_imageRequested.back().path.resize(512);
-                    }
-                }
-            }
-            ImGui::End();
-
-            ImGui::Render();
-        }
-
-        if (dx12Windw && m_hdlSurfaceDx12->isValid)
-        {
-            m_hdlSurfaceDx12->surface->render();
-        }
-        if (vkWindw && m_hdlSurfaceVulkan->isValid)
+        if (m_hdlSurfaceVulkan->isValid)
         {
             m_hdlSurfaceVulkan->surface->render();
         }
@@ -453,18 +337,12 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         return true;
     }
 
-    m::render::IRenderer*       m_iRendererDx12;
-    m::render::ISurface::HdlPtr m_hdlSurfaceDx12;
-    windows::mIWindow*          m_windowDx12 = nullptr;
-
     m::render::IRenderer*       m_iRendererVulkan;
     m::render::ISurface::HdlPtr m_hdlSurfaceVulkan;
-    windows::mIWindow*          m_windowVulkan = nullptr;
+    win32::IWindowImpl*         m_windowVulkan = nullptr;
 
-    render::Task2dRender*                         m_pDx12TaskRender = nullptr;
-    render::Task2dRender*                         m_pVkTaskRender   = nullptr;
+    render::Task2dRender*                         m_pVkTaskRender = nullptr;
     std::vector<resource::mRequestImage>          m_imageRequested;
-    math::mMat4x4                                 m_dx12Matrix{};
     math::mMat4x4                                 m_vkMatrix{};
     std::vector<render::TaskData2dRender::mRange> m_ranges;
 
