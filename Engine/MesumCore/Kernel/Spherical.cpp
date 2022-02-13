@@ -12,6 +12,16 @@ mSpherical::mSpherical() {}
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
+mSpherical::mSpherical(mFloat a_latitude, mFloat a_longitude, mFloat a_radius)
+{
+    set_latitude(a_latitude);
+    set_longitude(a_longitude);
+    set_radius(a_radius);
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
 void mSpherical::set_latitude(mFloat a_latitude)
 {
     m_latitude = std::clamp(a_latitude, std::numbers::pi_v<mFloat> * -0.5f,
@@ -39,7 +49,7 @@ void mSpherical::set_longitude(mFloat a_longitude)
     {
         m_longitude += 2.0f * std::numbers::pi_v<mFloat>;
     }
-    while (m_longitude >= std::numbers::pi_v<mFloat>) // TODO >= ?
+    while (m_longitude >= std::numbers::pi_v<mFloat>)  // TODO >= ?
     {
         m_longitude -= 2.0f * std::numbers::pi_v<mFloat>;
     }
