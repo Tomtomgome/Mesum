@@ -1,6 +1,11 @@
 var group___graphics =
 [
+    [ "m::aa", "namespacem_1_1aa.html", null ],
     [ "m::dearImGui", "namespacem_1_1dear_im_gui.html", null ],
+    [ "m::aa::mAdapter", "structm_1_1aa_1_1m_adapter.html", null ],
+    [ "m::aa::mAdapter::InitData", "structm_1_1aa_1_1m_adapter_1_1_init_data.html", null ],
+    [ "m::aa::mApi", "structm_1_1aa_1_1m_api.html", null ],
+    [ "m::aa::mApi::InitData", "structm_1_1aa_1_1m_api_1_1_init_data.html", null ],
     [ "m::windows::mIWindow", "classm_1_1windows_1_1m_i_window.html", [
       [ "mOnDestroyCallback", "classm_1_1windows_1_1m_i_window.html#aac000ba3942a81d421cc885ef647b06b", null ],
       [ "mOnResizeCallback", "classm_1_1windows_1_1m_i_window.html#a66c8a73f232356e9964747be216052f0", null ],

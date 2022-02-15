@@ -13,26 +13,27 @@
 \DoxyCodeLine{13 \{}
 \DoxyCodeLine{14    \textcolor{keyword}{public}:}
 \DoxyCodeLine{15     \mbox{\hyperlink{classm_1_1math_1_1m_spherical}{mSpherical}}();}
-\DoxyCodeLine{16 }
-\DoxyCodeLine{17     mFloat get\_latitude()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_latitude; \}}
-\DoxyCodeLine{18     \textcolor{keywordtype}{void}   set\_latitude(mFloat a\_latitude);}
-\DoxyCodeLine{19     \textcolor{keywordtype}{void}   add\_latitude(mFloat a\_deltaLatitude);}
-\DoxyCodeLine{20 }
-\DoxyCodeLine{21     mFloat get\_longitude()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_longitude; \}}
-\DoxyCodeLine{22     \textcolor{keywordtype}{void}   set\_longitude(mFloat a\_longitude);}
-\DoxyCodeLine{23     \textcolor{keywordtype}{void}   add\_longitude(mFloat a\_deltaLongitude);}
-\DoxyCodeLine{24 }
-\DoxyCodeLine{25     mFloat get\_radius()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_radius; \}}
-\DoxyCodeLine{26     \textcolor{keywordtype}{void}   set\_radius(mFloat a\_radius);}
-\DoxyCodeLine{27 }
-\DoxyCodeLine{28     \textcolor{keywordtype}{void} compute\_cartesianCoordinates(\mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec3}}\& a\_outCartesianCoordinates) \textcolor{keyword}{const};}
-\DoxyCodeLine{29 }
-\DoxyCodeLine{30    \textcolor{keyword}{private}:}
-\DoxyCodeLine{31     mFloat m\_latitude  = 0.0f;}
-\DoxyCodeLine{32     mFloat m\_longitude = 0.0f;}
-\DoxyCodeLine{33     mFloat m\_radius    = 1.0f;}
-\DoxyCodeLine{34 \};}
-\DoxyCodeLine{35 \}  \textcolor{comment}{// namespace m::math}}
-\DoxyCodeLine{36 }
+\DoxyCodeLine{16     \mbox{\hyperlink{classm_1_1math_1_1m_spherical}{mSpherical}}(mFloat a\_latitude, mFloat a\_longitude, mFloat a\_radius);}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18     [[nodiscard]] mFloat get\_latitude()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_latitude; \}}
+\DoxyCodeLine{19     \textcolor{keywordtype}{void}                 set\_latitude(mFloat a\_latitude);}
+\DoxyCodeLine{20     \textcolor{keywordtype}{void}                 add\_latitude(mFloat a\_deltaLatitude);}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22     [[nodiscard]] mFloat get\_longitude()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_longitude; \}}
+\DoxyCodeLine{23     \textcolor{keywordtype}{void}                 set\_longitude(mFloat a\_longitude);}
+\DoxyCodeLine{24     \textcolor{keywordtype}{void}                 add\_longitude(mFloat a\_deltaLongitude);}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26     [[nodiscard]] mFloat get\_radius()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_radius; \}}
+\DoxyCodeLine{27     \textcolor{keywordtype}{void}                 set\_radius(mFloat a\_radius);}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29     \textcolor{keywordtype}{void} compute\_cartesianCoordinates(\mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec3}}\& a\_outCartesianCoordinates) \textcolor{keyword}{const};}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31    \textcolor{keyword}{private}:}
+\DoxyCodeLine{32     mFloat m\_latitude  = 0.0f;}
+\DoxyCodeLine{33     mFloat m\_longitude = 0.0f;}
+\DoxyCodeLine{34     mFloat m\_radius    = 1.0f;}
+\DoxyCodeLine{35 \};}
+\DoxyCodeLine{36 \}  \textcolor{comment}{// namespace m::math}}
+\DoxyCodeLine{37 }
 
 \end{DoxyCode}

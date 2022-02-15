@@ -3,6 +3,7 @@
 #include <MesumGraphics/DearImgui/MesumDearImGui.hpp>
 #include <MesumGraphics/RenderTasks/RenderTaskDearImGui.hpp>
 #include <MesumGraphics/WindowedApp.hpp>
+#include <MesumGraphics/ApiAbstraction.hpp>
 
 class CubeMover
 {
@@ -76,8 +77,18 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
                         "Height not overriden, use default : ", height);
         }
 
-        // m_iRenderer = new m::dx12::DX12Renderer();
-        // m_iRenderer = new m::vulkan::VulkanRenderer();
+        m::aa::mApi           api = m::aa::dx12::create_api();
+        m::aa::mApi::InitData apiInitData;
+        api.init(apiInitData);
+        m::aa::mAdapter           a = api.create_adapter();
+        m::aa::mAdapter::InitData initData;
+        a.init(initData);
+
+        m::aa::mApi api2 = m::aa::vulkan::create_api();
+        api2.init(apiInitData);
+        m::aa::mAdapter a2 = api2.create_adapter();
+        a2.init(initData);
+
         m_iDx12Renderer = new m::dx12::DX12Renderer();
         m_iDx12Renderer->init();
         m_iVulkanRenderer = new m::vulkan::VulkanRenderer();

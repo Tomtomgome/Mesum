@@ -1,5 +1,3 @@
-#ifndef M_GRAPHICS_COMMON
-#define M_GRAPHICS_COMMON
 #pragma once
 
 #ifdef _M_DLL_DYNAMIC_LINK
@@ -49,4 +47,22 @@
 
 #endif
 
-#endif  // M_CORE_COMMON
+#ifdef mIfDx12Enabled
+#undef mIfDx12Enabled
+#endif
+
+#ifdef mIfVulkanEnabled
+#undef mIfVulkanEnabled
+#endif
+
+#if (defined M_DX12_RENDERER) && (!defined M_VK_IMPLEMENTAITON)
+#define mIfDx12Enabled(a_something) a_something
+#else
+#define mIfDx12Enabled(a_something)
+#endif  // M_DX12_RENDERER
+
+#if (defined M_VULKAN_RENDERER) && (!defined M_DX12_IMPLEMENTAITON)
+#define mIfVulkanEnabled(a_something) a_something
+#else
+#define mIfVulkanEnabled(a_something)
+#endif  // M_VULKAN_RENDERER

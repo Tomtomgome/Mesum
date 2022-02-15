@@ -25,6 +25,7 @@ set(HEADERS Windows.hpp
             Renderer.hpp
             CrossRenderer.hpp
             RenderTask.hpp
+            ApiAbstraction.hpp
             MesumGraphics/Common.hpp)
 
 if(BM_DYNAMIC_LINK)

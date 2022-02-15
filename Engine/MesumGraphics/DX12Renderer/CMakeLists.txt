@@ -3,6 +3,7 @@ set(MODULE_NAME DX12Renderer)
 project(${MODULE_NAME} VERSION 1.0.0 DESCRIPTION "Win32 specific windows")
 
 set(SOURCES DX12RendererCommon.cpp
+        DX12ApiAbstraction.cpp
         DX12Context.cpp
         #DX12Texture.cpp
         DX12CommandQueue.cpp

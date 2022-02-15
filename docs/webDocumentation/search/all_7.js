@@ -99,10 +99,11 @@ var searchData=
   ['imvec4_96',['ImVec4',['../struct_im_vec4.html',1,'']]],
   ['imvector_97',['ImVector',['../struct_im_vector.html',1,'']]],
   ['init_98',['init',['../namespacem_1_1dear_im_gui.html#a8f0ca8ff668f59aa9af97475715b46a1',1,'m::dearImGui::init()'],['../classm_1_1application_1_1m_i_loop_application.html#aa1f941cca206e4783c7bcc206c85a950',1,'m::application::mILoopApplication::init()'],['../classm_1_1application_1_1m_i_timed_loop_application.html#ad4ed9bb275006c340185826f215e6215',1,'m::application::mITimedLoopApplication::init()'],['../classm_1_1xcb__unix_1_1_i_windowed_application_impl.html#af51366e2fdd19f1d8d9e8ec99523a850',1,'m::xcb_unix::IWindowedApplicationImpl::init()'],['../classm_1_1win32_1_1_i_windowed_application_impl.html#aab2f38772a89c69b29f02e3620c850bf',1,'m::win32::IWindowedApplicationImpl::init()'],['../classm_1_1win32_1_1_i_window_impl.html#a4cfffb74b30392a27c0f90e78b872793',1,'m::win32::IWindowImpl::init()'],['../classm_1_1windows_1_1m_i_window.html#accada43f032d76ee409de6901354db27',1,'m::windows::mIWindow::init()']]],
-  ['irenderer_99',['IRenderer',['../classm_1_1render_1_1_i_renderer.html',1,'m::render']]],
-  ['iresource_100',['IResource',['../structm_1_1render_1_1_i_resource.html',1,'m::render']]],
-  ['isurface_101',['ISurface',['../classm_1_1render_1_1_i_surface.html',1,'m::render']]],
-  ['iwindowedapplicationbase_102',['IWindowedApplicationBase',['../classm_1_1application_1_1_i_windowed_application_base.html',1,'m::application']]],
-  ['iwindowedapplicationimpl_103',['IWindowedApplicationImpl',['../classm_1_1win32_1_1_i_windowed_application_impl.html',1,'m::win32::IWindowedApplicationImpl'],['../classm_1_1xcb__unix_1_1_i_windowed_application_impl.html',1,'m::xcb_unix::IWindowedApplicationImpl']]],
-  ['iwindowimpl_104',['IWindowImpl',['../classm_1_1win32_1_1_i_window_impl.html',1,'m::win32::IWindowImpl'],['../classm_1_1xcb__unix_1_1_i_window_impl.html',1,'m::xcb_unix::IWindowImpl']]]
+  ['initdata_99',['InitData',['../structm_1_1aa_1_1m_adapter_1_1_init_data.html',1,'m::aa::mAdapter::InitData'],['../structm_1_1aa_1_1m_api_1_1_init_data.html',1,'m::aa::mApi::InitData']]],
+  ['irenderer_100',['IRenderer',['../classm_1_1render_1_1_i_renderer.html',1,'m::render']]],
+  ['iresource_101',['IResource',['../structm_1_1render_1_1_i_resource.html',1,'m::render']]],
+  ['isurface_102',['ISurface',['../classm_1_1render_1_1_i_surface.html',1,'m::render']]],
+  ['iwindowedapplicationbase_103',['IWindowedApplicationBase',['../classm_1_1application_1_1_i_windowed_application_base.html',1,'m::application']]],
+  ['iwindowedapplicationimpl_104',['IWindowedApplicationImpl',['../classm_1_1win32_1_1_i_windowed_application_impl.html',1,'m::win32::IWindowedApplicationImpl'],['../classm_1_1xcb__unix_1_1_i_windowed_application_impl.html',1,'m::xcb_unix::IWindowedApplicationImpl']]],
+  ['iwindowimpl_105',['IWindowImpl',['../classm_1_1win32_1_1_i_window_impl.html',1,'m::win32::IWindowImpl'],['../classm_1_1xcb__unix_1_1_i_window_impl.html',1,'m::xcb_unix::IWindowImpl']]]
 ];

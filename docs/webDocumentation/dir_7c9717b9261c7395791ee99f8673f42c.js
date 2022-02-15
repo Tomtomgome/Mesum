@@ -3,6 +3,7 @@ var dir_7c9717b9261c7395791ee99f8673f42c =
     [ "Application.hpp", "_application_8hpp_source.html", null ],
     [ "Asserts.hpp", "_asserts_8hpp_source.html", null ],
     [ "Callbacks.hpp", "_callbacks_8hpp_source.html", null ],
+    [ "FbxImporter.hpp", "_fbx_importer_8hpp_source.html", null ],
     [ "File.hpp", "_file_8hpp_source.html", null ],
     [ "Image.hpp", "_image_8hpp_source.html", null ],
     [ "Input.hpp", "_input_8hpp_source.html", null ],

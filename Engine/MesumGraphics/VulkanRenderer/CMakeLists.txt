@@ -1,8 +1,9 @@
 set(MODULE_NAME VulkanRenderer)
 
-project(${MODULE_NAME} VERSION 1.0.0 DESCRIPTION "Win32 specific windows")
+project(${MODULE_NAME} VERSION 1.0.0 DESCRIPTION "Vulkan implementation")
 
 set(SOURCES VulkanContext.cpp
+            VulkanApiAbstraction.cpp
             VulkanRendererCommon.cpp
             RendererVulkanImpl.cpp
             imgui_impl_vulkan.cpp)

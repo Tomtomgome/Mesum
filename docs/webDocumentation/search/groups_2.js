@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['log_0',['Log',['../group___log.html',1,'']]]
+  ['render_0',['Render',['../group___render.html',1,'']]]
 ];

@@ -1,6 +1,5 @@
 var hierarchy =
 [
-    [ "m::render::BasicVertex", "structm_1_1render_1_1_basic_vertex.html", null ],
     [ "m::render::BufferBase< tt_Vertex, tt_Index >", "structm_1_1render_1_1_buffer_base.html", [
       [ "m::render::Dx12BufferBase< tt_Vertex, tt_Index >", "structm_1_1render_1_1_dx12_buffer_base.html", null ],
       [ "m::render::VulkanBufferBase< tt_Vertex, tt_Index >", "structm_1_1render_1_1_vulkan_buffer_base.html", null ]
@@ -113,20 +112,24 @@ var hierarchy =
     [ "ImVec2ih", "struct_im_vec2ih.html", null ],
     [ "ImVec4", "struct_im_vec4.html", null ],
     [ "ImVector< T >", "struct_im_vector.html", null ],
+    [ "m::aa::mAdapter::InitData", "structm_1_1aa_1_1m_adapter_1_1_init_data.html", null ],
+    [ "m::aa::mApi::InitData", "structm_1_1aa_1_1m_api_1_1_init_data.html", null ],
     [ "m::render::IRenderer", "classm_1_1render_1_1_i_renderer.html", [
       [ "m::dx12::DX12Renderer", "classm_1_1dx12_1_1_d_x12_renderer.html", null ],
       [ "m::vulkan::VulkanRenderer", "classm_1_1vulkan_1_1_vulkan_renderer.html", null ]
     ] ],
-    [ "m::render::IResource", "structm_1_1render_1_1_i_resource.html", [
-      [ "m::dx12::DX12Texture", "structm_1_1dx12_1_1_d_x12_texture.html", null ]
-    ] ],
+    [ "m::render::IResource", "structm_1_1render_1_1_i_resource.html", null ],
     [ "m::render::ISurface", "classm_1_1render_1_1_i_surface.html", [
       [ "m::dx12::DX12Surface", "classm_1_1dx12_1_1_d_x12_surface.html", null ],
       [ "m::vulkan::VulkanSurface", "classm_1_1vulkan_1_1_vulkan_surface.html", null ]
     ] ],
+    [ "m::aa::mAdapter", "structm_1_1aa_1_1m_adapter.html", null ],
+    [ "m::aa::mApi", "structm_1_1aa_1_1m_api.html", null ],
     [ "m::mBasicLaunchData", "structm_1_1m_basic_launch_data.html", null ],
+    [ "m::render::mBasicVertex", "structm_1_1render_1_1m_basic_vertex.html", null ],
     [ "m::mCallback< t_RetType, t_Args >", "classm_1_1m_callback.html", null ],
     [ "m::mCmdLine", "structm_1_1m_cmd_line.html", null ],
+    [ "m::file::mFbxImporter", "classm_1_1file_1_1m_fbx_importer.html", null ],
     [ "m::application::mIBasicApplication", "classm_1_1application_1_1m_i_basic_application.html", [
       [ "m::application::mILoopApplication", "classm_1_1application_1_1m_i_loop_application.html", null ],
       [ "m::application::mITimedLoopApplication", "classm_1_1application_1_1m_i_timed_loop_application.html", [
@@ -158,6 +161,7 @@ var hierarchy =
     [ "m::math::mMatData< t_T, t_N, t_M >", "structm_1_1math_1_1m_mat_data.html", [
       [ "m::math::mMat< t_T, t_N, t_M >", "structm_1_1math_1_1m_mat.html", null ]
     ] ],
+    [ "m::render::mMesh", "structm_1_1render_1_1m_mesh.html", null ],
     [ "m::input::mMouseAction", "structm_1_1input_1_1m_mouse_action.html", null ],
     [ "m::mOutput< t_Output >", "structm_1_1m_output.html", null ],
     [ "m::profile::mRAIITiming", "classm_1_1profile_1_1m_r_a_i_i_timing.html", null ],
@@ -176,7 +180,6 @@ var hierarchy =
     [ "m::math::mXoRandomNumberGenerator", "classm_1_1math_1_1m_xo_random_number_generator.html", null ],
     [ "m::math::mXoRandomNumberGenerator::mXoshiro256ssState", "structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state.html", null ],
     [ "MyDocument", "struct_my_document.html", null ],
-    [ "m::render::ResourceDataHolder< t_DataType >", "classm_1_1render_1_1_resource_data_holder.html", null ],
     [ "STB_TexteditState", "struct_s_t_b___textedit_state.html", null ],
     [ "stbrp_context", "structstbrp__context.html", null ],
     [ "stbrp_node", "structstbrp__node.html", null ],
@@ -207,9 +210,6 @@ var hierarchy =
       [ "m::dx12::DX12RenderTaskset", "structm_1_1dx12_1_1_d_x12_render_taskset.html", null ],
       [ "m::vulkan::VulkanRenderTaskset", "structm_1_1vulkan_1_1_vulkan_render_taskset.html", null ]
     ] ],
-    [ "m::render::TextureDesc", "structm_1_1render_1_1_texture_desc.html", null ],
-    [ "m::render::TextureManager", "structm_1_1render_1_1_texture_manager.html", null ],
-    [ "m::render::TextureRequest", "structm_1_1render_1_1_texture_request.html", null ],
     [ "VERTEX_CONSTANT_BUFFER", "struct_v_e_r_t_e_x___c_o_n_s_t_a_n_t___b_u_f_f_e_r.html", null ],
     [ "m::vulkan::VulkanContext", "classm_1_1vulkan_1_1_vulkan_context.html", null ],
     [ "m::win32::WIN32Context", "structm_1_1win32_1_1_w_i_n32_context.html", null ],
