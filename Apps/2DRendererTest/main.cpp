@@ -7,7 +7,6 @@
 #include <MesumGraphics/DearImgui/MesumDearImGui.hpp>
 #include <MesumGraphics/RenderTasks/RenderTask2DRender.hpp>
 #include <MesumGraphics/RenderTasks/RenderTaskDearImGui.hpp>
-#include <MesumGraphics/Resources/Texture.hpp>
 #include <MesumGraphics/VulkanRenderer/VulkanContext.hpp>
 
 using namespace m;
