@@ -738,8 +738,8 @@ VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
     // Sampler ----------------------------------------------------------------
     VkSamplerCreateInfo samplerInfo{};
     samplerInfo.sType                   = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
-    samplerInfo.magFilter               = VK_FILTER_LINEAR;
-    samplerInfo.minFilter               = VK_FILTER_LINEAR;
+    samplerInfo.magFilter               = VK_FILTER_NEAREST;
+    samplerInfo.minFilter               = VK_FILTER_NEAREST;
     samplerInfo.addressModeU            = VK_SAMPLER_ADDRESS_MODE_REPEAT;
     samplerInfo.addressModeV            = VK_SAMPLER_ADDRESS_MODE_REPEAT;
     samplerInfo.addressModeW            = VK_SAMPLER_ADDRESS_MODE_REPEAT;
@@ -1320,7 +1320,7 @@ void VulkanTask2dRender::create_renderPassAndPipeline(mU32 a_width,
     colorBlendAttachment.colorWriteMask =
         VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT |
         VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
-    colorBlendAttachment.blendEnable = VK_TRUE;
+    colorBlendAttachment.blendEnable = VK_FALSE;
     colorBlendAttachment.srcColorBlendFactor =
         VK_BLEND_FACTOR_SRC_ALPHA;  // Optional
     colorBlendAttachment.dstColorBlendFactor =

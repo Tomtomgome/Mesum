@@ -16,46 +16,94 @@ static const mInt screenHeight = 300;
 
 math::mXoRandomNumberGenerator g_randomGenerator(0);
 
-void add_square(render::DataMeshBuffer<render::BasicVertex, mU16>* a_meshBuffer,
-                math::mVec2 const                                  a_position)
+struct RenderingCpnt
 {
-    mSoftAssert(a_meshBuffer != nullptr);
+    m::mU32 materialID;
+};
 
-    mUInt               index = a_meshBuffer->m_vertices.size();
-    mFloat              size  = 16;
-    render::BasicVertex vertex;
-    vertex.color    = {1.0f, 1.0f, 1.0f, 1.0f};
-    vertex.position = {a_position.x - size, a_position.y - size, 0.5f};
-    vertex.uv       = {0.0f, 1.0f};
-    a_meshBuffer->m_vertices.push_back(vertex);
-    vertex.position = {a_position.x - size, a_position.y + size, 0.5f};
-    vertex.uv       = {0.0f, 0.0f};
-    a_meshBuffer->m_vertices.push_back(vertex);
-    vertex.position = {a_position.x + size, a_position.y - size, 0.5f};
-    vertex.uv       = {1.0f, 1.0f};
-    a_meshBuffer->m_vertices.push_back(vertex);
-    vertex.position = {a_position.x + size, a_position.y + size, 0.5f};
-    vertex.uv       = {1.0f, 0.0f};
-    a_meshBuffer->m_vertices.push_back(vertex);
+struct TransformCpnt
+{
+    m::math::mVec2 position;
+    m::mFloat      angle;
+    m::mFloat      scale;
+};
 
+struct GenerationData
+{
+    m::math::mVec4 color;
+    m::math::mVec3 offset;
+    m::mFloat      angle;
+    m::mFloat      size;
+};
+
+m::math::mVec3 convert_radToCoordinates(m::mFloat const a_angle,
+                                        m::mFloat const a_radius)
+{
+    return {a_radius * cosf(a_angle), a_radius * sinf(a_angle), 0.5f};
+}
+
+void generate_squareIntoMeshBuffer(
+    render::DataMeshBuffer<render::BasicVertex, mU16>* a_meshBuffer,
+    GenerationData const&                              a_generationInfo)
+{
+    // Indexes
+    mUInt index = a_meshBuffer->m_vertices.size();
     a_meshBuffer->m_indices.push_back(index);
     a_meshBuffer->m_indices.push_back(index + 1);
     a_meshBuffer->m_indices.push_back(index + 2);
     a_meshBuffer->m_indices.push_back(index + 3);
     a_meshBuffer->m_indices.push_back(0xFFFF);
+
+    // Prep data
+    static m::mFloat pi   = 3.14159265;
+    static m::mFloat step = pi / 2.0f;
+
+    m::math::mVec3 offset       = a_generationInfo.offset;
+    m::mFloat      radius       = a_generationInfo.size / std::sqrt(2.0f);
+    m::mFloat      initialAngle = (pi / 4.0f) + a_generationInfo.angle;
+
+    // Vertices
+    render::BasicVertex vertex;
+    vertex.color = a_generationInfo.color;
+    vertex.position =
+        offset + convert_radToCoordinates(initialAngle + 2 * step, radius);
+    vertex.uv = {0.0f, 1.0f};
+    a_meshBuffer->m_vertices.push_back(vertex);
+    vertex.position =
+        offset + convert_radToCoordinates(initialAngle + step, radius);
+    vertex.uv = {0.0f, 0.0f};
+    a_meshBuffer->m_vertices.push_back(vertex);
+    vertex.position =
+        offset + convert_radToCoordinates(initialAngle + 3 * step, radius);
+    vertex.uv = {1.0f, 1.0f};
+    a_meshBuffer->m_vertices.push_back(vertex);
+    vertex.position = offset + convert_radToCoordinates(initialAngle, radius);
+    vertex.uv       = {1.0f, 0.0f};
+    a_meshBuffer->m_vertices.push_back(vertex);
 }
 
 struct Drawer_2D
 {
-    void add_square(math::mVec2 const a_position)
+    void add_square(TransformCpnt const& a_transform)
     {
-        ::add_square(&m_meshBuffer, a_position);
+        GenerationData data;
+        data.color = {1.0f, 1.0f, 1.0f, 1.0f};
+        data.offset = {a_transform.position.x, a_transform.position.y, 0.0f};
+        data.size = /*a_transform.size*/ 32 * a_transform.scale;
+        data.angle     = a_transform.angle;
+
+        generate_squareIntoMeshBuffer(&m_meshBuffer, data);
     }
 
     void reset() { m_meshBuffer.clear(); }
 
     render::DataMeshBuffer<render::BasicVertex, mU16> m_meshBuffer;
 };
+
+// struct RenderBatches
+//{
+//     std::vector<std::vector<RenderingData>> m_squarePositions;
+// };
 
 struct BunchOfSquares
 {
@@ -170,7 +218,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         crossPlatform::IWindowedApplication::init(a_cmdLine, a_appData);
 
         m_imageRequested.emplace_back();
-        m_imageRequested.back().path = "data/textures/Test.png";
+        m_imageRequested.back().path = "data/textures/Character.png";
         m_imageRequested.emplace_back();
         m_imageRequested.back().path = "data/textures/Test2.png";
         m_imageRequested.emplace_back();
@@ -287,6 +335,9 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         globalTime += deltaTime;
         addPos = 100.0f * std::sin(globalTime);
 
+        static mFloat addAngle = 0;
+        addAngle               = 2.0f * 3.141592 * std::sin(globalTime);
+
         RECT clientRect = {};
         ::GetWindowRect(((win32::IWindowImpl*)(m_windowVulkan))->get_hwnd(),
                         &clientRect);
@@ -310,7 +361,12 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             {
                 auto modifPos =
                     positions[i] + math::mVec2{addPosx + addPos, -addPosy};
-                m_drawer2d.add_square(modifPos);
+
+                TransformCpnt transform;
+                transform.position = modifPos;
+                transform.angle    = addAngle;
+                transform.scale    = 1.0f;
+                m_drawer2d.add_square(transform);
             }
             totalNbPositions += positions.size();
         }
