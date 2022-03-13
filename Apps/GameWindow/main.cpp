@@ -9,24 +9,14 @@
 #include <MesumGraphics/RenderTasks/RenderTaskDearImGui.hpp>
 #include <MesumGraphics/VulkanRenderer/VulkanContext.hpp>
 
+#include "Scene.hpp"
+
 using namespace m;
 
 static const mInt screenWidth  = 400;
 static const mInt screenHeight = 300;
 
 math::mXoRandomNumberGenerator g_randomGenerator(0);
-
-struct RenderingCpnt
-{
-    m::mU32 materialID;
-};
-
-struct TransformCpnt
-{
-    m::math::mVec2 position;
-    m::mFloat      angle;
-    m::mFloat      scale;
-};
 
 struct GenerationData
 {
@@ -44,7 +34,7 @@ m::math::mVec3 convert_radToCoordinates(m::mFloat const a_angle,
 
 void generate_squareIntoMeshBuffer(
     render::DataMeshBuffer<render::BasicVertex, mU16>* a_meshBuffer,
-    GenerationData const&                              a_generationInfo)
+    DrawableData const&                                a_generationInfo)
 {
     // Indexes
     mUInt index = a_meshBuffer->m_vertices.size();
@@ -81,66 +71,6 @@ void generate_squareIntoMeshBuffer(
     vertex.uv       = {1.0f, 0.0f};
     a_meshBuffer->m_vertices.push_back(vertex);
 }
-
-struct Drawer_2D
-{
-    void add_square(TransformCpnt const& a_transform)
-    {
-        GenerationData data;
-        data.color = {1.0f, 1.0f, 1.0f, 1.0f};
-        data.offset = {a_transform.position.x, a_transform.position.y, 0.0f};
-        data.size = /*a_transform.size*/ 32 * a_transform.scale;
-        data.angle     = a_transform.angle;
-
-        generate_squareIntoMeshBuffer(&m_meshBuffer, data);
-    }
-
-    void reset() { m_meshBuffer.clear(); }
-
-    render::DataMeshBuffer<render::BasicVertex, mU16> m_meshBuffer;
-};
-
-// struct RenderBatches
-//{
-//     std::vector<std::vector<RenderingData>> m_squarePositions;
-// };
-
-struct BunchOfSquares
-{
-    void prepare_add()
-    {
-        if (m_squarePositions.size() < currentMaterialID + 1)
-        {
-            m_squarePositions.resize(currentMaterialID + 1);
-        }
-    }
-
-    void add_newSquare()
-    {
-        prepare_add();
-
-        math::mVec2 newPosition;
-        for (int i = 0; i < 100; i++)
-        {
-            newPosition.x = g_randomGenerator.get_nextFloat() * screenWidth;
-            newPosition.y = g_randomGenerator.get_nextFloat() * screenHeight;
-            m_squarePositions[currentMaterialID].push_back(newPosition);
-        }
-    }
-
-    void add_oneNewSquare(const math::mIVec2& a_position)
-    {
-        prepare_add();
-
-        math::mVec2 newPosition;
-        newPosition.x = a_position.x;
-        newPosition.y = a_position.y;
-        m_squarePositions[currentMaterialID].push_back(newPosition);
-    }
-
-    mInt                                  currentMaterialID = 0;
-    std::vector<std::vector<math::mVec2>> m_squarePositions;
-};
 
 class mPainter
 {
@@ -225,7 +155,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_imageRequested.back().path.resize(512);  // prep for imGui
 
         render::TaskData2dRender taskData_2dRender;
-        taskData_2dRender.m_pMeshBuffer = &m_drawer2d.m_meshBuffer;
+        taskData_2dRender.m_pMeshBuffer = &m_meshBuffer;
         taskData_2dRender.m_pRanges     = &m_ranges;
 
         m_iRendererVulkan = new vulkan::VulkanRenderer();
@@ -271,8 +201,6 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_inputManager.attach_toMouseScrollEvent(input::mScrollCallback(
             &m_targetController, &mTargetController::update_zoomLevel));
 
-        m_painter.add_paintedPosition(math::mIVec2{500, 500});
-
         m_start = std::chrono::high_resolution_clock::now();
 
         MONITORINFO monitorInfo = {};
@@ -287,6 +215,23 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         SetWindowPos(m_windowVulkan->get_hwnd(), NULL, xPos, yPos, screenWidth,
                      screenHeight, SWP_SHOWWINDOW | SWP_DRAWFRAME);
+
+        Entity        mainCharacter = m_componentManager.create_entity();
+        RenderingCpnt rCpnt;
+        rCpnt.materialID  = 0;
+        rCpnt.pictureSize = 32;
+        m_componentManager.enable_component(mainCharacter, rCpnt);
+        TransformCpnt tCpnt;
+        tCpnt.position = {50, 50};
+        tCpnt.angle    = 0;
+        tCpnt.scale    = 2.0f;
+        m_componentManager.enable_component(mainCharacter, tCpnt);
+
+        Entity secondaryCharacter = m_componentManager.create_entity();
+        m_componentManager.enable_component(secondaryCharacter, rCpnt);
+        tCpnt.position = {50, 50};
+        tCpnt.scale    = 1.0f;
+        m_componentManager.enable_component(secondaryCharacter, tCpnt);
     }
 
     void destroy() override
@@ -307,73 +252,47 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         mDouble deltaTime = std::chrono::duration<mDouble>(ddeltaTime).count();
 
-        static math::mIVec2 lastPosRegPos;
-        static math::mIVec2 lastPlaced;
-        mFloat              fact = 1.0 / m_targetController.m_zoomLevel;
-        math::mVec4         floatPosition{0.0f, 0.0f, 0.0f, 1.0f};
-        math::mVec4         transPosition{};
-        for (auto position : m_painter.m_paintedPositions)
-        {
-            floatPosition.x = position.x;
-            floatPosition.y = position.y;
-            transPosition   = m_targetController.m_viewToWorld * floatPosition;
-            lastPosRegPos   = position;
-            lastPlaced =
-                math::mIVec2{mInt(transPosition.x), mInt(transPosition.y)};
-            m_bunchOfSquares.add_oneNewSquare(
-                math::mIVec2{mInt(transPosition.x), mInt(transPosition.y)});
-        }
-        m_painter.m_paintedPositions.clear();
-
-        m_drawer2d.reset();
+        m_drawingData.clean_drawables();
         m_ranges.clear();
-        static const mUInt indexPerQuad  = 5;
-        static const mUInt vertexPerQuad = 4;
+        process_renderableObjects(m_componentManager, m_drawingData);
 
-        static mFloat  addPos     = 0;
-        static mDouble globalTime = 0;
-        globalTime += deltaTime;
-        addPos = 100.0f * std::sin(globalTime);
+        static const mUInt indexPerQuad    = 5;
+        static const mUInt vertexPerQuad   = 4;
+        m::mU32            materialID      = 0;
+        mUInt              totalNbDrawable = 0;
+        for (auto drawables : m_drawingData.materialDrawables)
+        {
+            if (drawables.size() == 0)
+            {
+                ++materialID;
+                continue;
+            }
 
-        static mFloat addAngle = 0;
-        addAngle               = 2.0f * 3.141592 * std::sin(globalTime);
+            m_ranges.emplace_back();
+            m_ranges.back().materialID = materialID;
+            m_ranges.back().indexCount = drawables.size() * indexPerQuad;
+            m_ranges.back().indexStartLocation = totalNbDrawable * indexPerQuad;
+
+            for (auto drawable : drawables)
+            {
+                generate_squareIntoMeshBuffer(&m_meshBuffer, drawable);
+            }
+
+            totalNbDrawable += drawables.size();
+            ++materialID;
+        }
 
         RECT clientRect = {};
         ::GetWindowRect(((win32::IWindowImpl*)(m_windowVulkan))->get_hwnd(),
                         &clientRect);
         float addPosx          = m_initialClientRect.left - clientRect.left;
         float addPosy          = m_initialClientRect.top - clientRect.top;
-        mUInt totalNbPositions = 0;
-        for (mUInt j = 0; j < m_bunchOfSquares.m_squarePositions.size(); ++j)
-        {
-            auto& positions = m_bunchOfSquares.m_squarePositions[j];
-            if (positions.size() == 0)
-            {
-                continue;
-            }
-
-            m_ranges.emplace_back();
-            m_ranges.back().materialID = j;
-            m_ranges.back().indexCount = positions.size() * indexPerQuad;
-            m_ranges.back().indexStartLocation =
-                totalNbPositions * indexPerQuad;
-            for (mUInt i = 0; i < positions.size(); ++i)
-            {
-                auto modifPos =
-                    positions[i] + math::mVec2{addPosx + addPos, -addPosy};
-
-                TransformCpnt transform;
-                transform.position = modifPos;
-                transform.angle    = addAngle;
-                transform.scale    = 1.0f;
-                m_drawer2d.add_square(transform);
-            }
-            totalNbPositions += positions.size();
-        }
 
         m_vkMatrix = math::generate_projectionOrthoLH(
                          screenWidth, -screenHeight, 0.0f, 1.0f) *
-                     m_targetController.m_worldToView;
+                     m_targetController.m_worldToView *
+                     math::generate_translationMatrix(addPosx, -addPosy, 0.0f);
+        ;
 
         if (m_hdlSurfaceVulkan->isValid)
         {
@@ -397,16 +316,18 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     m::render::ISurface::HdlPtr m_hdlSurfaceVulkan;
     win32::IWindowImpl*         m_windowVulkan = nullptr;
 
-    render::Task2dRender*                         m_pVkTaskRender = nullptr;
-    std::vector<resource::mRequestImage>          m_imageRequested;
-    math::mMat4x4                                 m_vkMatrix{};
-    std::vector<render::TaskData2dRender::mRange> m_ranges;
+    render::Task2dRender*                             m_pVkTaskRender = nullptr;
+    std::vector<resource::mRequestImage>              m_imageRequested;
+    math::mMat4x4                                     m_vkMatrix{};
+    std::vector<render::TaskData2dRender::mRange>     m_ranges;
+    render::DataMeshBuffer<render::BasicVertex, mU16> m_meshBuffer;
 
-    Drawer_2D                    m_drawer2d;
     mPainter                     m_painter;
     mTargetController            m_targetController;
-    BunchOfSquares               m_bunchOfSquares;
     input::mCallbackInputManager m_inputManager;
+
+    ComponentManager m_componentManager;
+    DrawingData      m_drawingData;
 
     std::chrono::time_point<std::chrono::steady_clock> m_start;
     std::chrono::time_point<std::chrono::steady_clock> m_end;
