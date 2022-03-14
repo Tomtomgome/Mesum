@@ -15,6 +15,8 @@ using namespace m;
 
 static const mInt screenWidth  = 400;
 static const mInt screenHeight = 300;
+static mInt windowWidth  = 0;
+static mInt windowHeight = 0;
 
 math::mXoRandomNumberGenerator g_randomGenerator(0);
 
@@ -106,6 +108,13 @@ class mTargetController
             m_targetPoint.y -= a_position.y / m_zoomLevel;
             update_worldToViewMatrix();
         }
+    }
+
+    void set_target(const math::mIVec2& a_position)
+    {
+            m_targetPoint.x = a_position.x - windowWidth/2;
+            m_targetPoint.y = a_position.y - 1080 + windowHeight/2;
+            update_worldToViewMatrix();
     }
 
     void update_zoomLevel(mDouble a_update)
@@ -210,11 +219,16 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
                                              MONITOR_DEFAULTTONEAREST),
                          &monitorInfo);
 
-        mInt xPos = (monitorInfo.rcMonitor.right - screenWidth) / 2;
-        mInt yPos = (monitorInfo.rcMonitor.bottom - screenHeight) / 2;
+        RECT clientRect = {};
+        ::GetWindowRect(((win32::IWindowImpl*)(m_windowVulkan))->get_hwnd(),
+                        &clientRect);
+        windowWidth = clientRect.right - clientRect.left;
+        windowHeight = clientRect.bottom - clientRect.top;
+        mInt xPos = (monitorInfo.rcMonitor.right - windowWidth) / 2;
+        mInt yPos = (monitorInfo.rcMonitor.bottom - windowHeight) / 2;
 
-        SetWindowPos(m_windowVulkan->get_hwnd(), NULL, xPos, yPos, screenWidth,
-                     screenHeight, SWP_SHOWWINDOW | SWP_DRAWFRAME);
+        SetWindowPos(m_windowVulkan->get_hwnd(), NULL, xPos, yPos, windowWidth,
+                     windowHeight, SWP_SHOWWINDOW | SWP_DRAWFRAME);
 
         Entity        mainCharacter = m_componentManager.create_entity();
         RenderingCpnt rCpnt;
@@ -222,15 +236,32 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         rCpnt.pictureSize = 32;
         m_componentManager.enable_component(mainCharacter, rCpnt);
         TransformCpnt tCpnt;
-        tCpnt.position = {50, 50};
+        tCpnt.position = {1000, 600};
         tCpnt.angle    = 0;
         tCpnt.scale    = 2.0f;
         m_componentManager.enable_component(mainCharacter, tCpnt);
 
         Entity secondaryCharacter = m_componentManager.create_entity();
         m_componentManager.enable_component(secondaryCharacter, rCpnt);
-        tCpnt.position = {50, 50};
+        tCpnt.position = {0, 0};
         tCpnt.scale    = 1.0f;
+        m_componentManager.enable_component(secondaryCharacter, tCpnt);
+
+        secondaryCharacter = m_componentManager.create_entity();
+        m_componentManager.enable_component(secondaryCharacter, rCpnt);
+        tCpnt.position = {0, -10};
+        m_componentManager.enable_component(secondaryCharacter, tCpnt);
+        secondaryCharacter = m_componentManager.create_entity();
+        m_componentManager.enable_component(secondaryCharacter, rCpnt);
+        tCpnt.position = {30, 0};
+        m_componentManager.enable_component(secondaryCharacter, tCpnt);
+        secondaryCharacter = m_componentManager.create_entity();
+        m_componentManager.enable_component(secondaryCharacter, rCpnt);
+        tCpnt.position = {0, 30};
+        m_componentManager.enable_component(secondaryCharacter, tCpnt);
+        secondaryCharacter = m_componentManager.create_entity();
+        m_componentManager.enable_component(secondaryCharacter, rCpnt);
+        tCpnt.position = {-10, 0};
         m_componentManager.enable_component(secondaryCharacter, tCpnt);
     }
 
@@ -288,11 +319,13 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         float addPosx          = m_initialClientRect.left - clientRect.left;
         float addPosy          = m_initialClientRect.top - clientRect.top;
 
+
+        m_targetController.set_target({-clientRect.left, clientRect.top});
+
+
         m_vkMatrix = math::generate_projectionOrthoLH(
                          screenWidth, -screenHeight, 0.0f, 1.0f) *
-                     m_targetController.m_worldToView *
-                     math::generate_translationMatrix(addPosx, -addPosy, 0.0f);
-        ;
+                     m_targetController.m_worldToView;
 
         if (m_hdlSurfaceVulkan->isValid)
         {
