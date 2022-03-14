@@ -15,8 +15,8 @@ using namespace m;
 
 static const mInt screenWidth  = 400;
 static const mInt screenHeight = 300;
-static mInt windowWidth  = 0;
-static mInt windowHeight = 0;
+static mInt       windowWidth  = 0;
+static mInt       windowHeight = 0;
 
 math::mXoRandomNumberGenerator g_randomGenerator(0);
 
@@ -112,9 +112,9 @@ class mTargetController
 
     void set_target(const math::mIVec2& a_position)
     {
-            m_targetPoint.x = a_position.x - windowWidth/2;
-            m_targetPoint.y = a_position.y - 1080 + windowHeight/2;
-            update_worldToViewMatrix();
+        m_targetPoint.x = a_position.x - windowWidth / 2;
+        m_targetPoint.y = a_position.y - 1080 + windowHeight / 2;
+        update_worldToViewMatrix();
     }
 
     void update_zoomLevel(mDouble a_update)
@@ -157,9 +157,9 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         crossPlatform::IWindowedApplication::init(a_cmdLine, a_appData);
 
         m_imageRequested.emplace_back();
-        m_imageRequested.back().path = "data/textures/Character.png";
+        m_imageRequested.back().path = "data/textures/Mir.png";
         m_imageRequested.emplace_back();
-        m_imageRequested.back().path = "data/textures/Test2.png";
+        m_imageRequested.back().path = "data/textures/Character.png";
         m_imageRequested.emplace_back();
         m_imageRequested.back().path.resize(512);  // prep for imGui
 
@@ -222,31 +222,55 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         RECT clientRect = {};
         ::GetWindowRect(((win32::IWindowImpl*)(m_windowVulkan))->get_hwnd(),
                         &clientRect);
-        windowWidth = clientRect.right - clientRect.left;
+        windowWidth  = clientRect.right - clientRect.left;
         windowHeight = clientRect.bottom - clientRect.top;
-        mInt xPos = (monitorInfo.rcMonitor.right - windowWidth) / 2;
-        mInt yPos = (monitorInfo.rcMonitor.bottom - windowHeight) / 2;
+        mInt xPos    = (monitorInfo.rcMonitor.right - windowWidth) / 2;
+        mInt yPos    = (monitorInfo.rcMonitor.bottom - windowHeight) / 2;
 
         SetWindowPos(m_windowVulkan->get_hwnd(), NULL, xPos, yPos, windowWidth,
                      windowHeight, SWP_SHOWWINDOW | SWP_DRAWFRAME);
 
         Entity        mainCharacter = m_componentManager.create_entity();
         RenderingCpnt rCpnt;
-        rCpnt.materialID  = 0;
+        rCpnt.materialID  = 1;
         rCpnt.pictureSize = 32;
+        rCpnt.color       = {1.0f, 1.0f, 1.0f, 1.0f};
         m_componentManager.enable_component(mainCharacter, rCpnt);
         TransformCpnt tCpnt;
         tCpnt.position = {1000, 600};
         tCpnt.angle    = 0;
         tCpnt.scale    = 2.0f;
         m_componentManager.enable_component(mainCharacter, tCpnt);
+        AnimatorCpnt aCpnt;
+        aCpnt.pAnimation = new Animation();
+        aCpnt.pAnimation->animationDuration = std::chrono::seconds(2);
+        auto& keys = aCpnt.pAnimation->keys;
+        keys.resize(3);
+        keys[0].advancement = 0;
+        keys[1].advancement = 0.5;
+        keys[2].advancement = 1;
+        auto& modifiers = aCpnt.pAnimation->modifiers;
+        modifiers.resize(3);
+        modifiers[0].color = {0.0f, 0.0f, 0.0f, 1.0f};
+        modifiers[0].scale = 0.5;
+        modifiers[1].color = {1.0f, 1.0f, 1.0f, 1.0f};
+        modifiers[1].scale = 2;
+        modifiers[1].angle = 3.141592;
+        modifiers[2].scale = 0.5;
+        modifiers[2].color = {0.0f, 0.0f, 0.0f, 1.0f};
+        m_componentManager.enable_component(mainCharacter, aCpnt);
 
         Entity secondaryCharacter = m_componentManager.create_entity();
         m_componentManager.enable_component(secondaryCharacter, rCpnt);
-        tCpnt.position = {0, 0};
+        tCpnt.position = {1500, 600};
         tCpnt.scale    = 1.0f;
         m_componentManager.enable_component(secondaryCharacter, tCpnt);
 
+        secondaryCharacter = m_componentManager.create_entity();
+        rCpnt.materialID   = 0;
+        rCpnt.pictureSize  = 16;
+        m_componentManager.enable_component(secondaryCharacter, rCpnt);
+        tCpnt.position     = {0, 0};
         secondaryCharacter = m_componentManager.create_entity();
         m_componentManager.enable_component(secondaryCharacter, rCpnt);
         tCpnt.position = {0, -10};
@@ -285,6 +309,8 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         m_drawingData.clean_drawables();
         m_ranges.clear();
+        m_meshBuffer.clear();
+        process_animatedObjects(m_componentManager, ddeltaTime);
         process_renderableObjects(m_componentManager, m_drawingData);
 
         static const mUInt indexPerQuad    = 5;
@@ -316,12 +342,10 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         RECT clientRect = {};
         ::GetWindowRect(((win32::IWindowImpl*)(m_windowVulkan))->get_hwnd(),
                         &clientRect);
-        float addPosx          = m_initialClientRect.left - clientRect.left;
-        float addPosy          = m_initialClientRect.top - clientRect.top;
-
+        float addPosx = m_initialClientRect.left - clientRect.left;
+        float addPosy = m_initialClientRect.top - clientRect.top;
 
         m_targetController.set_target({-clientRect.left, clientRect.top});
-
 
         m_vkMatrix = math::generate_projectionOrthoLH(
                          screenWidth, -screenHeight, 0.0f, 1.0f) *
