@@ -76,18 +76,35 @@ void generate_squareIntoMeshBuffer(
     a_meshBuffer->m_vertices.push_back(vertex);
 }
 
-class mPainter
+void generate_rectangleIntoMeshBuffer(
+    render::DataMeshBuffer<render::BasicVertex, mU16>* a_meshBuffer,
+    math::mVec3 const& a_offset, math::mVec2 const& a_size,
+    math::mVec4 const& a_color)
 {
-   public:
-    void add_paintedPosition(const math::mIVec2& a_position)
-    {
-        m_paintedPositions.push_back(
-            math::mIVec2{mInt(a_position.x - screenWidth / 2),
-                         mInt(screenHeight / 2 - a_position.y)});
-    }
+    // Indexes
+    mUInt index = a_meshBuffer->m_vertices.size();
+    a_meshBuffer->m_indices.push_back(index);
+    a_meshBuffer->m_indices.push_back(index + 1);
+    a_meshBuffer->m_indices.push_back(index + 2);
+    a_meshBuffer->m_indices.push_back(index + 3);
+    a_meshBuffer->m_indices.push_back(0xFFFF);
 
-    std::vector<math::mIVec2> m_paintedPositions;
-};
+    // Vertices
+    render::BasicVertex vertex;
+    vertex.color    = a_color;
+    vertex.position = a_offset + math::mVec3{0.0f, -a_size.y, 0.0f};
+    vertex.uv       = {0.0f, 1.0f};
+    a_meshBuffer->m_vertices.push_back(vertex);
+    vertex.position = a_offset;
+    vertex.uv       = {0.0f, 0.0f};
+    a_meshBuffer->m_vertices.push_back(vertex);
+    vertex.position = a_offset + math::mVec3{a_size.x, -a_size.y, 0.0f};
+    vertex.uv       = {1.0f, 1.0f};
+    a_meshBuffer->m_vertices.push_back(vertex);
+    vertex.position = a_offset + math::mVec3{a_size.x, 0.0f, 0.0f};
+    vertex.uv       = {1.0f, 0.0f};
+    a_meshBuffer->m_vertices.push_back(vertex);
+}
 
 class mTargetController
 {
@@ -165,10 +182,6 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_imageRequested.emplace_back();
         m_imageRequested.back().path.resize(512);  // prep for imGui
 
-        render::TaskData2dRender taskData_2dRender;
-        taskData_2dRender.m_pMeshBuffer = &m_meshBuffer;
-        taskData_2dRender.m_pRanges     = &m_ranges;
-
         m_iRendererVulkan = new vulkan::VulkanRenderer();
         m_iRendererVulkan->init();
 
@@ -180,8 +193,11 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         render::Taskset* taskset_renderPipelineGame =
             m_hdlSurfaceGame->surface->addNew_renderTaskset();
 
-        taskData_2dRender.m_hdlOutput = m_hdlSurfaceGame;
-        taskData_2dRender.m_pMatrix   = &m_matrixGame;
+        render::TaskData2dRender taskData_2dRender;
+        taskData_2dRender.m_pMeshBuffer = &m_meshBuffer;
+        taskData_2dRender.m_pRanges     = &m_ranges;
+        taskData_2dRender.m_hdlOutput   = m_hdlSurfaceGame;
+        taskData_2dRender.m_pMatrix     = &m_matrixGame;
         m_pTaskRenderGame =
             (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
                 taskset_renderPipelineGame));
@@ -196,6 +212,9 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_start = std::chrono::high_resolution_clock::now();
 
 #ifdef ENABLE_EDITOR
+        m_imageRequestedEditor.emplace_back();
+        m_imageRequestedEditor.back().path = "data/textures/Editor/Overlay.png";
+
         m_iRendererDx12 = new dx12::DX12Renderer();
         m_iRendererDx12->init();
         // Setup editor window
@@ -210,21 +229,22 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             m_hdlSurfaceEditor->surface->addNew_renderTaskset();
         taskData_2dRender.m_hdlOutput = m_hdlSurfaceEditor;
         taskData_2dRender.m_pMatrix   = &m_matrixEditor;
-        m_pTaskRenderEditor =
+        m_pTaskRenderGameInEditor =
             (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
                 taskset_renderPipelineEditor));
+        m_pTaskRenderGameInEditor->add_texture(m_imageRequested[0]);
+        m_pTaskRenderGameInEditor->add_texture(m_imageRequested[1]);
+
+        taskData_2dRender.m_pMeshBuffer = &m_meshBufferEditor;
+        taskData_2dRender.m_pRanges     = &m_rangesEditor;
+        render::Task2dRender* pTaskRenderEditor =
+            (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
+                taskset_renderPipelineEditor));
+        pTaskRenderEditor->add_texture(m_imageRequestedEditor[0]);
 
         render::TaskDataDrawDearImGui taskData_drawDearImGui;
         taskData_drawDearImGui.m_hdlOutput = m_hdlSurfaceEditor;
         taskData_drawDearImGui.add_toTaskSet(taskset_renderPipelineEditor);
-
-        m_pTaskRenderEditor->add_texture(m_imageRequested[0]);
-        m_pTaskRenderEditor->add_texture(m_imageRequested[1]);
-
-        m_inputManager.attach_toMouseEvent(
-            input::mMouseAction::mousePressed(input::mMouseButton::left),
-            input::mMouseActionCallback(&m_painter,
-                                        &mPainter::add_paintedPosition));
 
         m_inputManager.attach_toMouseEvent(
             input::mMouseAction::mousePressed(input::mMouseButton::middle),
@@ -303,21 +323,31 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         rCpnt.pictureSize  = 16;
         m_componentManager.enable_component(secondaryCharacter, rCpnt);
         tCpnt.position     = {0, 0};
-        secondaryCharacter = m_componentManager.create_entity();
-        m_componentManager.enable_component(secondaryCharacter, rCpnt);
-        tCpnt.position = {0, -10};
         m_componentManager.enable_component(secondaryCharacter, tCpnt);
+
         secondaryCharacter = m_componentManager.create_entity();
         m_componentManager.enable_component(secondaryCharacter, rCpnt);
         tCpnt.position = {30, 0};
         m_componentManager.enable_component(secondaryCharacter, tCpnt);
+
         secondaryCharacter = m_componentManager.create_entity();
         m_componentManager.enable_component(secondaryCharacter, rCpnt);
         tCpnt.position = {0, 30};
         m_componentManager.enable_component(secondaryCharacter, tCpnt);
+
         secondaryCharacter = m_componentManager.create_entity();
         m_componentManager.enable_component(secondaryCharacter, rCpnt);
-        tCpnt.position = {-10, 0};
+        tCpnt.position = {1920, 0};
+        m_componentManager.enable_component(secondaryCharacter, tCpnt);
+
+        secondaryCharacter = m_componentManager.create_entity();
+        m_componentManager.enable_component(secondaryCharacter, rCpnt);
+        tCpnt.position = {0, 1080};
+        m_componentManager.enable_component(secondaryCharacter, tCpnt);
+
+        secondaryCharacter = m_componentManager.create_entity();
+        m_componentManager.enable_component(secondaryCharacter, rCpnt);
+        tCpnt.position = {1920, 1080};
         m_componentManager.enable_component(secondaryCharacter, tCpnt);
     }
 
@@ -404,13 +434,13 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         float addPosx = m_initialClientRect.left - clientRect.left;
         float addPosy = m_initialClientRect.top - clientRect.top;
 
-        math::mIVec2  targetPoint{0, 0};
+        math::mIVec2 targetPoint{0, 0};
         targetPoint.x = -clientRect.left - windowWidth / 2;
         targetPoint.y = clientRect.top - 1080 + windowHeight / 2;
-        m_matrixGame = math::generate_projectionOrthoLH(
-                           screenWidth, -screenHeight, 0.0f, 1.0f) *
-                       math::generate_translationMatrix(targetPoint.x, targetPoint.y,
-                                                        0.0f);
+        m_matrixGame  = math::generate_projectionOrthoLH(
+                            screenWidth, -screenHeight, 0.0f, 1.0f) *
+                       math::generate_translationMatrix(targetPoint.x,
+                                                        targetPoint.y, 0.0f);
 
         if (m_hdlSurfaceGame->isValid)
         {
@@ -418,6 +448,19 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         }
 
 #ifdef ENABLE_EDITOR
+        m_rangesEditor.clear();
+        m_meshBufferEditor.clear();
+
+        m_rangesEditor.emplace_back();
+        m_rangesEditor.back().materialID         = 0;
+        m_rangesEditor.back().indexCount         = 1 * indexPerQuad;
+        m_rangesEditor.back().indexStartLocation = 0;
+
+        generate_rectangleIntoMeshBuffer(
+            &m_meshBufferEditor,
+            {mFloat(clientRect.left), 1080 - mFloat(clientRect.top), 0.0f},
+            {400, 300}, {1.0f, 1.0f, 1.0f, 0.1f});
+
         m_matrixEditor =
             math::generate_projectionOrthoLH(1280, 720, 0.0f, 1.0f) *
             m_targetController.m_worldToView;
@@ -456,22 +499,11 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     render::Task2dRender*    m_pTaskRenderGame = nullptr;
     math::mMat4x4            m_matrixGame{};
 
-#ifdef ENABLE_EDITOR
-    render::IRenderer*       m_iRendererDx12;
-    win32::IWindowImpl*      m_windowEditor = nullptr;
-    render::ISurface::HdlPtr m_hdlSurfaceEditor;
-    render::Task2dRender*    m_pTaskRenderEditor = nullptr;
-    math::mMat4x4            m_matrixEditor{};
-
-    mTargetController            m_targetController;
-#endif  // ENABLE_EDITOR
-
     std::vector<resource::mRequestImage> m_imageRequested;
 
     std::vector<render::TaskData2dRender::mRange>     m_ranges;
     render::DataMeshBuffer<render::BasicVertex, mU16> m_meshBuffer;
 
-    mPainter                     m_painter;
     input::mCallbackInputManager m_inputManager;
 
     ComponentManager m_componentManager;
@@ -481,6 +513,22 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     std::chrono::time_point<std::chrono::steady_clock> m_end;
 
     RECT m_initialClientRect{};
+
+#ifdef ENABLE_EDITOR
+    render::IRenderer*       m_iRendererDx12;
+    win32::IWindowImpl*      m_windowEditor = nullptr;
+    render::ISurface::HdlPtr m_hdlSurfaceEditor;
+    render::Task2dRender*    m_pTaskRenderGameInEditor = nullptr;
+    math::mMat4x4            m_matrixEditor{};
+
+    mTargetController m_targetController;
+
+    // Editor specific rendering
+    std::vector<resource::mRequestImage> m_imageRequestedEditor;
+
+    std::vector<render::TaskData2dRender::mRange>     m_rangesEditor;
+    render::DataMeshBuffer<render::BasicVertex, mU16> m_meshBufferEditor;
+#endif  // ENABLE_EDITOR
 };
 
 M_EXECUTE_WINDOWED_APP(RendererTestApp)
