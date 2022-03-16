@@ -37,6 +37,7 @@ class mIWindow
     {
         std::string   name;  //!< The name of the window
         math::mUIVec2 size;  //!< The initial size of the window
+        mBool isTransparent; //!< HACK
     };
 
     ///////////////////////////////////////////////////////////////////////////

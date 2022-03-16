@@ -11,6 +11,8 @@
 
 #include "Scene.hpp"
 
+#define ENABLE_EDITOR
+
 using namespace m;
 
 static const mInt screenWidth  = 400;
@@ -169,27 +171,55 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         m_iRendererVulkan = new vulkan::VulkanRenderer();
         m_iRendererVulkan->init();
-        // Setup vulkan window
-        m_windowVulkan = static_cast<win32::IWindowImpl*>(
-            add_newWindow("Vulkan Window", screenWidth, screenHeight));
-        m_windowVulkan->link_inputManager(&m_inputManager);
-        m_hdlSurfaceVulkan = m_windowVulkan->link_renderer(m_iRendererVulkan);
 
-        render::Taskset* taskset_renderPipelineVulkan =
-            m_hdlSurfaceVulkan->surface->addNew_renderTaskset();
+        // Setup game window
+        m_windowGame = static_cast<win32::IWindowImpl*>(
+            add_newWindow("Game", screenWidth, screenHeight, true));
+        m_hdlSurfaceGame = m_windowGame->link_renderer(m_iRendererVulkan);
 
-        taskData_2dRender.m_hdlOutput = m_hdlSurfaceVulkan;
-        taskData_2dRender.m_pMatrix   = &m_vkMatrix;
-        m_pVkTaskRender =
+        render::Taskset* taskset_renderPipelineGame =
+            m_hdlSurfaceGame->surface->addNew_renderTaskset();
+
+        taskData_2dRender.m_hdlOutput = m_hdlSurfaceGame;
+        taskData_2dRender.m_pMatrix   = &m_matrixGame;
+        m_pTaskRenderGame =
             (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
-                taskset_renderPipelineVulkan));
+                taskset_renderPipelineGame));
 
-        m_pVkTaskRender->add_texture(m_imageRequested[0]);
-        m_pVkTaskRender->add_texture(m_imageRequested[1]);
+        m_pTaskRenderGame->add_texture(m_imageRequested[0]);
+        m_pTaskRenderGame->add_texture(m_imageRequested[1]);
 
-        ((win32::IWindowImpl*)(m_windowVulkan))
+        ((win32::IWindowImpl*)(m_windowGame))
             ->attach_toSpecialUpdate(mCallback(this, &RendererTestApp::render));
-        ::GetWindowRect(m_windowVulkan->get_hwnd(), &m_initialClientRect);
+        ::GetWindowRect(m_windowGame->get_hwnd(), &m_initialClientRect);
+
+        m_start = std::chrono::high_resolution_clock::now();
+
+#ifdef ENABLE_EDITOR
+        m_iRendererDx12 = new dx12::DX12Renderer();
+        m_iRendererDx12->init();
+        // Setup editor window
+        m_windowEditor = static_cast<win32::IWindowImpl*>(
+            add_newWindow("Editor", 1280, 720, false));
+        m_windowEditor->link_inputManager(&m_inputManager);
+        m_hdlSurfaceEditor = m_windowEditor->link_renderer(m_iRendererDx12);
+
+        dearImGui::init(*m_windowEditor);
+
+        render::Taskset* taskset_renderPipelineEditor =
+            m_hdlSurfaceEditor->surface->addNew_renderTaskset();
+        taskData_2dRender.m_hdlOutput = m_hdlSurfaceEditor;
+        taskData_2dRender.m_pMatrix   = &m_matrixEditor;
+        m_pTaskRenderEditor =
+            (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
+                taskset_renderPipelineEditor));
+
+        render::TaskDataDrawDearImGui taskData_drawDearImGui;
+        taskData_drawDearImGui.m_hdlOutput = m_hdlSurfaceEditor;
+        taskData_drawDearImGui.add_toTaskSet(taskset_renderPipelineEditor);
+
+        m_pTaskRenderEditor->add_texture(m_imageRequested[0]);
+        m_pTaskRenderEditor->add_texture(m_imageRequested[1]);
 
         m_inputManager.attach_toMouseEvent(
             input::mMouseAction::mousePressed(input::mMouseButton::left),
@@ -210,26 +240,28 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_inputManager.attach_toMouseScrollEvent(input::mScrollCallback(
             &m_targetController, &mTargetController::update_zoomLevel));
 
-        m_start = std::chrono::high_resolution_clock::now();
+#endif  // ENABLE_EDITOR
 
+        // Special game window positionning
         MONITORINFO monitorInfo = {};
         monitorInfo.cbSize      = sizeof(MONITORINFO);
 
-        ::GetMonitorInfo(::MonitorFromWindow(m_windowVulkan->get_hwnd(),
+        ::GetMonitorInfo(::MonitorFromWindow(m_windowGame->get_hwnd(),
                                              MONITOR_DEFAULTTONEAREST),
                          &monitorInfo);
 
         RECT clientRect = {};
-        ::GetWindowRect(((win32::IWindowImpl*)(m_windowVulkan))->get_hwnd(),
+        ::GetWindowRect(((win32::IWindowImpl*)(m_windowGame))->get_hwnd(),
                         &clientRect);
         windowWidth  = clientRect.right - clientRect.left;
         windowHeight = clientRect.bottom - clientRect.top;
         mInt xPos    = (monitorInfo.rcMonitor.right - windowWidth) / 2;
         mInt yPos    = (monitorInfo.rcMonitor.bottom - windowHeight) / 2;
 
-        SetWindowPos(m_windowVulkan->get_hwnd(), NULL, xPos, yPos, windowWidth,
+        SetWindowPos(m_windowGame->get_hwnd(), NULL, xPos, yPos, windowWidth,
                      windowHeight, SWP_SHOWWINDOW | SWP_DRAWFRAME);
 
+        // Setup entity system
         Entity        mainCharacter = m_componentManager.create_entity();
         RenderingCpnt rCpnt;
         rCpnt.materialID  = 1;
@@ -242,14 +274,14 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         tCpnt.scale    = 2.0f;
         m_componentManager.enable_component(mainCharacter, tCpnt);
         AnimatorCpnt aCpnt;
-        aCpnt.pAnimation = new Animation();
+        aCpnt.pAnimation                    = new Animation();
         aCpnt.pAnimation->animationDuration = std::chrono::seconds(2);
-        auto& keys = aCpnt.pAnimation->keys;
+        auto& keys                          = aCpnt.pAnimation->keys;
         keys.resize(3);
         keys[0].advancement = 0;
         keys[1].advancement = 0.5;
         keys[2].advancement = 1;
-        auto& modifiers = aCpnt.pAnimation->modifiers;
+        auto& modifiers     = aCpnt.pAnimation->modifiers;
         modifiers.resize(3);
         modifiers[0].color = {0.0f, 0.0f, 0.0f, 1.0f};
         modifiers[0].scale = 0.5;
@@ -296,8 +328,35 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_iRendererVulkan->destroy();
         delete m_iRendererVulkan;
 
+#ifdef ENABLE_EDITOR
+        m_iRendererDx12->destroy();
+        delete m_iRendererDx12;
+#endif  // ENABLE_EDITOR
+
         dearImGui::destroy();
     }
+#ifdef ENABLE_EDITOR
+    void render_editorGUI()
+    {
+        start_dearImGuiNewFrame(m_iRendererDx12);
+
+        ImGui::NewFrame();
+
+        ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(),
+                                     ImGuiDockNodeFlags_PassthruCentralNode);
+
+        ImGui::Begin("Engine");
+        {
+            ImGui::Text("Camera offset : %dx;%dy",
+                        m_targetController.m_targetPoint.x,
+                        m_targetController.m_targetPoint.y);
+            ImGui::Text("Zoom : %f", m_targetController.m_zoomLevel);
+        }
+        ImGui::End();
+
+        ImGui::Render();
+    }
+#endif  // ENABLE_EDITOR
 
     void render(std::chrono::steady_clock::duration const& a_deltaTime)
     {
@@ -340,21 +399,36 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         }
 
         RECT clientRect = {};
-        ::GetWindowRect(((win32::IWindowImpl*)(m_windowVulkan))->get_hwnd(),
+        ::GetWindowRect(((win32::IWindowImpl*)(m_windowGame))->get_hwnd(),
                         &clientRect);
         float addPosx = m_initialClientRect.left - clientRect.left;
         float addPosy = m_initialClientRect.top - clientRect.top;
 
-        m_targetController.set_target({-clientRect.left, clientRect.top});
+        math::mIVec2  targetPoint{0, 0};
+        targetPoint.x = -clientRect.left - windowWidth / 2;
+        targetPoint.y = clientRect.top - 1080 + windowHeight / 2;
+        m_matrixGame = math::generate_projectionOrthoLH(
+                           screenWidth, -screenHeight, 0.0f, 1.0f) *
+                       math::generate_translationMatrix(targetPoint.x, targetPoint.y,
+                                                        0.0f);
 
-        m_vkMatrix = math::generate_projectionOrthoLH(
-                         screenWidth, -screenHeight, 0.0f, 1.0f) *
-                     m_targetController.m_worldToView;
-
-        if (m_hdlSurfaceVulkan->isValid)
+        if (m_hdlSurfaceGame->isValid)
         {
-            m_hdlSurfaceVulkan->surface->render();
+            m_hdlSurfaceGame->surface->render();
         }
+
+#ifdef ENABLE_EDITOR
+        m_matrixEditor =
+            math::generate_projectionOrthoLH(1280, 720, 0.0f, 1.0f) *
+            m_targetController.m_worldToView;
+
+        render_editorGUI();
+
+        if (m_hdlSurfaceEditor->isValid)
+        {
+            m_hdlSurfaceEditor->surface->render();
+        }
+#endif  // ENABLE_EDITOR
     }
 
     mBool step(std::chrono::steady_clock::duration const& a_deltaTime) override
@@ -366,21 +440,38 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         render(a_deltaTime);
 
+#ifdef ENABLE_EDITOR
+        if (!m_hdlSurfaceEditor->isValid)
+        {
+            return false;
+        }
+#endif  // ENABLE_EDITOR
+
         return true;
     }
 
-    m::render::IRenderer*       m_iRendererVulkan;
-    m::render::ISurface::HdlPtr m_hdlSurfaceVulkan;
-    win32::IWindowImpl*         m_windowVulkan = nullptr;
+    render::IRenderer*       m_iRendererVulkan;
+    win32::IWindowImpl*      m_windowGame = nullptr;
+    render::ISurface::HdlPtr m_hdlSurfaceGame;
+    render::Task2dRender*    m_pTaskRenderGame = nullptr;
+    math::mMat4x4            m_matrixGame{};
 
-    render::Task2dRender*                             m_pVkTaskRender = nullptr;
-    std::vector<resource::mRequestImage>              m_imageRequested;
-    math::mMat4x4                                     m_vkMatrix{};
+#ifdef ENABLE_EDITOR
+    render::IRenderer*       m_iRendererDx12;
+    win32::IWindowImpl*      m_windowEditor = nullptr;
+    render::ISurface::HdlPtr m_hdlSurfaceEditor;
+    render::Task2dRender*    m_pTaskRenderEditor = nullptr;
+    math::mMat4x4            m_matrixEditor{};
+
+    mTargetController            m_targetController;
+#endif  // ENABLE_EDITOR
+
+    std::vector<resource::mRequestImage> m_imageRequested;
+
     std::vector<render::TaskData2dRender::mRange>     m_ranges;
     render::DataMeshBuffer<render::BasicVertex, mU16> m_meshBuffer;
 
     mPainter                     m_painter;
-    mTargetController            m_targetController;
     input::mCallbackInputManager m_inputManager;
 
     ComponentManager m_componentManager;

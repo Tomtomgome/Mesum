@@ -187,7 +187,7 @@ void WIN32Context::register_windowClass(const mWideChar* a_className,
 
 HWND WIN32Context::create_window(const mWideChar* a_className,
                                  std::string a_windowName, mU32 a_width,
-                                 mU32 a_height) const
+                                 mU32 a_height, mBool a_isRransparent) const
 {
     mInt screenWidth  = GetSystemMetrics(SM_CXSCREEN);
     mInt screenHeight = GetSystemMetrics(SM_CYSCREEN);
@@ -202,34 +202,54 @@ HWND WIN32Context::create_window(const mWideChar* a_className,
     mInt windowPosY = std::max<mInt>(0, (screenHeight - windowHeight) / 2);
     // Create the window.
 
-    HWND hwnd = CreateWindowExW(
-        WS_EX_LAYERED | WS_EX_TOPMOST,  // NULL,         // Optional window styles.
-        a_className,        // Window class
-        convert_string(a_windowName).c_str(),  // Window text
-        WS_OVERLAPPEDWINDOW,                   // Window style
+    HWND hwnd;
+    if (a_isRransparent)
+    {
+        hwnd = CreateWindowExW(
+            WS_EX_LAYERED |
+                WS_EX_TOPMOST,  // NULL,         // Optional window styles.
+            a_className,        // Window class
+            convert_string(a_windowName).c_str(),  // Window text
+            WS_OVERLAPPEDWINDOW,                   // Window style
 
-        // Size and position
-        windowPosX, windowPosY, windowWidth, windowHeight,
+            // Size and position
+            windowPosX, windowPosY, windowWidth, windowHeight,
 
-        NULL,         // Parent window
-        NULL,         // Menu
-        m_hInstance,  // Instance handle
-        nullptr       // Additional application data
-    );
-    //
+            NULL,         // Parent window
+            NULL,         // Menu
+            m_hInstance,  // Instance handle
+            nullptr       // Additional application data
+        );
+        //
         BLENDFUNCTION blend = {};
-        blend.BlendOp = AC_SRC_OVER;
-        blend.AlphaFormat = AC_SRC_ALPHA;
+        blend.BlendOp       = AC_SRC_OVER;
+        blend.AlphaFormat   = AC_SRC_ALPHA;
 
-//        UpdateLayeredWindow(hwnd, GetDC(NULL), NULL, NULL, NULL, NULL, RGB(255, 255, 255),
-//        &blend,
-//                            ULW_COLORKEY);
-//
-//        ShowWindow(hwnd, SW_SHOW);
-//        UpdateWindow(hwnd);
-    SetLayeredWindowAttributes(hwnd, RGB(255, 255, 255), 0, LWA_COLORKEY);
-        mAssert(hwnd != NULL);
+        //        UpdateLayeredWindow(hwnd, GetDC(NULL), NULL, NULL, NULL, NULL,
+        //        RGB(255, 255, 255), &blend,
+        //                            ULW_COLORKEY);
+        //
+        //        ShowWindow(hwnd, SW_SHOW);
+        //        UpdateWindow(hwnd);
+        SetLayeredWindowAttributes(hwnd, RGB(255, 255, 255), 0, LWA_COLORKEY);
+    }
+    else
+    {
+        hwnd = CreateWindowExW(
+            NULL,                                  // Optional window styles.
+            a_className,                           // Window class
+            convert_string(a_windowName).c_str(),  // Window text
+            WS_OVERLAPPEDWINDOW,                   // Window style
+                                                   // Size and position
+            windowPosX, windowPosY, windowWidth, windowHeight,
+            NULL,         // Parent window
+            NULL,         // Menu
+            m_hInstance,  // Instance handle
+            nullptr       // Additional application data
+        );
+    }
 
+    mAssert(hwnd != NULL);
     return hwnd;
 }
 

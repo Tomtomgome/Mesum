@@ -16,7 +16,7 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND   hWnd,
 namespace m::win32
 {
 static mBool killThread = false;
-void call_updateThreaded(IWindowImpl* a_pWindow)
+void         call_updateThreaded(IWindowImpl* a_pWindow)
 {
     static std::chrono::time_point<std::chrono::steady_clock> start;
     static std::chrono::time_point<std::chrono::steady_clock> end;
@@ -163,14 +163,14 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
         case WM_ENTERSIZEMOVE:
         {
             killThread = false;
-            //specialThread = std::thread(call_updateThreaded, this);
+            // specialThread = std::thread(call_updateThreaded, this);
             SetTimer(m_hwnd, 1, 8, (TIMERPROC)NULL);
         }
         break;
         case WM_EXITSIZEMOVE:
         {
             killThread = true;
-            //specialThread.join();
+            // specialThread.join();
             KillTimer(m_hwnd, 1);
         }
         break;
@@ -183,7 +183,7 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
         {
             if (!processed)
             {
-                mLog_info("unprocessed msg : ", a_uMsg);
+                // mLog_info("unprocessed msg : ", a_uMsg);
                 result = DefWindowProcW(m_hwnd, a_uMsg, a_wParam, a_lParam);
             }
         }
@@ -200,9 +200,11 @@ void IWindowImpl::init(mInitData const& a_initData)
     m_clientHeight = a_initData.size.y;
     m_windowName   = a_initData.name;
 
+
     const mWideChar className[] = L"MainWindowClass";
     m_hwnd = m_parentContext->create_window(className, m_windowName,
-                                            m_clientWidth, m_clientHeight);
+                                            m_clientWidth, m_clientHeight,
+                                            a_initData.isTransparent);
     GetWindowRect(m_hwnd, &m_windowRect);
 
     SetWindowLongPtr(m_hwnd, GWLP_USERDATA, LONG_PTR(this));

@@ -13,7 +13,8 @@ class IWindowedApplicationImpl : public application::IWindowedApplicationBase
 {
    public:
     windows::mIWindow* add_newWindow(std::string a_name, mU32 a_width,
-                                     mU32 a_height) override;
+                                     mU32  a_height,
+                                     mBool a_isTransparent) override;
 
     void start_dearImGuiNewFrame(
         render::IRenderer const* a_renderer) const override;

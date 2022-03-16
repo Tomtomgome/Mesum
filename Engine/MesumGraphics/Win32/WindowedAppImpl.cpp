@@ -28,15 +28,14 @@ LRESULT CALLBACK WindowProc(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam,
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-windows::mIWindow* IWindowedApplicationImpl::add_newWindow(std::string a_name,
-                                                           mU32        a_width,
-                                                           mU32        a_height)
+windows::mIWindow* IWindowedApplicationImpl::add_newWindow(
+    std::string a_name, mU32 a_width, mU32 a_height, mBool a_isTransparent = false)
 {
     IWindowImpl* newWindow = new IWindowImpl();
     m_windows.insert(newWindow);
 
     newWindow->set_winContext(m_W32Context);
-    newWindow->init({a_name, {a_width, a_height}});
+    newWindow->init({a_name, {a_width, a_height}, a_isTransparent});
 
     return newWindow;
 }
