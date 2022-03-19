@@ -16,11 +16,12 @@
 struct RenderingCpnt
 {
     Serializable(1, RenderingCpnt);
+    void display_gui();
 
-    m::math::mVec4 color;
-    m::mU32        materialID;
-    m::mU32        pictureSize;
-    m::mBool       enabled;
+    m::math::mVec4 color{1.0f,1.0f,1.0f,1.0f};
+    m::mU32        materialID{0};
+    m::mU32        pictureSize{0};
+    m::mBool       enabled{false};
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -29,11 +30,12 @@ struct RenderingCpnt
 struct TransformCpnt
 {
     Serializable(1, TransformCpnt);
+    void display_gui();
 
-    m::math::mVec2 position;
-    m::mFloat      angle;
-    m::mFloat      scale;
-    m::mBool       enabled;
+    m::math::mVec2 position{0.0f, 0.0f};
+    m::mFloat      angle{0};
+    m::mFloat      scale{1.0f};
+    m::mBool       enabled{true};
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -42,6 +44,7 @@ struct TransformCpnt
 struct Key
 {
     Serializable(1, Key);
+    void display_gui();
 
     m::mFloat advancement = 0;
 };
@@ -49,6 +52,7 @@ struct Key
 struct Modifier
 {
     Serializable(1, Modifier);
+    void display_gui();
 
     m::math::mVec4 color{};
     m::math::mVec2 offset{};
@@ -59,6 +63,7 @@ struct Modifier
 struct Animation
 {
     Serializable(1, Animation);
+    void display_gui();
 
     std::vector<Key>                    keys;
     std::vector<Modifier>               modifiers;
@@ -74,6 +79,7 @@ struct Animation
 struct AnimatorCpnt
 {
     Serializable(1, AnimatorCpnt);
+    void display_gui();
 
     static const m::mU32 version = 1;
     Animation*           pAnimation;
@@ -91,6 +97,8 @@ using Entity = m::mU32;
 struct ComponentManager
 {
     static const m::mU32 s_version = 1U;
+
+    void display_gui();
 
     void   initialize();
     void   reset();

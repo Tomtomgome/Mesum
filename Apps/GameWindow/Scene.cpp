@@ -1,3 +1,4 @@
+#include <imgui.h>
 #include "Scene.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -6,7 +7,7 @@
 
 void RenderingCpnt::read(std::ifstream& a_inputStream)
 {
-    m::mU32 version;
+    m::mU32     version;
     std::string debugName;
     a_inputStream >> debugName >> version;
 
@@ -30,12 +31,33 @@ void RenderingCpnt::write(std::ofstream& a_outputStream) const
     a_outputStream << enabled << std::endl;
 }
 
+void RenderingCpnt::display_gui()
+{
+    ImGui::Checkbox("Rendering", &enabled);
+    if (!enabled)
+    {
+        return;
+    }
+
+    ImGui::Indent();
+    if (ImGui::TreeNode(this, "parameters"))
+    {
+        ImGui::ColorPicker4("Color", color.data);
+        // Be carefull with this ?
+        ImGui::InputInt("MaterialID", (m::mInt*)(&materialID));
+        ImGui::InputInt("Texture Size", (m::mInt*)(&pictureSize));
+
+        ImGui::TreePop();
+    }
+    ImGui::Unindent();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 void TransformCpnt::read(std::ifstream& a_inputStream)
 {
-    m::mU32 version;
+    m::mU32     version;
     std::string debugName;
     a_inputStream >> debugName >> version;
 
@@ -58,13 +80,32 @@ void TransformCpnt::write(std::ofstream& a_outputStream) const
     a_outputStream << enabled << std::endl;
 }
 
+void TransformCpnt::display_gui()
+{
+    ImGui::Checkbox("Transform", &enabled);
+    if (!enabled)
+    {
+        return;
+    }
+
+    ImGui::Indent();
+    if (ImGui::TreeNode(this, "parameters"))
+    {
+        ImGui::DragFloat2("Position", position.data);
+        ImGui::DragFloat("angle", &angle, 0.01f);
+        ImGui::DragFloat("scale", &scale);
+        ImGui::TreePop();
+    }
+    ImGui::Unindent();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
 void Key::read(std::ifstream& a_inputStream)
 {
-    m::mU32 version;
+    m::mU32     version;
     std::string debugName;
     a_inputStream >> debugName >> version;
 
@@ -76,14 +117,14 @@ void Key::read(std::ifstream& a_inputStream)
 
 void Key::write(std::ofstream& a_outputStream) const
 {
-    a_outputStream << "AnimationKey: "<< s_version << " ";
+    a_outputStream << "AnimationKey: " << s_version << " ";
 
     a_outputStream << advancement << std::endl;
 }
 
 void Modifier::read(std::ifstream& a_inputStream)
 {
-    m::mU32 version;
+    m::mU32     version;
     std::string debugName;
     a_inputStream >> debugName >> version;
 
@@ -98,7 +139,7 @@ void Modifier::read(std::ifstream& a_inputStream)
 
 void Modifier::write(std::ofstream& a_outputStream) const
 {
-    a_outputStream << "AnimationModifer: "<< s_version << ' ';
+    a_outputStream << "AnimationModifer: " << s_version << ' ';
 
     a_outputStream << color.x << ' ' << color.y << ' ' << color.z << ' '
                    << color.w << ' ';
@@ -109,7 +150,7 @@ void Modifier::write(std::ofstream& a_outputStream) const
 
 void Animation::read(std::ifstream& a_inputStream)
 {
-    m::mU32 version;
+    m::mU32     version;
     std::string debugName;
     a_inputStream >> debugName >> version;
 
@@ -154,9 +195,32 @@ void Animation::write(std::ofstream& a_outputStream) const
     a_outputStream << scaleMultiply << std::endl;
 }
 
+void Animation::display_gui()
+{
+    // Modifiers
+    // keys
+
+    auto numNano = std::chrono::nanoseconds(animationDuration).count();
+    m::mDouble duration = m::mDouble(numNano)/1000000000.0;
+    ImGui::InputDouble("Duration (s)", &duration);
+    numNano = duration * 1000000000;
+    animationDuration = std::chrono::nanoseconds(numNano);
+    //Update Animation Frame
+
+    ImGui::DragFloat("Advancement", &currentAdvancement);
+    ImGui::Checkbox("Is Looping", &isLooping);
+    m::mInt option = colorMultiply ? 0 : 1;
+    ImGui::Combo("Color", &option, "Multiply\0Add\0");
+    colorMultiply = option == 0;
+    option = scaleMultiply ? 0 : 1;
+    ImGui::Combo("Scale", &option, "Multiply\0Add\0");
+    scaleMultiply = option == 0;
+
+}
+
 void AnimatorCpnt::read(std::ifstream& a_inputStream)
 {
-    m::mU32 version;
+    m::mU32     version;
     std::string debugName;
     a_inputStream >> debugName >> version;
 
@@ -192,6 +256,33 @@ void AnimatorCpnt::write(std::ofstream& a_outputStream) const
     a_outputStream << enabled << std::endl;
 }
 
+void AnimatorCpnt::display_gui()
+{
+    ImGui::Checkbox("Animator", &enabled);
+    if (!enabled)
+    {
+        return;
+    }
+
+    ImGui::Indent();
+    if (ImGui::TreeNode(this, "parameters"))
+    {
+        if(pAnimation == nullptr)
+        {
+            if(ImGui::Button("Create Animation")) {
+                pAnimation = new Animation();
+            }
+        }
+        else
+        {
+            pAnimation->display_gui();
+        }
+
+        ImGui::TreePop();
+    }
+    ImGui::Unindent();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -217,6 +308,29 @@ void ComponentManager::enable_component<AnimatorCpnt>(
 {
     animators[a_entity]         = a_component;
     animators[a_entity].enabled = true;
+}
+
+void ComponentManager::display_gui()
+{
+    if(ImGui::Button("Add Entity"))
+    {
+        create_entity();
+    }
+
+    ImGui::Text("Total entity : %d", entityCount);
+
+    for (m::mUInt i = 0; i < entityCount; ++i)
+    {
+        std::stringstream entityName;
+        entityName << "Entity " << i;
+        if (ImGui::TreeNode(entityName.str().c_str()))
+        {
+            transforms[i].display_gui();
+            renderingCpnts[i].display_gui();
+            animators[i].display_gui();
+            ImGui::TreePop();
+        }
+    }
 }
 
 void ComponentManager::initialize()
@@ -363,9 +477,8 @@ void process_renderableObjects(ComponentManager const& a_cpntManager,
             m::mBool scaleMultiply = false;
 
             AnimatorCpnt const& ac = a_cpntManager.animators[i];
-            if (ac.enabled)
+            if (ac.enabled && ac.pAnimation != nullptr)
             {
-                mAssert(ac.pAnimation != nullptr);
                 modifier      = ac.pAnimation->lastModifier;
                 colorMultiply = ac.pAnimation->colorMultiply;
                 scaleMultiply = ac.pAnimation->scaleMultiply;

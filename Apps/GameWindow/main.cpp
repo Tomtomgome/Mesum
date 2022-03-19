@@ -171,17 +171,8 @@ class mTargetController
 
 class RendererTestApp : public m::crossPlatform::IWindowedApplication
 {
-    void init(mCmdLine const& a_cmdLine, void* a_appData) override
+    void init_game()
     {
-        crossPlatform::IWindowedApplication::init(a_cmdLine, a_appData);
-
-        m_imageRequested.emplace_back();
-        m_imageRequested.back().path = "data/textures/Mir.png";
-        m_imageRequested.emplace_back();
-        m_imageRequested.back().path = "data/textures/Character.png";
-        m_imageRequested.emplace_back();
-        m_imageRequested.back().path.resize(512);  // prep for imGui
-
         m_iRendererVulkan = new vulkan::VulkanRenderer();
         m_iRendererVulkan->init();
 
@@ -209,9 +200,33 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             ->attach_toSpecialUpdate(mCallback(this, &RendererTestApp::render));
         ::GetWindowRect(m_windowGame->get_hwnd(), &m_initialClientRect);
 
-        m_start = std::chrono::high_resolution_clock::now();
+        // Special game window positionning
+        MONITORINFO monitorInfo = {};
+        monitorInfo.cbSize      = sizeof(MONITORINFO);
 
+        ::GetMonitorInfo(::MonitorFromWindow(m_windowGame->get_hwnd(),
+                                             MONITOR_DEFAULTTONEAREST),
+                         &monitorInfo);
+
+        RECT clientRect = {};
+        ::GetWindowRect(((win32::IWindowImpl*)(m_windowGame))->get_hwnd(),
+                        &clientRect);
+        windowWidth  = clientRect.right - clientRect.left;
+        windowHeight = clientRect.bottom - clientRect.top;
+        mInt xPos    = (monitorInfo.rcMonitor.right - windowWidth) / 2;
+        mInt yPos    = (monitorInfo.rcMonitor.bottom - windowHeight) / 2;
+
+        SetWindowPos(m_windowGame->get_hwnd(), NULL, xPos, yPos, windowWidth,
+                     windowHeight, SWP_SHOWWINDOW | SWP_DRAWFRAME);
+
+        m_start = std::chrono::high_resolution_clock::now();
+    }
+
+    void init_editor()
+    {
 #ifdef ENABLE_EDITOR
+        m_updateScene = false;
+
         m_imageRequestedEditor.emplace_back();
         m_imageRequestedEditor.back().path = "data/textures/Editor/Overlay.png";
 
@@ -227,8 +242,12 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         render::Taskset* taskset_renderPipelineEditor =
             m_hdlSurfaceEditor->surface->addNew_renderTaskset();
-        taskData_2dRender.m_hdlOutput = m_hdlSurfaceEditor;
-        taskData_2dRender.m_pMatrix   = &m_matrixEditor;
+
+        render::TaskData2dRender taskData_2dRender;
+        taskData_2dRender.m_pMeshBuffer = &m_meshBuffer;
+        taskData_2dRender.m_pRanges     = &m_ranges;
+        taskData_2dRender.m_hdlOutput   = m_hdlSurfaceEditor;
+        taskData_2dRender.m_pMatrix     = &m_matrixEditor;
         m_pTaskRenderGameInEditor =
             (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
                 taskset_renderPipelineEditor));
@@ -261,38 +280,34 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             &m_targetController, &mTargetController::update_zoomLevel));
 
 #endif  // ENABLE_EDITOR
+    }
 
-        // Special game window positionning
-        MONITORINFO monitorInfo = {};
-        monitorInfo.cbSize      = sizeof(MONITORINFO);
+    void init(mCmdLine const& a_cmdLine, void* a_appData) override
+    {
+        crossPlatform::IWindowedApplication::init(a_cmdLine, a_appData);
 
-        ::GetMonitorInfo(::MonitorFromWindow(m_windowGame->get_hwnd(),
-                                             MONITOR_DEFAULTTONEAREST),
-                         &monitorInfo);
+        m_imageRequested.emplace_back();
+        m_imageRequested.back().path = "data/textures/Mir.png";
+        m_imageRequested.emplace_back();
+        m_imageRequested.back().path = "data/textures/Character.png";
+        m_imageRequested.emplace_back();
+        m_imageRequested.back().path.resize(512);  // prep for imGui
 
-        RECT clientRect = {};
-        ::GetWindowRect(((win32::IWindowImpl*)(m_windowGame))->get_hwnd(),
-                        &clientRect);
-        windowWidth  = clientRect.right - clientRect.left;
-        windowHeight = clientRect.bottom - clientRect.top;
-        mInt xPos    = (monitorInfo.rcMonitor.right - windowWidth) / 2;
-        mInt yPos    = (monitorInfo.rcMonitor.bottom - windowHeight) / 2;
-
-        SetWindowPos(m_windowGame->get_hwnd(), NULL, xPos, yPos, windowWidth,
-                     windowHeight, SWP_SHOWWINDOW | SWP_DRAWFRAME);
+        init_editor();
+        init_game();
 
         // Setup entity system
-        Entity        mainCharacter = m_componentManager.create_entity();
+        Entity        mainCharacter = m_scene.create_entity();
         RenderingCpnt rCpnt;
         rCpnt.materialID  = 1;
         rCpnt.pictureSize = 32;
         rCpnt.color       = {1.0f, 1.0f, 1.0f, 1.0f};
-        m_componentManager.enable_component(mainCharacter, rCpnt);
+        m_scene.enable_component(mainCharacter, rCpnt);
         TransformCpnt tCpnt;
         tCpnt.position = {1000, 600};
         tCpnt.angle    = 0;
         tCpnt.scale    = 2.0f;
-        m_componentManager.enable_component(mainCharacter, tCpnt);
+        m_scene.enable_component(mainCharacter, tCpnt);
         AnimatorCpnt aCpnt;
         aCpnt.pAnimation                    = new Animation();
         aCpnt.pAnimation->animationDuration = std::chrono::seconds(2);
@@ -310,50 +325,29 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         modifiers[1].angle = 3.141592;
         modifiers[2].scale = 0.5;
         modifiers[2].color = {0.0f, 0.0f, 0.0f, 1.0f};
-        m_componentManager.enable_component(mainCharacter, aCpnt);
+        m_scene.enable_component(mainCharacter, aCpnt);
 
-        Entity secondaryCharacter = m_componentManager.create_entity();
-        m_componentManager.enable_component(secondaryCharacter, rCpnt);
+        Entity secondaryCharacter = m_scene.create_entity();
+        m_scene.enable_component(secondaryCharacter, rCpnt);
         tCpnt.position = {1500, 600};
         tCpnt.scale    = 1.0f;
-        m_componentManager.enable_component(secondaryCharacter, tCpnt);
+        m_scene.enable_component(secondaryCharacter, tCpnt);
 
-        secondaryCharacter = m_componentManager.create_entity();
-        rCpnt.materialID   = 0;
-        rCpnt.pictureSize  = 16;
-        m_componentManager.enable_component(secondaryCharacter, rCpnt);
-        tCpnt.position     = {0, 0};
-        m_componentManager.enable_component(secondaryCharacter, tCpnt);
+        m_componentManager.load_fromCopy(m_scene);
 
-        secondaryCharacter = m_componentManager.create_entity();
+        Entity bigRedFlag = m_componentManager.create_entity();
         m_componentManager.enable_component(secondaryCharacter, rCpnt);
-        tCpnt.position = {30, 0};
-        m_componentManager.enable_component(secondaryCharacter, tCpnt);
-
-        secondaryCharacter = m_componentManager.create_entity();
-        m_componentManager.enable_component(secondaryCharacter, rCpnt);
-        tCpnt.position = {0, 30};
-        m_componentManager.enable_component(secondaryCharacter, tCpnt);
-
-        secondaryCharacter = m_componentManager.create_entity();
-        m_componentManager.enable_component(secondaryCharacter, rCpnt);
-        tCpnt.position = {1920, 0};
-        m_componentManager.enable_component(secondaryCharacter, tCpnt);
-
-        secondaryCharacter = m_componentManager.create_entity();
-        m_componentManager.enable_component(secondaryCharacter, rCpnt);
-        tCpnt.position = {0, 1080};
-        m_componentManager.enable_component(secondaryCharacter, tCpnt);
-
-        secondaryCharacter = m_componentManager.create_entity();
-        m_componentManager.enable_component(secondaryCharacter, rCpnt);
-        tCpnt.position = {1920, 1080};
+        tCpnt.position = {1200, 600};
+        tCpnt.scale    = 5.0f;
         m_componentManager.enable_component(secondaryCharacter, tCpnt);
     }
 
     void destroy() override
     {
         crossPlatform::IWindowedApplication::destroy();
+
+        m_scene.reset();
+        m_componentManager.reset();
 
         m_iRendererVulkan->destroy();
         delete m_iRendererVulkan;
@@ -375,18 +369,63 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(),
                                      ImGuiDockNodeFlags_PassthruCentralNode);
 
+        ImGui::ShowDemoWindow();
+
         ImGui::Begin("Engine");
         {
             ImGui::Text("Camera offset : %dx;%dy",
                         m_targetController.m_targetPoint.x,
                         m_targetController.m_targetPoint.y);
             ImGui::Text("Zoom : %f", m_targetController.m_zoomLevel);
+            ImGui::Checkbox("Allow Update", &m_updateScene);
+
+            if (ImGui::Button("Reset cene"))
+            {
+                m_componentManager.load_fromCopy(m_scene);
+            }
+            if (ImGui::Button("Save"))
+            {
+                m_componentManager.save_toFile("data/levels/save.txt");
+            }
+            if (ImGui::Button("Load"))
+            {
+                m_componentManager.reset();
+                m_componentManager.load_fromFile("data/levels/save.txt");
+            }
+        }
+        ImGui::End();
+
+        ImGui::Begin("Level Editor");
+        {
+            static char path[512] = "";
+            ImGui::InputText("Level Path : ", path, 512);
+
+            if (ImGui::Button("Save"))
+            {
+                m_componentManager.save_toFile(path);
+            }
+            if (ImGui::Button("Load"))
+            {
+                m_componentManager.reset();
+                m_componentManager.load_fromFile(path);
+            }
+
+            if (ImGui::CollapsingHeader("Entities"))
+            {
+                m_componentManager.display_gui();
+            }
         }
         ImGui::End();
 
         ImGui::Render();
     }
 #endif  // ENABLE_EDITOR
+
+    void update_gameScene(
+        std::chrono::steady_clock::duration const& a_deltaTime)
+    {
+        process_animatedObjects(m_componentManager, a_deltaTime);
+    }
 
     void render(std::chrono::steady_clock::duration const& a_deltaTime)
     {
@@ -396,10 +435,14 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         mDouble deltaTime = std::chrono::duration<mDouble>(ddeltaTime).count();
 
+        if (m_updateScene)
+        {
+            update_gameScene(ddeltaTime);
+        }
+
         m_drawingData.clean_drawables();
         m_ranges.clear();
         m_meshBuffer.clear();
-        process_animatedObjects(m_componentManager, ddeltaTime);
         process_renderableObjects(m_componentManager, m_drawingData);
 
         static const mUInt indexPerQuad    = 5;
@@ -453,13 +496,26 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         m_rangesEditor.emplace_back();
         m_rangesEditor.back().materialID         = 0;
-        m_rangesEditor.back().indexCount         = 1 * indexPerQuad;
+        m_rangesEditor.back().indexCount         = 5 * indexPerQuad;
         m_rangesEditor.back().indexStartLocation = 0;
 
         generate_rectangleIntoMeshBuffer(
             &m_meshBufferEditor,
             {mFloat(clientRect.left), 1080 - mFloat(clientRect.top), 0.0f},
             {400, 300}, {1.0f, 1.0f, 1.0f, 0.1f});
+
+        generate_rectangleIntoMeshBuffer(&m_meshBufferEditor,
+                                         {0.0f, 0.0f, 0.0f}, {1920, -10},
+                                         {1.0f, 1.0f, 1.0f, 0.1f});
+        generate_rectangleIntoMeshBuffer(&m_meshBufferEditor,
+                                         {0.0f, 0.0f, 0.0f}, {10, -1080},
+                                         {1.0f, 1.0f, 1.0f, 0.1f});
+        generate_rectangleIntoMeshBuffer(&m_meshBufferEditor,
+                                         {1920.0f - 10.0f, 0.0f, 0.0f},
+                                         {10, -1080}, {1.0f, 1.0f, 1.0f, 0.1f});
+        generate_rectangleIntoMeshBuffer(&m_meshBufferEditor,
+                                         {0.0f, 1080.0f, 0.0f}, {1920, 10},
+                                         {1.0f, 1.0f, 1.0f, 0.1f});
 
         m_matrixEditor =
             math::generate_projectionOrthoLH(1280, 720, 0.0f, 1.0f) *
@@ -509,10 +565,14 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     ComponentManager m_componentManager;
     DrawingData      m_drawingData;
 
+    ComponentManager m_scene;
+
     std::chrono::time_point<std::chrono::steady_clock> m_start;
     std::chrono::time_point<std::chrono::steady_clock> m_end;
 
     RECT m_initialClientRect{};
+
+    mBool m_updateScene = true;
 
 #ifdef ENABLE_EDITOR
     render::IRenderer*       m_iRendererDx12;
