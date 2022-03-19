@@ -3,6 +3,198 @@
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+void RenderingCpnt::read(std::ifstream& a_inputStream)
+{
+    m::mU32 version;
+    std::string debugName;
+    a_inputStream >> debugName >> version;
+
+    if (version <= 1)
+    {
+        a_inputStream >> color.x >> color.y >> color.z >> color.w;
+        a_inputStream >> materialID;
+        a_inputStream >> pictureSize;
+        a_inputStream >> enabled;
+    }
+}
+
+void RenderingCpnt::write(std::ofstream& a_outputStream) const
+{
+    a_outputStream << "RenderingCpnt: " << s_version << ' ';
+
+    a_outputStream << color.x << ' ' << color.y << ' ' << color.z << ' '
+                   << color.w << ' ';
+    a_outputStream << materialID << ' ';
+    a_outputStream << pictureSize << ' ';
+    a_outputStream << enabled << std::endl;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+void TransformCpnt::read(std::ifstream& a_inputStream)
+{
+    m::mU32 version;
+    std::string debugName;
+    a_inputStream >> debugName >> version;
+
+    if (version <= 1)
+    {
+        a_inputStream >> position.x >> position.y;
+        a_inputStream >> angle;
+        a_inputStream >> scale;
+        a_inputStream >> enabled;
+    }
+}
+
+void TransformCpnt::write(std::ofstream& a_outputStream) const
+{
+    a_outputStream << "TransformCpnt: " << s_version << ' ';
+
+    a_outputStream << position.x << ' ' << position.y << ' ';
+    a_outputStream << angle << ' ';
+    a_outputStream << scale << ' ';
+    a_outputStream << enabled << std::endl;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+void Key::read(std::ifstream& a_inputStream)
+{
+    m::mU32 version;
+    std::string debugName;
+    a_inputStream >> debugName >> version;
+
+    if (version <= 1)
+    {
+        a_inputStream >> advancement;
+    }
+}
+
+void Key::write(std::ofstream& a_outputStream) const
+{
+    a_outputStream << "AnimationKey: "<< s_version << " ";
+
+    a_outputStream << advancement << std::endl;
+}
+
+void Modifier::read(std::ifstream& a_inputStream)
+{
+    m::mU32 version;
+    std::string debugName;
+    a_inputStream >> debugName >> version;
+
+    if (version <= 1)
+    {
+        a_inputStream >> color.x >> color.y >> color.z >> color.w;
+        a_inputStream >> offset.x >> offset.y;
+        a_inputStream >> angle;
+        a_inputStream >> scale;
+    }
+}
+
+void Modifier::write(std::ofstream& a_outputStream) const
+{
+    a_outputStream << "AnimationModifer: "<< s_version << ' ';
+
+    a_outputStream << color.x << ' ' << color.y << ' ' << color.z << ' '
+                   << color.w << ' ';
+    a_outputStream << offset.x << ' ' << offset.y << ' ';
+    a_outputStream << angle << ' ';
+    a_outputStream << scale << std::endl;
+}
+
+void Animation::read(std::ifstream& a_inputStream)
+{
+    m::mU32 version;
+    std::string debugName;
+    a_inputStream >> debugName >> version;
+
+    if (version <= 1)
+    {
+        m::mU32 size;
+        a_inputStream >> size;
+        keys.resize(size);
+        for (auto& key : keys) { key.read(a_inputStream); }
+        a_inputStream >> size;
+        modifiers.resize(size);
+        for (auto& modif : modifiers) { modif.read(a_inputStream); }
+        m::mU64 tmpDuration;
+        a_inputStream >> tmpDuration;
+        animationDuration = std::chrono::nanoseconds(tmpDuration);
+        a_inputStream >> lastKeyIndex;
+        lastModifier.read(a_inputStream);
+        a_inputStream >> currentAdvancement;
+        a_inputStream >> isLooping;
+        a_inputStream >> colorMultiply;
+        a_inputStream >> scaleMultiply;
+    }
+}
+
+void Animation::write(std::ofstream& a_outputStream) const
+{
+    a_outputStream << "Animation: " << s_version << ' ';
+
+    a_outputStream << keys.size() << ' ';
+    for (auto& key : keys) { key.write(a_outputStream); }
+    a_outputStream << modifiers.size() << ' ';
+    for (auto& modif : modifiers) { modif.write(a_outputStream); }
+    a_outputStream << m::mU64(duration_cast<std::chrono::nanoseconds>(
+                                  animationDuration)
+                                  .count())
+                   << ' ';
+    a_outputStream << lastKeyIndex << ' ';
+    lastModifier.write(a_outputStream);
+    a_outputStream << currentAdvancement << ' ';
+    a_outputStream << isLooping << ' ';
+    a_outputStream << colorMultiply << ' ';
+    a_outputStream << scaleMultiply << std::endl;
+}
+
+void AnimatorCpnt::read(std::ifstream& a_inputStream)
+{
+    m::mU32 version;
+    std::string debugName;
+    a_inputStream >> debugName >> version;
+
+    if (version <= 1)
+    {
+        bool hasAnimation;
+        a_inputStream >> hasAnimation;
+        if (hasAnimation)
+        {
+            if (pAnimation == nullptr)
+            {
+                pAnimation = new Animation();
+            }
+            pAnimation->read(a_inputStream);
+        }
+        a_inputStream >> enabled;
+    }
+}
+
+void AnimatorCpnt::write(std::ofstream& a_outputStream) const
+{
+    a_outputStream << "AnimatorCpnt: " << s_version << ' ';
+
+    if (pAnimation != nullptr)
+    {
+        a_outputStream << true << ' ';
+        pAnimation->write(a_outputStream);
+    }
+    else
+    {
+        a_outputStream << false << ' ';
+    }
+    a_outputStream << enabled << std::endl;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 template <>
 void ComponentManager::enable_component<RenderingCpnt>(
     Entity const& a_entity, RenderingCpnt const& a_component)
@@ -32,6 +224,78 @@ void ComponentManager::initialize()
     renderingCpnts.reserve(100);
     transforms.reserve(100);
     animators.reserve(100);
+}
+
+void ComponentManager::reset()
+{
+    entityCount = 0;
+    renderingCpnts.clear();
+    transforms.clear();
+
+    for (auto& animator : animators)
+    {
+        if (animator.pAnimation != nullptr)
+        {
+            delete animator.pAnimation;
+        }
+    }
+    animators.clear();
+}
+
+void ComponentManager::load_fromCopy(ComponentManager const& a_source)
+{
+    reset();
+    entityCount    = a_source.entityCount;
+    renderingCpnts = a_source.renderingCpnts;
+    transforms     = a_source.transforms;
+    animators      = a_source.animators;
+
+    for (auto& animator : animators)
+    {
+        if (animator.pAnimation != nullptr)
+        {
+            Animation& tmpAnim     = *animator.pAnimation;
+            animator.pAnimation    = new Animation();
+            *(animator.pAnimation) = tmpAnim;
+        }
+    }
+}
+void ComponentManager::load_fromFile(std::string const& a_path)
+{
+    std::ifstream inputStream(a_path);
+    m::mU32       version;
+    std::string   debugName;
+    inputStream >> debugName >> version;
+
+    if (version <= 1)
+    {
+        inputStream >> entityCount;
+
+        renderingCpnts.resize(entityCount);
+        animators.resize(entityCount);
+        transforms.resize(entityCount);
+
+        for (int i = 0; i < entityCount; ++i)
+        {
+            renderingCpnts[i].read(inputStream);
+            animators[i].read(inputStream);
+            transforms[i].read(inputStream);
+        }
+    }
+}
+
+void ComponentManager::save_toFile(std::string const& a_path) const
+{
+    std::ofstream outputStream(a_path, std::ios::binary);
+    outputStream << "CpntManager: " << s_version << ' ';
+
+    outputStream << entityCount << std::endl;
+    for (int i = 0; i < entityCount; ++i)
+    {
+        renderingCpnts[i].write(outputStream);
+        animators[i].write(outputStream);
+        transforms[i].write(outputStream);
+    }
 }
 
 Entity ComponentManager::create_entity()

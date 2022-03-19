@@ -3,12 +3,20 @@
 #include <Kernel/Math.hpp>
 
 #include <vector>
+#include <iostream>
+
+#define Serializable(a_versionNumber, t_ClassName)           \
+    static const m::mU32 s_version = a_versionNumber;        \
+    void                 read(std::ifstream& a_inputStream); \
+    void                 write(std::ofstream& a_outputStream) const;
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 struct RenderingCpnt
 {
+    Serializable(1, RenderingCpnt);
+
     m::math::mVec4 color;
     m::mU32        materialID;
     m::mU32        pictureSize;
@@ -20,6 +28,8 @@ struct RenderingCpnt
 ///////////////////////////////////////////////////////////////////////////////
 struct TransformCpnt
 {
+    Serializable(1, TransformCpnt);
+
     m::math::mVec2 position;
     m::mFloat      angle;
     m::mFloat      scale;
@@ -31,11 +41,15 @@ struct TransformCpnt
 ///////////////////////////////////////////////////////////////////////////////
 struct Key
 {
+    Serializable(1, Key);
+
     m::mFloat advancement = 0;
 };
 
 struct Modifier
 {
+    Serializable(1, Modifier);
+
     m::math::mVec4 color{};
     m::math::mVec2 offset{};
     m::mFloat      angle = 0;
@@ -44,6 +58,8 @@ struct Modifier
 
 struct Animation
 {
+    Serializable(1, Animation);
+
     std::vector<Key>                    keys;
     std::vector<Modifier>               modifiers;
     std::chrono::steady_clock::duration animationDuration{};
@@ -57,8 +73,11 @@ struct Animation
 
 struct AnimatorCpnt
 {
-    Animation* pAnimation;
-    m::mBool   enabled;
+    Serializable(1, AnimatorCpnt);
+
+    static const m::mU32 version = 1;
+    Animation*           pAnimation;
+    m::mBool             enabled;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -71,7 +90,13 @@ using Entity = m::mU32;
 ///////////////////////////////////////////////////////////////////////////////
 struct ComponentManager
 {
+    static const m::mU32 s_version = 1U;
+
     void   initialize();
+    void   reset();
+    void   load_fromCopy(ComponentManager const& a_source);
+    void   load_fromFile(std::string const& a_path);
+    void   save_toFile(std::string const& a_path) const;
     Entity create_entity();
 
     template <typename t_Component>
