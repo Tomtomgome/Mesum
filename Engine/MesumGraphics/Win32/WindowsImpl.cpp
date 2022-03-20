@@ -269,7 +269,7 @@ void IWindowImpl::set_asImGuiWindow()
             if (!(*a_interrupt))
             {
                 *a_interrupt = ImGui_ImplWin32_WndProcHandler(
-                    a_hwnd, a_uMsg, a_wParam, a_lParam);
+                    a_hwnd, a_uMsg, a_wParam, a_lParam) || ImGui::GetIO().WantCaptureMouse;
             }
         }));
 }

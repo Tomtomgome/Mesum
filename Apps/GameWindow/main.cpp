@@ -11,6 +11,8 @@
 
 #include "Scene.hpp"
 
+#include <filesystem>
+
 #define ENABLE_EDITOR
 
 using namespace m;
@@ -381,16 +383,27 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
             if (ImGui::Button("Reset cene"))
             {
-                m_componentManager.load_fromCopy(m_scene);
-            }
-            if (ImGui::Button("Save"))
-            {
-                m_componentManager.save_toFile("data/levels/save.txt");
-            }
-            if (ImGui::Button("Load"))
-            {
                 m_componentManager.reset();
-                m_componentManager.load_fromFile("data/levels/save.txt");
+            }
+        }
+        ImGui::End();
+
+        ImGui::Begin("Level Browser");
+        {
+            std::filesystem::path currentPath = std::filesystem::current_path();
+            std::filesystem::path levelPath{currentPath/"data"/"levels"};
+            for (const auto& entry :
+                 std::filesystem::directory_iterator{levelPath})
+            {
+                if (entry.path().has_extension() &&
+                    entry.path().extension() == ".lvl")
+                {
+                    if (ImGui::Button(entry.path().stem().string().c_str()))
+                    {
+                        m_componentManager.reset();
+                        m_componentManager.load_fromFile(entry.path().string());
+                    }
+                }
             }
         }
         ImGui::End();
@@ -400,14 +413,9 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             static char path[512] = "";
             ImGui::InputText("Level Path : ", path, 512);
 
-            if (ImGui::Button("Save"))
+            if (ImGui::Button("Save as"))
             {
                 m_componentManager.save_toFile(path);
-            }
-            if (ImGui::Button("Load"))
-            {
-                m_componentManager.reset();
-                m_componentManager.load_fromFile(path);
             }
 
             if (ImGui::CollapsingHeader("Entities"))
