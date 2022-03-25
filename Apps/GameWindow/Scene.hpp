@@ -65,8 +65,8 @@ struct Animation
     Serializable(1, Animation);
     void display_gui();
 
-    std::vector<Key>                    keys;
-    std::vector<Modifier>               modifiers;
+    std::vector<Key>                    keys{{0.0f}, {1.0f}};
+    std::vector<Modifier>               modifiers{{}, {}};
     std::chrono::steady_clock::duration animationDuration{};
     m::mUInt                            lastKeyIndex = 0;
     Modifier                            lastModifier{};

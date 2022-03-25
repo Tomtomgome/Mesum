@@ -10,7 +10,8 @@ endif()
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
-set(SOURCES main.cpp)
+set(SOURCES main.cpp Scene.cpp)
+
 add_executable(${APP_NAME} ${BM_APP_WINDOWED} ${SOURCES})
 target_link_libraries(${APP_NAME} PUBLIC MesumGraphics)
 target_include_directories(${APP_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/.)

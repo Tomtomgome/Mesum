@@ -122,6 +122,11 @@ void Key::write(std::ofstream& a_outputStream) const
     a_outputStream << advancement << std::endl;
 }
 
+void Key::display_gui()
+{
+    ImGui::DragFloat("Advancement", &advancement, 0.01f, 0.0f, 1.0f);
+}
+
 void Modifier::read(std::ifstream& a_inputStream)
 {
     m::mU32     version;
@@ -146,6 +151,14 @@ void Modifier::write(std::ofstream& a_outputStream) const
     a_outputStream << offset.x << ' ' << offset.y << ' ';
     a_outputStream << angle << ' ';
     a_outputStream << scale << std::endl;
+}
+
+void Modifier::display_gui()
+{
+    ImGui::ColorPicker4("Color", color.data);
+    ImGui::DragFloat2("Offset", offset.data);
+    ImGui::DragFloat("Angle", &angle, 0.01f);
+    ImGui::DragFloat("Scale", &scale, 0.1f);
 }
 
 void Animation::read(std::ifstream& a_inputStream)
@@ -198,7 +211,24 @@ void Animation::write(std::ofstream& a_outputStream) const
 void Animation::display_gui()
 {
     // Modifiers
-    // keys
+    mAssert(modifiers.size() == keys.size());
+    for(m::mUInt i = 0; i < modifiers.size(); ++i)
+    {
+        if (ImGui::TreeNode(&modifiers[i], "KeyNode"))
+        {
+            keys[i].display_gui();
+            modifiers[i].display_gui();
+            ImGui::TreePop();
+        }
+    }
+
+    if(ImGui::Button("AddKey"))
+    {
+        Key lastKey = keys.back();
+        keys.push_back(lastKey);
+        Modifier lastModifier = modifiers.back();
+        modifiers.push_back(lastModifier);
+    }
 
     auto numNano = std::chrono::nanoseconds(animationDuration).count();
     m::mDouble duration = m::mDouble(numNano)/1000000000.0;
@@ -325,9 +355,11 @@ void ComponentManager::display_gui()
         entityName << "Entity " << i;
         if (ImGui::TreeNode(entityName.str().c_str()))
         {
+            ImGui::PushItemWidth(-80);
             transforms[i].display_gui();
             renderingCpnts[i].display_gui();
             animators[i].display_gui();
+            ImGui::PopItemWidth();
             ImGui::TreePop();
         }
     }

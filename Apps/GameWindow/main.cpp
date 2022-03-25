@@ -408,7 +408,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         }
         ImGui::End();
 
-        ImGui::Begin("Level Editor");
+        ImGui::Begin("Level Editor", NULL, ImGuiWindowFlags_AlwaysAutoResize);
         {
             static char path[512] = "";
             ImGui::InputText("Level Path : ", path, 512);
