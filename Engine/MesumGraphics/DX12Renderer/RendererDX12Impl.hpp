@@ -38,6 +38,9 @@ class DX12Surface : public render::ISurface
 
     D3D12_CPU_DESCRIPTOR_HANDLE get_currentRtvDesc();
 
+    mU32 get_width() const { return m_clientWidth; }
+    mU32 get_height() const { return m_clientHeight; }
+
    public:
     // The number of swap chain back buffers.
     static const mU8 scm_numFrames = 3;
@@ -57,8 +60,8 @@ class DX12Surface : public render::ISurface
    private:
     // By default, enable V-Sync.
     // Can be toggled with the V key.
-    mBool m_vSync              = true;
-    mBool m_tearingSupported   = false;
+    mBool m_vSync            = true;
+    mBool m_tearingSupported = false;
 
     ComPtr<IDXGISwapChain4> m_swapChain;
     ComPtr<ID3D12Resource>  m_backBuffers[scm_numFrames];
@@ -69,7 +72,7 @@ class DX12Surface : public render::ISurface
 
     ComPtr<ID3D12DescriptorHeap> m_SRVDescriptorHeap;
 
-    std::vector<DX12RenderTaskset*>                 m_renderTasksets;
+    std::vector<DX12RenderTaskset*> m_renderTasksets;
 
     // Synchronization objects
     mU64 m_frameFenceValues[scm_numFrames] = {};
@@ -89,9 +92,9 @@ class DX12Renderer : public render::IRenderer
     void destroy() override;
 
     mBool get_supportDearImGuiMultiViewports() override { return true; }
-    void start_dearImGuiNewFrameRenderer() const override;
+    void  start_dearImGuiNewFrameRenderer() const override;
 
-    render::ISurface* getNew_surface() override;
+    render::ISurface*  getNew_surface() override;
     render::IResource* getNew_texture() override;
 };
 

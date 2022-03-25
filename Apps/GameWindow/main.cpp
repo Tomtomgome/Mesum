@@ -297,51 +297,6 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         init_editor();
         init_game();
-
-        // Setup entity system
-        Entity        mainCharacter = m_scene.create_entity();
-        RenderingCpnt rCpnt;
-        rCpnt.materialID  = 1;
-        rCpnt.pictureSize = 32;
-        rCpnt.color       = {1.0f, 1.0f, 1.0f, 1.0f};
-        m_scene.enable_component(mainCharacter, rCpnt);
-        TransformCpnt tCpnt;
-        tCpnt.position = {1000, 600};
-        tCpnt.angle    = 0;
-        tCpnt.scale    = 2.0f;
-        m_scene.enable_component(mainCharacter, tCpnt);
-        AnimatorCpnt aCpnt;
-        aCpnt.pAnimation                    = new Animation();
-        aCpnt.pAnimation->animationDuration = std::chrono::seconds(2);
-        auto& keys                          = aCpnt.pAnimation->keys;
-        keys.resize(3);
-        keys[0].advancement = 0;
-        keys[1].advancement = 0.5;
-        keys[2].advancement = 1;
-        auto& modifiers     = aCpnt.pAnimation->modifiers;
-        modifiers.resize(3);
-        modifiers[0].color = {0.0f, 0.0f, 0.0f, 1.0f};
-        modifiers[0].scale = 0.5;
-        modifiers[1].color = {1.0f, 1.0f, 1.0f, 1.0f};
-        modifiers[1].scale = 2;
-        modifiers[1].angle = 3.141592;
-        modifiers[2].scale = 0.5;
-        modifiers[2].color = {0.0f, 0.0f, 0.0f, 1.0f};
-        m_scene.enable_component(mainCharacter, aCpnt);
-
-        Entity secondaryCharacter = m_scene.create_entity();
-        m_scene.enable_component(secondaryCharacter, rCpnt);
-        tCpnt.position = {1500, 600};
-        tCpnt.scale    = 1.0f;
-        m_scene.enable_component(secondaryCharacter, tCpnt);
-
-        m_componentManager.load_fromCopy(m_scene);
-
-        Entity bigRedFlag = m_componentManager.create_entity();
-        m_componentManager.enable_component(secondaryCharacter, rCpnt);
-        tCpnt.position = {1200, 600};
-        tCpnt.scale    = 5.0f;
-        m_componentManager.enable_component(secondaryCharacter, tCpnt);
     }
 
     void destroy() override
@@ -410,12 +365,13 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         ImGui::Begin("Level Editor", NULL, ImGuiWindowFlags_AlwaysAutoResize);
         {
-            static char path[512] = "";
-            ImGui::InputText("Level Path : ", path, 512);
+            static char name[512] = "";
+            ImGui::InputText("Level Name : ", name, 512);
 
             if (ImGui::Button("Save as"))
             {
-                m_componentManager.save_toFile(path);
+                std::string path = "data/levels/";
+                m_componentManager.save_toFile(path + name + ".lvl");
             }
 
             if (ImGui::CollapsingHeader("Entities"))
@@ -525,8 +481,13 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
                                          {0.0f, 1080.0f, 0.0f}, {1920, 10},
                                          {1.0f, 1.0f, 1.0f, 0.1f});
 
+        auto currentSurface =
+            static_cast<dx12::DX12Surface*>(m_hdlSurfaceEditor->surface);
+        mInt screenWidth  = currentSurface->get_width();
+        mInt screenHeight = currentSurface->get_height();
+
         m_matrixEditor =
-            math::generate_projectionOrthoLH(1280, 720, 0.0f, 1.0f) *
+            math::generate_projectionOrthoLH(screenWidth, screenHeight, 0.0f, 1.0f) *
             m_targetController.m_worldToView;
 
         render_editorGUI();

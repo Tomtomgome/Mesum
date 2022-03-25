@@ -649,8 +649,8 @@ void Dx12Task2dRender::execute() const
     auto currentSurface =
         static_cast<dx12::DX12Surface*>(m_taskData.m_hdlOutput->surface);
 
-    mInt screenWidth  = 1280;
-    mInt screenHeight = 720;
+    mInt screenWidth  = currentSurface->get_width();
+    mInt screenHeight = currentSurface->get_height();
 
     D3D12_CPU_DESCRIPTOR_HANDLE rtv;
     rtv = currentSurface->get_currentRtvDesc();
