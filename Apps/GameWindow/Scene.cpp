@@ -92,8 +92,10 @@ void TransformCpnt::display_gui()
     if (ImGui::TreeNode(this, "parameters"))
     {
         ImGui::DragFloat2("Position", position.data);
-        ImGui::DragFloat("angle", &angle, 0.01f);
-        ImGui::DragFloat("scale", &scale);
+        m::mFloat degreeAngle = 360 * (angle / (2 * 3.141592));
+        ImGui::DragFloat("angle", &degreeAngle, 0.01f);
+        angle = (degreeAngle / 360) * 2 * 3.141592;
+        ImGui::DragFloat("scale", &scale, 0.1f);
         ImGui::TreePop();
     }
     ImGui::Unindent();
@@ -212,7 +214,7 @@ void Animation::display_gui()
 {
     // Modifiers
     mAssert(modifiers.size() == keys.size());
-    for(m::mUInt i = 0; i < modifiers.size(); ++i)
+    for (m::mUInt i = 0; i < modifiers.size(); ++i)
     {
         if (ImGui::TreeNode(&modifiers[i], "KeyNode"))
         {
@@ -222,7 +224,7 @@ void Animation::display_gui()
         }
     }
 
-    if(ImGui::Button("AddKey"))
+    if (ImGui::Button("AddKey"))
     {
         Key lastKey = keys.back();
         keys.push_back(lastKey);
@@ -230,22 +232,21 @@ void Animation::display_gui()
         modifiers.push_back(lastModifier);
     }
 
-    auto numNano = std::chrono::nanoseconds(animationDuration).count();
-    m::mDouble duration = m::mDouble(numNano)/1000000000.0;
+    auto       numNano  = std::chrono::nanoseconds(animationDuration).count();
+    m::mDouble duration = m::mDouble(numNano) / 1000000000.0;
     ImGui::InputDouble("Duration (s)", &duration);
-    numNano = duration * 1000000000;
+    numNano           = duration * 1000000000;
     animationDuration = std::chrono::nanoseconds(numNano);
-    //Update Animation Frame
+    // Update Animation Frame
 
     ImGui::DragFloat("Advancement", &currentAdvancement);
     ImGui::Checkbox("Is Looping", &isLooping);
     m::mInt option = colorMultiply ? 0 : 1;
     ImGui::Combo("Color", &option, "Multiply\0Add\0");
     colorMultiply = option == 0;
-    option = scaleMultiply ? 0 : 1;
+    option        = scaleMultiply ? 0 : 1;
     ImGui::Combo("Scale", &option, "Multiply\0Add\0");
     scaleMultiply = option == 0;
-
 }
 
 void AnimatorCpnt::read(std::ifstream& a_inputStream)
@@ -297,9 +298,10 @@ void AnimatorCpnt::display_gui()
     ImGui::Indent();
     if (ImGui::TreeNode(this, "parameters"))
     {
-        if(pAnimation == nullptr)
+        if (pAnimation == nullptr)
         {
-            if(ImGui::Button("Create Animation")) {
+            if (ImGui::Button("Create Animation"))
+            {
                 pAnimation = new Animation();
             }
         }
@@ -340,9 +342,17 @@ void ComponentManager::enable_component<AnimatorCpnt>(
     animators[a_entity].enabled = true;
 }
 
+template <>
+void ComponentManager::enable_component<CollisionCpnt>(
+    Entity const& a_entity, CollisionCpnt const& a_component)
+{
+    collisions[a_entity]         = a_component;
+    collisions[a_entity].enabled = true;
+}
+
 void ComponentManager::display_gui()
 {
-    if(ImGui::Button("Add Entity"))
+    if (ImGui::Button("Add Entity"))
     {
         create_entity();
     }
@@ -359,6 +369,7 @@ void ComponentManager::display_gui()
             transforms[i].display_gui();
             renderingCpnts[i].display_gui();
             animators[i].display_gui();
+            collisions[i].display_gui();
             ImGui::PopItemWidth();
             ImGui::TreePop();
         }
@@ -370,6 +381,7 @@ void ComponentManager::initialize()
     renderingCpnts.reserve(100);
     transforms.reserve(100);
     animators.reserve(100);
+    collisions.reserve(100);
 }
 
 void ComponentManager::reset()
@@ -386,6 +398,8 @@ void ComponentManager::reset()
         }
     }
     animators.clear();
+
+    collisions.clear();
 }
 
 void ComponentManager::load_fromCopy(ComponentManager const& a_source)
@@ -395,6 +409,7 @@ void ComponentManager::load_fromCopy(ComponentManager const& a_source)
     renderingCpnts = a_source.renderingCpnts;
     transforms     = a_source.transforms;
     animators      = a_source.animators;
+    collisions     = a_source.collisions;
 
     for (auto& animator : animators)
     {
@@ -405,7 +420,9 @@ void ComponentManager::load_fromCopy(ComponentManager const& a_source)
             *(animator.pAnimation) = tmpAnim;
         }
     }
+
 }
+
 void ComponentManager::load_fromFile(std::string const& a_path)
 {
     std::ifstream inputStream(a_path);
@@ -413,19 +430,24 @@ void ComponentManager::load_fromFile(std::string const& a_path)
     std::string   debugName;
     inputStream >> debugName >> version;
 
-    if (version <= 1)
+    if (version >= 1)
     {
         inputStream >> entityCount;
 
         renderingCpnts.resize(entityCount);
         animators.resize(entityCount);
         transforms.resize(entityCount);
+        collisions.resize(entityCount);
 
         for (int i = 0; i < entityCount; ++i)
         {
             renderingCpnts[i].read(inputStream);
             animators[i].read(inputStream);
             transforms[i].read(inputStream);
+            if (s_version >= 2)
+            {
+                collisions[i].read(inputStream);
+            }
         }
     }
 }
@@ -441,6 +463,7 @@ void ComponentManager::save_toFile(std::string const& a_path) const
         renderingCpnts[i].write(outputStream);
         animators[i].write(outputStream);
         transforms[i].write(outputStream);
+        collisions[i].write(outputStream);
     }
 }
 
@@ -449,6 +472,7 @@ Entity ComponentManager::create_entity()
     renderingCpnts.emplace_back();
     transforms.emplace_back();
     animators.emplace_back();
+    collisions.emplace_back();
     return entityCount++;
 }
 

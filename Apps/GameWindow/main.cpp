@@ -346,7 +346,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         ImGui::Begin("Level Browser");
         {
             std::filesystem::path currentPath = std::filesystem::current_path();
-            std::filesystem::path levelPath{currentPath/"data"/"levels"};
+            std::filesystem::path levelPath{currentPath / "data" / "levels"};
             for (const auto& entry :
                  std::filesystem::directory_iterator{levelPath})
             {
@@ -470,25 +470,31 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         generate_rectangleIntoMeshBuffer(&m_meshBufferEditor,
                                          {0.0f, 0.0f, 0.0f}, {1920, -10},
-                                         {1.0f, 1.0f, 1.0f, 0.1f});
+                                         {0.0f, 0.0f, 0.0f, 0.1f});
         generate_rectangleIntoMeshBuffer(&m_meshBufferEditor,
                                          {0.0f, 0.0f, 0.0f}, {10, -1080},
-                                         {1.0f, 1.0f, 1.0f, 0.1f});
+                                         {0.0f, 0.0f, 0.0f, 0.1f});
         generate_rectangleIntoMeshBuffer(&m_meshBufferEditor,
                                          {1920.0f - 10.0f, 0.0f, 0.0f},
-                                         {10, -1080}, {1.0f, 1.0f, 1.0f, 0.1f});
+                                         {10, -1080}, {0.0f, 0.0f, 0.0f, 0.1f});
         generate_rectangleIntoMeshBuffer(&m_meshBufferEditor,
                                          {0.0f, 1080.0f, 0.0f}, {1920, 10},
-                                         {1.0f, 1.0f, 1.0f, 0.1f});
+                                         {0.0f, 0.0f, 0.0f, 0.1f});
+
+        m_rangesEditor.emplace_back();
+        m_rangesEditor.back().materialID = 0;
+        m_rangesEditor.back().indexCount =
+            draw_debugCollisions(m_componentManager, m_meshBufferEditor);
+        m_rangesEditor.back().indexStartLocation = 5 * indexPerQuad;
 
         auto currentSurface =
             static_cast<dx12::DX12Surface*>(m_hdlSurfaceEditor->surface);
         mInt screenWidth  = currentSurface->get_width();
         mInt screenHeight = currentSurface->get_height();
 
-        m_matrixEditor =
-            math::generate_projectionOrthoLH(screenWidth, screenHeight, 0.0f, 1.0f) *
-            m_targetController.m_worldToView;
+        m_matrixEditor = math::generate_projectionOrthoLH(
+                             screenWidth, screenHeight, 0.0f, 1.0f) *
+                         m_targetController.m_worldToView;
 
         render_editorGUI();
 

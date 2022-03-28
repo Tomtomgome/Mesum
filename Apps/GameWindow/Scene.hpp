@@ -1,14 +1,11 @@
 #pragma once
 
+#include "Serializable.hpp"
+#include "Collision.hpp"
+
 #include <Kernel/Math.hpp>
 
 #include <vector>
-#include <iostream>
-
-#define Serializable(a_versionNumber, t_ClassName)           \
-    static const m::mU32 s_version = a_versionNumber;        \
-    void                 read(std::ifstream& a_inputStream); \
-    void                 write(std::ofstream& a_outputStream) const;
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -18,7 +15,7 @@ struct RenderingCpnt
     Serializable(1, RenderingCpnt);
     void display_gui();
 
-    m::math::mVec4 color{1.0f,1.0f,1.0f,1.0f};
+    m::math::mVec4 color{1.0f, 1.0f, 1.0f, 1.0f};
     m::mU32        materialID{0};
     m::mU32        pictureSize{0};
     m::mBool       enabled{false};
@@ -96,7 +93,7 @@ using Entity = m::mU32;
 ///////////////////////////////////////////////////////////////////////////////
 struct ComponentManager
 {
-    static const m::mU32 s_version = 1U;
+    static const m::mU32 s_version = 2U;
 
     void display_gui();
 
@@ -119,11 +116,15 @@ struct ComponentManager
     template <>
     void enable_component<AnimatorCpnt>(Entity const&       a_entity,
                                         AnimatorCpnt const& a_component);
+    template <>
+    void enable_component<CollisionCpnt>(Entity const&        a_entity,
+                                         CollisionCpnt const& a_component);
 
     m::mU32                    entityCount = 0;
     std::vector<RenderingCpnt> renderingCpnts;
     std::vector<AnimatorCpnt>  animators;
     std::vector<TransformCpnt> transforms;
+    std::vector<CollisionCpnt> collisions;
 };
 
 template <typename t_Component>
@@ -149,6 +150,11 @@ struct DrawingData
     void                                   clean_drawables();
     std::vector<std::vector<DrawableData>> materialDrawables;
 };
+
+void apply_modifierToTC(TransformCpnt& a_tc, Modifier const& a_modifier,
+                        bool a_scaleMultiply);
+void apply_modifierToRC(RenderingCpnt& a_rc, Modifier const& a_modifier,
+                        bool a_colorMultiply);
 
 void process_renderableObjects(ComponentManager const& a_cpntManager,
                                DrawingData&            a_outputDrawingData);
