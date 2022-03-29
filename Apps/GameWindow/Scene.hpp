@@ -156,12 +156,21 @@ void apply_modifierToTC(TransformCpnt& a_tc, Modifier const& a_modifier,
 void apply_modifierToRC(RenderingCpnt& a_rc, Modifier const& a_modifier,
                         bool a_colorMultiply);
 
-void process_renderableObjects(ComponentManager const& a_cpntManager,
-                               DrawingData&            a_outputDrawingData);
+void process_renderableObjects(
+    std::vector<TransformCpnt> const& a_transforms,
+    std::vector<RenderingCpnt> const& a_renderingCpnts,
+    DrawingData&                      a_outputDrawingData);
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 void process_animatedObjects(
-    ComponentManager&                          a_cpntManager,
+    std::vector<AnimatorCpnt>&                 a_animators,
     std::chrono::steady_clock::duration const& a_deltaTime);
+
+void apply_animationModifiers(
+    std::vector<AnimatorCpnt> const&  a_animators,
+    std::vector<TransformCpnt> const& a_transforms,
+    std::vector<RenderingCpnt> const& a_renderingCpnts,
+    std::vector<TransformCpnt>&       a_outTransforms,
+    std::vector<RenderingCpnt>&       a_outRenderingCpnts);

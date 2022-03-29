@@ -12,11 +12,30 @@ void CollisionCpnt::read(std::ifstream& a_inputStream)
     m::mU32     version;
     std::string debugName;
     a_inputStream >> debugName >> version;
+
+    if (version <= 1)
+    {
+        m::mU32 size;
+        a_inputStream >> size;
+        positions.resize(size);
+        for(auto& position : positions)
+        {
+            a_inputStream >> position.x >> position.y;
+        }
+        a_inputStream >> enabled;
+    }
 }
 
 void CollisionCpnt::write(std::ofstream& a_outputStream) const
 {
     a_outputStream << "CollisionCpnt: " << s_version << ' ';
+
+    a_outputStream << positions.size() << " ";
+    for (auto& position : positions)
+    {
+        a_outputStream << position.x << " " << position.y << " ";
+    }
+    a_outputStream << enabled << std::endl;
 }
 
 void CollisionCpnt::display_gui()
@@ -52,41 +71,33 @@ void CollisionCpnt::display_gui()
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 m::mUInt draw_debugCollisions(
-    ComponentManager const&                                     a_cpntManager,
+    std::vector<TransformCpnt> const&                           a_transforms,
+    std::vector<CollisionCpnt> const&                           a_collisions,
     m::render::DataMeshBuffer<m::render::BasicVertex, m::mU16>& a_meshBuffer)
 {
+    mAssert(a_transforms.size() == a_collisions.size());
+
     m::mUInt               countIndex   = a_meshBuffer.m_indices.size();
     m::mUInt               currentIndex = a_meshBuffer.m_vertices.size();
     m::render::BasicVertex vertex;
-    vertex.color = {1.0, 0.0, 0.0, 0.2};
+    vertex.color = {1.0, 0.0, 0.0, 0.5};
     vertex.uv    = {0.0f, 0.0f};
 
-    for (m::mU32 i = 0; i < a_cpntManager.entityCount; ++i)
+    for (m::mU32 i = 0; i < a_transforms.size(); ++i)
     {
-        CollisionCpnt const& cc = a_cpntManager.collisions[i];
-        TransformCpnt const& tc = a_cpntManager.transforms[i];
+        CollisionCpnt const& cc = a_collisions[i];
+        TransformCpnt const& tc = a_transforms[i];
         if (cc.enabled && tc.enabled)
         {
-            Modifier            modifier;
-            m::mBool scaleMultiply = false;
-            AnimatorCpnt const& ac = a_cpntManager.animators[i];
-            if (ac.enabled && ac.pAnimation != nullptr)
-            {
-                modifier = ac.pAnimation->lastModifier;
-                scaleMultiply = ac.pAnimation->scaleMultiply;
-            }
-
-            TransformCpnt effectiveTc = tc;
-            apply_modifierToTC(effectiveTc, modifier, scaleMultiply);
-            m::mFloat cteta = cosf(effectiveTc.angle);
-            m::mFloat steta = sinf(effectiveTc.angle);
+            m::mFloat cteta = cosf(tc.angle);
+            m::mFloat steta = sinf(tc.angle);
             for (auto& position : cc.positions)
             {
                 m::math::mVec2 tmpPos = {
                     position.x * cteta - position.y * steta,
                     position.x * steta + position.y * cteta};
-                tmpPos *= effectiveTc.scale;
-                tmpPos += effectiveTc.position;
+                tmpPos *= tc.scale;
+                tmpPos += tc.position;
                 vertex.position = {tmpPos.x, tmpPos.y, 0.0f};
                 a_meshBuffer.m_vertices.push_back(vertex);
                 a_meshBuffer.m_indices.push_back(currentIndex++);

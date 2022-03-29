@@ -7,7 +7,7 @@
 
 #include <vector>
 
-class ComponentManager;
+class TransformCpnt;
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -25,5 +25,6 @@ struct CollisionCpnt
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 m::mUInt draw_debugCollisions(
-    ComponentManager const&                                     a_cpntManager,
+    std::vector<TransformCpnt> const&                           a_transforms,
+    std::vector<CollisionCpnt> const&                           a_collisions,
     m::render::DataMeshBuffer<m::render::BasicVertex, m::mU16>& a_meshBuffer);

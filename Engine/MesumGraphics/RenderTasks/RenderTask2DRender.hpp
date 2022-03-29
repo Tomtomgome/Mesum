@@ -5,6 +5,7 @@
 #include <MesumCore/Kernel/MathTypes.hpp>
 #include <MesumGraphics/RenderTask.hpp>
 #include <MesumGraphics/Renderer.hpp>
+#include <MesumGraphics/RenderBase.hpp>
 
 #ifdef M_DX12_RENDERER
 #include <MesumGraphics/DX12Renderer/DX12Context.hpp>
@@ -20,13 +21,6 @@ struct mRequestImage;
 
 namespace m::render
 {
-struct BasicVertex
-{
-    math::mVec3 position;
-    math::mVec4 color;
-    math::mVec2 uv;
-};
-
 template <typename tt_Vertex, typename tt_Index>
 struct BufferBase
 {
@@ -318,19 +312,6 @@ using uploadBuffers =
 
 using vulkanUploadBuffers =
     VulkanBufferBase<BasicVertex, mU16>[vulkan::VulkanSurface::scm_numFrames];
-
-template <typename tt_Vertex, typename tt_Index>
-struct DataMeshBuffer
-{
-    std::vector<tt_Vertex> m_vertices;
-    std::vector<tt_Index>  m_indices;
-
-    void clear()
-    {
-        m_vertices.clear();
-        m_indices.clear();
-    }
-};
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------

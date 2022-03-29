@@ -420,7 +420,6 @@ void ComponentManager::load_fromCopy(ComponentManager const& a_source)
             *(animator.pAnimation) = tmpAnim;
         }
     }
-
 }
 
 void ComponentManager::load_fromFile(std::string const& a_path)
@@ -513,13 +512,17 @@ void apply_modifierToTC(TransformCpnt& a_tc, Modifier const& a_modifier,
     a_tc.angle += a_modifier.angle;
 }
 
-void process_renderableObjects(ComponentManager const& a_cpntManager,
-                               DrawingData&            a_outputDrawingData)
+void process_renderableObjects(
+    std::vector<TransformCpnt> const& a_transforms,
+    std::vector<RenderingCpnt> const& a_renderingCpnts,
+    DrawingData&                      a_outputDrawingData)
 {
-    for (m::mU32 i = 0; i < a_cpntManager.entityCount; ++i)
+    mAssert(a_transforms.size() == a_renderingCpnts.size());
+
+    for (m::mU32 i = 0; i < a_transforms.size(); ++i)
     {
-        RenderingCpnt const& rc = a_cpntManager.renderingCpnts[i];
-        TransformCpnt const& tc = a_cpntManager.transforms[i];
+        RenderingCpnt const& rc = a_renderingCpnts[i];
+        TransformCpnt const& tc = a_transforms[i];
         if (rc.enabled && tc.enabled)
         {
             if (rc.materialID + 1 >
@@ -528,31 +531,13 @@ void process_renderableObjects(ComponentManager const& a_cpntManager,
                 a_outputDrawingData.materialDrawables.resize(rc.materialID + 1);
             }
 
-            Modifier modifier;
-            m::mBool colorMultiply = false;  // Otherwise Add
-            m::mBool scaleMultiply = false;
-
-            AnimatorCpnt const& ac = a_cpntManager.animators[i];
-            if (ac.enabled && ac.pAnimation != nullptr)
-            {
-                modifier      = ac.pAnimation->lastModifier;
-                colorMultiply = ac.pAnimation->colorMultiply;
-                scaleMultiply = ac.pAnimation->scaleMultiply;
-            }
-
-            RenderingCpnt effectiveRc = rc;
-            apply_modifierToRC(effectiveRc, modifier, colorMultiply);
-            TransformCpnt effectiveTc = tc;
-            apply_modifierToTC(effectiveTc, modifier, scaleMultiply);
-
             DrawableData& drawableData =
-                a_outputDrawingData.materialDrawables[effectiveRc.materialID]
+                a_outputDrawingData.materialDrawables[rc.materialID]
                     .emplace_back();
-            drawableData.color  = effectiveRc.color;
-            drawableData.offset = {effectiveTc.position.x,
-                                   effectiveTc.position.y, 0.0f};
-            drawableData.size   = effectiveRc.pictureSize * effectiveTc.scale;
-            drawableData.angle  = effectiveTc.angle;
+            drawableData.color  = rc.color;
+            drawableData.offset = {tc.position.x, tc.position.y, 0.0f};
+            drawableData.size   = rc.pictureSize * tc.scale;
+            drawableData.angle  = tc.angle;
         }
     }
 }
@@ -625,18 +610,66 @@ bool update(Animation&                                 a_animation,
     return true;
 }
 
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
 void process_animatedObjects(
-    ComponentManager&                          a_cpntManager,
+    std::vector<AnimatorCpnt>&                 a_animators,
     std::chrono::steady_clock::duration const& a_deltaTime)
 {
-    for (m::mU32 i = 0; i < a_cpntManager.entityCount; ++i)
+    for (m::mU32 i = 0; i < a_animators.size(); ++i)
     {
-        AnimatorCpnt& ra = a_cpntManager.animators[i];
+        AnimatorCpnt& ra = a_animators[i];
         if (ra.enabled)
         {
             mAssert(ra.pAnimation != nullptr);
             Animation& rAnimation = *ra.pAnimation;
             ra.enabled            = update(rAnimation, a_deltaTime);
+        }
+    }
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void apply_animationModifiers(
+    std::vector<AnimatorCpnt> const&  a_animators,
+    std::vector<TransformCpnt> const& a_transforms,
+    std::vector<RenderingCpnt> const& a_renderingCpnts,
+    std::vector<TransformCpnt>&       a_outTransforms,
+    std::vector<RenderingCpnt>&       a_outRenderingCpnts)
+{
+    mAssert(a_animators.size() == a_transforms.size());
+    mAssert(a_animators.size() == a_renderingCpnts.size());
+    mAssert(a_animators.size() == a_outTransforms.size());
+    mAssert(a_animators.size() == a_outRenderingCpnts.size());
+
+    for (m::mU32 i = 0; i < a_animators.size(); ++i)
+    {
+        RenderingCpnt const& rc = a_renderingCpnts[i];
+        AnimatorCpnt const&  ac = a_animators[i];
+        TransformCpnt const& tc = a_transforms[i];
+
+        TransformCpnt& etc = a_outTransforms[i];
+        RenderingCpnt& erc = a_outRenderingCpnts[i];
+
+        if (ac.enabled && ac.pAnimation != nullptr)
+        {
+            Modifier modifier = ac.pAnimation->lastModifier;
+            m::mBool colorMultiply =
+                ac.pAnimation->colorMultiply;  // Otherwise Add
+            m::mBool scaleMultiply = ac.pAnimation->scaleMultiply;
+
+            if (tc.enabled)
+            {
+                etc = tc;
+                apply_modifierToTC(etc, modifier, scaleMultiply);
+            }
+            if (rc.enabled)
+            {
+                erc = rc;
+                apply_modifierToRC(erc, modifier, colorMultiply);
+            }
         }
     }
 }

@@ -335,6 +335,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
                         m_targetController.m_targetPoint.y);
             ImGui::Text("Zoom : %f", m_targetController.m_zoomLevel);
             ImGui::Checkbox("Allow Update", &m_updateScene);
+            ImGui::Checkbox("Collision Debug Draw", &m_debugCollisions);
 
             if (ImGui::Button("Reset cene"))
             {
@@ -388,7 +389,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     void update_gameScene(
         std::chrono::steady_clock::duration const& a_deltaTime)
     {
-        process_animatedObjects(m_componentManager, a_deltaTime);
+        process_animatedObjects(m_componentManager.animators, a_deltaTime);
     }
 
     void render(std::chrono::steady_clock::duration const& a_deltaTime)
@@ -403,11 +404,18 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         {
             update_gameScene(ddeltaTime);
         }
+        m_effectiveTransforms.resize(m_componentManager.entityCount);
+        m_effectiveRenderingCpnts.resize(m_componentManager.entityCount);
+        apply_animationModifiers(
+            m_componentManager.animators, m_componentManager.transforms,
+            m_componentManager.renderingCpnts, m_effectiveTransforms,
+            m_effectiveRenderingCpnts);
 
         m_drawingData.clean_drawables();
         m_ranges.clear();
         m_meshBuffer.clear();
-        process_renderableObjects(m_componentManager, m_drawingData);
+        process_renderableObjects(m_effectiveTransforms,
+                                  m_effectiveRenderingCpnts, m_drawingData);
 
         static const mUInt indexPerQuad    = 5;
         static const mUInt vertexPerQuad   = 4;
@@ -480,12 +488,15 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         generate_rectangleIntoMeshBuffer(&m_meshBufferEditor,
                                          {0.0f, 1080.0f, 0.0f}, {1920, 10},
                                          {0.0f, 0.0f, 0.0f, 0.1f});
-
-        m_rangesEditor.emplace_back();
-        m_rangesEditor.back().materialID = 0;
-        m_rangesEditor.back().indexCount =
-            draw_debugCollisions(m_componentManager, m_meshBufferEditor);
-        m_rangesEditor.back().indexStartLocation = 5 * indexPerQuad;
+        if (m_debugCollisions)
+        {
+            m_rangesEditor.emplace_back();
+            m_rangesEditor.back().materialID = 0;
+            m_rangesEditor.back().indexCount = draw_debugCollisions(
+                m_effectiveTransforms, m_componentManager.collisions,
+                m_meshBufferEditor);
+            m_rangesEditor.back().indexStartLocation = 5 * indexPerQuad;
+        }
 
         auto currentSurface =
             static_cast<dx12::DX12Surface*>(m_hdlSurfaceEditor->surface);
@@ -537,8 +548,10 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
     input::mCallbackInputManager m_inputManager;
 
-    ComponentManager m_componentManager;
-    DrawingData      m_drawingData;
+    ComponentManager           m_componentManager;
+    std::vector<TransformCpnt> m_effectiveTransforms;
+    std::vector<RenderingCpnt> m_effectiveRenderingCpnts;
+    DrawingData                m_drawingData;
 
     ComponentManager m_scene;
 
@@ -563,6 +576,8 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
     std::vector<render::TaskData2dRender::mRange>     m_rangesEditor;
     render::DataMeshBuffer<render::BasicVertex, mU16> m_meshBufferEditor;
+
+    mBool m_debugCollisions = false;
 #endif  // ENABLE_EDITOR
 };
 
