@@ -7,6 +7,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
 void CollisionCpnt::read(std::ifstream& a_inputStream)
 {
     m::mU32     version;
@@ -18,7 +21,7 @@ void CollisionCpnt::read(std::ifstream& a_inputStream)
         m::mU32 size;
         a_inputStream >> size;
         positions.resize(size);
-        for(auto& position : positions)
+        for (auto& position : positions)
         {
             a_inputStream >> position.x >> position.y;
         }
@@ -26,6 +29,9 @@ void CollisionCpnt::read(std::ifstream& a_inputStream)
     }
 }
 
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
 void CollisionCpnt::write(std::ofstream& a_outputStream) const
 {
     a_outputStream << "CollisionCpnt: " << s_version << ' ';
@@ -38,6 +44,9 @@ void CollisionCpnt::write(std::ofstream& a_outputStream) const
     a_outputStream << enabled << std::endl;
 }
 
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
 void CollisionCpnt::display_gui()
 {
     ImGui::Checkbox("Collision", &enabled);
@@ -70,18 +79,14 @@ void CollisionCpnt::display_gui()
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-m::mUInt draw_debugCollisions(
-    std::vector<TransformCpnt> const&                           a_transforms,
-    std::vector<CollisionCpnt> const&                           a_collisions,
-    m::render::DataMeshBuffer<m::render::BasicVertex, m::mU16>& a_meshBuffer)
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void process_collisions(std::vector<TransformCpnt> const& a_transforms,
+                        std::vector<CollisionCpnt> const& a_collisions,
+                        std::vector<CollisionData>&       a_collisionDatas)
 {
     mAssert(a_transforms.size() == a_collisions.size());
-
-    m::mUInt               countIndex   = a_meshBuffer.m_indices.size();
-    m::mUInt               currentIndex = a_meshBuffer.m_vertices.size();
-    m::render::BasicVertex vertex;
-    vertex.color = {1.0, 0.0, 0.0, 0.5};
-    vertex.uv    = {0.0f, 0.0f};
 
     for (m::mU32 i = 0; i < a_transforms.size(); ++i)
     {
@@ -89,21 +94,114 @@ m::mUInt draw_debugCollisions(
         TransformCpnt const& tc = a_transforms[i];
         if (cc.enabled && tc.enabled)
         {
+            CollisionData cd;
+            cd.entity = i;
+            cd.positions.resize(cc.positions.size());
             m::mFloat cteta = cosf(tc.angle);
             m::mFloat steta = sinf(tc.angle);
-            for (auto& position : cc.positions)
+
+            for (m::mInt i = 0; i < cc.positions.size(); ++i)
             {
-                m::math::mVec2 tmpPos = {
+                m::math::mVec2 const& position = cc.positions[i];
+                m::math::mVec2        tmpPos   = {
                     position.x * cteta - position.y * steta,
                     position.x * steta + position.y * cteta};
                 tmpPos *= tc.scale;
                 tmpPos += tc.position;
-                vertex.position = {tmpPos.x, tmpPos.y, 0.0f};
-                a_meshBuffer.m_vertices.push_back(vertex);
-                a_meshBuffer.m_indices.push_back(currentIndex++);
+
+                cd.positions[i] = tmpPos;
             }
-            a_meshBuffer.m_indices.push_back(0xFFFF);
+
+            a_collisionDatas.push_back(cd);
         }
+    }
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+bool intersect(m::math::mVec2 a_a, m::math::mVec2 a_b, m::math::mVec2 a_p)
+{
+    if (a_a.y > a_p.y && a_b.y > a_p.y)
+        return false;
+    if (a_a.y < a_p.y && a_b.y < a_p.y)
+        return false;
+
+    // There is a division, this is crap
+    if((a_p.y - a_a.y) / (a_b.y - a_a.y) * (a_b.x - a_a.x) + a_a.x < a_p.x)
+        return false;
+
+    return true;
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+bool collision_point(CollisionData const&  a_collisionData,
+                     m::math::mVec2 const& a_point)
+{
+    m::mUInt nbPoints = a_collisionData.positions.size();
+    if (nbPoints < 3)
+    {
+        return false;
+    }
+
+    m::math::mVec2 collisionLine = {10000, a_point.y};
+
+    m::mInt countIntersection = 0;
+    m::mInt indexPoint        = 0;
+    do {
+        m::mInt indexNextPoint = (indexPoint + 1) % nbPoints;
+
+        if (intersect(a_collisionData.positions[indexPoint],
+                      a_collisionData.positions[indexNextPoint], a_point))
+        {
+            countIntersection++;
+        }
+        indexPoint = indexNextPoint;
+    } while (indexPoint != 0);
+
+    return countIntersection & 1;
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void gather_intersectedObjects(
+    std::vector<CollisionData> const& a_collisionDatas,
+    m::math::mVec2 const& a_point, std::vector<Entity>& a_intersectedEntities)
+{
+    for (auto collisionData : a_collisionDatas)
+    {
+        if (collision_point(collisionData, a_point))
+        {
+            a_intersectedEntities.push_back(collisionData.entity);
+        }
+    }
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+m::mUInt draw_debugCollisions(
+    std::vector<CollisionData> const& a_collisionDatas,
+    m::render::DataMeshBuffer<m::render::BasicVertex, m::mU16>& a_meshBuffer)
+{
+    m::mUInt               countIndex   = a_meshBuffer.m_indices.size();
+    m::mUInt               currentIndex = a_meshBuffer.m_vertices.size();
+    m::render::BasicVertex vertex;
+    vertex.color = {1.0, 0.0, 0.0, 0.5};
+    vertex.uv    = {0.0f, 0.0f};
+
+    for (auto data : a_collisionDatas)
+    {
+        for (auto& position : data.positions)
+        {
+            vertex.position = {position.x, position.y, 0.0f};
+            a_meshBuffer.m_vertices.push_back(vertex);
+            a_meshBuffer.m_indices.push_back(currentIndex++);
+        }
+        a_meshBuffer.m_indices.push_back(0xFFFF);
     }
 
     return a_meshBuffer.m_indices.size() - countIndex;

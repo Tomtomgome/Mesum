@@ -651,7 +651,9 @@ void apply_animationModifiers(
         TransformCpnt const& tc = a_transforms[i];
 
         TransformCpnt& etc = a_outTransforms[i];
+        etc = tc;
         RenderingCpnt& erc = a_outRenderingCpnts[i];
+        erc = rc;
 
         if (ac.enabled && ac.pAnimation != nullptr)
         {
@@ -662,12 +664,10 @@ void apply_animationModifiers(
 
             if (tc.enabled)
             {
-                etc = tc;
                 apply_modifierToTC(etc, modifier, scaleMultiply);
             }
             if (rc.enabled)
             {
-                erc = rc;
                 apply_modifierToRC(erc, modifier, colorMultiply);
             }
         }

@@ -181,6 +181,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         // Setup game window
         m_windowGame = static_cast<win32::IWindowImpl*>(
             add_newWindow("Game", screenWidth, screenHeight, true));
+        m_windowGame->link_inputManager(&m_inputManagerGame);
         m_hdlSurfaceGame = m_windowGame->link_renderer(m_iRendererVulkan);
 
         render::Taskset* taskset_renderPipelineGame =
@@ -221,6 +222,47 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         SetWindowPos(m_windowGame->get_hwnd(), NULL, xPos, yPos, windowWidth,
                      windowHeight, SWP_SHOWWINDOW | SWP_DRAWFRAME);
 
+        m_inputManagerGame.attach_toMouseEvent(
+            input::mMouseAction::mousePressed(input::mMouseButton::left),
+            input::mMouseActionCallback(
+                [this](const math::mIVec2& a_position)
+                {
+                    if (m_componentManager.entityCount > 0)
+                    {
+                        RECT clientRect = {};
+                        ::GetWindowRect(
+                            ((win32::IWindowImpl*)(m_windowGame))->get_hwnd(),
+                            &clientRect);
+
+                        math::mIVec2 targetPoint{0, 0};
+                        targetPoint.x = -clientRect.left - windowWidth / 2;
+                        targetPoint.y =
+                            clientRect.top - 1080 + windowHeight / 2;
+
+                        math::mMat4x4 translate =
+                            math::generate_translationMatrix(
+                                -targetPoint.x, -targetPoint.y, 0.0f);
+
+                        math::mVec4 transPoint = {
+                            mFloat(a_position.x - screenWidth / 2),
+                            mFloat(screenHeight / 2 - a_position.y), 0.0f,
+                            1.0f};
+
+                        transPoint                  = translate * transPoint;
+                        math::mVec2 positionInSpace = {transPoint.x,
+                                                       transPoint.y};
+
+                        std::vector<Entity> intersected;
+                        gather_intersectedObjects(m_completeCollisionDatas,
+                                                  positionInSpace, intersected);
+
+                        for (auto& entity : intersected)
+                        {
+                            mLog_info("Intersected Entity : ", entity);
+                        }
+                    }
+                }));
+
         m_start = std::chrono::high_resolution_clock::now();
     }
 
@@ -237,7 +279,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         // Setup editor window
         m_windowEditor = static_cast<win32::IWindowImpl*>(
             add_newWindow("Editor", 1280, 720, false));
-        m_windowEditor->link_inputManager(&m_inputManager);
+        m_windowEditor->link_inputManager(&m_inputManagerEditor);
         m_hdlSurfaceEditor = m_windowEditor->link_renderer(m_iRendererDx12);
 
         dearImGui::init(*m_windowEditor);
@@ -267,18 +309,19 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         taskData_drawDearImGui.m_hdlOutput = m_hdlSurfaceEditor;
         taskData_drawDearImGui.add_toTaskSet(taskset_renderPipelineEditor);
 
-        m_inputManager.attach_toMouseEvent(
+        m_inputManagerEditor.attach_toMouseEvent(
             input::mMouseAction::mousePressed(input::mMouseButton::middle),
             input::mMouseActionCallback(&m_targetController,
                                         &mTargetController::activate_moveMode));
-        m_inputManager.attach_toMouseEvent(
+        m_inputManagerEditor.attach_toMouseEvent(
             input::mMouseAction::mouseReleased(input::mMouseButton::middle),
             input::mMouseActionCallback(
                 &m_targetController, &mTargetController::deactivate_moveMode));
-        m_inputManager.attach_toMouseMoveEvent(input::mMouseActionCallback(
-            &m_targetController, &mTargetController::move_target));
+        m_inputManagerEditor.attach_toMouseMoveEvent(
+            input::mMouseActionCallback(&m_targetController,
+                                        &mTargetController::move_target));
 
-        m_inputManager.attach_toMouseScrollEvent(input::mScrollCallback(
+        m_inputManagerEditor.attach_toMouseScrollEvent(input::mScrollCallback(
             &m_targetController, &mTargetController::update_zoomLevel));
 
 #endif  // ENABLE_EDITOR
@@ -410,6 +453,10 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             m_componentManager.animators, m_componentManager.transforms,
             m_componentManager.renderingCpnts, m_effectiveTransforms,
             m_effectiveRenderingCpnts);
+        m_completeCollisionDatas.clear();
+
+        process_collisions(m_effectiveTransforms, m_componentManager.collisions,
+                           m_completeCollisionDatas);
 
         m_drawingData.clean_drawables();
         m_ranges.clear();
@@ -446,8 +493,6 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         RECT clientRect = {};
         ::GetWindowRect(((win32::IWindowImpl*)(m_windowGame))->get_hwnd(),
                         &clientRect);
-        float addPosx = m_initialClientRect.left - clientRect.left;
-        float addPosy = m_initialClientRect.top - clientRect.top;
 
         math::mIVec2 targetPoint{0, 0};
         targetPoint.x = -clientRect.left - windowWidth / 2;
@@ -493,8 +538,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             m_rangesEditor.emplace_back();
             m_rangesEditor.back().materialID = 0;
             m_rangesEditor.back().indexCount = draw_debugCollisions(
-                m_effectiveTransforms, m_componentManager.collisions,
-                m_meshBufferEditor);
+                m_completeCollisionDatas, m_meshBufferEditor);
             m_rangesEditor.back().indexStartLocation = 5 * indexPerQuad;
         }
 
@@ -541,17 +585,19 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     render::Task2dRender*    m_pTaskRenderGame = nullptr;
     math::mMat4x4            m_matrixGame{};
 
+    input::mCallbackInputManager m_inputManagerGame;
+
     std::vector<resource::mRequestImage> m_imageRequested;
 
     std::vector<render::TaskData2dRender::mRange>     m_ranges;
     render::DataMeshBuffer<render::BasicVertex, mU16> m_meshBuffer;
 
-    input::mCallbackInputManager m_inputManager;
-
     ComponentManager           m_componentManager;
     std::vector<TransformCpnt> m_effectiveTransforms;
     std::vector<RenderingCpnt> m_effectiveRenderingCpnts;
-    DrawingData                m_drawingData;
+    std::vector<CollisionData> m_completeCollisionDatas;
+
+    DrawingData m_drawingData;
 
     ComponentManager m_scene;
 
@@ -569,7 +615,8 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     render::Task2dRender*    m_pTaskRenderGameInEditor = nullptr;
     math::mMat4x4            m_matrixEditor{};
 
-    mTargetController m_targetController;
+    input::mCallbackInputManager m_inputManagerEditor;
+    mTargetController            m_targetController;
 
     // Editor specific rendering
     std::vector<resource::mRequestImage> m_imageRequestedEditor;
