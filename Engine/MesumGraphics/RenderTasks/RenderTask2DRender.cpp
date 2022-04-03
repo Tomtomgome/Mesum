@@ -1463,7 +1463,7 @@ void VulkanTask2dRender::execute() const
         info.renderArea.extent.width = width;
         info.renderArea.extent.height = height;
         VkClearValue clearValues[1]   = {};
-        clearValues[0].color          = {1.0f, 1.0f, 1.0f, 0.0f};
+        clearValues[0].color          = {0.0f, 0.0f, 0.0f, 0.0f};
         info.clearValueCount          = 1;
         info.pClearValues             = clearValues;
         vkCmdBeginRenderPass(commandBuffer, &info, VK_SUBPASS_CONTENTS_INLINE);

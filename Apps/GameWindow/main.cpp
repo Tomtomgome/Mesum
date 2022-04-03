@@ -263,6 +263,12 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
                     }
                 }));
 
+        std::filesystem::path currentPath = std::filesystem::current_path();
+        std::filesystem::path levelPath{currentPath / "data" / "levels" /
+                                        "test.lvl"};
+        m_componentManager.reset();
+        m_componentManager.load_fromFile(levelPath.string());
+
         m_start = std::chrono::high_resolution_clock::now();
     }
 

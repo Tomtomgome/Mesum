@@ -143,7 +143,6 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
             m_flagToBeClosed = true;
         }
         break;
-
         case WM_SIZE:
         {
             RECT clientRect = {};

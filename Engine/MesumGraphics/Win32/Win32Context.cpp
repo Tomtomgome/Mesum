@@ -1,5 +1,7 @@
 #include <Kernel/Kernel.hpp>
 #include <Win32Context.hpp>
+
+#include <dwmapi.h>
 #ifndef UNICODE
 #define UNICODE
 #endif
@@ -206,7 +208,7 @@ HWND WIN32Context::create_window(const mWideChar* a_className,
     if (a_isRransparent)
     {
         hwnd = CreateWindowExW(
-            WS_EX_LAYERED |
+                WS_EX_APPWINDOW |
                 WS_EX_TOPMOST,  // NULL,         // Optional window styles.
             a_className,        // Window class
             convert_string(a_windowName).c_str(),  // Window text
@@ -221,17 +223,21 @@ HWND WIN32Context::create_window(const mWideChar* a_className,
             nullptr       // Additional application data
         );
         //
-        BLENDFUNCTION blend = {};
-        blend.BlendOp       = AC_SRC_OVER;
-        blend.AlphaFormat   = AC_SRC_ALPHA;
 
-        //        UpdateLayeredWindow(hwnd, GetDC(NULL), NULL, NULL, NULL, NULL,
-        //        RGB(255, 255, 255), &blend,
-        //                            ULW_COLORKEY);
-        //
-        //        ShowWindow(hwnd, SW_SHOW);
-        //        UpdateWindow(hwnd);
-        SetLayeredWindowAttributes(hwnd, RGB(255, 255, 255), 0, LWA_COLORKEY);
+        BOOL composition;
+        if(FAILED(DwmIsCompositionEnabled(&composition)) || !composition)
+        {
+            mLog_info("Composition Not supported");
+        }
+        //HWND hwnd = m_hwnd;//m_windowGame->get_hwnd();
+        HRGN region = CreateRectRgn(0, 0, -1, -1);
+        DWM_BLURBEHIND bb = {0};
+        bb.dwFlags = DWM_BB_ENABLE | DWM_BB_BLURREGION;
+        bb.hRgnBlur = region;
+        bb.fEnable = TRUE;
+
+        DwmEnableBlurBehindWindow(hwnd, &bb);
+        DeleteObject(region);
     }
     else
     {
