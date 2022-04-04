@@ -171,6 +171,34 @@ class mTargetController
                                 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
 };
 
+struct PlayerHand
+{
+    void hold_things(const math::mIVec2& a_position)
+    {
+        heldPosition    = a_position;
+        requestGripping = true;
+    }
+
+    void move_hand(const math::mIVec2& a_position)
+    {
+        requestMove  = true;
+        displacement += {a_position.x, -a_position.y};
+    }
+
+    void release_things(const math::mIVec2& a_position)
+    {
+        requestRelease = true;
+    }
+
+    math::mIVec2 displacement{};
+    math::mIVec2 heldPosition{};
+    mBool        requestGripping = false;
+    mBool        requestMove     = false;
+    mBool        requestRelease  = false;
+
+    std::vector<Entity> hand;
+};
+
 class RendererTestApp : public m::crossPlatform::IWindowedApplication
 {
     void init_game()
@@ -224,44 +252,14 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         m_inputManagerGame.attach_toMouseEvent(
             input::mMouseAction::mousePressed(input::mMouseButton::left),
-            input::mMouseActionCallback(
-                [this](const math::mIVec2& a_position)
-                {
-                    if (m_componentManager.entityCount > 0)
-                    {
-                        RECT clientRect = {};
-                        ::GetWindowRect(
-                            ((win32::IWindowImpl*)(m_windowGame))->get_hwnd(),
-                            &clientRect);
-
-                        math::mIVec2 targetPoint{0, 0};
-                        targetPoint.x = -clientRect.left - windowWidth / 2;
-                        targetPoint.y =
-                            clientRect.top - 1080 + windowHeight / 2;
-
-                        math::mMat4x4 translate =
-                            math::generate_translationMatrix(
-                                -targetPoint.x, -targetPoint.y, 0.0f);
-
-                        math::mVec4 transPoint = {
-                            mFloat(a_position.x - screenWidth / 2),
-                            mFloat(screenHeight / 2 - a_position.y), 0.0f,
-                            1.0f};
-
-                        transPoint                  = translate * transPoint;
-                        math::mVec2 positionInSpace = {transPoint.x,
-                                                       transPoint.y};
-
-                        std::vector<Entity> intersected;
-                        gather_intersectedObjects(m_completeCollisionDatas,
-                                                  positionInSpace, intersected);
-
-                        for (auto& entity : intersected)
-                        {
-                            mLog_info("Intersected Entity : ", entity);
-                        }
-                    }
-                }));
+            input::mMouseActionCallback(&m_playerHand,
+                                        &PlayerHand::hold_things));
+        m_inputManagerGame.attach_toMouseEvent(
+            input::mMouseAction::mouseReleased(input::mMouseButton::left),
+            input::mMouseActionCallback(&m_playerHand,
+                                        &PlayerHand::release_things));
+        m_inputManagerGame.attach_toMouseMoveEvent(
+            input::mMouseActionCallback(&m_playerHand, &PlayerHand::move_hand));
 
         std::filesystem::path currentPath = std::filesystem::current_path();
         std::filesystem::path levelPath{currentPath / "data" / "levels" /
@@ -441,6 +439,65 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         process_animatedObjects(m_componentManager.animators, a_deltaTime);
     }
 
+    void process_playerHand()
+    {
+        if (m_playerHand.requestRelease)
+        {
+            m_playerHand.requestRelease = false;
+            m_playerHand.hand.clear();
+        }
+
+        if (m_playerHand.requestGripping)
+        {
+            m_playerHand.requestGripping = false;
+            math::mIVec2& holdPosition   = m_playerHand.heldPosition;
+
+            if (m_componentManager.entityCount > 0)
+            {
+                RECT clientRect = {};
+                ::GetWindowRect(
+                    ((win32::IWindowImpl*)(m_windowGame))->get_hwnd(),
+                    &clientRect);
+
+                math::mIVec2 targetPoint{0, 0};
+                targetPoint.x = -clientRect.left - windowWidth / 2;
+                targetPoint.y = clientRect.top - 1080 + windowHeight / 2;
+
+                math::mMat4x4 translate = math::generate_translationMatrix(
+                    -targetPoint.x, -targetPoint.y, 0.0f);
+
+                math::mVec4 transPoint = {
+                    mFloat(holdPosition.x - screenWidth / 2),
+                    mFloat(screenHeight / 2 - holdPosition.y), 0.0f, 1.0f};
+
+                transPoint                  = translate * transPoint;
+                math::mVec2 positionInSpace = {transPoint.x, transPoint.y};
+
+                gather_intersectedObjects(m_completeCollisionDatas,
+                                          positionInSpace, m_playerHand.hand);
+
+                for (auto& entity : m_playerHand.hand)
+                {
+                    mLog_info("Intersected Entity : ", entity);
+                }
+            }
+        }
+
+        if (m_playerHand.requestMove)
+        {
+            m_playerHand.requestMove = false;
+            math::mVec2 displacement{mFloat(m_playerHand.displacement.x),
+                                     mFloat(m_playerHand.displacement.y)};
+
+            for (auto entity : m_playerHand.hand)
+            {
+                m_componentManager.transforms[entity].position += displacement;
+            }
+
+            m_playerHand.displacement = {0, 0};
+        }
+    }
+
     void render(std::chrono::steady_clock::duration const& a_deltaTime)
     {
         m_end = std::chrono::high_resolution_clock::now();
@@ -448,6 +505,8 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_start = std::chrono::high_resolution_clock::now();
 
         mDouble deltaTime = std::chrono::duration<mDouble>(ddeltaTime).count();
+
+        process_playerHand();
 
         if (m_updateScene)
         {
@@ -592,6 +651,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     math::mMat4x4            m_matrixGame{};
 
     input::mCallbackInputManager m_inputManagerGame;
+    PlayerHand                   m_playerHand;
 
     std::vector<resource::mRequestImage> m_imageRequested;
 
