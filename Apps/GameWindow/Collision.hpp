@@ -35,12 +35,19 @@ void process_collisions(std::vector<TransformCpnt> const& a_transforms,
                         std::vector<CollisionCpnt> const& a_collisions,
                         std::vector<CollisionData>&       a_collisionDatas);
 
-bool collision_point(CollisionCpnt const&  a_collisionCpnt,
+m::mBool collision_point(CollisionData const&  a_collisionData,
                      m::math::mVec2 const& a_point);
+
+m::mBool collision_shape(CollisionData const&  a_cdA,
+                     CollisionData const&  a_cdB);
 
 void gather_intersectedObjects(
     std::vector<CollisionData> const& a_collisionDatas,
     m::math::mVec2 const& a_point, std::vector<Entity>& a_intersectedEntities);
+
+void gather_intersectedObjects(
+    std::vector<CollisionData> const&       a_collisionDatas,
+    std::vector<std::pair<Entity, Entity>>& a_intersectedEntities);
 
 m::mUInt draw_debugCollisions(
     std::vector<CollisionData> const& a_collisionDatas,

@@ -508,6 +508,14 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         process_playerHand();
 
+        std::vector<std::pair<Entity, Entity>> collidingPairs;
+        gather_intersectedObjects(m_completeCollisionDatas, collidingPairs);
+
+        for (auto& pair : collidingPairs)
+        {
+            mLog_info("Intersected Entity : ", pair.first, " with ", pair.second);
+        }
+
         if (m_updateScene)
         {
             update_gameScene(ddeltaTime);

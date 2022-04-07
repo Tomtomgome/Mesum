@@ -128,7 +128,7 @@ bool intersect(m::math::mVec2 a_a, m::math::mVec2 a_b, m::math::mVec2 a_p)
         return false;
 
     // There is a division, this is crap
-    if((a_p.y - a_a.y) / (a_b.y - a_a.y) * (a_b.x - a_a.x) + a_a.x < a_p.x)
+    if ((a_p.y - a_a.y) / (a_b.y - a_a.y) * (a_b.x - a_a.x) + a_a.x < a_p.x)
         return false;
 
     return true;
@@ -137,16 +137,14 @@ bool intersect(m::math::mVec2 a_a, m::math::mVec2 a_b, m::math::mVec2 a_p)
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-bool collision_point(CollisionData const&  a_collisionData,
-                     m::math::mVec2 const& a_point)
+m::mBool collision_point(CollisionData const&  a_collisionData,
+                         m::math::mVec2 const& a_point)
 {
     m::mUInt nbPoints = a_collisionData.positions.size();
     if (nbPoints < 3)
     {
         return false;
     }
-
-    m::math::mVec2 collisionLine = {10000, a_point.y};
 
     m::mInt countIntersection = 0;
     m::mInt indexPoint        = 0;
@@ -162,6 +160,75 @@ bool collision_point(CollisionData const&  a_collisionData,
     } while (indexPoint != 0);
 
     return countIntersection & 1;
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+m::mBool compute_positiveHalfSpace(m::math::mVec2 a_a, m::math::mVec2 a_b,
+                                   CollisionData const& a_cdB)
+{
+    m::math::mVec2 segment  = a_b - a_a;
+    m::mInt        nbPoints = a_cdB.positions.size();
+
+    for (auto& position : a_cdB.positions)
+    {
+        m::math::mVec2 vector = position - a_a;
+        if (((segment.y * vector.x) - (segment.x * vector.y)) > 0)
+        {
+            nbPoints--;
+        }
+    }
+
+    return nbPoints == 0;
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+m::mBool collision_shape(CollisionData const& a_cdA, CollisionData const& a_cdB)
+{
+    m::mUInt nbPointsA = a_cdA.positions.size();
+    m::mUInt nbPointsB = a_cdB.positions.size();
+    if (nbPointsA < 3 || nbPointsB <= 0)
+    {
+        return false;
+    }
+
+    m::mInt indexPoint = 0;
+    do {
+        m::mInt indexNextPoint = (indexPoint + 1) % nbPointsA;
+
+        if (compute_positiveHalfSpace(a_cdA.positions[indexPoint],
+                                      a_cdA.positions[indexNextPoint], a_cdB))
+        {
+            return false;
+        }
+
+        indexPoint = indexNextPoint;
+    } while (indexPoint != 0);
+
+    return true;
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void gather_intersectedObjects(
+    std::vector<CollisionData> const&       a_collisionDatas,
+    std::vector<std::pair<Entity, Entity>>& a_intersectedEntities)
+{
+    for (m::mUInt i = 0; i < a_collisionDatas.size(); ++i)
+    {
+        for (m::mUInt j = i + 1; j < a_collisionDatas.size(); ++j)
+        {
+            if (collision_shape(a_collisionDatas[i], a_collisionDatas[j]))
+            {
+                a_intersectedEntities.push_back(std::make_pair(
+                    a_collisionDatas[i].entity, a_collisionDatas[j].entity));
+            }
+        }
+    }
 }
 
 //-----------------------------------------------------------------------------
