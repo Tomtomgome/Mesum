@@ -2,6 +2,7 @@
 
 #include "Serializable.hpp"
 #include "Collision.hpp"
+#include "Animation.hpp"
 
 #include <Kernel/Math.hpp>
 
@@ -33,54 +34,6 @@ struct TransformCpnt
     m::mFloat      angle{0};
     m::mFloat      scale{1.0f};
     m::mBool       enabled{true};
-};
-
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-struct Key
-{
-    Serializable(1, Key);
-    void display_gui();
-
-    m::mFloat advancement = 0;
-};
-
-struct Modifier
-{
-    Serializable(1, Modifier);
-    void display_gui();
-
-    m::math::mVec4 color{};
-    m::math::mVec2 offset{};
-    m::mFloat      angle = 0;
-    m::mFloat      scale = 0;
-};
-
-struct Animation
-{
-    Serializable(1, Animation);
-    void display_gui();
-
-    std::vector<Key>                    keys{{0.0f}, {1.0f}};
-    std::vector<Modifier>               modifiers{{}, {}};
-    std::chrono::steady_clock::duration animationDuration{};
-    m::mUInt                            lastKeyIndex = 0;
-    Modifier                            lastModifier{};
-    m::mFloat                           currentAdvancement = 0;
-    m::mBool                            isLooping          = true;
-    m::mBool                            colorMultiply = true;  // Otherwise Add
-    m::mBool                            scaleMultiply = true;  // Otherwise Add
-};
-
-struct AnimatorCpnt
-{
-    Serializable(1, AnimatorCpnt);
-    void display_gui();
-
-    static const m::mU32 version = 1;
-    Animation*           pAnimation;
-    m::mBool             enabled;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -151,26 +104,7 @@ struct DrawingData
     std::vector<std::vector<DrawableData>> materialDrawables;
 };
 
-void apply_modifierToTC(TransformCpnt& a_tc, Modifier const& a_modifier,
-                        bool a_scaleMultiply);
-void apply_modifierToRC(RenderingCpnt& a_rc, Modifier const& a_modifier,
-                        bool a_colorMultiply);
-
 void process_renderableObjects(
     std::vector<TransformCpnt> const& a_transforms,
     std::vector<RenderingCpnt> const& a_renderingCpnts,
     DrawingData&                      a_outputDrawingData);
-
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-void process_animatedObjects(
-    std::vector<AnimatorCpnt>&                 a_animators,
-    std::chrono::steady_clock::duration const& a_deltaTime);
-
-void apply_animationModifiers(
-    std::vector<AnimatorCpnt> const&  a_animators,
-    std::vector<TransformCpnt> const& a_transforms,
-    std::vector<RenderingCpnt> const& a_renderingCpnts,
-    std::vector<TransformCpnt>&       a_outTransforms,
-    std::vector<RenderingCpnt>&       a_outRenderingCpnts);

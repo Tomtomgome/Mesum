@@ -342,6 +342,8 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_imageRequested.emplace_back();
         m_imageRequested.back().path.resize(512);  // prep for imGui
 
+        g_animationBank.load();
+
         init_editor();
         init_game();
     }
@@ -426,6 +428,12 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             {
                 m_componentManager.display_gui();
             }
+        }
+        ImGui::End();
+
+        ImGui::Begin("Animation Bank");
+        {
+            g_animationBank.display_gui();
         }
         ImGui::End();
 
