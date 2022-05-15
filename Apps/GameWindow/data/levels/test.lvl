@@ -1,25 +1,21 @@
 CpntManager: 2 4
 RenderingCpnt: 1 1 1 1 1 1 32 1
-AnimatorCpnt: 1 1 Animation: 1 3 AnimationKey: 1 0
-AnimationKey: 1 0.5
-AnimationKey: 1 1
-3 AnimationModifer: 1 0 0 0 1 0 0 0 0.5
-AnimationModifer: 1 1 1 1 1 0 0 3.14159 2
-AnimationModifer: 1 0 0 0 1 0 0 0 0.5
-2000000000 0 AnimationModifer: 1 0.982296 0.982296 0.982296 1 0 0 3.08597 1.97344
-0.491148 1 1 1
-1
+AnimatorCpnt: 2 0AnimationModifer: 1 1 0.999993 0.999993 0.333508 0 0 0 1
+0.666492 1 1
 TransformCpnt: 1 1000 600 0 2 1
 CollisionCpnt: 1 3 16 -14 -16 -14 0 16 1
 RenderingCpnt: 1 1 1 1 1 0 0 0
-AnimatorCpnt: 1 0 0
+AnimatorCpnt: 2 -1AnimationModifer: 1 0 0 0 0 0 0 0 0
+0 1 0
 TransformCpnt: 1 0 0 0 1 1
 CollisionCpnt: 1 3 0 0 0 0 0 0 0
 RenderingCpnt: 1 1 1 1 1 0 0 0
-AnimatorCpnt: 1 0 0
+AnimatorCpnt: 2 -1AnimationModifer: 1 0 0 0 0 0 0 0 0
+0 1 0
 TransformCpnt: 1 0 0 0 1 1
 CollisionCpnt: 1 3 0 0 0 0 0 0 0
 RenderingCpnt: 1 1 1 1 1 0 0 0
-AnimatorCpnt: 1 0 0
+AnimatorCpnt: 2 -1AnimationModifer: 1 0 0 0 0 0 0 0 0
+0 1 0
 TransformCpnt: 1 0 0 0 1 1
 CollisionCpnt: 1 3 0 0 0 0 0 0 0

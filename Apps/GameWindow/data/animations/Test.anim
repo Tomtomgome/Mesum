@@ -1,0 +1,13 @@
+Animation: 2 6 AnimationKey: 1 0
+AnimationKey: 1 0.2
+AnimationKey: 1 0.4
+AnimationKey: 1 0.6
+AnimationKey: 1 0.8
+AnimationKey: 1 1
+6 AnimationModifer: 1 1 1 1 1 0 0 0 1
+AnimationModifer: 1 1 1 1 1 0 0 0 0.5
+AnimationModifer: 1 1 1 1 1 0 0 0 0.75
+AnimationModifer: 1 1 1 1 1 0 0 0 0.25
+AnimationModifer: 1 1 1 1 1 0 0 0 0.5
+AnimationModifer: 1 1 1 1 1 0 0 0 0
+1000000000 1 1 1
