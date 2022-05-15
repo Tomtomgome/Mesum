@@ -425,7 +425,7 @@ Modifier update(Animation& a_animation, m::mFloat const& a_currentAdvancement)
 
     // Legacy code from when the animation played itself, not the animator
     // a_animation.lastKeyIndex = nextKeyIndex - 1;
-    m::mU32 previousKeyIndex = 0;
+    m::mU32 previousKeyIndex = nextKeyIndex == 0 ? 0 : nextKeyIndex - 1;
     Key     previousKey      = a_animation.keys[previousKeyIndex];
 
     m::mFloat relativeAdvancement =

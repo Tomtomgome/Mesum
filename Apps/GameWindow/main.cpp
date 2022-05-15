@@ -486,7 +486,10 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
                 for (auto& entity : m_playerHand.hand)
                 {
-                    mLog_info("Intersected Entity : ", entity);
+                    if(m_componentManager.animators[entity].enabled)
+                    {
+                        m_componentManager.animators[entity].animationID = 0;
+                    }
                 }
             }
         }
