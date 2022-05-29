@@ -1,0 +1,7 @@
+Model: 1 First
+RenderingCpnt: 1 1 1 1 1 1 32 1
+AnimatorCpnt: 2 -1AnimationModifer: 1 0 0 0 0 0 0 0 0
+0 1 0
+TransformCpnt: 1 0 0 0 1 1
+CollisionCpnt: 1 3 0 0 0 0 0 0 0
+0
