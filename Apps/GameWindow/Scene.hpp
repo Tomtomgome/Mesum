@@ -60,11 +60,13 @@ struct Model
 ///////////////////////////////////////////////////////////////////////////////
 struct ModelBank
 {
+    using ModelID = m::mInt;
+
     void load();
     void save();
 
     void display_gui();
-    void display_selecter(m::mInt& a_modelID);
+    void display_selecter(ModelID& a_modelID);
 
     std::vector<Model> models;
 };
@@ -81,7 +83,7 @@ using Entity = m::mU32;
 ///////////////////////////////////////////////////////////////////////////////
 struct ComponentManager
 {
-    static const m::mU32 s_version = 2U;
+    static const m::mU32 s_version = 3U;
 
     void display_gui();
 
@@ -93,6 +95,8 @@ struct ComponentManager
     Entity create_entity();
     Entity create_entityFromModel(Model const&         a_model,
                                   TransformCpnt const& a_creationTransform);
+
+    void kill_entity(Entity const a_entity);
 
     template <typename t_Component>
     void enable_component(Entity const&      a_entity,
@@ -111,6 +115,8 @@ struct ComponentManager
                                          CollisionCpnt const& a_component);
 
     m::mU32                    entityCount = 0;
+    std::vector<Entity>        freeEntities;
+    std::vector<m::mU8>        enabled;
     std::vector<RenderingCpnt> renderingCpnts;
     std::vector<AnimatorCpnt>  animators;
     std::vector<TransformCpnt> transforms;

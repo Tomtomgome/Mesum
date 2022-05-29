@@ -10,6 +10,7 @@
 #include <MesumGraphics/VulkanRenderer/VulkanContext.hpp>
 
 #include "Scene.hpp"
+#include "GameAction.hpp"
 
 #include <filesystem>
 
@@ -181,7 +182,7 @@ struct PlayerHand
 
     void move_hand(const math::mIVec2& a_position)
     {
-        requestMove  = true;
+        requestMove = true;
         displacement += {a_position.x, -a_position.y};
     }
 
@@ -343,6 +344,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_imageRequested.back().path.resize(512);  // prep for imGui
 
         g_animationBank.load();
+        g_modelBank.load();
 
         init_editor();
         init_game();
@@ -492,7 +494,10 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
                 for (auto& entity : m_playerHand.hand)
                 {
-                    if(m_componentManager.animators[entity].enabled)
+                    g_gameActionProcessor.add_gameAction<KillEntityGA>(
+                        {m_componentManager, entity});
+
+                    if (m_componentManager.animators[entity].enabled)
                     {
                         m_componentManager.animators[entity].animationID = 0;
                     }
@@ -523,6 +528,9 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         mDouble deltaTime = std::chrono::duration<mDouble>(ddeltaTime).count();
 
+        //Process the recorded gameActions
+        g_gameActionProcessor.execute_gameActions();
+
         process_playerHand();
 
         std::vector<std::pair<Entity, Entity>> collidingPairs;
@@ -530,7 +538,8 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         for (auto& pair : collidingPairs)
         {
-            mLog_info("Intersected Entity : ", pair.first, " with ", pair.second);
+            mLog_info("Intersected Entity : ", pair.first, " with ",
+                      pair.second);
         }
 
         if (m_updateScene)

@@ -250,7 +250,7 @@ void ModelBank::display_gui()
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void ModelBank::display_selecter(m::mInt& a_modelID)
+void ModelBank::display_selecter(ModelBank::ModelID& a_modelID)
 {
     const char* preview = (models.size() == 0 || a_modelID < 0)
                               ? "None"
@@ -320,21 +320,26 @@ void ComponentManager::display_gui()
         create_entityFromModel(g_modelBank.models[modelID], creationTransform);
     }
 
-    ImGui::Text("Total entity : %d", entityCount);
+    ImGui::Text("allocated entities : %d", entityCount);
+    ImGui::Text("active entities : %d",
+                entityCount - m::mInt(freeEntities.size()));
 
     for (m::mUInt i = 0; i < entityCount; ++i)
     {
-        std::stringstream entityName;
-        entityName << "Entity " << i;
-        if (ImGui::TreeNode(entityName.str().c_str()))
+        if (enabled[i] == 1)
         {
-            ImGui::PushItemWidth(-80);
-            transforms[i].display_gui();
-            renderingCpnts[i].display_gui();
-            animators[i].display_gui();
-            collisions[i].display_gui();
-            ImGui::PopItemWidth();
-            ImGui::TreePop();
+            std::stringstream entityName;
+            entityName << "Entity " << i;
+            if (ImGui::TreeNode(entityName.str().c_str()))
+            {
+                ImGui::PushItemWidth(-80);
+                transforms[i].display_gui();
+                renderingCpnts[i].display_gui();
+                animators[i].display_gui();
+                collisions[i].display_gui();
+                ImGui::PopItemWidth();
+                ImGui::TreePop();
+            }
         }
     }
 }
@@ -345,6 +350,7 @@ void ComponentManager::initialize()
     transforms.reserve(100);
     animators.reserve(100);
     collisions.reserve(100);
+    enabled.reserve(100);
 }
 
 void ComponentManager::reset()
@@ -354,6 +360,7 @@ void ComponentManager::reset()
     transforms.clear();
     animators.clear();
     collisions.clear();
+    enabled.clear();
 }
 
 void ComponentManager::load_fromCopy(ComponentManager const& a_source)
@@ -364,6 +371,7 @@ void ComponentManager::load_fromCopy(ComponentManager const& a_source)
     transforms     = a_source.transforms;
     animators      = a_source.animators;
     collisions     = a_source.collisions;
+    enabled        = a_source.enabled;
 }
 
 void ComponentManager::load_fromFile(std::string const& a_path)
@@ -381,15 +389,28 @@ void ComponentManager::load_fromFile(std::string const& a_path)
         animators.resize(entityCount);
         transforms.resize(entityCount);
         collisions.resize(entityCount);
+        enabled.resize(entityCount);
 
         for (int i = 0; i < entityCount; ++i)
         {
             renderingCpnts[i].read(inputStream);
             animators[i].read(inputStream);
             transforms[i].read(inputStream);
-            if (s_version >= 2)
+            if (version >= 2)
             {
                 collisions[i].read(inputStream);
+            }
+            if (version >= 3)
+            {
+                inputStream >> enabled[i];
+                if (enabled[i] == 0)
+                {
+                    freeEntities.push_back(i);
+                }
+            }
+            else
+            {
+                enabled[i] = 1;
             }
         }
     }
@@ -407,30 +428,68 @@ void ComponentManager::save_toFile(std::string const& a_path) const
         animators[i].write(outputStream);
         transforms[i].write(outputStream);
         collisions[i].write(outputStream);
+        outputStream << enabled[i] << std::endl;
     }
 }
 
 Entity ComponentManager::create_entity()
 {
+    if (freeEntities.size() > 0)
+    {
+        Entity e = freeEntities.back();
+        freeEntities.pop_back();
+        enabled[e] = 1;
+        return e;
+    }
+
     renderingCpnts.emplace_back();
     transforms.emplace_back();
     animators.emplace_back();
     collisions.emplace_back();
+    enabled.emplace_back(1);
     return entityCount++;
 }
 
 Entity ComponentManager::create_entityFromModel(
     Model const& a_model, TransformCpnt const& a_creationTransform)
 {
-    renderingCpnts.emplace_back(a_model.renderingCpnt);
+    Entity e = 0;
+    if (freeEntities.size() > 0)
+    {
+        e = freeEntities.back();
+        freeEntities.pop_back();
 
-    transforms.emplace_back(
-        apply_transformToTC(a_model.transform, a_creationTransform));
-    ;
+        renderingCpnts[e] = a_model.renderingCpnt;
+        transforms[e] =
+            apply_transformToTC(a_model.transform, a_creationTransform);
+        animators[e]  = a_model.animator;
+        collisions[e] = a_model.collision;
+        enabled[e]    = 1;
+    }
+    else
+    {
+        renderingCpnts.emplace_back(a_model.renderingCpnt);
+        transforms.emplace_back(
+            apply_transformToTC(a_model.transform, a_creationTransform));
+        animators.emplace_back(a_model.animator);
+        collisions.emplace_back(a_model.collision);
+        enabled.emplace_back(1);
 
-    animators.emplace_back(a_model.animator);
-    collisions.emplace_back(a_model.collision);
-    return entityCount++;
+        e = entityCount++;
+    }
+
+    return e;
+}
+
+void ComponentManager::kill_entity(Entity const a_entity)
+{
+    freeEntities.push_back(a_entity);
+
+    renderingCpnts[a_entity].enabled = false;
+    animators[a_entity].enabled      = false;
+    transforms[a_entity].enabled     = false;
+    collisions[a_entity].enabled     = false;
+    enabled[a_entity]                = 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -16,4 +16,5 @@ layout(binding = 1) uniform PsTextureID
 
 void main() {
     outColor = inColor * texture(textures[CBMaterial.textureIndex], inUv);
+    outColor.rgb *= outColor.a;
 }
