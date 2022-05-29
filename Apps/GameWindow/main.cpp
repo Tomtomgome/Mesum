@@ -437,6 +437,12 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         }
         ImGui::End();
 
+        ImGui::Begin("Model Bank");
+        {
+            g_modelBank.display_gui();
+        }
+        ImGui::End();
+
         ImGui::Render();
     }
 #endif  // ENABLE_EDITOR

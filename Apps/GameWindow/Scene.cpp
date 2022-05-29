@@ -1,6 +1,7 @@
 #include <imgui.h>
 #include "Scene.hpp"
 
+#include <filesystem>
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -240,6 +241,159 @@ Entity ComponentManager::create_entity()
     animators.emplace_back();
     collisions.emplace_back();
     return entityCount++;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void Model::read(std::ifstream& a_inputStream)
+{
+    m::mU32     version;
+    std::string debugName;
+    a_inputStream >> debugName >> version;
+
+    if (version <= 1)
+    {
+        a_inputStream >> name;
+        renderingCpnt.read(a_inputStream);
+        animator.read(a_inputStream);
+        transform.read(a_inputStream);
+        collision.read(a_inputStream);
+        a_inputStream >> ID;
+    }
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void Model::write(std::ofstream& a_outputStream) const
+{
+    a_outputStream << "Model: " << s_version << ' ';
+
+    a_outputStream << name << std::endl;
+    renderingCpnt.write(a_outputStream);
+    animator.write(a_outputStream);
+    transform.write(a_outputStream);
+    collision.write(a_outputStream);
+    a_outputStream << ID << std::endl;
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void Model::display_gui()
+{
+    renderingCpnt.display_gui();
+    animator.display_gui();
+    transform.display_gui();
+    collision.display_gui();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+ModelBank g_modelBank;
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void ModelBank::load()
+{
+    models.clear();
+    std::filesystem::path currentPath = std::filesystem::current_path();
+    std::filesystem::path modelsPath{currentPath / "data" / "models"};
+    for (const auto& entry :
+         std::filesystem::directory_iterator{modelsPath})
+    {
+        if (entry.path().has_extension() && entry.path().extension() == ".model")
+        {
+            std::ifstream inputStream(entry.path());
+            Model     model;
+            model.name = entry.path().filename().stem().string();
+            model.read(inputStream);
+            if (model.ID >= models.size())
+            {
+                models.resize(model.ID + 1);
+            }
+            models[model.ID] = model;
+        }
+    }
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void ModelBank::save()
+{
+    std::filesystem::path mainPath{std::filesystem::current_path() / "data" /
+                                   "models"};
+    for (auto const& rModel : models)
+    {
+        std::filesystem::path modelPath{mainPath /
+                                            std::string(rModel.name + ".model")};
+
+        std::ofstream outputStream(modelPath, std::ios::binary);
+        rModel.write(outputStream);
+    }
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void ModelBank::display_gui()
+{
+    if (ImGui::Button("Reload"))
+    {
+        load();
+    }
+    if (ImGui::Button("Save"))
+    {
+        save();
+    }
+
+    for (auto& rModel : models)
+    {
+        if (ImGui::TreeNode(rModel.name.c_str()))
+        {
+            rModel.display_gui();
+            ImGui::TreePop();
+        }
+    }
+
+    static char name[512] = "";
+    ImGui::InputText("New model name : ", name, 512);
+
+    if (ImGui::Button("Create Model"))
+    {
+        models.emplace_back();
+        models.back().name = name;
+        models.back().ID   = models.size() - 1;
+    }
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void ModelBank::display_selecter(m::mInt& a_modelID)
+{
+    const char* preview =
+        a_modelID < 0 ? "None" : models[a_modelID].name.c_str();
+
+    if (ImGui::BeginCombo("Played animation", preview))
+    {
+        for (m::mInt i = -1; i < m::mInt(models.size()); ++i)
+        {
+            if (ImGui::Selectable(i == -1 ? "None" : models[i].name.c_str(),
+                                  i == a_modelID))
+            {
+                a_modelID = i;
+            }
+        }
+        ImGui::EndCombo();
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
