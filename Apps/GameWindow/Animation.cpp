@@ -1,6 +1,7 @@
 #include "Animation.hpp"
 
 #include "Scene.hpp"
+#include "GameAction.hpp"
 
 #include <imgui.h>
 
@@ -317,6 +318,14 @@ void AnimatorCpnt::read(std::ifstream& a_inputStream)
     {
         a_inputStream >> animationID;
         lastModifier.read(a_inputStream);
+        if(version >= 3)
+        {
+            a_inputStream >> lastKeyIndex;
+        }
+        else
+        {
+            lastKeyIndex = 0;
+        }
         a_inputStream >> currentAdvancement;
         a_inputStream >> isLooping;
     }
@@ -333,6 +342,7 @@ void AnimatorCpnt::write(std::ofstream& a_outputStream) const
 
     a_outputStream << animationID;
     lastModifier.write(a_outputStream);
+    a_outputStream << lastKeyIndex << ' ';
     a_outputStream << currentAdvancement << ' ';
     a_outputStream << isLooping << ' ';
     a_outputStream << enabled << std::endl;
@@ -402,7 +412,7 @@ void apply_modifierToTC(TransformCpnt& a_tc, Modifier const& a_modifier,
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-Modifier update(Animation& a_animation, m::mFloat const& a_currentAdvancement)
+auto update(Animation& a_animation, m::mFloat const& a_currentAdvancement)
 {
     // Legacy code from when the animation played itself, not the animator
     // m::mU32  nextKeyIndex = a_animation.lastKeyIndex + 1;
@@ -451,7 +461,7 @@ Modifier update(Animation& a_animation, m::mFloat const& a_currentAdvancement)
         (1.0f - relativeAdvancement) * previousModifier.scale +
         relativeAdvancement * nextModifier.scale;
 
-    return finalModifier;
+    return std::tie(finalModifier, previousKeyIndex);
 }
 
 //-----------------------------------------------------------------------------
@@ -485,7 +495,19 @@ void process_animatedObjects(
                 ra.currentAdvancement = std::modf(1.0f, &ra.currentAdvancement);
             }
 
-            ra.lastModifier = update(rAnimation, ra.currentAdvancement);
+            auto previousKeyIndex = ra.lastKeyIndex;
+            const auto& [lastModifier, lastKeyIndex] =
+                update(rAnimation, ra.currentAdvancement);
+            ra.lastModifier = lastModifier;
+            ra.lastKeyIndex = lastKeyIndex;
+
+            // Maybe this should be in the update function
+            if (previousKeyIndex != lastKeyIndex)
+            {
+                // ExecuteGameAction
+                g_gameActionProcessor.add_gameAction(
+                    *rAnimation.gameActions[lastKeyIndex], ra.pParentManager, i);
+            }
         }
     }
 }

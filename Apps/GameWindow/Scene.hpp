@@ -89,7 +89,6 @@ struct ComponentManager
 
     void   initialize();
     void   reset();
-    void   load_fromCopy(ComponentManager const& a_source);
     void   load_fromFile(std::string const& a_path);
     void   save_toFile(std::string const& a_path) const;
     Entity create_entity();

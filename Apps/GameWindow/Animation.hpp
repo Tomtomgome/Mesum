@@ -7,6 +7,8 @@
 
 class RenderingCpnt;
 class TransformCpnt;
+struct GameAction;
+struct ComponentManager;
 using Entity = m::mU32;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -40,6 +42,7 @@ struct Animation
     m::mUInt                            ID{0};
     std::vector<Key>                    keys{{0.0f}, {1.0f}};
     std::vector<Modifier>               modifiers{{}, {}};
+    std::vector<GameAction*>            gameActions{{nullptr}, {nullptr}};
     std::chrono::steady_clock::duration animationDuration{};
     m::mBool                            colorMultiply = true;  // Otherwise Add
     m::mBool                            scaleMultiply = true;  // Otherwise Add
@@ -62,14 +65,16 @@ extern AnimationBank g_animationBank;
 ///////////////////////////////////////////////////////////////////////////////
 struct AnimatorCpnt
 {
-    Serializable(2, AnimatorCpnt);
+    Serializable(3, AnimatorCpnt);
     void display_gui();
 
-    m::mInt              animationID{-1};
-    Modifier             lastModifier{};
-    m::mFloat            currentAdvancement{0};
-    m::mBool             isLooping{true};
-    m::mBool             enabled{false};
+    m::mInt           animationID{-1};
+    Modifier          lastModifier{};
+    m::mInt           lastKeyIndex{0};
+    m::mFloat         currentAdvancement{0};
+    m::mBool          isLooping{true};
+    ComponentManager* pParentManager{nullptr};
+    m::mBool          enabled{false};
 };
 
 ///////////////////////////////////////////////////////////////////////////////

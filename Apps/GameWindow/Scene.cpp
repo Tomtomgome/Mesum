@@ -295,6 +295,7 @@ void ComponentManager::enable_component<AnimatorCpnt>(
 {
     animators[a_entity]         = a_component;
     animators[a_entity].enabled = true;
+    animators[a_entity].pParentManager = this;
 }
 
 template <>
@@ -363,17 +364,6 @@ void ComponentManager::reset()
     enabled.clear();
 }
 
-void ComponentManager::load_fromCopy(ComponentManager const& a_source)
-{
-    reset();
-    entityCount    = a_source.entityCount;
-    renderingCpnts = a_source.renderingCpnts;
-    transforms     = a_source.transforms;
-    animators      = a_source.animators;
-    collisions     = a_source.collisions;
-    enabled        = a_source.enabled;
-}
-
 void ComponentManager::load_fromFile(std::string const& a_path)
 {
     std::ifstream inputStream(a_path);
@@ -395,6 +385,7 @@ void ComponentManager::load_fromFile(std::string const& a_path)
         {
             renderingCpnts[i].read(inputStream);
             animators[i].read(inputStream);
+            animators[i].pParentManager = this;
             transforms[i].read(inputStream);
             if (version >= 2)
             {
@@ -445,6 +436,7 @@ Entity ComponentManager::create_entity()
     renderingCpnts.emplace_back();
     transforms.emplace_back();
     animators.emplace_back();
+    animators.back().pParentManager = this;
     collisions.emplace_back();
     enabled.emplace_back(1);
     return entityCount++;
@@ -463,6 +455,7 @@ Entity ComponentManager::create_entityFromModel(
         transforms[e] =
             apply_transformToTC(a_model.transform, a_creationTransform);
         animators[e]  = a_model.animator;
+        animators[e].pParentManager = this;
         collisions[e] = a_model.collision;
         enabled[e]    = 1;
     }
@@ -472,6 +465,7 @@ Entity ComponentManager::create_entityFromModel(
         transforms.emplace_back(
             apply_transformToTC(a_model.transform, a_creationTransform));
         animators.emplace_back(a_model.animator);
+        animators.back().pParentManager = this;
         collisions.emplace_back(a_model.collision);
         enabled.emplace_back(1);
 
