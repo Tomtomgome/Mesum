@@ -41,6 +41,12 @@ inline void check_MicrosoftHRESULT(HRESULT a_hr)
         mAssert(false);
     }
 }
+size_t get_dxgiBitsPerPixel(_In_ DXGI_FORMAT a_eFmt);
+void   get_dxgiSurfaceInfo(_In_ size_t a_stWidth, _In_ size_t a_stHeight,
+                           _In_ DXGI_FORMAT  a_eFmt,
+                           _Out_opt_ size_t* a_stOutNumBytes,
+                           _Out_opt_ size_t* a_stOutRowBytes,
+                           _Out_opt_ size_t* a_stOutNumRows);
 
 void set_dxgiDebugName(ComPtr<IDXGIObject> a_dxgiObject, std::string a_sName,
                        const mInt a_lineNumber, const mChar* a_file);

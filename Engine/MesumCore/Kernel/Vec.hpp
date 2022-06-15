@@ -69,6 +69,13 @@ struct mVecData<t_T, 4>
             t_T z;
             t_T w;
         };
+        struct
+        {
+            t_T r;
+            t_T g;
+            t_T b;
+            t_T a;
+        };
     };
 };
 

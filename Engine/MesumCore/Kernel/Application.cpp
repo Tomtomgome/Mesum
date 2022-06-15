@@ -34,7 +34,7 @@ void mITimedLoopApplication::launch(mCmdLine const& a_cmdLine, void* a_appData)
 
     auto start = std::chrono::high_resolution_clock::now();
     std::chrono::steady_clock::duration deltaTime;
-    while (step(deltaTime))
+    do
     {
         auto end  = std::chrono::high_resolution_clock::now();
         deltaTime = end - start;
@@ -44,7 +44,7 @@ void mITimedLoopApplication::launch(mCmdLine const& a_cmdLine, void* a_appData)
             deltaTime = m_minStepDuration;
         }
         start = std::chrono::high_resolution_clock::now();
-    }
+    } while (step(deltaTime));
 
     destroy();
 }
