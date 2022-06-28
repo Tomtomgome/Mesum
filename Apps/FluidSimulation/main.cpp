@@ -180,7 +180,7 @@ void compute_divergence(Universe const& a_input, GridVector& a_outDivergences)
             mFloat uiminus12 =
                 (i == 0) ? 0.0f : a_input.Q[convert_toIndex(i - 1, j)].uh;
             mFloat viminus12 =
-                (j == 0) ? 0.0f : a_input.Q[convert_toIndex(i, j - 1)].uh;
+                (j == 0) ? 0.0f : a_input.Q[convert_toIndex(i, j - 1)].uv;
 
             mInt index = convert_toIndex(i, j);
 
@@ -234,7 +234,7 @@ void compute_entriesOfA(Universe const& a_input, mFloat a_deltaTime,
             a_A[index].Aplusi =
                 is_solid(a_input, i + 1, j) ? 0.0f : -globalFactor;
             a_A[index].Aplusj =
-                is_solid(a_input, i, j + j) ? 0.0f : -globalFactor;
+                is_solid(a_input, i, j + 1) ? 0.0f : -globalFactor;
         }
     }
 }
