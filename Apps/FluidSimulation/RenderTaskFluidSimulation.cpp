@@ -128,13 +128,13 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
     descSampler.MaxAnisotropy  = 1;
     descSampler.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
 
-    D3D12_FILTER_TYPE eDx12FilterMinMag = D3D12_FILTER_TYPE_LINEAR;
+    D3D12_FILTER_TYPE eDx12FilterMinMag = D3D12_FILTER_TYPE_POINT;
     D3D12_FILTER_TYPE eDx12FilterMip    = D3D12_FILTER_TYPE_POINT;
 
     D3D12_FILTER_REDUCTION_TYPE eDx12FilterReduction =
         D3D12_FILTER_REDUCTION_TYPE_STANDARD;
     D3D12_TEXTURE_ADDRESS_MODE eDx12AddressMode =
-        D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+        D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
 
     descSampler.Filter =
         D3D12_ENCODE_BASIC_FILTER(eDx12FilterMinMag, eDx12FilterMinMag,

@@ -7,6 +7,8 @@
 
 #include "RenderTaskFluidSimulation.hpp"
 
+#include <iomanip>
+
 #ifdef min
 #undef min
 #endif
@@ -17,18 +19,18 @@
 
 using namespace m;
 
-static const mFloat s_cellSize = 1.0f;
-static const mFloat s_density  = 1.0f;
+static const mDouble s_cellSize = 1.0f;
+static const mDouble s_density  = 1.0f;
 
-static const mInt   s_maxIteration       = 100;
-static const mFloat s_solutionTolerance  = 0.0000001;
-static const mFloat s_micTunningConstant = 0.97f;
+static const mInt    s_maxIteration       = 100;
+static const mDouble s_solutionTolerance  = 0.00000000000001;
+static const mDouble s_micTunningConstant = 0.97f;
 
-static const mFloat s_gravity = 9.8;
-static const mFloat s_wind    = 20;
+static const mDouble s_gravity = 9.8;
+static const mDouble s_wind    = 2.5;
 
 static const mInt g_gridSize = s_nbRow * s_nbCol;
-using GridVector             = math::mVec<mFloat, g_gridSize>;
+using GridVector             = math::mVec<mDouble, g_gridSize>;
 template <typename t_Type>
 using GridVectorSP = math::mVec<t_Type, g_gridSize>;
 
@@ -41,20 +43,20 @@ mBool check_visibility(math::mIVec2 a_target, math::mIVec2 a_pos,
 
 struct EntryOfA
 {
-    mFloat Adiag;
-    mFloat Aplusi;
-    mFloat Aplusj;
+    mDouble Adiag;
+    mDouble Aplusi;
+    mDouble Aplusj;
 };
 
 struct Particle
 {
-    mFloat uv;
-    mFloat uh;
-    mFloat T;
+    mDouble uv;
+    mDouble uh;
+    mDouble T;
 };
 
 Particle interpolate(Particle const& a_a, Particle const& a_b,
-                     mFloat const a_alpha)
+                     mDouble const a_alpha)
 {
     Particle output;
     output.uv = (1.0f - a_alpha) * a_a.uv + a_b.uv * a_alpha;
@@ -64,15 +66,15 @@ Particle interpolate(Particle const& a_a, Particle const& a_b,
     return output;
 }
 
-mFloat saturate(mFloat const a_input, mFloat const a_min = 0.0f,
-                mFloat const a_max = 1.0f)
+mDouble saturate(mDouble const a_input, mDouble const a_min = 0.0f,
+                 mDouble const a_max = 1.0f)
 {
     return std::min(a_max, std::max(a_min, a_input));
 }
 
-mInt convert_toIndex(mInt a_x, mInt a_y)
+mInt convert_toIndex(mInt a_col, mInt a_row)
 {
-    return a_y * s_nbCol + a_x;
+    return a_row * s_nbCol + a_col;
 }
 
 mInt convert_toIndex(math::mIVec2 a_position)
@@ -119,28 +121,30 @@ void init_universe(Universe& a_input)
     a_input.Q[convert_toIndex(s_nbCol / 2, s_nbRow / 2)].T = 100;
 }
 
-math::mVec2 get_speedAt(Universe const& a_input, math::mIVec2 a_position)
+math::mDVec2 get_speedAt(Universe const& a_input, math::mIVec2 a_position)
 {
-    mFloat tSpeed = (a_position.y == s_nbRow - 1)
-                        ? 0.0f
-                        : a_input.Q[convert_toIndex(a_position)].uv;
-    mFloat rSpeed = (a_position.x == s_nbCol - 1)
-                        ? 0.0f
-                        : a_input.Q[convert_toIndex(a_position)].uh;
-    mFloat lSpeed =
+    mDouble tSpeed = (a_position.y == s_nbRow - 1)
+                         ? 0.0f
+                         : a_input.Q[convert_toIndex(a_position)].uv;
+    mDouble rSpeed = (a_position.x == s_nbCol - 1)
+                         ? 0.0f
+                         : a_input.Q[convert_toIndex(a_position)].uh;
+    mDouble lSpeed =
         (a_position.x == 0)
             ? 0.0f
             : a_input.Q[convert_toIndex(a_position.x - 1, a_position.y)].uh;
-    mFloat bSpeed =
+    mDouble bSpeed =
         (a_position.y == 0)
             ? 0.0f
-            : a_input.Q[convert_toIndex(a_position.x, a_position.y - 1)].uh;
+            : a_input.Q[convert_toIndex(a_position.x, a_position.y - 1)].uv;
 
-    return {(rSpeed + lSpeed) / 2.0f, (bSpeed + tSpeed) / 2.0f};
+    return {(rSpeed + lSpeed) / 2.0, (bSpeed + tSpeed) / 2.0};
 }
 
-Particle get_valueAt(Universe const& a_input, math::mVec2 a_position)
+Particle get_valueAt(Universe const& a_input, math::mDVec2 a_position)
 {
+    a_position.x = std::min(s_nbCol - 1.0, std::max(0.0, a_position.x));
+    a_position.y = std::min(s_nbRow - 1.0, std::max(0.0, a_position.y));
     math::mIVec2 a_flooredPosition = {mInt(std::floor(a_position.x)),
                                       mInt(std::floor(a_position.y))};
     a_flooredPosition.x =
@@ -167,25 +171,28 @@ Particle get_valueAt(Universe const& a_input, math::mVec2 a_position)
     return interpolate(bottom, top, a_position.y - a_flooredPosition.y);
 }
 
-void compute_divergence(Universe const& a_input, GridVector& a_outDivergences)
+void compute_divergence(Universe const& a_input, GridVector& a_outDivergences,
+                        mFloat a_deltaTime)
 {
+    mDouble globalFactor = 1.0;//(s_density * s_cellSize * s_cellSize) / a_deltaTime;
     for (mInt j = 0; j < s_nbRow; ++j)
     {
         for (mInt i = 0; i < s_nbCol; ++i)
         {
-            mFloat viplus12 =
+            mDouble viplus12 =
                 (j == s_nbRow - 1) ? 0.0f : a_input.Q[convert_toIndex(i, j)].uv;
-            mFloat uiplus12 =
+            mDouble uiplus12 =
                 (i == s_nbCol - 1) ? 0.0f : a_input.Q[convert_toIndex(i, j)].uh;
-            mFloat uiminus12 =
+            mDouble uiminus12 =
                 (i == 0) ? 0.0f : a_input.Q[convert_toIndex(i - 1, j)].uh;
-            mFloat viminus12 =
+            mDouble viminus12 =
                 (j == 0) ? 0.0f : a_input.Q[convert_toIndex(i, j - 1)].uv;
 
             mInt index = convert_toIndex(i, j);
 
-            a_outDivergences[index] = (uiplus12 - uiminus12) / s_cellSize +
-                                      (viplus12 - viminus12) / s_cellSize;
+            a_outDivergences[index] =
+                globalFactor * ((uiplus12 - uiminus12) / s_cellSize +
+                                (viplus12 - viminus12) / s_cellSize);
         }
     }
 }
@@ -220,10 +227,10 @@ mInt get_numberOfSolidNeighbors(Universe const& a_input, mInt a_i, mInt a_j)
     return nbSolid;
 }
 
-void compute_entriesOfA(Universe const& a_input, mFloat a_deltaTime,
+void compute_entriesOfA(Universe const& a_input, mDouble a_deltaTime,
                         GridVectorSP<EntryOfA>& a_A)
 {
-    mFloat globalFactor = a_deltaTime / (s_density * s_cellSize * s_cellSize);
+    mDouble globalFactor = a_deltaTime / (s_density * s_cellSize * s_cellSize);
     for (mInt j = 0; j < s_nbRow; ++j)
     {
         for (mInt i = 0; i < s_nbCol; ++i)
@@ -241,18 +248,18 @@ void compute_entriesOfA(Universe const& a_input, mFloat a_deltaTime,
 
 void compute_MIC0Entries(GridVectorSP<EntryOfA> const& a_A, GridVector& MIC0)
 {
-    for (mInt j = 0; j < s_nbRow; ++j)
+    for (mInt row = 0; row < s_nbRow; ++row)
     {
-        for (mInt i = 0; i < s_nbCol; ++i)
+        for (mInt col = 0; col < s_nbCol; ++col)
         {
-            mInt  index               = convert_toIndex(i, j);
-            mBool isOutOfBoundIMinus1 = is_outOfBoundI(i - 1);
-            mBool isOutOfBoundJinus1  = is_outOfBoundJ(j - 1);
+            mInt  index               = convert_toIndex(col, row);
+            mBool isOutOfBoundIMinus1 = is_outOfBoundI(col - 1);
+            mBool isOutOfBoundJinus1  = is_outOfBoundJ(row - 1);
 
-            mFloat ici;
-            mFloat icj;
-            mFloat mici;
-            mFloat micj;
+            mDouble ici;
+            mDouble icj;
+            mDouble mici;
+            mDouble micj;
             if (isOutOfBoundIMinus1)
             {
                 ici  = 0.0f;
@@ -260,7 +267,7 @@ void compute_MIC0Entries(GridVectorSP<EntryOfA> const& a_A, GridVector& MIC0)
             }
             else
             {
-                mInt indexMinusI = convert_toIndex(i - 1, j);
+                mInt indexMinusI = convert_toIndex(col - 1, row);
                 ici              = a_A[indexMinusI].Aplusi * MIC0[indexMinusI];
                 mici = a_A[indexMinusI].Aplusi * (a_A[indexMinusI].Aplusj) *
                        MIC0[indexMinusI] * MIC0[indexMinusI];
@@ -272,17 +279,17 @@ void compute_MIC0Entries(GridVectorSP<EntryOfA> const& a_A, GridVector& MIC0)
             }
             else
             {
-                mInt indexMinusJ = convert_toIndex(i, j - 1);
+                mInt indexMinusJ = convert_toIndex(col, row - 1);
                 icj              = a_A[indexMinusJ].Aplusj * MIC0[indexMinusJ];
                 micj = a_A[indexMinusJ].Aplusj * (a_A[indexMinusJ].Aplusi) *
                        MIC0[indexMinusJ] * MIC0[indexMinusJ];
             }
 
-            mFloat e = a_A[index].Adiag - (ici * ici) - (icj * icj) -
-                       s_micTunningConstant * (mici + micj);
+            mDouble e = a_A[index].Adiag - (ici * ici) - (icj * icj) -
+                        s_micTunningConstant * (mici + micj);
 
             mAssert(e >= 0);
-            MIC0[index] = 1 / std::sqrt(std::max(e, 0.000000000000000000001f));
+            MIC0[index] = 1 / std::sqrt(std::max(e, 0.000000000000000000001));
         }
     }
 }
@@ -292,6 +299,7 @@ void apply_preconditionner(GridVector const&             a_vecPreconditionner,
                            GridVector const&             a_vecInput,
                            GridVector&                   a_vecOutput)
 {
+    GridVector a_tmpOutput;
     for (mInt j = 0; j < s_nbRow; ++j)
     {
         for (mInt i = 0; i < s_nbCol; ++i)
@@ -300,8 +308,8 @@ void apply_preconditionner(GridVector const&             a_vecPreconditionner,
             mInt indexMinusI = convert_toIndex(i - 1, j);
             mInt indexMinusJ = convert_toIndex(i, j - 1);
 
-            mFloat fi;
-            mFloat fj;
+            mDouble fi;
+            mDouble fj;
             if (is_outOfBoundI(i - 1))
             {
                 fi = 0;
@@ -310,7 +318,7 @@ void apply_preconditionner(GridVector const&             a_vecPreconditionner,
             {
                 fi = a_A[indexMinusI].Aplusi *
                      a_vecPreconditionner[indexMinusI] *
-                     a_vecOutput[indexMinusI];
+                     a_tmpOutput[indexMinusI];
             }
 
             if (is_outOfBoundJ(j - 1))
@@ -321,11 +329,11 @@ void apply_preconditionner(GridVector const&             a_vecPreconditionner,
             {
                 fj = a_A[indexMinusJ].Aplusj *
                      a_vecPreconditionner[indexMinusJ] *
-                     a_vecOutput[indexMinusJ];
+                     a_tmpOutput[indexMinusJ];
             }
 
-            mFloat tmp         = a_vecInput[index] - fi - fj;
-            a_vecOutput[index] = tmp * a_vecPreconditionner[index];
+            mDouble tmp        = a_vecInput[index] - fi - fj;
+            a_tmpOutput[index] = tmp * a_vecPreconditionner[index];
         }
     }
 
@@ -337,8 +345,8 @@ void apply_preconditionner(GridVector const&             a_vecPreconditionner,
             mInt indexPlusI = convert_toIndex(i + 1, j);
             mInt indexPlusJ = convert_toIndex(i, j + 1);
 
-            mFloat fi;
-            mFloat fj;
+            mDouble fi;
+            mDouble fj;
             if (is_outOfBoundI(i + 1))
             {
                 fi = 0;
@@ -359,7 +367,7 @@ void apply_preconditionner(GridVector const&             a_vecPreconditionner,
                      a_vecOutput[indexPlusJ];
             }
 
-            mFloat tmp         = a_vecOutput[index] - fi - fj;
+            mDouble tmp        = a_tmpOutput[index] - fi - fj;
             a_vecOutput[index] = tmp * a_vecPreconditionner[index];
         }
     }
@@ -378,23 +386,23 @@ void apply_A(GridVectorSP<EntryOfA> const& a_A, GridVector const& a_vecInput,
             mInt indexPlusJ  = convert_toIndex(i, j + 1);
             mInt indexMinusJ = convert_toIndex(i, j - 1);
 
-            mFloat fPlusI  = 0.0f;
-            mFloat fMinusI = 0.0f;
-            mFloat fPlusJ  = 0.0f;
-            mFloat fMinusJ = 0.0f;
-            if (!is_outOfBoundI(i+1))
+            mDouble fPlusI  = 0.0f;
+            mDouble fMinusI = 0.0f;
+            mDouble fPlusJ  = 0.0f;
+            mDouble fMinusJ = 0.0f;
+            if (!is_outOfBoundI(i + 1))
             {
                 fPlusI = a_vecInput[indexPlusI] * a_A[index].Aplusi;
             }
-            if (!is_outOfBoundI(i-1))
+            if (!is_outOfBoundI(i - 1))
             {
                 fMinusI = a_vecInput[indexMinusI] * a_A[indexMinusI].Aplusi;
             }
-            if (!is_outOfBoundJ(j+1))
+            if (!is_outOfBoundJ(j + 1))
             {
                 fPlusJ = a_vecInput[indexPlusJ] * a_A[index].Aplusj;
             }
-            if (!is_outOfBoundJ(j-1))
+            if (!is_outOfBoundJ(j - 1))
             {
                 fMinusJ = a_vecInput[indexMinusJ] * a_A[indexMinusJ].Aplusj;
             }
@@ -404,9 +412,9 @@ void apply_A(GridVectorSP<EntryOfA> const& a_A, GridVector const& a_vecInput,
     }
 }
 
-mFloat get_maxValue(GridVector& a_vector)
+mDouble get_maxValue(GridVector& a_vector)
 {
-    mFloat maxValue = 0;
+    mDouble maxValue = 0;
     for (mInt i = 0; i < g_gridSize; ++i)
     {
         if (a_vector[i] > maxValue)
@@ -419,13 +427,12 @@ mFloat get_maxValue(GridVector& a_vector)
 
 mBool compute_preconditionedConjugaiteGradient(
     GridVector const& a_vecPreconditionner, GridVectorSP<EntryOfA> const& a_A,
-    GridVector& a_pressures, GridVector const& a_divergences,
-    mFloat a_fluidDensity)
+    GridVector& a_pressures, GridVector const& a_divergences)
 {
     GridVector vecResidual;
     GridVector vecAuxiliary;
     GridVector vecSearch;
-    mFloat     teta;
+    mDouble    teta;
     for (mInt i = 0; i < s_nbRow * s_nbCol; ++i)
     {
         a_pressures[i] = 0.0f;
@@ -433,15 +440,18 @@ mBool compute_preconditionedConjugaiteGradient(
     }
     apply_preconditionner(a_vecPreconditionner, a_A, vecResidual, vecAuxiliary);
     vecSearch = vecAuxiliary;
-    // teta      = math::dot(vecAuxiliary, vecResidual);
+    teta      = math::dot(vecAuxiliary, vecResidual);
 
     for (mInt iterID = 0; iterID < s_maxIteration; ++iterID)
     {
         apply_A(a_A, vecSearch, vecAuxiliary);
-        mFloat alpha = a_fluidDensity / dot(vecAuxiliary, vecSearch);
+
+        mDouble dotValue = dot(vecAuxiliary, vecSearch);
+        mDouble alpha    = teta / dotValue;
         a_pressures += alpha * vecSearch;
         vecResidual -= alpha * vecAuxiliary;
 
+        mLog_info("Max value : ", get_maxValue(vecResidual));
         if (get_maxValue(vecResidual) <= s_solutionTolerance)
         {
             return true;
@@ -449,16 +459,17 @@ mBool compute_preconditionedConjugaiteGradient(
 
         apply_preconditionner(a_vecPreconditionner, a_A, vecResidual,
                               vecAuxiliary);
-        teta        = math::dot(vecAuxiliary, vecResidual);
-        mFloat beta = teta / a_fluidDensity;
-        vecSearch   = vecAuxiliary + beta * vecSearch;
+        mDouble newTeta = math::dot(vecAuxiliary, vecResidual);
+        mDouble beta    = newTeta / teta;
+        vecSearch       = vecAuxiliary + beta * vecSearch;
+        teta            = newTeta;
     }
 
     return false;
 }
 
 void update_velocities(GridVector& a_pressures, Universe& a_output,
-                       mFloat a_deltaTime)
+                       mDouble a_deltaTime)
 {
     for (mInt j = 0; j < s_nbRow; ++j)
     {
@@ -468,11 +479,11 @@ void update_velocities(GridVector& a_pressures, Universe& a_output,
             mInt indexPlusI = convert_toIndex(i + 1, j);
             mInt indexPlusJ = convert_toIndex(i, j + 1);
 
-            mFloat pressure = a_pressures[index];
-            mFloat pressurePlusI;
-            mFloat pressurePlusJ;
+            mDouble pressure = a_pressures[index];
+            mDouble pressurePlusI;
+            mDouble pressurePlusJ;
 
-            if (is_outOfBoundI(i+1))
+            if (is_outOfBoundI(i + 1))
             {
                 pressurePlusI = a_pressures[index] + (s_density * s_cellSize *
                                                       (a_output.Q[index].uh)) /
@@ -483,7 +494,7 @@ void update_velocities(GridVector& a_pressures, Universe& a_output,
                 pressurePlusI = a_pressures[indexPlusI];
             }
 
-            if (is_outOfBoundJ(j+1))
+            if (is_outOfBoundJ(j + 1))
             {
                 pressurePlusJ = a_pressures[index] + (s_density * s_cellSize *
                                                       (a_output.Q[index].uv)) /
@@ -508,7 +519,7 @@ profile::mProfilerMultiSampling<1> g_AdvectionProfiler;
 profile::mProfilerMultiSampling<1> g_UpdateProfiler;
 profile::mProfilerMultiSampling<1> g_ProjectionProfiler;
 
-void Simulate(Universe const& a_input, Universe& a_output, mFloat a_deltaTime)
+void Simulate(Universe const& a_input, Universe& a_output, mDouble a_deltaTime)
 {
     mLog_info("SIMULATION STEP ---------------------");
     //---- Advect
@@ -519,17 +530,18 @@ void Simulate(Universe const& a_input, Universe& a_output, mFloat a_deltaTime)
         {
             for (mInt col = 0; col < s_nbCol; ++col)
             {
-                mInt        index     = row * s_nbCol + col;
-                math::mVec2 cellPoint = {mFloat(col), mFloat(row)};
+                mInt         index     = row * s_nbCol + col;
+                math::mDVec2 cellPoint = {mDouble(col), mDouble(row)};
                 // Find particle starting point
-                math::mVec2 speed            = get_speedAt(a_input, {col, row});
-                math::mVec2 startingPosition = cellPoint - a_deltaTime * speed;
+                math::mDVec2 speed = get_speedAt(a_input, {col, row});
+                math::mDVec2 startingPosition = cellPoint - a_deltaTime * speed;
 
                 a_output.Q[index] = get_valueAt(a_input, startingPosition);
             }
         }
     }
-    mLog_info("--- Timing : ", g_AdvectionProfiler.get_average<mFloat, std::micro>());
+    mLog_info("--- Timing : ",
+              g_AdvectionProfiler.get_average<mDouble, std::micro>());
 
     //---- Apply gravity
     mLog_info("Apply gravity");
@@ -540,39 +552,184 @@ void Simulate(Universe const& a_input, Universe& a_output, mFloat a_deltaTime)
             for (mInt col = 0; col < s_nbCol; ++col)
             {
                 mInt index = row * s_nbCol + col;
-                a_output.Q[index].uh += a_deltaTime * s_gravity;
-                a_output.Q[index].uv += a_deltaTime * s_wind;
+                a_output.Q[index].uv += a_deltaTime * s_gravity;
+                a_output.Q[index].uh += a_deltaTime * s_wind;
             }
         }
     }
-    mLog_info("--- Timing : ", g_UpdateProfiler.get_average<mFloat, std::micro>());
+    mLog_info("--- Timing : ",
+              g_UpdateProfiler.get_average<mDouble, std::micro>());
 
     //---- Project
     mLog_info("Project");
     {
+        std::stringstream debugString;
+        debugString << std::setprecision(3) << std::fixed;
         profile::mRAIITiming timming(g_ProjectionProfiler);
         // Compute divergences
         mLog_info("- Compute Divergences");
         GridVector divergences;
-        compute_divergence(a_output, divergences);
+        compute_divergence(a_output, divergences, a_deltaTime);
+        divergences *= -1;
+        debugString.seekp(std::ios_base::beg);
+        for (mInt row = s_nbRow - 1; row >= 0; --row)
+        {
+            for (mInt col = 0; col < s_nbCol; ++col)
+            {
+                mInt    index = row * s_nbCol + col;
+                mDouble value = divergences[index];
+                debugString << ((value < 0) ? "" : " ") << divergences[index]
+                            << " ";
+            }
+            debugString << std::endl;
+        }
+        mLog_info("\n", debugString.str());
         // Set entries of A
         mLog_info("- Set A");
         GridVectorSP<EntryOfA> A;
         compute_entriesOfA(a_output, a_deltaTime, A);
+
+//        debugString.seekp(std::ios_base::beg);
+//        for (mInt row = s_nbRow - 1; row >= 0; --row)
+//        {
+//            for (mInt col = 0; col < s_nbCol; ++col)
+//            {
+//                mInt    index = row * s_nbCol + col;
+//                mDouble value = A[index].Adiag;
+//                debugString << ((value < 0) ? "" : " ") << value << " ";
+//            }
+//            debugString << std::endl;
+//        }
+//        mLog_info("\n", debugString.str());
+//        debugString.seekp(std::ios_base::beg);
+//        for (mInt row = s_nbRow - 1; row >= 0; --row)
+//        {
+//            for (mInt col = 0; col < s_nbCol; ++col)
+//            {
+//                mInt    index = row * s_nbCol + col;
+//                mDouble value = A[index].Aplusi;
+//                debugString << ((value < 0) ? "" : " ") << value << " ";
+//            }
+//            debugString << std::endl;
+//        }
+//        mLog_info("\n", debugString.str());
+//        debugString.seekp(std::ios_base::beg);
+//        for (mInt row = s_nbRow - 1; row >= 0; --row)
+//        {
+//            for (mInt col = 0; col < s_nbCol; ++col)
+//            {
+//                mInt    index = row * s_nbCol + col;
+//                mDouble value = A[index].Aplusj;
+//                debugString << ((value < 0) ? "" : " ") << value << " ";
+//            }
+//            debugString << std::endl;
+//        }
+//        mLog_info("\n", debugString.str());
+
         // Construct MIC(0)
         mLog_info("- Construct MIC");
         GridVector MIC0;
         compute_MIC0Entries(A, MIC0);
+
+//        debugString.seekp(std::ios_base::beg);
+//        for (mInt row = s_nbRow - 1; row >= 0; --row)
+//        {
+//            for (mInt col = 0; col < s_nbCol; ++col)
+//            {
+//                mInt    index = row * s_nbCol + col;
+//                mDouble value = MIC0[index];
+//                debugString << ((value < 0) ? "" : " ") << value << " ";
+//            }
+//            debugString << std::endl;
+//        }
+//        mLog_info("\n", debugString.str());
         // Solve Ap = d with MICCG(0)
         mLog_info("- Solve");
         GridVector pressures;
-        compute_preconditionedConjugaiteGradient(MIC0, A, pressures, divergences,
-                                                 s_density);
+        compute_preconditionedConjugaiteGradient(MIC0, A, pressures,
+                                                 divergences);
+
+        debugString.seekp(std::ios_base::beg);
+        for (mInt row = s_nbRow - 1; row >= 0; --row)
+        {
+            for (mInt col = 0; col < s_nbCol; ++col)
+            {
+                mInt    index = row * s_nbCol + col;
+                mDouble value = pressures[index];
+                debugString << ((value < 0) ? "" : " ") << value << " ";
+            }
+            debugString << std::endl;
+        }
+        mLog_info("\n", debugString.str());
         // Change velocities according to pressures
         mLog_info("- Update");
         update_velocities(pressures, a_output, a_deltaTime);
+        /*
+        debugString.seekp(std::ios_base::beg);
+        for (mInt row = 0; row < s_nbRow * s_nbCol; ++row)
+        {
+            mInt jr = row / s_nbCol;
+            mInt ir = row % s_nbCol;
+            for (mInt col = 0; col < s_nbCol * s_nbCol; ++col)
+            {
+                mInt jc = col / s_nbCol;
+                mInt ic = col % s_nbCol;
+
+                mDouble value;
+                if (row == col)
+                {
+                    value = A[row].Adiag;
+                    debugString << ((value < 0) ? "" : " ") << value << " ";
+                }
+                else if ((jc == (jr + 1)) && (ic == ir))
+                {
+                    value = A[row].Aplusj;
+                    debugString << ((value < 0) ? "" : " ") << value << " ";
+                }
+                else if ((ic == (ir + 1)) && (jc == jr))
+                {
+                    value = A[row].Aplusi;
+                    debugString << ((value < 0) ? "" : " ") << value << " ";
+                }
+                else if ((jc == (jr - 1)) && (ic == ir))
+                {
+                    mInt index = jc * s_nbCol + ic;
+                    value      = A[index].Aplusj;
+                    debugString << ((value < 0) ? "" : " ") << value << " ";
+                }
+                else if ((ic == (ir - 1)) && (jc == jr))
+                {
+                    mInt index = jc * s_nbCol + ic;
+                    value      = A[index].Aplusi;
+                    debugString << ((value < 0) ? "" : " ") << value << " ";
+                }
+                else
+                {
+                    debugString << " 0 ";  // << 0.0f << " ";
+                }
+            }
+            debugString << std::endl;
+        }
+        mLog_info("\n", debugString.str());*/
+
+        compute_divergence(a_output, divergences, a_deltaTime);
+        debugString.seekp(std::ios_base::beg);
+        for (mInt row = s_nbRow - 1; row >= 0; --row)
+        {
+            for (mInt col = 0; col < s_nbCol; ++col)
+            {
+                mInt    index = row * s_nbCol + col;
+                mDouble value = divergences[index];
+                debugString << ((value < 0) ? "" : " ") << divergences[index]
+                            << " ";
+            }
+            debugString << std::endl;
+        }
+        mLog_info("Final divergence : \n", debugString.str());
+
     }
-    mLog_info("--- Timing : ", g_ProjectionProfiler.get_average<mFloat, std::micro>());
+    mLog_info("--- Timing : ",
+              g_ProjectionProfiler.get_average<mDouble, std::micro>());
 }
 
 class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
@@ -642,6 +799,7 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
 
         static mBool displayTmp   = true;
         static mBool displaySpeed = true;
+        static mBool runtimeUpdate = false;
 
         for (mInt pix = 0; pix < s_nbRow * s_nbCol; ++pix)
         {
@@ -652,6 +810,13 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
                 displaySpeed ? m_universes[previous].Q[pix].uh : 0;
             m_pixelData[pix].b =
                 displaySpeed ? m_universes[previous].Q[pix].uv : 0;
+        }
+
+        if(runtimeUpdate)
+        {
+            i = (i + 1) % 2;
+            Simulate(m_universes[previous], m_universes[i],
+                     simulationSpeed * 0.016f);
         }
 
         start_dearImGuiNewFrame(m_iRenderer);
@@ -667,13 +832,15 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
             init_universe(m_universes[i]);
         }
 
-        if(ImGui::Button("Simulation Step"))
+        if (ImGui::Button("Simulation Step"))
         {
             i = (i + 1) % 2;
             Simulate(m_universes[previous], m_universes[i],
                      simulationSpeed * 0.016f);
-                         //std::chrono::duration<mFloat>(a_deltaTime).count());
+            // std::chrono::duration<mDouble>(a_deltaTime).count());
         }
+
+        ImGui::Checkbox("Run Time Update", &runtimeUpdate);
 
         ImGui::Checkbox("Display Tmp", &displayTmp);
         ImGui::Checkbox("Display Speed", &displaySpeed);
