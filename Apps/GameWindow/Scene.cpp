@@ -295,7 +295,6 @@ void ComponentManager::enable_component<AnimatorCpnt>(
 {
     animators[a_entity]         = a_component;
     animators[a_entity].enabled = true;
-    animators[a_entity].pParentManager = this;
 }
 
 template <>
@@ -385,7 +384,6 @@ void ComponentManager::load_fromFile(std::string const& a_path)
         {
             renderingCpnts[i].read(inputStream);
             animators[i].read(inputStream);
-            animators[i].pParentManager = this;
             transforms[i].read(inputStream);
             if (version >= 2)
             {
@@ -436,7 +434,6 @@ Entity ComponentManager::create_entity()
     renderingCpnts.emplace_back();
     transforms.emplace_back();
     animators.emplace_back();
-    animators.back().pParentManager = this;
     collisions.emplace_back();
     enabled.emplace_back(1);
     return entityCount++;
@@ -445,8 +442,20 @@ Entity ComponentManager::create_entity()
 Entity ComponentManager::create_entityFromModel(
     Model const& a_model, TransformCpnt const& a_creationTransform)
 {
-    Entity e = 0;
-    if (freeEntities.size() > 0)
+    Entity e;
+
+    if (freeEntities.empty())
+    {
+        renderingCpnts.emplace_back(a_model.renderingCpnt);
+        transforms.emplace_back(
+            apply_transformToTC(a_model.transform, a_creationTransform));
+        animators.emplace_back(a_model.animator);
+        collisions.emplace_back(a_model.collision);
+        enabled.emplace_back(1);
+
+        e = entityCount++;
+    }
+    else
     {
         e = freeEntities.back();
         freeEntities.pop_back();
@@ -455,21 +464,8 @@ Entity ComponentManager::create_entityFromModel(
         transforms[e] =
             apply_transformToTC(a_model.transform, a_creationTransform);
         animators[e]  = a_model.animator;
-        animators[e].pParentManager = this;
         collisions[e] = a_model.collision;
         enabled[e]    = 1;
-    }
-    else
-    {
-        renderingCpnts.emplace_back(a_model.renderingCpnt);
-        transforms.emplace_back(
-            apply_transformToTC(a_model.transform, a_creationTransform));
-        animators.emplace_back(a_model.animator);
-        animators.back().pParentManager = this;
-        collisions.emplace_back(a_model.collision);
-        enabled.emplace_back(1);
-
-        e = entityCount++;
     }
 
     return e;

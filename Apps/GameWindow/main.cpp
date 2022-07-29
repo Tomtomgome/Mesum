@@ -10,7 +10,7 @@
 #include <MesumGraphics/VulkanRenderer/VulkanContext.hpp>
 
 #include "Scene.hpp"
-#include "GameAction.hpp"
+#include "GameActionDef.hpp"
 
 #include <filesystem>
 
@@ -452,10 +452,15 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     void update_gameScene(
         std::chrono::steady_clock::duration const& a_deltaTime)
     {
-        process_animatedObjects(m_componentManager.animators, a_deltaTime);
+        std::vector<AnimatorEvent> animatorEvents;
+        animatorEvents.resize(m_componentManager.animators.size());
+        process_animatedObjects(m_componentManager.animators, animatorEvents,
+                                a_deltaTime);
+        process_animatorEvents(animatorEvents, m_componentManager.animators,
+                               m_gameActions);
     }
 
-    void process_playerHand()
+    void process_playerHand(std::vector<GameAction*>& a_gameActions)
     {
         if (m_playerHand.requestRelease)
         {
@@ -494,8 +499,9 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
                 for (auto& entity : m_playerHand.hand)
                 {
-                    g_gameActionProcessor.add_gameAction<KillEntityGA>(
-                        {m_componentManager, entity});
+                    GAKillEntity::InternalData internalData;
+                    internalData.entityToKill = entity;
+                    a_gameActions.push_back(GAKillEntity::create(internalData));
 
                     if (m_componentManager.animators[entity].enabled)
                     {
@@ -528,10 +534,10 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
         mDouble deltaTime = std::chrono::duration<mDouble>(ddeltaTime).count();
 
-        //Process the recorded gameActions
-        g_gameActionProcessor.execute_gameActions();
+        // Process the recorded gameActionsLists
+        execute_gameActions(m_gameActions, m_componentManager);
 
-        process_playerHand();
+        process_playerHand(m_gameActions);
 
         std::vector<std::pair<Entity, Entity>> collidingPairs;
         gather_intersectedObjects(m_completeCollisionDatas, collidingPairs);
@@ -696,6 +702,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     std::vector<TransformCpnt> m_effectiveTransforms;
     std::vector<RenderingCpnt> m_effectiveRenderingCpnts;
     std::vector<CollisionData> m_completeCollisionDatas;
+    std::vector<GameAction*>   m_gameActions;
 
     DrawingData m_drawingData;
 

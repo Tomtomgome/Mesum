@@ -1,7 +1,7 @@
 #include "Animation.hpp"
 
 #include "Scene.hpp"
-#include "GameAction.hpp"
+#include "GameActionDef.hpp"
 
 #include <imgui.h>
 
@@ -104,6 +104,16 @@ void Animation::read(std::ifstream& a_inputStream)
         a_inputStream >> size;
         modifiers.resize(size);
         for (auto& modif : modifiers) { modif.read(a_inputStream); }
+        gameActionsLists.resize(size);
+        if (version >= 3)
+        {
+            for (auto& list : gameActionsLists)
+            {
+                a_inputStream >> size;
+                list.resize(size);
+                for (auto& ga : list) { ga.read(a_inputStream); }
+            }
+        }
         m::mU64 tmpDuration;
         a_inputStream >> tmpDuration;
         animationDuration = std::chrono::nanoseconds(tmpDuration);
@@ -138,6 +148,11 @@ void Animation::write(std::ofstream& a_outputStream) const
     for (auto& key : keys) { key.write(a_outputStream); }
     a_outputStream << modifiers.size() << ' ';
     for (auto& modif : modifiers) { modif.write(a_outputStream); }
+    for (auto& list : gameActionsLists)
+    {
+        a_outputStream << list.size() << ' ';
+        for (auto& ga : list) { ga.write(a_outputStream); }
+    }
     a_outputStream << m::mU64(duration_cast<std::chrono::nanoseconds>(
                                   animationDuration)
                                   .count())
@@ -160,6 +175,20 @@ void Animation::display_gui()
         {
             keys[i].display_gui();
             modifiers[i].display_gui();
+            for (auto& ga : gameActionsLists[i]) { ga.display_gui(); }
+
+            if (ImGui::Button("Push Game Action"))
+            {
+                gameActionsLists[i].emplace_back();
+            }
+            if (!gameActionsLists[i].empty())
+            {
+                if (ImGui::Button("Pop Game Action"))
+                {
+                    gameActionsLists[i].pop_back();
+                }
+            }
+
             ImGui::TreePop();
         }
     }
@@ -318,7 +347,7 @@ void AnimatorCpnt::read(std::ifstream& a_inputStream)
     {
         a_inputStream >> animationID;
         lastModifier.read(a_inputStream);
-        if(version >= 3)
+        if (version >= 3)
         {
             a_inputStream >> lastKeyIndex;
         }
@@ -469,6 +498,7 @@ auto update(Animation& a_animation, m::mFloat const& a_currentAdvancement)
 //-----------------------------------------------------------------------------
 void process_animatedObjects(
     std::vector<AnimatorCpnt>&                 a_animators,
+    std::vector<AnimatorEvent>&                a_animatorsEvents,
     std::chrono::steady_clock::duration const& a_deltaTime)
 {
     for (m::mU32 i = 0; i < a_animators.size(); ++i)
@@ -501,12 +531,51 @@ void process_animatedObjects(
             ra.lastModifier = lastModifier;
             ra.lastKeyIndex = lastKeyIndex;
 
-            // Maybe this should be in the update function
             if (previousKeyIndex != lastKeyIndex)
             {
+                // Be carefull, we could miss a key
+                a_animatorsEvents[i].value |= AnimatorEvent::Type::keyPassed;
+            }
+        }
+    }
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void process_animatorEvents(std::vector<AnimatorEvent>& a_animatorEvents,
+                            std::vector<AnimatorCpnt>&  a_animators,
+                            std::vector<GameAction*>&   a_gameActions)
+{
+    mAssert(a_animatorEvents.size());
+
+    for (m::mU32 i = 0; i < a_animatorEvents.size(); ++i)
+    {
+        AnimatorEvent& rae = a_animatorEvents[i];
+
+        if ((rae.value & AnimatorEvent::Type::keyPassed) != 0)
+        {
+            AnimatorCpnt& ra = a_animators[i];
+            if (ra.animationID >= 0)
+            {
+                Animation& rAnimation =
+                    g_animationBank.animations[ra.animationID];
                 // ExecuteGameAction
-                g_gameActionProcessor.add_gameAction(
-                    *rAnimation.gameActions[lastKeyIndex], ra.pParentManager, i);
+                for (auto gaDesc : rAnimation.gameActionsLists[ra.lastKeyIndex])
+                {
+                    switch (gaDesc.type)
+                    {
+                        case GameAction::Type::selfDestruct:
+                        {
+                            GASelfDestruct::InternalData actionData{};
+                            actionData.entity = i;
+                            a_gameActions.push_back(
+                                GASelfDestruct::create(actionData));
+                        }
+                        break;
+                        default: mNotImplemented; break;
+                    }
+                }
             }
         }
     }

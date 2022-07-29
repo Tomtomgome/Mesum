@@ -1,48 +1,74 @@
 #include "GameAction.hpp"
 
+#include <imgui.h>
+
+const char* GameAction::GATypeNames[3] = {
+    "Spawn Model",
+    "Kill Entity",
+    "Self Destruct",
+};
+
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-void SpawnModelSomewhereGA::execute()
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void GameActionDesc::read(std::ifstream& a_inputStream)
 {
-    targetCpntManager.create_entityFromModel(g_modelBank.models[spawnModel],
-                                             spawnTransform);
+    m::mU32     version;
+    std::string debugName;
+    a_inputStream >> debugName >> version;
+
+    m::mI32 tmpInt;
+    a_inputStream >> tmpInt;
+    type = static_cast<GameAction::Type>(tmpInt);
 }
 
-KillEntityGA::KillEntityGA(KillEntityGA const& a_ga)
-    : targetCpntManager(a_ga.targetCpntManager),
-      entityToKill(a_ga.entityToKill)
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void GameActionDesc::write(std::ofstream& a_outputStream) const
 {
+    a_outputStream << "GameActionDesc: " << s_version << ' ';
+
+    a_outputStream << static_cast<m::mI32>(type) << std::endl;
 }
 
-KillEntityGA::KillEntityGA(ComponentManager& a_cm, Entity a_e)
-    : targetCpntManager(a_cm),
-      entityToKill(a_e)
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void GameActionDesc::display_gui()
 {
-}
+    const char* preview = GameAction::GATypeNames[type];
 
-void KillEntityGA::execute()
-{
-    targetCpntManager.kill_entity(entityToKill);
-}
-
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-GameActionProcessor g_gameActionProcessor;
-
-void GameActionProcessor::execute_gameActions()
-{
-    for (auto GA : m_actions)
+    if (ImGui::BeginCombo("Action type", preview))
     {
-        GA->execute();
-        delete GA;
+        for (m::mInt i = 0; i < m::mInt(GameAction::Type::_count); ++i)
+        {
+            auto iType = static_cast<GameAction::Type>(i);
+            if (ImGui::Selectable(GameAction::GATypeNames[i], iType == type))
+            {
+                type = iType;
+            }
+        }
+        ImGui::EndCombo();
     }
-    m_actions.clear();
 }
 
-void GameActionProcessor::clear()
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void execute_gameActions(std::vector<GameAction*>& a_gameActions,
+                         ComponentManager&         a_cpntManager)
 {
-    for (auto GA : m_actions) { delete GA; }
-    m_actions.clear();
+    for (auto action : a_gameActions)
+    {
+        action->execute(a_cpntManager);
+        delete action;
+    }
+    a_gameActions.clear();
 }

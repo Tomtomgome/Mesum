@@ -1,114 +1,41 @@
 #pragma once
 
-#include "Scene.hpp"
+#include "Serializable.hpp"
+
+#include <vector>
+
+struct ComponentManager;
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-class GameAction
+struct GameAction
 {
-   private:
-    class IGameActionConcept
+    enum Type
     {
-       public:
-        virtual void                execute()     = 0;
-        virtual void* create_copy() = 0;
+        spawnModel = 0,
+        killEntity,
+        selfDestruct,
+
+        _count
     };
-    template <typename t_GameAction>
-    class GameActionImpl : public IGameActionConcept
-    {
-       public:
-        template <typename... t_Args>
-        GameActionImpl(t_GameAction* a_data, t_Args... a_args)
-        {
-            m_data = a_data;
-            m_data->initialize(a_args...);
-        }
-        ~GameActionImpl() { delete m_data; }
+    static const char* GATypeNames[3];
 
-        virtual void execute() override { m_data->execute(); }
-        virtual void* create_copy() override { return m_data->create_copy(); }
-
-        t_GameAction* m_data;
-    };
-
-    IGameActionConcept* m_gameAction;
-
-   public:
-    template <typename t_GameAction, typename... t_Args>
-    GameAction(t_GameAction* a_data, t_Args... a_args)
-    {
-        m_gameAction = new GameActionImpl<t_GameAction>(a_data, a_args...);
-    }
-
-    ~GameAction() { delete m_gameAction; }
-
-    void execute() { m_gameAction->execute(); }
+    virtual ~GameAction()                                 = default;
+    virtual void execute(ComponentManager& a_cpntManager) = 0;
+    virtual Type get_type()                               = 0;
 };
 
-// Games Actions must be lightweight
-// struct GameAction
-//{
-//    virtual ~GameAction()  = default;
-//    virtual void execute() = 0;
-//};
-
-struct SpawnModelSomewhereGA
+struct GameActionDesc
 {
-    void execute();
+    Serializable(0, GameActionDesc);
+    void display_gui();
 
-    ComponentManager&  targetCpntManager;
-    TransformCpnt      spawnTransform;
-    ModelBank::ModelID spawnModel;
-};
-
-struct KillEntityGA
-{
-    KillEntityGA() = delete;
-    KillEntityGA(KillEntityGA const& a_ga);
-    KillEntityGA(ComponentManager& a_cm, Entity a_e);
-
-    void execute();
-
-    ComponentManager& targetCpntManager;
-    Entity            entityToKill;
+    GameAction::Type type;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-class GameActionProcessor
-{
-   public:
-    template <typename t_GameAction>
-    void add_gameAction(t_GameAction const& a_GameAction);
-    template <typename... t_Args>
-    void add_gameAction(GameAction const& a_GameAction, t_Args... a_args);
-
-    void clear();
-    void execute_gameActions();
-
-   private:
-    std::vector<GameAction*> m_actions;
-};
-
-template <typename t_GameAction>
-void GameActionProcessor::add_gameAction(t_GameAction const& a_GameAction)
-{
-    m_actions.push_back(new GameAction(a_GameAction));
-}
-
-template <typename... t_Args>
-void GameActionProcessor::add_gameAction(GameAction const& a_GameAction,
-                                         t_Args... a_args)
-{
-}
-
-template <typename t_GameAction, typename... t_Args>
-void GameActionProcessor::add_gameAction(t_GameAction const& a_GameAction,
-                                         t_Args... a_args)
-{
-    m_actions.push_back(new GameAction(a_GameAction, a_args...));
-}
-
-extern GameActionProcessor g_gameActionProcessor;
+void execute_gameActions(std::vector<GameAction*>& a_gameActions,
+                         ComponentManager&         a_cpntManager);
