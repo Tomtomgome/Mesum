@@ -12,8 +12,8 @@
 #include <MesumGraphics/VulkanRenderer/VulkanContext.hpp>
 #endif  // M_VULKAN_RENDERER
 
-static const int s_nbRow = 10;
-static const int s_nbCol = 10;
+static const int s_nbRow = 50;
+static const int s_nbCol = 50;
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////

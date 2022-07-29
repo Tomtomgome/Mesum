@@ -26,8 +26,8 @@ static const mInt    s_maxIteration       = 100;
 static const mDouble s_solutionTolerance  = 0.00000000000001;
 static const mDouble s_micTunningConstant = 0.97f;
 
-static const mDouble s_gravity = 9.8;
-static const mDouble s_wind    = 2.5;
+static const mDouble s_gravity = -9.8;
+static const mDouble s_wind    = -2.5;
 
 static const mInt g_gridSize = s_nbRow * s_nbCol;
 using GridVector             = math::mVec<mDouble, g_gridSize>;
@@ -214,7 +214,7 @@ bool is_outOfBound(mInt a_i, mInt a_j)
 
 bool is_solid(Universe const& a_input, mInt a_i, mInt a_j)
 {
-    return is_outOfBound(a_i, a_j);
+    return is_outOfBoundJ(a_j);//is_outOfBound(a_i, a_j);
 }
 
 mInt get_numberOfSolidNeighbors(Universe const& a_input, mInt a_i, mInt a_j)
@@ -451,7 +451,6 @@ mBool compute_preconditionedConjugaiteGradient(
         a_pressures += alpha * vecSearch;
         vecResidual -= alpha * vecAuxiliary;
 
-        mLog_info("Max value : ", get_maxValue(vecResidual));
         if (get_maxValue(vecResidual) <= s_solutionTolerance)
         {
             return true;
@@ -571,19 +570,19 @@ void Simulate(Universe const& a_input, Universe& a_output, mDouble a_deltaTime)
         GridVector divergences;
         compute_divergence(a_output, divergences, a_deltaTime);
         divergences *= -1;
-        debugString.seekp(std::ios_base::beg);
-        for (mInt row = s_nbRow - 1; row >= 0; --row)
-        {
-            for (mInt col = 0; col < s_nbCol; ++col)
-            {
-                mInt    index = row * s_nbCol + col;
-                mDouble value = divergences[index];
-                debugString << ((value < 0) ? "" : " ") << divergences[index]
-                            << " ";
-            }
-            debugString << std::endl;
-        }
-        mLog_info("\n", debugString.str());
+//        debugString.seekp(std::ios_base::beg);
+//        for (mInt row = s_nbRow - 1; row >= 0; --row)
+//        {
+//            for (mInt col = 0; col < s_nbCol; ++col)
+//            {
+//                mInt    index = row * s_nbCol + col;
+//                mDouble value = divergences[index];
+//                debugString << ((value < 0) ? "" : " ") << divergences[index]
+//                            << " ";
+//            }
+//            debugString << std::endl;
+//        }
+//        mLog_info("\n", debugString.str());
         // Set entries of A
         mLog_info("- Set A");
         GridVectorSP<EntryOfA> A;
@@ -649,18 +648,18 @@ void Simulate(Universe const& a_input, Universe& a_output, mDouble a_deltaTime)
         compute_preconditionedConjugaiteGradient(MIC0, A, pressures,
                                                  divergences);
 
-        debugString.seekp(std::ios_base::beg);
-        for (mInt row = s_nbRow - 1; row >= 0; --row)
-        {
-            for (mInt col = 0; col < s_nbCol; ++col)
-            {
-                mInt    index = row * s_nbCol + col;
-                mDouble value = pressures[index];
-                debugString << ((value < 0) ? "" : " ") << value << " ";
-            }
-            debugString << std::endl;
-        }
-        mLog_info("\n", debugString.str());
+//        debugString.seekp(std::ios_base::beg);
+//        for (mInt row = s_nbRow - 1; row >= 0; --row)
+//        {
+//            for (mInt col = 0; col < s_nbCol; ++col)
+//            {
+//                mInt    index = row * s_nbCol + col;
+//                mDouble value = pressures[index];
+//                debugString << ((value < 0) ? "" : " ") << value << " ";
+//            }
+//            debugString << std::endl;
+//        }
+//        mLog_info("\n", debugString.str());
         // Change velocities according to pressures
         mLog_info("- Update");
         update_velocities(pressures, a_output, a_deltaTime);
@@ -713,19 +712,19 @@ void Simulate(Universe const& a_input, Universe& a_output, mDouble a_deltaTime)
         mLog_info("\n", debugString.str());*/
 
         compute_divergence(a_output, divergences, a_deltaTime);
-        debugString.seekp(std::ios_base::beg);
-        for (mInt row = s_nbRow - 1; row >= 0; --row)
-        {
-            for (mInt col = 0; col < s_nbCol; ++col)
-            {
-                mInt    index = row * s_nbCol + col;
-                mDouble value = divergences[index];
-                debugString << ((value < 0) ? "" : " ") << divergences[index]
-                            << " ";
-            }
-            debugString << std::endl;
-        }
-        mLog_info("Final divergence : \n", debugString.str());
+//        debugString.seekp(std::ios_base::beg);
+//        for (mInt row = s_nbRow - 1; row >= 0; --row)
+//        {
+//            for (mInt col = 0; col < s_nbCol; ++col)
+//            {
+//                mInt    index = row * s_nbCol + col;
+//                mDouble value = divergences[index];
+//                debugString << ((value < 0) ? "" : " ") << divergences[index]
+//                            << " ";
+//            }
+//            debugString << std::endl;
+//        }
+//        mLog_info("Final divergence : \n", debugString.str());
 
     }
     mLog_info("--- Timing : ",
