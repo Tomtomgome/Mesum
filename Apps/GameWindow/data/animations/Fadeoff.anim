@@ -1,5 +1,6 @@
-Animation: 2 2 AnimationKey: 1 0
+Animation: 3 2 AnimationKey: 1 0
 AnimationKey: 1 1
 2 AnimationModifer: 1 1 1 1 1 0 0 0 1
 AnimationModifer: 1 1 0.99999 0.99999 0 0 0 0 1
+0 1 GameActionDesc: 0 2
 1000000000 1 1 0

@@ -453,7 +453,6 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         std::chrono::steady_clock::duration const& a_deltaTime)
     {
         std::vector<AnimatorEvent> animatorEvents;
-        animatorEvents.resize(m_componentManager.animators.size());
         process_animatedObjects(m_componentManager.animators, animatorEvents,
                                 a_deltaTime);
         process_animatorEvents(animatorEvents, m_componentManager.animators,
@@ -505,7 +504,11 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
                     if (m_componentManager.animators[entity].enabled)
                     {
-                        m_componentManager.animators[entity].animationID = 0;
+                        // TODO : "Start animation"
+                        m_componentManager.animators[entity].animationID  = 0;
+                        m_componentManager.animators[entity].lastKeyIndex = -1;
+                        m_componentManager.animators[entity].lastKeyIndex =
+                            0.0f;
                     }
                 }
             }

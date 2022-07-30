@@ -67,10 +67,12 @@ struct AnimatorEvent
 {
     enum Type
     {
+        none      = 0,
         keyPassed = 1,
     };
 
-    m::mInt value = 0;
+    Type            type{none};
+    m::math::mIVec3 data{0, 0, 0};
 };
 
 struct AnimatorCpnt

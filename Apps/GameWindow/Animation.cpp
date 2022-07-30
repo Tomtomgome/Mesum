@@ -95,45 +95,42 @@ void Animation::read(std::ifstream& a_inputStream)
     std::string debugName;
     a_inputStream >> debugName >> version;
 
-    if (version <= 2)
+    m::mU32 size;
+    a_inputStream >> size;
+    keys.resize(size);
+    for (auto& key : keys) { key.read(a_inputStream); }
+    a_inputStream >> size;
+    modifiers.resize(size);
+    for (auto& modif : modifiers) { modif.read(a_inputStream); }
+    gameActionsLists.resize(size);
+    if (version >= 3)
     {
-        m::mU32 size;
-        a_inputStream >> size;
-        keys.resize(size);
-        for (auto& key : keys) { key.read(a_inputStream); }
-        a_inputStream >> size;
-        modifiers.resize(size);
-        for (auto& modif : modifiers) { modif.read(a_inputStream); }
-        gameActionsLists.resize(size);
-        if (version >= 3)
+        for (auto& list : gameActionsLists)
         {
-            for (auto& list : gameActionsLists)
-            {
-                a_inputStream >> size;
-                list.resize(size);
-                for (auto& ga : list) { ga.read(a_inputStream); }
-            }
+            a_inputStream >> size;
+            list.resize(size);
+            for (auto& ga : list) { ga.read(a_inputStream); }
         }
-        m::mU64 tmpDuration;
-        a_inputStream >> tmpDuration;
-        animationDuration = std::chrono::nanoseconds(tmpDuration);
-        if (version <= 1)
-        {
-            m::mUInt lastKeyIndex;
-            a_inputStream >> lastKeyIndex;
-            Modifier lastModifier;
-            lastModifier.read(a_inputStream);
-            m::mFloat currentAdvancement;
-            a_inputStream >> currentAdvancement;
-            m::mBool isLooping;
-            a_inputStream >> isLooping;
-        }
-        a_inputStream >> colorMultiply;
-        a_inputStream >> scaleMultiply;
-        if (version >= 2)
-        {
-            a_inputStream >> ID;
-        }
+    }
+    m::mU64 tmpDuration;
+    a_inputStream >> tmpDuration;
+    animationDuration = std::chrono::nanoseconds(tmpDuration);
+    if (version <= 1)
+    {
+        m::mUInt lastKeyIndex;
+        a_inputStream >> lastKeyIndex;
+        Modifier lastModifier;
+        lastModifier.read(a_inputStream);
+        m::mFloat currentAdvancement;
+        a_inputStream >> currentAdvancement;
+        m::mBool isLooping;
+        a_inputStream >> isLooping;
+    }
+    a_inputStream >> colorMultiply;
+    a_inputStream >> scaleMultiply;
+    if (version >= 2)
+    {
+        a_inputStream >> ID;
     }
 }
 
@@ -353,7 +350,7 @@ void AnimatorCpnt::read(std::ifstream& a_inputStream)
         }
         else
         {
-            lastKeyIndex = 0;
+            lastKeyIndex = -1;
         }
         a_inputStream >> currentAdvancement;
         a_inputStream >> isLooping;
@@ -391,7 +388,13 @@ void AnimatorCpnt::display_gui()
     ImGui::Indent();
     if (ImGui::TreeNode(this, "parameters"))
     {
+        m::mInt previousAnimID = animationID;
         g_animationBank.display_animationSelecter(animationID);
+        if (previousAnimID != animationID)
+        {
+            lastKeyIndex       = -1;
+            currentAdvancement = 0.0f;
+        }
         ImGui::DragFloat("Advancement", &currentAdvancement);
         ImGui::Checkbox("Is Looping", &isLooping);
 
@@ -441,37 +444,20 @@ void apply_modifierToTC(TransformCpnt& a_tc, Modifier const& a_modifier,
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-auto update(Animation& a_animation, m::mFloat const& a_currentAdvancement)
+auto update(Animation& a_animation, m::mInt const a_lastKeyIndex,
+            m::mFloat const& a_currentAdvancement)
 {
-    // Legacy code from when the animation played itself, not the animator
-    // m::mU32  nextKeyIndex = a_animation.lastKeyIndex + 1;
-    m::mU32  nextKeyIndex = 0;
-    Key      nextKey;
+    m::mU32 nextKeyIndex = a_lastKeyIndex + 1;
+    mAssert(nextKeyIndex != a_animation.keys.size());
     Modifier finalModifier;
-    while (nextKeyIndex < a_animation.keys.size())
-    {
-        nextKey = a_animation.keys[nextKeyIndex];
-        if (nextKey.advancement >= a_currentAdvancement)
-        {
-            break;
-        }
-        ++nextKeyIndex;
-    }
-    if (nextKeyIndex == a_animation.keys.size())
-    {
-        mInterrupt;
-    }
-
-    // Legacy code from when the animation played itself, not the animator
-    // a_animation.lastKeyIndex = nextKeyIndex - 1;
-    m::mU32 previousKeyIndex = nextKeyIndex == 0 ? 0 : nextKeyIndex - 1;
-    Key     previousKey      = a_animation.keys[previousKeyIndex];
+    Key      previousKey = a_animation.keys[a_lastKeyIndex];
+    Key      nextKey     = a_animation.keys[nextKeyIndex];
 
     m::mFloat relativeAdvancement =
         (a_currentAdvancement - previousKey.advancement) *
-        (1.0 / (nextKey.advancement - previousKey.advancement));
+        (1.0f / (nextKey.advancement - previousKey.advancement));
 
-    Modifier& previousModifier = a_animation.modifiers[previousKeyIndex];
+    Modifier& previousModifier = a_animation.modifiers[a_lastKeyIndex];
     Modifier& nextModifier     = a_animation.modifiers[nextKeyIndex];
 
     finalModifier.color =
@@ -490,7 +476,7 @@ auto update(Animation& a_animation, m::mFloat const& a_currentAdvancement)
         (1.0f - relativeAdvancement) * previousModifier.scale +
         relativeAdvancement * nextModifier.scale;
 
-    return std::tie(finalModifier, previousKeyIndex);
+    return finalModifier;
 }
 
 //-----------------------------------------------------------------------------
@@ -511,31 +497,56 @@ void process_animatedObjects(
             m::mFloat advancement =
                 std::chrono::duration<m::mFloat>(a_deltaTime) /
                 std::chrono::duration<m::mFloat>(rAnimation.animationDuration);
-            ra.currentAdvancement += advancement;
 
-            if (ra.currentAdvancement > 1)
+            m::mU32 nextKeyIndex;
+            Key     nextKey;
+            while (advancement > 0.0f)
             {
-                if (!ra.isLooping)
+                // We arrived at the end of the animation
+                if (ra.lastKeyIndex + 1 == rAnimation.keys.size())
                 {
-                    ra.currentAdvancement = 0;
-                    ra.animationID        = -1;
-                    continue;
+                    ra.currentAdvancement = 0.0f;
+                    ra.lastKeyIndex       = -1;
+
+                    if (!ra.isLooping)
+                    {
+                        advancement    = 0.0f;
+                        ra.animationID = -1;
+                    }
                 }
 
-                ra.currentAdvancement = std::modf(1.0f, &ra.currentAdvancement);
+                nextKeyIndex = (ra.lastKeyIndex + 1) % rAnimation.keys.size();
+                nextKey      = rAnimation.keys[nextKeyIndex];
+
+                if (advancement > nextKey.advancement - ra.currentAdvancement)
+                {
+                    advancement -=
+                        (nextKey.advancement - ra.currentAdvancement);
+                    ra.currentAdvancement = nextKey.advancement;
+                    ra.lastKeyIndex       = nextKeyIndex;
+                    // KeyPassed event
+                    AnimatorEvent event;
+                    event.type   = AnimatorEvent::Type::keyPassed;
+                    event.data.x = i;
+                    event.data.y = ra.animationID;
+                    event.data.z = ra.lastKeyIndex;
+                    a_animatorsEvents.push_back(event);
+                }
+                else
+                {
+                    ra.currentAdvancement += advancement;
+                    advancement = 0.0f;
+                }
             }
 
-            auto previousKeyIndex = ra.lastKeyIndex;
-            const auto& [lastModifier, lastKeyIndex] =
-                update(rAnimation, ra.currentAdvancement);
-            ra.lastModifier = lastModifier;
-            ra.lastKeyIndex = lastKeyIndex;
-
-            if (previousKeyIndex != lastKeyIndex)
+            // Animation stopped
+            if (ra.animationID == -1)
             {
-                // Be carefull, we could miss a key
-                a_animatorsEvents[i].value |= AnimatorEvent::Type::keyPassed;
+                continue;
             }
+
+            ra.lastModifier =
+                update(rAnimation, ra.lastKeyIndex, ra.currentAdvancement);
         }
     }
 }
@@ -547,28 +558,27 @@ void process_animatorEvents(std::vector<AnimatorEvent>& a_animatorEvents,
                             std::vector<AnimatorCpnt>&  a_animators,
                             std::vector<GameAction*>&   a_gameActions)
 {
-    mAssert(a_animatorEvents.size());
-
     for (m::mU32 i = 0; i < a_animatorEvents.size(); ++i)
     {
         AnimatorEvent& rae = a_animatorEvents[i];
 
-        if ((rae.value & AnimatorEvent::Type::keyPassed) != 0)
+        if (rae.type == AnimatorEvent::Type::keyPassed)
         {
-            AnimatorCpnt& ra = a_animators[i];
-            if (ra.animationID >= 0)
+            // data.x = animator ID
+            // data.y = animation ID
+            // data.z = key
+            if (rae.data.y >= 0)
             {
-                Animation& rAnimation =
-                    g_animationBank.animations[ra.animationID];
-                // ExecuteGameAction
-                for (auto gaDesc : rAnimation.gameActionsLists[ra.lastKeyIndex])
+                Animation& rAnimation = g_animationBank.animations[rae.data.y];
+                // Queue game action
+                for (auto gaDesc : rAnimation.gameActionsLists[rae.data.z])
                 {
                     switch (gaDesc.type)
                     {
                         case GameAction::Type::selfDestruct:
                         {
                             GASelfDestruct::InternalData actionData{};
-                            actionData.entity = i;
+                            actionData.entity = rae.data.x;
                             a_gameActions.push_back(
                                 GASelfDestruct::create(actionData));
                         }
