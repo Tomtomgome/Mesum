@@ -8,11 +8,6 @@
 #define m_write_flag 2
 #define m_textual_flag 4
 
-#define Serializable(a_versionNumber, t_ClassName)           \
-    static const m::mU32 s_version = a_versionNumber;        \
-    void                 read(std::ifstream& a_inputStream); \
-    void                 write(std::ofstream& a_outputStream) const;
-
 inline void inc_spacing(m::mUInt& a_spacing)
 {
     a_spacing++;
@@ -108,8 +103,11 @@ void serialize_from(std::istream& a_stream, m::mInt a_serializationFlags,
     mAssert(a_serializationFlags & m_read_flag);
     if (a_serializationFlags & m_textual_flag)
     {
-        std::string debugName;
-        a_stream >> debugName >> a_value;
+        if (a_fileVersion >= a_specVersion)
+        {
+            std::string debugName;
+            a_stream >> debugName >> a_value;
+        }
     }
     else
     {
@@ -117,7 +115,11 @@ void serialize_from(std::istream& a_stream, m::mInt a_serializationFlags,
     }
 }
 
-#define mSerialize_from(a_version, a_variable)                      \
+#define mSerialize_from(a_version, a_variable)                              \
+    serialize_from(a_stream, a_serializationFlags, #a_variable, a_variable, \
+                   a_version, internalVersion, a_spacingNumber)
+
+#define mSerialize_memberFrom(a_version, a_variable)                \
     serialize_from(a_stream, a_serializationFlags, #a_variable,     \
                    a_object.a_variable, a_version, internalVersion, \
                    a_spacingNumber)
@@ -153,7 +155,7 @@ void serialize_from(std::istream& a_stream, m::mInt a_serializationFlags,
         mAssert(a_serializationFlags& m_read_flag);                \
         if (a_serializationFlags & m_textual_flag)                 \
         {                                                          \
-            if (a_fileVersion > a_specVersion)                     \
+            if (a_fileVersion >= a_specVersion)                    \
             {                                                      \
                 serialize(a_value, a_stream, a_serializationFlags, \
                           a_spacingNumber);                        \
@@ -165,7 +167,7 @@ void serialize_from(std::istream& a_stream, m::mInt a_serializationFlags,
         }                                                          \
     }
 
-#define mBegin_Serialization(t_ClassName, a_versionNumber)                     \
+#define mBegin_serialization(t_ClassName, a_versionNumber)                     \
     static const m::mU32 t_ClassName##_version = a_versionNumber;              \
     template <typename t_StreamType>                                           \
     void serialize(t_ClassName& a_object, t_StreamType& a_stream,              \

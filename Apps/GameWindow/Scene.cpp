@@ -9,41 +9,6 @@
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void Model::read(std::ifstream& a_inputStream)
-{
-    m::mU32     version;
-    std::string debugName;
-    a_inputStream >> debugName >> version;
-
-    if (version <= 1)
-    {
-        a_inputStream >> name;
-        renderingCpnt.read(a_inputStream);
-        animator.read(a_inputStream);
-        transform.read(a_inputStream);
-        collision.read(a_inputStream);
-        a_inputStream >> ID;
-    }
-}
-
-//-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
-void Model::write(std::ofstream& a_outputStream) const
-{
-    a_outputStream << "Model: " << s_version << ' ';
-
-    a_outputStream << name << std::endl;
-    renderingCpnt.write(a_outputStream);
-    animator.write(a_outputStream);
-    transform.write(a_outputStream);
-    collision.write(a_outputStream);
-    a_outputStream << ID << std::endl;
-}
-
-//-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
 void Model::display_gui()
 {
     renderingCpnt.display_gui();
@@ -73,7 +38,7 @@ void ModelBank::load()
             std::ifstream inputStream(entry.path());
             Model         model;
             model.name = entry.path().filename().stem().string();
-            model.read(inputStream);
+            serialize(model, inputStream, m_read_flag | m_textual_flag);
             if (model.ID >= models.size())
             {
                 models.resize(model.ID + 1);
@@ -90,13 +55,13 @@ void ModelBank::save()
 {
     std::filesystem::path mainPath{std::filesystem::current_path() / "data" /
                                    "models"};
-    for (auto const& rModel : models)
+    for (auto& rModel : models)
     {
         std::filesystem::path modelPath{mainPath /
                                         std::string(rModel.name + ".model")};
 
         std::ofstream outputStream(modelPath, std::ios::binary);
-        rModel.write(outputStream);
+        serialize(rModel, outputStream, m_write_flag | m_textual_flag);
     }
 }
 
@@ -278,12 +243,14 @@ void ComponentManager::load_fromFile(std::string const& a_path)
 
         for (int i = 0; i < entityCount; ++i)
         {
-            renderingCpnts[i].read(inputStream);
-            animators[i].read(inputStream);
-            transforms[i].read(inputStream);
+            serialize(renderingCpnts[i], inputStream,
+                      m_read_flag | m_textual_flag);
+            serialize(animators[i], inputStream, m_read_flag | m_textual_flag);
+            serialize(transforms[i], inputStream, m_read_flag | m_textual_flag);
             if (version >= 2)
             {
-                collisions[i].read(inputStream);
+                serialize(collisions[i], inputStream,
+                          m_read_flag | m_textual_flag);
             }
             if (version >= 3)
             {
@@ -301,7 +268,7 @@ void ComponentManager::load_fromFile(std::string const& a_path)
     }
 }
 
-void ComponentManager::save_toFile(std::string const& a_path) const
+void ComponentManager::save_toFile(std::string const& a_path)
 {
     std::ofstream outputStream(a_path, std::ios::binary);
     outputStream << "CpntManager: " << s_version << ' ';
@@ -309,10 +276,11 @@ void ComponentManager::save_toFile(std::string const& a_path) const
     outputStream << entityCount << std::endl;
     for (int i = 0; i < entityCount; ++i)
     {
-        renderingCpnts[i].write(outputStream);
-        animators[i].write(outputStream);
-        transforms[i].write(outputStream);
-        collisions[i].write(outputStream);
+        serialize(renderingCpnts[i], outputStream,
+                  m_write_flag | m_textual_flag);
+        serialize(animators[i], outputStream, m_write_flag | m_textual_flag);
+        serialize(transforms[i], outputStream, m_write_flag | m_textual_flag);
+        serialize(collisions[i], outputStream, m_write_flag | m_textual_flag);
         outputStream << enabled[i] << std::endl;
     }
 }

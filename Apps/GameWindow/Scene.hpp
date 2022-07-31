@@ -13,7 +13,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 struct Model
 {
-    Serializable(2, Model);
     void display_gui();
 
     std::string   name{"Unnamed"};
@@ -24,6 +23,15 @@ struct Model
     CollisionCpnt collision{};
     DisplacerCpnt displacer{};
 };
+mBegin_serialization(Model, 1)
+
+    mSerialize_memberFrom(1, ID);
+mSerialize_memberFrom(1, renderingCpnt);
+mSerialize_memberFrom(1, animator);
+mSerialize_memberFrom(1, transform);
+mSerialize_memberFrom(1, collision);
+mSerialize_memberFrom(1, displacer);
+mEnd_serialization(Model);
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -60,7 +68,7 @@ struct ComponentManager
     void   initialize();
     void   reset();
     void   load_fromFile(std::string const& a_path);
-    void   save_toFile(std::string const& a_path) const;
+    void   save_toFile(std::string const& a_path);
     Entity create_entity();
     Entity create_entityFromModel(Model const&         a_model,
                                   TransformCpnt const& a_creationTransform);

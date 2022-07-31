@@ -14,30 +14,6 @@ const char* GameAction::GATypeNames[3] = {
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void GameActionDesc::read(std::ifstream& a_inputStream)
-{
-    m::mU32     version;
-    std::string debugName;
-    a_inputStream >> debugName >> version;
-
-    m::mI32 tmpInt;
-    a_inputStream >> tmpInt;
-    type = static_cast<GameAction::Type>(tmpInt);
-}
-
-//-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
-void GameActionDesc::write(std::ofstream& a_outputStream) const
-{
-    a_outputStream << "GameActionDesc: " << s_version << ' ';
-
-    a_outputStream << static_cast<m::mI32>(type) << std::endl;
-}
-
-//-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
 void GameActionDesc::display_gui()
 {
     const char* preview = GameAction::GATypeNames[type];

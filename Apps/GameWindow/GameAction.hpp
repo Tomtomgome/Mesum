@@ -28,11 +28,17 @@ struct GameAction
 
 struct GameActionDesc
 {
-    Serializable(0, GameActionDesc);
     void display_gui();
 
     GameAction::Type type;
 };
+mBegin_serialization(GameActionDesc, 1)
+
+    m::mI32 gaType = static_cast<m::mI32>(a_object.type);
+mSerialize_from(1, gaType);
+a_object.type = static_cast<GameAction::Type>(gaType);
+
+mEnd_serialization(GameActionDesc);
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////

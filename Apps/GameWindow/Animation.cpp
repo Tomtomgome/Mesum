@@ -13,66 +13,9 @@
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void Key::read(std::ifstream& a_inputStream)
-{
-    m::mU32     version;
-    std::string debugName;
-    a_inputStream >> debugName >> version;
-
-    if (version <= 1)
-    {
-        a_inputStream >> advancement;
-    }
-}
-
-//-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
-void Key::write(std::ofstream& a_outputStream) const
-{
-    a_outputStream << "AnimationKey: " << s_version << " ";
-
-    a_outputStream << advancement << std::endl;
-}
-
-//-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
 void Key::display_gui()
 {
     ImGui::DragFloat("Advancement", &advancement, 0.01f, 0.0f, 1.0f);
-}
-
-//-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
-void Modifier::read(std::ifstream& a_inputStream)
-{
-    m::mU32     version;
-    std::string debugName;
-    a_inputStream >> debugName >> version;
-
-    if (version <= 1)
-    {
-        a_inputStream >> color.x >> color.y >> color.z >> color.w;
-        a_inputStream >> offset.x >> offset.y;
-        a_inputStream >> angle;
-        a_inputStream >> scale;
-    }
-}
-
-//-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
-void Modifier::write(std::ofstream& a_outputStream) const
-{
-    a_outputStream << "AnimationModifer: " << s_version << ' ';
-
-    a_outputStream << color.x << ' ' << color.y << ' ' << color.z << ' '
-                   << color.w << ' ';
-    a_outputStream << offset.x << ' ' << offset.y << ' ';
-    a_outputStream << angle << ' ';
-    a_outputStream << scale << std::endl;
 }
 
 //-----------------------------------------------------------------------------
@@ -84,79 +27,6 @@ void Modifier::display_gui()
     ImGui::DragFloat2("Offset", offset.data);
     ImGui::DragFloat("Angle", &angle, 0.01f);
     ImGui::DragFloat("Scale", &scale, 0.1f);
-}
-
-//-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
-void Animation::read(std::ifstream& a_inputStream)
-{
-    m::mU32     version;
-    std::string debugName;
-    a_inputStream >> debugName >> version;
-
-    m::mU32 size;
-    a_inputStream >> size;
-    keys.resize(size);
-    for (auto& key : keys) { key.read(a_inputStream); }
-    a_inputStream >> size;
-    modifiers.resize(size);
-    for (auto& modif : modifiers) { modif.read(a_inputStream); }
-    gameActionsLists.resize(size);
-    if (version >= 3)
-    {
-        for (auto& list : gameActionsLists)
-        {
-            a_inputStream >> size;
-            list.resize(size);
-            for (auto& ga : list) { ga.read(a_inputStream); }
-        }
-    }
-    m::mU64 tmpDuration;
-    a_inputStream >> tmpDuration;
-    animationDuration = std::chrono::nanoseconds(tmpDuration);
-    if (version <= 1)
-    {
-        m::mUInt lastKeyIndex;
-        a_inputStream >> lastKeyIndex;
-        Modifier lastModifier;
-        lastModifier.read(a_inputStream);
-        m::mFloat currentAdvancement;
-        a_inputStream >> currentAdvancement;
-        m::mBool isLooping;
-        a_inputStream >> isLooping;
-    }
-    a_inputStream >> colorMultiply;
-    a_inputStream >> scaleMultiply;
-    if (version >= 2)
-    {
-        a_inputStream >> ID;
-    }
-}
-
-//-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
-void Animation::write(std::ofstream& a_outputStream) const
-{
-    a_outputStream << "Animation: " << s_version << ' ';
-
-    a_outputStream << keys.size() << ' ';
-    for (auto& key : keys) { key.write(a_outputStream); }
-    a_outputStream << modifiers.size() << ' ';
-    for (auto& modif : modifiers) { modif.write(a_outputStream); }
-    for (auto& list : gameActionsLists)
-    {
-        a_outputStream << list.size() << ' ';
-        for (auto& ga : list) { ga.write(a_outputStream); }
-    }
-    a_outputStream << m::mU64(duration_cast<std::chrono::nanoseconds>(
-                                  animationDuration)
-                                  .count())
-                   << ' ';
-    a_outputStream << colorMultiply << ' ';
-    a_outputStream << scaleMultiply << ' ';
-    a_outputStream << ID << std::endl;
 }
 
 //-----------------------------------------------------------------------------
@@ -235,7 +105,7 @@ void AnimationBank::load()
             std::ifstream inputStream(entry.path());
             Animation     anim;
             anim.name = entry.path().filename().stem().string();
-            anim.read(inputStream);
+            serialize(anim, inputStream, m_read_flag | m_textual_flag);
             if (anim.ID >= animations.size())
             {
                 animations.resize(anim.ID + 1);
@@ -252,13 +122,13 @@ void AnimationBank::save()
 {
     std::filesystem::path mainPath{std::filesystem::current_path() / "data" /
                                    "animations"};
-    for (auto const& rAnim : animations)
+    for (auto& rAnim : animations)
     {
         std::filesystem::path animationPath{mainPath /
                                             std::string(rAnim.name + ".anim")};
 
         std::ofstream outputStream(animationPath, std::ios::binary);
-        rAnim.write(outputStream);
+        serialize(rAnim, outputStream, m_write_flag | m_textual_flag);
     }
 }
 
@@ -321,59 +191,6 @@ void AnimationBank::display_animationSelecter(m::mInt& a_animationID)
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-//-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
-void AnimatorCpnt::read(std::ifstream& a_inputStream)
-{
-    m::mU32     version;
-    std::string debugName;
-    a_inputStream >> debugName >> version;
-
-    if (version <= 1)
-    {
-        bool hasAnimation;
-        a_inputStream >> hasAnimation;
-        if (hasAnimation)
-        {
-            Animation anim;
-            anim.read(a_inputStream);
-        }
-    }
-    if (version >= 2)
-    {
-        a_inputStream >> animationID;
-        lastModifier.read(a_inputStream);
-        if (version >= 3)
-        {
-            a_inputStream >> lastKeyIndex;
-        }
-        else
-        {
-            lastKeyIndex = -1;
-        }
-        a_inputStream >> currentAdvancement;
-        a_inputStream >> isLooping;
-    }
-
-    a_inputStream >> enabled;
-}
-
-//-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
-void AnimatorCpnt::write(std::ofstream& a_outputStream) const
-{
-    a_outputStream << "AnimatorCpnt: " << s_version << ' ';
-
-    a_outputStream << animationID;
-    lastModifier.write(a_outputStream);
-    a_outputStream << lastKeyIndex << ' ';
-    a_outputStream << currentAdvancement << ' ';
-    a_outputStream << isLooping << ' ';
-    a_outputStream << enabled << std::endl;
-}
-
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------

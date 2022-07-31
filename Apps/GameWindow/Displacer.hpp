@@ -8,9 +8,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 struct DisplacerCpnt
 {
-    Serializable(1, DisplacerCpnt);
     void display_gui();
 
-    TransformCpnt               target;
-    m::mBool                    enabled;
+    TransformCpnt target;
+    m::mBool      enabled;
 };
+mBegin_serialization(DisplacerCpnt, 1)
+
+    mSerialize_memberFrom(1, target);
+mSerialize_memberFrom(1, enabled);
+mEnd_serialization(DisplacerCpnt);

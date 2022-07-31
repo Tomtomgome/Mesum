@@ -10,43 +10,6 @@
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void CollisionCpnt::read(std::ifstream& a_inputStream)
-{
-    m::mU32     version;
-    std::string debugName;
-    a_inputStream >> debugName >> version;
-
-    if (version <= 1)
-    {
-        m::mU32 size;
-        a_inputStream >> size;
-        positions.resize(size);
-        for (auto& position : positions)
-        {
-            a_inputStream >> position.x >> position.y;
-        }
-        a_inputStream >> enabled;
-    }
-}
-
-//-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
-void CollisionCpnt::write(std::ofstream& a_outputStream) const
-{
-    a_outputStream << "CollisionCpnt: " << s_version << ' ';
-
-    a_outputStream << positions.size() << " ";
-    for (auto& position : positions)
-    {
-        a_outputStream << position.x << " " << position.y << " ";
-    }
-    a_outputStream << enabled << std::endl;
-}
-
-//-----------------------------------------------------------------------------
-//
-//-----------------------------------------------------------------------------
 void CollisionCpnt::display_gui()
 {
     ImGui::Checkbox("Collision", &enabled);

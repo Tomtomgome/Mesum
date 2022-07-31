@@ -8,7 +8,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 struct RenderingCpnt
 {
-    Serializable(1, RenderingCpnt);
     void display_gui();
 
     m::math::mVec4 color{1.0f, 1.0f, 1.0f, 1.0f};
@@ -16,15 +15,15 @@ struct RenderingCpnt
     m::mU32        pictureSize{0};
     m::mBool       enabled{false};
 };
-mBegin_Serialization(RenderingCpnt, 1)
+mBegin_serialization(RenderingCpnt, 1)
 
-    mSerialize_from(1, a_object.color.r);
-mSerialize_from(1, a_object.color.g);
-mSerialize_from(1, a_object.color.b);
-mSerialize_from(1, a_object.color.a);
-mSerialize_from(1, a_object.materialID);
-mSerialize_from(1, a_object.pictureSize);
-mSerialize_from(1, a_object.enabled);
+    mSerialize_memberFrom(1, color.r);
+mSerialize_memberFrom(1, color.g);
+mSerialize_memberFrom(1, color.b);
+mSerialize_memberFrom(1, color.a);
+mSerialize_memberFrom(1, materialID);
+mSerialize_memberFrom(1, pictureSize);
+mSerialize_memberFrom(1, enabled);
 
 mEnd_serialization(RenderingCpnt);
 
@@ -33,7 +32,6 @@ mEnd_serialization(RenderingCpnt);
 ///////////////////////////////////////////////////////////////////////////////
 struct TransformCpnt
 {
-    Serializable(1, TransformCpnt);
     void display_gui();
 
     m::math::mVec2 position{0.0f, 0.0f};
@@ -41,13 +39,13 @@ struct TransformCpnt
     m::mFloat      scale{1.0f};
     m::mBool       enabled{true};
 };
-mBegin_Serialization(TransformCpnt, 1)
+mBegin_serialization(TransformCpnt, 1)
 
-    mSerialize_from(1, position.x);
-mSerialize_from(1, position.y);
-mSerialize_from(1, angle);
-mSerialize_from(1, scale);
-mSerialize_from(1, enabled);
+    mSerialize_memberFrom(1, position.x);
+mSerialize_memberFrom(1, position.y);
+mSerialize_memberFrom(1, angle);
+mSerialize_memberFrom(1, scale);
+mSerialize_memberFrom(1, enabled);
 
 mEnd_serialization(TransformCpnt);
 

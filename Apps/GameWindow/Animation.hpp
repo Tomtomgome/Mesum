@@ -16,15 +16,18 @@ using Entity = m::mU32;
 ///////////////////////////////////////////////////////////////////////////////
 struct Key
 {
-    Serializable(1, Key);
     void display_gui();
 
     m::mFloat advancement = 0;
 };
+mBegin_serialization(Key, 1)
+
+    mSerialize_memberFrom(1, advancement);
+
+mEnd_serialization(Key);
 
 struct Modifier
 {
-    Serializable(1, Modifier);
     void display_gui();
 
     m::math::mVec4 color{};
@@ -32,10 +35,21 @@ struct Modifier
     m::mFloat      angle = 0;
     m::mFloat      scale = 0;
 };
+mBegin_serialization(Modifier, 1)
+
+    mSerialize_memberFrom(1, color.r);
+mSerialize_memberFrom(1, color.g);
+mSerialize_memberFrom(1, color.b);
+mSerialize_memberFrom(1, color.a);
+mSerialize_memberFrom(1, offset.x);
+mSerialize_memberFrom(1, offset.y);
+mSerialize_memberFrom(1, angle);
+mSerialize_memberFrom(1, scale);
+
+mEnd_serialization(Modifier);
 
 struct Animation
 {
-    Serializable(3, Animation);
     void display_gui();
 
     std::string                              name{"unnamed"};
@@ -47,6 +61,37 @@ struct Animation
     m::mBool colorMultiply = true;  // Otherwise Add
     m::mBool scaleMultiply = true;  // Otherwise Add
 };
+mBegin_serialization(Animation, 1)
+
+    mSerialize_memberFrom(1, ID);
+
+m::mUInt nbKeys = a_object.keys.size();
+mSerialize_from(1, nbKeys);
+a_object.keys.resize(nbKeys);
+a_object.modifiers.resize(nbKeys);
+a_object.gameActionsLists.resize(nbKeys);
+
+for (auto& key : a_object.keys) { mSerialize_from(1, key); }
+
+for (auto& modifier : a_object.modifiers) { mSerialize_from(1, modifier); }
+
+for (auto& gameActionList : a_object.gameActionsLists)
+{
+    m::mUInt nbGameAction = gameActionList.size();
+    mSerialize_from(1, nbGameAction);
+    gameActionList.resize(nbGameAction);
+    for (auto& gameAction : gameActionList) { mSerialize_from(1, gameAction); }
+}
+m::mU64 duration =
+    (m::mU64(duration_cast<std::chrono::nanoseconds>(a_object.animationDuration)
+                 .count()));
+mSerialize_from(1, duration);
+a_object.animationDuration = std::chrono::nanoseconds(duration);
+
+mSerialize_memberFrom(1, colorMultiply);
+mSerialize_memberFrom(1, scaleMultiply);
+
+mEnd_serialization(Animation);
 
 struct AnimationBank
 {
@@ -77,7 +122,6 @@ struct AnimatorEvent
 
 struct AnimatorCpnt
 {
-    Serializable(3, AnimatorCpnt);
     void display_gui();
 
     m::mInt   animationID{-1};
@@ -87,6 +131,16 @@ struct AnimatorCpnt
     m::mBool  isLooping{true};
     m::mBool  enabled{false};
 };
+mBegin_serialization(AnimatorCpnt, 1)
+
+    mSerialize_memberFrom(1, animationID);
+mSerialize_memberFrom(1, lastModifier);
+mSerialize_memberFrom(1, lastKeyIndex);
+mSerialize_memberFrom(1, currentAdvancement);
+mSerialize_memberFrom(1, isLooping);
+mSerialize_memberFrom(1, enabled);
+
+mEnd_serialization(AnimatorCpnt);
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
