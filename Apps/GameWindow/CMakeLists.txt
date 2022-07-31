@@ -15,7 +15,9 @@ set(SOURCES main.cpp
         Collision.cpp
         Animation.cpp
         GameAction.cpp
-        GameActionDef.cpp)
+        GameActionDef.cpp
+        Displacer.cpp
+        BasicCpnt.cpp)
 
 add_executable(${APP_NAME} ${BM_APP_WINDOWED} ${SOURCES})
 target_link_libraries(${APP_NAME} PUBLIC MesumGraphics)

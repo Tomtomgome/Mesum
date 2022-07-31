@@ -1,0 +1,35 @@
+#pragma once
+
+#include "Serializable.hpp"
+#include <Kernel/Math.hpp>
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+struct RenderingCpnt
+{
+    Serializable(1, RenderingCpnt);
+    void display_gui();
+
+    m::math::mVec4 color{1.0f, 1.0f, 1.0f, 1.0f};
+    m::mU32        materialID{0};
+    m::mU32        pictureSize{0};
+    m::mBool       enabled{false};
+};
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+struct TransformCpnt
+{
+    Serializable(1, TransformCpnt);
+    void display_gui();
+
+    m::math::mVec2 position{0.0f, 0.0f};
+    m::mFloat      angle{0};
+    m::mFloat      scale{1.0f};
+    m::mBool       enabled{true};
+};
+
+TransformCpnt apply_transformToTC(TransformCpnt const& a_transformA,
+                                  TransformCpnt const& a_transformB);

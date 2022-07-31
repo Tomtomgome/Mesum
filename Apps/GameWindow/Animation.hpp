@@ -6,8 +6,8 @@
 
 #include <vector>
 
-class RenderingCpnt;
-class TransformCpnt;
+struct RenderingCpnt;
+struct TransformCpnt;
 struct ComponentManager;
 using Entity = m::mU32;
 

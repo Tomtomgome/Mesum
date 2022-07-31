@@ -1,50 +1,19 @@
 #pragma once
 
 #include "Serializable.hpp"
+#include "BasicCpnt.hpp"
 #include "Collision.hpp"
 #include "Animation.hpp"
-
-#include <Kernel/Math.hpp>
+#include "Displacer.hpp";
 
 #include <vector>
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-struct RenderingCpnt
-{
-    Serializable(1, RenderingCpnt);
-    void display_gui();
-
-    m::math::mVec4 color{1.0f, 1.0f, 1.0f, 1.0f};
-    m::mU32        materialID{0};
-    m::mU32        pictureSize{0};
-    m::mBool       enabled{false};
-};
-
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-struct TransformCpnt
-{
-    Serializable(1, TransformCpnt);
-    void display_gui();
-
-    m::math::mVec2 position{0.0f, 0.0f};
-    m::mFloat      angle{0};
-    m::mFloat      scale{1.0f};
-    m::mBool       enabled{true};
-};
-
-TransformCpnt apply_transformToTC(TransformCpnt const& a_transformA,
-                                  TransformCpnt const& a_transformB);
-
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
 struct Model
 {
-    Serializable(1, Model);
+    Serializable(2, Model);
     void display_gui();
 
     std::string   name{"Unnamed"};
@@ -53,6 +22,7 @@ struct Model
     AnimatorCpnt  animator{};
     TransformCpnt transform{};
     CollisionCpnt collision{};
+    DisplacerCpnt displacer{};
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -112,6 +82,9 @@ struct ComponentManager
     template <>
     void enable_component<CollisionCpnt>(Entity const&        a_entity,
                                          CollisionCpnt const& a_component);
+    template <>
+    void enable_component<DisplacerCpnt>(Entity const&        a_entity,
+                                         DisplacerCpnt const& a_component);
 
     m::mU32                    entityCount = 0;
     std::vector<Entity>        freeEntities;
@@ -120,6 +93,7 @@ struct ComponentManager
     std::vector<AnimatorCpnt>  animators;
     std::vector<TransformCpnt> transforms;
     std::vector<CollisionCpnt> collisions;
+    std::vector<DisplacerCpnt> displacers;
 };
 
 template <typename t_Component>
