@@ -16,6 +16,17 @@ struct RenderingCpnt
     m::mU32        pictureSize{0};
     m::mBool       enabled{false};
 };
+mBegin_Serialization(RenderingCpnt, 1)
+
+    mSerialize_from(1, a_object.color.r);
+mSerialize_from(1, a_object.color.g);
+mSerialize_from(1, a_object.color.b);
+mSerialize_from(1, a_object.color.a);
+mSerialize_from(1, a_object.materialID);
+mSerialize_from(1, a_object.pictureSize);
+mSerialize_from(1, a_object.enabled);
+
+mEnd_serialization(RenderingCpnt);
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -30,6 +41,15 @@ struct TransformCpnt
     m::mFloat      scale{1.0f};
     m::mBool       enabled{true};
 };
+mBegin_Serialization(TransformCpnt, 1)
+
+    mSerialize_from(1, position.x);
+mSerialize_from(1, position.y);
+mSerialize_from(1, angle);
+mSerialize_from(1, scale);
+mSerialize_from(1, enabled);
+
+mEnd_serialization(TransformCpnt);
 
 TransformCpnt apply_transformToTC(TransformCpnt const& a_transformA,
                                   TransformCpnt const& a_transformB);

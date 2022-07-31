@@ -4,7 +4,7 @@
 #include "BasicCpnt.hpp"
 #include "Collision.hpp"
 #include "Animation.hpp"
-#include "Displacer.hpp";
+#include "Displacer.hpp"
 
 #include <vector>
 
