@@ -361,6 +361,7 @@ void ComponentManager::reset()
     animators.clear();
     collisions.clear();
     enabled.clear();
+    freeEntities.clear();
 }
 
 void ComponentManager::load_fromFile(std::string const& a_path)
