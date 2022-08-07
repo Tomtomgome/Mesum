@@ -38,7 +38,7 @@ class mSerializerIfstream
                                m::mUInt           a_objectVersion,
                                std::string const& a_debugName);
 
-    void end() {};
+    void end(){};
 
    private:
     std::ifstream& m_inputStream;
