@@ -39,7 +39,7 @@ void ModelBank::load()
             mSerializerIfstream serializer(inputStream);
             Model         model;
             model.name = entry.path().filename().stem().string();
-            serialize(model, serializer);
+            mSerialize(model, serializer);
             if (model.ID >= models.size())
             {
                 models.resize(model.ID + 1);
@@ -63,7 +63,7 @@ void ModelBank::save()
 
         std::ofstream outputStream(modelPath, std::ios::binary);
         mSerializerOfstream serializer(outputStream);
-        serialize(rModel, serializer);
+        mSerialize(rModel, serializer);
     }
 }
 
@@ -247,12 +247,12 @@ void ComponentManager::load_fromFile(std::string const& a_path)
 
         for (int i = 0; i < entityCount; ++i)
         {
-            serialize(renderingCpnts[i], serializer);
-            serialize(animators[i], serializer);
-            serialize(transforms[i], serializer);
+            mSerialize(renderingCpnts[i], serializer);
+            mSerialize(animators[i], serializer);
+            mSerialize(transforms[i], serializer);
             if (version >= 2)
             {
-                serialize(collisions[i], serializer);
+                mSerialize(collisions[i], serializer);
             }
             if (version >= 3)
             {
@@ -279,10 +279,10 @@ void ComponentManager::save_toFile(std::string const& a_path)
     outputStream << entityCount << std::endl;
     for (int i = 0; i < entityCount; ++i)
     {
-        serialize(renderingCpnts[i], serializer);
-        serialize(animators[i], serializer);
-        serialize(transforms[i], serializer);
-        serialize(collisions[i], serializer);
+        mSerialize(renderingCpnts[i], serializer);
+        mSerialize(animators[i], serializer);
+        mSerialize(transforms[i], serializer);
+        mSerialize(collisions[i], serializer);
         outputStream << enabled[i] << std::endl;
     }
 }

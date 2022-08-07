@@ -15,12 +15,15 @@ constexpr bool has_customSerialization()
 }
 
 template <typename t_Type>
-concept customSerializable = has_customSerialization<t_Type>();
+concept mCustomSerializable = has_customSerialization<t_Type>();
 
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 class mSerializerIfstream
 {
    public:
-    mSerializerIfstream(std::ifstream& a_inputStream)
+    explicit mSerializerIfstream(std::ifstream& a_inputStream)
         : m_inputStream(a_inputStream)
     {
     }
@@ -30,14 +33,7 @@ class mSerializerIfstream
                std::string const& a_debugName);
 
     template <typename t_Type>
-    void serialize_primitive(t_Type& a_object, std::string const& a_debugName);
-    template <customSerializable t_Type>
-    void serialize_primitive(t_Type& a_object, std::string const& a_debugName);
-
-    template <typename t_Type>
-    void serialize_fromVersion(t_Type& a_object, m::mUInt a_version,
-                               m::mUInt           a_objectVersion,
-                               std::string const& a_debugName);
+    void serialize(t_Type& a_object, std::string const& a_debugName);
 
     void end(){};
 
@@ -46,18 +42,11 @@ class mSerializerIfstream
 };
 
 template <typename t_Type>
-void mSerializerIfstream::serialize_primitive(t_Type&            a_object,
-                                              std::string const& a_debugName)
+void mSerializerIfstream::serialize(t_Type&            a_object,
+                                    std::string const& a_debugName)
 {
     std::string debugName;
     m_inputStream >> debugName >> a_object;
-}
-
-template <customSerializable t_Type>
-void mSerializerIfstream::serialize_primitive(t_Type&            a_object,
-                                              std::string const& a_debugName)
-{
-    serialize(a_object, *this);
 }
 
 template <typename t_Type>
@@ -68,18 +57,9 @@ void mSerializerIfstream::begin(t_Type& a_object, m::mUInt& a_version,
     m_inputStream >> debugName >> a_version;
 }
 
-template <typename t_Type>
-void mSerializerIfstream::serialize_fromVersion(t_Type&  a_object,
-                                                m::mUInt a_version,
-                                                m::mUInt a_objectVersion,
-                                                std::string const& a_debugName)
-{
-    if (a_objectVersion >= a_version)
-    {
-        serialize_primitive(a_object, a_debugName);
-    }
-}
-
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 class mSerializerOfstream
 {
    public:
@@ -93,14 +73,7 @@ class mSerializerOfstream
                std::string const& a_debugName);
 
     template <typename t_Type>
-    void serialize_primitive(t_Type& a_object, std::string const& a_debugName);
-    template <customSerializable t_Type>
-    void serialize_primitive(t_Type& a_object, std::string const& a_debugName);
-
-    template <typename t_Type>
-    void serialize_fromVersion(t_Type& a_object, m::mUInt a_version,
-                               m::mUInt           a_objectVersion,
-                               std::string const& a_debugName);
+    void serialize(t_Type& a_object, std::string const& a_debugName);
 
     void end();
 
@@ -112,18 +85,11 @@ class mSerializerOfstream
 };
 
 template <typename t_Type>
-void mSerializerOfstream::serialize_primitive(t_Type&            a_object,
-                                              std::string const& a_debugName)
+void mSerializerOfstream::serialize(t_Type&            a_object,
+                                    std::string const& a_debugName)
 {
     print_spacing();
     m_outputStream << a_debugName << " " << a_object << std::endl;
-}
-
-template <customSerializable t_Type>
-void mSerializerOfstream::serialize_primitive(t_Type&            a_object,
-                                              std::string const& a_debugName)
-{
-    serialize(a_object, *this);
 }
 
 template <typename t_Type>
@@ -135,26 +101,34 @@ void mSerializerOfstream::begin(t_Type& a_object, m::mUInt& a_version,
     m_spacingNumber++;
 }
 
-template <typename t_Type>
-void mSerializerOfstream::serialize_fromVersion(t_Type&  a_object,
-                                                m::mUInt a_version,
-                                                m::mUInt a_objectVersion,
-                                                std::string const& a_debugName)
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+template <typename t_Serialize, typename t_Type>
+void serialize_primitive(t_Serialize& a_serializer, t_Type& a_object,
+                         std::string const& a_debugName)
 {
-    serialize_primitive(a_object, a_debugName);
+    a_serializer.serialize(a_object, a_debugName);
 }
 
-#define mSerialize_from(a_version, a_variable)                                 \
-    a_serializer.serialize_fromVersion(a_variable, a_version, internalVersion, \
-                                       #a_variable)
+template <typename t_Serialize, mCustomSerializable t_Type>
+void serialize_primitive(t_Serialize& a_serializer, t_Type& a_object,
+                         std::string const& a_debugName)
+{
+    mSerialize(a_object, a_serializer);
+}
 
-#define mSerialize_memberFrom(a_version, a_variable)                   \
-    a_serializer.serialize_fromVersion(a_object.a_variable, a_version, \
-                                       internalVersion, #a_variable)
-
-#define mEnd_serialization(t_ClassName) \
-    a_serializer.end();                 \
+template <typename t_Serialize, typename t_Type>
+void serialize_fromVersion(t_Serialize& a_serializer, t_Type& a_object,
+                           m::mUInt a_version, m::mUInt a_objectVersion,
+                           std::string const& a_debugName)
+{
+    if (a_objectVersion >= a_version)
+    {
+        serialize_primitive(a_serializer, a_object, a_debugName);
     }
+}
 
 #define mBegin_serialization(t_ClassName, a_versionNumber)                \
     template <>                                                           \
@@ -164,7 +138,19 @@ void mSerializerOfstream::serialize_fromVersion(t_Type&  a_object,
     }                                                                     \
     static const m::mU32 t_ClassName##_version = a_versionNumber;         \
     template <typename t_SerializerType>                                  \
-    void serialize(t_ClassName& a_object, t_SerializerType& a_serializer) \
+    void mSerialize(t_ClassName& a_object, t_SerializerType& a_serializer) \
     {                                                                     \
         m::mUInt internalVersion = t_ClassName##_version;                 \
         a_serializer.begin(a_object, internalVersion, #t_ClassName);
+
+#define mSerialize_from(a_version, a_variable)                 \
+    serialize_fromVersion(a_serializer, a_variable, a_version, \
+                          internalVersion, #a_variable)
+
+#define mSerialize_memberFrom(a_version, a_variable)                    \
+    serialize_fromVersion(a_serializer, a_object.a_variable, a_version, \
+                          internalVersion, #a_variable)
+
+#define mEnd_serialization(t_ClassName) \
+    a_serializer.end();                 \
+    }

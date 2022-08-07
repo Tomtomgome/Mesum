@@ -106,7 +106,7 @@ void AnimationBank::load()
             mSerializerIfstream serializer(inputStream);
             Animation     anim;
             anim.name = entry.path().filename().stem().string();
-            serialize(anim, serializer);
+            mSerialize(anim, serializer);
             if (anim.ID >= animations.size())
             {
                 animations.resize(anim.ID + 1);
@@ -130,7 +130,7 @@ void AnimationBank::save()
 
         std::ofstream outputStream(animationPath, std::ios::binary);
         mSerializerOfstream serializer(outputStream);
-        serialize(rAnim, serializer);
+        mSerialize(rAnim, serializer);
     }
 }
 
