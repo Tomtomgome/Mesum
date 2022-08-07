@@ -101,22 +101,22 @@ void mSerializerOfstream::begin(t_Type& a_object, m::mUInt& a_version,
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-template <typename t_Serialize, typename t_Type>
-void serialize_primitive(t_Serialize& a_serializer, t_Type& a_object,
+template <typename t_Serializer, typename t_Type>
+void serialize_primitive(t_Serializer& a_serializer, t_Type& a_object,
                          std::string const& a_debugName)
 {
     a_serializer.serialize(a_object, a_debugName);
 }
 
-template <typename t_Serialize, mCustomSerializable t_Type>
-void serialize_primitive(t_Serialize& a_serializer, t_Type& a_object,
+template <typename t_Serializer, mCustomSerializable t_Type>
+void serialize_primitive(t_Serializer& a_serializer, t_Type& a_object,
                          std::string const& a_debugName)
 {
     mSerialize(a_object, a_serializer);
 }
 
-template <typename t_Serialize, typename t_Type>
-void serialize_fromVersion(t_Serialize& a_serializer, t_Type& a_object,
+template <typename t_Serializer, typename t_Type>
+void serialize_fromVersion(t_Serializer& a_serializer, t_Type& a_object,
                            m::mUInt a_version, m::mUInt a_objectVersion,
                            std::string const& a_debugName)
 {
