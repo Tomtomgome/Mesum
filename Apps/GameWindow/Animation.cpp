@@ -103,9 +103,10 @@ void AnimationBank::load()
         if (entry.path().has_extension() && entry.path().extension() == ".anim")
         {
             std::ifstream inputStream(entry.path());
+            mSerializerIfstream serializer(inputStream);
             Animation     anim;
             anim.name = entry.path().filename().stem().string();
-            serialize(anim, inputStream, m_read_flag | m_textual_flag);
+            serialize(anim, serializer);
             if (anim.ID >= animations.size())
             {
                 animations.resize(anim.ID + 1);
@@ -128,7 +129,8 @@ void AnimationBank::save()
                                             std::string(rAnim.name + ".anim")};
 
         std::ofstream outputStream(animationPath, std::ios::binary);
-        serialize(rAnim, outputStream, m_write_flag | m_textual_flag);
+        mSerializerOfstream serializer(outputStream);
+        serialize(rAnim, serializer);
     }
 }
 

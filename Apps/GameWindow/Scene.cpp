@@ -36,9 +36,10 @@ void ModelBank::load()
             entry.path().extension() == ".model")
         {
             std::ifstream inputStream(entry.path());
+            mSerializerIfstream serializer(inputStream);
             Model         model;
             model.name = entry.path().filename().stem().string();
-            serialize(model, inputStream, m_read_flag | m_textual_flag);
+            serialize(model, serializer);
             if (model.ID >= models.size())
             {
                 models.resize(model.ID + 1);
@@ -61,7 +62,8 @@ void ModelBank::save()
                                         std::string(rModel.name + ".model")};
 
         std::ofstream outputStream(modelPath, std::ios::binary);
-        serialize(rModel, outputStream, m_write_flag | m_textual_flag);
+        mSerializerOfstream serializer(outputStream);
+        serialize(rModel, serializer);
     }
 }
 
@@ -231,6 +233,8 @@ void ComponentManager::load_fromFile(std::string const& a_path)
     std::string   debugName;
     inputStream >> debugName >> version;
 
+    mSerializerIfstream serializer(inputStream);
+
     if (version >= 1)
     {
         inputStream >> entityCount;
@@ -243,14 +247,12 @@ void ComponentManager::load_fromFile(std::string const& a_path)
 
         for (int i = 0; i < entityCount; ++i)
         {
-            serialize(renderingCpnts[i], inputStream,
-                      m_read_flag | m_textual_flag);
-            serialize(animators[i], inputStream, m_read_flag | m_textual_flag);
-            serialize(transforms[i], inputStream, m_read_flag | m_textual_flag);
+            serialize(renderingCpnts[i], serializer);
+            serialize(animators[i], serializer);
+            serialize(transforms[i], serializer);
             if (version >= 2)
             {
-                serialize(collisions[i], inputStream,
-                          m_read_flag | m_textual_flag);
+                serialize(collisions[i], serializer);
             }
             if (version >= 3)
             {
@@ -273,14 +275,14 @@ void ComponentManager::save_toFile(std::string const& a_path)
     std::ofstream outputStream(a_path, std::ios::binary);
     outputStream << "CpntManager: " << s_version << ' ';
 
+    mSerializerOfstream serializer(outputStream);
     outputStream << entityCount << std::endl;
     for (int i = 0; i < entityCount; ++i)
     {
-        serialize(renderingCpnts[i], outputStream,
-                  m_write_flag | m_textual_flag);
-        serialize(animators[i], outputStream, m_write_flag | m_textual_flag);
-        serialize(transforms[i], outputStream, m_write_flag | m_textual_flag);
-        serialize(collisions[i], outputStream, m_write_flag | m_textual_flag);
+        serialize(renderingCpnts[i], serializer);
+        serialize(animators[i], serializer);
+        serialize(transforms[i], serializer);
+        serialize(collisions[i], serializer);
         outputStream << enabled[i] << std::endl;
     }
 }
