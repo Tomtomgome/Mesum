@@ -1,17 +1,17 @@
 #include "Camera.hpp"
 
-using namespace DirectX;
+#include "Kernel/MatHelpers.hpp"
 
 namespace m::render
 {
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void mCamera::set_vFoV(mFloat a_vFoV)
+void mCamera::set_vFov(mFloat a_vFov)
 {
-    if (m_vFoV != a_vFoV)
+    if (m_vFov != a_vFov)
     {
-        m_vFoV = a_vFoV;
+        m_vFov = a_vFov;
         // recompute
     }
 }
@@ -23,20 +23,14 @@ void mCamera::set_fromLookAt(math::mVec3 const& a_position,
                              math::mVec3 const& a_lookAt,
                              math::mVec3 const& a_up)
 {
-    const XMVECTOR dxPosition =
-        XMVectorSet(a_position.x, a_position.y, a_position.z, 1);
-    const XMVECTOR dxLookAt =
-        XMVectorSet(a_lookAt.x, a_lookAt.y, a_lookAt.z, 1);
-    const XMVECTOR dxUp = XMVectorSet(a_up.x, a_up.y, a_up.z, 0);
-
     // Update the view matrix.
-    m_viewMatrix = XMMatrixLookAtLH(dxPosition, dxLookAt, dxUp);
+    m_viewMatrix = generate_lookAtLH(a_position, a_lookAt, a_up);
 }
 
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-DirectX::XMMATRIX const& mCamera::get_viewMatrix()
+math::mMat4x4 const& mCamera::get_viewMatrix()
 {
     return m_viewMatrix;
 }
@@ -44,11 +38,9 @@ DirectX::XMMATRIX const& mCamera::get_viewMatrix()
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-DirectX::XMMATRIX mCamera::get_projectionMatrix(mFloat a_aspectRatio)
+math::mMat4x4 mCamera::get_projectionMatrix(mFloat a_aspectRatio)
 {
     // Update the projection matrix.
-    XMMATRIX projectionMatrix = XMMatrixPerspectiveFovLH(
-        XMConvertToRadians(m_vFoV), a_aspectRatio, m_near, m_far);
-    return projectionMatrix;
+    return m::math::generate_projectionPerspectiveLH(m_vFov, a_aspectRatio, m_near, m_far);
 }
 }  // namespace m::render

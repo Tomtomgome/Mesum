@@ -5,6 +5,7 @@
 #include "Kernel/Spherical.hpp"
 #include "Kernel/StateInputManager.hpp"
 #include "Kernel/Types.hpp"
+#include "Kernel/Quaternion.hpp"
 
 using namespace m::math;
 

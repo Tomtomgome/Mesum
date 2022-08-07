@@ -28,6 +28,9 @@ mMat4x4 generate_translationMatrix(mFloat a_x, mFloat a_y, mFloat a_z);
 mMat4x4 generate_projectionOrthoLH(mFloat a_width, mFloat a_height,
                                    mFloat a_near, mFloat a_far);
 
+mMat4x4 generate_projectionPerspectiveLH(mFloat a_vFov, mFloat a_aspectRatio,
+                                         mFloat a_near, mFloat a_far);
+
 ///////////////////////////////////////////////////////////////////////////////
 /// \brief Returns a basic scaling matrix
 ///
@@ -36,6 +39,9 @@ mMat4x4 generate_projectionOrthoLH(mFloat a_width, mFloat a_height,
 /// \param a_z Scale on in the z axis
 ///////////////////////////////////////////////////////////////////////////////
 mMat4x4 generate_scaleMatrix(mFloat a_x, mFloat a_y, mFloat a_z);
+
+mMat4x4 generate_lookAtLH(mVec3 const& a_position, mVec3 const& a_lookAt,
+                          mVec3 const& a_up);
 
 };  // namespace m::math
 

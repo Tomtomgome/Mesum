@@ -25,7 +25,7 @@ struct TaskData3dRender : public TaskData
 {
     DataMeshBuffer<mBasicVertex, mU16>* m_pMeshBuffer;
     ISurface::HdlPtr                    m_hdlOutput;
-    DirectX::XMMATRIX*                  m_matrix;
+    math::mMat4x4*                      m_matrix;
 
     mIfDx12Enabled(Task* getNew_dx12Implementation(TaskData* a_data) override);
 };
