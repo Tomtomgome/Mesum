@@ -4,10 +4,6 @@
 #include <Kernel/Asserts.hpp>
 #include <fstream>
 
-#define m_read_flag 1
-#define m_write_flag 2
-#define m_textual_flag 4
-
 template <typename t_Type>
 constexpr bool has_customSerialization()
 {
