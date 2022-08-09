@@ -123,6 +123,11 @@ void serialize_fromVersion(t_Serializer& a_serializer, t_Type& a_object,
     }
 }
 
+#define mAllow_privateSerialization(t_ClassName)       \
+    template <typename t_SerializerType>               \
+    friend void mSerialize(t_ClassName&      a_object, \
+                           t_SerializerType& a_serializer);
+
 #define mBegin_serialization(t_ClassName, a_versionNumber)                 \
     static const m::mU32 t_ClassName##_version = a_versionNumber;          \
     template <typename t_SerializerType>                                   \
