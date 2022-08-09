@@ -4,14 +4,11 @@
 #include <Kernel/Asserts.hpp>
 #include <fstream>
 
-template <typename t_Type>
-constexpr bool has_customSerialization()
+template <typename t_Serializer, typename t_Type>
+concept mCustomSerializable = requires(t_Serializer serializer, t_Type object)
 {
-    return false;
-}
-
-template <typename t_Type>
-concept mCustomSerializable = has_customSerialization<t_Type>();
+    mSerialize(object, serializer);
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -97,7 +94,6 @@ void mSerializerOfstream::begin(t_Type& a_object, m::mUInt& a_version,
     m_spacingNumber++;
 }
 
-
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -108,7 +104,8 @@ void serialize_primitive(t_Serializer& a_serializer, t_Type& a_object,
     a_serializer.serialize(a_object, a_debugName);
 }
 
-template <typename t_Serializer, mCustomSerializable t_Type>
+template <typename t_Serializer, typename t_Type>
+requires mCustomSerializable<t_Serializer, t_Type>
 void serialize_primitive(t_Serializer& a_serializer, t_Type& a_object,
                          std::string const& a_debugName)
 {
@@ -126,17 +123,12 @@ void serialize_fromVersion(t_Serializer& a_serializer, t_Type& a_object,
     }
 }
 
-#define mBegin_serialization(t_ClassName, a_versionNumber)                \
-    template <>                                                           \
-    constexpr bool has_customSerialization<t_ClassName>()                 \
-    {                                                                     \
-        return true;                                                      \
-    }                                                                     \
-    static const m::mU32 t_ClassName##_version = a_versionNumber;         \
-    template <typename t_SerializerType>                                  \
+#define mBegin_serialization(t_ClassName, a_versionNumber)                 \
+    static const m::mU32 t_ClassName##_version = a_versionNumber;          \
+    template <typename t_SerializerType>                                   \
     void mSerialize(t_ClassName& a_object, t_SerializerType& a_serializer) \
-    {                                                                     \
-        m::mUInt internalVersion = t_ClassName##_version;                 \
+    {                                                                      \
+        m::mUInt internalVersion = t_ClassName##_version;                  \
         a_serializer.begin(a_object, internalVersion, #t_ClassName);
 
 #define mSerialize_from(a_version, a_variable)                 \
