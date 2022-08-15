@@ -12,7 +12,7 @@
 #include <DirectXMath.h>
 
 // D3D12 extension library.
-#include <d3dx12.h>
+#include "d3dx12.h"
 
 #include <algorithm>
 #include <chrono>

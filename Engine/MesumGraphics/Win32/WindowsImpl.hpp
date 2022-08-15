@@ -44,6 +44,13 @@ class IWindowImpl : public windows::mIWindow
         return m_flagToBeClosed;
     }
 
+    //Specific to win functions
+    void attach_toSpecialUpdate(
+        mCallback<void, std::chrono::steady_clock::duration const&> const&
+            a_onUpdateCallback);
+    HWND get_hwnd(){return m_hwnd;}
+    void call_update(std::chrono::steady_clock::duration const& a_deltaTime);
+
    private:
     input::mIInputManager* m_linkedInputManager;
 
@@ -67,6 +74,9 @@ class IWindowImpl : public windows::mIWindow
     using CallbackWindowDestroy = mCallback<void>;
     using CallbackInputProcessing =
         mCallback<void, mBool*, HWND, UINT, WPARAM, LPARAM>;
+
+    mSignal<std::chrono::steady_clock::duration const&> m_signalSpecialUpdate;
+
     mSignal<mU32, mU32>                         m_signalResize;
     mSignal<>                                   m_signalWindowDestroyed;
     mSignal<mBool*, HWND, UINT, WPARAM, LPARAM> m_signalOverrideInputProcessing;

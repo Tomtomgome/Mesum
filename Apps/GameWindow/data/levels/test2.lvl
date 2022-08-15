@@ -1,0 +1,118 @@
+CpntManager: 3 3
+RenderingCpnt 1
+ color.r 0.333333
+ color.g 0
+ color.b 0
+ color.a 1
+ materialID 1
+ pictureSize 32
+ enabled 1
+AnimatorCpnt 1
+ animationID -1
+ Modifier 1
+  color.r 0
+  color.g 0
+  color.b 0
+  color.a 0
+  offset.x 0
+  offset.y 0
+  angle 0
+  scale 0
+ lastKeyIndex 0
+ currentAdvancement 0
+ isLooping 1
+ enabled 0
+TransformCpnt 1
+ position.x 891
+ position.y 675
+ angle 0
+ scale 37.3
+ enabled 1
+CollisionCpnt 1
+ nbPositions 3
+ position.x 0
+ position.y 0
+ position.x 0
+ position.y 0
+ position.x 0
+ position.y 0
+ enabled 0
+
+RenderingCpnt 1
+ color.r 1
+ color.g 1
+ color.b 1
+ color.a 1
+ materialID 1
+ pictureSize 32
+ enabled 1
+AnimatorCpnt 1
+ animationID -1
+ Modifier 1
+  color.r 0
+  color.g 0
+  color.b 0
+  color.a 0
+  offset.x 0
+  offset.y 0
+  angle 0
+  scale 0
+ lastKeyIndex 0
+ currentAdvancement 0
+ isLooping 1
+ enabled 0
+TransformCpnt 1
+ position.x 782
+ position.y 620
+ angle -0.841772
+ scale 5.8
+ enabled 1
+CollisionCpnt 1
+ nbPositions 3
+ position.x -17
+ position.y -14
+ position.x 17
+ position.y -14
+ position.x 0
+ position.y 15
+ enabled 1
+
+RenderingCpnt 1
+ color.r 1
+ color.g 1
+ color.b 1
+ color.a 1
+ materialID 1
+ pictureSize 32
+ enabled 1
+AnimatorCpnt 1
+ animationID -1
+ Modifier 1
+  color.r 0
+  color.g 0
+  color.b 0
+  color.a 0
+  offset.x 0
+  offset.y 0
+  angle 0
+  scale 0
+ lastKeyIndex 0
+ currentAdvancement 0
+ isLooping 1
+ enabled 0
+TransformCpnt 1
+ position.x 967
+ position.y 529
+ angle 0
+ scale 1
+ enabled 1
+CollisionCpnt 1
+ nbPositions 3
+ position.x -16
+ position.y -14
+ position.x 16
+ position.y -14
+ position.x 0
+ position.y 15
+ enabled 1
+

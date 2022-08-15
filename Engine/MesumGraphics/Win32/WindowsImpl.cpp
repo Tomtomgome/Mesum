@@ -4,6 +4,8 @@
 #define UNICODE
 #endif
 
+#include <thread>
+
 #include <imgui.h>
 #include <imgui_impl_win32.h>
 
@@ -13,6 +15,29 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND   hWnd,
                                                              LPARAM lParam);
 namespace m::win32
 {
+static mBool killThread = false;
+void         call_updateThreaded(IWindowImpl* a_pWindow)
+{
+    static std::chrono::time_point<std::chrono::steady_clock> start;
+    static std::chrono::time_point<std::chrono::steady_clock> end;
+    start = std::chrono::high_resolution_clock::now();
+    while (!killThread)
+    {
+        end            = std::chrono::high_resolution_clock::now();
+        auto deltaTime = end - start;
+        a_pWindow->call_update(deltaTime);
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(8ms);
+        start = std::chrono::high_resolution_clock::now();
+    }
+}
+
+void IWindowImpl::call_update(
+    std::chrono::steady_clock::duration const& a_deltaTime)
+{
+    m_signalSpecialUpdate.call(a_deltaTime);
+}
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -110,6 +135,7 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
         }
     }
 
+    static std::thread specialThread;
     switch (a_uMsg)
     {
         case WM_DESTROY:
@@ -117,7 +143,6 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
             m_flagToBeClosed = true;
         }
         break;
-
         case WM_SIZE:
         {
             RECT clientRect = {};
@@ -129,10 +154,35 @@ LRESULT IWindowImpl::process_messages(UINT a_uMsg, WPARAM a_wParam,
             m_signalResize.call(width, height);
         }
         break;
+        case WM_MOVE:
+        {
+            m_signalSpecialUpdate.call(std::chrono::milliseconds(0));
+        }
+        break;
+        case WM_ENTERSIZEMOVE:
+        {
+            killThread = false;
+            // specialThread = std::thread(call_updateThreaded, this);
+            SetTimer(m_hwnd, 1, 8, (TIMERPROC)NULL);
+        }
+        break;
+        case WM_EXITSIZEMOVE:
+        {
+            killThread = true;
+            // specialThread.join();
+            KillTimer(m_hwnd, 1);
+        }
+        break;
+        case WM_TIMER:
+        {
+            m_signalSpecialUpdate.call(std::chrono::milliseconds(16));
+        }
+        break;
         default:
         {
             if (!processed)
             {
+                // mLog_info("unprocessed msg : ", a_uMsg);
                 result = DefWindowProcW(m_hwnd, a_uMsg, a_wParam, a_lParam);
             }
         }
@@ -147,11 +197,13 @@ void IWindowImpl::init(mInitData const& a_initData)
 {
     m_clientWidth  = a_initData.size.x;
     m_clientHeight = a_initData.size.y;
-    m_windowName = a_initData.name;
+    m_windowName   = a_initData.name;
+
 
     const mWideChar className[] = L"MainWindowClass";
     m_hwnd = m_parentContext->create_window(className, m_windowName,
-                                            m_clientWidth, m_clientHeight);
+                                            m_clientWidth, m_clientHeight,
+                                            a_initData.isTransparent);
     GetWindowRect(m_hwnd, &m_windowRect);
 
     SetWindowLongPtr(m_hwnd, GWLP_USERDATA, LONG_PTR(this));
@@ -216,7 +268,7 @@ void IWindowImpl::set_asImGuiWindow()
             if (!(*a_interrupt))
             {
                 *a_interrupt = ImGui_ImplWin32_WndProcHandler(
-                    a_hwnd, a_uMsg, a_wParam, a_lParam);
+                    a_hwnd, a_uMsg, a_wParam, a_lParam) || ImGui::GetIO().WantCaptureMouse;
             }
         }));
 }
@@ -277,8 +329,19 @@ void IWindowImpl::toggle_fullScreen()
         ShowWindow(m_hwnd, SW_NORMAL);
     }
 }
+
 //-----------------------------------------------------------------------------
+//
 //-----------------------------------------------------------------------------
+void IWindowImpl::attach_toSpecialUpdate(
+    mCallback<void, std::chrono::steady_clock::duration const&> const&
+        a_onUpdateCallback)
+{
+    m_signalSpecialUpdate.attach_toSignal(a_onUpdateCallback);
+}
+
+//-----------------------------------------------------------------------------
+//
 //-----------------------------------------------------------------------------
 void IWindowImpl::attach_toDestroy(mCallback<void> const& a_onDestroyCallback)
 {

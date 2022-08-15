@@ -13,18 +13,22 @@ class IWindowedApplicationImpl : public application::IWindowedApplicationBase
 {
    public:
     windows::mIWindow* add_newWindow(std::string a_name, mU32 a_width,
-                                    mU32 a_height) override;
+                                     mU32  a_height,
+                                     mBool a_isTransparent) override;
 
     void start_dearImGuiNewFrame(
         render::IRenderer const* a_renderer) const override;
 
+    void process_messages();
+
    protected:
-    void init(mCmdLine const& a_cmdLine, void* a_appData) override;
-    void destroy() override;
+    void  init(mCmdLine const& a_cmdLine, void* a_appData) override;
+    void  destroy() override;
     mBool step(std::chrono::steady_clock::duration const& a_deltaTime) override;
 
    private:
-    WIN32Context                m_W32Context;
+    mBool                        m_signalKeepRunning = true;
+    WIN32Context                 m_W32Context;
     std::set<windows::mIWindow*> m_windows;
 };
 

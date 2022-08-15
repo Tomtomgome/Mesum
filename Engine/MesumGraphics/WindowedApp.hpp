@@ -22,7 +22,8 @@ class IWindowedApplicationBase : public mITimedLoopApplication
 {
    public:
     virtual windows::mIWindow* add_newWindow(std::string a_name, mU32 a_width,
-                                            mU32 a_height) = 0;
+                                             mU32  a_height,
+                                             mBool a_isTransparent) = 0;
 
     virtual void start_dearImGuiNewFrame(
         render::IRenderer const* a_renderer) const = 0;

@@ -25,6 +25,7 @@ set(HEADERS Windows.hpp
             Renderer.hpp
             CrossRenderer.hpp
             RenderTask.hpp
+            RenderBase.hpp
             ApiAbstraction.hpp
             MesumGraphics/Common.hpp)
 
@@ -32,7 +33,7 @@ if(BM_DYNAMIC_LINK)
 set(BM_LINK_MODE SHARED)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS 1)
 else()
-set(BM_LINK_MODE STATIC)
+set(BM_LINK_MODE STATIC RenderBase.hpp)
 endif()
 
 if(WIN32)

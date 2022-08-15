@@ -1,5 +1,7 @@
 #include <Kernel/Kernel.hpp>
 #include <Win32Context.hpp>
+
+#include <dwmapi.h>
 #ifndef UNICODE
 #define UNICODE
 #endif
@@ -187,7 +189,7 @@ void WIN32Context::register_windowClass(const mWideChar* a_className,
 
 HWND WIN32Context::create_window(const mWideChar* a_className,
                                  std::string a_windowName, mU32 a_width,
-                                 mU32 a_height) const
+                                 mU32 a_height, mBool a_isRransparent) const
 {
     mInt screenWidth  = GetSystemMetrics(SM_CXSCREEN);
     mInt screenHeight = GetSystemMetrics(SM_CYSCREEN);
@@ -202,23 +204,58 @@ HWND WIN32Context::create_window(const mWideChar* a_className,
     mInt windowPosY = std::max<mInt>(0, (screenHeight - windowHeight) / 2);
     // Create the window.
 
-    HWND hwnd =
-        CreateWindowExW(NULL,         // Optional window styles.
-                        a_className,  // Window class
-                        convert_string(a_windowName).c_str(),  // Window text
-                        WS_OVERLAPPEDWINDOW,                   // Window style
+    HWND hwnd;
+    if (a_isRransparent)
+    {
+        hwnd = CreateWindowExW(
+                WS_EX_APPWINDOW |
+                WS_EX_TOPMOST,  // NULL,         // Optional window styles.
+            a_className,        // Window class
+            convert_string(a_windowName).c_str(),  // Window text
+            WS_OVERLAPPEDWINDOW,                   // Window style
 
-                        // Size and position
-                        windowPosX, windowPosY, windowWidth, windowHeight,
+            // Size and position
+            windowPosX, windowPosY, windowWidth, windowHeight,
 
-                        NULL,         // Parent window
-                        NULL,         // Menu
-                        m_hInstance,  // Instance handle
-                        nullptr       // Additional application data
+            NULL,         // Parent window
+            NULL,         // Menu
+            m_hInstance,  // Instance handle
+            nullptr       // Additional application data
         );
+        //
+
+        BOOL composition;
+        if(FAILED(DwmIsCompositionEnabled(&composition)) || !composition)
+        {
+            mLog_info("Composition Not supported");
+        }
+        //HWND hwnd = m_hwnd;//m_windowGame->get_hwnd();
+        HRGN region = CreateRectRgn(0, 0, -1, -1);
+        DWM_BLURBEHIND bb = {0};
+        bb.dwFlags = DWM_BB_ENABLE | DWM_BB_BLURREGION;
+        bb.hRgnBlur = region;
+        bb.fEnable = TRUE;
+
+        DwmEnableBlurBehindWindow(hwnd, &bb);
+        DeleteObject(region);
+    }
+    else
+    {
+        hwnd = CreateWindowExW(
+            NULL,                                  // Optional window styles.
+            a_className,                           // Window class
+            convert_string(a_windowName).c_str(),  // Window text
+            WS_OVERLAPPEDWINDOW,                   // Window style
+                                                   // Size and position
+            windowPosX, windowPosY, windowWidth, windowHeight,
+            NULL,         // Parent window
+            NULL,         // Menu
+            m_hInstance,  // Instance handle
+            nullptr       // Additional application data
+        );
+    }
 
     mAssert(hwnd != NULL);
-
     return hwnd;
 }
 

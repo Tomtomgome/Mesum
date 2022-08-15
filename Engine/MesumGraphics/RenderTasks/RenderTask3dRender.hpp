@@ -6,6 +6,7 @@
 #include <MesumGraphics/Renderer.hpp>
 
 #include <RenderTasks/RenderTask2DRender.hpp>  // temp
+#include <RenderTasks/BasicVertex.hpp>
 
 #include <MesumCore/Kernel/MathTypes.hpp>
 
@@ -15,7 +16,7 @@
 
 namespace m::render
 {
-using uploadBuffers =
+using uploadBuffers3D =
     Dx12BufferBase<mBasicVertex, mU16>[dx12::DX12Surface::scm_numFrames];
 
 //-----------------------------------------------------------------------------
@@ -25,7 +26,7 @@ struct TaskData3dRender : public TaskData
 {
     DataMeshBuffer<mBasicVertex, mU16>* m_pMeshBuffer;
     ISurface::HdlPtr                    m_hdlOutput;
-    DirectX::XMMATRIX*                  m_matrix;
+    math::mMat4x4*                      m_matrix;
 
     mIfDx12Enabled(Task* getNew_dx12Implementation(TaskData* a_data) override);
 };
@@ -53,7 +54,7 @@ mIfDx12Enabled(struct Dx12Task3dRender
 
                   private:
                    mUInt         m_i = 0;
-                   uploadBuffers m_buffers;
+                   uploadBuffers3D m_buffers;
 
                    dx12::ComPtr<ID3D12RootSignature> m_rootSignature = nullptr;
                    dx12::ComPtr<ID3D12PipelineState> m_pso           = nullptr;

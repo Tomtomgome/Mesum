@@ -363,8 +363,8 @@ void Dx12Task2dRender::execute() const
     auto currentSurface =
         static_cast<dx12::DX12Surface*>(m_taskData.m_hdlOutput->surface);
 
-    mInt screenWidth  = 1280;
-    mInt screenHeight = 720;
+    mInt screenWidth  = currentSurface->get_width();
+    mInt screenHeight = currentSurface->get_height();
 
     D3D12_CPU_DESCRIPTOR_HANDLE rtv;
     rtv = currentSurface->get_currentRtvDesc();
@@ -452,8 +452,8 @@ VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
     // Sampler ----------------------------------------------------------------
     VkSamplerCreateInfo samplerInfo{};
     samplerInfo.sType                   = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
-    samplerInfo.magFilter               = VK_FILTER_LINEAR;
-    samplerInfo.minFilter               = VK_FILTER_LINEAR;
+    samplerInfo.magFilter               = VK_FILTER_NEAREST;
+    samplerInfo.minFilter               = VK_FILTER_NEAREST;
     samplerInfo.addressModeU            = VK_SAMPLER_ADDRESS_MODE_REPEAT;
     samplerInfo.addressModeV            = VK_SAMPLER_ADDRESS_MODE_REPEAT;
     samplerInfo.addressModeW            = VK_SAMPLER_ADDRESS_MODE_REPEAT;
@@ -953,22 +953,22 @@ void VulkanTask2dRender::create_renderPassAndPipeline(mU32 a_width,
 
     VkVertexInputBindingDescription bindingDescription{};
     bindingDescription.binding   = 0;
-    bindingDescription.stride    = sizeof(mBasicVertex);
+    bindingDescription.stride    = sizeof(BasicVertex);
     bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
 
     std::array<VkVertexInputAttributeDescription, 3> attributeDescriptions = {};
     attributeDescriptions[0].binding                                       = 0;
     attributeDescriptions[0].location                                      = 0;
     attributeDescriptions[0].format   = VK_FORMAT_R32G32B32A32_SFLOAT;
-    attributeDescriptions[0].offset   = offsetof(mBasicVertex, position);
+    attributeDescriptions[0].offset   = offsetof(BasicVertex, position);
     attributeDescriptions[1].binding  = 0;
     attributeDescriptions[1].location = 1;
     attributeDescriptions[1].format   = VK_FORMAT_R32G32B32A32_SFLOAT;
-    attributeDescriptions[1].offset   = offsetof(mBasicVertex, color);
+    attributeDescriptions[1].offset   = offsetof(BasicVertex, color);
     attributeDescriptions[2].binding  = 0;
     attributeDescriptions[2].location = 2;
     attributeDescriptions[2].format   = VK_FORMAT_R32G32_SFLOAT;
-    attributeDescriptions[2].offset   = offsetof(mBasicVertex, uv);
+    attributeDescriptions[2].offset   = offsetof(BasicVertex, uv);
 
     VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
     vertexInputInfo.sType =
@@ -1177,7 +1177,7 @@ void VulkanTask2dRender::execute() const
         info.renderArea.extent.width = width;
         info.renderArea.extent.height = height;
         VkClearValue clearValues[1]   = {};
-        clearValues[0].color          = {1.0f, 1.0f, 1.0f, 0.0f};
+        clearValues[0].color          = {0.0f, 0.0f, 0.0f, 0.0f};
         info.clearValueCount          = 1;
         info.pClearValues             = clearValues;
         vkCmdBeginRenderPass(commandBuffer, &info, VK_SUBPASS_CONTENTS_INLINE);

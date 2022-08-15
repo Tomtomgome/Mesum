@@ -4,8 +4,15 @@
 #include "../ApiAbstraction.hpp"
 #undef M_VK_IMPLEMENTAITON
 
+#include "VulkanRendererCommon.hpp"
+
+#include <set>
+
 namespace m::aa::vulkan
 {
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 const std::vector<const mChar*> g_validationLayers = {
     "VK_LAYER_KHRONOS_validation"};
 
@@ -67,18 +74,112 @@ std::vector<const mChar*> get_requiedExtensions(mBool a_enableValidationLayers)
 }
 
 //-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+VKAPI_ATTR VkBool32 VKAPI_CALL callback_logDebugMessage(
+    VkDebugUtilsMessageSeverityFlagBitsEXT      messageSeverity,
+    VkDebugUtilsMessageTypeFlagsEXT             messageType,
+    const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData)
+{
+    switch (messageSeverity)
+    {
+        case VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT: break;
+        case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:
+            mLog_infoTo(m::vulkan::VK_RENDERER_ID,
+                        "Validation layer : ", pCallbackData->pMessage);
+            break;
+        case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
+            mLog_warningTo(m::vulkan::VK_RENDERER_ID,
+                           "Validation layer : ", pCallbackData->pMessage);
+            break;
+        case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
+            mLog_errorTo(m::vulkan::VK_RENDERER_ID,
+                         "Validation layer : ", pCallbackData->pMessage);
+            break;
+        default: mInterrupt;
+    }
+
+    return VK_FALSE;
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+VkResult create_debugUtilsMessengerEXT(
+    VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo,
+    const VkAllocationCallbacks* pAllocator,
+    VkDebugUtilsMessengerEXT*    pDebugMessenger)
+{
+    auto func = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(
+        instance, "vkCreateDebugUtilsMessengerEXT");
+
+    if (func != nullptr)
+    {
+        return func(instance, pCreateInfo, pAllocator, pDebugMessenger);
+    }
+    else
+    {
+        return VK_ERROR_EXTENSION_NOT_PRESENT;
+    }
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void setup_debugUtilsMessengerCreateInfoExt(
+    VkDebugUtilsMessengerCreateInfoEXT& a_createInfo)
+{
+    a_createInfo.sType =
+        VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+    a_createInfo.messageSeverity =
+        VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT |
+        VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT |
+        VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
+    a_createInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT |
+                               VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT |
+                               VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
+    a_createInfo.pfnUserCallback = callback_logDebugMessage;
+    a_createInfo.pUserData       = nullptr;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void init(mAdapter& a_adapter, m::aa::mAdapter::InitData const& a_initData)
+void init(mAdapter& a_adapter)
 {
-    mLog_info("This is the Vulkan impl");
 }
 
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
+void destroy(mAdapter& a_adapter)
+{
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+mAdapter create_adapter()
+{
+    mAdapter a;
+    mLink_virtualMemberFunction(a, init);
+    mLink_virtualMemberFunction(a, destroy);
+    return a;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
 void init(mApi& a_api, m::aa::mApi::InitData const& a_initData)
 {
+    a_api.debugEnabled = a_initData.enableDebug;
+
     if (a_initData.enableDebug && !check_validationLayerSupport())
     {
         throw(std::runtime_error(
@@ -127,20 +228,112 @@ void init(mApi& a_api, m::aa::mApi::InitData const& a_initData)
     }
 #endif  // PRINT_EXTENTIONS
 
-    if (vkCreateInstance(&createInfo, nullptr, &a_api.vulkanData.instance))
+    if (vkCreateInstance(&createInfo, nullptr, &a_api.internal.vulkan.instance))
     {
         throw std::runtime_error("failed to create instance !");
+    }
+
+    // Setup debug
+    if (!a_initData.enableDebug)
+        return;
+
+    VkDebugUtilsMessengerCreateInfoEXT createInfoDebugUtils = {};
+    setup_debugUtilsMessengerCreateInfoExt(createInfoDebugUtils);
+
+    if (create_debugUtilsMessengerEXT(
+            a_api.internal.vulkan.instance, &createInfoDebugUtils, nullptr,
+            &a_api.internal.vulkan.debugUtil) != VK_SUCCESS)
+    {
+        throw std::runtime_error("failed to set up debug messenger");
     }
 }
 
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-mAdapter create_adapter()
+void destroy(mApi& a_api)
 {
-    mAdapter a;
-    mLink_virtualMemberFunction(a, init);
-    return a;
+    if (a_api.debugEnabled)
+    {
+        auto func = (PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(
+            a_api.internal.vulkan.instance, "vkDestroyDebugUtilsMessengerEXT");
+        if (func != nullptr)
+        {
+            func(a_api.internal.vulkan.instance,
+                 a_api.internal.vulkan.debugUtil, nullptr);
+        }
+    }
+
+    vkDestroyInstance(a_api.internal.vulkan.instance, nullptr);
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void enumerate_adapter(mApi& a_api, std::vector<mAdapter>& a_adapters)
+{
+    mU32 deviceCount = 0;
+    vkEnumeratePhysicalDevices(a_api.internal.vulkan.instance, &deviceCount,
+                               nullptr);
+
+    a_adapters.reserve(deviceCount);
+
+    std::vector<VkPhysicalDevice> devices(deviceCount);
+    vkEnumeratePhysicalDevices(a_api.internal.vulkan.instance, &deviceCount,
+                               devices.data());
+
+    for (mUInt idDevice = 0; idDevice < deviceCount; ++idDevice)
+    {
+        a_adapters.push_back(a_api.create_adapter());
+        // Set physical device handle
+        mAdapter& rAdapter                      = a_adapters.back();
+        rAdapter.init();
+        rAdapter.internal.vulkan.physicalDevice = devices[idDevice];
+
+        // Enumerate properties
+        VkPhysicalDeviceProperties propertiesDevice;
+        vkGetPhysicalDeviceProperties(devices[idDevice], &propertiesDevice);
+
+        // Set properties
+        mAdapter::Properties& rProperties = rAdapter.properties;
+        rProperties.idVendor              = propertiesDevice.vendorID;
+        rProperties.idDevice              = propertiesDevice.deviceID;
+        switch (propertiesDevice.deviceType)
+        {
+            case VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU:
+            {
+                rProperties.type = mAdapter::DeviceType::deviceIntegrated;
+            }
+            break;
+            case VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU:
+            {
+                rProperties.type = mAdapter::DeviceType::deviceDescrete;
+            }
+            break;
+            case VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU:
+            {
+                rProperties.type = mAdapter::DeviceType::deviceVirtual;
+            }
+            break;
+            case VK_PHYSICAL_DEVICE_TYPE_CPU:
+            {
+                rProperties.type = mAdapter::DeviceType::deviceCpu;
+            }
+            break;
+            case VK_PHYSICAL_DEVICE_TYPE_OTHER:
+            default:
+            {
+                rProperties.type = mAdapter::DeviceType::deviceOther;
+            }
+            break;
+        }
+
+        // Enumerate extensions (Not flexible at the moment)
+        // TODO : Expose Extentions data
+
+        // Enumerate queue families
+        // TODO : Expose Queue families data
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -151,6 +344,8 @@ mApi create_api()
     mApi api;
     api.create_adapter = create_adapter;
     mLink_virtualMemberFunction(api, init);
+    mLink_virtualMemberFunction(api, destroy);
+    mLink_virtualMemberFunction(api, enumerate_adapter);
     return api;
 }
 

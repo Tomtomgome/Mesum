@@ -5,7 +5,7 @@
 #include <MesumCore/Kernel/MathTypes.hpp>
 #include <MesumGraphics/RenderTask.hpp>
 #include <MesumGraphics/Renderer.hpp>
-#include <MesumGraphics/RenderTasks/BasicVertex.hpp>
+#include <MesumGraphics/RenderBase.hpp>
 
 #ifdef M_DX12_RENDERER
 #include <MesumGraphics/DX12Renderer/DX12Context.hpp>
@@ -308,23 +308,10 @@ void record_bind(
 }
 
 using uploadBuffers =
-    Dx12BufferBase<mBasicVertex, mU16>[dx12::DX12Surface::scm_numFrames];
+    Dx12BufferBase<BasicVertex, mU16>[dx12::DX12Surface::scm_numFrames];
 
 using vulkanUploadBuffers =
-    VulkanBufferBase<mBasicVertex, mU16>[vulkan::VulkanSurface::scm_numFrames];
-
-template <typename tt_Vertex, typename tt_Index>
-struct DataMeshBuffer
-{
-    std::vector<tt_Vertex> m_vertices;
-    std::vector<tt_Index>  m_indices;
-
-    void clear()
-    {
-        m_vertices.clear();
-        m_indices.clear();
-    }
-};
+    VulkanBufferBase<BasicVertex, mU16>[vulkan::VulkanSurface::scm_numFrames];
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -338,10 +325,10 @@ struct TaskData2dRender : public TaskData
         mUInt indexCount         = 0;
     };
 
-    DataMeshBuffer<mBasicVertex, mU16>* m_pMeshBuffer = nullptr;
-    math::mMat4x4*                      m_pMatrix     = nullptr;
-    std::vector<mRange>*                m_pRanges     = nullptr;
-    ISurface::HdlPtr                    m_hdlOutput;
+    DataMeshBuffer<BasicVertex, mU16>* m_pMeshBuffer = nullptr;
+    math::mMat4x4*                     m_pMatrix     = nullptr;
+    std::vector<mRange>*               m_pRanges     = nullptr;
+    ISurface::HdlPtr                   m_hdlOutput;
 
     mIfDx12Enabled(Task* getNew_dx12Implementation(TaskData* a_data) override);
     mIfVulkanEnabled(Task* getNew_vulkanImplementation(TaskData* a_data)

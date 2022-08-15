@@ -49,6 +49,11 @@ class CubeMover
     const m::logging::mChannelID m_CUBEMOVER_ID = mLog_getId();
 };
 
+void enumerate_adapter(m::aa::mApi& a_api, std::vector<m::aa::mAdapter>& a_adapters )
+{
+
+}
+
 class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 {
     void add_applicationWindow()
@@ -81,8 +86,38 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m::aa::mApi::InitData apiInitData;
         api.init(apiInitData);
         m::aa::mAdapter           a = api.create_adapter();
+        mLink_virtualMemberFunctionEXT(api, enumerate_adapter, enumerate_adapter);
+
         m::aa::mAdapter::InitData initData;
         a.init(initData);
+
+        std::vector<m::aa::mAdapter> adapters;
+        api.enumerate_adapter(adapters);
+
+        m::aa::mAdapter selectedAdapter;
+        for (auto& adapter : adapters)
+        {
+//            if (adapter.extensions.supportsSwapChain)
+//            {
+//                continue;
+//            }
+//            if (adapter.features)
+//            {
+//                continue;
+//            }
+            if (adapter.properties.type != m::aa::mAdapter::deviceDescrete)
+            {
+                continue;
+            }
+
+            selectedAdapter = adapter;
+        }
+
+        m::aa::mDevice::InitData initData;
+        initData.queues = {{mQueue::type::transfer graphics}, {mQueue::type::transfer}};
+        m::aa::mDevice device = selectedAdapter.create_device(initData);
+        m::aa::mQueue graphicsQueue = device.get_queue(0);
+        m::aa::mQueue transferQueue = device.get_queue(1);
 
         m::aa::mApi api2 = m::aa::vulkan::create_api();
         api2.init(apiInitData);
