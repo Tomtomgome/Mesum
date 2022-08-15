@@ -35,9 +35,9 @@ void ModelBank::load()
         if (entry.path().has_extension() &&
             entry.path().extension() == ".model")
         {
-            std::ifstream inputStream(entry.path());
-            mSerializerIfstream serializer(inputStream);
-            Model         model;
+            std::ifstream                      inputStream(entry.path());
+            m::serializer::mSerializerIfstream serializer(inputStream);
+            Model                              model;
             model.name = entry.path().filename().stem().string();
             mSerialize(model, serializer);
             if (model.ID >= models.size())
@@ -62,7 +62,7 @@ void ModelBank::save()
                                         std::string(rModel.name + ".model")};
 
         std::ofstream outputStream(modelPath, std::ios::binary);
-        mSerializerOfstream serializer(outputStream);
+        m::serializer::mSerializerOfstream serializer(outputStream);
         mSerialize(rModel, serializer);
     }
 }
@@ -233,7 +233,7 @@ void ComponentManager::load_fromFile(std::string const& a_path)
     std::string   debugName;
     inputStream >> debugName >> version;
 
-    mSerializerIfstream serializer(inputStream);
+    m::serializer::mSerializerIfstream serializer(inputStream);
 
     if (version >= 1)
     {
@@ -275,7 +275,7 @@ void ComponentManager::save_toFile(std::string const& a_path)
     std::ofstream outputStream(a_path, std::ios::binary);
     outputStream << "CpntManager: " << s_version << ' ';
 
-    mSerializerOfstream serializer(outputStream);
+    m::serializer::mSerializerOfstream serializer(outputStream);
     outputStream << entityCount << std::endl;
     for (int i = 0; i < entityCount; ++i)
     {
