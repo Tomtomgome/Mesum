@@ -75,6 +75,15 @@ namespace m::aa
 #define mLink_virtualMemberFunction(a_o, a_if) a_o.a_if##Internal = a_if
 
 ///////////////////////////////////////////////////////////////////////////////
+/// \brief Used to link the member function of an object to its implementation
+///////////////////////////////////////////////////////////////////////////////
+#define mLink_virtualMemberFunctionEXT(a_o, a_if, a_f) a_o.a_if##Internal = a_f
+
+struct mDevice
+{
+};
+
+///////////////////////////////////////////////////////////////////////////////
 /// \brief Structure abstracting an adapter to a physical device
 ///////////////////////////////////////////////////////////////////////////////
 struct mAdapter
@@ -82,17 +91,36 @@ struct mAdapter
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Initialization data of an adapter
     ///////////////////////////////////////////////////////////////////////////
-    struct InitData
+    enum DeviceType
+    {
+        deviceOther,
+        deviceIntegrated,
+        deviceDescrete,
+        deviceVirtual,
+        deviceCpu
+    };
+
+    struct Limits
     {
     };
 
-    mDeclare_virtualMemberFunction(mAdapter, void, init,
-                                   mAdapter::InitData const&);
+    struct Properties
+    {
+        mU32       idVendor;
+        mU32       idDevice;
+        DeviceType type;
+        Limits     limits;
+    };
+
+    mDeclare_virtualMemberFunction(mAdapter, void, init);
+    mDeclare_virtualMemberFunction(mAdapter, void, destroy);
+
+    Properties properties;
     union
     {
-        mIfDx12Enabled(struct { IDXGIAdapter4* adapter; } dx12Data;);
-        mIfVulkanEnabled(struct {} vulkanData;);
-    };
+        mIfDx12Enabled(struct { IDXGIAdapter4* adapter; } dx12;);
+        mIfVulkanEnabled(struct {VkPhysicalDevice physicalDevice;} vulkan;);
+    } internal;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -110,19 +138,25 @@ struct mApi
     };
 
     mDeclare_virtualMemberFunction(mApi, void, init, mApi::InitData const&);
+    mDeclare_virtualMemberFunction(mApi, void, destroy);
+    mDeclare_virtualMemberFunction(mApi, void, enumerate_adapter,
+                                   std::vector<mAdapter>& a_adapters);
     mDeclare_virtualFunction(mAdapter, create_adapter);
 
+    bool debugEnabled;
     union
     {
-        mIfDx12Enabled(struct { IDXGIFactory* adapter; } dx12Data;);
-        mIfVulkanEnabled(struct {
-            VkInstance instance;
-        } vulkanData;);
-    };
+        mIfDx12Enabled(struct { IDXGIFactory4* factory; } dx12;);
+        mIfVulkanEnabled(struct
+                         {
+                             VkInstance               instance;
+                             VkDebugUtilsMessengerEXT debugUtil;
+                         } vulkan;);
+    } internal;
 };
 
-mIfDx12Enabled(namespace dx12 { mApi create_api(); };);
-mIfVulkanEnabled(namespace vulkan { mApi create_api(); };);
+mIfDx12Enabled(namespace dx12 { mApi create_api(); });
+mIfVulkanEnabled(namespace vulkan { mApi create_api(); });
 
 };  // namespace m::aa
 

@@ -17,7 +17,7 @@ struct alignas(sizeof(t_T) * t_N * t_M) mMatData
     union
     {
         t_T            data[t_N][t_M];
-        mVec<t_T, t_M> row[t_N];
+        //mVec<t_T, t_M> row[t_N]; // TODO Francois: Weird compilation errors
     };
 };
 
