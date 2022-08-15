@@ -95,7 +95,7 @@ Dx12Task3dRender::Dx12Task3dRender(TaskData3dRender* a_data)
     // A single 32-bit constant root parameter that is used by the vertex
     // shader.
     CD3DX12_ROOT_PARAMETER rootParameters[1];
-    rootParameters[0].InitAsConstants(sizeof(XMMATRIX) / 4, 0, 0,
+    rootParameters[0].InitAsConstants(sizeof(math::mMat4x4) / 4, 0, 0,
                                       D3D12_SHADER_VISIBILITY_VERTEX);
 
     CD3DX12_ROOT_SIGNATURE_DESC descRootSignature;
@@ -171,8 +171,8 @@ void Dx12Task3dRender::execute() const
     graphicCommandList->SetPipelineState(m_pso.Get());
     graphicCommandList->SetGraphicsRootSignature(m_rootSignature.Get());
 
-    graphicCommandList->SetGraphicsRoot32BitConstants(0, sizeof(XMMATRIX) / 4,
-                                                      m_taskData.m_matrix, 0);
+    graphicCommandList->SetGraphicsRoot32BitConstants(
+        0, sizeof(math::mMat4x4) / 4, m_taskData.m_matrix, 0);
 
     graphicCommandList->IASetPrimitiveTopology(
         D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);  // TODO

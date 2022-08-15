@@ -31,8 +31,7 @@ static mU32 g_Indices[36] = {0, 1, 2, 0, 2, 3, 4, 6, 5, 4, 7, 6,
 
 render::DataMeshBuffer<render::mBasicVertex, mU16> g_meshBuffer;
 
-using namespace DirectX;
-DirectX::XMMATRIX mvpMatrix;
+m::math::mMat4x4 mvpMatrix;
 
 //*****************************************************************************
 //
@@ -140,16 +139,14 @@ mBool WorldExplorerApp::step(
     m_cameraOrbitController.update(a_deltaTime, m_inputManager);
     m_cameraOrbitController.update_camera(m_camera);
 
-    m_angle                     = m_angle + deltaTime * 90.0f;
-    const XMVECTOR rotationAxis = XMVectorSet(0, 1, 0, 0);
-    XMMATRIX       modelMatrix =
-        XMMatrixRotationAxis(rotationAxis, XMConvertToRadians(m_angle));
-
-    mvpMatrix = XMMatrixMultiply(modelMatrix, m_camera.get_viewMatrix());
+    /* m_angle += m_angle + deltaTime * 90.0f;
+    glm::vec3 rotationAxis(0, 1, 0);
+    auto      modelMatrix = glm::identity<glm::mat4>();
+    glm::rotate(modelMatrix, glm::radians(45.f), rotationAxis);*/
 
     mFloat aspectRatio = 1280.0f / 720.0f;
     mvpMatrix =
-        XMMatrixMultiply(mvpMatrix, m_camera.get_projectionMatrix(aspectRatio));
+        m_camera.get_viewMatrix() * m_camera.get_projectionMatrix(aspectRatio);
 
     m_hdlSurface->surface->render();
 

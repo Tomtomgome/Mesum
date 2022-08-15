@@ -17,6 +17,37 @@ void mCameraOrbitController::update(
         deltaTime = 0.1;  // clamp delta time! TODO
     }
 
+    // rotate
+
+    mVec2 deltaRotate;
+
+    if (a_inputManager.get_keyState(input::mKey::keyLeft) ==
+        input::mInputType::pressed)
+    {
+        deltaRotate.x = -1.0f;
+    }
+    else if (a_inputManager.get_keyState(input::mKey::keyRight) ==
+             input::mInputType::pressed)
+    {
+        deltaRotate.x = 1.0f;
+    }
+
+    if (a_inputManager.get_keyState(input::mKey::keyDown) ==
+        input::mInputType::pressed)
+    {
+        deltaRotate.y = -1.0f;
+    }
+    else if (a_inputManager.get_keyState(input::mKey::keyUp) ==
+             input::mInputType::pressed)
+    {
+        deltaRotate.y = 1.0f;
+    }
+
+    m_orbit.add_longitude(deltaRotate.x * m_rotateSpeed * deltaTime);
+    m_orbit.add_latitude(deltaRotate.y * m_rotateSpeed * deltaTime);
+
+    // move
+
     // TODO crash si j'appuie sur mute
     mVec3 deltaMove;
 
@@ -47,12 +78,22 @@ void mCameraOrbitController::update(
         deltaMove = normalized(deltaMove);  // TODO le retour par copie bon ?!
     }
 
-    if (a_inputManager.get_keyState(input::mKey::keyE) ==
+    mVec3 coordinates;
+    m_orbit.compute_cartesianCoordinates(coordinates);
+    coordinates.y = 0.0f; // TODO kk faudrait plutôt get uniquement le vecteur de longitude comme vecteur de rotation
+    coordinates = normalized(coordinates);
+
+    mVec3 forward{0.0f, 0.0f, 1.0f};
+    deltaMove = mQuaternion(forward, coordinates) * deltaMove;
+
+    // up / down
+
+    if (a_inputManager.get_keyState(input::mKey::keyA) ==
         input::mInputType::pressed)
     {
         deltaMove.y = -1.0f;
     }
-    else if (a_inputManager.get_keyState(input::mKey::keyA) ==
+    else if (a_inputManager.get_keyState(input::mKey::keyE) ==
              input::mInputType::pressed)
     {
         deltaMove.y = 1.0f;
@@ -62,32 +103,6 @@ void mCameraOrbitController::update(
 
     m_pivot += deltaMove;
 
-    mVec2 deltaRotate;
-
-    if (a_inputManager.get_keyState(input::mKey::keyLeft) ==
-        input::mInputType::pressed)
-    {
-        deltaRotate.x = -1.0f;
-    }
-    else if (a_inputManager.get_keyState(input::mKey::keyRight) ==
-             input::mInputType::pressed)
-    {
-        deltaRotate.x = 1.0f;
-    }
-
-    if (a_inputManager.get_keyState(input::mKey::keyDown) ==
-        input::mInputType::pressed)
-    {
-        deltaRotate.y = -1.0f;
-    }
-    else if (a_inputManager.get_keyState(input::mKey::keyUp) ==
-             input::mInputType::pressed)
-    {
-        deltaRotate.y = 1.0f;
-    }
-
-    m_orbit.add_longitude(deltaRotate.x * m_rotateSpeed * deltaTime);
-    m_orbit.add_latitude(deltaRotate.y * m_rotateSpeed * deltaTime);
 
     /* 16 left shift          16 right shift        173 mute TODO crash */
 }
