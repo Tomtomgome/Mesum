@@ -69,7 +69,7 @@ void WorldExplorerApp::init(mCmdLine const& a_cmdLine, void* a_appData)
     m_iRenderer = std::make_unique<m::dx12::DX12Renderer>();
     m_iRenderer->init();
 
-    m_pWindow = add_newWindow("WorldExplorer app", 1280, 720);
+    m_pWindow = add_newWindow("WorldExplorer app", 1280, 720, false);
     m_pWindow->link_inputManager(&m_inputManager);
     m_hdlSurface = m_pWindow->link_renderer(m_iRenderer.get());
 
