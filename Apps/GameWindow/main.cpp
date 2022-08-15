@@ -498,7 +498,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 
                 for (auto& entity : m_playerHand.hand)
                 {
-                    GAKillEntity::InternalData internalData;
+                    GAKillEntity::InternalData internalData{};
                     internalData.entityToKill = entity;
                     a_gameActions.push_back(GAKillEntity::create(internalData));
 
