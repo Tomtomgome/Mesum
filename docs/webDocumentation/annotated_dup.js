@@ -1,6 +1,10 @@
 var annotated_dup =
 [
     [ "m", null, [
+      [ "aa", "namespacem_1_1aa.html", [
+        [ "mAdapter", "structm_1_1aa_1_1m_adapter.html", null ],
+        [ "mApi", "structm_1_1aa_1_1m_api.html", null ]
+      ] ],
       [ "application", "namespacem_1_1application.html", [
         [ "IWindowedApplicationBase", "classm_1_1application_1_1_i_windowed_application_base.html", null ],
         [ "mIBasicApplication", "classm_1_1application_1_1m_i_basic_application.html", "classm_1_1application_1_1m_i_basic_application" ],
@@ -12,8 +16,10 @@ var annotated_dup =
         [ "DX12Context", "classm_1_1dx12_1_1_d_x12_context.html", null ],
         [ "DX12Renderer", "classm_1_1dx12_1_1_d_x12_renderer.html", null ],
         [ "DX12RenderTaskset", "structm_1_1dx12_1_1_d_x12_render_taskset.html", null ],
-        [ "DX12Surface", "classm_1_1dx12_1_1_d_x12_surface.html", null ],
-        [ "DX12Texture", "structm_1_1dx12_1_1_d_x12_texture.html", null ]
+        [ "DX12Surface", "classm_1_1dx12_1_1_d_x12_surface.html", null ]
+      ] ],
+      [ "file", null, [
+        [ "mFbxImporter", "classm_1_1file_1_1m_fbx_importer.html", null ]
       ] ],
       [ "input", "namespacem_1_1input.html", [
         [ "mCallbackInputManager", "structm_1_1input_1_1m_callback_input_manager.html", "structm_1_1input_1_1m_callback_input_manager" ],
@@ -45,14 +51,14 @@ var annotated_dup =
         [ "mRAIITiming", "classm_1_1profile_1_1m_r_a_i_i_timing.html", "classm_1_1profile_1_1m_r_a_i_i_timing" ]
       ] ],
       [ "render", null, [
-        [ "BasicVertex", "structm_1_1render_1_1_basic_vertex.html", null ],
         [ "BufferBase", "structm_1_1render_1_1_buffer_base.html", null ],
         [ "DataMeshBuffer", "structm_1_1render_1_1_data_mesh_buffer.html", null ],
         [ "Dx12BufferBase", "structm_1_1render_1_1_dx12_buffer_base.html", null ],
         [ "IRenderer", "classm_1_1render_1_1_i_renderer.html", null ],
         [ "IResource", "structm_1_1render_1_1_i_resource.html", "structm_1_1render_1_1_i_resource" ],
         [ "ISurface", "classm_1_1render_1_1_i_surface.html", "classm_1_1render_1_1_i_surface" ],
-        [ "ResourceDataHolder", "classm_1_1render_1_1_resource_data_holder.html", null ],
+        [ "mBasicVertex", "structm_1_1render_1_1m_basic_vertex.html", null ],
+        [ "mMesh", "structm_1_1render_1_1m_mesh.html", null ],
         [ "Task", "structm_1_1render_1_1_task.html", null ],
         [ "Task2dRender", "structm_1_1render_1_1_task2d_render.html", null ],
         [ "Task3dRender", "structm_1_1render_1_1_task3d_render.html", null ],
@@ -62,9 +68,6 @@ var annotated_dup =
         [ "TaskDataDrawDearImGui", "structm_1_1render_1_1_task_data_draw_dear_im_gui.html", null ],
         [ "TaskDrawDearImGui", "structm_1_1render_1_1_task_draw_dear_im_gui.html", null ],
         [ "Taskset", "structm_1_1render_1_1_taskset.html", null ],
-        [ "TextureDesc", "structm_1_1render_1_1_texture_desc.html", null ],
-        [ "TextureManager", "structm_1_1render_1_1_texture_manager.html", null ],
-        [ "TextureRequest", "structm_1_1render_1_1_texture_request.html", null ],
         [ "VulkanBufferBase", "structm_1_1render_1_1_vulkan_buffer_base.html", null ]
       ] ],
       [ "resource", null, [

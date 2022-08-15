@@ -70,7 +70,7 @@ void manage_assert(mBool a_condition, mInt a_lineNumber, const mChar* a_file,
 ///////////////////////////////////////////////////////////////////////////////
 #define mAssert(a_condition)                          \
     m::manage_assert(a_condition, __LINE__, __FILE__, \
-                     "Triggered soft assertion from file : ");
+                     "Triggered hard assertion from file : ");
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \brief Blocking assert reserved to check function preconditions

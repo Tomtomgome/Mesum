@@ -1,4 +1,4 @@
-#include <RenderTask3dRender.h>
+#include <RenderTask3dRender.hpp>
 
 #include <array>
 
@@ -9,7 +9,7 @@ namespace m::render
 //-----------------------------------------------------------------------------
 Task* TaskData3dRender::getNew_dx12Implementation(TaskData* a_data)
 {
-	return new Dx12Task3dRender(dynamic_cast<TaskData3dRender*>(a_data));
+    return new Dx12Task3dRender(dynamic_cast<TaskData3dRender*>(a_data));
 }
 
 //-----------------------------------------------------------------------------
@@ -34,22 +34,29 @@ Dx12Task3dRender::Dx12Task3dRender(TaskData3dRender* a_data)
     D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
 
     const D3D12_INPUT_ELEMENT_DESC inputElements[] = {
-        {
-			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT,
-			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
-		},
-        {
-			"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0,	D3D12_APPEND_ALIGNED_ELEMENT,
-			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
-		}
-	};
+        {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
+         D3D12_APPEND_ALIGNED_ELEMENT,
+         D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
+        {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0,
+         D3D12_APPEND_ALIGNED_ELEMENT,
+         D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
+        {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
+         D3D12_APPEND_ALIGNED_ELEMENT,
+         D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
+        {"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
+         D3D12_APPEND_ALIGNED_ELEMENT,
+         D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0}};
 
     pipelineDesc.InputLayout.pInputElementDescs = inputElements;
     pipelineDesc.InputLayout.NumElements        = std::size(inputElements);
     pipelineDesc.IBStripCutValue = D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_0xFFFF;
 
-	dx12::ComPtr<ID3DBlob> vs = dx12::compile_shader("../../../Apps/WorldExplorer/data/cubeShader.hlsl", "vs_main", "vs_6_0");
-	dx12::ComPtr<ID3DBlob> ps =	dx12::compile_shader("../../../Apps/WorldExplorer/data/cubeShader.hlsl", "ps_main", "ps_6_0");
+    dx12::ComPtr<ID3DBlob> vs =
+        dx12::compile_shader("../../../Apps/WorldExplorer/data/cubeShader.hlsl",
+                             "vs_main", "vs_6_0");
+    dx12::ComPtr<ID3DBlob> ps =
+        dx12::compile_shader("../../../Apps/WorldExplorer/data/cubeShader.hlsl",
+                             "ps_main", "ps_6_0");
 
     pipelineDesc.VS.BytecodeLength  = vs->GetBufferSize();
     pipelineDesc.VS.pShaderBytecode = vs->GetBufferPointer();
@@ -61,9 +68,12 @@ Dx12Task3dRender::Dx12Task3dRender(TaskData3dRender* a_data)
     pipelineDesc.BlendState       = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
     pipelineDesc.BlendState.RenderTarget[0].BlendEnable = 1;
     pipelineDesc.BlendState.RenderTarget[0].SrcBlend    = D3D12_BLEND_SRC_ALPHA;
-    pipelineDesc.BlendState.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
-    pipelineDesc.BlendState.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_SRC_ALPHA;
-    pipelineDesc.BlendState.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_INV_SRC_ALPHA;
+    pipelineDesc.BlendState.RenderTarget[0].DestBlend =
+        D3D12_BLEND_INV_SRC_ALPHA;
+    pipelineDesc.BlendState.RenderTarget[0].SrcBlendAlpha =
+        D3D12_BLEND_SRC_ALPHA;
+    pipelineDesc.BlendState.RenderTarget[0].DestBlendAlpha =
+        D3D12_BLEND_INV_SRC_ALPHA;
     pipelineDesc.BlendState.RenderTarget[0].BlendOp      = D3D12_BLEND_OP_ADD;
     pipelineDesc.BlendState.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
 
@@ -82,13 +92,16 @@ Dx12Task3dRender::Dx12Task3dRender(TaskData3dRender* a_data)
     pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
     pipelineDesc.SampleDesc.Count      = 1;
 
-	// A single 32-bit constant root parameter that is used by the vertex shader.
-	CD3DX12_ROOT_PARAMETER rootParameters[1];
-	rootParameters[0].InitAsConstants( sizeof( XMMATRIX ) / 4, 0, 0, D3D12_SHADER_VISIBILITY_VERTEX );
+    // A single 32-bit constant root parameter that is used by the vertex
+    // shader.
+    CD3DX12_ROOT_PARAMETER rootParameters[1];
+    rootParameters[0].InitAsConstants(sizeof(XMMATRIX) / 4, 0, 0,
+                                      D3D12_SHADER_VISIBILITY_VERTEX);
 
     CD3DX12_ROOT_SIGNATURE_DESC descRootSignature;
-    descRootSignature.Init(	_countof(rootParameters), rootParameters, 0,
-							   nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+    descRootSignature.Init(
+        _countof(rootParameters), rootParameters, 0, nullptr,
+        D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
     dx12::ComPtr<ID3DBlob> rootBlob;
     dx12::ComPtr<ID3DBlob> errorBlob;
@@ -122,10 +135,10 @@ Dx12Task3dRender::Dx12Task3dRender(TaskData3dRender* a_data)
 //-----------------------------------------------------------------------------
 void Dx12Task3dRender::prepare()
 {
-	auto* meshBuffer = m_taskData.m_pMeshBuffer;
+    auto* meshBuffer = m_taskData.m_pMeshBuffer;
 
-	auto& buffer = m_buffers[(++m_i) % dx12::DX12Surface::scm_numFrames];
-	render::upload_data(buffer, meshBuffer->m_vertices, meshBuffer->m_indices);
+    auto& buffer = m_buffers[(++m_i) % dx12::DX12Surface::scm_numFrames];
+    render::upload_data(buffer, meshBuffer->m_vertices, meshBuffer->m_indices);
 }
 
 //-----------------------------------------------------------------------------
@@ -158,24 +171,22 @@ void Dx12Task3dRender::execute() const
     graphicCommandList->SetPipelineState(m_pso.Get());
     graphicCommandList->SetGraphicsRootSignature(m_rootSignature.Get());
 
+    graphicCommandList->SetGraphicsRoot32BitConstants(0, sizeof(XMMATRIX) / 4,
+                                                      m_taskData.m_matrix, 0);
 
-
-
-
-
-
-	graphicCommandList->SetGraphicsRoot32BitConstants( 0, sizeof( XMMATRIX ) / 4, m_taskData.m_matrix, 0 );
-
-
-
-
-    graphicCommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST); // TODO D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP dans le 2DRender ?? c qoi le mieu
+    graphicCommandList->IASetPrimitiveTopology(
+        D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);  // TODO
+                                               // D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP
+                                               // dans le 2DRender ?? c qoi le
+                                               // mieu
 
     auto& buffer = m_buffers[(m_i) % dx12::DX12Surface::scm_numFrames];
     record_bind(buffer, graphicCommandList);
-    graphicCommandList->DrawIndexedInstanced(m_taskData.m_pMeshBuffer->m_indices.size(), 1u, 0u, 0u, 0u);
+    graphicCommandList->DrawIndexedInstanced(
+        m_taskData.m_pMeshBuffer->m_indices.size(), 1u, 0u, 0u, 0u);
 
-    dx12::DX12Context::gs_dx12Contexte->get_commandQueue().execute_commandList(graphicCommandList.Get());
+    dx12::DX12Context::gs_dx12Contexte->get_commandQueue().execute_commandList(
+        graphicCommandList.Get());
 }
 
 #endif  // M_DX12_RENDERER

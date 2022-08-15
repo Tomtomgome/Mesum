@@ -97,27 +97,28 @@ $(document).ready(function(){initNavTree('_spherical_8hpp_source.html',''); init
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>{</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>   <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <a class="code hl_class" href="classm_1_1math_1_1m_spherical.html">mSpherical</a>();</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    mFloat get_latitude()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_latitude; }</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keywordtype">void</span>   set_latitude(mFloat a_latitude);</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keywordtype">void</span>   add_latitude(mFloat a_deltaLatitude);</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    mFloat get_longitude()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_longitude; }</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keywordtype">void</span>   set_longitude(mFloat a_longitude);</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keywordtype">void</span>   add_longitude(mFloat a_deltaLongitude);</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    mFloat get_radius()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_radius; }</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="keywordtype">void</span>   set_radius(mFloat a_radius);</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keywordtype">void</span> compute_cartesianCoordinates(<a class="code hl_struct" href="structm_1_1math_1_1m_vec.html">mVec3</a>&amp; a_outCartesianCoordinates) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>   <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    mFloat m_latitude  = 0.0f;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    mFloat m_longitude = 0.0f;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    mFloat m_radius    = 1.0f;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>};</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>}  <span class="comment">// namespace m::math</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <a class="code hl_class" href="classm_1_1math_1_1m_spherical.html">mSpherical</a>(mFloat a_latitude, mFloat a_longitude, mFloat a_radius);</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    [[nodiscard]] mFloat get_latitude()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_latitude; }</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keywordtype">void</span>                 set_latitude(mFloat a_latitude);</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keywordtype">void</span>                 add_latitude(mFloat a_deltaLatitude);</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    [[nodiscard]] mFloat get_longitude()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_longitude; }</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keywordtype">void</span>                 set_longitude(mFloat a_longitude);</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keywordtype">void</span>                 add_longitude(mFloat a_deltaLongitude);</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    [[nodiscard]] mFloat get_radius()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> m_radius; }</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordtype">void</span>                 set_radius(mFloat a_radius);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordtype">void</span> compute_cartesianCoordinates(<a class="code hl_struct" href="structm_1_1math_1_1m_vec.html">mVec3</a>&amp; a_outCartesianCoordinates) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>   <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    mFloat m_latitude  = 0.0f;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    mFloat m_longitude = 0.0f;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    mFloat m_radius    = 1.0f;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>};</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>}  <span class="comment">// namespace m::math</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
 <div class="ttc" id="aclassm_1_1math_1_1m_spherical_html"><div class="ttname"><a href="classm_1_1math_1_1m_spherical.html">m::math::mSpherical</a></div><div class="ttdef"><b>Definition:</b> Spherical.hpp:13</div></div>
 <div class="ttc" id="anamespacem_1_1math_html"><div class="ttname"><a href="namespacem_1_1math.html">m::math</a></div><div class="ttdoc">Namespace for math related utils.</div><div class="ttdef"><b>Definition:</b> Mat.hpp:10</div></div>
 <div class="ttc" id="astructm_1_1math_1_1m_vec_html"><div class="ttname"><a href="structm_1_1math_1_1m_vec.html">m::math::mVec</a></div><div class="ttdoc">Structure representing a generic math vector.</div><div class="ttdef"><b>Definition:</b> Vec.hpp:83</div></div>

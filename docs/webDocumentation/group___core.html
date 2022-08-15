@@ -131,6 +131,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1m_signal.html">m::mSignal&lt; t_Args &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class encapsulating a signal.  <a href="classm_1_1m_signal.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1file_1_1m_fbx_importer.html">m::file::mFbxImporter</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structm_1_1resource_1_1m_request_image.html">m::resource::mRequestImage</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure used to request the loading of an image on disk.  <a href="structm_1_1resource_1_1m_request_image.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -307,6 +309,9 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:gae7c4fc68e739a7db1c12af48cad59e7c"><td class="memItemLeft" align="right" valign="top"><a id="gae7c4fc68e739a7db1c12af48cad59e7c" name="gae7c4fc68e739a7db1c12af48cad59e7c"></a>
+mBool&#160;</td><td class="memItemRight" valign="bottom"><b>m::file::mFbxImporter::PrintFile</b> (std::string a_filePath)</td></tr>
+<tr class="separator:gae7c4fc68e739a7db1c12af48cad59e7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga757ca8491b5337650385dc5453332407"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structm_1_1m_output.html">mOutput</a>&lt; <a class="el" href="structm_1_1resource_1_1m_image.html">mImage</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#ga757ca8491b5337650385dc5453332407">m::resource::load_image</a> (<a class="el" href="structm_1_1resource_1_1m_request_image.html">mRequestImage</a> const  &amp;a_request)</td></tr>
 <tr class="memdesc:ga757ca8491b5337650385dc5453332407"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads an image from the disk through a request.  <a href="group___core.html#ga757ca8491b5337650385dc5453332407">More...</a><br /></td></tr>
 <tr class="separator:ga757ca8491b5337650385dc5453332407"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -383,7 +388,7 @@ std::chrono::time_point&lt; std::chrono::steady_clock &gt;&#160;</td><td class="
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">    m::manage_assert(a_condition, __LINE__, __FILE__, \</div>
-<div class="line">                     <span class="stringliteral">&quot;Triggered soft assertion from file : &quot;</span>);</div>
+<div class="line">                     <span class="stringliteral">&quot;Triggered hard assertion from file : &quot;</span>);</div>
 </div><!-- fragment -->
 <p>A basic assert interrupting execution. </p>
 <dl class="params"><dt>Parameters</dt><dd>

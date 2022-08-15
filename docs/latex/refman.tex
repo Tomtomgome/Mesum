@@ -190,7 +190,9 @@
 \chapter{Module Documentation}
 \input{group___core}
 \input{group___graphics}
+\input{group___render}
 \chapter{Namespace Documentation}
+\input{namespacem_1_1aa}
 \input{namespacem_1_1application}
 \input{namespacem_1_1dear_im_gui}
 \input{namespacem_1_1files}
@@ -198,7 +200,6 @@
 \input{namespacem_1_1logging}
 \input{namespacem_1_1math}
 \chapter{Class Documentation}
-\input{structm_1_1render_1_1_basic_vertex}
 \input{structm_1_1render_1_1_buffer_base}
 \input{structm_1_1dx12_1_1_d_x12_command_queue_1_1_command_allocator_entry}
 \input{structm_1_1render_1_1_data_mesh_buffer}
@@ -208,7 +209,6 @@
 \input{classm_1_1dx12_1_1_d_x12_renderer}
 \input{structm_1_1dx12_1_1_d_x12_render_taskset}
 \input{classm_1_1dx12_1_1_d_x12_surface}
-\input{structm_1_1dx12_1_1_d_x12_texture}
 \input{struct_example_app_console}
 \input{struct_example_app_documents}
 \input{struct_example_app_log}
@@ -312,6 +312,8 @@
 \input{struct_im_vec2ih}
 \input{struct_im_vec4}
 \input{struct_im_vector}
+\input{structm_1_1aa_1_1m_adapter_1_1_init_data}
+\input{structm_1_1aa_1_1m_api_1_1_init_data}
 \input{classm_1_1render_1_1_i_renderer}
 \input{structm_1_1render_1_1_i_resource}
 \input{classm_1_1render_1_1_i_surface}
@@ -320,10 +322,14 @@
 \input{classm_1_1xcb__unix_1_1_i_windowed_application_impl}
 \input{classm_1_1win32_1_1_i_window_impl}
 \input{classm_1_1xcb__unix_1_1_i_window_impl}
+\input{structm_1_1aa_1_1m_adapter}
+\input{structm_1_1aa_1_1m_api}
 \input{structm_1_1m_basic_launch_data}
+\input{structm_1_1render_1_1m_basic_vertex}
 \input{classm_1_1m_callback}
 \input{structm_1_1input_1_1m_callback_input_manager}
 \input{structm_1_1m_cmd_line}
+\input{classm_1_1file_1_1m_fbx_importer}
 \input{classm_1_1logging_1_1m_file_log_policy}
 \input{classm_1_1application_1_1m_i_basic_application}
 \input{classm_1_1input_1_1m_i_input_manager}
@@ -338,6 +344,7 @@
 \input{classm_1_1logging_1_1m_logger}
 \input{structm_1_1math_1_1m_mat}
 \input{structm_1_1math_1_1m_mat_data}
+\input{structm_1_1render_1_1m_mesh}
 \input{structm_1_1input_1_1m_mouse_action}
 \input{structm_1_1m_output}
 \input{classm_1_1profile_1_1m_profiler_multi_sampling}
@@ -356,7 +363,6 @@
 \input{classm_1_1math_1_1m_xo_random_number_generator}
 \input{structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state}
 \input{struct_my_document}
-\input{classm_1_1render_1_1_resource_data_holder}
 \input{struct_s_t_b___textedit_state}
 \input{structstbrp__context}
 \input{structstbrp__node}
@@ -382,9 +388,6 @@
 \input{structm_1_1render_1_1_task_data_draw_dear_im_gui}
 \input{structm_1_1render_1_1_task_draw_dear_im_gui}
 \input{structm_1_1render_1_1_taskset}
-\input{structm_1_1render_1_1_texture_desc}
-\input{structm_1_1render_1_1_texture_manager}
-\input{structm_1_1render_1_1_texture_request}
 \input{struct_v_e_r_t_e_x___c_o_n_s_t_a_n_t___b_u_f_f_e_r}
 \input{structm_1_1render_1_1_vulkan_buffer_base}
 \input{classm_1_1vulkan_1_1_vulkan_context}
@@ -403,6 +406,7 @@
 \input{_application_8hpp_source}
 \input{_asserts_8hpp_source}
 \input{_callbacks_8hpp_source}
+\input{_fbx_importer_8hpp_source}
 \input{_file_8hpp_source}
 \input{_image_8hpp_source}
 \input{_input_8hpp_source}
@@ -423,6 +427,7 @@
 \input{_state_input_manager_8hpp_source}
 \input{_types_8hpp_source}
 \input{_vec_8hpp_source}
+\input{_api_abstraction_8hpp_source}
 \input{_cross_platform_8hpp_source}
 \input{_cross_renderer_8hpp_source}
 \input{imconfig_8h_source}
@@ -436,16 +441,16 @@
 \input{_d_x12_command_queue_8hpp_source}
 \input{_d_x12_context_8hpp_source}
 \input{_d_x12_renderer_common_8hpp_source}
-\input{_d_x12_texture_8hpp_source}
 \input{imgui__impl__dx12_8h_source}
 \input{_renderer_d_x12_impl_8hpp_source}
 \input{_common_8hpp_source}
 \input{_renderer_8hpp_source}
 \input{_render_task_8hpp_source}
+\input{_basic_vertex_8hpp_source}
+\input{_mesh_8hpp_source}
 \input{_render_task2_d_render_8hpp_source}
-\input{_render_task3d_render_8h_source}
+\input{_render_task3d_render_8hpp_source}
 \input{_render_task_dear_im_gui_8hpp_source}
-\input{_texture_8hpp_source}
 \input{_windowed_app_impl_x_c_b_8hpp_source}
 \input{_windows_impl_x_c_b_8hpp_source}
 \input{_x_c_b_context_8hpp_source}

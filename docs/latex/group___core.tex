@@ -31,6 +31,8 @@ class \mbox{\hyperlink{classm_1_1m_callback}{m\+::m\+Callback$<$ t\+\_\+\+Ret\+T
 \begin{DoxyCompactList}\small\item\em Class encapsulating a callback. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classm_1_1m_signal}{m\+::m\+Signal$<$ t\+\_\+\+Args $>$}}
 \begin{DoxyCompactList}\small\item\em Class encapsulating a signal. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classm_1_1file_1_1m_fbx_importer}{m\+::file\+::m\+Fbx\+Importer}}
+\item 
 struct \mbox{\hyperlink{structm_1_1resource_1_1m_request_image}{m\+::resource\+::m\+Request\+Image}}
 \begin{DoxyCompactList}\small\item\em Structure used to request the loading of an image on disk. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structm_1_1resource_1_1m_image}{m\+::resource\+::m\+Image}}
@@ -160,6 +162,9 @@ struct \mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+::math\+::m\+Vec$<$ t\+\_\+
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
+\mbox{\Hypertarget{group___core_gae7c4fc68e739a7db1c12af48cad59e7c}\label{group___core_gae7c4fc68e739a7db1c12af48cad59e7c}} 
+m\+Bool {\bfseries m\+::file\+::m\+Fbx\+Importer\+::\+Print\+File} (std\+::string a\+\_\+file\+Path)
+\item 
 \mbox{\hyperlink{structm_1_1m_output}{m\+Output}}$<$ \mbox{\hyperlink{structm_1_1resource_1_1m_image}{m\+Image}} $>$ \mbox{\hyperlink{group___core_ga757ca8491b5337650385dc5453332407}{m\+::resource\+::load\+\_\+image}} (\mbox{\hyperlink{structm_1_1resource_1_1m_request_image}{m\+Request\+Image}} const  \&a\+\_\+request)
 \begin{DoxyCompactList}\small\item\em Loads an image from the disk through a request. \end{DoxyCompactList}\item 
 virtual void \mbox{\hyperlink{group___core_gac6293026c2b1a3029978393784f14e45}{m\+::profile\+::m\+IProfiler\+::add\+\_\+timing}} (std\+::chrono\+::steady\+\_\+clock\+::duration a\+\_\+timming)=0
@@ -220,7 +225,7 @@ Namespace grouping basic profiling tools.
 {\bfseries Value\+:}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{    m::manage\_assert(a\_condition, \_\_LINE\_\_, \_\_FILE\_\_, \(\backslash\)}
-\DoxyCodeLine{                     \textcolor{stringliteral}{"{}Triggered soft assertion from file : "{}});}
+\DoxyCodeLine{                     \textcolor{stringliteral}{"{}Triggered hard assertion from file : "{}});}
 
 \end{DoxyCode}
 

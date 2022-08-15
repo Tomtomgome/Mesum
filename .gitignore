@@ -12,3 +12,6 @@ build/
 # Clion
 .idea/
 cmake-build-debug/
+
+# Libs
+Externals/FBX SDK 2020.0.1/

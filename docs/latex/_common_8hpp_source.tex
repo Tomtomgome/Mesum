@@ -2,57 +2,73 @@
 \label{_common_8hpp_source}\index{MesumGraphics/MesumGraphics/Common.hpp@{MesumGraphics/MesumGraphics/Common.hpp}}
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef M\_GRAPHICS\_COMMON}}
-\DoxyCodeLine{2 \textcolor{preprocessor}{\#define M\_GRAPHICS\_COMMON}}
-\DoxyCodeLine{3 \textcolor{preprocessor}{\#pragma once}}
-\DoxyCodeLine{4 }
-\DoxyCodeLine{5 \textcolor{preprocessor}{\#ifdef \_M\_DLL\_DYNAMIC\_LINK}}
-\DoxyCodeLine{6 \textcolor{preprocessor}{\#ifdef \_M\_GRAPHICS\_EXPORT}}
-\DoxyCodeLine{7 \textcolor{preprocessor}{\#define MesumGraphicsApi \_\_declspec(dllexport)}}
-\DoxyCodeLine{8 \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{9 \textcolor{preprocessor}{\#define MesumGraphicsApi \_\_declspec(dllimport)}}
-\DoxyCodeLine{10 \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{11 \textcolor{preprocessor}{\#else}}
-\DoxyCodeLine{12 \textcolor{preprocessor}{\#define MesumGraphicsApi}}
-\DoxyCodeLine{13 \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{14 }
-\DoxyCodeLine{15 \textcolor{preprocessor}{\#ifdef \_M\_ALL\_RENDERER}}
-\DoxyCodeLine{16 \textcolor{preprocessor}{\#define M\_ALL\_RENDERER}}
-\DoxyCodeLine{17 \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{18 }
-\DoxyCodeLine{19 \textcolor{preprocessor}{\#ifdef \_M\_DX12\_RENDERER}}
-\DoxyCodeLine{20 \textcolor{preprocessor}{\#define M\_DX12\_RENDERER}}
-\DoxyCodeLine{21 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// \_M\_DX12\_RENDERER}}
-\DoxyCodeLine{22 }
-\DoxyCodeLine{23 \textcolor{preprocessor}{\#ifdef \_M\_VULKAN\_RENDERER}}
-\DoxyCodeLine{24 \textcolor{preprocessor}{\#define M\_VULKAN\_RENDERER}}
-\DoxyCodeLine{25 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// \_M\_VULKAN\_RENDERER}}
-\DoxyCodeLine{26 }
-\DoxyCodeLine{27 \textcolor{preprocessor}{\#ifdef \_M\_DX12\_DEFAULT\_RENDERER}}
-\DoxyCodeLine{28 \textcolor{preprocessor}{\#define M\_DX12\_DEFAULT\_RENDERER}}
-\DoxyCodeLine{29 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// \_M\_DX12\_DEFAULT\_RENDERER}}
-\DoxyCodeLine{30 }
-\DoxyCodeLine{31 \textcolor{preprocessor}{\#ifdef \_M\_VULKAN\_DEFAULT\_RENDERER}}
-\DoxyCodeLine{32 \textcolor{preprocessor}{\#define M\_VULKAN\_DEFAULT\_RENDERER}}
-\DoxyCodeLine{33 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// \_M\_DX12\_DEFAULT\_RENDERER}}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#ifdef \_M\_DLL\_DYNAMIC\_LINK}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#ifdef \_M\_GRAPHICS\_EXPORT}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#define MesumGraphicsApi \_\_declspec(dllexport)}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#define MesumGraphicsApi \_\_declspec(dllimport)}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#define MesumGraphicsApi}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifdef \_M\_ALL\_RENDERER}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define M\_ALL\_RENDERER}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#ifdef \_M\_DX12\_RENDERER}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#define M\_DX12\_RENDERER}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// \_M\_DX12\_RENDERER}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#ifdef \_M\_VULKAN\_RENDERER}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#define M\_VULKAN\_RENDERER}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// \_M\_VULKAN\_RENDERER}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#ifdef \_M\_DX12\_DEFAULT\_RENDERER}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#define M\_DX12\_DEFAULT\_RENDERER}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// \_M\_DX12\_DEFAULT\_RENDERER}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#ifdef \_M\_VULKAN\_DEFAULT\_RENDERER}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#define M\_VULKAN\_DEFAULT\_RENDERER}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// \_M\_DX12\_DEFAULT\_RENDERER}}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#if defined M\_WIN32}}
 \DoxyCodeLine{34 }
-\DoxyCodeLine{35 \textcolor{preprocessor}{\#if defined M\_WIN32}}
-\DoxyCodeLine{36 }
-\DoxyCodeLine{37 \textcolor{preprocessor}{\#ifndef UNICODE}}
-\DoxyCodeLine{38 \textcolor{preprocessor}{\#define UNICODE}}
-\DoxyCodeLine{39 \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{40 \textcolor{preprocessor}{\#define WIN32\_LEAN\_AND\_MEAN}}
-\DoxyCodeLine{41 \textcolor{preprocessor}{\#include <Windows.h>}}
-\DoxyCodeLine{42 \textcolor{preprocessor}{\#include <consoleapi.h>}}
-\DoxyCodeLine{43 }
-\DoxyCodeLine{44 \textcolor{preprocessor}{\#ifdef max}}
-\DoxyCodeLine{45 \textcolor{preprocessor}{\#undef max}}
-\DoxyCodeLine{46 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#ifndef UNICODE}}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#define UNICODE}}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#define WIN32\_LEAN\_AND\_MEAN}}
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#include <Windows.h>}}
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#include <consoleapi.h>}}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{preprocessor}{\#ifdef max}}
+\DoxyCodeLine{43 \textcolor{preprocessor}{\#undef max}}
+\DoxyCodeLine{44 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{preprocessor}{\#elif defined M\_UNIX}}
 \DoxyCodeLine{47 }
-\DoxyCodeLine{48 \textcolor{preprocessor}{\#elif defined M\_UNIX}}
+\DoxyCodeLine{48 \textcolor{preprocessor}{\#endif}}
 \DoxyCodeLine{49 }
-\DoxyCodeLine{50 \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{51 }
-\DoxyCodeLine{52 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_CORE\_COMMON}}
+\DoxyCodeLine{50 \textcolor{preprocessor}{\#ifdef mIfDx12Enabled}}
+\DoxyCodeLine{51 \textcolor{preprocessor}{\#undef mIfDx12Enabled}}
+\DoxyCodeLine{52 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 \textcolor{preprocessor}{\#ifdef mIfVulkanEnabled}}
+\DoxyCodeLine{55 \textcolor{preprocessor}{\#undef mIfVulkanEnabled}}
+\DoxyCodeLine{56 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 \textcolor{preprocessor}{\#if (defined M\_DX12\_RENDERER) \&\& (!defined M\_VK\_IMPLEMENTAITON)}}
+\DoxyCodeLine{59 \textcolor{preprocessor}{\#define mIfDx12Enabled(a\_something) a\_something}}
+\DoxyCodeLine{60 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{61 \textcolor{preprocessor}{\#define mIfDx12Enabled(a\_something)}}
+\DoxyCodeLine{62 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_DX12\_RENDERER}}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 \textcolor{preprocessor}{\#if (defined M\_VULKAN\_RENDERER) \&\& (!defined M\_DX12\_IMPLEMENTAITON)}}
+\DoxyCodeLine{65 \textcolor{preprocessor}{\#define mIfVulkanEnabled(a\_something) a\_something}}
+\DoxyCodeLine{66 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{67 \textcolor{preprocessor}{\#define mIfVulkanEnabled(a\_something)}}
+\DoxyCodeLine{68 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_VULKAN\_RENDERER}}
 
 \end{DoxyCode}

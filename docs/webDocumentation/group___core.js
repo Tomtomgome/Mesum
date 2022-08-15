@@ -47,6 +47,7 @@ var group___core =
       [ "detach_fromSignal", "classm_1_1m_signal.html#a9f2353d6e412ca07f8cd555d607b9dba", null ],
       [ "m_callbacks", "classm_1_1m_signal.html#a7d0937df96ca9773d0086d423a0f0e33", null ]
     ] ],
+    [ "m::file::mFbxImporter", "classm_1_1file_1_1m_fbx_importer.html", null ],
     [ "m::resource::mRequestImage", "structm_1_1resource_1_1m_request_image.html", [
       [ "path", "group___core.html#ga999843d5346e8e26c48f8ee3d41a423a", null ]
     ] ],

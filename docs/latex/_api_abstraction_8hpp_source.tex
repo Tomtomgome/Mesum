@@ -1,0 +1,94 @@
+\hypertarget{_api_abstraction_8hpp_source}{}\doxysection{Api\+Abstraction.\+hpp}
+\label{_api_abstraction_8hpp_source}\index{MesumGraphics/ApiAbstraction.hpp@{MesumGraphics/ApiAbstraction.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}MesumGraphics/Common.hpp"{}}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#ifdef mIfDx12Enabled}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#undef mIfDx12Enabled}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#ifdef mIfVulkanEnabled}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#undef mIfVulkanEnabled}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#if (defined M\_DX12\_RENDERER) \&\& (!defined M\_VK\_IMPLEMENTAITON)}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}DX12Renderer/Includes.hpp"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define mIfDx12Enabled(a\_something) a\_something}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#define mIfDx12Enabled(a\_something)}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_DX12\_RENDERER}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#if (defined M\_VULKAN\_RENDERER) \&\& (!defined M\_DX12\_IMPLEMENTAITON)}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}VulkanRenderer/Includes.hpp"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#define mIfVulkanEnabled(a\_something) a\_something}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#define mIfVulkanEnabled(a\_something)}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_VULKAN\_RENDERER}}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{31 }
+\DoxyCodeLine{35 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacem_1_1aa}{m::aa}}}
+\DoxyCodeLine{36 \{}
+\DoxyCodeLine{44 \textcolor{preprocessor}{\#define mDeclare\_virtualFunction(ret, name, ...) \(\backslash\)}}
+\DoxyCodeLine{45 \textcolor{preprocessor}{    typedef ret (*name\#\#Type)(\_\_VA\_ARGS\_\_);      \(\backslash\)}}
+\DoxyCodeLine{46 \textcolor{preprocessor}{    name\#\#Type name;}}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{51 \textcolor{preprocessor}{\#define mDeclare\_virtualMemberFunction\_\_(ret, name, parentType, ...)    \(\backslash\)}}
+\DoxyCodeLine{52 \textcolor{preprocessor}{    mDeclare\_virtualFunction(ret, name\#\#Internal, parentType\&,          \(\backslash\)}}
+\DoxyCodeLine{53 \textcolor{preprocessor}{                             \_\_VA\_ARGS\_\_) template <typename... t\_Args> \(\backslash\)}}
+\DoxyCodeLine{54 \textcolor{preprocessor}{    inline ret name(t\_Args... a\_args)                                   \(\backslash\)}}
+\DoxyCodeLine{55 \textcolor{preprocessor}{    \{                                                                   \(\backslash\)}}
+\DoxyCodeLine{56 \textcolor{preprocessor}{        mAssert(name\#\#Internal != nullptr);                             \(\backslash\)}}
+\DoxyCodeLine{57 \textcolor{preprocessor}{        return name\#\#Internal(*this, a\_args...);                        \(\backslash\)}}
+\DoxyCodeLine{58 \textcolor{preprocessor}{    \}}}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{69 \textcolor{preprocessor}{\#define mDeclare\_virtualMemberFunction(parentType, ret, name, ...) \(\backslash\)}}
+\DoxyCodeLine{70 \textcolor{preprocessor}{    mDeclare\_virtualMemberFunction\_\_(ret, name, parentType, \_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{75 \textcolor{preprocessor}{\#define mLink\_virtualMemberFunction(a\_o, a\_if) a\_o.a\_if\#\#Internal = a\_if}}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{80 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1aa_1_1m_adapter}{mAdapter}}}
+\DoxyCodeLine{81 \{}
+\DoxyCodeLine{85     \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1aa_1_1m_adapter_1_1_init_data}{InitData}}}
+\DoxyCodeLine{86     \{}
+\DoxyCodeLine{87     \};}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89     mDeclare\_virtualMemberFunction(\mbox{\hyperlink{structm_1_1aa_1_1m_adapter}{mAdapter}}, \textcolor{keywordtype}{void}, init,}
+\DoxyCodeLine{90                                    \mbox{\hyperlink{structm_1_1aa_1_1m_adapter_1_1_init_data}{mAdapter::InitData}} \textcolor{keyword}{const}\&);}
+\DoxyCodeLine{91     \textcolor{keyword}{union}}
+\DoxyCodeLine{92     \{}
+\DoxyCodeLine{93         mIfDx12Enabled(\textcolor{keyword}{struct} \{ IDXGIAdapter4* adapter; \} dx12Data;);}
+\DoxyCodeLine{94         mIfVulkanEnabled(\textcolor{keyword}{struct} \{\} vulkanData;);}
+\DoxyCodeLine{95     \};}
+\DoxyCodeLine{96 \};}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{101 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1aa_1_1m_api}{mApi}}}
+\DoxyCodeLine{102 \{}
+\DoxyCodeLine{106     \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1aa_1_1m_api_1_1_init_data}{InitData}}}
+\DoxyCodeLine{107     \{}
+\DoxyCodeLine{108         \textcolor{keywordtype}{bool} enableDebug;}
+\DoxyCodeLine{109         \textcolor{comment}{// Debug flags}}
+\DoxyCodeLine{110     \};}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112     mDeclare\_virtualMemberFunction(\mbox{\hyperlink{structm_1_1aa_1_1m_api}{mApi}}, \textcolor{keywordtype}{void}, init, \mbox{\hyperlink{structm_1_1aa_1_1m_api_1_1_init_data}{mApi::InitData}} \textcolor{keyword}{const}\&);}
+\DoxyCodeLine{113     mDeclare\_virtualFunction(\mbox{\hyperlink{structm_1_1aa_1_1m_adapter}{mAdapter}}, create\_adapter);}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115     \textcolor{keyword}{union}}
+\DoxyCodeLine{116     \{}
+\DoxyCodeLine{117         mIfDx12Enabled(\textcolor{keyword}{struct} \{ IDXGIFactory* adapter; \} dx12Data;);}
+\DoxyCodeLine{118         mIfVulkanEnabled(\textcolor{keyword}{struct} \{}
+\DoxyCodeLine{119             VkInstance instance;}
+\DoxyCodeLine{120         \} vulkanData;);}
+\DoxyCodeLine{121     \};}
+\DoxyCodeLine{122 \};}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 mIfDx12Enabled(\textcolor{keyword}{namespace} dx12 \{ mApi create\_api(); \};);}
+\DoxyCodeLine{125 mIfVulkanEnabled(\textcolor{keyword}{namespace} vulkan \{ mApi create\_api(); \};);}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 \};  \textcolor{comment}{// namespace m::aa}}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{131 }
+
+\end{DoxyCode}

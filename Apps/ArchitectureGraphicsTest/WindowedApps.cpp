@@ -3,6 +3,7 @@
 #include <MesumGraphics/DearImgui/MesumDearImGui.hpp>
 #include <MesumGraphics/RenderTasks/RenderTaskDearImGui.hpp>
 #include <MesumGraphics/WindowedApp.hpp>
+#include <MesumGraphics/ApiAbstraction.hpp>
 
 class CubeMover
 {
@@ -57,40 +58,51 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m_secondWindow->link_inputManager(&m_inputManager);
     }
 
-    void init() override
+    void init(m::mCmdLine const& a_cmdLine, void* a_appData) override
     {
-        m::crossPlatform::IWindowedApplication::init(<#initializer #>, nullptr);
+        m::crossPlatform::IWindowedApplication::init(a_cmdLine, a_appData);
 
-        m::mCmdLine const& cmdLine = get_cmdLine();
+        m::mCmdLine const& cmdLine = a_cmdLine;
         m::mUInt           width   = 1280;
         m::mUInt           height  = 720;
         if (!cmdLine.get_parameter("-w", width))
         {
-            mLog_infoTo(m_CUBEAPP_ID, "Width not overriden, use default : ", width);
+            mLog_infoTo(m_CUBEAPP_ID,
+                        "Width not overriden, use default : ", width);
         }
 
         if (!cmdLine.get_parameter("-h", height))
         {
             mLog_infoTo(m_CUBEAPP_ID,
-                    "Height not overriden, use default : ", height);
+                        "Height not overriden, use default : ", height);
         }
 
-        //m_iRenderer = new m::dx12::DX12Renderer();
-        //m_iRenderer = new m::vulkan::VulkanRenderer();
+        m::aa::mApi           api = m::aa::dx12::create_api();
+        m::aa::mApi::InitData apiInitData;
+        api.init(apiInitData);
+        m::aa::mAdapter           a = api.create_adapter();
+        m::aa::mAdapter::InitData initData;
+        a.init(initData);
+
+        m::aa::mApi api2 = m::aa::vulkan::create_api();
+        api2.init(apiInitData);
+        m::aa::mAdapter a2 = api2.create_adapter();
+        a2.init(initData);
+
         m_iDx12Renderer = new m::dx12::DX12Renderer();
         m_iDx12Renderer->init();
         m_iVulkanRenderer = new m::vulkan::VulkanRenderer();
         m_iVulkanRenderer->init();
 
         m_mainDx12Window = add_newWindow("Cube mover app", width, height);
-        m_mainDx12Window->set_asMainWindow();
 
         m_mainVulkanWindow = add_newWindow("Cube mover app", width, height);
 
         m_hdlDx12Surface = m_mainDx12Window->link_renderer(m_iDx12Renderer);
-        m_hdlVulkanSurface = m_mainVulkanWindow->link_renderer(m_iVulkanRenderer);
+        m_hdlVulkanSurface =
+            m_mainVulkanWindow->link_renderer(m_iVulkanRenderer);
 
-        m::dearImGui::init(m_mainDx12Window);
+        m::dearImGui::init(*m_mainDx12Window);
 
         m::render::Taskset* taskset_renderPipeline =
             m_hdlDx12Surface->surface->addNew_renderTaskset();
@@ -140,7 +152,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
             m::input::mKeyActionCallback(&m_mover,
                                          &CubeMover::set_notMoveRight));
 
-        set_microSecondsLimit(16000);
+        set_minimalStepDuration(std::chrono::milliseconds(16));
     }
 
     void destroy() override
@@ -156,22 +168,15 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m::dearImGui::destroy();
     }
 
-    m::mBool step(const m::mDouble& a_deltaTime) override
+    m::mBool step(
+        std::chrono::steady_clock::duration const& a_deltaTime) override
     {
         if (!m::crossPlatform::IWindowedApplication::step(a_deltaTime))
         {
             return false;
         }
 
-        m_inputManager.processAndUpdate_States();
-
-        m::mCmdLine const& cmdLine = get_cmdLine();
-        if (cmdLine.get_arg("-NoLog"))
-        {
-            mDisable_logChannels(m_CUBEAPP_ID);
-        }
-
-        mLog_infoTo(m_CUBEAPP_ID, "Bonjour !, dt = ", a_deltaTime, "ms");
+        mLog_infoTo(m_CUBEAPP_ID, "Bonjour !, dt = ", a_deltaTime);
 
         m_mover.move(m_x, m_y);
 
@@ -183,8 +188,11 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         ImGui::ShowDemoWindow(&showDemo);
         ImGui::Render();
 
-        m_hdlDx12Surface->surface->render();
-        if(m_hdlVulkanSurface->isValid)
+        if (m_hdlDx12Surface->isValid)
+        {
+            m_hdlDx12Surface->surface->render();
+        }
+        if (m_hdlVulkanSurface->isValid)
         {
             m_hdlVulkanSurface->surface->render();
         }
@@ -195,14 +203,14 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
     m::mFloat m_x = 0.0f;
     m::mFloat m_y = 0.0f;
 
-    m::render::IRenderer*       m_iDx12Renderer;
-    m::render::IRenderer*       m_iVulkanRenderer;
-    m::render::ISurface::HdlPtr m_hdlDx12Surface;
-    m::render::ISurface::HdlPtr m_hdlVulkanSurface;
+    m::render::IRenderer*           m_iDx12Renderer;
+    m::render::IRenderer*           m_iVulkanRenderer;
+    m::render::ISurface::HdlPtr     m_hdlDx12Surface;
+    m::render::ISurface::HdlPtr     m_hdlVulkanSurface;
     m::input::mCallbackInputManager m_inputManager;
-    m::windows::mIWindow*        m_mainDx12Window;
-    m::windows::mIWindow*        m_mainVulkanWindow;
-    CubeMover                   m_mover;
+    m::windows::mIWindow*           m_mainDx12Window;
+    m::windows::mIWindow*           m_mainVulkanWindow;
+    CubeMover                       m_mover;
 
     const m::logging::mChannelID m_CUBEAPP_ID = mLog_getId();
 };

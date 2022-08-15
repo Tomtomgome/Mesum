@@ -161,6 +161,12 @@ mBool mVec<t_T, t_Size>::operator==(const mVec<t_T, t_Size>& a_v) const
 }
 
 template <typename t_T, mUInt t_Size>
+mBool mVec<t_T, t_Size>::operator<(const mVec<t_T, t_Size>& a_v) const
+{
+    return (sqlength(*this) < sqlength(a_v));
+}
+
+template <typename t_T, mUInt t_Size>
 mVec<t_T, t_Size> operator+(const mVec<t_T, t_Size>& a_lhs,
                             const mVec<t_T, t_Size>& a_rhs)
 {

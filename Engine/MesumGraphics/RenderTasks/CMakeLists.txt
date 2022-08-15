@@ -8,7 +8,11 @@ set(SOURCES RenderTaskDearImGui.cpp
 
 set(HEADERS RenderTaskDearImGui.hpp
         RenderTask2DRender.hpp
-        RenderTask3dRender.h)
+        RenderTask3dRender.hpp
+        Mesh.cpp
+        Mesh.hpp
+        BasicVertex.cpp
+        BasicVertex.hpp)
 
 foreach(RENDER_MODULE_NAME ${RENDERER_MODULE_NAMES})
     list(APPEND TARGET_OBJECTS $<TARGET_OBJECTS:${RENDER_MODULE_NAME}>)
