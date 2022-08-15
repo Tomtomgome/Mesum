@@ -744,7 +744,7 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
         m_iRenderer = new m::dx12::DX12Renderer();
         m_iRenderer->init();
 
-        m_mainWindow = add_newWindow("Fluid Simulation", width, height);
+        m_mainWindow = add_newWindow("Fluid Simulation", width, height, false);
 
         m_hdlSurface = m_mainWindow->link_renderer(m_iRenderer);
         m::dearImGui::init(*m_mainWindow);
