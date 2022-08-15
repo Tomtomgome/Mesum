@@ -110,17 +110,17 @@ void enumerate_adapter(mApi& a_api, std::vector<mAdapter>& a_adapters)
 
         // rAdapter.properties.idVender = dxgiAdapterDesc1.VendorId;
         // rAdapter.properties.idDevice = dxgiAdapterDesc1.DeviceId;
-        if ((dxgiAdapterDesc1.Flags & DXGI_ADAPTER_FLAG_SOFTWARE) == 0 &&
-            SUCCEEDED(D3D12CreateDevice(dxgiAdapter1.Get(),
-                                        D3D_FEATURE_LEVEL_11_0,
-                                        __uuidof(ID3D12Device), nullptr)) &&
-            dxgiAdapterDesc1.DedicatedVideoMemory >
-                size_maxDedicatedVideoMemory)
-        {
-            size_maxDedicatedVideoMemory =
-                dxgiAdapterDesc1.DedicatedVideoMemory;
-            check_MicrosoftHRESULT(dxgiAdapter1.As(&dxgiAdapter4));
-        }
+//        if ((dxgiAdapterDesc1.Flags & DXGI_ADAPTER_FLAG_SOFTWARE) == 0 &&
+//            SUCCEEDED(D3D12CreateDevice(dxgiAdapter1.Get(),
+//                                        D3D_FEATURE_LEVEL_11_0,
+//                                        __uuidof(ID3D12Device), nullptr)) &&
+//            dxgiAdapterDesc1.DedicatedVideoMemory >
+//                size_maxDedicatedVideoMemory)
+//        {
+//            size_maxDedicatedVideoMemory =
+//                dxgiAdapterDesc1.DedicatedVideoMemory;
+//            check_MicrosoftHRESULT(dxgiAdapter1.As(&dxgiAdapter4));
+//        }
     }
 }
 
