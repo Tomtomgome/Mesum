@@ -25,6 +25,9 @@ Task3dRender::Task3dRender(TaskData3dRender* a_data)
 
 using namespace DirectX;
 
+ID3D12Resource* depthStencilBuffer; // This is the memory for our depth/stencil buffer
+ID3D12DescriptorHeap* dsDescriptorHeap; // This is a heap for our depth/stencil buffer descriptor
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -76,6 +79,7 @@ Dx12Task3dRender::Dx12Task3dRender(TaskData3dRender* a_data)
         D3D12_BLEND_INV_SRC_ALPHA;
     pipelineDesc.BlendState.RenderTarget[0].BlendOp      = D3D12_BLEND_OP_ADD;
     pipelineDesc.BlendState.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
+    pipelineDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 
     pipelineDesc.SampleMask = 0xFFFFFFFF;
 
@@ -92,6 +96,57 @@ Dx12Task3dRender::Dx12Task3dRender(TaskData3dRender* a_data)
     pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
     pipelineDesc.SampleDesc.Count      = 1;
 
+    dx12::ComPtr<ID3D12Device> device =
+        dx12::DX12Context::gs_dx12Contexte->m_device;
+
+    HRESULT                res;
+
+    /* -------------------- Depth / Stencil ---------------- */
+
+    pipelineDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT); // a default depth stencil state
+
+    // create a depth stencil descriptor heap so we can get a pointer to the depth stencil buffer
+    D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc = {};
+    dsvHeapDesc.NumDescriptors = 1;
+    dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+    dsvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+    res = device->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsDescriptorHeap));
+    if (FAILED(res))
+    {
+        return;
+    }
+
+    D3D12_DEPTH_STENCIL_VIEW_DESC depthStencilDesc = {};
+    depthStencilDesc.Format = DXGI_FORMAT_D32_FLOAT;
+    depthStencilDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
+    depthStencilDesc.Flags = D3D12_DSV_FLAG_NONE;
+
+    D3D12_CLEAR_VALUE depthOptimizedClearValue = {};
+    depthOptimizedClearValue.Format = DXGI_FORMAT_D32_FLOAT;
+    depthOptimizedClearValue.DepthStencil.Depth = 1.0f;
+    depthOptimizedClearValue.DepthStencil.Stencil = 0;
+
+    {
+        auto heapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+        auto resourceDesc           = CD3DX12_RESOURCE_DESC::Tex2D(
+            DXGI_FORMAT_D32_FLOAT, 1280 /* rt width */, 720 /* rt height */, 1,
+            0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL);
+
+        device->CreateCommittedResource(&heapProperties, D3D12_HEAP_FLAG_NONE,
+                                        &resourceDesc, D3D12_RESOURCE_STATE_DEPTH_WRITE,
+                                        &depthOptimizedClearValue,
+                                        IID_PPV_ARGS(&depthStencilBuffer));
+        dsDescriptorHeap->SetName(L"Depth/Stencil Resource Heap");
+    }
+
+    device->CreateDepthStencilView(depthStencilBuffer, &depthStencilDesc, dsDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+
+    // destroy
+    //SAFE_RELEASE(depthStencilBuffer);
+    //SAFE_RELEASE(dsDescriptorHeap);
+
+    /* -------------------- Depth / Stencil ---------------- */
+
     // A single 32-bit constant root parameter that is used by the vertex
     // shader.
     CD3DX12_ROOT_PARAMETER rootParameters[1];
@@ -105,7 +160,6 @@ Dx12Task3dRender::Dx12Task3dRender(TaskData3dRender* a_data)
 
     dx12::ComPtr<ID3DBlob> rootBlob;
     dx12::ComPtr<ID3DBlob> errorBlob;
-    HRESULT                res;
     res = D3D12SerializeRootSignature(&descRootSignature,
                                       D3D_ROOT_SIGNATURE_VERSION_1, &rootBlob,
                                       &errorBlob);
@@ -117,8 +171,6 @@ Dx12Task3dRender::Dx12Task3dRender(TaskData3dRender* a_data)
             mLog_info((char*)errorBlob->GetBufferPointer());
         }
     }
-    dx12::ComPtr<ID3D12Device> device =
-        dx12::DX12Context::gs_dx12Contexte->m_device;
 
     dx12::check_MicrosoftHRESULT(device->CreateRootSignature(
         0, rootBlob->GetBufferPointer(), rootBlob->GetBufferSize(),
@@ -151,11 +203,18 @@ void Dx12Task3dRender::execute() const
             .get_commandList();
 
     auto currentSurface =
-        static_cast<dx12::DX12Surface*>(m_taskData.m_hdlOutput->surface);
+        dynamic_cast<dx12::DX12Surface*>(m_taskData.m_hdlOutput->surface);
 
-    D3D12_CPU_DESCRIPTOR_HANDLE rtv;
-    rtv = currentSurface->get_currentRtvDesc();
-    graphicCommandList->OMSetRenderTargets(1, &rtv, FALSE, nullptr);
+    // get a handle to the depth/stencil buffer
+    CD3DX12_CPU_DESCRIPTOR_HANDLE dsvHandle(dsDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+
+    D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle;
+    rtvHandle = currentSurface->get_currentRtvDesc();
+
+    // set the render target for the output merger stage (the output of the pipeline)
+    graphicCommandList->OMSetRenderTargets(1, &rtvHandle, FALSE, &dsvHandle);
+
+    graphicCommandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
     D3D12_VIEWPORT viewport = {};
     viewport.MaxDepth       = 1.0f;
