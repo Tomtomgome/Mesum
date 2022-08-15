@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Serializable.hpp"
 #include "GameAction.hpp"
+#include <Kernel/Serializable.hpp>
 #include <Kernel/Math.hpp>
 
 #include <vector>
@@ -20,9 +20,9 @@ struct Key
 
     m::mFloat advancement = 0;
 };
-mBegin_serialization(Key, 1)
+mBegin_serialization(Key, 1);
 
-    mSerialize_memberFrom(1, advancement);
+mSerialize_memberFrom(1, advancement);
 
 mEnd_serialization(Key);
 
@@ -35,9 +35,9 @@ struct Modifier
     m::mFloat      angle = 0;
     m::mFloat      scale = 0;
 };
-mBegin_serialization(Modifier, 1)
+mBegin_serialization(Modifier, 1);
 
-    mSerialize_memberFrom(1, color.r);
+mSerialize_memberFrom(1, color.r);
 mSerialize_memberFrom(1, color.g);
 mSerialize_memberFrom(1, color.b);
 mSerialize_memberFrom(1, color.a);
@@ -61,9 +61,9 @@ struct Animation
     m::mBool colorMultiply = true;  // Otherwise Add
     m::mBool scaleMultiply = true;  // Otherwise Add
 };
-mBegin_serialization(Animation, 1)
+mBegin_serialization(Animation, 1);
 
-    mSerialize_memberFrom(1, ID);
+mSerialize_memberFrom(1, ID);
 
 m::mUInt nbKeys = a_object.keys.size();
 mSerialize_from(1, nbKeys);
@@ -131,9 +131,9 @@ struct AnimatorCpnt
     m::mBool  isLooping{true};
     m::mBool  enabled{false};
 };
-mBegin_serialization(AnimatorCpnt, 1)
+mBegin_serialization(AnimatorCpnt, 1);
 
-    mSerialize_memberFrom(1, animationID);
+mSerialize_memberFrom(1, animationID);
 mSerialize_memberFrom(1, lastModifier);
 mSerialize_memberFrom(1, lastKeyIndex);
 mSerialize_memberFrom(1, currentAdvancement);

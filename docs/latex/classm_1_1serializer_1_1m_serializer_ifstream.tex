@@ -1,0 +1,57 @@
+\hypertarget{classm_1_1serializer_1_1m_serializer_ifstream}{}\doxysection{m\+::serializer\+::m\+Serializer\+Ifstream Class Reference}
+\label{classm_1_1serializer_1_1m_serializer_ifstream}\index{m::serializer::mSerializerIfstream@{m::serializer::mSerializerIfstream}}
+
+
+Default serializer to read an object from a text file.  
+
+
+
+
+{\ttfamily \#include $<$Serializable.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classm_1_1serializer_1_1m_serializer_ifstream_a28d5a3b42a17ef1755bb5e56b01493fe}{m\+Serializer\+Ifstream}} (std\+::ifstream \&a\+\_\+input\+Stream)
+\begin{DoxyCompactList}\small\item\em Construct an input text file serializer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classm_1_1serializer_1_1m_serializer_ifstream_ad51df405840bae78e8d43d93d0fd088c}\label{classm_1_1serializer_1_1m_serializer_ifstream_ad51df405840bae78e8d43d93d0fd088c}} 
+{\footnotesize template$<$typename t\+\_\+\+Type $>$ }\\void {\bfseries begin} (t\+\_\+\+Type \&a\+\_\+object, m\+::m\+UInt \&a\+\_\+version, std\+::string const \&a\+\_\+debug\+Name)
+\item 
+\mbox{\Hypertarget{classm_1_1serializer_1_1m_serializer_ifstream_acc7d45a6a80117a047adda5894b52f8f}\label{classm_1_1serializer_1_1m_serializer_ifstream_acc7d45a6a80117a047adda5894b52f8f}} 
+{\footnotesize template$<$typename t\+\_\+\+Type $>$ }\\void {\bfseries serialize} (t\+\_\+\+Type \&a\+\_\+object, std\+::string const \&a\+\_\+debug\+Name)
+\item 
+\mbox{\Hypertarget{classm_1_1serializer_1_1m_serializer_ifstream_a2cfc46d8cee07f8f144e21f0e5f67e3a}\label{classm_1_1serializer_1_1m_serializer_ifstream_a2cfc46d8cee07f8f144e21f0e5f67e3a}} 
+void {\bfseries end} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1serializer_1_1m_serializer_ifstream_a11a3d1bb9f362a089d9be545d6a11aa1}\label{classm_1_1serializer_1_1m_serializer_ifstream_a11a3d1bb9f362a089d9be545d6a11aa1}} 
+std\+::ifstream \& {\bfseries m\+\_\+input\+Stream}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Default serializer to read an object from a text file. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classm_1_1serializer_1_1m_serializer_ifstream_a28d5a3b42a17ef1755bb5e56b01493fe}\label{classm_1_1serializer_1_1m_serializer_ifstream_a28d5a3b42a17ef1755bb5e56b01493fe}} 
+\index{m::serializer::mSerializerIfstream@{m::serializer::mSerializerIfstream}!mSerializerIfstream@{mSerializerIfstream}}
+\index{mSerializerIfstream@{mSerializerIfstream}!m::serializer::mSerializerIfstream@{m::serializer::mSerializerIfstream}}
+\doxysubsubsection{\texorpdfstring{mSerializerIfstream()}{mSerializerIfstream()}}
+{\footnotesize\ttfamily m\+::serializer\+::m\+Serializer\+Ifstream\+::m\+Serializer\+Ifstream (\begin{DoxyParamCaption}\item[{std\+::ifstream \&}]{a\+\_\+input\+Stream }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+
+
+Construct an input text file serializer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+input\+Stream} & the stream from which the serializer is going to read \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Core/\+Kernel/Serializable.\+hpp\end{DoxyCompactItemize}

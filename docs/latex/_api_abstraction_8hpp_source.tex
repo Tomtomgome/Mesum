@@ -49,46 +49,77 @@
 \DoxyCodeLine{71 }
 \DoxyCodeLine{75 \textcolor{preprocessor}{\#define mLink\_virtualMemberFunction(a\_o, a\_if) a\_o.a\_if\#\#Internal = a\_if}}
 \DoxyCodeLine{76 }
-\DoxyCodeLine{80 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1aa_1_1m_adapter}{mAdapter}}}
-\DoxyCodeLine{81 \{}
-\DoxyCodeLine{85     \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1aa_1_1m_adapter_1_1_init_data}{InitData}}}
-\DoxyCodeLine{86     \{}
-\DoxyCodeLine{87     \};}
-\DoxyCodeLine{88 }
-\DoxyCodeLine{89     mDeclare\_virtualMemberFunction(\mbox{\hyperlink{structm_1_1aa_1_1m_adapter}{mAdapter}}, \textcolor{keywordtype}{void}, init,}
-\DoxyCodeLine{90                                    \mbox{\hyperlink{structm_1_1aa_1_1m_adapter_1_1_init_data}{mAdapter::InitData}} \textcolor{keyword}{const}\&);}
-\DoxyCodeLine{91     \textcolor{keyword}{union}}
-\DoxyCodeLine{92     \{}
-\DoxyCodeLine{93         mIfDx12Enabled(\textcolor{keyword}{struct} \{ IDXGIAdapter4* adapter; \} dx12Data;);}
-\DoxyCodeLine{94         mIfVulkanEnabled(\textcolor{keyword}{struct} \{\} vulkanData;);}
-\DoxyCodeLine{95     \};}
-\DoxyCodeLine{96 \};}
-\DoxyCodeLine{97 }
-\DoxyCodeLine{101 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1aa_1_1m_api}{mApi}}}
-\DoxyCodeLine{102 \{}
-\DoxyCodeLine{106     \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1aa_1_1m_api_1_1_init_data}{InitData}}}
-\DoxyCodeLine{107     \{}
-\DoxyCodeLine{108         \textcolor{keywordtype}{bool} enableDebug;}
-\DoxyCodeLine{109         \textcolor{comment}{// Debug flags}}
-\DoxyCodeLine{110     \};}
-\DoxyCodeLine{111 }
-\DoxyCodeLine{112     mDeclare\_virtualMemberFunction(\mbox{\hyperlink{structm_1_1aa_1_1m_api}{mApi}}, \textcolor{keywordtype}{void}, init, \mbox{\hyperlink{structm_1_1aa_1_1m_api_1_1_init_data}{mApi::InitData}} \textcolor{keyword}{const}\&);}
-\DoxyCodeLine{113     mDeclare\_virtualFunction(\mbox{\hyperlink{structm_1_1aa_1_1m_adapter}{mAdapter}}, create\_adapter);}
+\DoxyCodeLine{80 \textcolor{preprocessor}{\#define mLink\_virtualMemberFunctionEXT(a\_o, a\_if, a\_f) a\_o.a\_if\#\#Internal = a\_f}}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1aa_1_1m_device}{mDevice}}}
+\DoxyCodeLine{83 \{}
+\DoxyCodeLine{84 \};}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{89 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1aa_1_1m_adapter}{mAdapter}}}
+\DoxyCodeLine{90 \{}
+\DoxyCodeLine{94     \textcolor{keyword}{enum} \mbox{\hyperlink{structm_1_1aa_1_1m_adapter_a80a3d080fb5a52f8d8e4f1a4eba8fd0b}{DeviceType}}}
+\DoxyCodeLine{95     \{}
+\DoxyCodeLine{96         deviceOther,}
+\DoxyCodeLine{97         deviceIntegrated,}
+\DoxyCodeLine{98         deviceDescrete,}
+\DoxyCodeLine{99         deviceVirtual,}
+\DoxyCodeLine{100         deviceCpu}
+\DoxyCodeLine{101     \};}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103     \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1aa_1_1m_adapter_1_1_limits}{Limits}}}
+\DoxyCodeLine{104     \{}
+\DoxyCodeLine{105     \};}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107     \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1aa_1_1m_adapter_1_1_properties}{Properties}}}
+\DoxyCodeLine{108     \{}
+\DoxyCodeLine{109         mU32       idVendor;}
+\DoxyCodeLine{110         mU32       idDevice;}
+\DoxyCodeLine{111         \mbox{\hyperlink{structm_1_1aa_1_1m_adapter_a80a3d080fb5a52f8d8e4f1a4eba8fd0b}{DeviceType}} type;}
+\DoxyCodeLine{112         \mbox{\hyperlink{structm_1_1aa_1_1m_adapter_1_1_limits}{Limits}}     limits;}
+\DoxyCodeLine{113     \};}
 \DoxyCodeLine{114 }
-\DoxyCodeLine{115     \textcolor{keyword}{union}}
-\DoxyCodeLine{116     \{}
-\DoxyCodeLine{117         mIfDx12Enabled(\textcolor{keyword}{struct} \{ IDXGIFactory* adapter; \} dx12Data;);}
-\DoxyCodeLine{118         mIfVulkanEnabled(\textcolor{keyword}{struct} \{}
-\DoxyCodeLine{119             VkInstance instance;}
-\DoxyCodeLine{120         \} vulkanData;);}
-\DoxyCodeLine{121     \};}
-\DoxyCodeLine{122 \};}
-\DoxyCodeLine{123 }
-\DoxyCodeLine{124 mIfDx12Enabled(\textcolor{keyword}{namespace} dx12 \{ mApi create\_api(); \};);}
-\DoxyCodeLine{125 mIfVulkanEnabled(\textcolor{keyword}{namespace} vulkan \{ mApi create\_api(); \};);}
-\DoxyCodeLine{126 }
-\DoxyCodeLine{127 \};  \textcolor{comment}{// namespace m::aa}}
-\DoxyCodeLine{128 }
-\DoxyCodeLine{131 }
+\DoxyCodeLine{115     mDeclare\_virtualMemberFunction(\mbox{\hyperlink{structm_1_1aa_1_1m_adapter}{mAdapter}}, \textcolor{keywordtype}{void}, init);}
+\DoxyCodeLine{116     mDeclare\_virtualMemberFunction(\mbox{\hyperlink{structm_1_1aa_1_1m_adapter}{mAdapter}}, \textcolor{keywordtype}{void}, destroy);}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118     \mbox{\hyperlink{structm_1_1aa_1_1m_adapter_1_1_properties}{Properties}} properties;}
+\DoxyCodeLine{119     \textcolor{keyword}{union}}
+\DoxyCodeLine{120     \{}
+\DoxyCodeLine{121         mIfDx12Enabled(\textcolor{keyword}{struct} \{ IDXGIAdapter4* adapter; \} dx12;);}
+\DoxyCodeLine{122         mIfVulkanEnabled(\textcolor{keyword}{struct} \{VkPhysicalDevice physicalDevice;\} vulkan;);}
+\DoxyCodeLine{123     \} \textcolor{keyword}{internal};}
+\DoxyCodeLine{124 \};}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{129 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1aa_1_1m_api}{mApi}}}
+\DoxyCodeLine{130 \{}
+\DoxyCodeLine{134     \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1aa_1_1m_api_1_1_init_data}{InitData}}}
+\DoxyCodeLine{135     \{}
+\DoxyCodeLine{136         \textcolor{keywordtype}{bool} enableDebug;}
+\DoxyCodeLine{137         \textcolor{comment}{// Debug flags}}
+\DoxyCodeLine{138     \};}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140     mDeclare\_virtualMemberFunction(\mbox{\hyperlink{structm_1_1aa_1_1m_api}{mApi}}, \textcolor{keywordtype}{void}, init, \mbox{\hyperlink{structm_1_1aa_1_1m_api_1_1_init_data}{mApi::InitData}} \textcolor{keyword}{const}\&);}
+\DoxyCodeLine{141     mDeclare\_virtualMemberFunction(\mbox{\hyperlink{structm_1_1aa_1_1m_api}{mApi}}, \textcolor{keywordtype}{void}, destroy);}
+\DoxyCodeLine{142     mDeclare\_virtualMemberFunction(\mbox{\hyperlink{structm_1_1aa_1_1m_api}{mApi}}, \textcolor{keywordtype}{void}, enumerate\_adapter,}
+\DoxyCodeLine{143                                    std::vector<mAdapter>\& a\_adapters);}
+\DoxyCodeLine{144     mDeclare\_virtualFunction(\mbox{\hyperlink{structm_1_1aa_1_1m_adapter}{mAdapter}}, create\_adapter);}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146     \textcolor{keywordtype}{bool} debugEnabled;}
+\DoxyCodeLine{147     \textcolor{keyword}{union}}
+\DoxyCodeLine{148     \{}
+\DoxyCodeLine{149         mIfDx12Enabled(\textcolor{keyword}{struct} \{ IDXGIFactory4* factory; \} dx12;);}
+\DoxyCodeLine{150         mIfVulkanEnabled(\textcolor{keyword}{struct}}
+\DoxyCodeLine{151                          \{}
+\DoxyCodeLine{152                              VkInstance               instance;}
+\DoxyCodeLine{153                              VkDebugUtilsMessengerEXT debugUtil;}
+\DoxyCodeLine{154                          \} vulkan;);}
+\DoxyCodeLine{155     \} \textcolor{keyword}{internal};}
+\DoxyCodeLine{156 \};}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158 mIfDx12Enabled(\textcolor{keyword}{namespace} dx12 \{ mApi create\_api(); \});}
+\DoxyCodeLine{159 mIfVulkanEnabled(\textcolor{keyword}{namespace} vulkan \{ mApi create\_api(); \});}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161 \};  \textcolor{comment}{// namespace m::aa}}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{165 }
 
 \end{DoxyCode}

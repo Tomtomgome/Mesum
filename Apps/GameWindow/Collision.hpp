@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Serializable.hpp"
 #include <Kernel/Math.hpp>
+#include <Kernel/Serializable.hpp>
 
 #include <MesumGraphics/RenderBase.hpp>
 
@@ -20,9 +20,9 @@ struct CollisionCpnt
     std::vector<m::math::mVec2> positions{{}, {}, {}};
     m::mBool                    enabled;
 };
-mBegin_serialization(CollisionCpnt, 1)
+mBegin_serialization(CollisionCpnt, 1);
 
-    m::mUInt nbPositions = a_object.positions.size();
+m::mUInt nbPositions = a_object.positions.size();
 mSerialize_from(1, nbPositions);
 a_object.positions.resize(nbPositions);
 for (auto& position : a_object.positions)

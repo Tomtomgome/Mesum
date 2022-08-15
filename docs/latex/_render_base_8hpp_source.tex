@@ -1,0 +1,36 @@
+\hypertarget{_render_base_8hpp_source}{}\doxysection{Render\+Base.\+hpp}
+\label{_render_base_8hpp_source}\index{MesumGraphics/RenderBase.hpp@{MesumGraphics/RenderBase.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <Kernel/Math.hpp>}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{6 }
+\DoxyCodeLine{7 \textcolor{keyword}{namespace }m::render}
+\DoxyCodeLine{8 \{}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_basic_vertex}{BasicVertex}}}
+\DoxyCodeLine{11 \{}
+\DoxyCodeLine{12     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{math::mVec3}} position;}
+\DoxyCodeLine{13     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{math::mVec4}} color;}
+\DoxyCodeLine{14     \mbox{\hyperlink{structm_1_1math_1_1m_vec}{math::mVec2}} uv;}
+\DoxyCodeLine{15 \};}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{template} <\textcolor{keyword}{typename} tt\_Vertex, \textcolor{keyword}{typename} tt\_Index>}
+\DoxyCodeLine{18 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_data_mesh_buffer}{DataMeshBuffer}}}
+\DoxyCodeLine{19 \{}
+\DoxyCodeLine{20     std::vector<tt\_Vertex> m\_vertices;}
+\DoxyCodeLine{21     std::vector<tt\_Index>  m\_indices;}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23     \textcolor{keywordtype}{void} clear()}
+\DoxyCodeLine{24     \{}
+\DoxyCodeLine{25         m\_vertices.clear();}
+\DoxyCodeLine{26         m\_indices.clear();}
+\DoxyCodeLine{27     \}}
+\DoxyCodeLine{28 \};}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \};  \textcolor{comment}{// namespace m::render}}
+
+\end{DoxyCode}

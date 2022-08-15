@@ -38,6 +38,7 @@ var NAVTREE =
         [ "Enumerator", "namespacemembers_eval.html", null ]
       ] ]
     ] ],
+    [ "Concepts", "concepts.html", "concepts" ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -47,6 +48,7 @@ var NAVTREE =
         [ "Functions", "functions_func.html", null ],
         [ "Variables", "functions_vars.html", null ],
         [ "Typedefs", "functions_type.html", null ],
+        [ "Enumerations", "functions_enum.html", null ],
         [ "Related Functions", "functions_rela.html", null ]
       ] ]
     ] ],
@@ -59,8 +61,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_api_abstraction_8hpp_source.html",
-"group___core.html#ga1848e387de750cedfad1837fc97f9937",
-"struct_im_gui___impl_d_x12___render_buffers.html"
+"functions_enum.html",
+"struct_im_bit_vector.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

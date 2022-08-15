@@ -84,6 +84,7 @@ $(document).ready(function(){initNavTree('group___core.html',''); initResizable(
 
 <div class="header">
   <div class="summary">
+<a href="#groups">Modules</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#define-members">Macros</a> &#124;
@@ -96,6 +97,11 @@ $(document).ready(function(){initNavTree('group___core.html',''); initResizable(
 <p>Namespace grouping file resoures.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="groups" name="groups"></a>
+Modules</h2></td></tr>
+<tr class="memitem:group___serialization"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___serialization.html">Serialization</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacem_1_1application"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacem_1_1application.html">m::application</a></td></tr>
@@ -192,6 +198,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1profile_1_1m_r_a_i_i_timing.html">m::profile::mRAIITiming</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">RAII Timming that sends the elapsed time between its creation and destruction to its parent profiler.  <a href="classm_1_1profile_1_1m_r_a_i_i_timing.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structm_1_1math_1_1m_quaternion.html">m::math::mQuaternion</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure representing a math quaternion.  <a href="structm_1_1math_1_1m_quaternion.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1math_1_1m_spherical.html">m::math::mSpherical</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -306,6 +315,21 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>mDisable_logChannels</b>&#160;&#160;&#160;m::log_inst.disable_channels</td></tr>
 <tr class="memdesc:gac92102d2681a9eb9e2d7f2cc7079190a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro used to disable channels the logger. <br /></td></tr>
 <tr class="separator:gac92102d2681a9eb9e2d7f2cc7079190a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9646ac3906626820ba2d694205ea0eef"><td class="memItemLeft" align="right" valign="top"><a id="ga9646ac3906626820ba2d694205ea0eef" name="ga9646ac3906626820ba2d694205ea0eef"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>M_VEC3_MESUM_TO_GLM</b>(mesumVec3)&#160;&#160;&#160;    glm::vec3((mesumVec3).x, (mesumVec3).y, (mesumVec3).z)</td></tr>
+<tr class="memdesc:ga9646ac3906626820ba2d694205ea0eef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Namespace for math related utils. <br /></td></tr>
+<tr class="separator:ga9646ac3906626820ba2d694205ea0eef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa66c8c8700da53512e1310beaee35c71"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#gaa66c8c8700da53512e1310beaee35c71">M_VEC3_GLM_TO_MESUM</a>(glmVec3)</td></tr>
+<tr class="separator:gaa66c8c8700da53512e1310beaee35c71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1ad47446a77f964e5aab7b91c5a6c7e4"><td class="memItemLeft" align="right" valign="top"><a id="ga1ad47446a77f964e5aab7b91c5a6c7e4" name="ga1ad47446a77f964e5aab7b91c5a6c7e4"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>M_QUAT_MESUM_TO_GLM</b>(mesumQuat)&#160;&#160;&#160;    glm::qua((mesumQuat).w, (mesumQuat).x, (mesumQuat).y, (mesumQuat).z)</td></tr>
+<tr class="separator:ga1ad47446a77f964e5aab7b91c5a6c7e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacfa8b2b3e9cb067422d9c105e0d3bc39"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#gacfa8b2b3e9cb067422d9c105e0d3bc39">M_QUAT_GLM_TO_MESUM</a>(glmQuat)</td></tr>
+<tr class="separator:gacfa8b2b3e9cb067422d9c105e0d3bc39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga52c660bfc812114fdc6fc37e4168aa1f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#ga52c660bfc812114fdc6fc37e4168aa1f">M_MAT4_MESUM_TO_GLM</a>(mesumMat4)</td></tr>
+<tr class="separator:ga52c660bfc812114fdc6fc37e4168aa1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7f261fc0f748a3255c4e49232ac12501"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#ga7f261fc0f748a3255c4e49232ac12501">M_MAT4_GLM_TO_MESUM</a>(glmMat4)</td></tr>
+<tr class="separator:ga7f261fc0f748a3255c4e49232ac12501"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -372,6 +396,100 @@ std::chrono::time_point&lt; std::chrono::steady_clock &gt;&#160;</td><td class="
 <p >Namespace grouping file resoures. </p>
 <p >Namespace grouping basic profiling tools.</p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ga7f261fc0f748a3255c4e49232ac12501" name="ga7f261fc0f748a3255c4e49232ac12501"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7f261fc0f748a3255c4e49232ac12501">&#9670;&nbsp;</a></span>M_MAT4_GLM_TO_MESUM</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define M_MAT4_GLM_TO_MESUM</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">glmMat4</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    mMat4x4                                                             \</div>
+<div class="line">    {                                                                   \</div>
+<div class="line">        glmMat4[0][0], glmMat4[0][1], glmMat4[0][2], glmMat4[0][3],     \</div>
+<div class="line">            glmMat4[1][0], glmMat4[1][1], glmMat4[1][2], glmMat4[1][3], \</div>
+<div class="line">            glmMat4[2][0], glmMat4[2][1], glmMat4[2][2], glmMat4[2][3], \</div>
+<div class="line">            glmMat4[3][0], glmMat4[3][1], glmMat4[3][2], glmMat4[3][3]  \</div>
+<div class="line">    }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga52c660bfc812114fdc6fc37e4168aa1f" name="ga52c660bfc812114fdc6fc37e4168aa1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga52c660bfc812114fdc6fc37e4168aa1f">&#9670;&nbsp;</a></span>M_MAT4_MESUM_TO_GLM</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define M_MAT4_MESUM_TO_GLM</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">mesumMat4</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    glm::mat4(                                                             \</div>
+<div class="line">        {mesumMat4.data[0][0], mesumMat4.data[0][1], mesumMat4.data[0][2], \</div>
+<div class="line">         mesumMat4.data[0][3], mesumMat4.data[1][0], mesumMat4.data[1][1], \</div>
+<div class="line">         mesumMat4.data[1][2], mesumMat4.data[1][3], mesumMat4.data[2][0], \</div>
+<div class="line">         mesumMat4.data[2][1], mesumMat4.data[2][2], mesumMat4.data[2][3], \</div>
+<div class="line">         mesumMat4.data[3][0], mesumMat4.data[3][1], mesumMat4.data[3][2], \</div>
+<div class="line">         mesumMat4.data[3][3]})</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gacfa8b2b3e9cb067422d9c105e0d3bc39" name="gacfa8b2b3e9cb067422d9c105e0d3bc39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacfa8b2b3e9cb067422d9c105e0d3bc39">&#9670;&nbsp;</a></span>M_QUAT_GLM_TO_MESUM</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define M_QUAT_GLM_TO_MESUM</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">glmQuat</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    mQuaternion                                            \</div>
+<div class="line">    {                                                      \</div>
+<div class="line">        (glmQuat).x, (glmQuat).y, (glmQuat).z, (glmQuat).w \</div>
+<div class="line">    }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gaa66c8c8700da53512e1310beaee35c71" name="gaa66c8c8700da53512e1310beaee35c71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa66c8c8700da53512e1310beaee35c71">&#9670;&nbsp;</a></span>M_VEC3_GLM_TO_MESUM</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define M_VEC3_GLM_TO_MESUM</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">glmVec3</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    mVec3                                     \</div>
+<div class="line">    {                                         \</div>
+<div class="line">        (glmVec3).x, (glmVec3).y, (glmVec3).z \</div>
+<div class="line">    }</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="gae68855c8125ce66a9e53e758526c95ca" name="gae68855c8125ce66a9e53e758526c95ca"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gae68855c8125ce66a9e53e758526c95ca">&#9670;&nbsp;</a></span>mAssert</h2>
 

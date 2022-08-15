@@ -17,6 +17,7 @@ set(SOURCES Kernel.cpp
 		StateInputManager.cpp
 		MatHelpers.cpp
 		Quaternion.cpp
+		Serializable.cpp
 		)
 set(HEADERS Types.hpp
 		Asserts.hpp
@@ -44,6 +45,7 @@ set(HEADERS Types.hpp
 		Mat.hpp
 		MatHelpers.hpp
 		Quaternion.hpp
+		Serializable.hpp
 		)
 
 add_library(${MODULE_NAME} OBJECT ${SOURCES} ${HEADERS})

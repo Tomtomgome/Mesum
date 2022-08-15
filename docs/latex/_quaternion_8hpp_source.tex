@@ -1,0 +1,25 @@
+\hypertarget{_quaternion_8hpp_source}{}\doxysection{Quaternion.\+hpp}
+\label{_quaternion_8hpp_source}\index{MesumCore/Kernel/Quaternion.hpp@{MesumCore/Kernel/Quaternion.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}MathTypes.hpp"{}}}
+\DoxyCodeLine{4 }
+\DoxyCodeLine{9 }
+\DoxyCodeLine{13 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacem_1_1math}{m::math}}}
+\DoxyCodeLine{14 \{}
+\DoxyCodeLine{18 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1math_1_1m_quaternion}{mQuaternion}} : \textcolor{keyword}{public} \mbox{\hyperlink{structm_1_1math_1_1m_vec_data}{mVecData}}<float, 4>}
+\DoxyCodeLine{19 \{}
+\DoxyCodeLine{26     \mbox{\hyperlink{structm_1_1math_1_1m_quaternion_aad45186997549efee7dada454da62516}{mQuaternion}}(\mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec3}} \textcolor{keyword}{const}\& a\_fromDirection, \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec3}} \textcolor{keyword}{const}\& a\_toDirection);}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{31     \mbox{\hyperlink{structm_1_1math_1_1m_quaternion_aad45186997549efee7dada454da62516}{mQuaternion}}(mFloat a\_x, mFloat a\_y, mFloat a\_z, mFloat a\_w);}
+\DoxyCodeLine{32 \};}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec3}} operator*(\mbox{\hyperlink{structm_1_1math_1_1m_quaternion}{mQuaternion}} \textcolor{keyword}{const}\& a\_q, \mbox{\hyperlink{structm_1_1math_1_1m_vec}{mVec3}} \textcolor{keyword}{const}\& a\_v);}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \};  \textcolor{comment}{// namespace m::math}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{40 }
+
+\end{DoxyCode}

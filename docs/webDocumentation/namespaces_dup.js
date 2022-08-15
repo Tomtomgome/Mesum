@@ -29,6 +29,7 @@ var namespaces_dup =
         [ "mRAIITiming", "classm_1_1profile_1_1m_r_a_i_i_timing.html", "classm_1_1profile_1_1m_r_a_i_i_timing" ]
       ] ],
       [ "render", null, [
+        [ "BasicVertex", "structm_1_1render_1_1_basic_vertex.html", null ],
         [ "BufferBase", "structm_1_1render_1_1_buffer_base.html", null ],
         [ "DataMeshBuffer", "structm_1_1render_1_1_data_mesh_buffer.html", null ],
         [ "Dx12BufferBase", "structm_1_1render_1_1_dx12_buffer_base.html", null ],
@@ -53,6 +54,7 @@ var namespaces_dup =
         [ "mRequestImage", "structm_1_1resource_1_1m_request_image.html", "structm_1_1resource_1_1m_request_image" ],
         [ "load_image", "group___core.html#ga757ca8491b5337650385dc5453332407", null ]
       ] ],
+      [ "serializer", "namespacem_1_1serializer.html", "namespacem_1_1serializer" ],
       [ "vulkan", null, [
         [ "VulkanContext", "classm_1_1vulkan_1_1_vulkan_context.html", null ],
         [ "VulkanRenderer", "classm_1_1vulkan_1_1_vulkan_renderer.html", null ],

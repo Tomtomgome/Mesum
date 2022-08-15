@@ -1,0 +1,35 @@
+\hypertarget{classm_serializer_ifstream}{}\doxysection{m\+Serializer\+Ifstream Class Reference}
+\label{classm_serializer_ifstream}\index{mSerializerIfstream@{mSerializerIfstream}}
+
+
+Default serializer to read an object from a text file.  
+
+
+
+
+{\ttfamily \#include $<$Serializable.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{group___core_gac5a9ddaf434a1884583a46a3c6db5446}{m\+Serializer\+Ifstream}} (std\+::ifstream \&a\+\_\+input\+Stream)
+\begin{DoxyCompactList}\small\item\em Construct an input text file serializer. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename t\+\_\+\+Type $>$ }\\void {\bfseries begin} (t\+\_\+\+Type \&a\+\_\+object, m\+::m\+UInt \&a\+\_\+version, std\+::string const \&a\+\_\+debug\+Name)
+\item 
+{\footnotesize template$<$typename t\+\_\+\+Type $>$ }\\void {\bfseries serialize} (t\+\_\+\+Type \&a\+\_\+object, std\+::string const \&a\+\_\+debug\+Name)
+\item 
+void {\bfseries end} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::ifstream \& {\bfseries m\+\_\+input\+Stream}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Default serializer to read an object from a text file. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Core/\+Kernel/Serializable.\+hpp\end{DoxyCompactItemize}

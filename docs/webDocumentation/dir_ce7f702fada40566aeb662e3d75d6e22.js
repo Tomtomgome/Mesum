@@ -10,6 +10,7 @@ var dir_ce7f702fada40566aeb662e3d75d6e22 =
     [ "ApiAbstraction.hpp", "_api_abstraction_8hpp_source.html", null ],
     [ "CrossPlatform.hpp", "_cross_platform_8hpp_source.html", null ],
     [ "CrossRenderer.hpp", "_cross_renderer_8hpp_source.html", null ],
+    [ "RenderBase.hpp", "_render_base_8hpp_source.html", null ],
     [ "Renderer.hpp", "_renderer_8hpp_source.html", null ],
     [ "RenderTask.hpp", "_render_task_8hpp_source.html", null ],
     [ "WindowedApp.hpp", "_windowed_app_8hpp_source.html", null ],

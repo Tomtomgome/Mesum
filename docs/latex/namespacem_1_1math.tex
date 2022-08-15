@@ -12,6 +12,8 @@ struct \mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat}}
 \begin{DoxyCompactList}\small\item\em Structure representing a generic matrix. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structm_1_1math_1_1m_mat_data}{m\+Mat\+Data}}
 \begin{DoxyCompactList}\small\item\em Holds the data for a matrix. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structm_1_1math_1_1m_quaternion}{m\+Quaternion}}
+\begin{DoxyCompactList}\small\item\em Structure representing a math quaternion. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classm_1_1math_1_1m_spherical}{m\+Spherical}}
 \item 
 struct \mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+Vec}}
@@ -89,8 +91,17 @@ m\+U64 {\bfseries rol64} (m\+U64 a\+\_\+x, m\+Int a\+\_\+k)
 \begin{DoxyCompactList}\small\item\em Returns a basic translation matrix. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat4x4}} \mbox{\hyperlink{namespacem_1_1math_a9bb2a799b2969206368773fe6e4d316f}{generate\+\_\+projection\+Ortho\+LH}} (m\+Float a\+\_\+width, m\+Float a\+\_\+height, m\+Float a\+\_\+near, m\+Float a\+\_\+far)
 \begin{DoxyCompactList}\small\item\em Returns a basic left handed orthographic projection matrix. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacem_1_1math_a8d700447369a2904743051a99125e59d}\label{namespacem_1_1math_a8d700447369a2904743051a99125e59d}} 
+\mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat4x4}} {\bfseries generate\+\_\+projection\+Perspective\+LH} (m\+Float a\+\_\+v\+Fov, m\+Float a\+\_\+aspect\+Ratio, m\+Float a\+\_\+near, m\+Float a\+\_\+far)
+\item 
 \mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat4x4}} \mbox{\hyperlink{namespacem_1_1math_a81feb414941156da2c50224e2cb8cae0}{generate\+\_\+scale\+Matrix}} (m\+Float a\+\_\+x, m\+Float a\+\_\+y, m\+Float a\+\_\+z)
 \begin{DoxyCompactList}\small\item\em Returns a basic scaling matrix. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespacem_1_1math_abe7b57b8caa6fb25dcbb49b51a8e8fc0}\label{namespacem_1_1math_abe7b57b8caa6fb25dcbb49b51a8e8fc0}} 
+\mbox{\hyperlink{structm_1_1math_1_1m_mat}{m\+Mat4x4}} {\bfseries generate\+\_\+look\+At\+LH} (\mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+Vec3}} const \&a\+\_\+position, \mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+Vec3}} const \&a\+\_\+look\+At, \mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+Vec3}} const \&a\+\_\+up)
+\item 
+\mbox{\Hypertarget{namespacem_1_1math_a92b7f19682671d1a59a40a203db3b7d4}\label{namespacem_1_1math_a92b7f19682671d1a59a40a203db3b7d4}} 
+\mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+Vec3}} {\bfseries operator$\ast$} (\mbox{\hyperlink{structm_1_1math_1_1m_quaternion}{m\+Quaternion}} const \&a\+\_\+q, \mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+Vec3}} const \&a\+\_\+v)
+\item 
 \mbox{\Hypertarget{namespacem_1_1math_ad0f2c73b130dcb948785c2301c9cb4b4}\label{namespacem_1_1math_ad0f2c73b130dcb948785c2301c9cb4b4}} 
 {\footnotesize template$<$typename t\+\_\+T , m\+UInt t\+\_\+\+Size$>$ }\\\mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+Vec}}$<$ t\+\_\+T, t\+\_\+\+Size $>$ {\bfseries operator+} (const \mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+Vec}}$<$ t\+\_\+T, t\+\_\+\+Size $>$ \&a\+\_\+lhs, const \mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+Vec}}$<$ t\+\_\+T, t\+\_\+\+Size $>$ \&a\+\_\+rhs)
 \item 

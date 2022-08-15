@@ -36,6 +36,15 @@ void {\bfseries set\+\_\+win\+Context} (\mbox{\hyperlink{structm_1_1win32_1_1_w_
 \item 
 \mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a60065989d029b19567e37f8bdaabef75}\label{classm_1_1win32_1_1_i_window_impl_a60065989d029b19567e37f8bdaabef75}} 
 m\+Bool {\bfseries is\+\_\+flagged\+To\+Be\+Closed} () const
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a1b2f89538c0e3f09802e161dd1f146a7}\label{classm_1_1win32_1_1_i_window_impl_a1b2f89538c0e3f09802e161dd1f146a7}} 
+void {\bfseries attach\+\_\+to\+Special\+Update} (\mbox{\hyperlink{classm_1_1m_callback}{m\+Callback}}$<$ void, std\+::chrono\+::steady\+\_\+clock\+::duration const \& $>$ const \&a\+\_\+on\+Update\+Callback)
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a6b3366f2aadaef083fc0bf9dffbdac7a}\label{classm_1_1win32_1_1_i_window_impl_a6b3366f2aadaef083fc0bf9dffbdac7a}} 
+HWND {\bfseries get\+\_\+hwnd} ()
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_aefc2cdccca4cbbee94ae58fcd908ec2f}\label{classm_1_1win32_1_1_i_window_impl_aefc2cdccca4cbbee94ae58fcd908ec2f}} 
+void {\bfseries call\+\_\+update} (std\+::chrono\+::steady\+\_\+clock\+::duration const \&a\+\_\+delta\+Time)
 \end{DoxyCompactItemize}
 \doxysubsection*{Private Types}
 \begin{DoxyCompactItemize}
@@ -78,6 +87,9 @@ RECT {\bfseries m\+\_\+window\+Rect}
 \item 
 \mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_af894e7bbd0828b72160cfcc012be58ff}\label{classm_1_1win32_1_1_i_window_impl_af894e7bbd0828b72160cfcc012be58ff}} 
 \mbox{\hyperlink{structm_1_1win32_1_1_w_i_n32_context}{WIN32\+Context}} const  $\ast$ {\bfseries m\+\_\+parent\+Context} = nullptr
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_a25b8ccbe3847565453e8018e1d21d3fa}\label{classm_1_1win32_1_1_i_window_impl_a25b8ccbe3847565453e8018e1d21d3fa}} 
+\mbox{\hyperlink{classm_1_1m_signal}{m\+Signal}}$<$ std\+::chrono\+::steady\+\_\+clock\+::duration const  \& $>$ {\bfseries m\+\_\+signal\+Special\+Update}
 \item 
 \mbox{\Hypertarget{classm_1_1win32_1_1_i_window_impl_aa5e41daab5ab5484225f983717956946}\label{classm_1_1win32_1_1_i_window_impl_aa5e41daab5ab5484225f983717956946}} 
 \mbox{\hyperlink{classm_1_1m_signal}{m\+Signal}}$<$ m\+U32, m\+U32 $>$ {\bfseries m\+\_\+signal\+Resize}

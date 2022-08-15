@@ -48,35 +48,45 @@
 \DoxyCodeLine{44         \textcolor{keywordflow}{return} m\_flagToBeClosed;}
 \DoxyCodeLine{45     \}}
 \DoxyCodeLine{46 }
-\DoxyCodeLine{47    \textcolor{keyword}{private}:}
-\DoxyCodeLine{48     input::mIInputManager* m\_linkedInputManager;}
-\DoxyCodeLine{49 }
-\DoxyCodeLine{50     HWND m\_hwnd;}
-\DoxyCodeLine{51 }
-\DoxyCodeLine{52     \textcolor{comment}{// By default, use windowed mode.}}
-\DoxyCodeLine{53     \textcolor{comment}{// Can be toggled with F11}}
-\DoxyCodeLine{54     mBool m\_fullscreen     = \textcolor{keyword}{false};}
-\DoxyCodeLine{55     mBool m\_flagToBeClosed = \textcolor{keyword}{false};}
+\DoxyCodeLine{47     \textcolor{comment}{//Specific to win functions}}
+\DoxyCodeLine{48     \textcolor{keywordtype}{void} attach\_toSpecialUpdate(}
+\DoxyCodeLine{49         mCallback<void, std::chrono::steady\_clock::duration const\&> \textcolor{keyword}{const}\&}
+\DoxyCodeLine{50             a\_onUpdateCallback);}
+\DoxyCodeLine{51     HWND get\_hwnd()\{\textcolor{keywordflow}{return} m\_hwnd;\}}
+\DoxyCodeLine{52     \textcolor{keywordtype}{void} call\_update(std::chrono::steady\_clock::duration \textcolor{keyword}{const}\& a\_deltaTime);}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54    \textcolor{keyword}{private}:}
+\DoxyCodeLine{55     input::mIInputManager* m\_linkedInputManager;}
 \DoxyCodeLine{56 }
-\DoxyCodeLine{57     std::string m\_windowName;}
-\DoxyCodeLine{58     mU32        m\_clientWidth  = 1280;}
-\DoxyCodeLine{59     mU32        m\_clientHeight = 720;}
-\DoxyCodeLine{60 }
-\DoxyCodeLine{61     \textcolor{comment}{// Window rectangle (used to toggle fullscreen state).}}
-\DoxyCodeLine{62     RECT m\_windowRect;}
+\DoxyCodeLine{57     HWND m\_hwnd;}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59     \textcolor{comment}{// By default, use windowed mode.}}
+\DoxyCodeLine{60     \textcolor{comment}{// Can be toggled with F11}}
+\DoxyCodeLine{61     mBool m\_fullscreen     = \textcolor{keyword}{false};}
+\DoxyCodeLine{62     mBool m\_flagToBeClosed = \textcolor{keyword}{false};}
 \DoxyCodeLine{63 }
-\DoxyCodeLine{64     WIN32Context \textcolor{keyword}{const}* m\_parentContext = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{65 }
-\DoxyCodeLine{66     \textcolor{keyword}{using} CallbackResize        = mCallback<void, mU32, mU32>;}
-\DoxyCodeLine{67     \textcolor{keyword}{using} CallbackWindowDestroy = mCallback<void>;}
-\DoxyCodeLine{68     \textcolor{keyword}{using} CallbackInputProcessing =}
-\DoxyCodeLine{69         mCallback<void, mBool*, HWND, UINT, WPARAM, LPARAM>;}
-\DoxyCodeLine{70     mSignal<mU32, mU32>                         m\_signalResize;}
-\DoxyCodeLine{71     mSignal<>                                   m\_signalWindowDestroyed;}
-\DoxyCodeLine{72     mSignal<mBool*, HWND, UINT, WPARAM, LPARAM> m\_signalOverrideInputProcessing;}
-\DoxyCodeLine{73 \};}
-\DoxyCodeLine{74 }
-\DoxyCodeLine{75 \}  \textcolor{comment}{// namespace m::win32}}
-\DoxyCodeLine{76 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_WINDOWSIMPL}}
+\DoxyCodeLine{64     std::string m\_windowName;}
+\DoxyCodeLine{65     mU32        m\_clientWidth  = 1280;}
+\DoxyCodeLine{66     mU32        m\_clientHeight = 720;}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68     \textcolor{comment}{// Window rectangle (used to toggle fullscreen state).}}
+\DoxyCodeLine{69     RECT m\_windowRect;}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71     WIN32Context \textcolor{keyword}{const}* m\_parentContext = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73     \textcolor{keyword}{using} CallbackResize        = mCallback<void, mU32, mU32>;}
+\DoxyCodeLine{74     \textcolor{keyword}{using} CallbackWindowDestroy = mCallback<void>;}
+\DoxyCodeLine{75     \textcolor{keyword}{using} CallbackInputProcessing =}
+\DoxyCodeLine{76         mCallback<void, mBool*, HWND, UINT, WPARAM, LPARAM>;}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78     mSignal<std::chrono::steady\_clock::duration const\&> m\_signalSpecialUpdate;}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80     mSignal<mU32, mU32>                         m\_signalResize;}
+\DoxyCodeLine{81     mSignal<>                                   m\_signalWindowDestroyed;}
+\DoxyCodeLine{82     mSignal<mBool*, HWND, UINT, WPARAM, LPARAM> m\_signalOverrideInputProcessing;}
+\DoxyCodeLine{83 \};}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 \}  \textcolor{comment}{// namespace m::win32}}
+\DoxyCodeLine{86 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_WINDOWSIMPL}}
 
 \end{DoxyCode}

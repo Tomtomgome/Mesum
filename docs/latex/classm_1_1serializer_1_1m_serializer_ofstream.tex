@@ -1,0 +1,67 @@
+\hypertarget{classm_1_1serializer_1_1m_serializer_ofstream}{}\doxysection{m\+::serializer\+::m\+Serializer\+Ofstream Class Reference}
+\label{classm_1_1serializer_1_1m_serializer_ofstream}\index{m::serializer::mSerializerOfstream@{m::serializer::mSerializerOfstream}}
+
+
+Default serializer to write an object on a text file.  
+
+
+
+
+{\ttfamily \#include $<$Serializable.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classm_1_1serializer_1_1m_serializer_ofstream_ad38f489dcd8ffa1fd7058522cd0ab597}{m\+Serializer\+Ofstream}} (std\+::ofstream \&a\+\_\+output\+Stream)
+\begin{DoxyCompactList}\small\item\em Construct an output text file serializer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classm_1_1serializer_1_1m_serializer_ofstream_a0af388f13e1765864efb9d64b9903a58}\label{classm_1_1serializer_1_1m_serializer_ofstream_a0af388f13e1765864efb9d64b9903a58}} 
+{\footnotesize template$<$typename t\+\_\+\+Type $>$ }\\void {\bfseries begin} (t\+\_\+\+Type \&a\+\_\+object, m\+::m\+UInt \&a\+\_\+version, std\+::string const \&a\+\_\+debug\+Name)
+\item 
+\mbox{\Hypertarget{classm_1_1serializer_1_1m_serializer_ofstream_a261c4183e3fedf00b2fb8f894ad5e1ea}\label{classm_1_1serializer_1_1m_serializer_ofstream_a261c4183e3fedf00b2fb8f894ad5e1ea}} 
+{\footnotesize template$<$typename t\+\_\+\+Type $>$ }\\void {\bfseries serialize} (t\+\_\+\+Type \&a\+\_\+object, std\+::string const \&a\+\_\+debug\+Name)
+\item 
+\mbox{\Hypertarget{classm_1_1serializer_1_1m_serializer_ofstream_a1969364abdfb2dcd58e2afc15b66fafc}\label{classm_1_1serializer_1_1m_serializer_ofstream_a1969364abdfb2dcd58e2afc15b66fafc}} 
+void {\bfseries end} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1serializer_1_1m_serializer_ofstream_a542baf81c253625bff8401f9e7833974}\label{classm_1_1serializer_1_1m_serializer_ofstream_a542baf81c253625bff8401f9e7833974}} 
+void {\bfseries print\+\_\+spacing} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classm_1_1serializer_1_1m_serializer_ofstream_ae355c99d229ca6770a084068e3712ead}\label{classm_1_1serializer_1_1m_serializer_ofstream_ae355c99d229ca6770a084068e3712ead}} 
+m\+::m\+UInt {\bfseries m\+\_\+spacing\+Number} = 0
+\item 
+\mbox{\Hypertarget{classm_1_1serializer_1_1m_serializer_ofstream_a4bcd33a65ca6e65bcf46d3e836710277}\label{classm_1_1serializer_1_1m_serializer_ofstream_a4bcd33a65ca6e65bcf46d3e836710277}} 
+std\+::ofstream \& {\bfseries m\+\_\+output\+Stream}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Default serializer to write an object on a text file. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classm_1_1serializer_1_1m_serializer_ofstream_ad38f489dcd8ffa1fd7058522cd0ab597}\label{classm_1_1serializer_1_1m_serializer_ofstream_ad38f489dcd8ffa1fd7058522cd0ab597}} 
+\index{m::serializer::mSerializerOfstream@{m::serializer::mSerializerOfstream}!mSerializerOfstream@{mSerializerOfstream}}
+\index{mSerializerOfstream@{mSerializerOfstream}!m::serializer::mSerializerOfstream@{m::serializer::mSerializerOfstream}}
+\doxysubsubsection{\texorpdfstring{mSerializerOfstream()}{mSerializerOfstream()}}
+{\footnotesize\ttfamily m\+::serializer\+::m\+Serializer\+Ofstream\+::m\+Serializer\+Ofstream (\begin{DoxyParamCaption}\item[{std\+::ofstream \&}]{a\+\_\+output\+Stream }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+
+
+Construct an output text file serializer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+output\+Stream} & The stream on which the serializer is going to write \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Core/\+Kernel/Serializable.\+hpp\item 
+Mesum\+Core/\+Kernel/Serializable.\+cpp\end{DoxyCompactItemize}

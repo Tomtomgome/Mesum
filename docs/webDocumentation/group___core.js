@@ -1,5 +1,6 @@
 var group___core =
 [
+    [ "Serialization", "group___serialization.html", "group___serialization" ],
     [ "m::application", "namespacem_1_1application.html", null ],
     [ "m::files", "namespacem_1_1files.html", null ],
     [ "m::input", "namespacem_1_1input.html", null ],
@@ -180,6 +181,10 @@ var group___core =
       [ "m_pParent", "group___core.html#ga1e6f6172605e1987636758efada6ee92", null ],
       [ "m_start", "group___core.html#ga16881a589345bcb0ce7de57fc989e811", null ]
     ] ],
+    [ "m::math::mQuaternion", "structm_1_1math_1_1m_quaternion.html", [
+      [ "mQuaternion", "structm_1_1math_1_1m_quaternion.html#aad45186997549efee7dada454da62516", null ],
+      [ "mQuaternion", "structm_1_1math_1_1m_quaternion.html#aa581042067f64bf4c4c4fd68db5aa068", null ]
+    ] ],
     [ "m::math::mSpherical", "classm_1_1math_1_1m_spherical.html", null ],
     [ "m::input::mStateInputManager", "classm_1_1input_1_1m_state_input_manager.html", [
       [ "process_keyEvent", "classm_1_1input_1_1m_state_input_manager.html#ad0978592c3f769288e5ed6fef1350dc5", null ]
@@ -189,6 +194,7 @@ var group___core =
     [ "m::math::mVecData< t_T, 3 >", "structm_1_1math_1_1m_vec_data_3_01t___t_00_013_01_4.html", null ],
     [ "m::math::mVecData< t_T, 4 >", "structm_1_1math_1_1m_vec_data_3_01t___t_00_014_01_4.html", null ],
     [ "m::math::mVec< t_T, t_Size >", "structm_1_1math_1_1m_vec.html", null ],
+    [ "M_VEC3_MESUM_TO_GLM", "group___core.html#ga9646ac3906626820ba2d694205ea0eef", null ],
     [ "mAssert", "group___core.html#gae68855c8125ce66a9e53e758526c95ca", null ],
     [ "mDisable_logChannels", "group___core.html#gac92102d2681a9eb9e2d7f2cc7079190a", null ],
     [ "mEnable_logChannels", "group___core.html#ga1ffa20cdc73fef0927476b0142dbfbeb", null ],

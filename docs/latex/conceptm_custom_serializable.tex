@@ -1,0 +1,33 @@
+\hypertarget{conceptm_custom_serializable}{}\doxysection{m\+Custom\+Serializable Concept Reference}
+\label{conceptm_custom_serializable}\index{mCustomSerializable@{mCustomSerializable}}
+
+
+Concept defining objects with a defined serialize function.  
+
+
+
+
+{\ttfamily \#include $<$Serializable.\+hpp$>$}
+
+\doxysubsection{Concept definition}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{template}<\textcolor{keyword}{typename} t\_Serializer, \textcolor{keyword}{typename} t\_Type>}
+\DoxyCodeLine{\textcolor{keyword}{concept }\mbox{\hyperlink{conceptm_custom_serializable}{mCustomSerializable}} =  \textcolor{keyword}{requires}(t\_Serializer serializer, t\_Type object)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{    mSerialize(\textcolor{keywordtype}{object}, serializer);}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Detailed Description}
+Concept defining objects with a defined serialize function. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em t\+\_\+\+Serializer} & The type of serializer \\
+\hline
+{\em t\+\_\+\+Type} & The type for which the custom serialization is tested \\
+\hline
+\end{DoxyTemplParams}

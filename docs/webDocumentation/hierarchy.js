@@ -1,5 +1,6 @@
 var hierarchy =
 [
+    [ "m::render::BasicVertex", "structm_1_1render_1_1_basic_vertex.html", null ],
     [ "m::render::BufferBase< tt_Vertex, tt_Index >", "structm_1_1render_1_1_buffer_base.html", [
       [ "m::render::Dx12BufferBase< tt_Vertex, tt_Index >", "structm_1_1render_1_1_dx12_buffer_base.html", null ],
       [ "m::render::VulkanBufferBase< tt_Vertex, tt_Index >", "structm_1_1render_1_1_vulkan_buffer_base.html", null ]
@@ -112,7 +113,6 @@ var hierarchy =
     [ "ImVec2ih", "struct_im_vec2ih.html", null ],
     [ "ImVec4", "struct_im_vec4.html", null ],
     [ "ImVector< T >", "struct_im_vector.html", null ],
-    [ "m::aa::mAdapter::InitData", "structm_1_1aa_1_1m_adapter_1_1_init_data.html", null ],
     [ "m::aa::mApi::InitData", "structm_1_1aa_1_1m_api_1_1_init_data.html", null ],
     [ "m::render::IRenderer", "classm_1_1render_1_1_i_renderer.html", [
       [ "m::dx12::DX12Renderer", "classm_1_1dx12_1_1_d_x12_renderer.html", null ],
@@ -123,12 +123,14 @@ var hierarchy =
       [ "m::dx12::DX12Surface", "classm_1_1dx12_1_1_d_x12_surface.html", null ],
       [ "m::vulkan::VulkanSurface", "classm_1_1vulkan_1_1_vulkan_surface.html", null ]
     ] ],
+    [ "m::aa::mAdapter::Limits", "structm_1_1aa_1_1m_adapter_1_1_limits.html", null ],
     [ "m::aa::mAdapter", "structm_1_1aa_1_1m_adapter.html", null ],
     [ "m::aa::mApi", "structm_1_1aa_1_1m_api.html", null ],
     [ "m::mBasicLaunchData", "structm_1_1m_basic_launch_data.html", null ],
     [ "m::render::mBasicVertex", "structm_1_1render_1_1m_basic_vertex.html", null ],
     [ "m::mCallback< t_RetType, t_Args >", "classm_1_1m_callback.html", null ],
     [ "m::mCmdLine", "structm_1_1m_cmd_line.html", null ],
+    [ "m::aa::mDevice", "structm_1_1aa_1_1m_device.html", null ],
     [ "m::file::mFbxImporter", "classm_1_1file_1_1m_fbx_importer.html", null ],
     [ "m::application::mIBasicApplication", "classm_1_1application_1_1m_i_basic_application.html", [
       [ "m::application::mILoopApplication", "classm_1_1application_1_1m_i_loop_application.html", null ],
@@ -167,6 +169,8 @@ var hierarchy =
     [ "m::profile::mRAIITiming", "classm_1_1profile_1_1m_r_a_i_i_timing.html", null ],
     [ "m::render::TaskData2dRender::mRange", "structm_1_1render_1_1_task_data2d_render_1_1m_range.html", null ],
     [ "m::resource::mRequestImage", "structm_1_1resource_1_1m_request_image.html", null ],
+    [ "m::serializer::mSerializerIfstream", "classm_1_1serializer_1_1m_serializer_ifstream.html", null ],
+    [ "m::serializer::mSerializerOfstream", "classm_1_1serializer_1_1m_serializer_ofstream.html", null ],
     [ "m::mSignal< t_Args >", "classm_1_1m_signal.html", null ],
     [ "m::mSignal< const math::mIVec2 & >", "classm_1_1m_signal.html", null ],
     [ "m::mSignal< mDouble >", "classm_1_1m_signal.html", null ],
@@ -174,12 +178,16 @@ var hierarchy =
     [ "m::math::mVecData< t_T, t_Size >", "structm_1_1math_1_1m_vec_data.html", [
       [ "m::math::mVec< t_T, t_Size >", "structm_1_1math_1_1m_vec.html", null ]
     ] ],
+    [ "m::math::mVecData< float, 4 >", "structm_1_1math_1_1m_vec_data.html", [
+      [ "m::math::mQuaternion", "structm_1_1math_1_1m_quaternion.html", null ]
+    ] ],
     [ "m::math::mVecData< t_T, 2 >", "structm_1_1math_1_1m_vec_data_3_01t___t_00_012_01_4.html", null ],
     [ "m::math::mVecData< t_T, 3 >", "structm_1_1math_1_1m_vec_data_3_01t___t_00_013_01_4.html", null ],
     [ "m::math::mVecData< t_T, 4 >", "structm_1_1math_1_1m_vec_data_3_01t___t_00_014_01_4.html", null ],
     [ "m::math::mXoRandomNumberGenerator", "classm_1_1math_1_1m_xo_random_number_generator.html", null ],
     [ "m::math::mXoRandomNumberGenerator::mXoshiro256ssState", "structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state.html", null ],
     [ "MyDocument", "struct_my_document.html", null ],
+    [ "m::aa::mAdapter::Properties", "structm_1_1aa_1_1m_adapter_1_1_properties.html", null ],
     [ "STB_TexteditState", "struct_s_t_b___textedit_state.html", null ],
     [ "stbrp_context", "structstbrp__context.html", null ],
     [ "stbrp_node", "structstbrp__node.html", null ],

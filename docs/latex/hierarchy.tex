@@ -1,5 +1,6 @@
 \doxysection{Class Hierarchy}
 This inheritance list is sorted roughly, but not completely, alphabetically\+:\begin{DoxyCompactList}
+\item \contentsline{section}{m\+::render\+::Basic\+Vertex}{\pageref{structm_1_1render_1_1_basic_vertex}}{}
 \item \contentsline{section}{m\+::render\+::Buffer\+Base\texorpdfstring{$<$}{<} tt\+\_\+\+Vertex, tt\+\_\+\+Index \texorpdfstring{$>$}{>}}{\pageref{structm_1_1render_1_1_buffer_base}}{}
 \begin{DoxyCompactList}
 \item \contentsline{section}{m\+::render\+::Dx12\+Buffer\+Base\texorpdfstring{$<$}{<} tt\+\_\+\+Vertex, tt\+\_\+\+Index \texorpdfstring{$>$}{>}}{\pageref{structm_1_1render_1_1_dx12_buffer_base}}{}
@@ -114,7 +115,6 @@ This inheritance list is sorted roughly, but not completely, alphabetically\+:\b
 \item \contentsline{section}{Im\+Vec2ih}{\pageref{struct_im_vec2ih}}{}
 \item \contentsline{section}{Im\+Vec4}{\pageref{struct_im_vec4}}{}
 \item \contentsline{section}{Im\+Vector\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>}}{\pageref{struct_im_vector}}{}
-\item \contentsline{section}{m\+::aa\+::m\+Adapter\+::Init\+Data}{\pageref{structm_1_1aa_1_1m_adapter_1_1_init_data}}{}
 \item \contentsline{section}{m\+::aa\+::m\+Api\+::Init\+Data}{\pageref{structm_1_1aa_1_1m_api_1_1_init_data}}{}
 \item \contentsline{section}{m\+::render\+::IRenderer}{\pageref{classm_1_1render_1_1_i_renderer}}{}
 \begin{DoxyCompactList}
@@ -127,12 +127,14 @@ This inheritance list is sorted roughly, but not completely, alphabetically\+:\b
 \item \contentsline{section}{m\+::dx12\+::DX12\+Surface}{\pageref{classm_1_1dx12_1_1_d_x12_surface}}{}
 \item \contentsline{section}{m\+::vulkan\+::Vulkan\+Surface}{\pageref{classm_1_1vulkan_1_1_vulkan_surface}}{}
 \end{DoxyCompactList}
+\item \contentsline{section}{m\+::aa\+::m\+Adapter\+::Limits}{\pageref{structm_1_1aa_1_1m_adapter_1_1_limits}}{}
 \item \contentsline{section}{m\+::aa\+::m\+Adapter}{\pageref{structm_1_1aa_1_1m_adapter}}{}
 \item \contentsline{section}{m\+::aa\+::m\+Api}{\pageref{structm_1_1aa_1_1m_api}}{}
 \item \contentsline{section}{m\+::m\+Basic\+Launch\+Data}{\pageref{structm_1_1m_basic_launch_data}}{}
 \item \contentsline{section}{m\+::render\+::m\+Basic\+Vertex}{\pageref{structm_1_1render_1_1m_basic_vertex}}{}
 \item \contentsline{section}{m\+::m\+Callback\texorpdfstring{$<$}{<} t\+\_\+\+Ret\+Type, t\+\_\+\+Args \texorpdfstring{$>$}{>}}{\pageref{classm_1_1m_callback}}{}
 \item \contentsline{section}{m\+::m\+Cmd\+Line}{\pageref{structm_1_1m_cmd_line}}{}
+\item \contentsline{section}{m\+::aa\+::m\+Device}{\pageref{structm_1_1aa_1_1m_device}}{}
 \item \contentsline{section}{m\+::file\+::m\+Fbx\+Importer}{\pageref{classm_1_1file_1_1m_fbx_importer}}{}
 \item \contentsline{section}{m\+::application\+::m\+IBasic\+Application}{\pageref{classm_1_1application_1_1m_i_basic_application}}{}
 \begin{DoxyCompactList}
@@ -179,6 +181,8 @@ This inheritance list is sorted roughly, but not completely, alphabetically\+:\b
 \item \contentsline{section}{m\+::profile\+::m\+RAIITiming}{\pageref{classm_1_1profile_1_1m_r_a_i_i_timing}}{}
 \item \contentsline{section}{m\+::render\+::Task\+Data2d\+Render\+::m\+Range}{\pageref{structm_1_1render_1_1_task_data2d_render_1_1m_range}}{}
 \item \contentsline{section}{m\+::resource\+::m\+Request\+Image}{\pageref{structm_1_1resource_1_1m_request_image}}{}
+\item \contentsline{section}{m\+::serializer\+::m\+Serializer\+Ifstream}{\pageref{classm_1_1serializer_1_1m_serializer_ifstream}}{}
+\item \contentsline{section}{m\+::serializer\+::m\+Serializer\+Ofstream}{\pageref{classm_1_1serializer_1_1m_serializer_ofstream}}{}
 \item \contentsline{section}{m\+::m\+Signal\texorpdfstring{$<$}{<} t\+\_\+\+Args \texorpdfstring{$>$}{>}}{\pageref{classm_1_1m_signal}}{}
 \item \contentsline{section}{m\+::m\+Signal\texorpdfstring{$<$}{<} const math\+::m\+IVec2 \& \texorpdfstring{$>$}{>}}{\pageref{classm_1_1m_signal}}{}
 \item \contentsline{section}{m\+::m\+Signal\texorpdfstring{$<$}{<} m\+Double \texorpdfstring{$>$}{>}}{\pageref{classm_1_1m_signal}}{}
@@ -187,12 +191,17 @@ This inheritance list is sorted roughly, but not completely, alphabetically\+:\b
 \begin{DoxyCompactList}
 \item \contentsline{section}{m\+::math\+::m\+Vec\texorpdfstring{$<$}{<} t\+\_\+T, t\+\_\+\+Size \texorpdfstring{$>$}{>}}{\pageref{structm_1_1math_1_1m_vec}}{}
 \end{DoxyCompactList}
+\item \contentsline{section}{m\+::math\+::m\+Vec\+Data\texorpdfstring{$<$}{<} float, 4 \texorpdfstring{$>$}{>}}{\pageref{structm_1_1math_1_1m_vec_data}}{}
+\begin{DoxyCompactList}
+\item \contentsline{section}{m\+::math\+::m\+Quaternion}{\pageref{structm_1_1math_1_1m_quaternion}}{}
+\end{DoxyCompactList}
 \item \contentsline{section}{m\+::math\+::m\+Vec\+Data\texorpdfstring{$<$}{<} t\+\_\+T, 2 \texorpdfstring{$>$}{>}}{\pageref{structm_1_1math_1_1m_vec_data_3_01t___t_00_012_01_4}}{}
 \item \contentsline{section}{m\+::math\+::m\+Vec\+Data\texorpdfstring{$<$}{<} t\+\_\+T, 3 \texorpdfstring{$>$}{>}}{\pageref{structm_1_1math_1_1m_vec_data_3_01t___t_00_013_01_4}}{}
 \item \contentsline{section}{m\+::math\+::m\+Vec\+Data\texorpdfstring{$<$}{<} t\+\_\+T, 4 \texorpdfstring{$>$}{>}}{\pageref{structm_1_1math_1_1m_vec_data_3_01t___t_00_014_01_4}}{}
 \item \contentsline{section}{m\+::math\+::m\+Xo\+Random\+Number\+Generator}{\pageref{classm_1_1math_1_1m_xo_random_number_generator}}{}
 \item \contentsline{section}{m\+::math\+::m\+Xo\+Random\+Number\+Generator\+::m\+Xoshiro256ss\+State}{\pageref{structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state}}{}
 \item \contentsline{section}{My\+Document}{\pageref{struct_my_document}}{}
+\item \contentsline{section}{m\+::aa\+::m\+Adapter\+::Properties}{\pageref{structm_1_1aa_1_1m_adapter_1_1_properties}}{}
 \item \contentsline{section}{STB\+\_\+\+Textedit\+State}{\pageref{struct_s_t_b___textedit_state}}{}
 \item \contentsline{section}{stbrp\+\_\+context}{\pageref{structstbrp__context}}{}
 \item \contentsline{section}{stbrp\+\_\+node}{\pageref{structstbrp__node}}{}

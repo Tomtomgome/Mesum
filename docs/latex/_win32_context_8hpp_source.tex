@@ -23,22 +23,23 @@
 \DoxyCodeLine{19     \textcolor{keywordtype}{void} destroy();}
 \DoxyCodeLine{20 }
 \DoxyCodeLine{21     \textcolor{comment}{// Windows}}
-\DoxyCodeLine{22     \textcolor{keywordtype}{void} register\_windowClass(\textcolor{keyword}{const} mWideChar* a\_className, HINSTANCE a\_hInstance,}
-\DoxyCodeLine{23                               WNDPROC a\_proc);}
+\DoxyCodeLine{22     \textcolor{keywordtype}{void} register\_windowClass(\textcolor{keyword}{const} mWideChar* a\_className,}
+\DoxyCodeLine{23                               HINSTANCE a\_hInstance, WNDPROC a\_proc);}
 \DoxyCodeLine{24     HWND create\_window(\textcolor{keyword}{const} mWideChar* a\_className, std::string a\_windowName,}
-\DoxyCodeLine{25                        mU32 a\_clientWidth, mU32 a\_clientHeight) \textcolor{keyword}{const};}
-\DoxyCodeLine{26 }
-\DoxyCodeLine{27     \textcolor{comment}{// Keys and inputs}}
-\DoxyCodeLine{28     [[nodiscard]] \mbox{\hyperlink{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}{input::mKey}} get\_keyFromParam(WPARAM a\_wParam) \textcolor{keyword}{const};}
-\DoxyCodeLine{29 }
-\DoxyCodeLine{30     \textcolor{comment}{// Properties}}
-\DoxyCodeLine{31     \mbox{\hyperlink{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}{input::mKey}} m\_lut\_keycodes[256];}
-\DoxyCodeLine{32     mI16       m\_lut\_scancode[input::mKey::keyLast + 1];}
-\DoxyCodeLine{33 }
-\DoxyCodeLine{34     HINSTANCE m\_hInstance;}
-\DoxyCodeLine{35 \};}
-\DoxyCodeLine{36 }
-\DoxyCodeLine{37 \}  \textcolor{comment}{// namespace m::win32}}
-\DoxyCodeLine{38 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_WIN32CONTEXT}}
+\DoxyCodeLine{25                        mU32 a\_clientWidth, mU32 a\_clientHeight,}
+\DoxyCodeLine{26                        mBool a\_isTransparent) \textcolor{keyword}{const};}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28     \textcolor{comment}{// Keys and inputs}}
+\DoxyCodeLine{29     [[nodiscard]] \mbox{\hyperlink{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}{input::mKey}} get\_keyFromParam(WPARAM a\_wParam) \textcolor{keyword}{const};}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31     \textcolor{comment}{// Properties}}
+\DoxyCodeLine{32     \mbox{\hyperlink{namespacem_1_1input_a75650b0303fc6c118edacf0178358753}{input::mKey}} m\_lut\_keycodes[256];}
+\DoxyCodeLine{33     mI16        m\_lut\_scancode[input::mKey::keyLast + 1];}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35     HINSTANCE m\_hInstance;}
+\DoxyCodeLine{36 \};}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \}  \textcolor{comment}{// namespace m::win32}}
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_WIN32CONTEXT}}
 
 \end{DoxyCode}

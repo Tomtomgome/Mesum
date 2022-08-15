@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Serializable.hpp"
+#include <Kernel/Serializable.hpp>
 #include <Kernel/Math.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -15,9 +15,9 @@ struct RenderingCpnt
     m::mU32        pictureSize{0};
     m::mBool       enabled{false};
 };
-mBegin_serialization(RenderingCpnt, 1)
+mBegin_serialization(RenderingCpnt, 1);
 
-    mSerialize_memberFrom(1, color.r);
+mSerialize_memberFrom(1, color.r);
 mSerialize_memberFrom(1, color.g);
 mSerialize_memberFrom(1, color.b);
 mSerialize_memberFrom(1, color.a);
@@ -39,9 +39,9 @@ struct TransformCpnt
     m::mFloat      scale{1.0f};
     m::mBool       enabled{true};
 };
-mBegin_serialization(TransformCpnt, 1)
+mBegin_serialization(TransformCpnt, 1);
 
-    mSerialize_memberFrom(1, position.x);
+mSerialize_memberFrom(1, position.x);
 mSerialize_memberFrom(1, position.y);
 mSerialize_memberFrom(1, angle);
 mSerialize_memberFrom(1, scale);

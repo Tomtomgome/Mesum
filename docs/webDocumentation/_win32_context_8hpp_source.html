@@ -107,23 +107,24 @@ $(document).ready(function(){initNavTree('_win32_context_8hpp_source.html',''); 
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keywordtype">void</span> destroy();</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="comment">// Windows</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keywordtype">void</span> register_windowClass(<span class="keyword">const</span> mWideChar* a_className, HINSTANCE a_hInstance,</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>                              WNDPROC a_proc);</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keywordtype">void</span> register_windowClass(<span class="keyword">const</span> mWideChar* a_className,</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>                              HINSTANCE a_hInstance, WNDPROC a_proc);</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    HWND create_window(<span class="keyword">const</span> mWideChar* a_className, std::string a_windowName,</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>                       mU32 a_clientWidth, mU32 a_clientHeight) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="comment">// Keys and inputs</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    [[nodiscard]] <a class="code hl_enumeration" href="namespacem_1_1input.html#a75650b0303fc6c118edacf0178358753">input::mKey</a> get_keyFromParam(WPARAM a_wParam) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="comment">// Properties</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <a class="code hl_enumeration" href="namespacem_1_1input.html#a75650b0303fc6c118edacf0178358753">input::mKey</a> m_lut_keycodes[256];</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    mI16       m_lut_scancode[input::mKey::keyLast + 1];</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    HINSTANCE m_hInstance;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>};</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>}  <span class="comment">// namespace m::win32</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#endif  </span><span class="comment">// M_WIN32CONTEXT</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>                       mU32 a_clientWidth, mU32 a_clientHeight,</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>                       mBool a_isTransparent) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="comment">// Keys and inputs</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    [[nodiscard]] <a class="code hl_enumeration" href="namespacem_1_1input.html#a75650b0303fc6c118edacf0178358753">input::mKey</a> get_keyFromParam(WPARAM a_wParam) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="comment">// Properties</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <a class="code hl_enumeration" href="namespacem_1_1input.html#a75650b0303fc6c118edacf0178358753">input::mKey</a> m_lut_keycodes[256];</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    mI16        m_lut_scancode[input::mKey::keyLast + 1];</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    HINSTANCE m_hInstance;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>};</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>}  <span class="comment">// namespace m::win32</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#endif  </span><span class="comment">// M_WIN32CONTEXT</span></div>
 <div class="ttc" id="anamespacem_1_1input_html_a75650b0303fc6c118edacf0178358753"><div class="ttname"><a href="namespacem_1_1input.html#a75650b0303fc6c118edacf0178358753">m::input::mKey</a></div><div class="ttdeci">mKey</div><div class="ttdoc">Enumerates some basic key values in the engine.</div><div class="ttdef"><b>Definition:</b> Keys.hpp:15</div></div>
 <div class="ttc" id="anamespacem_1_1logging_html_af807dfba0ed733f24957c0f3d016a15f"><div class="ttname"><a href="namespacem_1_1logging.html#af807dfba0ed733f24957c0f3d016a15f">m::logging::mChannelID</a></div><div class="ttdeci">mU64 mChannelID</div><div class="ttdoc">ChannelIDs are defined by a bit.</div><div class="ttdef"><b>Definition:</b> Log.hpp:27</div></div>
 <div class="ttc" id="astructm_1_1win32_1_1_w_i_n32_context_html"><div class="ttname"><a href="structm_1_1win32_1_1_w_i_n32_context.html">m::win32::WIN32Context</a></div><div class="ttdef"><b>Definition:</b> Win32Context.hpp:15</div></div>

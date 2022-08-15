@@ -42,65 +42,68 @@
 \DoxyCodeLine{38 }
 \DoxyCodeLine{39     D3D12\_CPU\_DESCRIPTOR\_HANDLE get\_currentRtvDesc();}
 \DoxyCodeLine{40 }
-\DoxyCodeLine{41    \textcolor{keyword}{public}:}
-\DoxyCodeLine{42     \textcolor{comment}{// The number of swap chain back buffers.}}
-\DoxyCodeLine{43     \textcolor{keyword}{static} \textcolor{keyword}{const} mU8 scm\_numFrames = 3;}
-\DoxyCodeLine{44 }
-\DoxyCodeLine{45    \textcolor{keyword}{private}:}
-\DoxyCodeLine{46     [[nodiscard]] mUInt get\_syncInterval()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_vSync ? 1 : 0; \}}
+\DoxyCodeLine{41     mU32 get\_width()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_clientWidth; \}}
+\DoxyCodeLine{42     mU32 get\_height()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_clientHeight; \}}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44    \textcolor{keyword}{public}:}
+\DoxyCodeLine{45     \textcolor{comment}{// The number of swap chain back buffers.}}
+\DoxyCodeLine{46     \textcolor{keyword}{static} \textcolor{keyword}{const} mU8 scm\_numFrames = 3;}
 \DoxyCodeLine{47 }
-\DoxyCodeLine{48     [[nodiscard]] mUInt get\_presentFlags()\textcolor{keyword}{ const}}
-\DoxyCodeLine{49 \textcolor{keyword}{    }\{}
-\DoxyCodeLine{50         \textcolor{keywordflow}{return} m\_tearingSupported \&\& !m\_vSync ? DXGI\_PRESENT\_ALLOW\_TEARING : 0;}
-\DoxyCodeLine{51     \}}
-\DoxyCodeLine{52 }
-\DoxyCodeLine{53     \textcolor{keywordtype}{void} update\_renderTargetViews(}
-\DoxyCodeLine{54         ComPtr<ID3D12Device2> a\_device, ComPtr<IDXGISwapChain4> a\_swapChain,}
-\DoxyCodeLine{55         ComPtr<ID3D12DescriptorHeap> a\_descriptorHeap);}
-\DoxyCodeLine{56 }
-\DoxyCodeLine{57    \textcolor{keyword}{private}:}
-\DoxyCodeLine{58     \textcolor{comment}{// By default, enable V-\/Sync.}}
-\DoxyCodeLine{59     \textcolor{comment}{// Can be toggled with the V key.}}
-\DoxyCodeLine{60     mBool m\_vSync              = \textcolor{keyword}{true};}
-\DoxyCodeLine{61     mBool m\_tearingSupported   = \textcolor{keyword}{false};}
-\DoxyCodeLine{62 }
-\DoxyCodeLine{63     ComPtr<IDXGISwapChain4> m\_swapChain;}
-\DoxyCodeLine{64     ComPtr<ID3D12Resource>  m\_backBuffers[scm\_numFrames];}
-\DoxyCodeLine{65     mUInt                   m\_currentBackBufferIndex;}
-\DoxyCodeLine{66 }
-\DoxyCodeLine{67     ComPtr<ID3D12DescriptorHeap> m\_RTVDescriptorHeap;}
-\DoxyCodeLine{68     mUInt                        m\_RTVDescriptorSize;}
+\DoxyCodeLine{48    \textcolor{keyword}{private}:}
+\DoxyCodeLine{49     [[nodiscard]] mUInt get\_syncInterval()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} m\_vSync ? 1 : 0; \}}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51     [[nodiscard]] mUInt get\_presentFlags()\textcolor{keyword}{ const}}
+\DoxyCodeLine{52 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{53         \textcolor{keywordflow}{return} m\_tearingSupported \&\& !m\_vSync ? DXGI\_PRESENT\_ALLOW\_TEARING : 0;}
+\DoxyCodeLine{54     \}}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56     \textcolor{keywordtype}{void} update\_renderTargetViews(}
+\DoxyCodeLine{57         ComPtr<ID3D12Device2> a\_device, ComPtr<IDXGISwapChain4> a\_swapChain,}
+\DoxyCodeLine{58         ComPtr<ID3D12DescriptorHeap> a\_descriptorHeap);}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60    \textcolor{keyword}{private}:}
+\DoxyCodeLine{61     \textcolor{comment}{// By default, enable V-\/Sync.}}
+\DoxyCodeLine{62     \textcolor{comment}{// Can be toggled with the V key.}}
+\DoxyCodeLine{63     mBool m\_vSync            = \textcolor{keyword}{true};}
+\DoxyCodeLine{64     mBool m\_tearingSupported = \textcolor{keyword}{false};}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66     ComPtr<IDXGISwapChain4> m\_swapChain;}
+\DoxyCodeLine{67     ComPtr<ID3D12Resource>  m\_backBuffers[scm\_numFrames];}
+\DoxyCodeLine{68     mUInt                   m\_currentBackBufferIndex;}
 \DoxyCodeLine{69 }
-\DoxyCodeLine{70     ComPtr<ID3D12DescriptorHeap> m\_SRVDescriptorHeap;}
-\DoxyCodeLine{71 }
-\DoxyCodeLine{72     std::vector<DX12RenderTaskset*>                 m\_renderTasksets;}
-\DoxyCodeLine{73 }
-\DoxyCodeLine{74     \textcolor{comment}{// Synchronization objects}}
-\DoxyCodeLine{75     mU64 m\_frameFenceValues[scm\_numFrames] = \{\};}
+\DoxyCodeLine{70     ComPtr<ID3D12DescriptorHeap> m\_RTVDescriptorHeap;}
+\DoxyCodeLine{71     mUInt                        m\_RTVDescriptorSize;}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73     ComPtr<ID3D12DescriptorHeap> m\_SRVDescriptorHeap;}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75     std::vector<DX12RenderTaskset*> m\_renderTasksets;}
 \DoxyCodeLine{76 }
-\DoxyCodeLine{77     \textcolor{comment}{// Surface description}}
-\DoxyCodeLine{78     mU32 m\_clientWidth;}
-\DoxyCodeLine{79     mU32 m\_clientHeight;}
-\DoxyCodeLine{80 \};}
-\DoxyCodeLine{81 }
-\DoxyCodeLine{82 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{83 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{84 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{85 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_renderer}{DX12Renderer}} : \textcolor{keyword}{public} \mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{render::IRenderer}}}
-\DoxyCodeLine{86 \{}
-\DoxyCodeLine{87    \textcolor{keyword}{public}:}
-\DoxyCodeLine{88     \textcolor{keywordtype}{void} init() \textcolor{keyword}{override};}
-\DoxyCodeLine{89     \textcolor{keywordtype}{void} destroy() \textcolor{keyword}{override};}
-\DoxyCodeLine{90 }
-\DoxyCodeLine{91     mBool get\_supportDearImGuiMultiViewports()\textcolor{keyword}{ override }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
-\DoxyCodeLine{92     \textcolor{keywordtype}{void} start\_dearImGuiNewFrameRenderer() \textcolor{keyword}{const override};}
+\DoxyCodeLine{77     \textcolor{comment}{// Synchronization objects}}
+\DoxyCodeLine{78     mU64 m\_frameFenceValues[scm\_numFrames] = \{\};}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80     \textcolor{comment}{// Surface description}}
+\DoxyCodeLine{81     mU32 m\_clientWidth;}
+\DoxyCodeLine{82     mU32 m\_clientHeight;}
+\DoxyCodeLine{83 \};}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{86 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{87 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{88 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1dx12_1_1_d_x12_renderer}{DX12Renderer}} : \textcolor{keyword}{public} \mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{render::IRenderer}}}
+\DoxyCodeLine{89 \{}
+\DoxyCodeLine{90    \textcolor{keyword}{public}:}
+\DoxyCodeLine{91     \textcolor{keywordtype}{void} init() \textcolor{keyword}{override};}
+\DoxyCodeLine{92     \textcolor{keywordtype}{void} destroy() \textcolor{keyword}{override};}
 \DoxyCodeLine{93 }
-\DoxyCodeLine{94     \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{render::ISurface}}* getNew\_surface() \textcolor{keyword}{override};}
-\DoxyCodeLine{95     \mbox{\hyperlink{structm_1_1render_1_1_i_resource}{render::IResource}}* getNew\_texture() \textcolor{keyword}{override};}
-\DoxyCodeLine{96 \};}
-\DoxyCodeLine{97 }
-\DoxyCodeLine{98 \}  \textcolor{comment}{// namespace m::dx12}}
-\DoxyCodeLine{99 }
-\DoxyCodeLine{100 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_RendererDX12Impl}}
+\DoxyCodeLine{94     mBool get\_supportDearImGuiMultiViewports()\textcolor{keyword}{ override }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{95     \textcolor{keywordtype}{void}  start\_dearImGuiNewFrameRenderer() \textcolor{keyword}{const override};}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97     \mbox{\hyperlink{classm_1_1render_1_1_i_surface}{render::ISurface}}*  getNew\_surface() \textcolor{keyword}{override};}
+\DoxyCodeLine{98     \mbox{\hyperlink{structm_1_1render_1_1_i_resource}{render::IResource}}* getNew\_texture() \textcolor{keyword}{override};}
+\DoxyCodeLine{99 \};}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 \}  \textcolor{comment}{// namespace m::dx12}}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_RendererDX12Impl}}
 
 \end{DoxyCode}

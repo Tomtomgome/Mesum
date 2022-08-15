@@ -12,22 +12,43 @@ Structure abstracting an adapter to a physical device.
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-struct \mbox{\hyperlink{structm_1_1aa_1_1m_adapter_1_1_init_data}{Init\+Data}}
+struct \mbox{\hyperlink{structm_1_1aa_1_1m_adapter_1_1_limits}{Limits}}
+\item 
+struct \mbox{\hyperlink{structm_1_1aa_1_1m_adapter_1_1_properties}{Properties}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structm_1_1aa_1_1m_adapter_a80a3d080fb5a52f8d8e4f1a4eba8fd0b}\label{structm_1_1aa_1_1m_adapter_a80a3d080fb5a52f8d8e4f1a4eba8fd0b}} 
+enum \mbox{\hyperlink{structm_1_1aa_1_1m_adapter_a80a3d080fb5a52f8d8e4f1a4eba8fd0b}{Device\+Type}} \{ \newline
+{\bfseries device\+Other}
+, {\bfseries device\+Integrated}
+, {\bfseries device\+Descrete}
+, {\bfseries device\+Virtual}
+, \newline
+{\bfseries device\+Cpu}
+ \}
 \begin{DoxyCompactList}\small\item\em Initialization data of an adapter. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{structm_1_1aa_1_1m_adapter_a376bf6cb9ca9153076390b183505544a}\label{structm_1_1aa_1_1m_adapter_a376bf6cb9ca9153076390b183505544a}} 
-{\bfseries m\+Declare\+\_\+virtual\+Member\+Function} (\mbox{\hyperlink{structm_1_1aa_1_1m_adapter}{m\+Adapter}}, void, init, \mbox{\hyperlink{structm_1_1aa_1_1m_adapter_1_1_init_data}{m\+Adapter\+::\+Init\+Data}} const \&)
+\mbox{\Hypertarget{structm_1_1aa_1_1m_adapter_aab0e8e0c427f154e9d6c1d8c7ecb5462}\label{structm_1_1aa_1_1m_adapter_aab0e8e0c427f154e9d6c1d8c7ecb5462}} 
+{\bfseries m\+Declare\+\_\+virtual\+Member\+Function} (\mbox{\hyperlink{structm_1_1aa_1_1m_adapter}{m\+Adapter}}, void, init)
+\item 
+\mbox{\Hypertarget{structm_1_1aa_1_1m_adapter_a15a572743d5d052a6c7b329fdb5c8838}\label{structm_1_1aa_1_1m_adapter_a15a572743d5d052a6c7b329fdb5c8838}} 
+{\bfseries m\+Declare\+\_\+virtual\+Member\+Function} (\mbox{\hyperlink{structm_1_1aa_1_1m_adapter}{m\+Adapter}}, void, destroy)
 \end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{structm_1_1aa_1_1m_adapter_aa02b0f641c22040da7cbfc4820f9d834}\label{structm_1_1aa_1_1m_adapter_aa02b0f641c22040da7cbfc4820f9d834}} 
+\mbox{\Hypertarget{structm_1_1aa_1_1m_adapter_aacd377c766827da41f09907d29cc39a9}\label{structm_1_1aa_1_1m_adapter_aacd377c766827da41f09907d29cc39a9}} 
+\mbox{\hyperlink{structm_1_1aa_1_1m_adapter_1_1_properties}{Properties}} {\bfseries properties}
+\item 
+\mbox{\Hypertarget{structm_1_1aa_1_1m_adapter_a1ed0e02f83f97e8709b41853011f90c3}\label{structm_1_1aa_1_1m_adapter_a1ed0e02f83f97e8709b41853011f90c3}} 
 \begin{tabbing}
 xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
 union \{\\
-\}; \\
+\} {\bfseries internal}\\
 
 \end{tabbing}\end{DoxyCompactItemize}
 

@@ -1,0 +1,68 @@
+\hypertarget{_mat_glm_8hpp_source}{}\doxysection{Mat\+Glm.\+hpp}
+\label{_mat_glm_8hpp_source}\index{MesumCore/Kernel/MatGlm.hpp@{MesumCore/Kernel/MatGlm.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}../../../Externals/glm/glm.hpp"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}../../../Externals/glm/ext.hpp"{}}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{10 }
+\DoxyCodeLine{14 \textcolor{comment}{// namespace m::math}}
+\DoxyCodeLine{15 \textcolor{comment}{//\{}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#define M\_VEC3\_MESUM\_TO\_GLM(mesumVec3) \(\backslash\)}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{    glm::vec3((mesumVec3).x, (mesumVec3).y, (mesumVec3).z)}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#define M\_VEC3\_GLM\_TO\_MESUM(glmVec3)          \(\backslash\)}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{    mVec3                                     \(\backslash\)}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{    \{                                         \(\backslash\)}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{        (glmVec3).x, (glmVec3).y, (glmVec3).z \(\backslash\)}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{    \}}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#define M\_QUAT\_MESUM\_TO\_GLM(mesumQuat) \(\backslash\)}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{    glm::qua((mesumQuat).w, (mesumQuat).x, (mesumQuat).y, (mesumQuat).z)}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#define M\_QUAT\_GLM\_TO\_MESUM(glmQuat)                       \(\backslash\)}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{    mQuaternion                                            \(\backslash\)}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{    \{                                                      \(\backslash\)}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{        (glmQuat).x, (glmQuat).y, (glmQuat).z, (glmQuat).w \(\backslash\)}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{    \}}}
+\DoxyCodeLine{31 \textcolor{comment}{/*}}
+\DoxyCodeLine{32 \textcolor{comment}{\#define M\_MAT4\_MESUM\_TO\_GLM(mesumMat4)                                         \(\backslash\)}}
+\DoxyCodeLine{33 \textcolor{comment}{    glm::mat4(\{mesumMat4.data[0][0], mesumMat4.data[1][0], mesumMat4.data[2][0],}}
+\DoxyCodeLine{34 \textcolor{comment}{mesumMat4.data[3][0],                                          \(\backslash\)}}
+\DoxyCodeLine{35 \textcolor{comment}{               mesumMat4.data[0][1], mesumMat4.data[1][1], mesumMat4.data[2][1],}}
+\DoxyCodeLine{36 \textcolor{comment}{mesumMat4.data[3][1],                                          \(\backslash\)}}
+\DoxyCodeLine{37 \textcolor{comment}{               mesumMat4.data[0][2], mesumMat4.data[1][2], mesumMat4.data[2][2],}}
+\DoxyCodeLine{38 \textcolor{comment}{mesumMat4.data[3][2],                                          \(\backslash\)}}
+\DoxyCodeLine{39 \textcolor{comment}{               mesumMat4.data[0][3], mesumMat4.data[1][3], mesumMat4.data[2][3],}}
+\DoxyCodeLine{40 \textcolor{comment}{mesumMat4.data[3][3]\})}}
+\DoxyCodeLine{41 \textcolor{comment}{}}
+\DoxyCodeLine{42 \textcolor{comment}{\#define M\_MAT4\_GLM\_TO\_MESUM(glmMat4)                               \(\backslash\)}}
+\DoxyCodeLine{43 \textcolor{comment}{    mMat4x4\{glmMat4[0][0], glmMat4[1][0], glmMat4[2][0], glmMat4[3][0], \(\backslash\)}}
+\DoxyCodeLine{44 \textcolor{comment}{           glmMat4[0][1], glmMat4[1][1], glmMat4[2][1], glmMat4[3][1], \(\backslash\)}}
+\DoxyCodeLine{45 \textcolor{comment}{           glmMat4[0][2], glmMat4[1][2], glmMat4[2][2], glmMat4[3][2], \(\backslash\)}}
+\DoxyCodeLine{46 \textcolor{comment}{           glmMat4[0][3], glmMat4[1][3], glmMat4[2][3], glmMat4[3][3]\}}}
+\DoxyCodeLine{47 \textcolor{comment}{*/}}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#define M\_MAT4\_MESUM\_TO\_GLM(mesumMat4)                                     \(\backslash\)}}
+\DoxyCodeLine{50 \textcolor{preprocessor}{    glm::mat4(                                                             \(\backslash\)}}
+\DoxyCodeLine{51 \textcolor{preprocessor}{        \{mesumMat4.data[0][0], mesumMat4.data[0][1], mesumMat4.data[0][2], \(\backslash\)}}
+\DoxyCodeLine{52 \textcolor{preprocessor}{         mesumMat4.data[0][3], mesumMat4.data[1][0], mesumMat4.data[1][1], \(\backslash\)}}
+\DoxyCodeLine{53 \textcolor{preprocessor}{         mesumMat4.data[1][2], mesumMat4.data[1][3], mesumMat4.data[2][0], \(\backslash\)}}
+\DoxyCodeLine{54 \textcolor{preprocessor}{         mesumMat4.data[2][1], mesumMat4.data[2][2], mesumMat4.data[2][3], \(\backslash\)}}
+\DoxyCodeLine{55 \textcolor{preprocessor}{         mesumMat4.data[3][0], mesumMat4.data[3][1], mesumMat4.data[3][2], \(\backslash\)}}
+\DoxyCodeLine{56 \textcolor{preprocessor}{         mesumMat4.data[3][3]\})}}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 \textcolor{preprocessor}{\#define M\_MAT4\_GLM\_TO\_MESUM(glmMat4)                                    \(\backslash\)}}
+\DoxyCodeLine{59 \textcolor{preprocessor}{    mMat4x4                                                             \(\backslash\)}}
+\DoxyCodeLine{60 \textcolor{preprocessor}{    \{                                                                   \(\backslash\)}}
+\DoxyCodeLine{61 \textcolor{preprocessor}{        glmMat4[0][0], glmMat4[0][1], glmMat4[0][2], glmMat4[0][3],     \(\backslash\)}}
+\DoxyCodeLine{62 \textcolor{preprocessor}{            glmMat4[1][0], glmMat4[1][1], glmMat4[1][2], glmMat4[1][3], \(\backslash\)}}
+\DoxyCodeLine{63 \textcolor{preprocessor}{            glmMat4[2][0], glmMat4[2][1], glmMat4[2][2], glmMat4[2][3], \(\backslash\)}}
+\DoxyCodeLine{64 \textcolor{preprocessor}{            glmMat4[3][0], glmMat4[3][1], glmMat4[3][2], glmMat4[3][3]  \(\backslash\)}}
+\DoxyCodeLine{65 \textcolor{preprocessor}{    \}}}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 \textcolor{comment}{//\};  // namespace m::math}}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{71 }
+
+\end{DoxyCode}

@@ -1,0 +1,155 @@
+\hypertarget{_serializable_8hpp_source}{}\doxysection{Serializable.\+hpp}
+\label{_serializable_8hpp_source}\index{MesumCore/Kernel/Serializable.hpp@{MesumCore/Kernel/Serializable.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}Types.hpp"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}Asserts.hpp"{}}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <fstream>}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{12 }
+\DoxyCodeLine{17 }
+\DoxyCodeLine{24 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_Serializer, \textcolor{keyword}{typename} t\_Type>}
+\DoxyCodeLine{25 \textcolor{keyword}{concept }\mbox{\hyperlink{conceptm_custom_serializable}{mCustomSerializable}} = \textcolor{keyword}{requires}(t\_Serializer serializer, t\_Type object)}
+\DoxyCodeLine{26 \{}
+\DoxyCodeLine{27     mSerialize(\textcolor{keywordtype}{object}, serializer);}
+\DoxyCodeLine{28 \};}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{39 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_Serializer, \textcolor{keyword}{typename} t\_Type>}
+\DoxyCodeLine{40 \textcolor{keywordtype}{void} \mbox{\hyperlink{group___serialization_ga3266948527928e07f2b9aa352c39165f}{serialize\_primitive}}(t\_Serializer\& a\_serializer, t\_Type\& a\_object,}
+\DoxyCodeLine{41                          std::string \textcolor{keyword}{const}\& a\_debugName)}
+\DoxyCodeLine{42 \{}
+\DoxyCodeLine{43     a\_serializer.serialize(a\_object, a\_debugName);}
+\DoxyCodeLine{44 \}}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{55 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_Serializer, \textcolor{keyword}{typename} t\_Type>}
+\DoxyCodeLine{56 \textcolor{keyword}{requires} \mbox{\hyperlink{conceptm_custom_serializable}{mCustomSerializable<t\_Serializer, t\_Type>}}}
+\DoxyCodeLine{57 \textcolor{keywordtype}{void} \mbox{\hyperlink{group___serialization_ga3266948527928e07f2b9aa352c39165f}{serialize\_primitive}}(t\_Serializer\& a\_serializer, t\_Type\& a\_object,}
+\DoxyCodeLine{58                          std::string \textcolor{keyword}{const}\& a\_debugName)}
+\DoxyCodeLine{59 \{}
+\DoxyCodeLine{60     mSerialize(a\_object, a\_serializer);}
+\DoxyCodeLine{61 \}}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{74 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_Serializer, \textcolor{keyword}{typename} t\_Type>}
+\DoxyCodeLine{75 \textcolor{keywordtype}{void} \mbox{\hyperlink{group___serialization_gac13b5c1d087df8bd2f6499d6f1dea939}{serialize\_fromVersion}}(t\_Serializer\& a\_serializer, t\_Type\& a\_object,}
+\DoxyCodeLine{76                            m::mUInt a\_version, m::mUInt a\_objectVersion,}
+\DoxyCodeLine{77                            std::string \textcolor{keyword}{const}\& a\_debugName)}
+\DoxyCodeLine{78 \{}
+\DoxyCodeLine{79     \textcolor{keywordflow}{if} (a\_objectVersion >= a\_version)}
+\DoxyCodeLine{80     \{}
+\DoxyCodeLine{81         \mbox{\hyperlink{group___serialization_ga3266948527928e07f2b9aa352c39165f}{serialize\_primitive}}(a\_serializer, a\_object, a\_debugName);}
+\DoxyCodeLine{82     \}}
+\DoxyCodeLine{83 \}}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{90 \textcolor{preprocessor}{\#define mAllow\_privateSerialization(t\_ClassName)       \(\backslash\)}}
+\DoxyCodeLine{91 \textcolor{preprocessor}{    template <typename t\_SerializerType>               \(\backslash\)}}
+\DoxyCodeLine{92 \textcolor{preprocessor}{    friend void mSerialize(t\_ClassName\&      a\_object, \(\backslash\)}}
+\DoxyCodeLine{93 \textcolor{preprocessor}{                           t\_SerializerType\& a\_serializer);}}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{116 \textcolor{preprocessor}{\#define mBegin\_serialization(t\_ClassName, a\_versionNumber)                 \(\backslash\)}}
+\DoxyCodeLine{117 \textcolor{preprocessor}{    static const m::mU32 t\_ClassName\#\#\_version = a\_versionNumber;          \(\backslash\)}}
+\DoxyCodeLine{118 \textcolor{preprocessor}{    template <typename t\_SerializerType>                                   \(\backslash\)}}
+\DoxyCodeLine{119 \textcolor{preprocessor}{    void mSerialize(t\_ClassName\& a\_object, t\_SerializerType\& a\_serializer) \(\backslash\)}}
+\DoxyCodeLine{120 \textcolor{preprocessor}{    \{                                                                      \(\backslash\)}}
+\DoxyCodeLine{121 \textcolor{preprocessor}{        m::mUInt internalVersion = t\_ClassName\#\#\_version;                  \(\backslash\)}}
+\DoxyCodeLine{122 \textcolor{preprocessor}{        a\_serializer.begin(a\_object, internalVersion, \#t\_ClassName);}}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{132 \textcolor{preprocessor}{\#define mSerialize\_from(a\_version, a\_variable)                 \(\backslash\)}}
+\DoxyCodeLine{133 \textcolor{preprocessor}{    serialize\_fromVersion(a\_serializer, a\_variable, a\_version, \(\backslash\)}}
+\DoxyCodeLine{134 \textcolor{preprocessor}{                          internalVersion, \#a\_variable)}}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{144 \textcolor{preprocessor}{\#define mSerialize\_memberFrom(a\_version, a\_variable)                    \(\backslash\)}}
+\DoxyCodeLine{145 \textcolor{preprocessor}{    serialize\_fromVersion(a\_serializer, a\_object.a\_variable, a\_version, \(\backslash\)}}
+\DoxyCodeLine{146 \textcolor{preprocessor}{                          internalVersion, \#a\_variable)}}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{154 \textcolor{preprocessor}{\#define mEnd\_serialization(t\_ClassName) \(\backslash\)}}
+\DoxyCodeLine{155 \textcolor{preprocessor}{    a\_serializer.end();                 \(\backslash\)}}
+\DoxyCodeLine{156 \textcolor{preprocessor}{    \}}}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{161 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacem_1_1serializer}{m::serializer}}}
+\DoxyCodeLine{162 \{}
+\DoxyCodeLine{166 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1serializer_1_1m_serializer_ifstream}{mSerializerIfstream}}}
+\DoxyCodeLine{167 \{}
+\DoxyCodeLine{168    \textcolor{keyword}{public}:}
+\DoxyCodeLine{175     \textcolor{keyword}{explicit} \mbox{\hyperlink{classm_1_1serializer_1_1m_serializer_ifstream_a28d5a3b42a17ef1755bb5e56b01493fe}{mSerializerIfstream}}(std::ifstream\& a\_inputStream)}
+\DoxyCodeLine{176         : m\_inputStream(a\_inputStream)}
+\DoxyCodeLine{177     \{}
+\DoxyCodeLine{178     \}}
+\DoxyCodeLine{179 }
+\DoxyCodeLine{180     \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_Type>}
+\DoxyCodeLine{181     \textcolor{keywordtype}{void} begin(t\_Type\& a\_object, m::mUInt\& a\_version,}
+\DoxyCodeLine{182                std::string \textcolor{keyword}{const}\& a\_debugName);}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{184     \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_Type>}
+\DoxyCodeLine{185     \textcolor{keywordtype}{void} serialize(t\_Type\& a\_object, std::string \textcolor{keyword}{const}\& a\_debugName);}
+\DoxyCodeLine{186 }
+\DoxyCodeLine{187     \textcolor{keywordtype}{void} end()\{\};}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{189    \textcolor{keyword}{private}:}
+\DoxyCodeLine{190     std::ifstream\& m\_inputStream;}
+\DoxyCodeLine{191 \};}
+\DoxyCodeLine{192 }
+\DoxyCodeLine{193 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_Type>}
+\DoxyCodeLine{194 \textcolor{keywordtype}{void} mSerializerIfstream::serialize(t\_Type\&            a\_object,}
+\DoxyCodeLine{195                                     std::string \textcolor{keyword}{const}\& a\_debugName)}
+\DoxyCodeLine{196 \{}
+\DoxyCodeLine{197     std::string debugName;}
+\DoxyCodeLine{198     m\_inputStream >> debugName >> a\_object;}
+\DoxyCodeLine{199 \}}
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_Type>}
+\DoxyCodeLine{202 \textcolor{keywordtype}{void} mSerializerIfstream::begin(t\_Type\& a\_object, m::mUInt\& a\_version,}
+\DoxyCodeLine{203                                 std::string \textcolor{keyword}{const}\& a\_debugName)}
+\DoxyCodeLine{204 \{}
+\DoxyCodeLine{205     std::string debugName;}
+\DoxyCodeLine{206     m\_inputStream >> debugName >> a\_version;}
+\DoxyCodeLine{207 \}}
+\DoxyCodeLine{208 }
+\DoxyCodeLine{212 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1serializer_1_1m_serializer_ofstream}{mSerializerOfstream}}}
+\DoxyCodeLine{213 \{}
+\DoxyCodeLine{214    \textcolor{keyword}{public}:}
+\DoxyCodeLine{221     \textcolor{keyword}{explicit} \mbox{\hyperlink{classm_1_1serializer_1_1m_serializer_ofstream_ad38f489dcd8ffa1fd7058522cd0ab597}{mSerializerOfstream}}(std::ofstream\& a\_outputStream)}
+\DoxyCodeLine{222         : m\_outputStream(a\_outputStream)}
+\DoxyCodeLine{223     \{}
+\DoxyCodeLine{224     \}}
+\DoxyCodeLine{225 }
+\DoxyCodeLine{226     \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_Type>}
+\DoxyCodeLine{227     \textcolor{keywordtype}{void} begin(t\_Type\& a\_object, m::mUInt\& a\_version,}
+\DoxyCodeLine{228                std::string \textcolor{keyword}{const}\& a\_debugName);}
+\DoxyCodeLine{229 }
+\DoxyCodeLine{230     \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_Type>}
+\DoxyCodeLine{231     \textcolor{keywordtype}{void} serialize(t\_Type\& a\_object, std::string \textcolor{keyword}{const}\& a\_debugName);}
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233     \textcolor{keywordtype}{void} end();}
+\DoxyCodeLine{234 }
+\DoxyCodeLine{235    \textcolor{keyword}{private}:}
+\DoxyCodeLine{236     \textcolor{keywordtype}{void} print\_spacing();}
+\DoxyCodeLine{237 }
+\DoxyCodeLine{238     m::mUInt       m\_spacingNumber = 0;}
+\DoxyCodeLine{239     std::ofstream\& m\_outputStream;}
+\DoxyCodeLine{240 \};}
+\DoxyCodeLine{241 }
+\DoxyCodeLine{242 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_Type>}
+\DoxyCodeLine{243 \textcolor{keywordtype}{void} mSerializerOfstream::serialize(t\_Type\&            a\_object,}
+\DoxyCodeLine{244                                     std::string \textcolor{keyword}{const}\& a\_debugName)}
+\DoxyCodeLine{245 \{}
+\DoxyCodeLine{246     print\_spacing();}
+\DoxyCodeLine{247     m\_outputStream << a\_debugName << \textcolor{stringliteral}{"{} "{}} << a\_object << std::endl;}
+\DoxyCodeLine{248 \}}
+\DoxyCodeLine{249 }
+\DoxyCodeLine{250 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_Type>}
+\DoxyCodeLine{251 \textcolor{keywordtype}{void} mSerializerOfstream::begin(t\_Type\& a\_object, m::mUInt\& a\_version,}
+\DoxyCodeLine{252                                 std::string \textcolor{keyword}{const}\& a\_debugName)}
+\DoxyCodeLine{253 \{}
+\DoxyCodeLine{254     print\_spacing();}
+\DoxyCodeLine{255     m\_outputStream << a\_debugName << \textcolor{stringliteral}{"{} "{}} << a\_version << std::endl;}
+\DoxyCodeLine{256     m\_spacingNumber++;}
+\DoxyCodeLine{257 \}}
+\DoxyCodeLine{258 }
+\DoxyCodeLine{259 \};  \textcolor{comment}{// namespace m::serializer}}
+\DoxyCodeLine{260 }
+\DoxyCodeLine{264 }
+
+\end{DoxyCode}

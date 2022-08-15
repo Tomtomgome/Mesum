@@ -98,7 +98,7 @@ var searchData=
   ['imvec2ih_95',['ImVec2ih',['../struct_im_vec2ih.html',1,'']]],
   ['imvec4_96',['ImVec4',['../struct_im_vec4.html',1,'']]],
   ['imvector_97',['ImVector',['../struct_im_vector.html',1,'']]],
-  ['initdata_98',['InitData',['../structm_1_1aa_1_1m_adapter_1_1_init_data.html',1,'m::aa::mAdapter::InitData'],['../structm_1_1aa_1_1m_api_1_1_init_data.html',1,'m::aa::mApi::InitData']]],
+  ['initdata_98',['InitData',['../structm_1_1aa_1_1m_api_1_1_init_data.html',1,'m::aa::mApi']]],
   ['irenderer_99',['IRenderer',['../classm_1_1render_1_1_i_renderer.html',1,'m::render']]],
   ['iresource_100',['IResource',['../structm_1_1render_1_1_i_resource.html',1,'m::render']]],
   ['isurface_101',['ISurface',['../classm_1_1render_1_1_i_surface.html',1,'m::render']]],

@@ -102,6 +102,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structm_1_1math_1_1m_mat_data.html">mMatData</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds the data for a matrix.  <a href="structm_1_1math_1_1m_mat_data.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structm_1_1math_1_1m_quaternion.html">mQuaternion</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure representing a math quaternion.  <a href="structm_1_1math_1_1m_quaternion.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1math_1_1m_spherical.html">mSpherical</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structm_1_1math_1_1m_vec.html">mVec</a></td></tr>
@@ -191,9 +194,18 @@ mU64&#160;</td><td class="memItemRight" valign="bottom"><b>rol64</b> (mU64 a_x, 
 <tr class="memitem:a9bb2a799b2969206368773fe6e4d316f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structm_1_1math_1_1m_mat.html">mMat4x4</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacem_1_1math.html#a9bb2a799b2969206368773fe6e4d316f">generate_projectionOrthoLH</a> (mFloat a_width, mFloat a_height, mFloat a_near, mFloat a_far)</td></tr>
 <tr class="memdesc:a9bb2a799b2969206368773fe6e4d316f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a basic left handed orthographic projection matrix.  <a href="namespacem_1_1math.html#a9bb2a799b2969206368773fe6e4d316f">More...</a><br /></td></tr>
 <tr class="separator:a9bb2a799b2969206368773fe6e4d316f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d700447369a2904743051a99125e59d"><td class="memItemLeft" align="right" valign="top"><a id="a8d700447369a2904743051a99125e59d" name="a8d700447369a2904743051a99125e59d"></a>
+<a class="el" href="structm_1_1math_1_1m_mat.html">mMat4x4</a>&#160;</td><td class="memItemRight" valign="bottom"><b>generate_projectionPerspectiveLH</b> (mFloat a_vFov, mFloat a_aspectRatio, mFloat a_near, mFloat a_far)</td></tr>
+<tr class="separator:a8d700447369a2904743051a99125e59d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81feb414941156da2c50224e2cb8cae0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structm_1_1math_1_1m_mat.html">mMat4x4</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacem_1_1math.html#a81feb414941156da2c50224e2cb8cae0">generate_scaleMatrix</a> (mFloat a_x, mFloat a_y, mFloat a_z)</td></tr>
 <tr class="memdesc:a81feb414941156da2c50224e2cb8cae0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a basic scaling matrix.  <a href="namespacem_1_1math.html#a81feb414941156da2c50224e2cb8cae0">More...</a><br /></td></tr>
 <tr class="separator:a81feb414941156da2c50224e2cb8cae0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe7b57b8caa6fb25dcbb49b51a8e8fc0"><td class="memItemLeft" align="right" valign="top"><a id="abe7b57b8caa6fb25dcbb49b51a8e8fc0" name="abe7b57b8caa6fb25dcbb49b51a8e8fc0"></a>
+<a class="el" href="structm_1_1math_1_1m_mat.html">mMat4x4</a>&#160;</td><td class="memItemRight" valign="bottom"><b>generate_lookAtLH</b> (<a class="el" href="structm_1_1math_1_1m_vec.html">mVec3</a> const &amp;a_position, <a class="el" href="structm_1_1math_1_1m_vec.html">mVec3</a> const &amp;a_lookAt, <a class="el" href="structm_1_1math_1_1m_vec.html">mVec3</a> const &amp;a_up)</td></tr>
+<tr class="separator:abe7b57b8caa6fb25dcbb49b51a8e8fc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92b7f19682671d1a59a40a203db3b7d4"><td class="memItemLeft" align="right" valign="top"><a id="a92b7f19682671d1a59a40a203db3b7d4" name="a92b7f19682671d1a59a40a203db3b7d4"></a>
+<a class="el" href="structm_1_1math_1_1m_vec.html">mVec3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (<a class="el" href="structm_1_1math_1_1m_quaternion.html">mQuaternion</a> const &amp;a_q, <a class="el" href="structm_1_1math_1_1m_vec.html">mVec3</a> const &amp;a_v)</td></tr>
+<tr class="separator:a92b7f19682671d1a59a40a203db3b7d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0f2c73b130dcb948785c2301c9cb4b4"><td class="memTemplParams" colspan="2"><a id="ad0f2c73b130dcb948785c2301c9cb4b4" name="ad0f2c73b130dcb948785c2301c9cb4b4"></a>
 template&lt;typename t_T , mUInt t_Size&gt; </td></tr>
 <tr class="memitem:ad0f2c73b130dcb948785c2301c9cb4b4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structm_1_1math_1_1m_vec.html">mVec</a>&lt; t_T, t_Size &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator+</b> (const <a class="el" href="structm_1_1math_1_1m_vec.html">mVec</a>&lt; t_T, t_Size &gt; &amp;a_lhs, const <a class="el" href="structm_1_1math_1_1m_vec.html">mVec</a>&lt; t_T, t_Size &gt; &amp;a_rhs)</td></tr>

@@ -1,0 +1,241 @@
+\hypertarget{group___serialization}{}\doxysection{Serialization}
+\label{group___serialization}\index{Serialization@{Serialization}}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacem_1_1serializer}{m\+::serializer}}
+\begin{DoxyCompactList}\small\item\em Groups default serializer classes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Concepts}
+\begin{DoxyCompactItemize}
+\item 
+concept \mbox{\hyperlink{conceptm_custom_serializable}{m\+Custom\+Serializable}}
+\begin{DoxyCompactList}\small\item\em Concept defining objects with a defined serialize function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classm_1_1serializer_1_1m_serializer_ifstream}{m\+::serializer\+::m\+Serializer\+Ifstream}}
+\begin{DoxyCompactList}\small\item\em Default serializer to read an object from a text file. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classm_1_1serializer_1_1m_serializer_ofstream}{m\+::serializer\+::m\+Serializer\+Ofstream}}
+\begin{DoxyCompactList}\small\item\em Default serializer to write an object on a text file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group___serialization_ga781705c4882c71618ff36f1694562013}{m\+Allow\+\_\+private\+Serialization}}(t\+\_\+\+Class\+Name)
+\begin{DoxyCompactList}\small\item\em Put in a class, allows private members to be serialized. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group___serialization_gac8e4bf76374ea6587ca13996313138ef}{m\+Begin\+\_\+serialization}}(t\+\_\+\+Class\+Name,  a\+\_\+version\+Number)
+\begin{DoxyCompactList}\small\item\em Put outside a struct, Start the definition of a custom serialization. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group___serialization_gaf9374d51fc9e8604a3207a6f891aa71a}{m\+Serialize\+\_\+from}}(a\+\_\+version,  a\+\_\+variable)
+\begin{DoxyCompactList}\small\item\em Serialize a variable from a given version. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group___serialization_ga9d46eb453530384345c3a69570c375a0}{m\+Serialize\+\_\+member\+From}}(a\+\_\+version,  a\+\_\+variable)
+\begin{DoxyCompactList}\small\item\em Serialize a member of the struct from a given version. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group___serialization_ga4561cac40f387ab8816285a05d5b06bc}{m\+End\+\_\+serialization}}(t\+\_\+\+Class\+Name)
+\begin{DoxyCompactList}\small\item\em End the definition of a custom serialization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename t\+\_\+\+Serializer , typename t\+\_\+\+Type $>$ }\\void \mbox{\hyperlink{group___serialization_ga3266948527928e07f2b9aa352c39165f}{serialize\+\_\+primitive}} (t\+\_\+\+Serializer \&a\+\_\+serializer, t\+\_\+\+Type \&a\+\_\+object, std\+::string const \&a\+\_\+debug\+Name)
+\begin{DoxyCompactList}\small\item\em Serialize an object using a serializer directly. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename t\+\_\+\+Serializer , typename t\+\_\+\+Type $>$ }\\void \mbox{\hyperlink{group___serialization_gac13b5c1d087df8bd2f6499d6f1dea939}{serialize\+\_\+from\+Version}} (t\+\_\+\+Serializer \&a\+\_\+serializer, t\+\_\+\+Type \&a\+\_\+object, m\+::m\+UInt a\+\_\+version, m\+::m\+UInt a\+\_\+object\+Version, std\+::string const \&a\+\_\+debug\+Name)
+\begin{DoxyCompactList}\small\item\em Serialize an object only if a\+\_\+object\+Version \texorpdfstring{$>$}{>} a\+\_\+version. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{group___serialization_ga781705c4882c71618ff36f1694562013}\label{group___serialization_ga781705c4882c71618ff36f1694562013}} 
+\index{Serialization@{Serialization}!mAllow\_privateSerialization@{mAllow\_privateSerialization}}
+\index{mAllow\_privateSerialization@{mAllow\_privateSerialization}!Serialization@{Serialization}}
+\doxysubsubsection{\texorpdfstring{mAllow\_privateSerialization}{mAllow\_privateSerialization}}
+{\footnotesize\ttfamily \#define m\+Allow\+\_\+private\+Serialization(\begin{DoxyParamCaption}\item[{}]{t\+\_\+\+Class\+Name }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{    \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_SerializerType>               \(\backslash\)}
+\DoxyCodeLine{    friend \textcolor{keywordtype}{void} mSerialize(t\_ClassName\&      a\_object, \(\backslash\)}
+\DoxyCodeLine{                           t\_SerializerType\& a\_serializer);}
+
+\end{DoxyCode}
+
+
+Put in a class, allows private members to be serialized. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em t\+\_\+\+Class\+Name} & The name of the class in which the macro is called \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group___serialization_gac8e4bf76374ea6587ca13996313138ef}\label{group___serialization_gac8e4bf76374ea6587ca13996313138ef}} 
+\index{Serialization@{Serialization}!mBegin\_serialization@{mBegin\_serialization}}
+\index{mBegin\_serialization@{mBegin\_serialization}!Serialization@{Serialization}}
+\doxysubsubsection{\texorpdfstring{mBegin\_serialization}{mBegin\_serialization}}
+{\footnotesize\ttfamily \#define m\+Begin\+\_\+serialization(\begin{DoxyParamCaption}\item[{}]{t\+\_\+\+Class\+Name,  }\item[{}]{a\+\_\+version\+Number }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{    \textcolor{keyword}{static} \textcolor{keyword}{const} m::mU32 t\_ClassName\#\#\_version = a\_versionNumber;          \(\backslash\)}
+\DoxyCodeLine{    template <typename t\_SerializerType>                                   \(\backslash\)}
+\DoxyCodeLine{    void mSerialize(t\_ClassName\& a\_object, t\_SerializerType\& a\_serializer) \(\backslash\)}
+\DoxyCodeLine{    \{                                                                      \(\backslash\)}
+\DoxyCodeLine{        m::mUInt internalVersion = t\_ClassName\#\#\_version;                  \(\backslash\)}
+\DoxyCodeLine{        a\_serializer.begin(a\_object, internalVersion, \#t\_ClassName);}
+
+\end{DoxyCode}
+
+
+Put outside a struct, Start the definition of a custom serialization. 
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{struct }mExample}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{    mInt variable;}
+\DoxyCodeLine{    std::String nameAddedLaterOn}
+\DoxyCodeLine{\};}
+\DoxyCodeLine{\mbox{\hyperlink{group___serialization_gac8e4bf76374ea6587ca13996313138ef}{mBegin\_serialization}}(mExample, 2);}
+\DoxyCodeLine{\mbox{\hyperlink{group___serialization_ga9d46eb453530384345c3a69570c375a0}{mSerialize\_memberFrom}}(1, variable);}
+\DoxyCodeLine{\mbox{\hyperlink{group___serialization_ga9d46eb453530384345c3a69570c375a0}{mSerialize\_memberFrom}}(2, nameAddedLaterOn);}
+\DoxyCodeLine{\mbox{\hyperlink{group___serialization_ga4561cac40f387ab8816285a05d5b06bc}{mEnd\_serialization}}(mExample);}
+
+\end{DoxyCode}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em t\+\_\+\+Class\+Name} & The name of the struct for which to define the custom serialization \\
+\hline
+{\em a\+\_\+version\+Number} & The version of the serialization defined by this function. This number is expected to be incremented each time the content of the function is modified (in order to keep compatibility) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group___serialization_ga4561cac40f387ab8816285a05d5b06bc}\label{group___serialization_ga4561cac40f387ab8816285a05d5b06bc}} 
+\index{Serialization@{Serialization}!mEnd\_serialization@{mEnd\_serialization}}
+\index{mEnd\_serialization@{mEnd\_serialization}!Serialization@{Serialization}}
+\doxysubsubsection{\texorpdfstring{mEnd\_serialization}{mEnd\_serialization}}
+{\footnotesize\ttfamily \#define m\+End\+\_\+serialization(\begin{DoxyParamCaption}\item[{}]{t\+\_\+\+Class\+Name }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{    a\_serializer.end();                 \(\backslash\)}
+\DoxyCodeLine{    \}}
+
+\end{DoxyCode}
+
+
+End the definition of a custom serialization. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em t\+\_\+\+Class\+Name} & The name of the struct for which the custom serialization was defined \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group___serialization_gaf9374d51fc9e8604a3207a6f891aa71a}\label{group___serialization_gaf9374d51fc9e8604a3207a6f891aa71a}} 
+\index{Serialization@{Serialization}!mSerialize\_from@{mSerialize\_from}}
+\index{mSerialize\_from@{mSerialize\_from}!Serialization@{Serialization}}
+\doxysubsubsection{\texorpdfstring{mSerialize\_from}{mSerialize\_from}}
+{\footnotesize\ttfamily \#define m\+Serialize\+\_\+from(\begin{DoxyParamCaption}\item[{}]{a\+\_\+version,  }\item[{}]{a\+\_\+variable }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{    \mbox{\hyperlink{group___serialization_gac13b5c1d087df8bd2f6499d6f1dea939}{serialize\_fromVersion}}(a\_serializer, a\_variable, a\_version, \(\backslash\)}
+\DoxyCodeLine{                          internalVersion, \#a\_variable)}
+
+\end{DoxyCode}
+
+
+Serialize a variable from a given version. 
+
+Put between m\+Begin\+\_\+serialization and m\+End\+\_\+serialization
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+version} & The version at which the serialization started \\
+\hline
+{\em a\+\_\+variable} & The name of the variable to serialize \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group___serialization_ga9d46eb453530384345c3a69570c375a0}\label{group___serialization_ga9d46eb453530384345c3a69570c375a0}} 
+\index{Serialization@{Serialization}!mSerialize\_memberFrom@{mSerialize\_memberFrom}}
+\index{mSerialize\_memberFrom@{mSerialize\_memberFrom}!Serialization@{Serialization}}
+\doxysubsubsection{\texorpdfstring{mSerialize\_memberFrom}{mSerialize\_memberFrom}}
+{\footnotesize\ttfamily \#define m\+Serialize\+\_\+member\+From(\begin{DoxyParamCaption}\item[{}]{a\+\_\+version,  }\item[{}]{a\+\_\+variable }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{    \mbox{\hyperlink{group___serialization_gac13b5c1d087df8bd2f6499d6f1dea939}{serialize\_fromVersion}}(a\_serializer, a\_object.a\_variable, a\_version, \(\backslash\)}
+\DoxyCodeLine{                          internalVersion, \#a\_variable)}
+
+\end{DoxyCode}
+
+
+Serialize a member of the struct from a given version. 
+
+Put between m\+Begin\+\_\+serialization and m\+End\+\_\+serialization
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+version} & The version at which the serialization started \\
+\hline
+{\em a\+\_\+variable} & The name of the member to serialize \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{group___serialization_gac13b5c1d087df8bd2f6499d6f1dea939}\label{group___serialization_gac13b5c1d087df8bd2f6499d6f1dea939}} 
+\index{Serialization@{Serialization}!serialize\_fromVersion@{serialize\_fromVersion}}
+\index{serialize\_fromVersion@{serialize\_fromVersion}!Serialization@{Serialization}}
+\doxysubsubsection{\texorpdfstring{serialize\_fromVersion()}{serialize\_fromVersion()}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+\+Serializer , typename t\+\_\+\+Type $>$ \\
+void serialize\+\_\+from\+Version (\begin{DoxyParamCaption}\item[{t\+\_\+\+Serializer \&}]{a\+\_\+serializer,  }\item[{t\+\_\+\+Type \&}]{a\+\_\+object,  }\item[{m\+::m\+UInt}]{a\+\_\+version,  }\item[{m\+::m\+UInt}]{a\+\_\+object\+Version,  }\item[{std\+::string const \&}]{a\+\_\+debug\+Name }\end{DoxyParamCaption})}
+
+
+
+Serialize an object only if a\+\_\+object\+Version \texorpdfstring{$>$}{>} a\+\_\+version. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em t\+\_\+\+Serializer} & The type of serializer \\
+\hline
+{\em t\+\_\+\+Type} & The type of object to serialize \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+serializer} & The serializer to use for the serialization \\
+\hline
+{\em a\+\_\+object} & The object to serialize \\
+\hline
+{\em a\+\_\+version} & The specified version at which to do the serialization \\
+\hline
+{\em a\+\_\+object\+Version} & The version read or writen from the serialization \\
+\hline
+{\em a\+\_\+debug\+Name} & A debug name for the object, not always used \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group___serialization_ga3266948527928e07f2b9aa352c39165f}\label{group___serialization_ga3266948527928e07f2b9aa352c39165f}} 
+\index{Serialization@{Serialization}!serialize\_primitive@{serialize\_primitive}}
+\index{serialize\_primitive@{serialize\_primitive}!Serialization@{Serialization}}
+\doxysubsubsection{\texorpdfstring{serialize\_primitive()}{serialize\_primitive()}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+\+Serializer , typename t\+\_\+\+Type $>$ \\
+void serialize\+\_\+primitive (\begin{DoxyParamCaption}\item[{t\+\_\+\+Serializer \&}]{a\+\_\+serializer,  }\item[{t\+\_\+\+Type \&}]{a\+\_\+object,  }\item[{std\+::string const \&}]{a\+\_\+debug\+Name }\end{DoxyParamCaption})}
+
+
+
+Serialize an object using a serializer directly. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em t\+\_\+\+Serializer} & The type of serializer \\
+\hline
+{\em t\+\_\+\+Type} & The type of object to serialize \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+serializer} & The serializer to use for the serialization \\
+\hline
+{\em a\+\_\+object} & The object to serialize \\
+\hline
+{\em a\+\_\+debug\+Name} & A debug name for the object, not always used \\
+\hline
+\end{DoxyParams}

@@ -5,6 +5,11 @@
 Namespace grouping file resoures.  
 
 
+\doxysubsection*{Modules}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{group___serialization}{Serialization}}
+\end{DoxyCompactItemize}
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
@@ -73,6 +78,8 @@ class \mbox{\hyperlink{classm_1_1profile_1_1m_profiler_multi_sampling}{m\+::prof
 \begin{DoxyCompactList}\small\item\em Implementation of a profiler that averages times accross multiple samples. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classm_1_1profile_1_1m_r_a_i_i_timing}{m\+::profile\+::m\+RAIITiming}}
 \begin{DoxyCompactList}\small\item\em RAII Timming that sends the elapsed time between its creation and destruction to its parent profiler. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structm_1_1math_1_1m_quaternion}{m\+::math\+::m\+Quaternion}}
+\begin{DoxyCompactList}\small\item\em Structure representing a math quaternion. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classm_1_1math_1_1m_spherical}{m\+::math\+::m\+Spherical}}
 \item 
 class \mbox{\hyperlink{classm_1_1input_1_1m_state_input_manager}{m\+::input\+::m\+State\+Input\+Manager}}
@@ -158,7 +165,21 @@ struct \mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+::math\+::m\+Vec$<$ t\+\_\+
 \begin{DoxyCompactList}\small\item\em Macro used to enable channels of the logger. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{group___core_gac92102d2681a9eb9e2d7f2cc7079190a}\label{group___core_gac92102d2681a9eb9e2d7f2cc7079190a}} 
 \#define {\bfseries m\+Disable\+\_\+log\+Channels}~m\+::log\+\_\+inst.\+disable\+\_\+channels
-\begin{DoxyCompactList}\small\item\em Macro used to disable channels the logger. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Macro used to disable channels the logger. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_ga9646ac3906626820ba2d694205ea0eef}\label{group___core_ga9646ac3906626820ba2d694205ea0eef}} 
+\#define {\bfseries M\+\_\+\+VEC3\+\_\+\+MESUM\+\_\+\+TO\+\_\+\+GLM}(mesum\+Vec3)~    glm\+::vec3((mesum\+Vec3).x, (mesum\+Vec3).y, (mesum\+Vec3).z)
+\begin{DoxyCompactList}\small\item\em Namespace for math related utils. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{group___core_gaa66c8c8700da53512e1310beaee35c71}{M\+\_\+\+VEC3\+\_\+\+GLM\+\_\+\+TO\+\_\+\+MESUM}}(glm\+Vec3)
+\item 
+\mbox{\Hypertarget{group___core_ga1ad47446a77f964e5aab7b91c5a6c7e4}\label{group___core_ga1ad47446a77f964e5aab7b91c5a6c7e4}} 
+\#define {\bfseries M\+\_\+\+QUAT\+\_\+\+MESUM\+\_\+\+TO\+\_\+\+GLM}(mesum\+Quat)~    glm\+::qua((mesum\+Quat).w, (mesum\+Quat).x, (mesum\+Quat).y, (mesum\+Quat).z)
+\item 
+\#define \mbox{\hyperlink{group___core_gacfa8b2b3e9cb067422d9c105e0d3bc39}{M\+\_\+\+QUAT\+\_\+\+GLM\+\_\+\+TO\+\_\+\+MESUM}}(glm\+Quat)
+\item 
+\#define \mbox{\hyperlink{group___core_ga52c660bfc812114fdc6fc37e4168aa1f}{M\+\_\+\+MAT4\+\_\+\+MESUM\+\_\+\+TO\+\_\+\+GLM}}(mesum\+Mat4)
+\item 
+\#define \mbox{\hyperlink{group___core_ga7f261fc0f748a3255c4e49232ac12501}{M\+\_\+\+MAT4\+\_\+\+GLM\+\_\+\+TO\+\_\+\+MESUM}}(glm\+Mat4)
+\end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -216,6 +237,68 @@ Namespace grouping file resoures.
 Namespace grouping basic profiling tools.
 
 \doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{group___core_ga7f261fc0f748a3255c4e49232ac12501}\label{group___core_ga7f261fc0f748a3255c4e49232ac12501}} 
+\index{Core@{Core}!M\_MAT4\_GLM\_TO\_MESUM@{M\_MAT4\_GLM\_TO\_MESUM}}
+\index{M\_MAT4\_GLM\_TO\_MESUM@{M\_MAT4\_GLM\_TO\_MESUM}!Core@{Core}}
+\doxysubsubsection{\texorpdfstring{M\_MAT4\_GLM\_TO\_MESUM}{M\_MAT4\_GLM\_TO\_MESUM}}
+{\footnotesize\ttfamily \#define M\+\_\+\+MAT4\+\_\+\+GLM\+\_\+\+TO\+\_\+\+MESUM(\begin{DoxyParamCaption}\item[{}]{glm\+Mat4 }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{    mMat4x4                                                             \(\backslash\)}
+\DoxyCodeLine{    \{                                                                   \(\backslash\)}
+\DoxyCodeLine{        glmMat4[0][0], glmMat4[0][1], glmMat4[0][2], glmMat4[0][3],     \(\backslash\)}
+\DoxyCodeLine{            glmMat4[1][0], glmMat4[1][1], glmMat4[1][2], glmMat4[1][3], \(\backslash\)}
+\DoxyCodeLine{            glmMat4[2][0], glmMat4[2][1], glmMat4[2][2], glmMat4[2][3], \(\backslash\)}
+\DoxyCodeLine{            glmMat4[3][0], glmMat4[3][1], glmMat4[3][2], glmMat4[3][3]  \(\backslash\)}
+\DoxyCodeLine{    \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{group___core_ga52c660bfc812114fdc6fc37e4168aa1f}\label{group___core_ga52c660bfc812114fdc6fc37e4168aa1f}} 
+\index{Core@{Core}!M\_MAT4\_MESUM\_TO\_GLM@{M\_MAT4\_MESUM\_TO\_GLM}}
+\index{M\_MAT4\_MESUM\_TO\_GLM@{M\_MAT4\_MESUM\_TO\_GLM}!Core@{Core}}
+\doxysubsubsection{\texorpdfstring{M\_MAT4\_MESUM\_TO\_GLM}{M\_MAT4\_MESUM\_TO\_GLM}}
+{\footnotesize\ttfamily \#define M\+\_\+\+MAT4\+\_\+\+MESUM\+\_\+\+TO\+\_\+\+GLM(\begin{DoxyParamCaption}\item[{}]{mesum\+Mat4 }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{    glm::mat4(                                                             \(\backslash\)}
+\DoxyCodeLine{        \{mesumMat4.data[0][0], mesumMat4.data[0][1], mesumMat4.data[0][2], \(\backslash\)}
+\DoxyCodeLine{         mesumMat4.data[0][3], mesumMat4.data[1][0], mesumMat4.data[1][1], \(\backslash\)}
+\DoxyCodeLine{         mesumMat4.data[1][2], mesumMat4.data[1][3], mesumMat4.data[2][0], \(\backslash\)}
+\DoxyCodeLine{         mesumMat4.data[2][1], mesumMat4.data[2][2], mesumMat4.data[2][3], \(\backslash\)}
+\DoxyCodeLine{         mesumMat4.data[3][0], mesumMat4.data[3][1], mesumMat4.data[3][2], \(\backslash\)}
+\DoxyCodeLine{         mesumMat4.data[3][3]\})}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{group___core_gacfa8b2b3e9cb067422d9c105e0d3bc39}\label{group___core_gacfa8b2b3e9cb067422d9c105e0d3bc39}} 
+\index{Core@{Core}!M\_QUAT\_GLM\_TO\_MESUM@{M\_QUAT\_GLM\_TO\_MESUM}}
+\index{M\_QUAT\_GLM\_TO\_MESUM@{M\_QUAT\_GLM\_TO\_MESUM}!Core@{Core}}
+\doxysubsubsection{\texorpdfstring{M\_QUAT\_GLM\_TO\_MESUM}{M\_QUAT\_GLM\_TO\_MESUM}}
+{\footnotesize\ttfamily \#define M\+\_\+\+QUAT\+\_\+\+GLM\+\_\+\+TO\+\_\+\+MESUM(\begin{DoxyParamCaption}\item[{}]{glm\+Quat }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{    mQuaternion                                            \(\backslash\)}
+\DoxyCodeLine{    \{                                                      \(\backslash\)}
+\DoxyCodeLine{        (glmQuat).x, (glmQuat).y, (glmQuat).z, (glmQuat).w \(\backslash\)}
+\DoxyCodeLine{    \}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{group___core_gaa66c8c8700da53512e1310beaee35c71}\label{group___core_gaa66c8c8700da53512e1310beaee35c71}} 
+\index{Core@{Core}!M\_VEC3\_GLM\_TO\_MESUM@{M\_VEC3\_GLM\_TO\_MESUM}}
+\index{M\_VEC3\_GLM\_TO\_MESUM@{M\_VEC3\_GLM\_TO\_MESUM}!Core@{Core}}
+\doxysubsubsection{\texorpdfstring{M\_VEC3\_GLM\_TO\_MESUM}{M\_VEC3\_GLM\_TO\_MESUM}}
+{\footnotesize\ttfamily \#define M\+\_\+\+VEC3\+\_\+\+GLM\+\_\+\+TO\+\_\+\+MESUM(\begin{DoxyParamCaption}\item[{}]{glm\+Vec3 }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{    mVec3                                     \(\backslash\)}
+\DoxyCodeLine{    \{                                         \(\backslash\)}
+\DoxyCodeLine{        (glmVec3).x, (glmVec3).y, (glmVec3).z \(\backslash\)}
+\DoxyCodeLine{    \}}
+
+\end{DoxyCode}
 \mbox{\Hypertarget{group___core_gae68855c8125ce66a9e53e758526c95ca}\label{group___core_gae68855c8125ce66a9e53e758526c95ca}} 
 \index{Core@{Core}!mAssert@{mAssert}}
 \index{mAssert@{mAssert}!Core@{Core}}

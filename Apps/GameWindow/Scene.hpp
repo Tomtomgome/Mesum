@@ -1,10 +1,11 @@
 #pragma once
 
-#include "Serializable.hpp"
 #include "BasicCpnt.hpp"
 #include "Collision.hpp"
 #include "Animation.hpp"
 #include "Displacer.hpp"
+
+#include <Kernel/Serializable.hpp>
 
 #include <vector>
 
@@ -23,14 +24,15 @@ struct Model
     CollisionCpnt collision{};
     DisplacerCpnt displacer{};
 };
-mBegin_serialization(Model, 1)
+mBegin_serialization(Model, 1);
 
-    mSerialize_memberFrom(1, ID);
+mSerialize_memberFrom(1, ID);
 mSerialize_memberFrom(1, renderingCpnt);
 mSerialize_memberFrom(1, animator);
 mSerialize_memberFrom(1, transform);
 mSerialize_memberFrom(1, collision);
 mSerialize_memberFrom(1, displacer);
+
 mEnd_serialization(Model);
 
 ///////////////////////////////////////////////////////////////////////////////

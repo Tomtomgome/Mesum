@@ -9,11 +9,12 @@ var searchData=
   ['detach_5ffrommousemoveevent_6',['detach_fromMouseMoveEvent',['../structm_1_1input_1_1m_callback_input_manager.html#aed4d184782b1e1c181aad8397eb98d69',1,'m::input::mCallbackInputManager::detach_fromMouseMoveEvent(const mMouseMoveCallback &amp;a_callback)'],['../structm_1_1input_1_1m_callback_input_manager.html#ae4abfabf49a6e159dccdaddb395625fc',1,'m::input::mCallbackInputManager::detach_fromMouseMoveEvent(const mMouseMoveSignal::mCallbackHandle &amp;a_handle)']]],
   ['detach_5ffrommousescrollevent_7',['detach_fromMouseScrollEvent',['../structm_1_1input_1_1m_callback_input_manager.html#ad2c9faa1f57fbb8547d02cfd1e8dc581',1,'m::input::mCallbackInputManager::detach_fromMouseScrollEvent(const mScrollCallback &amp;a_callback)'],['../structm_1_1input_1_1m_callback_input_manager.html#aea3d2e1c2a410ce38d5b7fe0ace3a14c',1,'m::input::mCallbackInputManager::detach_fromMouseScrollEvent(const mScrollSignal::mCallbackHandle &amp;a_handle)']]],
   ['detach_5ffromsignal_8',['detach_fromSignal',['../classm_1_1m_signal.html#a9f2353d6e412ca07f8cd555d607b9dba',1,'m::mSignal::detach_fromSignal(mCallback&lt; void, t_Args... &gt; a_callback)'],['../classm_1_1m_signal.html#ac846bbef1acd0dde085eadedb7ba0766',1,'m::mSignal::detach_fromSignal(const mCallbackHandle &amp;a_handle)']]],
-  ['disable_5fchannels_9',['disable_channels',['../classm_1_1logging_1_1m_logger.html#a8447286a207b62778ea2fd3c2fd1cb10',1,'m::logging::mLogger']]],
-  ['dx12bufferbase_10',['Dx12BufferBase',['../structm_1_1render_1_1_dx12_buffer_base.html',1,'m::render']]],
-  ['dx12commandqueue_11',['DX12CommandQueue',['../classm_1_1dx12_1_1_d_x12_command_queue.html',1,'m::dx12']]],
-  ['dx12context_12',['DX12Context',['../classm_1_1dx12_1_1_d_x12_context.html',1,'m::dx12']]],
-  ['dx12renderer_13',['DX12Renderer',['../classm_1_1dx12_1_1_d_x12_renderer.html',1,'m::dx12']]],
-  ['dx12rendertaskset_14',['DX12RenderTaskset',['../structm_1_1dx12_1_1_d_x12_render_taskset.html',1,'m::dx12']]],
-  ['dx12surface_15',['DX12Surface',['../classm_1_1dx12_1_1_d_x12_surface.html',1,'m::dx12']]]
+  ['devicetype_9',['DeviceType',['../structm_1_1aa_1_1m_adapter.html#a80a3d080fb5a52f8d8e4f1a4eba8fd0b',1,'m::aa::mAdapter']]],
+  ['disable_5fchannels_10',['disable_channels',['../classm_1_1logging_1_1m_logger.html#a8447286a207b62778ea2fd3c2fd1cb10',1,'m::logging::mLogger']]],
+  ['dx12bufferbase_11',['Dx12BufferBase',['../structm_1_1render_1_1_dx12_buffer_base.html',1,'m::render']]],
+  ['dx12commandqueue_12',['DX12CommandQueue',['../classm_1_1dx12_1_1_d_x12_command_queue.html',1,'m::dx12']]],
+  ['dx12context_13',['DX12Context',['../classm_1_1dx12_1_1_d_x12_context.html',1,'m::dx12']]],
+  ['dx12renderer_14',['DX12Renderer',['../classm_1_1dx12_1_1_d_x12_renderer.html',1,'m::dx12']]],
+  ['dx12rendertaskset_15',['DX12RenderTaskset',['../structm_1_1dx12_1_1_d_x12_render_taskset.html',1,'m::dx12']]],
+  ['dx12surface_16',['DX12Surface',['../classm_1_1dx12_1_1_d_x12_surface.html',1,'m::dx12']]]
 ];

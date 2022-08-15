@@ -9,7 +9,7 @@
 \DoxyCodeLine{5 \textcolor{preprocessor}{\#include <MesumCore/Kernel/MathTypes.hpp>}}
 \DoxyCodeLine{6 \textcolor{preprocessor}{\#include <MesumGraphics/RenderTask.hpp>}}
 \DoxyCodeLine{7 \textcolor{preprocessor}{\#include <MesumGraphics/Renderer.hpp>}}
-\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <MesumGraphics/RenderTasks/BasicVertex.hpp>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <MesumGraphics/RenderBase.hpp>}}
 \DoxyCodeLine{9 }
 \DoxyCodeLine{10 \textcolor{preprocessor}{\#ifdef M\_DX12\_RENDERER}}
 \DoxyCodeLine{11 \textcolor{preprocessor}{\#include <MesumGraphics/DX12Renderer/DX12Context.hpp>}}
@@ -312,154 +312,141 @@
 \DoxyCodeLine{308 \}}
 \DoxyCodeLine{309 }
 \DoxyCodeLine{310 \textcolor{keyword}{using} uploadBuffers =}
-\DoxyCodeLine{311     Dx12BufferBase<mBasicVertex, mU16>[dx12::DX12Surface::scm\_numFrames];}
+\DoxyCodeLine{311     Dx12BufferBase<BasicVertex, mU16>[dx12::DX12Surface::scm\_numFrames];}
 \DoxyCodeLine{312 }
 \DoxyCodeLine{313 \textcolor{keyword}{using} vulkanUploadBuffers =}
-\DoxyCodeLine{314     VulkanBufferBase<mBasicVertex, mU16>[vulkan::VulkanSurface::scm\_numFrames];}
+\DoxyCodeLine{314     VulkanBufferBase<BasicVertex, mU16>[vulkan::VulkanSurface::scm\_numFrames];}
 \DoxyCodeLine{315 }
-\DoxyCodeLine{316 \textcolor{keyword}{template} <\textcolor{keyword}{typename} tt\_Vertex, \textcolor{keyword}{typename} tt\_Index>}
-\DoxyCodeLine{317 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_data_mesh_buffer}{DataMeshBuffer}}}
-\DoxyCodeLine{318 \{}
-\DoxyCodeLine{319     std::vector<tt\_Vertex> m\_vertices;}
-\DoxyCodeLine{320     std::vector<tt\_Index>  m\_indices;}
-\DoxyCodeLine{321 }
-\DoxyCodeLine{322     \textcolor{keywordtype}{void} clear()}
-\DoxyCodeLine{323     \{}
-\DoxyCodeLine{324         m\_vertices.clear();}
-\DoxyCodeLine{325         m\_indices.clear();}
-\DoxyCodeLine{326     \}}
-\DoxyCodeLine{327 \};}
-\DoxyCodeLine{328 }
-\DoxyCodeLine{329 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{330 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{331 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{332 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_task_data2d_render}{TaskData2dRender}} : \textcolor{keyword}{public} \mbox{\hyperlink{structm_1_1render_1_1_task_data}{TaskData}}}
-\DoxyCodeLine{333 \{}
-\DoxyCodeLine{334     \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_task_data2d_render_1_1m_range}{mRange}}}
-\DoxyCodeLine{335     \{}
-\DoxyCodeLine{336         mInt  materialID         = 0;}
-\DoxyCodeLine{337         mUInt indexStartLocation = 0;}
-\DoxyCodeLine{338         mUInt indexCount         = 0;}
-\DoxyCodeLine{339     \};}
-\DoxyCodeLine{340 }
-\DoxyCodeLine{341     \mbox{\hyperlink{structm_1_1render_1_1_data_mesh_buffer}{DataMeshBuffer<mBasicVertex, mU16>}}* m\_pMeshBuffer = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{342     \mbox{\hyperlink{structm_1_1math_1_1m_mat}{math::mMat4x4}}*                      m\_pMatrix     = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{343     std::vector<mRange>*                m\_pRanges     = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{344     ISurface::HdlPtr                    m\_hdlOutput;}
-\DoxyCodeLine{345 }
-\DoxyCodeLine{346     mIfDx12Enabled(\mbox{\hyperlink{structm_1_1render_1_1_task}{Task}}* getNew\_dx12Implementation(\mbox{\hyperlink{structm_1_1render_1_1_task_data}{TaskData}}* a\_data) \textcolor{keyword}{override});}
-\DoxyCodeLine{347     mIfVulkanEnabled(\mbox{\hyperlink{structm_1_1render_1_1_task}{Task}}* getNew\_vulkanImplementation(\mbox{\hyperlink{structm_1_1render_1_1_task_data}{TaskData}}* a\_data)}
-\DoxyCodeLine{348                          \textcolor{keyword}{override});}
-\DoxyCodeLine{349 \};}
-\DoxyCodeLine{350 }
-\DoxyCodeLine{351 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{352 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{353 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{354 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_task2d_render}{Task2dRender}} : \textcolor{keyword}{public} \mbox{\hyperlink{structm_1_1render_1_1_task}{Task}}}
-\DoxyCodeLine{355 \{}
-\DoxyCodeLine{356     \textcolor{keyword}{explicit} \mbox{\hyperlink{structm_1_1render_1_1_task2d_render}{Task2dRender}}(\mbox{\hyperlink{structm_1_1render_1_1_task_data2d_render}{TaskData2dRender}}* a\_data);}
-\DoxyCodeLine{357 }
-\DoxyCodeLine{358     \textcolor{keyword}{virtual} mBool add\_texture(\mbox{\hyperlink{structm_1_1resource_1_1m_request_image}{resource::mRequestImage}} \textcolor{keyword}{const}\& a\_request) = 0;}
-\DoxyCodeLine{359 }
-\DoxyCodeLine{360     \textcolor{keywordtype}{void} prepare()\textcolor{keyword}{ override }\{\}}
-\DoxyCodeLine{361 }
-\DoxyCodeLine{362     \mbox{\hyperlink{structm_1_1render_1_1_task_data2d_render}{TaskData2dRender}}   m\_taskData;}
-\DoxyCodeLine{363     \textcolor{keyword}{static} \textcolor{keyword}{const} mUInt sm\_nbMaxMaterial = 32;}
-\DoxyCodeLine{364     \textcolor{keyword}{static} \textcolor{keyword}{const} mUInt sm\_minimalCBSize = 256;}
-\DoxyCodeLine{365 \};}
+\DoxyCodeLine{316 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{317 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{318 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{319 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_task_data2d_render}{TaskData2dRender}} : \textcolor{keyword}{public} \mbox{\hyperlink{structm_1_1render_1_1_task_data}{TaskData}}}
+\DoxyCodeLine{320 \{}
+\DoxyCodeLine{321     \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_task_data2d_render_1_1m_range}{mRange}}}
+\DoxyCodeLine{322     \{}
+\DoxyCodeLine{323         mInt  materialID         = 0;}
+\DoxyCodeLine{324         mUInt indexStartLocation = 0;}
+\DoxyCodeLine{325         mUInt indexCount         = 0;}
+\DoxyCodeLine{326     \};}
+\DoxyCodeLine{327 }
+\DoxyCodeLine{328     \mbox{\hyperlink{structm_1_1render_1_1_data_mesh_buffer}{DataMeshBuffer<BasicVertex, mU16>}}* m\_pMeshBuffer = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{329     \mbox{\hyperlink{structm_1_1math_1_1m_mat}{math::mMat4x4}}*                     m\_pMatrix     = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{330     std::vector<mRange>*               m\_pRanges     = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{331     ISurface::HdlPtr                   m\_hdlOutput;}
+\DoxyCodeLine{332 }
+\DoxyCodeLine{333     mIfDx12Enabled(\mbox{\hyperlink{structm_1_1render_1_1_task}{Task}}* getNew\_dx12Implementation(\mbox{\hyperlink{structm_1_1render_1_1_task_data}{TaskData}}* a\_data) \textcolor{keyword}{override});}
+\DoxyCodeLine{334     mIfVulkanEnabled(\mbox{\hyperlink{structm_1_1render_1_1_task}{Task}}* getNew\_vulkanImplementation(\mbox{\hyperlink{structm_1_1render_1_1_task_data}{TaskData}}* a\_data)}
+\DoxyCodeLine{335                          \textcolor{keyword}{override});}
+\DoxyCodeLine{336 \};}
+\DoxyCodeLine{337 }
+\DoxyCodeLine{338 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{339 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{340 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{341 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1render_1_1_task2d_render}{Task2dRender}} : \textcolor{keyword}{public} \mbox{\hyperlink{structm_1_1render_1_1_task}{Task}}}
+\DoxyCodeLine{342 \{}
+\DoxyCodeLine{343     \textcolor{keyword}{explicit} \mbox{\hyperlink{structm_1_1render_1_1_task2d_render}{Task2dRender}}(\mbox{\hyperlink{structm_1_1render_1_1_task_data2d_render}{TaskData2dRender}}* a\_data);}
+\DoxyCodeLine{344 }
+\DoxyCodeLine{345     \textcolor{keyword}{virtual} mBool add\_texture(\mbox{\hyperlink{structm_1_1resource_1_1m_request_image}{resource::mRequestImage}} \textcolor{keyword}{const}\& a\_request) = 0;}
+\DoxyCodeLine{346 }
+\DoxyCodeLine{347     \textcolor{keywordtype}{void} prepare()\textcolor{keyword}{ override }\{\}}
+\DoxyCodeLine{348 }
+\DoxyCodeLine{349     \mbox{\hyperlink{structm_1_1render_1_1_task_data2d_render}{TaskData2dRender}}   m\_taskData;}
+\DoxyCodeLine{350     \textcolor{keyword}{static} \textcolor{keyword}{const} mUInt sm\_nbMaxMaterial = 32;}
+\DoxyCodeLine{351     \textcolor{keyword}{static} \textcolor{keyword}{const} mUInt sm\_minimalCBSize = 256;}
+\DoxyCodeLine{352 \};}
+\DoxyCodeLine{353 }
+\DoxyCodeLine{354 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{355 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{356 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{357 mIfDx12Enabled(\textcolor{keyword}{struct} Dx12Task2dRender : \textcolor{keyword}{public} \mbox{\hyperlink{structm_1_1render_1_1_task2d_render}{Task2dRender}}}
+\DoxyCodeLine{358 \{}
+\DoxyCodeLine{359     \textcolor{keyword}{explicit} Dx12Task2dRender(\mbox{\hyperlink{structm_1_1render_1_1_task_data2d_render}{TaskData2dRender}}* a\_data);}
+\DoxyCodeLine{360 }
+\DoxyCodeLine{361     mBool add\_texture(\mbox{\hyperlink{structm_1_1resource_1_1m_request_image}{resource::mRequestImage}} \textcolor{keyword}{const}\& a\_request) \textcolor{keyword}{override};}
+\DoxyCodeLine{362 }
+\DoxyCodeLine{363     \textcolor{keywordtype}{void} prepare() \textcolor{keyword}{override};}
+\DoxyCodeLine{364 }
+\DoxyCodeLine{365     \textcolor{keywordtype}{void} execute() \textcolor{keyword}{const override};}
 \DoxyCodeLine{366 }
-\DoxyCodeLine{367 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{368 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{369 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{370 mIfDx12Enabled(\textcolor{keyword}{struct} Dx12Task2dRender : \textcolor{keyword}{public} \mbox{\hyperlink{structm_1_1render_1_1_task2d_render}{Task2dRender}}}
-\DoxyCodeLine{371 \{}
-\DoxyCodeLine{372     \textcolor{keyword}{explicit} Dx12Task2dRender(\mbox{\hyperlink{structm_1_1render_1_1_task_data2d_render}{TaskData2dRender}}* a\_data);}
+\DoxyCodeLine{367    \textcolor{keyword}{private}:}
+\DoxyCodeLine{368     mUInt         m\_i = 0;}
+\DoxyCodeLine{369     uploadBuffers m\_buffers;}
+\DoxyCodeLine{370 }
+\DoxyCodeLine{371     dx12::ComPtr<ID3D12RootSignature> m\_rootSignature = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{372     dx12::ComPtr<ID3D12PipelineState> m\_pso           = \textcolor{keyword}{nullptr};}
 \DoxyCodeLine{373 }
-\DoxyCodeLine{374     mBool add\_texture(\mbox{\hyperlink{structm_1_1resource_1_1m_request_image}{resource::mRequestImage}} \textcolor{keyword}{const}\& a\_request) \textcolor{keyword}{override};}
-\DoxyCodeLine{375 }
-\DoxyCodeLine{376     \textcolor{keywordtype}{void} prepare() \textcolor{keyword}{override};}
-\DoxyCodeLine{377 }
-\DoxyCodeLine{378     \textcolor{keywordtype}{void} execute() \textcolor{keyword}{const override};}
-\DoxyCodeLine{379 }
-\DoxyCodeLine{380    \textcolor{keyword}{private}:}
-\DoxyCodeLine{381     mUInt         m\_i = 0;}
-\DoxyCodeLine{382     uploadBuffers m\_buffers;}
-\DoxyCodeLine{383 }
-\DoxyCodeLine{384     dx12::ComPtr<ID3D12RootSignature> m\_rootSignature = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{385     dx12::ComPtr<ID3D12PipelineState> m\_pso           = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{386 }
-\DoxyCodeLine{388     dx12::ComPtr<ID3D12Resource> m\_pCbMatrices = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{389     \textcolor{keywordtype}{void}* m\_pCbMatricesData = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{390     dx12::ComPtr<ID3D12Resource> m\_pCbMaterial = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{391     \textcolor{keywordtype}{void}* m\_pCbMaterialData = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{392     std::vector<dx12::ComPtr<ID3D12Resource>> m\_pTextureResources\{\};}
-\DoxyCodeLine{393 }
-\DoxyCodeLine{394     D3D12\_GPU\_DESCRIPTOR\_HANDLE m\_GPUDescHdlTexture\{\};}
-\DoxyCodeLine{395 }
-\DoxyCodeLine{396     D3D12\_GPU\_DESCRIPTOR\_HANDLE m\_GPUDescHdlSampler\{\};}
-\DoxyCodeLine{397 }
-\DoxyCodeLine{398     dx12::ComPtr<ID3D12DescriptorHeap> m\_pSrvHeap = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{399     mUInt m\_incrementSizeSrv = 0;}
-\DoxyCodeLine{400     \textcolor{keyword}{static} \textcolor{keyword}{const} mUInt sm\_sizeSrvHeap = 32;}
-\DoxyCodeLine{401     dx12::ComPtr<ID3D12DescriptorHeap> m\_pSamplerHeap = \textcolor{keyword}{nullptr};}
-\DoxyCodeLine{402     mUInt m\_incrementSizeSampler = 0;}
-\DoxyCodeLine{403     \textcolor{keyword}{static} \textcolor{keyword}{const} mUInt sm\_sizeSamplerHeap = 8;}
-\DoxyCodeLine{404 \};)}
-\DoxyCodeLine{405 }
-\DoxyCodeLine{406 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{407 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{408 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
-\DoxyCodeLine{409 mIfVulkanEnabled(\textcolor{keyword}{struct} VulkanTask2dRender : \textcolor{keyword}{public} Task2dRender}
-\DoxyCodeLine{410 \{}
-\DoxyCodeLine{411     \textcolor{keyword}{explicit} VulkanTask2dRender(TaskData2dRender* a\_data);}
-\DoxyCodeLine{412     \string~VulkanTask2dRender() \textcolor{keyword}{override};}
-\DoxyCodeLine{413 }
-\DoxyCodeLine{414     mBool add\_texture(resource::mRequestImage \textcolor{keyword}{const}\& a\_request) \textcolor{keyword}{override};}
-\DoxyCodeLine{415 }
-\DoxyCodeLine{416     \textcolor{keywordtype}{void} create\_renderPassAndPipeline(mU32 a\_width, mU32 a\_height);}
-\DoxyCodeLine{417 }
-\DoxyCodeLine{418     \textcolor{keywordtype}{void} prepare() \textcolor{keyword}{override};}
-\DoxyCodeLine{419 }
-\DoxyCodeLine{420     \textcolor{keywordtype}{void} execute() \textcolor{keyword}{const override};}
-\DoxyCodeLine{421 }
-\DoxyCodeLine{422    \textcolor{keyword}{private}:}
-\DoxyCodeLine{423     vulkanUploadBuffers m\_buffers;}
-\DoxyCodeLine{424 }
-\DoxyCodeLine{425     VkShaderModule m\_vertShaderModule;}
-\DoxyCodeLine{426     VkShaderModule m\_fragShaderModule;}
-\DoxyCodeLine{427 }
-\DoxyCodeLine{428     VkDescriptorSetLayout m\_cbDescriptorLayout;}
+\DoxyCodeLine{375     dx12::ComPtr<ID3D12Resource> m\_pCbMatrices = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{376     \textcolor{keywordtype}{void}* m\_pCbMatricesData = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{377     dx12::ComPtr<ID3D12Resource> m\_pCbMaterial = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{378     \textcolor{keywordtype}{void}* m\_pCbMaterialData = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{379     std::vector<dx12::ComPtr<ID3D12Resource>> m\_pTextureResources\{\};}
+\DoxyCodeLine{380 }
+\DoxyCodeLine{381     D3D12\_GPU\_DESCRIPTOR\_HANDLE m\_GPUDescHdlTexture\{\};}
+\DoxyCodeLine{382 }
+\DoxyCodeLine{383     D3D12\_GPU\_DESCRIPTOR\_HANDLE m\_GPUDescHdlSampler\{\};}
+\DoxyCodeLine{384 }
+\DoxyCodeLine{385     dx12::ComPtr<ID3D12DescriptorHeap> m\_pSrvHeap = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{386     mUInt m\_incrementSizeSrv = 0;}
+\DoxyCodeLine{387     \textcolor{keyword}{static} \textcolor{keyword}{const} mUInt sm\_sizeSrvHeap = 32;}
+\DoxyCodeLine{388     dx12::ComPtr<ID3D12DescriptorHeap> m\_pSamplerHeap = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{389     mUInt m\_incrementSizeSampler = 0;}
+\DoxyCodeLine{390     \textcolor{keyword}{static} \textcolor{keyword}{const} mUInt sm\_sizeSamplerHeap = 8;}
+\DoxyCodeLine{391 \};)}
+\DoxyCodeLine{392 }
+\DoxyCodeLine{393 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{394 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{395 \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{396 mIfVulkanEnabled(\textcolor{keyword}{struct} VulkanTask2dRender : \textcolor{keyword}{public} Task2dRender}
+\DoxyCodeLine{397 \{}
+\DoxyCodeLine{398     \textcolor{keyword}{explicit} VulkanTask2dRender(TaskData2dRender* a\_data);}
+\DoxyCodeLine{399     \string~VulkanTask2dRender() \textcolor{keyword}{override};}
+\DoxyCodeLine{400 }
+\DoxyCodeLine{401     mBool add\_texture(resource::mRequestImage \textcolor{keyword}{const}\& a\_request) \textcolor{keyword}{override};}
+\DoxyCodeLine{402 }
+\DoxyCodeLine{403     \textcolor{keywordtype}{void} create\_renderPassAndPipeline(mU32 a\_width, mU32 a\_height);}
+\DoxyCodeLine{404 }
+\DoxyCodeLine{405     \textcolor{keywordtype}{void} prepare() \textcolor{keyword}{override};}
+\DoxyCodeLine{406 }
+\DoxyCodeLine{407     \textcolor{keywordtype}{void} execute() \textcolor{keyword}{const override};}
+\DoxyCodeLine{408 }
+\DoxyCodeLine{409    \textcolor{keyword}{private}:}
+\DoxyCodeLine{410     vulkanUploadBuffers m\_buffers;}
+\DoxyCodeLine{411 }
+\DoxyCodeLine{412     VkShaderModule m\_vertShaderModule;}
+\DoxyCodeLine{413     VkShaderModule m\_fragShaderModule;}
+\DoxyCodeLine{414 }
+\DoxyCodeLine{415     VkDescriptorSetLayout m\_cbDescriptorLayout;}
+\DoxyCodeLine{416 }
+\DoxyCodeLine{417     VkPipelineLayout m\_pipelineLayout;}
+\DoxyCodeLine{418     VkRenderPass     m\_renderPass;}
+\DoxyCodeLine{419     VkPipeline       m\_graphicsPipeline;}
+\DoxyCodeLine{420 }
+\DoxyCodeLine{421     VkBuffer m\_cbMatrices[vulkan::VulkanSurface::scm\_numFrames];}
+\DoxyCodeLine{422     VkDeviceMemory m\_cbMatricesMemory[vulkan::VulkanSurface::scm\_numFrames];}
+\DoxyCodeLine{423 }
+\DoxyCodeLine{424     VkBuffer m\_cbMaterials[vulkan::VulkanSurface::scm\_numFrames];}
+\DoxyCodeLine{425     VkDeviceMemory m\_cbMaterialsMemory[vulkan::VulkanSurface::scm\_numFrames];}
+\DoxyCodeLine{426 }
+\DoxyCodeLine{427     VkDescriptorPool m\_descriptorPool;}
+\DoxyCodeLine{428     VkDescriptorSet  m\_cbSets[vulkan::VulkanSurface::scm\_numFrames];}
 \DoxyCodeLine{429 }
-\DoxyCodeLine{430     VkPipelineLayout m\_pipelineLayout;}
-\DoxyCodeLine{431     VkRenderPass     m\_renderPass;}
-\DoxyCodeLine{432     VkPipeline       m\_graphicsPipeline;}
-\DoxyCodeLine{433 }
-\DoxyCodeLine{434     VkBuffer m\_cbMatrices[vulkan::VulkanSurface::scm\_numFrames];}
-\DoxyCodeLine{435     VkDeviceMemory m\_cbMatricesMemory[vulkan::VulkanSurface::scm\_numFrames];}
-\DoxyCodeLine{436 }
-\DoxyCodeLine{437     VkBuffer m\_cbMaterials[vulkan::VulkanSurface::scm\_numFrames];}
-\DoxyCodeLine{438     VkDeviceMemory m\_cbMaterialsMemory[vulkan::VulkanSurface::scm\_numFrames];}
+\DoxyCodeLine{430     VkDescriptorSetLayout m\_bindlessTextureDescriptorLayout;}
+\DoxyCodeLine{431     \textcolor{keyword}{static} \textcolor{keyword}{const} mUInt sm\_sizeDescriptorPool = 32;}
+\DoxyCodeLine{432     VkDescriptorPool m\_textureDescriptorPool;}
+\DoxyCodeLine{433     VkDescriptorSet m\_bindlessTextureDescriptorSet;}
+\DoxyCodeLine{434 }
+\DoxyCodeLine{435     std::vector<VkImage> m\_pTextureImages\{\};}
+\DoxyCodeLine{436     std::vector<VkDeviceMemory> m\_pTextureMemory\{\};}
+\DoxyCodeLine{437 }
+\DoxyCodeLine{438     std::vector<VkImageView> m\_imageViews\{\};}
 \DoxyCodeLine{439 }
-\DoxyCodeLine{440     VkDescriptorPool m\_descriptorPool;}
-\DoxyCodeLine{441     VkDescriptorSet  m\_cbSets[vulkan::VulkanSurface::scm\_numFrames];}
-\DoxyCodeLine{442 }
-\DoxyCodeLine{443     VkDescriptorSetLayout m\_bindlessTextureDescriptorLayout;}
-\DoxyCodeLine{444     \textcolor{keyword}{static} \textcolor{keyword}{const} mUInt sm\_sizeDescriptorPool = 32;}
-\DoxyCodeLine{445     VkDescriptorPool m\_textureDescriptorPool;}
-\DoxyCodeLine{446     VkDescriptorSet m\_bindlessTextureDescriptorSet;}
-\DoxyCodeLine{447 }
-\DoxyCodeLine{448     std::vector<VkImage> m\_pTextureImages\{\};}
-\DoxyCodeLine{449     std::vector<VkDeviceMemory> m\_pTextureMemory\{\};}
-\DoxyCodeLine{450 }
-\DoxyCodeLine{451     std::vector<VkImageView> m\_imageViews\{\};}
-\DoxyCodeLine{452 }
-\DoxyCodeLine{453     VkSampler m\_textureSampler;}
-\DoxyCodeLine{454 }
-\DoxyCodeLine{455     mUInt m\_i = 0;}
-\DoxyCodeLine{456 \};)}
-\DoxyCodeLine{457 }
-\DoxyCodeLine{458 \}  \textcolor{comment}{// namespace m::render}}
-\DoxyCodeLine{459 }
-\DoxyCodeLine{460 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_RenderTaskDearImGui}}
+\DoxyCodeLine{440     VkSampler m\_textureSampler;}
+\DoxyCodeLine{441 }
+\DoxyCodeLine{442     mUInt m\_i = 0;}
+\DoxyCodeLine{443 \};)}
+\DoxyCodeLine{444 }
+\DoxyCodeLine{445 \}  \textcolor{comment}{// namespace m::render}}
+\DoxyCodeLine{446 }
+\DoxyCodeLine{447 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_RenderTaskDearImGui}}
 
 \end{DoxyCode}

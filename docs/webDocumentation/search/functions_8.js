@@ -7,7 +7,10 @@ var searchData=
   ['mmouseaction_4',['mMouseAction',['../structm_1_1input_1_1m_mouse_action.html#a28d097d5f3db0fd78e8948d4c95aac0d',1,'m::input::mMouseAction::mMouseAction()=default'],['../structm_1_1input_1_1m_mouse_action.html#a8ffb6cc294108ca0db6039732a9d5a5e',1,'m::input::mMouseAction::mMouseAction(const mMouseAction &amp;a_MouseAction)=default'],['../structm_1_1input_1_1m_mouse_action.html#a9c6ee0bfd836f9b25d496d49a4ddea53',1,'m::input::mMouseAction::mMouseAction(mInputType a_action, mKeyMod a_keyMod, mMouseButton a_button)']]],
   ['mousepressed_5',['mousePressed',['../structm_1_1input_1_1m_mouse_action.html#a2b10826d1c50fa73a9d4e6469d1bb001',1,'m::input::mMouseAction']]],
   ['mousereleased_6',['mouseReleased',['../structm_1_1input_1_1m_mouse_action.html#af52d6a909c1e3f959ad9015bb8001ed8',1,'m::input::mMouseAction']]],
-  ['mraiitiming_7',['mRAIITiming',['../group___core.html#ga848799fdd49850bb562058bbe7ca8897',1,'m::profile::mRAIITiming']]],
-  ['mstdcoutlogpolicy_8',['mStdcoutLogPolicy',['../classm_1_1logging_1_1m_stdcout_log_policy.html#aed487acf90165eb431b9a2b521d20610',1,'m::logging::mStdcoutLogPolicy']]],
-  ['mxorandomnumbergenerator_9',['mXoRandomNumberGenerator',['../classm_1_1math_1_1m_xo_random_number_generator.html#a19b46ac054019318c8d2ed23cc710f49',1,'m::math::mXoRandomNumberGenerator']]]
+  ['mquaternion_7',['mQuaternion',['../structm_1_1math_1_1m_quaternion.html#aad45186997549efee7dada454da62516',1,'m::math::mQuaternion::mQuaternion(mVec3 const &amp;a_fromDirection, mVec3 const &amp;a_toDirection)'],['../structm_1_1math_1_1m_quaternion.html#aa581042067f64bf4c4c4fd68db5aa068',1,'m::math::mQuaternion::mQuaternion(mFloat a_x, mFloat a_y, mFloat a_z, mFloat a_w)']]],
+  ['mraiitiming_8',['mRAIITiming',['../group___core.html#ga848799fdd49850bb562058bbe7ca8897',1,'m::profile::mRAIITiming']]],
+  ['mserializerifstream_9',['mSerializerIfstream',['../classm_1_1serializer_1_1m_serializer_ifstream.html#a28d5a3b42a17ef1755bb5e56b01493fe',1,'m::serializer::mSerializerIfstream']]],
+  ['mserializerofstream_10',['mSerializerOfstream',['../classm_1_1serializer_1_1m_serializer_ofstream.html#ad38f489dcd8ffa1fd7058522cd0ab597',1,'m::serializer::mSerializerOfstream']]],
+  ['mstdcoutlogpolicy_11',['mStdcoutLogPolicy',['../classm_1_1logging_1_1m_stdcout_log_policy.html#aed487acf90165eb431b9a2b521d20610',1,'m::logging::mStdcoutLogPolicy']]],
+  ['mxorandomnumbergenerator_12',['mXoRandomNumberGenerator',['../classm_1_1math_1_1m_xo_random_number_generator.html#a19b46ac054019318c8d2ed23cc710f49',1,'m::math::mXoRandomNumberGenerator']]]
 ];

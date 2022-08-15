@@ -181,6 +181,8 @@
 \input{modules}
 \chapter{Namespace Index}
 \input{namespaces}
+\chapter{Concept Index}
+\input{concepts}
 \chapter{Hierarchical Index}
 \input{hierarchy}
 \chapter{Class Index}
@@ -189,6 +191,7 @@
 \input{files}
 \chapter{Module Documentation}
 \input{group___core}
+\input{group___serialization}
 \input{group___graphics}
 \input{group___render}
 \chapter{Namespace Documentation}
@@ -199,7 +202,11 @@
 \input{namespacem_1_1input}
 \input{namespacem_1_1logging}
 \input{namespacem_1_1math}
+\input{namespacem_1_1serializer}
+\chapter{Concept Documentation}
+\input{conceptm_custom_serializable}
 \chapter{Class Documentation}
+\input{structm_1_1render_1_1_basic_vertex}
 \input{structm_1_1render_1_1_buffer_base}
 \input{structm_1_1dx12_1_1_d_x12_command_queue_1_1_command_allocator_entry}
 \input{structm_1_1render_1_1_data_mesh_buffer}
@@ -312,7 +319,6 @@
 \input{struct_im_vec2ih}
 \input{struct_im_vec4}
 \input{struct_im_vector}
-\input{structm_1_1aa_1_1m_adapter_1_1_init_data}
 \input{structm_1_1aa_1_1m_api_1_1_init_data}
 \input{classm_1_1render_1_1_i_renderer}
 \input{structm_1_1render_1_1_i_resource}
@@ -322,6 +328,7 @@
 \input{classm_1_1xcb__unix_1_1_i_windowed_application_impl}
 \input{classm_1_1win32_1_1_i_window_impl}
 \input{classm_1_1xcb__unix_1_1_i_window_impl}
+\input{structm_1_1aa_1_1m_adapter_1_1_limits}
 \input{structm_1_1aa_1_1m_adapter}
 \input{structm_1_1aa_1_1m_api}
 \input{structm_1_1m_basic_launch_data}
@@ -329,6 +336,7 @@
 \input{classm_1_1m_callback}
 \input{structm_1_1input_1_1m_callback_input_manager}
 \input{structm_1_1m_cmd_line}
+\input{structm_1_1aa_1_1m_device}
 \input{classm_1_1file_1_1m_fbx_importer}
 \input{classm_1_1logging_1_1m_file_log_policy}
 \input{classm_1_1application_1_1m_i_basic_application}
@@ -348,9 +356,12 @@
 \input{structm_1_1input_1_1m_mouse_action}
 \input{structm_1_1m_output}
 \input{classm_1_1profile_1_1m_profiler_multi_sampling}
+\input{structm_1_1math_1_1m_quaternion}
 \input{classm_1_1profile_1_1m_r_a_i_i_timing}
 \input{structm_1_1render_1_1_task_data2d_render_1_1m_range}
 \input{structm_1_1resource_1_1m_request_image}
+\input{classm_1_1serializer_1_1m_serializer_ifstream}
+\input{classm_1_1serializer_1_1m_serializer_ofstream}
 \input{classm_1_1m_signal}
 \input{classm_1_1math_1_1m_spherical}
 \input{classm_1_1input_1_1m_state_input_manager}
@@ -363,6 +374,7 @@
 \input{classm_1_1math_1_1m_xo_random_number_generator}
 \input{structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state}
 \input{struct_my_document}
+\input{structm_1_1aa_1_1m_adapter_1_1_properties}
 \input{struct_s_t_b___textedit_state}
 \input{structstbrp__context}
 \input{structstbrp__node}
@@ -419,10 +431,13 @@
 \input{_log_policies_8hpp_source}
 \input{_mains_8hpp_source}
 \input{_mat_8hpp_source}
+\input{_mat_glm_8hpp_source}
 \input{_math_8hpp_source}
 \input{_mat_helpers_8hpp_source}
 \input{_math_types_8hpp_source}
 \input{_profile_8hpp_source}
+\input{_quaternion_8hpp_source}
+\input{_serializable_8hpp_source}
 \input{_spherical_8hpp_source}
 \input{_state_input_manager_8hpp_source}
 \input{_types_8hpp_source}
@@ -444,6 +459,7 @@
 \input{imgui__impl__dx12_8h_source}
 \input{_renderer_d_x12_impl_8hpp_source}
 \input{_common_8hpp_source}
+\input{_render_base_8hpp_source}
 \input{_renderer_8hpp_source}
 \input{_render_task_8hpp_source}
 \input{_basic_vertex_8hpp_source}

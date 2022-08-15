@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Serializable.hpp"
 #include "BasicCpnt.hpp"
+#include <Kernel/Serializable.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -13,8 +13,9 @@ struct DisplacerCpnt
     TransformCpnt target;
     m::mBool      enabled;
 };
-mBegin_serialization(DisplacerCpnt, 1)
+mBegin_serialization(DisplacerCpnt, 1);
 
-    mSerialize_memberFrom(1, target);
+mSerialize_memberFrom(1, target);
 mSerialize_memberFrom(1, enabled);
+
 mEnd_serialization(DisplacerCpnt);

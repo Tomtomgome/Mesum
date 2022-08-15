@@ -2,6 +2,7 @@ var namespacem_1_1math =
 [
     [ "mMat", "structm_1_1math_1_1m_mat.html", null ],
     [ "mMatData", "structm_1_1math_1_1m_mat_data.html", null ],
+    [ "mQuaternion", "structm_1_1math_1_1m_quaternion.html", "structm_1_1math_1_1m_quaternion" ],
     [ "mSpherical", "classm_1_1math_1_1m_spherical.html", null ],
     [ "mVec", "structm_1_1math_1_1m_vec.html", null ],
     [ "mVecData", "structm_1_1math_1_1m_vec_data.html", null ],

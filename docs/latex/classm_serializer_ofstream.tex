@@ -1,0 +1,43 @@
+\hypertarget{classm_serializer_ofstream}{}\doxysection{m\+Serializer\+Ofstream Class Reference}
+\label{classm_serializer_ofstream}\index{mSerializerOfstream@{mSerializerOfstream}}
+
+
+Default serializer to write an object on a text file.  
+
+
+
+
+{\ttfamily \#include $<$Serializable.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{group___core_ga904231da22fbb8b9cc099a3d4201360c}{m\+Serializer\+Ofstream}} (std\+::ofstream \&a\+\_\+output\+Stream)
+\begin{DoxyCompactList}\small\item\em Construct an output text file serializer. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename t\+\_\+\+Type $>$ }\\void {\bfseries begin} (t\+\_\+\+Type \&a\+\_\+object, m\+::m\+UInt \&a\+\_\+version, std\+::string const \&a\+\_\+debug\+Name)
+\item 
+{\footnotesize template$<$typename t\+\_\+\+Type $>$ }\\void {\bfseries serialize} (t\+\_\+\+Type \&a\+\_\+object, std\+::string const \&a\+\_\+debug\+Name)
+\item 
+void {\bfseries end} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void {\bfseries print\+\_\+spacing} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+m\+::m\+UInt {\bfseries m\+\_\+spacing\+Number} = 0
+\item 
+std\+::ofstream \& {\bfseries m\+\_\+output\+Stream}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Default serializer to write an object on a text file. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Core/\+Kernel/Serializable.\+hpp\item 
+Mesum\+Core/\+Kernel/Serializable.\+cpp\end{DoxyCompactItemize}

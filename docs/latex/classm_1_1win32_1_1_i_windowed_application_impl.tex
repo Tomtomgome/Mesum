@@ -9,9 +9,12 @@ Inheritance diagram for m\+::win32\+::IWindowed\+Application\+Impl\+:\begin{figu
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classm_1_1windows_1_1m_i_window}{windows\+::m\+IWindow}} $\ast$ \mbox{\hyperlink{classm_1_1win32_1_1_i_windowed_application_impl_a7ea215560a8a2f917f40869a5446abe1}{add\+\_\+new\+Window}} (std\+::string a\+\_\+name, m\+U32 a\+\_\+width, m\+U32 a\+\_\+height) override
+\mbox{\hyperlink{classm_1_1windows_1_1m_i_window}{windows\+::m\+IWindow}} $\ast$ \mbox{\hyperlink{classm_1_1win32_1_1_i_windowed_application_impl_a62479e976a1abd292a07bc124bde8da0}{add\+\_\+new\+Window}} (std\+::string a\+\_\+name, m\+U32 a\+\_\+width, m\+U32 a\+\_\+height, m\+Bool a\+\_\+is\+Transparent) override
 \item 
 void \mbox{\hyperlink{classm_1_1win32_1_1_i_windowed_application_impl_abeabe866f4b32bd15192922eb682181e}{start\+\_\+dear\+Im\+Gui\+New\+Frame}} (\mbox{\hyperlink{classm_1_1render_1_1_i_renderer}{render\+::\+IRenderer}} const $\ast$a\+\_\+renderer) const override
+\item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_windowed_application_impl_a0a2ef7a492ebe4b5c387fcef4c5a5064}\label{classm_1_1win32_1_1_i_windowed_application_impl_a0a2ef7a492ebe4b5c387fcef4c5a5064}} 
+void {\bfseries process\+\_\+messages} ()
 \end{DoxyCompactItemize}
 \doxysubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
@@ -25,6 +28,9 @@ m\+Bool \mbox{\hyperlink{classm_1_1win32_1_1_i_windowed_application_impl_a56dcd1
 \doxysubsection*{Private Attributes}
 \begin{DoxyCompactItemize}
 \item 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_windowed_application_impl_a6cf62105c2327ec04f180faad9257c48}\label{classm_1_1win32_1_1_i_windowed_application_impl_a6cf62105c2327ec04f180faad9257c48}} 
+m\+Bool {\bfseries m\+\_\+signal\+Keep\+Running} = true
+\item 
 \mbox{\Hypertarget{classm_1_1win32_1_1_i_windowed_application_impl_acaa60f8d6a2a8c068af3c74514a0ad42}\label{classm_1_1win32_1_1_i_windowed_application_impl_acaa60f8d6a2a8c068af3c74514a0ad42}} 
 \mbox{\hyperlink{structm_1_1win32_1_1_w_i_n32_context}{WIN32\+Context}} {\bfseries m\+\_\+\+W32\+Context}
 \item 
@@ -34,11 +40,11 @@ std\+::set$<$ \mbox{\hyperlink{classm_1_1windows_1_1m_i_window}{windows\+::m\+IW
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classm_1_1win32_1_1_i_windowed_application_impl_a7ea215560a8a2f917f40869a5446abe1}\label{classm_1_1win32_1_1_i_windowed_application_impl_a7ea215560a8a2f917f40869a5446abe1}} 
+\mbox{\Hypertarget{classm_1_1win32_1_1_i_windowed_application_impl_a62479e976a1abd292a07bc124bde8da0}\label{classm_1_1win32_1_1_i_windowed_application_impl_a62479e976a1abd292a07bc124bde8da0}} 
 \index{m::win32::IWindowedApplicationImpl@{m::win32::IWindowedApplicationImpl}!add\_newWindow@{add\_newWindow}}
 \index{add\_newWindow@{add\_newWindow}!m::win32::IWindowedApplicationImpl@{m::win32::IWindowedApplicationImpl}}
 \doxysubsubsection{\texorpdfstring{add\_newWindow()}{add\_newWindow()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{classm_1_1windows_1_1m_i_window}{windows\+::m\+IWindow}} $\ast$ m\+::win32\+::\+IWindowed\+Application\+Impl\+::add\+\_\+new\+Window (\begin{DoxyParamCaption}\item[{std\+::string}]{a\+\_\+name,  }\item[{m\+U32}]{a\+\_\+width,  }\item[{m\+U32}]{a\+\_\+height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classm_1_1windows_1_1m_i_window}{windows\+::m\+IWindow}} $\ast$ m\+::win32\+::\+IWindowed\+Application\+Impl\+::add\+\_\+new\+Window (\begin{DoxyParamCaption}\item[{std\+::string}]{a\+\_\+name,  }\item[{m\+U32}]{a\+\_\+width,  }\item[{m\+U32}]{a\+\_\+height,  }\item[{m\+Bool}]{a\+\_\+is\+Transparent = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
