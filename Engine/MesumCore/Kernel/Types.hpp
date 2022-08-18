@@ -28,6 +28,9 @@ namespace m
     using mFloat  = float;
 
     using mBool = bool;
+
+    using mSize = mU64;
+    using mPtr = void*;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

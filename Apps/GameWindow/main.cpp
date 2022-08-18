@@ -1,6 +1,7 @@
 #include <Kernel/File.hpp>
 #include <Kernel/Math.hpp>
 #include <Kernel/MatHelpers.hpp>
+#include <Kernel/Memory.hpp>
 #include <MesumCore/Kernel/Image.hpp>
 #include <MesumGraphics/CrossPlatform.hpp>
 #include <MesumGraphics/DX12Renderer/DX12Context.hpp>
@@ -385,10 +386,12 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
                         m_targetController.m_targetPoint.x,
                         m_targetController.m_targetPoint.y);
             ImGui::Text("Zoom : %f", m_targetController.m_zoomLevel);
+            ImGui::Text("Default memory allocated : %d",
+                        g_memoryStats.defaultAllocsSize);
             ImGui::Checkbox("Allow Update", &m_updateScene);
             ImGui::Checkbox("Collision Debug Draw", &m_debugCollisions);
 
-            if (ImGui::Button("Reset cene"))
+            if (ImGui::Button("Reset scene"))
             {
                 m_componentManager.reset();
             }

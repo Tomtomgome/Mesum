@@ -29,3 +29,5 @@
 #if defined _M_WINDOWED
 #define M_WINDOWED_APP
 #endif //_M_WINDOWED
+
+#define M_TRACK_MEMORY_ALLOCATIONS
