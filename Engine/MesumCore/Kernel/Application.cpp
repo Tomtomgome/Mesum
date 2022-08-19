@@ -1,4 +1,6 @@
-#include <Application.hpp>
+#include "Application.hpp"
+#include "memory.hpp"
+
 #include <chrono>
 #include <thread>
 
@@ -12,6 +14,7 @@ namespace m::application
 //-----------------------------------------------------------------------------
 void mILoopApplication::launch(mCmdLine const& a_cmdLine, void* a_appData)
 {
+    memory::initialize_memoryTracking();
     init(a_cmdLine, a_appData);
 
     while (step())
@@ -20,6 +23,7 @@ void mILoopApplication::launch(mCmdLine const& a_cmdLine, void* a_appData)
     }
 
     destroy();
+    memory::terminate_memoryTracking();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -30,6 +34,7 @@ void mILoopApplication::launch(mCmdLine const& a_cmdLine, void* a_appData)
 //-----------------------------------------------------------------------------
 void mITimedLoopApplication::launch(mCmdLine const& a_cmdLine, void* a_appData)
 {
+    memory::initialize_memoryTracking();
     init(a_cmdLine, a_appData);
 
     auto start = std::chrono::high_resolution_clock::now();
@@ -47,5 +52,6 @@ void mITimedLoopApplication::launch(mCmdLine const& a_cmdLine, void* a_appData)
     } while (step(deltaTime));
 
     destroy();
+    memory::terminate_memoryTracking();
 }
 }  // namespace m::application

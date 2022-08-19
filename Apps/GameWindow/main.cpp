@@ -387,7 +387,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
                         m_targetController.m_targetPoint.y);
             ImGui::Text("Zoom : %f", m_targetController.m_zoomLevel);
             ImGui::Text("Default memory allocated : %d",
-                        g_memoryStats.defaultAllocsSize);
+                        mInt(memory::g_memStats.globalAllocationSizes));
             ImGui::Checkbox("Allow Update", &m_updateScene);
             ImGui::Checkbox("Collision Debug Draw", &m_debugCollisions);
 
