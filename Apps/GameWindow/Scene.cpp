@@ -27,7 +27,8 @@ ModelBank g_modelBank;
 //-----------------------------------------------------------------------------
 void ModelBank::load()
 {
-    models.clear();
+    unload();
+
     std::filesystem::path currentPath = std::filesystem::current_path();
     std::filesystem::path modelsPath{currentPath / "data" / "models"};
     for (const auto& entry : std::filesystem::directory_iterator{modelsPath})
