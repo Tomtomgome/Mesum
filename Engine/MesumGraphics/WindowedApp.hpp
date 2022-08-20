@@ -64,7 +64,7 @@ LPSTR* CommandLineToArgvA(LPWSTR lpWCmdLine, INT* pNumArgs);
         data.m_hInstance = hInstance;                                        \
         data.m_nCmdShow  = nCmdShow;                                         \
         m::init_console();                                                   \
-        m::internal_run<AppClass>(cmdLine, &data);                           \
+        m::run_internal<AppClass>(cmdLine, &data);                           \
         FreeConsole();                                                       \
         return 0;                                                            \
     }
@@ -81,7 +81,7 @@ struct WindowedLaunchData
         m::WindowedLaunchData data;                \
         m::mCmdLine           cmdLine;             \
         cmdLine.parse_cmdLineAguments(argc, argv); \
-        m::internal_run<AppClass>(cmdLine, &data); \
+        m::run_internal<AppClass>(cmdLine, &data); \
         return 0;                                  \
     }
 

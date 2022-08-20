@@ -93,7 +93,7 @@ AnimationBank g_animationBank;
 //-----------------------------------------------------------------------------
 void AnimationBank::load()
 {
-    animations.clear();
+    unload();
 
     std::filesystem::path currentPath = std::filesystem::current_path();
     std::filesystem::path animationsPath{currentPath / "data" / "animations"};
@@ -114,6 +114,15 @@ void AnimationBank::load()
             animations[anim.ID] = anim;
         }
     }
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void AnimationBank::unload()
+{
+    std::vector<Animation> empty;
+    animations.swap(empty);
 }
 
 //-----------------------------------------------------------------------------

@@ -34,6 +34,7 @@ mOutput<mImage> load_image(mRequestImage const& a_request)
     result.data.clear();
     result.data.insert(result.data.begin(), &pPixels[0],
                        &pPixels[result.width * result.height * 4]);
+    free(pPixels);
     return {ecSuccess, std::move(result)};
 }
 }  // namespace m::resource

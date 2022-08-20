@@ -89,9 +89,10 @@ mPtr allocate(m::mSize a_size)
 #ifdef M_TRACK_MEMORY_ALLOCATIONS
     mPtr p = malloc(a_size + sizeof(mSize));
     mAssert(p != nullptr);
-    memory::g_memStats.globalAllocationSizes += a_size;
     *static_cast<mSize*>(p) = a_size;
     p                       = static_cast<mU8*>(p) + sizeof(mSize);
+
+    memory::g_memStats.globalAllocationSizes += a_size;
 #else
     mPtr p = malloc(a_size);
 #endif
@@ -109,6 +110,7 @@ void deallocate(mPtr& a_object)
 
     // track amount
     mSize size = *static_cast<mSize*>(p);
+
     memory::g_memStats.globalAllocationSizes -= size;
 #else
     mPtr p = a_object;

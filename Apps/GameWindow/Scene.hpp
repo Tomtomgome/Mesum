@@ -43,6 +43,7 @@ struct ModelBank
     using ModelID = m::mInt;
 
     void load();
+    void unload();
     void save();
 
     void display_gui();

@@ -10,7 +10,7 @@
 #define MesumCoreApi
 #endif
 
-//PLatform specific
+// PLatform specific
 #if defined _DEBUG || !defined(NDEBUG)
 #define M_DEBUG
 #else
@@ -28,6 +28,8 @@
 
 #if defined _M_WINDOWED
 #define M_WINDOWED_APP
-#endif //_M_WINDOWED
+#endif  //_M_WINDOWED
 
+#ifdef M_DEBUG
 #define M_TRACK_MEMORY_ALLOCATIONS
+#endif // M_DEBUG

@@ -96,6 +96,7 @@ mEnd_serialization(Animation);
 struct AnimationBank
 {
     void load();
+    void unload();
     void save();
 
     void display_gui();

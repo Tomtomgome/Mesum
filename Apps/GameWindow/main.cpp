@@ -355,6 +355,9 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     {
         crossPlatform::IWindowedApplication::destroy();
 
+        g_animationBank.unload();
+        g_modelBank.unload();
+
         m_scene.reset();
         m_componentManager.reset();
 
