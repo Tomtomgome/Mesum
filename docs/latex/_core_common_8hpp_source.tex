@@ -14,7 +14,7 @@
 \DoxyCodeLine{10 \textcolor{preprocessor}{\#define MesumCoreApi}}
 \DoxyCodeLine{11 \textcolor{preprocessor}{\#endif}}
 \DoxyCodeLine{12 }
-\DoxyCodeLine{13 \textcolor{comment}{//PLatform specific}}
+\DoxyCodeLine{13 \textcolor{comment}{// PLatform specific}}
 \DoxyCodeLine{14 \textcolor{preprocessor}{\#if defined \_DEBUG || !defined(NDEBUG)}}
 \DoxyCodeLine{15 \textcolor{preprocessor}{\#define M\_DEBUG}}
 \DoxyCodeLine{16 \textcolor{preprocessor}{\#else}}
@@ -32,6 +32,10 @@
 \DoxyCodeLine{28 }
 \DoxyCodeLine{29 \textcolor{preprocessor}{\#if defined \_M\_WINDOWED}}
 \DoxyCodeLine{30 \textcolor{preprocessor}{\#define M\_WINDOWED\_APP}}
-\DoxyCodeLine{31 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//\_M\_WINDOWED}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{//\_M\_WINDOWED}}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#ifdef M\_DEBUG}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#define M\_TRACK\_MEMORY\_ALLOCATIONS}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// M\_DEBUG}}
 
 \end{DoxyCode}

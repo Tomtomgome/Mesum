@@ -6,6 +6,8 @@ var group___core =
     [ "m::input", "namespacem_1_1input.html", null ],
     [ "m::logging", "namespacem_1_1logging.html", null ],
     [ "m::math", "namespacem_1_1math.html", null ],
+    [ "m::memory", "namespacem_1_1memory.html", null ],
+    [ "m::memory::mConstructible", "conceptm_1_1memory_1_1m_constructible.html", null ],
     [ "m::application::mIBasicApplication", "classm_1_1application_1_1m_i_basic_application.html", [
       [ "launch", "classm_1_1application_1_1m_i_basic_application.html#a10ecb6a45dbf100c037eff46b5a1f161", null ]
     ] ],
@@ -169,6 +171,21 @@ var group___core =
       [ "m_state", "classm_1_1math_1_1m_xo_random_number_generator.html#a6ba9fdbfc115b7e57914d79cfcd77685", null ]
     ] ],
     [ "m::math::mXoRandomNumberGenerator::mXoshiro256ssState", "structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state.html", null ],
+    [ "m::memory::mMemoryStat", "structm_1_1memory_1_1m_memory_stat.html", [
+      [ "isVerbose", "group___core.html#ga113434be21754263a7764da45ef6ceb9", null ],
+      [ "name", "group___core.html#gad44d36a0c4cd777d47c32da7586a8f12", null ],
+      [ "totalAllocatedSize", "group___core.html#gaa318ba0acaf17279101c859e26cceb17", null ]
+    ] ],
+    [ "m::memory::mMemoryStats", "structm_1_1memory_1_1m_memory_stats.html", [
+      [ "globalAllocationSizes", "group___core.html#gae95126dec809b6689cc8a0b49c828658", null ],
+      [ "typedMemoryStats", "group___core.html#ga5d405d050bad14229530a277485ca30d", null ]
+    ] ],
+    [ "m::memory::mObjectAllocator", "classm_1_1memory_1_1m_object_allocator.html", [
+      [ "construct", "group___core.html#gacf827a7e9f992da1a3d73fd99ec78849", null ],
+      [ "destroy", "group___core.html#gaf1b6180dbbf03aeac3d4202113a28e70", null ],
+      [ "init", "group___core.html#ga7212aacd3c0bdcb743c0c8111e524ff1", null ],
+      [ "m_memoryType", "group___core.html#gaab127b2ed1722b618ad28e946c4a9005", null ]
+    ] ],
     [ "m::profile::mIProfiler", "classm_1_1profile_1_1m_i_profiler.html", [
       [ "add_timing", "group___core.html#gac6293026c2b1a3029978393784f14e45", null ]
     ] ],
@@ -216,15 +233,32 @@ var group___core =
     [ "mNotImplemented", "group___core.html#ga546b07714c544247ba947aab1bdec5b8", null ],
     [ "mSet_logFilter", "group___core.html#ga8ed93f4b384ddb9ce37e98d7092e04d4", null ],
     [ "mSoftAssert", "group___core.html#gaed17c7e2d6fa608a86bd77dbf44de294", null ],
+    [ "m::memory::mMemoryType", "group___core.html#gae30e3b08929d0b80e963d8d2f78ecee0", null ],
     [ "m::profile::mProfilerMultiSampling::add_timing", "group___core.html#ga9cb2380c73ae20a4b1a7cd6a854d66b8", null ],
     [ "m::profile::mIProfiler::add_timing", "group___core.html#gac6293026c2b1a3029978393784f14e45", null ],
+    [ "m::memory::allocate", "group___core.html#ga2bcddd94b87ebc4f821711be12350540", null ],
+    [ "m::memory::mObjectAllocator::construct", "group___core.html#gacf827a7e9f992da1a3d73fd99ec78849", null ],
+    [ "m::memory::create_newMemoryType", "group___core.html#ga15e54f2c88a911cb2f924ee14f1efad6", null ],
+    [ "m::memory::deallocate", "group___core.html#ga3e8a2c2093e3958307890bd0f43d9782", null ],
+    [ "m::memory::mObjectAllocator::destroy", "group___core.html#gaf1b6180dbbf03aeac3d4202113a28e70", null ],
+    [ "m::memory::mObjectAllocator::init", "group___core.html#ga7212aacd3c0bdcb743c0c8111e524ff1", null ],
+    [ "m::memory::initialize_memoryTracking", "group___core.html#gad10b6d07b493b6f616c763c6dbddcdd0", null ],
     [ "m::resource::load_image", "group___core.html#ga757ca8491b5337650385dc5453332407", null ],
+    [ "m::memory::log_memoryAllocation", "group___core.html#gad318d3ff0e85bcfd14e960980a55e048", null ],
+    [ "m::memory::log_memoryDeallocation", "group___core.html#gabeccd804a1121925e8a21d958a0cc11d", null ],
     [ "m::profile::mRAIITiming::mRAIITiming", "group___core.html#ga848799fdd49850bb562058bbe7ca8897", null ],
+    [ "m::memory::terminate_memoryTracking", "group___core.html#ga2ab061ca5eeabb00df05176d7bb17e05", null ],
     [ "m::profile::mRAIITiming::~mRAIITiming", "group___core.html#ga7ee6d3967363eec5ab00aba61b521ce6", null ],
     [ "m::resource::mImage::data", "group___core.html#ga002ad0b6468e36a0292f869a845c3c49", null ],
+    [ "m::memory::mMemoryStats::globalAllocationSizes", "group___core.html#gae95126dec809b6689cc8a0b49c828658", null ],
     [ "m::resource::mImage::height", "group___core.html#gab81a19fd597b9546705bb9ffefad10dc", null ],
+    [ "m::memory::mMemoryStat::isVerbose", "group___core.html#ga113434be21754263a7764da45ef6ceb9", null ],
+    [ "m::memory::mObjectAllocator::m_memoryType", "group___core.html#gaab127b2ed1722b618ad28e946c4a9005", null ],
     [ "m::profile::mRAIITiming::m_pParent", "group___core.html#ga1e6f6172605e1987636758efada6ee92", null ],
     [ "m::profile::mRAIITiming::m_start", "group___core.html#ga16881a589345bcb0ce7de57fc989e811", null ],
+    [ "m::memory::mMemoryStat::name", "group___core.html#gad44d36a0c4cd777d47c32da7586a8f12", null ],
     [ "m::resource::mRequestImage::path", "group___core.html#ga999843d5346e8e26c48f8ee3d41a423a", null ],
+    [ "m::memory::mMemoryStat::totalAllocatedSize", "group___core.html#gaa318ba0acaf17279101c859e26cceb17", null ],
+    [ "m::memory::mMemoryStats::typedMemoryStats", "group___core.html#ga5d405d050bad14229530a277485ca30d", null ],
     [ "m::resource::mImage::width", "group___core.html#ga6fc74eceb5f8cfc9d13ce112291811de", null ]
 ];

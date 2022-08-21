@@ -7,5 +7,6 @@ var searchData=
   ['input_4',['input',['../namespacem_1_1input.html',1,'m']]],
   ['logging_5',['logging',['../namespacem_1_1logging.html',1,'m']]],
   ['math_6',['math',['../namespacem_1_1math.html',1,'m']]],
-  ['serializer_7',['serializer',['../namespacem_1_1serializer.html',1,'m']]]
+  ['memory_7',['memory',['../namespacem_1_1memory.html',1,'m']]],
+  ['serializer_8',['serializer',['../namespacem_1_1serializer.html',1,'m']]]
 ];

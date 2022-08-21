@@ -1,0 +1,33 @@
+\hypertarget{conceptm_1_1memory_1_1m_constructible}{}\doxysection{m\+::memory\+::m\+Constructible Concept Reference}
+\label{conceptm_1_1memory_1_1m_constructible}\index{m::memory::mConstructible@{m::memory::mConstructible}}
+
+
+Concept defining objects that can be constructed with a given list of parameters.  
+
+
+
+
+{\ttfamily \#include $<$Memory.\+hpp$>$}
+
+\doxysubsection{Concept definition}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{template}<\textcolor{keyword}{typename} t\_Type, \textcolor{keyword}{typename}... t\_Arg>}
+\DoxyCodeLine{\textcolor{keyword}{concept }\mbox{\hyperlink{conceptm_1_1memory_1_1m_constructible}{m::memory::mConstructible}} =  \textcolor{keyword}{requires}(t\_Arg... a\_args)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{    \textcolor{keyword}{new} t\_Type(a\_args...);}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Detailed Description}
+Concept defining objects that can be constructed with a given list of parameters. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em t\+\_\+\+Type} & The type of object to construct \\
+\hline
+{\em t\+\_\+\+Arg} & The list of arguments used for construction \\
+\hline
+\end{DoxyTemplParams}

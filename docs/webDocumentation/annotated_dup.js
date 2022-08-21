@@ -17,7 +17,9 @@ var annotated_dup =
         [ "DX12Context", "classm_1_1dx12_1_1_d_x12_context.html", null ],
         [ "DX12Renderer", "classm_1_1dx12_1_1_d_x12_renderer.html", null ],
         [ "DX12RenderTaskset", "structm_1_1dx12_1_1_d_x12_render_taskset.html", null ],
-        [ "DX12Surface", "classm_1_1dx12_1_1_d_x12_surface.html", null ]
+        [ "DX12Surface", "classm_1_1dx12_1_1_d_x12_surface.html", null ],
+        [ "mApiDX12", "classm_1_1dx12_1_1m_api_d_x12.html", null ],
+        [ "mSwapchainDX12", "classm_1_1dx12_1_1m_swapchain_d_x12.html", null ]
       ] ],
       [ "file", null, [
         [ "mFbxImporter", "classm_1_1file_1_1m_fbx_importer.html", null ]
@@ -47,6 +49,11 @@ var annotated_dup =
         [ "mVecData< t_T, 4 >", "structm_1_1math_1_1m_vec_data_3_01t___t_00_014_01_4.html", null ],
         [ "mXoRandomNumberGenerator", "classm_1_1math_1_1m_xo_random_number_generator.html", "classm_1_1math_1_1m_xo_random_number_generator" ]
       ] ],
+      [ "memory", "namespacem_1_1memory.html", [
+        [ "mMemoryStat", "structm_1_1memory_1_1m_memory_stat.html", "structm_1_1memory_1_1m_memory_stat" ],
+        [ "mMemoryStats", "structm_1_1memory_1_1m_memory_stats.html", "structm_1_1memory_1_1m_memory_stats" ],
+        [ "mObjectAllocator", "classm_1_1memory_1_1m_object_allocator.html", "classm_1_1memory_1_1m_object_allocator" ]
+      ] ],
       [ "profile", null, [
         [ "mIProfiler", "classm_1_1profile_1_1m_i_profiler.html", "classm_1_1profile_1_1m_i_profiler" ],
         [ "mProfilerMultiSampling", "classm_1_1profile_1_1m_profiler_multi_sampling.html", "classm_1_1profile_1_1m_profiler_multi_sampling" ],
@@ -61,6 +68,8 @@ var annotated_dup =
         [ "IResource", "structm_1_1render_1_1_i_resource.html", "structm_1_1render_1_1_i_resource" ],
         [ "ISurface", "classm_1_1render_1_1_i_surface.html", "classm_1_1render_1_1_i_surface" ],
         [ "mBasicVertex", "structm_1_1render_1_1m_basic_vertex.html", null ],
+        [ "mIApi", "classm_1_1render_1_1m_i_api.html", null ],
+        [ "mISwapchain", "classm_1_1render_1_1m_i_swapchain.html", null ],
         [ "mMesh", "structm_1_1render_1_1m_mesh.html", null ],
         [ "Task", "structm_1_1render_1_1_task.html", null ],
         [ "Task2dRender", "structm_1_1render_1_1_task2d_render.html", null ],

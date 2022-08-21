@@ -132,6 +132,9 @@ var hierarchy =
     [ "m::mCmdLine", "structm_1_1m_cmd_line.html", null ],
     [ "m::aa::mDevice", "structm_1_1aa_1_1m_device.html", null ],
     [ "m::file::mFbxImporter", "classm_1_1file_1_1m_fbx_importer.html", null ],
+    [ "m::render::mIApi", "classm_1_1render_1_1m_i_api.html", [
+      [ "m::dx12::mApiDX12", "classm_1_1dx12_1_1m_api_d_x12.html", null ]
+    ] ],
     [ "m::application::mIBasicApplication", "classm_1_1application_1_1m_i_basic_application.html", [
       [ "m::application::mILoopApplication", "classm_1_1application_1_1m_i_loop_application.html", null ],
       [ "m::application::mITimedLoopApplication", "classm_1_1application_1_1m_i_timed_loop_application.html", [
@@ -154,6 +157,9 @@ var hierarchy =
     [ "m::profile::mIProfiler", "classm_1_1profile_1_1m_i_profiler.html", [
       [ "m::profile::mProfilerMultiSampling< t_SampleCount >", "classm_1_1profile_1_1m_profiler_multi_sampling.html", null ]
     ] ],
+    [ "m::render::mISwapchain", "classm_1_1render_1_1m_i_swapchain.html", [
+      [ "m::dx12::mSwapchainDX12", "classm_1_1dx12_1_1m_swapchain_d_x12.html", null ]
+    ] ],
     [ "m::windows::mIWindow", "classm_1_1windows_1_1m_i_window.html", [
       [ "m::win32::IWindowImpl", "classm_1_1win32_1_1_i_window_impl.html", null ],
       [ "m::xcb_unix::IWindowImpl", "classm_1_1xcb__unix_1_1_i_window_impl.html", null ]
@@ -163,8 +169,11 @@ var hierarchy =
     [ "m::math::mMatData< t_T, t_N, t_M >", "structm_1_1math_1_1m_mat_data.html", [
       [ "m::math::mMat< t_T, t_N, t_M >", "structm_1_1math_1_1m_mat.html", null ]
     ] ],
+    [ "m::memory::mMemoryStat", "structm_1_1memory_1_1m_memory_stat.html", null ],
+    [ "m::memory::mMemoryStats", "structm_1_1memory_1_1m_memory_stats.html", null ],
     [ "m::render::mMesh", "structm_1_1render_1_1m_mesh.html", null ],
     [ "m::input::mMouseAction", "structm_1_1input_1_1m_mouse_action.html", null ],
+    [ "m::memory::mObjectAllocator", "classm_1_1memory_1_1m_object_allocator.html", null ],
     [ "m::mOutput< t_Output >", "structm_1_1m_output.html", null ],
     [ "m::profile::mRAIITiming", "classm_1_1profile_1_1m_r_a_i_i_timing.html", null ],
     [ "m::render::TaskData2dRender::mRange", "structm_1_1render_1_1_task_data2d_render_1_1m_range.html", null ],

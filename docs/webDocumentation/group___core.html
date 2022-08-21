@@ -86,8 +86,10 @@ $(document).ready(function(){initNavTree('group___core.html',''); initResizable(
   <div class="summary">
 <a href="#groups">Modules</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#concepts">Concepts</a> &#124;
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#define-members">Macros</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">Core</div></div>
@@ -118,6 +120,15 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacem_1_1math"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacem_1_1math.html">m::math</a></td></tr>
 <tr class="memdesc:namespacem_1_1math"><td class="mdescLeft">&#160;</td><td class="mdescRight">Namespace for math related utils. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacem_1_1memory"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacem_1_1memory.html">m::memory</a></td></tr>
+<tr class="memdesc:namespacem_1_1memory"><td class="mdescLeft">&#160;</td><td class="mdescRight">Namespace grouping memory utilities. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="concepts" name="concepts"></a>
+Concepts</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptm_1_1memory_1_1m_constructible.html">m::memory::mConstructible</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Concept defining objects that can be constructed with a given list of parameters. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -189,6 +200,15 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state.html">m::math::mXoRandomNumberGenerator::mXoshiro256ssState</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">State of the xoshiro algorithm.  <a href="structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structm_1_1memory_1_1m_memory_stat.html">m::memory::mMemoryStat</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stat for a type of memory.  <a href="structm_1_1memory_1_1m_memory_stat.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structm_1_1memory_1_1m_memory_stats.html">m::memory::mMemoryStats</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Groups all stats for memory.  <a href="structm_1_1memory_1_1m_memory_stats.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1memory_1_1m_object_allocator.html">m::memory::mObjectAllocator</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Basic allocator allowing to log memory debug stats.  <a href="classm_1_1memory_1_1m_object_allocator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classm_1_1profile_1_1m_i_profiler.html">m::profile::mIProfiler</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface core to profiling.  <a href="classm_1_1profile_1_1m_i_profiler.html#details">More...</a><br /></td></tr>
@@ -331,6 +351,13 @@ Macros</h2></td></tr>
 <tr class="memitem:ga7f261fc0f748a3255c4e49232ac12501"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#ga7f261fc0f748a3255c4e49232ac12501">M_MAT4_GLM_TO_MESUM</a>(glmMat4)</td></tr>
 <tr class="separator:ga7f261fc0f748a3255c4e49232ac12501"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:gae30e3b08929d0b80e963d8d2f78ecee0"><td class="memItemLeft" align="right" valign="top"><a id="gae30e3b08929d0b80e963d8d2f78ecee0" name="gae30e3b08929d0b80e963d8d2f78ecee0"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>m::memory::mMemoryType</b> = mUInt</td></tr>
+<tr class="memdesc:gae30e3b08929d0b80e963d8d2f78ecee0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of memory used for debug information memory types ARE NOT THREAD SAFE. <br /></td></tr>
+<tr class="separator:gae30e3b08929d0b80e963d8d2f78ecee0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:gae7c4fc68e739a7db1c12af48cad59e7c"><td class="memItemLeft" align="right" valign="top"><a id="gae7c4fc68e739a7db1c12af48cad59e7c" name="gae7c4fc68e739a7db1c12af48cad59e7c"></a>
@@ -339,6 +366,39 @@ mBool&#160;</td><td class="memItemRight" valign="bottom"><b>m::file::mFbxImporte
 <tr class="memitem:ga757ca8491b5337650385dc5453332407"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structm_1_1m_output.html">mOutput</a>&lt; <a class="el" href="structm_1_1resource_1_1m_image.html">mImage</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#ga757ca8491b5337650385dc5453332407">m::resource::load_image</a> (<a class="el" href="structm_1_1resource_1_1m_request_image.html">mRequestImage</a> const  &amp;a_request)</td></tr>
 <tr class="memdesc:ga757ca8491b5337650385dc5453332407"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads an image from the disk through a request.  <a href="group___core.html#ga757ca8491b5337650385dc5453332407">More...</a><br /></td></tr>
 <tr class="separator:ga757ca8491b5337650385dc5453332407"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad10b6d07b493b6f616c763c6dbddcdd0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#gad10b6d07b493b6f616c763c6dbddcdd0">m::memory::initialize_memoryTracking</a> ()</td></tr>
+<tr class="memdesc:gad10b6d07b493b6f616c763c6dbddcdd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize memory tracking.  <a href="group___core.html#gad10b6d07b493b6f616c763c6dbddcdd0">More...</a><br /></td></tr>
+<tr class="separator:gad10b6d07b493b6f616c763c6dbddcdd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2ab061ca5eeabb00df05176d7bb17e05"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#ga2ab061ca5eeabb00df05176d7bb17e05">m::memory::terminate_memoryTracking</a> ()</td></tr>
+<tr class="memdesc:ga2ab061ca5eeabb00df05176d7bb17e05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Terminate memory tracking, check for memory leaks.  <a href="group___core.html#ga2ab061ca5eeabb00df05176d7bb17e05">More...</a><br /></td></tr>
+<tr class="separator:ga2ab061ca5eeabb00df05176d7bb17e05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga15e54f2c88a911cb2f924ee14f1efad6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___core.html#gae30e3b08929d0b80e963d8d2f78ecee0">mMemoryType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#ga15e54f2c88a911cb2f924ee14f1efad6">m::memory::create_newMemoryType</a> (std::string const  &amp;a_name)</td></tr>
+<tr class="memdesc:ga15e54f2c88a911cb2f924ee14f1efad6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new memory type.  <a href="group___core.html#ga15e54f2c88a911cb2f924ee14f1efad6">More...</a><br /></td></tr>
+<tr class="separator:ga15e54f2c88a911cb2f924ee14f1efad6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad318d3ff0e85bcfd14e960980a55e048"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#gad318d3ff0e85bcfd14e960980a55e048">m::memory::log_memoryAllocation</a> (<a class="el" href="group___core.html#gae30e3b08929d0b80e963d8d2f78ecee0">mMemoryType</a> a_type, mSize a_size)</td></tr>
+<tr class="memdesc:gad318d3ff0e85bcfd14e960980a55e048"><td class="mdescLeft">&#160;</td><td class="mdescRight">Record stats for a allocation of a certain memory type.  <a href="group___core.html#gad318d3ff0e85bcfd14e960980a55e048">More...</a><br /></td></tr>
+<tr class="separator:gad318d3ff0e85bcfd14e960980a55e048"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabeccd804a1121925e8a21d958a0cc11d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#gabeccd804a1121925e8a21d958a0cc11d">m::memory::log_memoryDeallocation</a> (<a class="el" href="group___core.html#gae30e3b08929d0b80e963d8d2f78ecee0">mMemoryType</a> a_type, mSize a_size)</td></tr>
+<tr class="memdesc:gabeccd804a1121925e8a21d958a0cc11d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Record stats for a deallocation of a certain memory type.  <a href="group___core.html#gabeccd804a1121925e8a21d958a0cc11d">More...</a><br /></td></tr>
+<tr class="separator:gabeccd804a1121925e8a21d958a0cc11d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2bcddd94b87ebc4f821711be12350540"><td class="memItemLeft" align="right" valign="top">mPtr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#ga2bcddd94b87ebc4f821711be12350540">m::memory::allocate</a> (m::mSize a_size)</td></tr>
+<tr class="memdesc:ga2bcddd94b87ebc4f821711be12350540"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal implementation of a basic allocation.  <a href="group___core.html#ga2bcddd94b87ebc4f821711be12350540">More...</a><br /></td></tr>
+<tr class="separator:ga2bcddd94b87ebc4f821711be12350540"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3e8a2c2093e3958307890bd0f43d9782"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#ga3e8a2c2093e3958307890bd0f43d9782">m::memory::deallocate</a> (mPtr &amp;a_object)</td></tr>
+<tr class="memdesc:ga3e8a2c2093e3958307890bd0f43d9782"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal implementation of a basic deallocation.  <a href="group___core.html#ga3e8a2c2093e3958307890bd0f43d9782">More...</a><br /></td></tr>
+<tr class="separator:ga3e8a2c2093e3958307890bd0f43d9782"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7212aacd3c0bdcb743c0c8111e524ff1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#ga7212aacd3c0bdcb743c0c8111e524ff1">m::memory::mObjectAllocator::init</a> (<a class="el" href="group___core.html#gae30e3b08929d0b80e963d8d2f78ecee0">mMemoryType</a> const &amp;a_memoryType)</td></tr>
+<tr class="memdesc:ga7212aacd3c0bdcb743c0c8111e524ff1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the allocator.  <a href="group___core.html#ga7212aacd3c0bdcb743c0c8111e524ff1">More...</a><br /></td></tr>
+<tr class="separator:ga7212aacd3c0bdcb743c0c8111e524ff1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacf827a7e9f992da1a3d73fd99ec78849"><td class="memTemplParams" colspan="2">template&lt;typename t_Type , typename... t_Arg&gt; <br />
+requires memory::mConstructible&lt;t_Type, t_Arg...&gt;</td></tr>
+<tr class="memitem:gacf827a7e9f992da1a3d73fd99ec78849"><td class="memTemplItemLeft" align="right" valign="top">t_Type *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___core.html#gacf827a7e9f992da1a3d73fd99ec78849">m::memory::mObjectAllocator::construct</a> (t_Arg... a_args)</td></tr>
+<tr class="memdesc:gacf827a7e9f992da1a3d73fd99ec78849"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new object.  <a href="group___core.html#gacf827a7e9f992da1a3d73fd99ec78849">More...</a><br /></td></tr>
+<tr class="separator:gacf827a7e9f992da1a3d73fd99ec78849"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf1b6180dbbf03aeac3d4202113a28e70"><td class="memTemplParams" colspan="2">template&lt;typename t_Type &gt; </td></tr>
+<tr class="memitem:gaf1b6180dbbf03aeac3d4202113a28e70"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___core.html#gaf1b6180dbbf03aeac3d4202113a28e70">m::memory::mObjectAllocator::destroy</a> (t_Type *a_object)</td></tr>
+<tr class="memdesc:gaf1b6180dbbf03aeac3d4202113a28e70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deconstruct an object.  <a href="group___core.html#gaf1b6180dbbf03aeac3d4202113a28e70">More...</a><br /></td></tr>
+<tr class="separator:gaf1b6180dbbf03aeac3d4202113a28e70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac6293026c2b1a3029978393784f14e45"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___core.html#gac6293026c2b1a3029978393784f14e45">m::profile::mIProfiler::add_timing</a> (std::chrono::steady_clock::duration a_timming)=0</td></tr>
 <tr class="memdesc:gac6293026c2b1a3029978393784f14e45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a timming data to a profiler.  <a href="group___core.html#gac6293026c2b1a3029978393784f14e45">More...</a><br /></td></tr>
 <tr class="separator:gac6293026c2b1a3029978393784f14e45"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -377,6 +437,33 @@ mInt&#160;</td><td class="memItemRight" valign="bottom"><b>m::resource::mImage::
 std::vector&lt; mU8 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m::resource::mImage::data</b> {}</td></tr>
 <tr class="memdesc:ga002ad0b6468e36a0292f869a845c3c49"><td class="mdescLeft">&#160;</td><td class="mdescRight">The array of values for each channel of each pixel. <br /></td></tr>
 <tr class="separator:ga002ad0b6468e36a0292f869a845c3c49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad44d36a0c4cd777d47c32da7586a8f12"><td class="memItemLeft" align="right" valign="top"><a id="gad44d36a0c4cd777d47c32da7586a8f12" name="gad44d36a0c4cd777d47c32da7586a8f12"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>m::memory::mMemoryStat::name</b> {}</td></tr>
+<tr class="memdesc:gad44d36a0c4cd777d47c32da7586a8f12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the memory type. <br /></td></tr>
+<tr class="separator:gad44d36a0c4cd777d47c32da7586a8f12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga113434be21754263a7764da45ef6ceb9"><td class="memItemLeft" align="right" valign="top"><a id="ga113434be21754263a7764da45ef6ceb9" name="ga113434be21754263a7764da45ef6ceb9"></a>
+mBool&#160;</td><td class="memItemRight" valign="bottom"><b>m::memory::mMemoryStat::isVerbose</b> = false</td></tr>
+<tr class="memdesc:ga113434be21754263a7764da45ef6ceb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does this type log allocation. <br /></td></tr>
+<tr class="separator:ga113434be21754263a7764da45ef6ceb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa318ba0acaf17279101c859e26cceb17"><td class="memItemLeft" align="right" valign="top"><a id="gaa318ba0acaf17279101c859e26cceb17" name="gaa318ba0acaf17279101c859e26cceb17"></a>
+mSize&#160;</td><td class="memItemRight" valign="bottom"><b>m::memory::mMemoryStat::totalAllocatedSize</b> = 0</td></tr>
+<tr class="memdesc:gaa318ba0acaf17279101c859e26cceb17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size allocated for this type. <br /></td></tr>
+<tr class="separator:gaa318ba0acaf17279101c859e26cceb17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae95126dec809b6689cc8a0b49c828658"><td class="memItemLeft" align="right" valign="top"><a id="gae95126dec809b6689cc8a0b49c828658" name="gae95126dec809b6689cc8a0b49c828658"></a>
+mSize&#160;</td><td class="memItemRight" valign="bottom"><b>m::memory::mMemoryStats::globalAllocationSizes</b></td></tr>
+<tr class="memdesc:gae95126dec809b6689cc8a0b49c828658"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of all allocations. <br /></td></tr>
+<tr class="separator:gae95126dec809b6689cc8a0b49c828658"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5d405d050bad14229530a277485ca30d"><td class="memItemLeft" align="right" valign="top"><a id="ga5d405d050bad14229530a277485ca30d" name="ga5d405d050bad14229530a277485ca30d"></a>
+std::vector&lt; <a class="el" href="structm_1_1memory_1_1m_memory_stat.html">mMemoryStat</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m::memory::mMemoryStats::typedMemoryStats</b></td></tr>
+<tr class="memdesc:ga5d405d050bad14229530a277485ca30d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stats for all memory types. <br /></td></tr>
+<tr class="separator:ga5d405d050bad14229530a277485ca30d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab13fa8d0454be8461f69821affd761ec"><td class="memItemLeft" align="right" valign="top"><a id="gab13fa8d0454be8461f69821affd761ec" name="gab13fa8d0454be8461f69821affd761ec"></a>
+<a class="el" href="structm_1_1memory_1_1m_memory_stats.html">mMemoryStats</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m::memory::g_memStats</b></td></tr>
+<tr class="separator:gab13fa8d0454be8461f69821affd761ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaab127b2ed1722b618ad28e946c4a9005"><td class="memItemLeft" align="right" valign="top"><a id="gaab127b2ed1722b618ad28e946c4a9005" name="gaab127b2ed1722b618ad28e946c4a9005"></a>
+<a class="el" href="group___core.html#gae30e3b08929d0b80e963d8d2f78ecee0">mMemoryType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m::memory::mObjectAllocator::m_memoryType</b></td></tr>
+<tr class="memdesc:gaab127b2ed1722b618ad28e946c4a9005"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type of memory used by the allocator. <br /></td></tr>
+<tr class="separator:gaab127b2ed1722b618ad28e946c4a9005"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab2103dfb51d9336e5b2eacf14e1c159c"><td class="memItemLeft" align="right" valign="top"><a id="gab2103dfb51d9336e5b2eacf14e1c159c" name="gab2103dfb51d9336e5b2eacf14e1c159c"></a>
 std::array&lt; std::chrono::steady_clock::duration, t_SampleCount &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m::profile::mProfilerMultiSampling&lt; t_SampleCount &gt;::m_samples</b> {}</td></tr>
 <tr class="separator:gab2103dfb51d9336e5b2eacf14e1c159c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -649,6 +736,230 @@ template&lt;mUInt t_SampleCount&gt; </div>
 
 </div>
 </div>
+<a id="ga2bcddd94b87ebc4f821711be12350540" name="ga2bcddd94b87ebc4f821711be12350540"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2bcddd94b87ebc4f821711be12350540">&#9670;&nbsp;</a></span>allocate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">mPtr m::memory::allocate </td>
+          <td>(</td>
+          <td class="paramtype">m::mSize&#160;</td>
+          <td class="paramname"><em>a_size</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Internal implementation of a basic allocation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a_size</td><td>The size of the allocation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a pointer to the newly allocated memory </dd></dl>
+
+</div>
+</div>
+<a id="gacf827a7e9f992da1a3d73fd99ec78849" name="gacf827a7e9f992da1a3d73fd99ec78849"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacf827a7e9f992da1a3d73fd99ec78849">&#9670;&nbsp;</a></span>construct()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename t_Type , typename... t_Arg&gt; <br />
+requires memory::mConstructible&lt;t_Type, t_Arg...&gt;</div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">t_Type * m::memory::mObjectAllocator::construct </td>
+          <td>(</td>
+          <td class="paramtype">t_Arg...&#160;</td>
+          <td class="paramname"><em>a_args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Construct a new object. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">t_Type</td><td>The type of object to construct </td></tr>
+    <tr><td class="paramname">t_Arg</td><td>The list of type of arguments to pass the constructor </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a_args</td><td>The list of parameters to pass the constructor </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to the newly created object </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>allocated object must be deallocated using the same allocator </dd></dl>
+
+</div>
+</div>
+<a id="ga15e54f2c88a911cb2f924ee14f1efad6" name="ga15e54f2c88a911cb2f924ee14f1efad6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga15e54f2c88a911cb2f924ee14f1efad6">&#9670;&nbsp;</a></span>create_newMemoryType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___core.html#gae30e3b08929d0b80e963d8d2f78ecee0">mMemoryType</a> m::memory::create_newMemoryType </td>
+          <td>(</td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>a_name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Create a new memory type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a_name</td><td>The name of the new memory type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The memory type newly created </dd></dl>
+
+</div>
+</div>
+<a id="ga3e8a2c2093e3958307890bd0f43d9782" name="ga3e8a2c2093e3958307890bd0f43d9782"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3e8a2c2093e3958307890bd0f43d9782">&#9670;&nbsp;</a></span>deallocate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void m::memory::deallocate </td>
+          <td>(</td>
+          <td class="paramtype">mPtr &amp;&#160;</td>
+          <td class="paramname"><em>a_object</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Internal implementation of a basic deallocation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a_object</td><td>The pointer to the object to deallocate </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="gaf1b6180dbbf03aeac3d4202113a28e70" name="gaf1b6180dbbf03aeac3d4202113a28e70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf1b6180dbbf03aeac3d4202113a28e70">&#9670;&nbsp;</a></span>destroy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename t_Type &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void m::memory::mObjectAllocator::destroy </td>
+          <td>(</td>
+          <td class="paramtype">t_Type *&#160;</td>
+          <td class="paramname"><em>a_object</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Deconstruct an object. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">t_Type</td><td>The type of object to deconstruct </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a_object</td><td>The pointer of the object to delete </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section pre"><dt>Precondition</dt><dd>a_object must have been allocated using the same allocator </dd></dl>
+
+</div>
+</div>
+<a id="ga7212aacd3c0bdcb743c0c8111e524ff1" name="ga7212aacd3c0bdcb743c0c8111e524ff1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7212aacd3c0bdcb743c0c8111e524ff1">&#9670;&nbsp;</a></span>init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void m::memory::mObjectAllocator::init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group___core.html#gae30e3b08929d0b80e963d8d2f78ecee0">mMemoryType</a> const &amp;&#160;</td>
+          <td class="paramname"><em>a_memoryType</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Initialize the allocator. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a_memoryType</td><td>The type of memory where to perform the allocations </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section pre"><dt>Precondition</dt><dd>the memory type must have been created using <a class="el" href="group___core.html#ga15e54f2c88a911cb2f924ee14f1efad6" title="Create a new memory type.">create_newMemoryType()</a> </dd></dl>
+
+</div>
+</div>
+<a id="gad10b6d07b493b6f616c763c6dbddcdd0" name="gad10b6d07b493b6f616c763c6dbddcdd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad10b6d07b493b6f616c763c6dbddcdd0">&#9670;&nbsp;</a></span>initialize_memoryTracking()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void m::memory::initialize_memoryTracking </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialize memory tracking. </p>
+<p >Called before application launch </p>
+
+</div>
+</div>
 <a id="ga757ca8491b5337650385dc5453332407" name="ga757ca8491b5337650385dc5453332407"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga757ca8491b5337650385dc5453332407">&#9670;&nbsp;</a></span>load_image()</h2>
 
@@ -674,6 +985,80 @@ template&lt;mUInt t_SampleCount&gt; </div>
 </dl>
 <dl class="section pre"><dt>Precondition</dt><dd>The path of the request must not be empty </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The data of the loaded image </dd></dl>
+
+</div>
+</div>
+<a id="gad318d3ff0e85bcfd14e960980a55e048" name="gad318d3ff0e85bcfd14e960980a55e048"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad318d3ff0e85bcfd14e960980a55e048">&#9670;&nbsp;</a></span>log_memoryAllocation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void m::memory::log_memoryAllocation </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group___core.html#gae30e3b08929d0b80e963d8d2f78ecee0">mMemoryType</a>&#160;</td>
+          <td class="paramname"><em>a_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">mSize&#160;</td>
+          <td class="paramname"><em>a_size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Record stats for a allocation of a certain memory type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a_type</td><td>The type of memory we are doing the allocation in </td></tr>
+    <tr><td class="paramname">a_size</td><td>The size of the allocation </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="gabeccd804a1121925e8a21d958a0cc11d" name="gabeccd804a1121925e8a21d958a0cc11d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabeccd804a1121925e8a21d958a0cc11d">&#9670;&nbsp;</a></span>log_memoryDeallocation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void m::memory::log_memoryDeallocation </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group___core.html#gae30e3b08929d0b80e963d8d2f78ecee0">mMemoryType</a>&#160;</td>
+          <td class="paramname"><em>a_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">mSize&#160;</td>
+          <td class="paramname"><em>a_size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Record stats for a deallocation of a certain memory type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a_type</td><td>The type of memory we are doing the deallocation in </td></tr>
+    <tr><td class="paramname">a_size</td><td>The size of the deallocation </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -709,6 +1094,26 @@ template&lt;mUInt t_SampleCount&gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ga2ab061ca5eeabb00df05176d7bb17e05" name="ga2ab061ca5eeabb00df05176d7bb17e05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2ab061ca5eeabb00df05176d7bb17e05">&#9670;&nbsp;</a></span>terminate_memoryTracking()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void m::memory::terminate_memoryTracking </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Terminate memory tracking, check for memory leaks. </p>
+<p >Called after application termination </p>
 
 </div>
 </div>

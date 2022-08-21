@@ -61,8 +61,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_api_abstraction_8hpp_source.html",
-"functions_enum.html",
-"struct_im_bit_vector.html"
+"dir_37cda58f759990e9dcc8b506e64e3629.html",
+"namespacem_1_1input.html#aebab0c1dd5f727ef12b5e6123eb79968",
+"structm_1_1vulkan_1_1_vulkan_render_taskset.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

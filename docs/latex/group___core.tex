@@ -22,7 +22,14 @@ namespace \mbox{\hyperlink{namespacem_1_1input}{m\+::input}}
 namespace \mbox{\hyperlink{namespacem_1_1logging}{m\+::logging}}
 \begin{DoxyCompactList}\small\item\em Namespace grouping all logging tools. \end{DoxyCompactList}\item 
 namespace \mbox{\hyperlink{namespacem_1_1math}{m\+::math}}
-\begin{DoxyCompactList}\small\item\em Namespace for math related utils. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Namespace for math related utils. \end{DoxyCompactList}\item 
+namespace \mbox{\hyperlink{namespacem_1_1memory}{m\+::memory}}
+\begin{DoxyCompactList}\small\item\em Namespace grouping memory utilities. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Concepts}
+\begin{DoxyCompactItemize}
+\item 
+concept \mbox{\hyperlink{conceptm_1_1memory_1_1m_constructible}{m\+::memory\+::m\+Constructible}}
+\begin{DoxyCompactList}\small\item\em Concept defining objects that can be constructed with a given list of parameters. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
@@ -72,6 +79,12 @@ class \mbox{\hyperlink{classm_1_1math_1_1m_xo_random_number_generator}{m\+::math
 \begin{DoxyCompactList}\small\item\em Random\+Number\+Generator using Xor\+Shift. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structm_1_1math_1_1m_xo_random_number_generator_1_1m_xoshiro256ss_state}{m\+::math\+::m\+Xo\+Random\+Number\+Generator\+::m\+Xoshiro256ss\+State}}
 \begin{DoxyCompactList}\small\item\em State of the xoshiro algorithm. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structm_1_1memory_1_1m_memory_stat}{m\+::memory\+::m\+Memory\+Stat}}
+\begin{DoxyCompactList}\small\item\em Stat for a type of memory. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structm_1_1memory_1_1m_memory_stats}{m\+::memory\+::m\+Memory\+Stats}}
+\begin{DoxyCompactList}\small\item\em Groups all stats for memory. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classm_1_1memory_1_1m_object_allocator}{m\+::memory\+::m\+Object\+Allocator}}
+\begin{DoxyCompactList}\small\item\em Basic allocator allowing to log memory debug stats. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classm_1_1profile_1_1m_i_profiler}{m\+::profile\+::m\+IProfiler}}
 \begin{DoxyCompactList}\small\item\em Interface core to profiling. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classm_1_1profile_1_1m_profiler_multi_sampling}{m\+::profile\+::m\+Profiler\+Multi\+Sampling$<$ t\+\_\+\+Sample\+Count $>$}}
@@ -180,6 +193,12 @@ struct \mbox{\hyperlink{structm_1_1math_1_1m_vec}{m\+::math\+::m\+Vec$<$ t\+\_\+
 \item 
 \#define \mbox{\hyperlink{group___core_ga7f261fc0f748a3255c4e49232ac12501}{M\+\_\+\+MAT4\+\_\+\+GLM\+\_\+\+TO\+\_\+\+MESUM}}(glm\+Mat4)
 \end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{group___core_gae30e3b08929d0b80e963d8d2f78ecee0}\label{group___core_gae30e3b08929d0b80e963d8d2f78ecee0}} 
+using {\bfseries m\+::memory\+::m\+Memory\+Type} = m\+UInt
+\begin{DoxyCompactList}\small\item\em Type of memory used for debug information memory types ARE NOT THREAD SAFE. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -188,6 +207,27 @@ m\+Bool {\bfseries m\+::file\+::m\+Fbx\+Importer\+::\+Print\+File} (std\+::strin
 \item 
 \mbox{\hyperlink{structm_1_1m_output}{m\+Output}}$<$ \mbox{\hyperlink{structm_1_1resource_1_1m_image}{m\+Image}} $>$ \mbox{\hyperlink{group___core_ga757ca8491b5337650385dc5453332407}{m\+::resource\+::load\+\_\+image}} (\mbox{\hyperlink{structm_1_1resource_1_1m_request_image}{m\+Request\+Image}} const  \&a\+\_\+request)
 \begin{DoxyCompactList}\small\item\em Loads an image from the disk through a request. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group___core_gad10b6d07b493b6f616c763c6dbddcdd0}{m\+::memory\+::initialize\+\_\+memory\+Tracking}} ()
+\begin{DoxyCompactList}\small\item\em Initialize memory tracking. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group___core_ga2ab061ca5eeabb00df05176d7bb17e05}{m\+::memory\+::terminate\+\_\+memory\+Tracking}} ()
+\begin{DoxyCompactList}\small\item\em Terminate memory tracking, check for memory leaks. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{group___core_gae30e3b08929d0b80e963d8d2f78ecee0}{m\+Memory\+Type}} \mbox{\hyperlink{group___core_ga15e54f2c88a911cb2f924ee14f1efad6}{m\+::memory\+::create\+\_\+new\+Memory\+Type}} (std\+::string const  \&a\+\_\+name)
+\begin{DoxyCompactList}\small\item\em Create a new memory type. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group___core_gad318d3ff0e85bcfd14e960980a55e048}{m\+::memory\+::log\+\_\+memory\+Allocation}} (\mbox{\hyperlink{group___core_gae30e3b08929d0b80e963d8d2f78ecee0}{m\+Memory\+Type}} a\+\_\+type, m\+Size a\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Record stats for a allocation of a certain memory type. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group___core_gabeccd804a1121925e8a21d958a0cc11d}{m\+::memory\+::log\+\_\+memory\+Deallocation}} (\mbox{\hyperlink{group___core_gae30e3b08929d0b80e963d8d2f78ecee0}{m\+Memory\+Type}} a\+\_\+type, m\+Size a\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Record stats for a deallocation of a certain memory type. \end{DoxyCompactList}\item 
+m\+Ptr \mbox{\hyperlink{group___core_ga2bcddd94b87ebc4f821711be12350540}{m\+::memory\+::allocate}} (m\+::m\+Size a\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Internal implementation of a basic allocation. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group___core_ga3e8a2c2093e3958307890bd0f43d9782}{m\+::memory\+::deallocate}} (m\+Ptr \&a\+\_\+object)
+\begin{DoxyCompactList}\small\item\em Internal implementation of a basic deallocation. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group___core_ga7212aacd3c0bdcb743c0c8111e524ff1}{m\+::memory\+::m\+Object\+Allocator\+::init}} (\mbox{\hyperlink{group___core_gae30e3b08929d0b80e963d8d2f78ecee0}{m\+Memory\+Type}} const \&a\+\_\+memory\+Type)
+\begin{DoxyCompactList}\small\item\em Initialize the allocator. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename t\+\_\+\+Type , typename... t\+\_\+\+Arg$>$ \newline
+requires memory\+::m\+Constructible$<$t\+\_\+\+Type, t\+\_\+\+Arg...$>$}\\t\+\_\+\+Type $\ast$ \mbox{\hyperlink{group___core_gacf827a7e9f992da1a3d73fd99ec78849}{m\+::memory\+::m\+Object\+Allocator\+::construct}} (t\+\_\+\+Arg... a\+\_\+args)
+\begin{DoxyCompactList}\small\item\em Construct a new object. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename t\+\_\+\+Type $>$ }\\void \mbox{\hyperlink{group___core_gaf1b6180dbbf03aeac3d4202113a28e70}{m\+::memory\+::m\+Object\+Allocator\+::destroy}} (t\+\_\+\+Type $\ast$a\+\_\+object)
+\begin{DoxyCompactList}\small\item\em Deconstruct an object. \end{DoxyCompactList}\item 
 virtual void \mbox{\hyperlink{group___core_gac6293026c2b1a3029978393784f14e45}{m\+::profile\+::m\+IProfiler\+::add\+\_\+timing}} (std\+::chrono\+::steady\+\_\+clock\+::duration a\+\_\+timming)=0
 \begin{DoxyCompactList}\small\item\em Add a timming data to a profiler. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{group___core_ga9cb2380c73ae20a4b1a7cd6a854d66b8}{m\+::profile\+::m\+Profiler\+Multi\+Sampling$<$ t\+\_\+\+Sample\+Count $>$\+::add\+\_\+timing}} (std\+::chrono\+::steady\+\_\+clock\+::duration a\+\_\+timming) override
@@ -217,6 +257,27 @@ m\+Int {\bfseries m\+::resource\+::m\+Image\+::height} \{0\}
 \mbox{\Hypertarget{group___core_ga002ad0b6468e36a0292f869a845c3c49}\label{group___core_ga002ad0b6468e36a0292f869a845c3c49}} 
 std\+::vector$<$ m\+U8 $>$ {\bfseries m\+::resource\+::m\+Image\+::data} \{\}
 \begin{DoxyCompactList}\small\item\em The array of values for each channel of each pixel. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_gad44d36a0c4cd777d47c32da7586a8f12}\label{group___core_gad44d36a0c4cd777d47c32da7586a8f12}} 
+std\+::string {\bfseries m\+::memory\+::m\+Memory\+Stat\+::name} \{\}
+\begin{DoxyCompactList}\small\item\em Name of the memory type. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_ga113434be21754263a7764da45ef6ceb9}\label{group___core_ga113434be21754263a7764da45ef6ceb9}} 
+m\+Bool {\bfseries m\+::memory\+::m\+Memory\+Stat\+::is\+Verbose} = false
+\begin{DoxyCompactList}\small\item\em Does this type log allocation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_gaa318ba0acaf17279101c859e26cceb17}\label{group___core_gaa318ba0acaf17279101c859e26cceb17}} 
+m\+Size {\bfseries m\+::memory\+::m\+Memory\+Stat\+::total\+Allocated\+Size} = 0
+\begin{DoxyCompactList}\small\item\em Size allocated for this type. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_gae95126dec809b6689cc8a0b49c828658}\label{group___core_gae95126dec809b6689cc8a0b49c828658}} 
+m\+Size {\bfseries m\+::memory\+::m\+Memory\+Stats\+::global\+Allocation\+Sizes}
+\begin{DoxyCompactList}\small\item\em Size of all allocations. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_ga5d405d050bad14229530a277485ca30d}\label{group___core_ga5d405d050bad14229530a277485ca30d}} 
+std\+::vector$<$ \mbox{\hyperlink{structm_1_1memory_1_1m_memory_stat}{m\+Memory\+Stat}} $>$ {\bfseries m\+::memory\+::m\+Memory\+Stats\+::typed\+Memory\+Stats}
+\begin{DoxyCompactList}\small\item\em Stats for all memory types. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{group___core_gab13fa8d0454be8461f69821affd761ec}\label{group___core_gab13fa8d0454be8461f69821affd761ec}} 
+\mbox{\hyperlink{structm_1_1memory_1_1m_memory_stats}{m\+Memory\+Stats}} {\bfseries m\+::memory\+::g\+\_\+mem\+Stats}
+\item 
+\mbox{\Hypertarget{group___core_gaab127b2ed1722b618ad28e946c4a9005}\label{group___core_gaab127b2ed1722b618ad28e946c4a9005}} 
+\mbox{\hyperlink{group___core_gae30e3b08929d0b80e963d8d2f78ecee0}{m\+Memory\+Type}} {\bfseries m\+::memory\+::m\+Object\+Allocator\+::m\+\_\+memory\+Type}
+\begin{DoxyCompactList}\small\item\em The type of memory used by the allocator. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{group___core_gab2103dfb51d9336e5b2eacf14e1c159c}\label{group___core_gab2103dfb51d9336e5b2eacf14e1c159c}} 
 std\+::array$<$ std\+::chrono\+::steady\+\_\+clock\+::duration, t\+\_\+\+Sample\+Count $>$ {\bfseries m\+::profile\+::m\+Profiler\+Multi\+Sampling$<$ t\+\_\+\+Sample\+Count $>$\+::m\+\_\+samples} \{\}
 \item 
@@ -404,7 +465,140 @@ Add a timming data to a profiler.
 
 Implemented in \mbox{\hyperlink{group___core_ga9cb2380c73ae20a4b1a7cd6a854d66b8}{m\+::profile\+::m\+Profiler\+Multi\+Sampling$<$ t\+\_\+\+Sample\+Count $>$}}.
 
-\mbox{\Hypertarget{group___core_ga757ca8491b5337650385dc5453332407}\label{group___core_ga757ca8491b5337650385dc5453332407}} 
+\mbox{\Hypertarget{group___core_ga2bcddd94b87ebc4f821711be12350540}\label{group___core_ga2bcddd94b87ebc4f821711be12350540}} 
+\index{Core@{Core}!allocate@{allocate}}
+\index{allocate@{allocate}!Core@{Core}}
+\doxysubsubsection{\texorpdfstring{allocate()}{allocate()}}
+{\footnotesize\ttfamily m\+Ptr m\+::memory\+::allocate (\begin{DoxyParamCaption}\item[{m\+::m\+Size}]{a\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Internal implementation of a basic allocation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+size} & The size of the allocation \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a pointer to the newly allocated memory 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group___core_gacf827a7e9f992da1a3d73fd99ec78849}\label{group___core_gacf827a7e9f992da1a3d73fd99ec78849}} 
+\index{Core@{Core}!construct@{construct}}
+\index{construct@{construct}!Core@{Core}}
+\doxysubsubsection{\texorpdfstring{construct()}{construct()}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+\+Type , typename... t\+\_\+\+Arg$>$ \newline
+requires memory\+::m\+Constructible$<$t\+\_\+\+Type, t\+\_\+\+Arg...$>$\\
+t\+\_\+\+Type $\ast$ m\+::memory\+::m\+Object\+Allocator\+::construct (\begin{DoxyParamCaption}\item[{t\+\_\+\+Arg...}]{a\+\_\+args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Construct a new object. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em t\+\_\+\+Type} & The type of object to construct \\
+\hline
+{\em t\+\_\+\+Arg} & The list of type of arguments to pass the constructor \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+args} & The list of parameters to pass the constructor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to the newly created object 
+\end{DoxyReturn}
+\begin{DoxyPostcond}{Postcondition}
+allocated object must be deallocated using the same allocator 
+\end{DoxyPostcond}
+\mbox{\Hypertarget{group___core_ga15e54f2c88a911cb2f924ee14f1efad6}\label{group___core_ga15e54f2c88a911cb2f924ee14f1efad6}} 
+\index{Core@{Core}!create\_newMemoryType@{create\_newMemoryType}}
+\index{create\_newMemoryType@{create\_newMemoryType}!Core@{Core}}
+\doxysubsubsection{\texorpdfstring{create\_newMemoryType()}{create\_newMemoryType()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{group___core_gae30e3b08929d0b80e963d8d2f78ecee0}{m\+Memory\+Type}} m\+::memory\+::create\+\_\+new\+Memory\+Type (\begin{DoxyParamCaption}\item[{std\+::string const \&}]{a\+\_\+name }\end{DoxyParamCaption})}
+
+
+
+Create a new memory type. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+name} & The name of the new memory type \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The memory type newly created 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group___core_ga3e8a2c2093e3958307890bd0f43d9782}\label{group___core_ga3e8a2c2093e3958307890bd0f43d9782}} 
+\index{Core@{Core}!deallocate@{deallocate}}
+\index{deallocate@{deallocate}!Core@{Core}}
+\doxysubsubsection{\texorpdfstring{deallocate()}{deallocate()}}
+{\footnotesize\ttfamily void m\+::memory\+::deallocate (\begin{DoxyParamCaption}\item[{m\+Ptr \&}]{a\+\_\+object }\end{DoxyParamCaption})}
+
+
+
+Internal implementation of a basic deallocation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+object} & The pointer to the object to deallocate \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group___core_gaf1b6180dbbf03aeac3d4202113a28e70}\label{group___core_gaf1b6180dbbf03aeac3d4202113a28e70}} 
+\index{Core@{Core}!destroy@{destroy}}
+\index{destroy@{destroy}!Core@{Core}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily template$<$typename t\+\_\+\+Type $>$ \\
+void m\+::memory\+::m\+Object\+Allocator\+::destroy (\begin{DoxyParamCaption}\item[{t\+\_\+\+Type $\ast$}]{a\+\_\+object }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Deconstruct an object. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em t\+\_\+\+Type} & The type of object to deconstruct \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+object} & The pointer of the object to delete \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPrecond}{Precondition}
+a\+\_\+object must have been allocated using the same allocator 
+\end{DoxyPrecond}
+\mbox{\Hypertarget{group___core_ga7212aacd3c0bdcb743c0c8111e524ff1}\label{group___core_ga7212aacd3c0bdcb743c0c8111e524ff1}} 
+\index{Core@{Core}!init@{init}}
+\index{init@{init}!Core@{Core}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily void m\+::memory\+::m\+Object\+Allocator\+::init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{group___core_gae30e3b08929d0b80e963d8d2f78ecee0}{m\+Memory\+Type}} const \&}]{a\+\_\+memory\+Type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Initialize the allocator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+memory\+Type} & The type of memory where to perform the allocations \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPrecond}{Precondition}
+the memory type must have been created using \mbox{\hyperlink{group___core_ga15e54f2c88a911cb2f924ee14f1efad6}{create\+\_\+new\+Memory\+Type()}} 
+\end{DoxyPrecond}
+\mbox{\Hypertarget{group___core_gad10b6d07b493b6f616c763c6dbddcdd0}\label{group___core_gad10b6d07b493b6f616c763c6dbddcdd0}} 
+\index{Core@{Core}!initialize\_memoryTracking@{initialize\_memoryTracking}}
+\index{initialize\_memoryTracking@{initialize\_memoryTracking}!Core@{Core}}
+\doxysubsubsection{\texorpdfstring{initialize\_memoryTracking()}{initialize\_memoryTracking()}}
+{\footnotesize\ttfamily void m\+::memory\+::initialize\+\_\+memory\+Tracking (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Initialize memory tracking. 
+
+Called before application launch \mbox{\Hypertarget{group___core_ga757ca8491b5337650385dc5453332407}\label{group___core_ga757ca8491b5337650385dc5453332407}} 
 \index{Core@{Core}!load\_image@{load\_image}}
 \index{load\_image@{load\_image}!Core@{Core}}
 \doxysubsubsection{\texorpdfstring{load\_image()}{load\_image()}}
@@ -425,6 +619,40 @@ The path of the request must not be empty
 \begin{DoxyReturn}{Returns}
 The data of the loaded image 
 \end{DoxyReturn}
+\mbox{\Hypertarget{group___core_gad318d3ff0e85bcfd14e960980a55e048}\label{group___core_gad318d3ff0e85bcfd14e960980a55e048}} 
+\index{Core@{Core}!log\_memoryAllocation@{log\_memoryAllocation}}
+\index{log\_memoryAllocation@{log\_memoryAllocation}!Core@{Core}}
+\doxysubsubsection{\texorpdfstring{log\_memoryAllocation()}{log\_memoryAllocation()}}
+{\footnotesize\ttfamily void m\+::memory\+::log\+\_\+memory\+Allocation (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{group___core_gae30e3b08929d0b80e963d8d2f78ecee0}{m\+Memory\+Type}}}]{a\+\_\+type,  }\item[{m\+Size}]{a\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Record stats for a allocation of a certain memory type. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+type} & The type of memory we are doing the allocation in \\
+\hline
+{\em a\+\_\+size} & The size of the allocation \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group___core_gabeccd804a1121925e8a21d958a0cc11d}\label{group___core_gabeccd804a1121925e8a21d958a0cc11d}} 
+\index{Core@{Core}!log\_memoryDeallocation@{log\_memoryDeallocation}}
+\index{log\_memoryDeallocation@{log\_memoryDeallocation}!Core@{Core}}
+\doxysubsubsection{\texorpdfstring{log\_memoryDeallocation()}{log\_memoryDeallocation()}}
+{\footnotesize\ttfamily void m\+::memory\+::log\+\_\+memory\+Deallocation (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{group___core_gae30e3b08929d0b80e963d8d2f78ecee0}{m\+Memory\+Type}}}]{a\+\_\+type,  }\item[{m\+Size}]{a\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Record stats for a deallocation of a certain memory type. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+type} & The type of memory we are doing the deallocation in \\
+\hline
+{\em a\+\_\+size} & The size of the deallocation \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{group___core_ga848799fdd49850bb562058bbe7ca8897}\label{group___core_ga848799fdd49850bb562058bbe7ca8897}} 
 \index{Core@{Core}!mRAIITiming@{mRAIITiming}}
 \index{mRAIITiming@{mRAIITiming}!Core@{Core}}
@@ -442,7 +670,17 @@ This gets a timestamps of this call
 {\em a\+\_\+parent} & The parent profiler to send the data to \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{group___core_ga7ee6d3967363eec5ab00aba61b521ce6}\label{group___core_ga7ee6d3967363eec5ab00aba61b521ce6}} 
+\mbox{\Hypertarget{group___core_ga2ab061ca5eeabb00df05176d7bb17e05}\label{group___core_ga2ab061ca5eeabb00df05176d7bb17e05}} 
+\index{Core@{Core}!terminate\_memoryTracking@{terminate\_memoryTracking}}
+\index{terminate\_memoryTracking@{terminate\_memoryTracking}!Core@{Core}}
+\doxysubsubsection{\texorpdfstring{terminate\_memoryTracking()}{terminate\_memoryTracking()}}
+{\footnotesize\ttfamily void m\+::memory\+::terminate\+\_\+memory\+Tracking (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Terminate memory tracking, check for memory leaks. 
+
+Called after application termination \mbox{\Hypertarget{group___core_ga7ee6d3967363eec5ab00aba61b521ce6}\label{group___core_ga7ee6d3967363eec5ab00aba61b521ce6}} 
 \index{Core@{Core}!````~mRAIITiming@{$\sim$mRAIITiming}}
 \index{````~mRAIITiming@{$\sim$mRAIITiming}!Core@{Core}}
 \doxysubsubsection{\texorpdfstring{$\sim$mRAIITiming()}{~mRAIITiming()}}

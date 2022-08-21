@@ -1,0 +1,52 @@
+\hypertarget{namespacem_1_1memory}{}\doxysection{m\+::memory Namespace Reference}
+\label{namespacem_1_1memory}\index{m::memory@{m::memory}}
+
+
+Namespace grouping memory utilities.  
+
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structm_1_1memory_1_1m_memory_stat}{m\+Memory\+Stat}}
+\begin{DoxyCompactList}\small\item\em Stat for a type of memory. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structm_1_1memory_1_1m_memory_stats}{m\+Memory\+Stats}}
+\begin{DoxyCompactList}\small\item\em Groups all stats for memory. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classm_1_1memory_1_1m_object_allocator}{m\+Object\+Allocator}}
+\begin{DoxyCompactList}\small\item\em Basic allocator allowing to log memory debug stats. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Concepts}
+\begin{DoxyCompactItemize}
+\item 
+concept \mbox{\hyperlink{conceptm_1_1memory_1_1m_constructible}{m\+Constructible}}
+\begin{DoxyCompactList}\small\item\em Concept defining objects that can be constructed with a given list of parameters. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using {\bfseries m\+Memory\+Type} = m\+UInt
+\begin{DoxyCompactList}\small\item\em Type of memory used for debug information memory types ARE NOT THREAD SAFE. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{group___core_gad10b6d07b493b6f616c763c6dbddcdd0}{initialize\+\_\+memory\+Tracking}} ()
+\begin{DoxyCompactList}\small\item\em Initialize memory tracking. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group___core_ga2ab061ca5eeabb00df05176d7bb17e05}{terminate\+\_\+memory\+Tracking}} ()
+\begin{DoxyCompactList}\small\item\em Terminate memory tracking, check for memory leaks. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{group___core_gae30e3b08929d0b80e963d8d2f78ecee0}{m\+Memory\+Type}} \mbox{\hyperlink{group___core_ga15e54f2c88a911cb2f924ee14f1efad6}{create\+\_\+new\+Memory\+Type}} (std\+::string const  \&a\+\_\+name)
+\begin{DoxyCompactList}\small\item\em Create a new memory type. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group___core_gad318d3ff0e85bcfd14e960980a55e048}{log\+\_\+memory\+Allocation}} (\mbox{\hyperlink{group___core_gae30e3b08929d0b80e963d8d2f78ecee0}{m\+Memory\+Type}} a\+\_\+type, m\+Size a\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Record stats for a allocation of a certain memory type. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group___core_gabeccd804a1121925e8a21d958a0cc11d}{log\+\_\+memory\+Deallocation}} (\mbox{\hyperlink{group___core_gae30e3b08929d0b80e963d8d2f78ecee0}{m\+Memory\+Type}} a\+\_\+type, m\+Size a\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Record stats for a deallocation of a certain memory type. \end{DoxyCompactList}\item 
+m\+Ptr \mbox{\hyperlink{group___core_ga2bcddd94b87ebc4f821711be12350540}{allocate}} (m\+::m\+Size a\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Internal implementation of a basic allocation. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group___core_ga3e8a2c2093e3958307890bd0f43d9782}{deallocate}} (m\+Ptr \&a\+\_\+object)
+\begin{DoxyCompactList}\small\item\em Internal implementation of a basic deallocation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structm_1_1memory_1_1m_memory_stats}{m\+Memory\+Stats}} {\bfseries g\+\_\+mem\+Stats}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Namespace grouping memory utilities. 

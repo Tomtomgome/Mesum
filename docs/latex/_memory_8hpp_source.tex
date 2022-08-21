@@ -1,0 +1,81 @@
+\hypertarget{_memory_8hpp_source}{}\doxysection{Memory.\+hpp}
+\label{_memory_8hpp_source}\index{MesumCore/Kernel/Memory.hpp@{MesumCore/Kernel/Memory.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{2 }
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include "{}../Common/CoreCommon.hpp"{}}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}Types.hpp"{}}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{13 }
+\DoxyCodeLine{17 \textcolor{keyword}{namespace }\mbox{\hyperlink{namespacem_1_1memory}{m::memory}}}
+\DoxyCodeLine{18 \{}
+\DoxyCodeLine{26 \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_Type, \textcolor{keyword}{typename}... t\_Arg>}
+\DoxyCodeLine{27 \textcolor{keyword}{concept }\mbox{\hyperlink{conceptm_1_1memory_1_1m_constructible}{mConstructible}} = \textcolor{keyword}{requires}(t\_Arg... a\_args)}
+\DoxyCodeLine{28 \{}
+\DoxyCodeLine{29     \textcolor{keyword}{new} t\_Type(a\_args...);}
+\DoxyCodeLine{30 \};}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{36 \textcolor{keyword}{using} \mbox{\hyperlink{group___core_gae30e3b08929d0b80e963d8d2f78ecee0}{mMemoryType}}                            = mUInt;}
+\DoxyCodeLine{37 \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{group___core_gae30e3b08929d0b80e963d8d2f78ecee0}{mMemoryType}} g\_defaultMemoryType = 0;}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{42 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1memory_1_1m_memory_stat}{mMemoryStat}}}
+\DoxyCodeLine{43 \{}
+\DoxyCodeLine{44     std::string \mbox{\hyperlink{group___core_gad44d36a0c4cd777d47c32da7586a8f12}{name}}\{\};                      }
+\DoxyCodeLine{45     mBool       \mbox{\hyperlink{group___core_ga113434be21754263a7764da45ef6ceb9}{isVerbose}}          = \textcolor{keyword}{false};  }
+\DoxyCodeLine{46     mSize       \mbox{\hyperlink{group___core_gaa318ba0acaf17279101c859e26cceb17}{totalAllocatedSize}} = 0;      }
+\DoxyCodeLine{47 \};}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{52 \textcolor{keyword}{struct }\mbox{\hyperlink{structm_1_1memory_1_1m_memory_stats}{mMemoryStats}}}
+\DoxyCodeLine{53 \{}
+\DoxyCodeLine{54     mSize \mbox{\hyperlink{group___core_gae95126dec809b6689cc8a0b49c828658}{globalAllocationSizes}};                }
+\DoxyCodeLine{55     std::vector<mMemoryStat> \mbox{\hyperlink{group___core_ga5d405d050bad14229530a277485ca30d}{typedMemoryStats}};  }
+\DoxyCodeLine{56 \};}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 \textcolor{keyword}{extern} \mbox{\hyperlink{structm_1_1memory_1_1m_memory_stats}{mMemoryStats}} g\_memStats;}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{65 \textcolor{keywordtype}{void} \mbox{\hyperlink{group___core_gad10b6d07b493b6f616c763c6dbddcdd0}{initialize\_memoryTracking}}();}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{72 \textcolor{keywordtype}{void} \mbox{\hyperlink{group___core_ga2ab061ca5eeabb00df05176d7bb17e05}{terminate\_memoryTracking}}();}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{80 \mbox{\hyperlink{group___core_gae30e3b08929d0b80e963d8d2f78ecee0}{mMemoryType}} \mbox{\hyperlink{group___core_ga15e54f2c88a911cb2f924ee14f1efad6}{create\_newMemoryType}}(std::string \textcolor{keyword}{const}\& a\_name);}
+\DoxyCodeLine{87 \textcolor{keywordtype}{void} \mbox{\hyperlink{group___core_gad318d3ff0e85bcfd14e960980a55e048}{log\_memoryAllocation}}(\mbox{\hyperlink{group___core_gae30e3b08929d0b80e963d8d2f78ecee0}{mMemoryType}} a\_type, mSize a\_size);}
+\DoxyCodeLine{94 \textcolor{keywordtype}{void} \mbox{\hyperlink{group___core_gabeccd804a1121925e8a21d958a0cc11d}{log\_memoryDeallocation}}(\mbox{\hyperlink{group___core_gae30e3b08929d0b80e963d8d2f78ecee0}{mMemoryType}} a\_type, mSize a\_size);}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{102 mPtr \mbox{\hyperlink{group___core_ga2bcddd94b87ebc4f821711be12350540}{allocate}}(m::mSize a\_size);}
+\DoxyCodeLine{108 \textcolor{keywordtype}{void} \mbox{\hyperlink{group___core_ga3e8a2c2093e3958307890bd0f43d9782}{deallocate}}(mPtr\& a\_object);}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{115 \textcolor{keyword}{class }\mbox{\hyperlink{classm_1_1memory_1_1m_object_allocator}{mObjectAllocator}}}
+\DoxyCodeLine{116 \{}
+\DoxyCodeLine{117    \textcolor{keyword}{public}:}
+\DoxyCodeLine{124     \textcolor{keywordtype}{void} \mbox{\hyperlink{group___core_ga7212aacd3c0bdcb743c0c8111e524ff1}{init}}(\mbox{\hyperlink{group___core_gae30e3b08929d0b80e963d8d2f78ecee0}{mMemoryType}} \textcolor{keyword}{const}\& a\_memoryType) \{ \mbox{\hyperlink{group___core_gaab127b2ed1722b618ad28e946c4a9005}{m\_memoryType}} = a\_memoryType; \}}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{135     \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_Type, \textcolor{keyword}{typename}... t\_Arg>}
+\DoxyCodeLine{136     \textcolor{keyword}{requires} \mbox{\hyperlink{conceptm_1_1memory_1_1m_constructible}{memory::mConstructible}}<t\_Type, t\_Arg...> t\_Type* \mbox{\hyperlink{group___core_gacf827a7e9f992da1a3d73fd99ec78849}{construct}}(}
+\DoxyCodeLine{137         t\_Arg... a\_args)}
+\DoxyCodeLine{138     \{}
+\DoxyCodeLine{139 \textcolor{preprocessor}{\#ifdef M\_TRACK\_MEMORY\_ALLOCATIONS}}
+\DoxyCodeLine{140         \mbox{\hyperlink{group___core_gad318d3ff0e85bcfd14e960980a55e048}{memory::log\_memoryAllocation}}(\mbox{\hyperlink{group___core_gaab127b2ed1722b618ad28e946c4a9005}{m\_memoryType}}, \textcolor{keyword}{sizeof}(t\_Type));}
+\DoxyCodeLine{141 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_TRACK\_MEMORY\_ALLOCATIONS}}
+\DoxyCodeLine{142         \textcolor{keywordflow}{return} \textcolor{keyword}{new} t\_Type(a\_args...);}
+\DoxyCodeLine{143     \}}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{152     \textcolor{keyword}{template} <\textcolor{keyword}{typename} t\_Type>}
+\DoxyCodeLine{153     \textcolor{keywordtype}{void} \mbox{\hyperlink{group___core_gaf1b6180dbbf03aeac3d4202113a28e70}{destroy}}(t\_Type* a\_object)}
+\DoxyCodeLine{154     \{}
+\DoxyCodeLine{155 \textcolor{preprocessor}{\#ifdef M\_TRACK\_MEMORY\_ALLOCATIONS}}
+\DoxyCodeLine{156         \mbox{\hyperlink{group___core_gabeccd804a1121925e8a21d958a0cc11d}{memory::log\_memoryDeallocation}}(\mbox{\hyperlink{group___core_gaab127b2ed1722b618ad28e946c4a9005}{m\_memoryType}}, \textcolor{keyword}{sizeof}(t\_Type));}
+\DoxyCodeLine{157 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// M\_TRACK\_MEMORY\_ALLOCATIONS}}
+\DoxyCodeLine{158         \textcolor{keyword}{delete} a\_object;}
+\DoxyCodeLine{159     \}}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161    \textcolor{keyword}{private}:}
+\DoxyCodeLine{162     \mbox{\hyperlink{group___core_gae30e3b08929d0b80e963d8d2f78ecee0}{mMemoryType}} \mbox{\hyperlink{group___core_gaab127b2ed1722b618ad28e946c4a9005}{m\_memoryType}}; }
+\DoxyCodeLine{163 \};}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165 \};  \textcolor{comment}{// namespace m::memory}}
+
+\end{DoxyCode}

@@ -12,7 +12,9 @@ var namespaces_dup =
         [ "DX12Context", "classm_1_1dx12_1_1_d_x12_context.html", null ],
         [ "DX12Renderer", "classm_1_1dx12_1_1_d_x12_renderer.html", null ],
         [ "DX12RenderTaskset", "structm_1_1dx12_1_1_d_x12_render_taskset.html", null ],
-        [ "DX12Surface", "classm_1_1dx12_1_1_d_x12_surface.html", null ]
+        [ "DX12Surface", "classm_1_1dx12_1_1_d_x12_surface.html", null ],
+        [ "mApiDX12", "classm_1_1dx12_1_1m_api_d_x12.html", null ],
+        [ "mSwapchainDX12", "classm_1_1dx12_1_1m_swapchain_d_x12.html", null ]
       ] ],
       [ "file", null, [
         [ "mFbxImporter", "classm_1_1file_1_1m_fbx_importer.html", null ]
@@ -23,6 +25,7 @@ var namespaces_dup =
       [ "input", "namespacem_1_1input.html", "namespacem_1_1input" ],
       [ "logging", "namespacem_1_1logging.html", "namespacem_1_1logging" ],
       [ "math", "namespacem_1_1math.html", "namespacem_1_1math" ],
+      [ "memory", "namespacem_1_1memory.html", "namespacem_1_1memory" ],
       [ "profile", null, [
         [ "mIProfiler", "classm_1_1profile_1_1m_i_profiler.html", "classm_1_1profile_1_1m_i_profiler" ],
         [ "mProfilerMultiSampling", "classm_1_1profile_1_1m_profiler_multi_sampling.html", "classm_1_1profile_1_1m_profiler_multi_sampling" ],
@@ -37,6 +40,8 @@ var namespaces_dup =
         [ "IResource", "structm_1_1render_1_1_i_resource.html", "structm_1_1render_1_1_i_resource" ],
         [ "ISurface", "classm_1_1render_1_1_i_surface.html", "classm_1_1render_1_1_i_surface" ],
         [ "mBasicVertex", "structm_1_1render_1_1m_basic_vertex.html", null ],
+        [ "mIApi", "classm_1_1render_1_1m_i_api.html", null ],
+        [ "mISwapchain", "classm_1_1render_1_1m_i_swapchain.html", null ],
         [ "mMesh", "structm_1_1render_1_1m_mesh.html", null ],
         [ "Task", "structm_1_1render_1_1_task.html", null ],
         [ "Task2dRender", "structm_1_1render_1_1_task2d_render.html", null ],

@@ -15,5 +15,6 @@ var searchData=
   ['get_5fnextu64_12',['get_nextU64',['../classm_1_1math_1_1m_xo_random_number_generator.html#aa6ffaa8fa1f2a3405af81ec9d5166af2',1,'m::math::mXoRandomNumberGenerator']]],
   ['get_5fparameter_13',['get_parameter',['../structm_1_1m_cmd_line.html#ab8de7405bf1f0f8a07d9ab3b7647209b',1,'m::mCmdLine']]],
   ['get_5ftime_14',['get_time',['../classm_1_1logging_1_1m_logger.html#a29c8fb84e89a835ee13835ba6564435e',1,'m::logging::mLogger']]],
-  ['graphics_15',['Graphics',['../group___graphics.html',1,'']]]
+  ['globalallocationsizes_15',['globalAllocationSizes',['../group___core.html#gae95126dec809b6689cc8a0b49c828658',1,'m::memory::mMemoryStats']]],
+  ['graphics_16',['Graphics',['../group___graphics.html',1,'']]]
 ];

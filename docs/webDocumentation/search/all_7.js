@@ -98,13 +98,15 @@ var searchData=
   ['imvec2ih_95',['ImVec2ih',['../struct_im_vec2ih.html',1,'']]],
   ['imvec4_96',['ImVec4',['../struct_im_vec4.html',1,'']]],
   ['imvector_97',['ImVector',['../struct_im_vector.html',1,'']]],
-  ['init_98',['init',['../namespacem_1_1dear_im_gui.html#a8f0ca8ff668f59aa9af97475715b46a1',1,'m::dearImGui::init()'],['../classm_1_1application_1_1m_i_loop_application.html#aa1f941cca206e4783c7bcc206c85a950',1,'m::application::mILoopApplication::init()'],['../classm_1_1application_1_1m_i_timed_loop_application.html#ad4ed9bb275006c340185826f215e6215',1,'m::application::mITimedLoopApplication::init()'],['../classm_1_1xcb__unix_1_1_i_windowed_application_impl.html#af51366e2fdd19f1d8d9e8ec99523a850',1,'m::xcb_unix::IWindowedApplicationImpl::init()'],['../classm_1_1win32_1_1_i_windowed_application_impl.html#aab2f38772a89c69b29f02e3620c850bf',1,'m::win32::IWindowedApplicationImpl::init()'],['../classm_1_1win32_1_1_i_window_impl.html#a4cfffb74b30392a27c0f90e78b872793',1,'m::win32::IWindowImpl::init()'],['../classm_1_1windows_1_1m_i_window.html#accada43f032d76ee409de6901354db27',1,'m::windows::mIWindow::init()']]],
+  ['init_98',['init',['../classm_1_1xcb__unix_1_1_i_windowed_application_impl.html#af51366e2fdd19f1d8d9e8ec99523a850',1,'m::xcb_unix::IWindowedApplicationImpl::init()'],['../classm_1_1application_1_1m_i_loop_application.html#aa1f941cca206e4783c7bcc206c85a950',1,'m::application::mILoopApplication::init()'],['../classm_1_1application_1_1m_i_timed_loop_application.html#ad4ed9bb275006c340185826f215e6215',1,'m::application::mITimedLoopApplication::init()'],['../group___core.html#ga7212aacd3c0bdcb743c0c8111e524ff1',1,'m::memory::mObjectAllocator::init()'],['../classm_1_1win32_1_1_i_windowed_application_impl.html#aab2f38772a89c69b29f02e3620c850bf',1,'m::win32::IWindowedApplicationImpl::init()'],['../classm_1_1win32_1_1_i_window_impl.html#a4cfffb74b30392a27c0f90e78b872793',1,'m::win32::IWindowImpl::init()'],['../classm_1_1windows_1_1m_i_window.html#accada43f032d76ee409de6901354db27',1,'m::windows::mIWindow::init()'],['../namespacem_1_1dear_im_gui.html#a8f0ca8ff668f59aa9af97475715b46a1',1,'m::dearImGui::init()']]],
   ['initdata_99',['InitData',['../structm_1_1aa_1_1m_api_1_1_init_data.html',1,'m::aa::mApi']]],
-  ['irenderer_100',['IRenderer',['../classm_1_1render_1_1_i_renderer.html',1,'m::render']]],
-  ['iresource_101',['IResource',['../structm_1_1render_1_1_i_resource.html',1,'m::render']]],
-  ['istransparent_102',['isTransparent',['../structm_1_1windows_1_1m_i_window_1_1m_init_data.html#a0854d0d71232bd029c16e5674139c1fb',1,'m::windows::mIWindow::mInitData']]],
-  ['isurface_103',['ISurface',['../classm_1_1render_1_1_i_surface.html',1,'m::render']]],
-  ['iwindowedapplicationbase_104',['IWindowedApplicationBase',['../classm_1_1application_1_1_i_windowed_application_base.html',1,'m::application']]],
-  ['iwindowedapplicationimpl_105',['IWindowedApplicationImpl',['../classm_1_1win32_1_1_i_windowed_application_impl.html',1,'m::win32::IWindowedApplicationImpl'],['../classm_1_1xcb__unix_1_1_i_windowed_application_impl.html',1,'m::xcb_unix::IWindowedApplicationImpl']]],
-  ['iwindowimpl_106',['IWindowImpl',['../classm_1_1win32_1_1_i_window_impl.html',1,'m::win32::IWindowImpl'],['../classm_1_1xcb__unix_1_1_i_window_impl.html',1,'m::xcb_unix::IWindowImpl']]]
+  ['initialize_5fmemorytracking_100',['initialize_memoryTracking',['../group___core.html#gad10b6d07b493b6f616c763c6dbddcdd0',1,'m::memory']]],
+  ['irenderer_101',['IRenderer',['../classm_1_1render_1_1_i_renderer.html',1,'m::render']]],
+  ['iresource_102',['IResource',['../structm_1_1render_1_1_i_resource.html',1,'m::render']]],
+  ['istransparent_103',['isTransparent',['../structm_1_1windows_1_1m_i_window_1_1m_init_data.html#a0854d0d71232bd029c16e5674139c1fb',1,'m::windows::mIWindow::mInitData']]],
+  ['isurface_104',['ISurface',['../classm_1_1render_1_1_i_surface.html',1,'m::render']]],
+  ['isverbose_105',['isVerbose',['../group___core.html#ga113434be21754263a7764da45ef6ceb9',1,'m::memory::mMemoryStat']]],
+  ['iwindowedapplicationbase_106',['IWindowedApplicationBase',['../classm_1_1application_1_1_i_windowed_application_base.html',1,'m::application']]],
+  ['iwindowedapplicationimpl_107',['IWindowedApplicationImpl',['../classm_1_1win32_1_1_i_windowed_application_impl.html',1,'m::win32::IWindowedApplicationImpl'],['../classm_1_1xcb__unix_1_1_i_windowed_application_impl.html',1,'m::xcb_unix::IWindowedApplicationImpl']]],
+  ['iwindowimpl_108',['IWindowImpl',['../classm_1_1win32_1_1_i_window_impl.html',1,'m::win32::IWindowImpl'],['../classm_1_1xcb__unix_1_1_i_window_impl.html',1,'m::xcb_unix::IWindowImpl']]]
 ];

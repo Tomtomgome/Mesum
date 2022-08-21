@@ -68,7 +68,7 @@
 \DoxyCodeLine{64 \textcolor{preprocessor}{        data.m\_hInstance = hInstance;                                        \(\backslash\)}}
 \DoxyCodeLine{65 \textcolor{preprocessor}{        data.m\_nCmdShow  = nCmdShow;                                         \(\backslash\)}}
 \DoxyCodeLine{66 \textcolor{preprocessor}{        m::init\_console();                                                   \(\backslash\)}}
-\DoxyCodeLine{67 \textcolor{preprocessor}{        m::internal\_run<AppClass>(cmdLine, \&data);                           \(\backslash\)}}
+\DoxyCodeLine{67 \textcolor{preprocessor}{        m::run\_internal<AppClass>(cmdLine, \&data);                           \(\backslash\)}}
 \DoxyCodeLine{68 \textcolor{preprocessor}{        FreeConsole();                                                       \(\backslash\)}}
 \DoxyCodeLine{69 \textcolor{preprocessor}{        return 0;                                                            \(\backslash\)}}
 \DoxyCodeLine{70 \textcolor{preprocessor}{    \}}}
@@ -85,7 +85,7 @@
 \DoxyCodeLine{81 \textcolor{preprocessor}{        m::WindowedLaunchData data;                \(\backslash\)}}
 \DoxyCodeLine{82 \textcolor{preprocessor}{        m::mCmdLine           cmdLine;             \(\backslash\)}}
 \DoxyCodeLine{83 \textcolor{preprocessor}{        cmdLine.parse\_cmdLineAguments(argc, argv); \(\backslash\)}}
-\DoxyCodeLine{84 \textcolor{preprocessor}{        m::internal\_run<AppClass>(cmdLine, \&data); \(\backslash\)}}
+\DoxyCodeLine{84 \textcolor{preprocessor}{        m::run\_internal<AppClass>(cmdLine, \&data); \(\backslash\)}}
 \DoxyCodeLine{85 \textcolor{preprocessor}{        return 0;                                  \(\backslash\)}}
 \DoxyCodeLine{86 \textcolor{preprocessor}{    \}}}
 \DoxyCodeLine{87 }

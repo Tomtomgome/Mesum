@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['width_0',['width',['../group___core.html#ga6fc74eceb5f8cfc9d13ce112291811de',1,'m::resource::mImage']]]
+  ['totalallocatedsize_0',['totalAllocatedSize',['../group___core.html#gaa318ba0acaf17279101c859e26cceb17',1,'m::memory::mMemoryStat']]],
+  ['typedmemorystats_1',['typedMemoryStats',['../group___core.html#ga5d405d050bad14229530a277485ca30d',1,'m::memory::mMemoryStats']]]
 ];

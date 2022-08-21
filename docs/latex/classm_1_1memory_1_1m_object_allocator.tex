@@ -1,0 +1,36 @@
+\hypertarget{classm_1_1memory_1_1m_object_allocator}{}\doxysection{m\+::memory\+::m\+Object\+Allocator Class Reference}
+\label{classm_1_1memory_1_1m_object_allocator}\index{m::memory::mObjectAllocator@{m::memory::mObjectAllocator}}
+
+
+Basic allocator allowing to log memory debug stats.  
+
+
+
+
+{\ttfamily \#include $<$Memory.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{group___core_ga7212aacd3c0bdcb743c0c8111e524ff1}{init}} (\mbox{\hyperlink{group___core_gae30e3b08929d0b80e963d8d2f78ecee0}{m\+Memory\+Type}} const \&a\+\_\+memory\+Type)
+\begin{DoxyCompactList}\small\item\em Initialize the allocator. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename t\+\_\+\+Type , typename... t\+\_\+\+Arg$>$ \newline
+requires memory\+::m\+Constructible$<$t\+\_\+\+Type, t\+\_\+\+Arg...$>$}\\t\+\_\+\+Type $\ast$ \mbox{\hyperlink{group___core_gacf827a7e9f992da1a3d73fd99ec78849}{construct}} (t\+\_\+\+Arg... a\+\_\+args)
+\begin{DoxyCompactList}\small\item\em Construct a new object. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename t\+\_\+\+Type $>$ }\\void \mbox{\hyperlink{group___core_gaf1b6180dbbf03aeac3d4202113a28e70}{destroy}} (t\+\_\+\+Type $\ast$a\+\_\+object)
+\begin{DoxyCompactList}\small\item\em Deconstruct an object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{group___core_gae30e3b08929d0b80e963d8d2f78ecee0}{m\+Memory\+Type}} {\bfseries m\+\_\+memory\+Type}
+\begin{DoxyCompactList}\small\item\em The type of memory used by the allocator. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Basic allocator allowing to log memory debug stats. 
+
+Prefer using these to construct objects instead of new and delete directly 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Mesum\+Core/\+Kernel/Memory.\+hpp\end{DoxyCompactItemize}
