@@ -4,6 +4,7 @@
 #include <MesumGraphics/RenderTasks/RenderTaskDearImGui.hpp>
 #include <MesumGraphics/WindowedApp.hpp>
 #include <MesumGraphics/ApiAbstraction.hpp>
+#include <MesumGraphics/RendererUtils.hpp>
 
 class CubeMover
 {
@@ -49,9 +50,9 @@ class CubeMover
     const m::logging::mChannelID m_CUBEMOVER_ID = mLog_getId();
 };
 
-void enumerate_adapter(m::aa::mApi& a_api, std::vector<m::aa::mAdapter>& a_adapters )
+void enumerate_adapter(m::aa::mApi&                  a_api,
+                       std::vector<m::aa::mAdapter>& a_adapters)
 {
-
 }
 
 class CubeMoverApp : public m::crossPlatform::IWindowedApplication
@@ -59,7 +60,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
     void add_applicationWindow()
     {
         m::windows::mIWindow* m_secondWindow =
-            add_newWindow("Test Second window", 600, 400);
+            add_newWindow("Test Second window", 600, 400, false);
         m_secondWindow->link_inputManager(&m_inputManager);
     }
 
@@ -82,58 +83,69 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
                         "Height not overriden, use default : ", height);
         }
 
-        m::aa::mApi           api = m::aa::dx12::create_api();
-        m::aa::mApi::InitData apiInitData;
-        api.init(apiInitData);
-        m::aa::mAdapter           a = api.create_adapter();
-        mLink_virtualMemberFunctionEXT(api, enumerate_adapter, enumerate_adapter);
+        //        m::aa::mApi           api = m::aa::dx12::create_api();
+        //        m::aa::mApi::InitData apiInitData;
+        //        api.init(apiInitData);
+        //        m::aa::mAdapter           a = api.create_adapter();
+        //        mLink_virtualMemberFunctionEXT(api, enumerate_adapter,
+        //        enumerate_adapter);
+        //
+        //        m::aa::mAdapter::InitData initData;
+        //        a.init(initData);
+        //
+        //        std::vector<m::aa::mAdapter> adapters;
+        //        api.enumerate_adapter(adapters);
+        //
+        //        m::aa::mAdapter selectedAdapter;
+        //        for (auto& adapter : adapters)
+        //        {
+        //            if (adapter.extensions.supportsSwapChain)
+        //            {
+        //                continue;
+        //            }
+        //            if (adapter.features)
+        //            {
+        //                continue;
+        //            }
+        //            if (adapter.properties.type !=
+        //            m::aa::mAdapter::deviceDescrete)
+        //            {
+        //                continue;
+        //            }
+        //
+        //            selectedAdapter = adapter;
+        //        }
+        //
+        //        m::aa::mDevice::InitData initData;
+        //        initData.queues = {{mQueue::type::transfer graphics},
+        //        {mQueue::type::transfer}}; m::aa::mDevice device =
+        //        selectedAdapter.create_device(initData); m::aa::mQueue
+        //        graphicsQueue = device.get_queue(0); m::aa::mQueue
+        //        transferQueue = device.get_queue(1);
+        //
+        //        m::aa::mApi api2 = m::aa::vulkan::create_api();
+        //        api2.init(apiInitData);
+        //        m::aa::mAdapter a2 = api2.create_adapter();
+        //        a2.init(initData);
 
-        m::aa::mAdapter::InitData initData;
-        a.init(initData);
-
-        std::vector<m::aa::mAdapter> adapters;
-        api.enumerate_adapter(adapters);
-
-        m::aa::mAdapter selectedAdapter;
-        for (auto& adapter : adapters)
-        {
-//            if (adapter.extensions.supportsSwapChain)
-//            {
-//                continue;
-//            }
-//            if (adapter.features)
-//            {
-//                continue;
-//            }
-            if (adapter.properties.type != m::aa::mAdapter::deviceDescrete)
-            {
-                continue;
-            }
-
-            selectedAdapter = adapter;
-        }
-
-        m::aa::mDevice::InitData initData;
-        initData.queues = {{mQueue::type::transfer graphics}, {mQueue::type::transfer}};
-        m::aa::mDevice device = selectedAdapter.create_device(initData);
-        m::aa::mQueue graphicsQueue = device.get_queue(0);
-        m::aa::mQueue transferQueue = device.get_queue(1);
-
-        m::aa::mApi api2 = m::aa::vulkan::create_api();
-        api2.init(apiInitData);
-        m::aa::mAdapter a2 = api2.create_adapter();
-        a2.init(initData);
-
+        //m::render::mIApi* pDx12Api = new m::dx12::mApiDX12();
+        //pDx12Api->init();
         m_iDx12Renderer = new m::dx12::DX12Renderer();
         m_iDx12Renderer->init();
         m_iVulkanRenderer = new m::vulkan::VulkanRenderer();
         m_iVulkanRenderer->init();
 
-        m_mainDx12Window = add_newWindow("Cube mover app", width, height);
+        m_mainDx12Window =
+            add_newWindow("Cube mover app", width, height, false);
 
-        m_mainVulkanWindow = add_newWindow("Cube mover app", width, height);
+        m_mainVulkanWindow =
+            add_newWindow("Cube mover app", width, height, false);
 
         m_hdlDx12Surface = m_mainDx12Window->link_renderer(m_iDx12Renderer);
+        //auto& swapchain = pDx12Api->create_swapchain();
+        //m::render::init_swapchainWithWindow(*pDx12Api, swapchain,
+        //                                    *m_mainDx12Window);
+
         m_hdlVulkanSurface =
             m_mainVulkanWindow->link_renderer(m_iVulkanRenderer);
 

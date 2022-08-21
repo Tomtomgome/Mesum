@@ -11,7 +11,7 @@ namespace m::win32
 {
 extern const logging::mChannelID PLATFORM_APP_ID;
 
-struct WIN32Context
+struct Win32Context
 {
     void init(HINSTANCE& a_hInstance);
     void init_keysLuts();

@@ -199,7 +199,6 @@ void IWindowImpl::init(mInitData const& a_initData)
     m_clientHeight = a_initData.size.y;
     m_windowName   = a_initData.name;
 
-
     const mWideChar className[] = L"MainWindowClass";
     m_hwnd = m_parentContext->create_window(className, m_windowName,
                                             m_clientWidth, m_clientHeight,
@@ -220,6 +219,14 @@ void IWindowImpl::destroy()
 
     ::DestroyWindow(m_hwnd);
     m_hwnd = nullptr;
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+std::pair<mU32, mU32> IWindowImpl::get_size() const
+{
+    return std::make_pair(m_clientWidth, m_clientHeight);
 }
 
 //-----------------------------------------------------------------------------
@@ -268,7 +275,8 @@ void IWindowImpl::set_asImGuiWindow()
             if (!(*a_interrupt))
             {
                 *a_interrupt = ImGui_ImplWin32_WndProcHandler(
-                    a_hwnd, a_uMsg, a_wParam, a_lParam) || ImGui::GetIO().WantCaptureMouse;
+                                   a_hwnd, a_uMsg, a_wParam, a_lParam) ||
+                               ImGui::GetIO().WantCaptureMouse;
             }
         }));
 }

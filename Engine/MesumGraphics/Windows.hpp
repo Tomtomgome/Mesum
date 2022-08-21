@@ -68,6 +68,13 @@ class mIWindow
     virtual void destroy() = 0;
 
     ///////////////////////////////////////////////////////////////////////////
+    /// \brief Get the size of the window
+    ///
+    /// \return The with and the heigh of the window as a pair
+    ///////////////////////////////////////////////////////////////////////////
+    virtual std::pair<mU32, mU32> get_size() const = 0;
+
+    ///////////////////////////////////////////////////////////////////////////
     /// \brief Link an input manager to the window
     ///
     /// Only one input manager can be linked to a window

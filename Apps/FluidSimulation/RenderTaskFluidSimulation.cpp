@@ -3,8 +3,6 @@
 using namespace m;
 using namespace m::render;
 
-
-
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -110,14 +108,14 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
         dx12::DX12Context::gs_dx12Contexte->m_device;
     ID3D12Device2* pDevice = dx12::DX12Context::gs_dx12Contexte->m_device.Get();
 
-    dx12::check_MicrosoftHRESULT(device->CreateRootSignature(
+    dx12::check_mhr(device->CreateRootSignature(
         0, rootBlob->GetBufferPointer(), rootBlob->GetBufferSize(),
         IID_PPV_ARGS(&m_rootSignature)));
 
     pipelineDesc.pRootSignature = m_rootSignature.Get();
 
-    dx12::check_MicrosoftHRESULT(device->CreateGraphicsPipelineState(
-        &pipelineDesc, IID_PPV_ARGS(&m_pso)));
+    dx12::check_mhr(device->CreateGraphicsPipelineState(&pipelineDesc,
+                                                        IID_PPV_ARGS(&m_pso)));
 
     // Sampler
     D3D12_SAMPLER_DESC descSampler{};
@@ -209,7 +207,7 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
         hr                   = pDevice->CreateCommittedResource(
                               &oHeapProperties, D3D12_HEAP_FLAG_NONE, &descTexture,
                               D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, nullptr,
-            IID_PPV_ARGS(m_pTextureResources.back().GetAddressOf()));
+                              IID_PPV_ARGS(m_pTextureResources.back().GetAddressOf()));
         if (hr != S_OK)
         {
             mLog_error("Fail to create resource for texture");
@@ -225,7 +223,7 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
         hr                 = pDevice->CreateCommittedResource(
                             &oHeapProperties, D3D12_HEAP_FLAG_NONE, &oResourceDesc,
                             D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
-            IID_PPV_ARGS(m_pUploadResources.back().GetAddressOf()));
+                            IID_PPV_ARGS(m_pUploadResources.back().GetAddressOf()));
 
         if (hr != S_OK)
         {
@@ -242,8 +240,8 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
         descShaderResourceView.Texture2D.ResourceMinLODClamp = 0.0f;
 
         CD3DX12_CPU_DESCRIPTOR_HANDLE const hdlCPUSrv(
-            m_pSrvHeap->GetCPUDescriptorHandleForHeapStart(),
-            i, m_incrementSizeSrv);
+            m_pSrvHeap->GetCPUDescriptorHandleForHeapStart(), i,
+            m_incrementSizeSrv);
 
         pDevice->CreateShaderResourceView(m_pTextureResources.back().Get(),
                                           &descShaderResourceView, hdlCPUSrv);

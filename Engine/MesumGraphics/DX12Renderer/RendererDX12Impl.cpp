@@ -156,8 +156,7 @@ void DX12Surface::render()
         UINT presentFlags =
             get_presentFlags();  // m_tearingSupported && !m_vSync ?
                                  // DXGI_PRESENT_ALLOW_TEARING : 0;
-        check_MicrosoftHRESULT(
-            m_swapChain->Present(syncInterval, presentFlags));
+        check_mhr(m_swapChain->Present(syncInterval, presentFlags));
 
         m_frameFenceValues[m_currentBackBufferIndex] =
             DX12Context::gs_dx12Contexte->get_commandQueue().signal_fence();
@@ -187,10 +186,10 @@ void DX12Surface::resize(mU32 a_width, mU32 a_height)
         }
 
         DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
-        check_MicrosoftHRESULT(m_swapChain->GetDesc(&swapChainDesc));
-        check_MicrosoftHRESULT(m_swapChain->ResizeBuffers(
-            scm_numFrames, a_width, a_height, swapChainDesc.BufferDesc.Format,
-            swapChainDesc.Flags));
+        check_mhr(m_swapChain->GetDesc(&swapChainDesc));
+        check_mhr(m_swapChain->ResizeBuffers(scm_numFrames, a_width, a_height,
+                                             swapChainDesc.BufferDesc.Format,
+                                             swapChainDesc.Flags));
 
         m_currentBackBufferIndex = m_swapChain->GetCurrentBackBufferIndex();
         update_renderTargetViews(DX12Context::gs_dx12Contexte->m_device,
@@ -214,8 +213,7 @@ void DX12Surface::update_renderTargetViews(
     for (int i = 0; i < scm_numFrames; ++i)
     {
         ComPtr<ID3D12Resource> backBuffer;
-        check_MicrosoftHRESULT(
-            a_swapChain->GetBuffer(i, IID_PPV_ARGS(&backBuffer)));
+        check_mhr(a_swapChain->GetBuffer(i, IID_PPV_ARGS(&backBuffer)));
 
         a_device->CreateRenderTargetView(backBuffer.Get(), nullptr, rtvHandle);
 
@@ -267,7 +265,48 @@ render::ISurface* DX12Renderer::getNew_surface()
 //-----------------------------------------------------------------------------
 render::IResource* DX12Renderer::getNew_texture()
 {
-    return nullptr;//new DX12Texture();
+    return nullptr;  // new DX12Texture();
 }
 
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+memory::mMemoryType      mApiDX12::sm_memoryType = memory::g_defaultMemoryType;
+memory::mObjectAllocator mApiDX12::sm_mal;
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void mApiDX12::init()
+{
+    // Two Dx12Api shouldn't be initialized
+    mAssert(mApiDX12::sm_memoryType == memory::g_defaultMemoryType);
+    mApiDX12::sm_memoryType = memory::create_newMemoryType("Dx12 rendering");
+    sm_mal.init(mApiDX12::sm_memoryType);
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void mApiDX12::destroy()
+{
+    // check dx12 memory allocator
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+render::mISwapchain& mApiDX12::create_swapchain() const
+{
+    return sm_mal.construct_ref<mSwapchainDX12>();
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void mApiDX12::destroy_swapchain(render::mISwapchain& a_swapchain) const
+{
+    auto dx12Swapchain = dynamic_cast<mSwapchainDX12&>(a_swapchain);
+    sm_mal.destroy_ref(dx12Swapchain);
+}
 }  // namespace m::dx12

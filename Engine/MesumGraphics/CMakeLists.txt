@@ -18,6 +18,7 @@ set(MODULE_NAME MesumGraphics)
 project(${MODULE_NAME} VERSION 1.0.0 DESCRIPTION "MesumEngine core functionnalities")
 
 set(SOURCES WindowedApp.cpp
+            RendererUtils.cpp
             )
 set(HEADERS Windows.hpp
             WindowedApp.hpp
@@ -27,6 +28,7 @@ set(HEADERS Windows.hpp
             RenderTask.hpp
             RenderBase.hpp
             ApiAbstraction.hpp
+            RendererUtils.hpp
             MesumGraphics/Common.hpp)
 
 if(BM_DYNAMIC_LINK)

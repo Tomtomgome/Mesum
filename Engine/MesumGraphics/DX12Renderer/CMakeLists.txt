@@ -8,6 +8,7 @@ set(SOURCES DX12RendererCommon.cpp
         #DX12Texture.cpp
         DX12CommandQueue.cpp
         RendererDX12Impl.cpp
+        SwapchainDX12Impl.cpp
         imgui_impl_dx12.cpp)
 
 set(HEADERS DX12RendererCommon.hpp

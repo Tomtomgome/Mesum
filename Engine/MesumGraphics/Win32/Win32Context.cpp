@@ -144,14 +144,14 @@ static input::mKey translateKeys(mInt a_keyCode)
     return keyUnknown;
 }
 
-void WIN32Context::init(HINSTANCE& a_hInstance)
+void Win32Context::init(HINSTANCE& a_hInstance)
 {
     mLog_infoTo(PLATFORM_APP_ID, "Initializing Win32Context");
     m_hInstance = a_hInstance;
     init_keysLuts();
 }
 
-void WIN32Context::init_keysLuts()
+void Win32Context::init_keysLuts()
 {
     memset(m_lut_keycodes, -1, sizeof(m_lut_keycodes));
     memset(m_lut_scancode, -1, sizeof(m_lut_scancode));
@@ -171,9 +171,9 @@ void WIN32Context::init_keysLuts()
     }
 }
 
-void WIN32Context::destroy() {}
+void Win32Context::destroy() {}
 
-void WIN32Context::register_windowClass(const mWideChar* a_className,
+void Win32Context::register_windowClass(const mWideChar* a_className,
                                         HINSTANCE a_hInstance, WNDPROC a_proc)
 {
     WNDCLASSEXW windowClass   = {};
@@ -187,7 +187,7 @@ void WIN32Context::register_windowClass(const mWideChar* a_className,
     RegisterClassExW(&windowClass);
 }
 
-HWND WIN32Context::create_window(const mWideChar* a_className,
+HWND Win32Context::create_window(const mWideChar* a_className,
                                  std::string a_windowName, mU32 a_width,
                                  mU32 a_height, mBool a_isRransparent) const
 {
@@ -259,7 +259,7 @@ HWND WIN32Context::create_window(const mWideChar* a_className,
     return hwnd;
 }
 
-input::mKey WIN32Context::get_keyFromParam(WPARAM a_wParam) const
+input::mKey Win32Context::get_keyFromParam(WPARAM a_wParam) const
 {
     mI64 scancode = a_wParam;
     if (scancode < 0 || scancode > 255)

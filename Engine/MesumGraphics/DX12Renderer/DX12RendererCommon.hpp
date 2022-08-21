@@ -33,7 +33,7 @@ using namespace Microsoft::WRL;
 
 extern MesumGraphicsApi const logging::mChannelID DX_RENDERER_ID;
 
-inline void check_MicrosoftHRESULT(HRESULT a_hr)
+inline void check_mhr(HRESULT a_hr)
 {
     if (FAILED(a_hr))
     {

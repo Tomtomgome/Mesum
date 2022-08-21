@@ -417,8 +417,7 @@ ComPtr<ID3DBlob> compile_shader(std::string const& a_shaderPath,
 void enable_debugLayer()
 {
     ComPtr<ID3D12Debug> debugInterface;
-    check_MicrosoftHRESULT(
-        D3D12GetDebugInterface(IID_PPV_ARGS(&debugInterface)));
+    check_mhr(D3D12GetDebugInterface(IID_PPV_ARGS(&debugInterface)));
     debugInterface->EnableDebugLayer();
 }
 
@@ -468,7 +467,7 @@ ComPtr<IDXGIAdapter4> get_adapter(mBool a_useWarp)
     createFactoryFlags = DXGI_CREATE_FACTORY_DEBUG;
 #endif  // M_DEBUG
 
-    check_MicrosoftHRESULT(
+    check_mhr(
         CreateDXGIFactory2(createFactoryFlags, IID_PPV_ARGS(&dxgiFactory)));
 
     ComPtr<IDXGIAdapter1> dxgiAdapter1;
@@ -476,9 +475,8 @@ ComPtr<IDXGIAdapter4> get_adapter(mBool a_useWarp)
 
     if (a_useWarp)
     {
-        check_MicrosoftHRESULT(
-            dxgiFactory->EnumWarpAdapter(IID_PPV_ARGS(&dxgiAdapter1)));
-        check_MicrosoftHRESULT(dxgiAdapter1.As(&dxgiAdapter4));
+        check_mhr(dxgiFactory->EnumWarpAdapter(IID_PPV_ARGS(&dxgiAdapter1)));
+        check_mhr(dxgiAdapter1.As(&dxgiAdapter4));
     }
     else
     {
@@ -499,7 +497,7 @@ ComPtr<IDXGIAdapter4> get_adapter(mBool a_useWarp)
             {
                 size_maxDedicatedVideoMemory =
                     dxgiAdapterDesc1.DedicatedVideoMemory;
-                check_MicrosoftHRESULT(dxgiAdapter1.As(&dxgiAdapter4));
+                check_mhr(dxgiAdapter1.As(&dxgiAdapter4));
             }
         }
     }
@@ -509,8 +507,8 @@ ComPtr<IDXGIAdapter4> get_adapter(mBool a_useWarp)
 ComPtr<ID3D12Device2> create_device(ComPtr<IDXGIAdapter4> a_adapter)
 {
     ComPtr<ID3D12Device2> d3d12Device2;
-    check_MicrosoftHRESULT(D3D12CreateDevice(
-        a_adapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&d3d12Device2)));
+    check_mhr(D3D12CreateDevice(a_adapter.Get(), D3D_FEATURE_LEVEL_11_0,
+                                IID_PPV_ARGS(&d3d12Device2)));
     mD3D12DebugNamed(d3d12Device2, "Suplied device");
 
 #ifdef M_DEBUG
@@ -556,7 +554,7 @@ ComPtr<ID3D12Device2> create_device(ComPtr<IDXGIAdapter4> a_adapter)
         // filter.DenyList.NumIDs = _countof(list_denyIds);
         // filter.DenyList.pIDList = list_denyIds;
 
-        check_MicrosoftHRESULT(infoQueue->PushStorageFilter(&filter));
+        check_mhr(infoQueue->PushStorageFilter(&filter));
     }
 #endif
 
@@ -574,8 +572,8 @@ ComPtr<ID3D12CommandQueue> create_commandQueue(ComPtr<ID3D12Device2>   a_device,
     desc_commandQueue.Flags    = D3D12_COMMAND_QUEUE_FLAG_NONE;
     desc_commandQueue.NodeMask = 0;
 
-    check_MicrosoftHRESULT(a_device->CreateCommandQueue(
-        &desc_commandQueue, IID_PPV_ARGS(&d3d12CommandQueue)));
+    check_mhr(a_device->CreateCommandQueue(&desc_commandQueue,
+                                           IID_PPV_ARGS(&d3d12CommandQueue)));
     mD3D12DebugNamed(d3d12CommandQueue, "Suplied commandqueue");
 
     return d3d12CommandQueue;
@@ -592,7 +590,7 @@ ComPtr<IDXGISwapChain4> create_swapChain(
     flags_createFactory = DXGI_CREATE_FACTORY_DEBUG;
 #endif  // M_DEBUG
 
-    check_MicrosoftHRESULT(
+    check_mhr(
         CreateDXGIFactory2(flags_createFactory, IID_PPV_ARGS(&dxgiFactory4)));
     mDXGIDebugNamed(dxgiFactory4, "SwapChain Factory");
 
@@ -613,17 +611,17 @@ ComPtr<IDXGISwapChain4> create_swapChain(
 
 	// Create a swap chain for the window.
     ComPtr<IDXGISwapChain1> swapChain1;
-    check_MicrosoftHRESULT(dxgiFactory4->CreateSwapChainForHwnd(
-        a_commandQueue.Get(), a_hWnd, &desc_SwapChain, nullptr, nullptr,
-        &swapChain1));
+    check_mhr(dxgiFactory4->CreateSwapChainForHwnd(a_commandQueue.Get(), a_hWnd,
+                                                   &desc_SwapChain, nullptr,
+                                                   nullptr, &swapChain1));
     mDXGIDebugNamed(swapChain1, "Base SwapChain");
 
     // Disable the Alt+Enter fullscreen toggle feature. Switching to fullscreen
     // will be handled manually.
-    check_MicrosoftHRESULT(
+    check_mhr(
         dxgiFactory4->MakeWindowAssociation(a_hWnd, DXGI_MWA_NO_ALT_ENTER));
 
-    check_MicrosoftHRESULT(swapChain1.As(&dxgiSwapChain4));
+    check_mhr(swapChain1.As(&dxgiSwapChain4));
     mDXGIDebugNamed(dxgiSwapChain4, "Suplied SwapChain");
 
     return dxgiSwapChain4;
@@ -640,8 +638,8 @@ ComPtr<ID3D12DescriptorHeap> create_descriptorHeap(
     desc_descriptorHeap.Type                       = a_type;
     desc_descriptorHeap.Flags                      = a_flags;
 
-    check_MicrosoftHRESULT(a_device->CreateDescriptorHeap(
-        &desc_descriptorHeap, IID_PPV_ARGS(&descriptorHeap)));
+    check_mhr(a_device->CreateDescriptorHeap(&desc_descriptorHeap,
+                                             IID_PPV_ARGS(&descriptorHeap)));
     mD3D12DebugNamed(descriptorHeap, "Suplied descriptor heap");
 
     return descriptorHeap;
@@ -651,7 +649,7 @@ ComPtr<ID3D12CommandAllocator> create_commandAllocator(
     ComPtr<ID3D12Device2> a_device, D3D12_COMMAND_LIST_TYPE a_type)
 {
     ComPtr<ID3D12CommandAllocator> commandAllocator;
-    check_MicrosoftHRESULT(a_device->CreateCommandAllocator(
+    check_mhr(a_device->CreateCommandAllocator(
         a_type, IID_PPV_ARGS(&commandAllocator)));
     mD3D12DebugNamed(commandAllocator, "Suplied command allocator");
 
@@ -664,12 +662,11 @@ ComPtr<ID3D12GraphicsCommandList2> create_commandList(
     D3D12_COMMAND_LIST_TYPE        a_type)
 {
     ComPtr<ID3D12GraphicsCommandList2> commandList;
-    check_MicrosoftHRESULT(
-        a_device->CreateCommandList(0, a_type, a_commandAllocator.Get(),
-                                    nullptr, IID_PPV_ARGS(&commandList)));
+    check_mhr(a_device->CreateCommandList(0, a_type, a_commandAllocator.Get(),
+                                          nullptr, IID_PPV_ARGS(&commandList)));
     mD3D12DebugNamed(commandList, "Suplied commandList");
 
-    check_MicrosoftHRESULT(commandList->Close());
+    check_mhr(commandList->Close());
 
     return commandList;
 }
@@ -678,7 +675,7 @@ ComPtr<ID3D12Fence> create_fence(ComPtr<ID3D12Device2> a_device)
 {
     ComPtr<ID3D12Fence> fence;
 
-    check_MicrosoftHRESULT(
+    check_mhr(
         a_device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence)));
     mD3D12DebugNamed(fence, "Suplied fence");
 
@@ -699,8 +696,7 @@ mU64 signal_fence(ComPtr<ID3D12CommandQueue> a_commandQueue,
                  ComPtr<ID3D12Fence> a_fence, mU64& a_fenceValue)
 {
     mU64 fenceValueForSignal = ++a_fenceValue;
-    check_MicrosoftHRESULT(
-        a_commandQueue->Signal(a_fence.Get(), fenceValueForSignal));
+    check_mhr(a_commandQueue->Signal(a_fence.Get(), fenceValueForSignal));
 
     return fenceValueForSignal;
 }
@@ -710,8 +706,7 @@ void wait_fenceValue(ComPtr<ID3D12Fence> a_fence, uint64_t a_fenceValue,
 {
     if (a_fence->GetCompletedValue() < a_fenceValue)
     {
-        check_MicrosoftHRESULT(
-            a_fence->SetEventOnCompletion(a_fenceValue, a_fenceEvent));
+        check_mhr(a_fence->SetEventOnCompletion(a_fenceValue, a_fenceEvent));
         WaitForSingleObject(a_fenceEvent,
                             static_cast<DWORD>(a_duration.count()));
     }

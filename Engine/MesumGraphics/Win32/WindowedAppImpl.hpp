@@ -28,7 +28,7 @@ class IWindowedApplicationImpl : public application::IWindowedApplicationBase
 
    private:
     mBool                        m_signalKeepRunning = true;
-    WIN32Context                 m_W32Context;
+    Win32Context                 m_W32Context;
     std::set<windows::mIWindow*> m_windows;
 };
 

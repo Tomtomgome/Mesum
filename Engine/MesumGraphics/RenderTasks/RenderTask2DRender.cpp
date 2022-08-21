@@ -118,38 +118,36 @@ Dx12Task2dRender::Dx12Task2dRender(TaskData2dRender* a_data)
     dx12::ComPtr<ID3D12Device> device =
         dx12::DX12Context::gs_dx12Contexte->m_device;
 
-    dx12::check_MicrosoftHRESULT(device->CreateRootSignature(
+    dx12::check_mhr(device->CreateRootSignature(
         0, rootBlob->GetBufferPointer(), rootBlob->GetBufferSize(),
         IID_PPV_ARGS(&m_rootSignature)));
 
     pipelineDesc.pRootSignature = m_rootSignature.Get();
 
-    dx12::check_MicrosoftHRESULT(device->CreateGraphicsPipelineState(
-        &pipelineDesc, IID_PPV_ARGS(&m_pso)));
+    dx12::check_mhr(device->CreateGraphicsPipelineState(&pipelineDesc,
+                                                        IID_PPV_ARGS(&m_pso)));
 
     // LOAD THE CONSTANT BUFFERS ----------------------------------------------
     auto heapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
     auto resourceDesc   = CD3DX12_RESOURCE_DESC::Buffer(sizeof(math::mMat4x4));
-    dx12::check_MicrosoftHRESULT(device->CreateCommittedResource(
+    dx12::check_mhr(device->CreateCommittedResource(
         &heapProperties, D3D12_HEAP_FLAG_NONE, &resourceDesc,
         D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
         IID_PPV_ARGS(m_pCbMatrices.GetAddressOf())));
     m_pCbMatrices->SetName(L"2D Matricies buffer");
 
     CD3DX12_RANGE readRange(0, 0);
-    dx12::check_MicrosoftHRESULT(
-        m_pCbMatrices->Map(0, &readRange, &m_pCbMatricesData));
+    dx12::check_mhr(m_pCbMatrices->Map(0, &readRange, &m_pCbMatricesData));
 
     resourceDesc =
         CD3DX12_RESOURCE_DESC::Buffer(sm_nbMaxMaterial * sm_minimalCBSize);
-    dx12::check_MicrosoftHRESULT(device->CreateCommittedResource(
+    dx12::check_mhr(device->CreateCommittedResource(
         &heapProperties, D3D12_HEAP_FLAG_NONE, &resourceDesc,
         D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
         IID_PPV_ARGS(m_pCbMaterial.GetAddressOf())));
     m_pCbMaterial->SetName(L"2D Material Buffer");
 
-    dx12::check_MicrosoftHRESULT(
-        m_pCbMaterial->Map(0, &readRange, &m_pCbMaterialData));
+    dx12::check_mhr(m_pCbMaterial->Map(0, &readRange, &m_pCbMaterialData));
 
     ID3D12Device2* pDevice = dx12::DX12Context::gs_dx12Contexte->m_device.Get();
 

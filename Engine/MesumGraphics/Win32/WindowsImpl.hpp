@@ -16,25 +16,27 @@ class IWindowImpl : public windows::mIWindow
     // Platform specific
     LRESULT process_messages(UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam);
 
-    void init(mInitData const& a_initData) override;
-    void destroy() override;
+    void init(mInitData const& a_initData) final;
+    void destroy() final;
 
-    void link_inputManager(input::mIInputManager* a_inputManager) override
+    std::pair<mU32, mU32> get_size() const final;
+
+    void link_inputManager(input::mIInputManager* a_inputManager) final
     {
         m_linkedInputManager = a_inputManager;
     };
     render::ISurface::HdlPtr link_renderer(
-        render::IRenderer* a_renderer) override;
+        render::IRenderer* a_renderer) final;
 
-    void set_asImGuiWindow() override;
-    void set_fullScreen(mBool a_fullscreen) override;
-    void toggle_fullScreen() override;
+    void set_asImGuiWindow() final;
+    void set_fullScreen(mBool a_fullscreen) final;
+    void toggle_fullScreen() final;
 
-    void attach_toDestroy(mCallback<void> const& a_onDestroyCallback) override;
+    void attach_toDestroy(mCallback<void> const& a_onDestroyCallback) final;
     void attach_toResize(
-        mCallback<void, mU32, mU32> const& a_onResizeCallback) override;
+        mCallback<void, mU32, mU32> const& a_onResizeCallback) final;
 
-    void set_winContext(WIN32Context const& a_winContext)
+    void set_winContext(Win32Context const& a_winContext)
     {
         m_parentContext = &a_winContext;
     }
@@ -68,7 +70,7 @@ class IWindowImpl : public windows::mIWindow
     // Window rectangle (used to toggle fullscreen state).
     RECT m_windowRect;
 
-    WIN32Context const* m_parentContext = nullptr;
+    Win32Context const* m_parentContext = nullptr;
 
     using CallbackResize        = mCallback<void, mU32, mU32>;
     using CallbackWindowDestroy = mCallback<void>;

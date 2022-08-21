@@ -98,6 +98,49 @@ class DX12Renderer : public render::IRenderer
     render::IResource* getNew_texture() override;
 };
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+class mSwapchainDX12 final : public render::mISwapchain
+{
+   public:
+    ~mSwapchainDX12() final = default;
+
+    void init_win32(Desc const& a_desc, DescWin32 const& a_descWin32) final;
+    void init_x11(Desc const& a_config, Descx11 const& a_data) final;
+
+    void resize(mU32 a_width, mU32 a_heigh) final;
+
+    void destroy() final;
+
+   private:
+    DXGI_SWAP_CHAIN_DESC1 m_descSwapChain;
+    IDXGISwapChain4*      m_pSwapChain;
+
+    // By default, enable V-Sync.
+    mBool m_vSync            = true;
+    mBool m_tearingSupported = false;
+};
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+class mApiDX12 final : public render::mIApi
+{
+   public:
+    static memory::mMemoryType      sm_memoryType;
+    static memory::mObjectAllocator sm_mal;
+
+   public:
+    ~mApiDX12() final = default;
+
+    void init() final;
+    void destroy() final;
+
+    render::mISwapchain& create_swapchain() const final;
+    void destroy_swapchain(render::mISwapchain& a_swapchain) const final;
+};
+
 }  // namespace m::dx12
 
 #endif  // M_RendererDX12Impl

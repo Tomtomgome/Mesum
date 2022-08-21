@@ -143,6 +143,22 @@ class mObjectAllocator
     }
 
     ///////////////////////////////////////////////////////////////////////////
+    /// \brief Construct a new object but return a reference
+    ///
+    /// \tparam t_Type The type of object to construct
+    /// \tparam t_Arg The list of type of arguments to pass the constructor
+    /// \param a_args The list of parameters to pass the constructor
+    /// \return A reference to the newly created object
+    /// \post allocated object must be deallocated using the same allocator
+    ///////////////////////////////////////////////////////////////////////////
+    template <typename t_Type, typename... t_Arg>
+    t_Type& construct_ref(
+        t_Arg... a_args)
+    {
+        return *(construct<t_Type, t_Arg...>(a_args...));
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
     /// \brief Deconstruct an object
     ///
     /// \tparam t_Type The type of object to deconstruct
@@ -156,6 +172,19 @@ class mObjectAllocator
         memory::log_memoryDeallocation(m_memoryType, sizeof(t_Type));
 #endif  // M_TRACK_MEMORY_ALLOCATIONS
         delete a_object;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    /// \brief Deconstruct an object from a reference
+    ///
+    /// \tparam t_Type The type of object to deconstruct
+    /// \param a_object The pointer of the object to delete
+    /// \pre a_object must have been allocated using the same allocator
+    ///////////////////////////////////////////////////////////////////////////
+    template <typename t_Type>
+    void destroy_ref(t_Type& a_object)
+    {
+        destroy(&a_object);
     }
 
    private:

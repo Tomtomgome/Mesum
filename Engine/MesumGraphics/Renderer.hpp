@@ -3,6 +3,7 @@
 #pragma once
 
 #include <MesumCore/Kernel/Callbacks.hpp>
+#include <MesumCore/Kernel/Memory.hpp>
 #include <MesumCore/Kernel/Types.hpp>
 #include <MesumGraphics/Common.hpp>
 #include <MesumGraphics/RenderTask.hpp>
@@ -22,8 +23,8 @@ enum class RendererApi
 struct Win32SurfaceInitData
 {
     HWND m_hwnd;
-    mU32  m_width;
-    mU32  m_height;
+    mU32 m_width;
+    mU32 m_height;
 };
 
 struct X11SurfaceInitData
@@ -60,8 +61,8 @@ struct IResource
 
     struct Handle
     {
-        std::atomic<State>* m_pState          = nullptr;
-        mU32                 m_resourceNumber = 0;
+        std::atomic<State>* m_pState         = nullptr;
+        mU32                m_resourceNumber = 0;
     };
 };
 
@@ -74,7 +75,7 @@ class ISurface
 
     virtual render::Taskset* addNew_renderTaskset() = 0;
 
-    virtual void render()                          = 0;
+    virtual void render()                            = 0;
     virtual void resize(mU32 a_width, mU32 a_height) = 0;
 
     virtual void destroy() = 0;
@@ -97,10 +98,65 @@ class IRenderer
     virtual void destroy() = 0;
 
     virtual mBool get_supportDearImGuiMultiViewports()    = 0;
-    virtual void start_dearImGuiNewFrameRenderer() const = 0;
+    virtual void  start_dearImGuiNewFrameRenderer() const = 0;
 
     virtual ISurface*  getNew_surface() = 0;
     virtual IResource* getNew_texture() = 0;
+};
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+template <typename t_ResultType>
+using mResult = std::pair<mBool, t_ResultType>;
+
+class mISwapchain
+{
+   public:
+    struct Desc
+    {
+        mUInt bufferCount;
+        mUInt width;
+        mUInt height;
+    };
+
+    struct DescWin32
+    {
+#if defined M_WIN32
+        HWND hwd;
+#endif
+    };
+
+    struct Descx11
+    {
+#if defined M_UNIX
+// TODO : linux support :(
+#endif
+    };
+
+   public:
+    virtual ~mISwapchain() = default;
+
+    virtual void init_win32(Desc const&      a_desc,
+                            DescWin32 const& a_descWin32)              = 0;
+    virtual void init_x11(Desc const& a_config, Descx11 const& a_data) = 0;
+
+    virtual void resize(mU32 a_width, mU32 a_heigh) = 0;
+
+    virtual void destroy() = 0;
+};
+
+class mIApi
+{
+   public:
+    virtual ~mIApi() = default;
+
+    virtual void init()    = 0;
+    virtual void destroy() = 0;
+
+    [[nodiscard("The application should manage the swapchain")]]
+    virtual render::mISwapchain& create_swapchain() const              = 0;
+    virtual void                 destroy_swapchain(mISwapchain&) const = 0;
 };
 
 }  // namespace m::render

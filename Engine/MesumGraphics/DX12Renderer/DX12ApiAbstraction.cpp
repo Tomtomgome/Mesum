@@ -54,7 +54,7 @@ void init(mApi& a_api, m::aa::mApi::InitData const& a_initData)
     {
         // Debug layers
         ID3D12Debug* debugInterface;
-        m::dx12::check_MicrosoftHRESULT(
+        m::dx12::check_mhr(
             D3D12GetDebugInterface(IID_PPV_ARGS(&debugInterface)));
         debugInterface->EnableDebugLayer();
         debugInterface->Release();
@@ -63,7 +63,7 @@ void init(mApi& a_api, m::aa::mApi::InitData const& a_initData)
         createFactoryFlags = DXGI_CREATE_FACTORY_DEBUG;
     }
 
-    m::dx12::check_MicrosoftHRESULT(CreateDXGIFactory2(
+    m::dx12::check_mhr(CreateDXGIFactory2(
         createFactoryFlags, IID_PPV_ARGS(&a_api.internal.dx12.factory)));
 }
 
@@ -101,7 +101,7 @@ void enumerate_adapter(mApi& a_api, std::vector<mAdapter>& a_adapters)
         mAdapter& rAdapter = a_adapters.back();
         rAdapter.init();
 
-        m::dx12::check_MicrosoftHRESULT(dxgiAdapter1->QueryInterface(
+        m::dx12::check_mhr(dxgiAdapter1->QueryInterface(
             __uuidof(IDXGIAdapter4),
             (void**)(&rAdapter.internal.dx12.adapter)));
 
@@ -110,17 +110,19 @@ void enumerate_adapter(mApi& a_api, std::vector<mAdapter>& a_adapters)
 
         // rAdapter.properties.idVender = dxgiAdapterDesc1.VendorId;
         // rAdapter.properties.idDevice = dxgiAdapterDesc1.DeviceId;
-//        if ((dxgiAdapterDesc1.Flags & DXGI_ADAPTER_FLAG_SOFTWARE) == 0 &&
-//            SUCCEEDED(D3D12CreateDevice(dxgiAdapter1.Get(),
-//                                        D3D_FEATURE_LEVEL_11_0,
-//                                        __uuidof(ID3D12Device), nullptr)) &&
-//            dxgiAdapterDesc1.DedicatedVideoMemory >
-//                size_maxDedicatedVideoMemory)
-//        {
-//            size_maxDedicatedVideoMemory =
-//                dxgiAdapterDesc1.DedicatedVideoMemory;
-//            check_MicrosoftHRESULT(dxgiAdapter1.As(&dxgiAdapter4));
-//        }
+        //        if ((dxgiAdapterDesc1.Flags & DXGI_ADAPTER_FLAG_SOFTWARE) == 0
+        //        &&
+        //            SUCCEEDED(D3D12CreateDevice(dxgiAdapter1.Get(),
+        //                                        D3D_FEATURE_LEVEL_11_0,
+        //                                        __uuidof(ID3D12Device),
+        //                                        nullptr)) &&
+        //            dxgiAdapterDesc1.DedicatedVideoMemory >
+        //                size_maxDedicatedVideoMemory)
+        //        {
+        //            size_maxDedicatedVideoMemory =
+        //                dxgiAdapterDesc1.DedicatedVideoMemory;
+        //            check_mhr(dxgiAdapter1.As(&dxgiAdapter4));
+        //        }
     }
 }
 
