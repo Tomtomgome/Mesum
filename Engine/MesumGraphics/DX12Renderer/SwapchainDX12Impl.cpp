@@ -1,5 +1,7 @@
 #include "RendererDX12Impl.hpp"
 
+#include "DX12Context.hpp"
+
 namespace m::dx12
 {
 ///////////////////////////////////////////////////////////////////////////////
@@ -49,8 +51,7 @@ void mSwapchainDX12::init_win32(Desc const&      a_desc,
         a_descWin32.hwd, &m_descSwapChain, nullptr, nullptr, &swapChain1));
     mDXGIDebugNamed(swapChain1, "Base SwapChain");
 
-    // Disable the Alt+Enter fullscreen toggle feature. Switching to fullscreen
-    // will be handled manually.
+    // Disable the Alt+Enter fullscreen toggle feature.
     check_mhr(dxgiFactory4->MakeWindowAssociation(a_descWin32.hwd,
                                                   DXGI_MWA_NO_ALT_ENTER));
 
@@ -61,20 +62,17 @@ void mSwapchainDX12::init_win32(Desc const&      a_desc,
     // TODO : Get the window name
     mDXGIDebugNamed(m_pSwapChain, "Window SwapChain");
 
-    //    m_currentBackBufferIndex = m_swapChain->GetCurrentBackBufferIndex();
-    //
-    //    m_RTVDescriptorHeap =
-    //        create_descriptorHeap(DX12Context::gs_dx12Contexte->m_device,
-    //                              D3D12_DESCRIPTOR_HEAP_TYPE_RTV,
-    //                              scm_numFrames);
-    //    mD3D12DebugNamed(m_RTVDescriptorHeap, "Window descriptor heap");
-    //
-    //    m_RTVDescriptorSize =
-    //        DX12Context::gs_dx12Contexte->m_device
-    //            ->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
-    //
-    //    update_renderTargetViews(DX12Context::gs_dx12Contexte->m_device,
-    //                             m_swapChain, m_RTVDescriptorHeap);
+    m_pDescriptorHeap = create_descriptorHeap(
+                            DX12Context::gs_dx12Contexte->m_device,
+                            D3D12_DESCRIPTOR_HEAP_TYPE_RTV, a_desc.bufferCount)
+                            .Get();
+   mD3D12DebugNamed(m_pDescriptorHeap, "Swapchain descriptor heap");
+
+    m_descriptorSize =
+        DX12Context::gs_dx12Contexte->m_device
+            ->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+
+    update_renderTargetViews();
 }
 
 //-----------------------------------------------------------------------------
@@ -89,13 +87,100 @@ void mSwapchainDX12::init_x11(Desc const& a_config, Descx11 const& a_data)
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void mSwapchainDX12::resize(mU32 a_width, mU32 a_heigh) {}
+void mSwapchainDX12::destroy()
+{
+    m_pSwapChain->Release();
+    for (auto& buffer : m_backbuffers) { buffer->Release(); }
+    std::vector<ID3D12Resource*>().swap(m_backbuffers);
+    m_pDescriptorHeap->Release();
+}
 
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void mSwapchainDX12::destroy()
+void mSwapchainDX12::resize(mU32 a_width, mU32 a_height)
 {
-    m_pSwapChain->Release();
+    DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
+    check_mhr(m_pSwapChain->GetDesc1(&swapChainDesc));
+    if (swapChainDesc.Width != a_width || swapChainDesc.Height != a_height)
+    {
+        DX12Context::gs_dx12Contexte->get_commandQueue().flush();
+
+        for (mInt i = 0; i < swapChainDesc.BufferCount; ++i)
+        {
+            // Any references to the back buffers must be released
+            // before the swap chain can be resized.
+            m_backbuffers[i]->Release();
+
+            // TODO Fix synchronization
+        }
+
+        check_mhr(m_pSwapChain->ResizeBuffers(
+            swapChainDesc.BufferCount, std::max(1u, a_width),
+            std::max(1u, a_height), swapChainDesc.Format, swapChainDesc.Flags));
+
+        update_renderTargetViews();
+    }
 }
+
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+IDXGISwapChain4* mSwapchainDX12::get_swapchain() const
+{
+    return m_pSwapChain;
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+mUInt mSwapchainDX12::get_currentBackBufferIndex() const
+{
+    return m_pSwapChain->GetCurrentBackBufferIndex();
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+ID3D12Resource* mSwapchainDX12::get_backbuffer(mUInt a_backbufferIndex) const
+{
+    ID3D12Resource* pBackbuffer;
+    m_pSwapChain->GetBuffer(a_backbufferIndex, IID_PPV_ARGS(&pBackbuffer));
+    return pBackbuffer;
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+CD3DX12_CPU_DESCRIPTOR_HANDLE mSwapchainDX12::get_rtv(
+    mInt a_backbufferIndex) const
+{
+    return {m_pDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
+            a_backbufferIndex, m_descriptorSize};
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void mSwapchainDX12::update_renderTargetViews()
+{
+    DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
+    check_mhr(m_pSwapChain->GetDesc(&swapChainDesc));
+
+    CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(
+        m_pDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+
+    m_backbuffers.resize(swapChainDesc.BufferCount);
+    for (int i = 0; i < m_backbuffers.size(); ++i)
+    {
+        check_mhr(m_pSwapChain->GetBuffer(i, IID_PPV_ARGS(&m_backbuffers[i])));
+
+        DX12Context::gs_dx12Contexte->m_device->CreateRenderTargetView(
+            m_backbuffers[i], nullptr, rtvHandle);
+
+        rtvHandle.Offset(m_descriptorSize);
+    }
+}
+
 }  // namespace m::dx12

@@ -110,6 +110,27 @@ class IRenderer
 template <typename t_ResultType>
 using mResult = std::pair<mBool, t_ResultType>;
 
+class mISynchTool
+{
+   public:
+    struct Desc
+    {
+        mUInt bufferCount;
+    };
+
+   public:
+    virtual ~mISynchTool() = default;
+
+    virtual void init(Desc& a_desc) = 0;
+    virtual void destroy() = 0;
+};
+
+class mIRenderTarget
+{
+   public:
+    virtual ~mIRenderTarget() = default;
+};
+
 class mISwapchain
 {
    public:
@@ -140,10 +161,9 @@ class mISwapchain
     virtual void init_win32(Desc const&      a_desc,
                             DescWin32 const& a_descWin32)              = 0;
     virtual void init_x11(Desc const& a_config, Descx11 const& a_data) = 0;
+    virtual void destroy()                                             = 0;
 
-    virtual void resize(mU32 a_width, mU32 a_heigh) = 0;
-
-    virtual void destroy() = 0;
+    virtual void resize(mU32 a_width, mU32 a_height) = 0;
 };
 
 class mIApi
@@ -154,9 +174,16 @@ class mIApi
     virtual void init()    = 0;
     virtual void destroy() = 0;
 
-    [[nodiscard("The application should manage the swapchain")]]
-    virtual render::mISwapchain& create_swapchain() const              = 0;
-    virtual void                 destroy_swapchain(mISwapchain&) const = 0;
+    virtual void start_dearImGuiNewFrameRenderer() const = 0;
+
+    [[nodiscard]] virtual render::mISwapchain& create_swapchain() const = 0;
+    virtual void destroy_swapchain(mISwapchain&) const                  = 0;
+
+    [[nodiscard]] virtual Taskset& create_renderTaskset() const  = 0;
+    virtual void destroy_renderTaskset(Taskset& a_taskset) const = 0;
+
+    [[nodiscard]] virtual mISynchTool& create_synchTool() const    = 0;
+    virtual void destroy_synchTool(mISynchTool& a_synchTool) const = 0;
 };
 
 }  // namespace m::render

@@ -12,10 +12,11 @@
 namespace m::render
 {
 void init_swapchainWithWindow(mIApi const& a_api, mISwapchain& a_swapchain,
-                              windows::mIWindow& a_window)
+                              windows::mIWindow& a_window,
+                              mUInt const        a_nbBackbuffer)
 {
     m::render::mISwapchain::Desc scDesc{};
-    scDesc.bufferCount   = 3;
+    scDesc.bufferCount   = a_nbBackbuffer;
     auto [width, height] = a_window.get_size();
     scDesc.width         = width;
     scDesc.height        = height;

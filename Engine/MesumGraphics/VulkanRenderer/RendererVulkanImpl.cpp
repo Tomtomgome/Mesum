@@ -28,6 +28,15 @@ void VulkanRenderTaskset::clear()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
+void VulkanRenderTaskset::execute()
+{
+    for (const auto task : m_set_tasks) { task->prepare(); }
+    for (const auto task : m_set_tasks) { task->execute(); }
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void VulkanSurface::init_win32(render::Win32SurfaceInitData& a_data)
 {
 #ifdef M_WIN32
@@ -485,8 +494,7 @@ render::ISurface* VulkanRenderer::getNew_surface()
 //-----------------------------------------------------------------------------
 render::IResource* VulkanRenderer::getNew_texture()
 {
-    return nullptr;//new VulkanTexture();
+    return nullptr;  // new VulkanTexture();
 }
-
 
 }  // namespace m::vulkan

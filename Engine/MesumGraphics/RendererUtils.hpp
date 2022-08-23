@@ -11,5 +11,6 @@ class mISwapchain;
 class mIApi;
 
 void init_swapchainWithWindow(mIApi const& a_api, mISwapchain& a_swapchain,
-                              windows::mIWindow& a_window);
+                              windows::mIWindow& a_window,
+                              mUInt const        a_nbBackbuffer);
 };  // namespace m::render

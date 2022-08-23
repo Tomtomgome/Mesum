@@ -18,6 +18,7 @@ class IWindowedApplicationImpl : public application::IWindowedApplicationBase
 
     void start_dearImGuiNewFrame(
         render::IRenderer const* a_renderer) const override;
+    void start_dearImGuiNewFrame(render::mIApi const& a_api) const override;
 
     void process_messages();
 

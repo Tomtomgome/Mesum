@@ -53,6 +53,16 @@ void IWindowedApplicationImpl::start_dearImGuiNewFrame(
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
+void IWindowedApplicationImpl::start_dearImGuiNewFrame(
+    render::mIApi const& a_api) const
+{
+    a_api.start_dearImGuiNewFrameRenderer();
+    ImGui_ImplWin32_NewFrame();
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void IWindowedApplicationImpl::init(mCmdLine const& a_cmdLine, void* a_appData)
 {
     WindowedLaunchData& data = *(WindowedLaunchData*)a_appData;

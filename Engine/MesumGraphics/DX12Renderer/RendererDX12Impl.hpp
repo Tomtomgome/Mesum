@@ -16,6 +16,7 @@ struct DX12RenderTaskset : public render::Taskset
 
     render::Task* add_task(render::TaskData* a_data) override;
     void          clear() override;
+    void          execute() override;
 };
 
 //-----------------------------------------------------------------------------
@@ -101,6 +102,28 @@ class DX12Renderer : public render::IRenderer
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
+class mSynchToolDX12 : public render::mISynchTool
+{
+   public:
+    void init(Desc& a_desc) final;
+    void destroy() final;
+   public:
+    mUInt             currentFenceIndex;
+    std::vector<mU64> fenceValues = {};
+};
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+class mRenderTargetDX12 : public render::mIRenderTarget
+{
+   public:
+    D3D12_CPU_DESCRIPTOR_HANDLE rtv;
+};
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 class mSwapchainDX12 final : public render::mISwapchain
 {
    public:
@@ -108,14 +131,28 @@ class mSwapchainDX12 final : public render::mISwapchain
 
     void init_win32(Desc const& a_desc, DescWin32 const& a_descWin32) final;
     void init_x11(Desc const& a_config, Descx11 const& a_data) final;
-
-    void resize(mU32 a_width, mU32 a_heigh) final;
-
     void destroy() final;
+
+    void resize(mU32 a_width, mU32 a_height) final;
+
+   public:
+    [[nodiscard]] IDXGISwapChain4* get_swapchain() const;
+    [[nodiscard]] mUInt            get_currentBackBufferIndex() const;
+    [[nodiscard]] ID3D12Resource* get_backbuffer(mUInt a_backbufferIndex) const;
+    [[nodiscard]] CD3DX12_CPU_DESCRIPTOR_HANDLE get_rtv(
+        mInt a_backbufferIndex) const;
+
+   private:
+    void update_renderTargetViews();
 
    private:
     DXGI_SWAP_CHAIN_DESC1 m_descSwapChain;
-    IDXGISwapChain4*      m_pSwapChain;
+
+    IDXGISwapChain4*             m_pSwapChain;
+    std::vector<ID3D12Resource*> m_backbuffers;
+    //TODO remove ComPtr
+    ComPtr<ID3D12DescriptorHeap> m_pDescriptorHeap;
+    mUInt                        m_descriptorSize;
 
     // By default, enable V-Sync.
     mBool m_vSync            = true;
@@ -137,8 +174,16 @@ class mApiDX12 final : public render::mIApi
     void init() final;
     void destroy() final;
 
-    render::mISwapchain& create_swapchain() const final;
+    void start_dearImGuiNewFrameRenderer() const final;
+
+    [[nodiscard]] render::mISwapchain& create_swapchain() const final;
     void destroy_swapchain(render::mISwapchain& a_swapchain) const final;
+
+    [[nodiscard]] render::Taskset& create_renderTaskset() const final;
+    void destroy_renderTaskset(render::Taskset& a_taskset) const final;
+
+    [[nodiscard]] virtual render::mISynchTool& create_synchTool() const final;
+    void destroy_synchTool(render::mISynchTool& a_synchTool) const final;
 };
 
 }  // namespace m::dx12

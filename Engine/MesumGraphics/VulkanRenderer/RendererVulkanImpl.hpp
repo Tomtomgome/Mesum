@@ -16,6 +16,7 @@ struct VulkanRenderTaskset : public render::Taskset
 
     render::Task* add_task(render::TaskData* a_data) override;
     void          clear() override;
+    void          execute() override;
 };
 
 //-----------------------------------------------------------------------------
@@ -45,8 +46,8 @@ class VulkanSurface : public render::ISurface
         return m_frameFramebuffers[m_currentImageIndex];
     }
     VkRenderPass get_mainRenderPass() { return m_mainRenderPass; }
-    mU32          get_width() const { return m_clientWidth; }
-    mU32          get_height() const { return m_clientHeight; }
+    mU32         get_width() const { return m_clientWidth; }
+    mU32         get_height() const { return m_clientHeight; }
 
    public:
     // The number of swap chain back buffers.
@@ -61,13 +62,12 @@ class VulkanSurface : public render::ISurface
     void destroy_swapChain();
 
    private:
-
     VkSurfaceKHR             m_surface   = VK_NULL_HANDLE;
     VkSwapchainKHR           m_swapChain = VK_NULL_HANDLE;
     std::vector<VkImage>     m_swapChainImages;
     std::vector<VkImageView> m_swapChainImageViews;
 
-    std::vector<mU64>         m_tstpRenderFinish;
+    std::vector<mU64>        m_tstpRenderFinish;
     std::vector<VkSemaphore> m_semaphoresImageAcquired;
     std::vector<VkSemaphore> m_semaphoresRenderCompleted;
 
@@ -105,9 +105,9 @@ class VulkanRenderer : public render::IRenderer
     void destroy() override;
 
     mBool get_supportDearImGuiMultiViewports() override { return false; }
-    void start_dearImGuiNewFrameRenderer() const override;
+    void  start_dearImGuiNewFrameRenderer() const override;
 
-    render::ISurface* getNew_surface() override;
+    render::ISurface*  getNew_surface() override;
     render::IResource* getNew_texture() override;
 };
 

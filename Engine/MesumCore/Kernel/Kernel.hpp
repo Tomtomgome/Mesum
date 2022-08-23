@@ -24,6 +24,34 @@ static const mErrorCode ecSuccess = 0; //!< default success code
 #define mIsSuccess(ec) ec == 0 //!< alias a success condition
 
 ///////////////////////////////////////////////////////////////////////////////
+/// \brief Unref pointer while doing nullptr check
+///
+/// \tparam t_Type the type of object to dereference
+/// \param a_object the pointer to the object to dereference
+/// \return a reference to the object pointed
+///////////////////////////////////////////////////////////////////////////////
+template<typename t_Type>
+t_Type& unref_safe(t_Type* a_object)
+{
+    mAssert(a_object != nullptr);
+    return *a_object;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Unref pointer to const while doing nullptr check
+///
+/// \tparam t_Type the type of object to dereference
+/// \param a_object the pointer to the object to dereference
+/// \return a reference to the object pointed
+///////////////////////////////////////////////////////////////////////////////
+template<typename t_Type>
+t_Type const& unref_safe(t_Type const* a_object)
+{
+    mAssert(a_object != nullptr);
+    return *a_object;
+}
+
+///////////////////////////////////////////////////////////////////////////////
 /// \brief Structure that defines an output accompanied with a result
 ///
 /// \tparam The type of the output

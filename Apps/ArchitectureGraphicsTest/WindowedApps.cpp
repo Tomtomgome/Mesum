@@ -2,6 +2,7 @@
 #include <MesumGraphics/CrossPlatform.hpp>
 #include <MesumGraphics/DearImgui/MesumDearImGui.hpp>
 #include <MesumGraphics/RenderTasks/RenderTaskDearImGui.hpp>
+#include <MesumGraphics/RenderTasks/RenderTasksBasicSwapchain.hpp>
 #include <MesumGraphics/WindowedApp.hpp>
 #include <MesumGraphics/ApiAbstraction.hpp>
 #include <MesumGraphics/RendererUtils.hpp>
@@ -74,13 +75,13 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         if (!cmdLine.get_parameter("-w", width))
         {
             mLog_infoTo(m_CUBEAPP_ID,
-                        "Width not overriden, use default : ", width);
+                        "Width not overridden, use default : ", width);
         }
 
         if (!cmdLine.get_parameter("-h", height))
         {
             mLog_infoTo(m_CUBEAPP_ID,
-                        "Height not overriden, use default : ", height);
+                        "Height not overridden, use default : ", height);
         }
 
         //        m::aa::mApi           api = m::aa::dx12::create_api();
@@ -128,10 +129,8 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         //        m::aa::mAdapter a2 = api2.create_adapter();
         //        a2.init(initData);
 
-        //m::render::mIApi* pDx12Api = new m::dx12::mApiDX12();
-        //pDx12Api->init();
-        m_iDx12Renderer = new m::dx12::DX12Renderer();
-        m_iDx12Renderer->init();
+        m_pDx12Api = new m::dx12::mApiDX12();
+        m_pDx12Api->init();
         m_iVulkanRenderer = new m::vulkan::VulkanRenderer();
         m_iVulkanRenderer->init();
 
@@ -141,22 +140,40 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m_mainVulkanWindow =
             add_newWindow("Cube mover app", width, height, false);
 
-        m_hdlDx12Surface = m_mainDx12Window->link_renderer(m_iDx12Renderer);
-        //auto& swapchain = pDx12Api->create_swapchain();
-        //m::render::init_swapchainWithWindow(*pDx12Api, swapchain,
-        //                                    *m_mainDx12Window);
+        m::mUInt nbBackbuffer = 3;
+
+        auto& dx12Swapchain = m_pDx12Api->create_swapchain();
+        m_pDx12Swapchain    = &dx12Swapchain;
+        m::render::init_swapchainWithWindow(*m_pDx12Api, dx12Swapchain,
+                                            *m_mainDx12Window, nbBackbuffer);
 
         m_hdlVulkanSurface =
             m_mainVulkanWindow->link_renderer(m_iVulkanRenderer);
 
         m::dearImGui::init(*m_mainDx12Window);
 
-        m::render::Taskset* taskset_renderPipeline =
-            m_hdlDx12Surface->surface->addNew_renderTaskset();
+        auto& dx12SynchTool = m_pDx12Api->create_synchTool();
+        m_pDx12SynchTool = &dx12SynchTool;
+        m::render::mISynchTool::Desc desc{nbBackbuffer};
+        dx12SynchTool.init(m::render::mISynchTool::Desc{nbBackbuffer});
+
+        auto& dx12Taskset = m_pDx12Api->create_renderTaskset();
+        m_pDx12Taskset    = &dx12Taskset;
+
+        m::render::mTaskDataSwapchainWaitForRT taskData_swapchainWaitForRT{};
+        taskData_swapchainWaitForRT.pSwapchain = m_pDx12Swapchain;
+        taskData_swapchainWaitForRT.pSynchTool  = m_pDx12SynchTool;
+        auto pTask = static_cast<m::render::mTaskSwapchainWaitForRT*>(
+            taskData_swapchainWaitForRT.add_toTaskSet(dx12Taskset));
 
         m::render::TaskDataDrawDearImGui taskData_drawDearImGui;
-        taskData_drawDearImGui.m_hdlOutput = m_hdlDx12Surface;
-        taskData_drawDearImGui.add_toTaskSet(taskset_renderPipeline);
+        taskData_drawDearImGui.pOutputRT = pTask->pOutputRT;
+        taskData_drawDearImGui.add_toTaskSet(dx12Taskset);
+
+        m::render::mTaskDataSwapchainPresent taskData_swapchainPresent{};
+        taskData_swapchainPresent.pSwapchain = m_pDx12Swapchain;
+        taskData_swapchainPresent.pSynchTool  = m_pDx12SynchTool;
+        taskData_swapchainPresent.add_toTaskSet(dx12Taskset);
 
         m_mainDx12Window->link_inputManager(&m_inputManager);
 
@@ -206,8 +223,14 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
     {
         m::crossPlatform::IWindowedApplication::destroy();
 
-        m_iDx12Renderer->destroy();
-        delete m_iDx12Renderer;
+        m_pDx12Taskset->clear();
+        m_pDx12Api->destroy_renderTaskset(*m_pDx12Taskset);
+
+        m_pDx12Swapchain->destroy();
+        m_pDx12Api->destroy_swapchain(*m_pDx12Swapchain);
+
+        m_pDx12Api->destroy();
+        delete m_pDx12Api;
 
         m_iVulkanRenderer->destroy();
         delete m_iVulkanRenderer;
@@ -227,7 +250,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         m_mover.move(m_x, m_y);
 
-        start_dearImGuiNewFrame(m_iDx12Renderer);
+        start_dearImGuiNewFrame(*m_pDx12Api);
 
         ImGui::NewFrame();
 
@@ -235,10 +258,12 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         ImGui::ShowDemoWindow(&showDemo);
         ImGui::Render();
 
-        if (m_hdlDx12Surface->isValid)
+        // TODO : if window still open
+        if (m_mainDx12Window != nullptr)
         {
-            m_hdlDx12Surface->surface->render();
+            m_pDx12Taskset->execute();
         }
+
         if (m_hdlVulkanSurface->isValid)
         {
             m_hdlVulkanSurface->surface->render();
@@ -250,9 +275,12 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
     m::mFloat m_x = 0.0f;
     m::mFloat m_y = 0.0f;
 
-    m::render::IRenderer*           m_iDx12Renderer;
+    m::render::mIApi*       m_pDx12Api;
+    m::render::mISwapchain* m_pDx12Swapchain;
+    m::render::mISynchTool* m_pDx12SynchTool;
+    m::render::Taskset*     m_pDx12Taskset;
+
     m::render::IRenderer*           m_iVulkanRenderer;
-    m::render::ISurface::HdlPtr     m_hdlDx12Surface;
     m::render::ISurface::HdlPtr     m_hdlVulkanSurface;
     m::input::mCallbackInputManager m_inputManager;
     m::windows::mIWindow*           m_mainDx12Window;
