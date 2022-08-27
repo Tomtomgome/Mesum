@@ -107,6 +107,7 @@ class mSynchToolDX12 : public render::mISynchTool
    public:
     void init(Desc& a_desc) final;
     void destroy() final;
+
    public:
     mUInt             currentFenceIndex;
     std::vector<mU64> fenceValues = {};
@@ -148,9 +149,9 @@ class mSwapchainDX12 final : public render::mISwapchain
    private:
     DXGI_SWAP_CHAIN_DESC1 m_descSwapChain;
 
-    IDXGISwapChain4*             m_pSwapChain;
+    ComPtr<IDXGISwapChain4>      m_pSwapChain;
     std::vector<ID3D12Resource*> m_backbuffers;
-    //TODO remove ComPtr
+    // TODO remove ComPtr
     ComPtr<ID3D12DescriptorHeap> m_pDescriptorHeap;
     mUInt                        m_descriptorSize;
 
@@ -182,7 +183,7 @@ class mApiDX12 final : public render::mIApi
     [[nodiscard]] render::Taskset& create_renderTaskset() const final;
     void destroy_renderTaskset(render::Taskset& a_taskset) const final;
 
-    [[nodiscard]] virtual render::mISynchTool& create_synchTool() const final;
+    [[nodiscard]] render::mISynchTool& create_synchTool() const final;
     void destroy_synchTool(render::mISynchTool& a_synchTool) const final;
 };
 

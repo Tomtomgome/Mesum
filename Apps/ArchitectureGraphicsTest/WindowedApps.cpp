@@ -84,51 +84,6 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
                         "Height not overridden, use default : ", height);
         }
 
-        //        m::aa::mApi           api = m::aa::dx12::create_api();
-        //        m::aa::mApi::InitData apiInitData;
-        //        api.init(apiInitData);
-        //        m::aa::mAdapter           a = api.create_adapter();
-        //        mLink_virtualMemberFunctionEXT(api, enumerate_adapter,
-        //        enumerate_adapter);
-        //
-        //        m::aa::mAdapter::InitData initData;
-        //        a.init(initData);
-        //
-        //        std::vector<m::aa::mAdapter> adapters;
-        //        api.enumerate_adapter(adapters);
-        //
-        //        m::aa::mAdapter selectedAdapter;
-        //        for (auto& adapter : adapters)
-        //        {
-        //            if (adapter.extensions.supportsSwapChain)
-        //            {
-        //                continue;
-        //            }
-        //            if (adapter.features)
-        //            {
-        //                continue;
-        //            }
-        //            if (adapter.properties.type !=
-        //            m::aa::mAdapter::deviceDescrete)
-        //            {
-        //                continue;
-        //            }
-        //
-        //            selectedAdapter = adapter;
-        //        }
-        //
-        //        m::aa::mDevice::InitData initData;
-        //        initData.queues = {{mQueue::type::transfer graphics},
-        //        {mQueue::type::transfer}}; m::aa::mDevice device =
-        //        selectedAdapter.create_device(initData); m::aa::mQueue
-        //        graphicsQueue = device.get_queue(0); m::aa::mQueue
-        //        transferQueue = device.get_queue(1);
-        //
-        //        m::aa::mApi api2 = m::aa::vulkan::create_api();
-        //        api2.init(apiInitData);
-        //        m::aa::mAdapter a2 = api2.create_adapter();
-        //        a2.init(initData);
-
         m_pDx12Api = new m::dx12::mApiDX12();
         m_pDx12Api->init();
         m_iVulkanRenderer = new m::vulkan::VulkanRenderer();
@@ -155,7 +110,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         auto& dx12SynchTool = m_pDx12Api->create_synchTool();
         m_pDx12SynchTool = &dx12SynchTool;
         m::render::mISynchTool::Desc desc{nbBackbuffer};
-        dx12SynchTool.init(m::render::mISynchTool::Desc{nbBackbuffer});
+        dx12SynchTool.init(desc);
 
         auto& dx12Taskset = m_pDx12Api->create_renderTaskset();
         m_pDx12Taskset    = &dx12Taskset;
@@ -163,11 +118,11 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m::render::mTaskDataSwapchainWaitForRT taskData_swapchainWaitForRT{};
         taskData_swapchainWaitForRT.pSwapchain = m_pDx12Swapchain;
         taskData_swapchainWaitForRT.pSynchTool  = m_pDx12SynchTool;
-        auto pTask = static_cast<m::render::mTaskSwapchainWaitForRT*>(
+        auto& task = static_cast<m::render::mTaskSwapchainWaitForRT&>(
             taskData_swapchainWaitForRT.add_toTaskSet(dx12Taskset));
 
         m::render::TaskDataDrawDearImGui taskData_drawDearImGui;
-        taskData_drawDearImGui.pOutputRT = pTask->pOutputRT;
+        taskData_drawDearImGui.pOutputRT = task.pOutputRT;
         taskData_drawDearImGui.add_toTaskSet(dx12Taskset);
 
         m::render::mTaskDataSwapchainPresent taskData_swapchainPresent{};

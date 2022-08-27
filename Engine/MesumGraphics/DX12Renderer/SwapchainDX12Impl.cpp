@@ -16,9 +16,8 @@ void mSwapchainDX12::init_win32(Desc const&      a_desc,
     m_tearingSupported = DX12Context::gs_dx12Contexte->get_tearingSupport();
 
     // Swapchain creation
-    ComPtr<IDXGISwapChain4> dxgiSwapChain4;
-    ComPtr<IDXGIFactory4>   dxgiFactory4;
-    UINT                    flags_createFactory = 0;
+    ComPtr<IDXGIFactory4> dxgiFactory4;
+    UINT                  flags_createFactory = 0;
 #ifdef M_DEBUG
     flags_createFactory = DXGI_CREATE_FACTORY_DEBUG;
 #endif  // M_DEBUG
@@ -55,10 +54,9 @@ void mSwapchainDX12::init_win32(Desc const&      a_desc,
     check_mhr(dxgiFactory4->MakeWindowAssociation(a_descWin32.hwd,
                                                   DXGI_MWA_NO_ALT_ENTER));
 
-    check_mhr(swapChain1.As(&dxgiSwapChain4));
-    mDXGIDebugNamed(dxgiSwapChain4, "Suplied SwapChain");
+    check_mhr(swapChain1.As(&m_pSwapChain));
+    mDXGIDebugNamed(m_pSwapChain, "Suplied SwapChain");
 
-    m_pSwapChain = dxgiSwapChain4.Get();
     // TODO : Get the window name
     mDXGIDebugNamed(m_pSwapChain, "Window SwapChain");
 
@@ -66,7 +64,7 @@ void mSwapchainDX12::init_win32(Desc const&      a_desc,
                             DX12Context::gs_dx12Contexte->m_device,
                             D3D12_DESCRIPTOR_HEAP_TYPE_RTV, a_desc.bufferCount)
                             .Get();
-   mD3D12DebugNamed(m_pDescriptorHeap, "Swapchain descriptor heap");
+    mD3D12DebugNamed(m_pDescriptorHeap, "Swapchain descriptor heap");
 
     m_descriptorSize =
         DX12Context::gs_dx12Contexte->m_device
@@ -89,8 +87,8 @@ void mSwapchainDX12::init_x11(Desc const& a_config, Descx11 const& a_data)
 //-----------------------------------------------------------------------------
 void mSwapchainDX12::destroy()
 {
-    m_pSwapChain->Release();
     for (auto& buffer : m_backbuffers) { buffer->Release(); }
+    m_pSwapChain->Release();
     std::vector<ID3D12Resource*>().swap(m_backbuffers);
     m_pDescriptorHeap->Release();
 }
@@ -111,7 +109,7 @@ void mSwapchainDX12::resize(mU32 a_width, mU32 a_height)
             // Any references to the back buffers must be released
             // before the swap chain can be resized.
             m_backbuffers[i]->Release();
-
+            m_backbuffers[i] = nullptr;
             // TODO Fix synchronization
         }
 
@@ -123,13 +121,12 @@ void mSwapchainDX12::resize(mU32 a_width, mU32 a_height)
     }
 }
 
-
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
 IDXGISwapChain4* mSwapchainDX12::get_swapchain() const
 {
-    return m_pSwapChain;
+    return m_pSwapChain.Get();
 }
 
 //-----------------------------------------------------------------------------
@@ -145,9 +142,7 @@ mUInt mSwapchainDX12::get_currentBackBufferIndex() const
 //-----------------------------------------------------------------------------
 ID3D12Resource* mSwapchainDX12::get_backbuffer(mUInt a_backbufferIndex) const
 {
-    ID3D12Resource* pBackbuffer;
-    m_pSwapChain->GetBuffer(a_backbufferIndex, IID_PPV_ARGS(&pBackbuffer));
-    return pBackbuffer;
+    return m_backbuffers[a_backbufferIndex];
 }
 
 //-----------------------------------------------------------------------------
@@ -179,7 +174,7 @@ void mSwapchainDX12::update_renderTargetViews()
         DX12Context::gs_dx12Contexte->m_device->CreateRenderTargetView(
             m_backbuffers[i], nullptr, rtvHandle);
 
-        rtvHandle.Offset(m_descriptorSize);
+        rtvHandle.Offset(mInt(m_descriptorSize));
     }
 }
 

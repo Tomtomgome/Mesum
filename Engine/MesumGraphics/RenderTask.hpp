@@ -2,6 +2,7 @@
 #define M_RENDERTASK
 #pragma once
 
+#include <MesumCore/Kernel/Kernel.hpp>
 #include <MesumCore/Kernel/Asserts.hpp>
 #include <MesumGraphics/Common.hpp>
 
@@ -31,7 +32,9 @@ struct Task
 
 struct TaskData
 {
+    // TODO : Remove ponter version
     Task* add_toTaskSet(Taskset* a_taskset);
+    Task& add_toTaskSet(Taskset& a_taskset);
 
     virtual Task* getNew_dx12Implementation(TaskData* a_data)
     {
@@ -56,6 +59,11 @@ struct Taskset
 inline Task* TaskData::add_toTaskSet(Taskset* a_taskset)
 {
     return a_taskset->add_task(this);
+}
+
+inline Task& TaskData::add_toTaskSet(Taskset& a_taskset)
+{
+    return unref_safe(a_taskset.add_task(this));
 }
 
 }  // namespace m::render

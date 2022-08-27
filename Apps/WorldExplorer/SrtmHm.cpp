@@ -87,7 +87,7 @@ void mSrtmHm::ReadAllHgtFiles()
             GetFileCoordinatesFromFileName(srtmFile);
 
         // Adds a new entry in the HgtData & Fills the HgtData
-        ReadHgtFile("../../../Apps/WorldExplorer/data/" + srtmFile,
+        ReadHgtFile("data/" + srtmFile,
                     m_mHgtData[i2FileCoordinates]);
     }
 }
