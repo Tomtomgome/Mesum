@@ -10,6 +10,41 @@ namespace m::render
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
+mTaskSwapchainResize::mTaskSwapchainResize(mTaskDataSwapchainResize* a_data)
+{
+    mAssert(a_data != nullptr);
+    taskData = *a_data;
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void mTaskSwapchainResize::execute() const
+{
+    unref_safe(taskData.pSwapchain).resize(taskData.width, taskData.height);
+}
+
+#ifdef M_DX12_RENDERER
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+mDefine_getForDx12Implementation(mTaskDataSwapchainResize,
+                                 mTaskSwapchainResize);
+#endif  // M_DX12_RENDERER
+
+#ifdef M_VULKAN_RENDERER
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+mDefine_getForVulkanImplementation(mTaskDataSwapchainResize,
+                                   mTaskSwapchainResize);
+#endif  // M_VULKAN_RENDERER
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
 mTaskSwapchainWaitForRT::mTaskSwapchainWaitForRT(
     mTaskDataSwapchainWaitForRT* a_data)
 {
@@ -50,7 +85,13 @@ void mTaskSwapchainWaitForRTDx12::execute() const
     auto& shynchTool =
         *(static_cast<dx12::mSynchToolDX12*>(taskData.pSynchTool));
 
+    mUInt waintIndex             = shynchTool.currentFenceIndex;
     shynchTool.currentFenceIndex = swapchain.get_currentBackBufferIndex();
+
+    if (!taskData.flush)
+    {
+        waintIndex = shynchTool.currentFenceIndex;
+    }
 
     dx12::DX12Context::gs_dx12Contexte->get_commandQueue().wait_fenceValue(
         shynchTool.fenceValues[shynchTool.currentFenceIndex]);
@@ -72,7 +113,8 @@ void mTaskSwapchainWaitForRTDx12::execute() const
 
         dx12::mRenderTargetDX12& outputRT =
             unref_safe(static_cast<dx12::mRenderTargetDX12*>(pOutputRT));
-        outputRT.rtv = CD3DX12_CPU_DESCRIPTOR_HANDLE(swapchain.get_rtv(shynchTool.currentFenceIndex));
+        outputRT.rtv = CD3DX12_CPU_DESCRIPTOR_HANDLE(
+            swapchain.get_rtv(shynchTool.currentFenceIndex));
 
         graphicCommandList->ClearRenderTargetView(outputRT.rtv, clearColor, 0,
                                                   nullptr);

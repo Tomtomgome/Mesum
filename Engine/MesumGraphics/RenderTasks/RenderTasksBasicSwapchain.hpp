@@ -16,10 +16,39 @@ namespace m::render
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
+struct mTaskDataSwapchainResize : public TaskData
+{
+    mISwapchain* pSwapchain = nullptr;
+    mUInt        width      = 1;
+    mUInt        height     = 1;
+
+    mIfDx12Enabled(Task* getNew_dx12Implementation(TaskData* a_data) override);
+    mIfVulkanEnabled(Task* getNew_vulkanImplementation(TaskData* a_data)
+                         override);
+};
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+struct mTaskSwapchainResize : public Task
+{
+    explicit mTaskSwapchainResize(mTaskDataSwapchainResize* a_data);
+
+    void prepare() final {}
+    void execute() const final;
+
+    mTaskDataSwapchainResize taskData;
+    mIRenderTarget*          pOutputRT = nullptr;
+};
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 struct mTaskDataSwapchainWaitForRT : public TaskData
 {
     mISwapchain* pSwapchain = nullptr;
     mISynchTool* pSynchTool = nullptr;
+    mBool        flush      = false;
 
     mIfDx12Enabled(Task* getNew_dx12Implementation(TaskData* a_data) override);
     mIfVulkanEnabled(Task* getNew_vulkanImplementation(TaskData* a_data)

@@ -344,7 +344,7 @@ render::mISwapchain& mApiDX12::create_swapchain() const
 //-----------------------------------------------------------------------------
 void mApiDX12::destroy_swapchain(render::mISwapchain& a_swapchain) const
 {
-    auto dx12Swapchain = dynamic_cast<mSwapchainDX12&>(a_swapchain);
+    auto& dx12Swapchain = dynamic_cast<mSwapchainDX12&>(a_swapchain);
     sm_mal.destroy_ref(dx12Swapchain);
 }
 
@@ -361,7 +361,7 @@ render::Taskset& mApiDX12::create_renderTaskset() const
 //-----------------------------------------------------------------------------
 void mApiDX12::destroy_renderTaskset(render::Taskset& a_taskset) const
 {
-    auto dx12Taskset = dynamic_cast<DX12RenderTaskset&>(a_taskset);
+    auto& dx12Taskset = dynamic_cast<DX12RenderTaskset&>(a_taskset);
     sm_mal.destroy_ref(dx12Taskset);
 }
 
@@ -378,7 +378,7 @@ render::mISynchTool& mApiDX12::create_synchTool() const
 //-----------------------------------------------------------------------------
 void mApiDX12::destroy_synchTool(render::mISynchTool& a_synchTool) const
 {
-    auto dx12SynchTool = dynamic_cast<mSynchToolDX12&>(a_synchTool);
+    auto& dx12SynchTool = dynamic_cast<mSynchToolDX12&>(a_synchTool);
     sm_mal.destroy_ref(dx12SynchTool);
 }
 

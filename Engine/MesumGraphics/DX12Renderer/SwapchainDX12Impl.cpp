@@ -98,6 +98,8 @@ void mSwapchainDX12::destroy()
 //-----------------------------------------------------------------------------
 void mSwapchainDX12::resize(mU32 a_width, mU32 a_height)
 {
+    // We assume synchronization is done externaly and the swapchain can be
+    // safely resized
     DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
     check_mhr(m_pSwapChain->GetDesc1(&swapChainDesc));
     if (swapChainDesc.Width != a_width || swapChainDesc.Height != a_height)
