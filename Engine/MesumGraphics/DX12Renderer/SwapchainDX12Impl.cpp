@@ -88,7 +88,9 @@ void mSwapchainDX12::init_x11(Desc const& a_config, Descx11 const& a_data)
 void mSwapchainDX12::destroy()
 {
     for (auto& buffer : m_backbuffers) { buffer->Release(); }
-    m_pSwapChain->Release();
+    
+    //m_pSwapChain->Release();
+    
     std::vector<ID3D12Resource*>().swap(m_backbuffers);
     m_pDescriptorHeap->Release();
 }
@@ -112,7 +114,6 @@ void mSwapchainDX12::resize(mU32 a_width, mU32 a_height)
             // before the swap chain can be resized.
             m_backbuffers[i]->Release();
             m_backbuffers[i] = nullptr;
-            // TODO Fix synchronization
         }
 
         check_mhr(m_pSwapChain->ResizeBuffers(

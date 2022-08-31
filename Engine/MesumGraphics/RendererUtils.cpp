@@ -11,6 +11,8 @@
 // TODO : linux support :(
 #endif
 
+#include <algorithm>
+
 namespace m::render
 {
 ///////////////////////////////////////////////////////////////////////////////
@@ -28,6 +30,7 @@ void mTasksetExecutor::destroy()
 {
     for (auto [api, taskset] : oneTimeTasksets)
     {
+        unref_safe(taskset).clear();
         api->destroy_renderTaskset(unref_safe(taskset));
     }
     oneTimeTasksets.clear();
@@ -35,10 +38,11 @@ void mTasksetExecutor::destroy()
 
     for (auto [api, taskset] : permanentTasksets)
     {
+        unref_safe(taskset).clear();
         api->destroy_renderTaskset(unref_safe(taskset));
     }
     permanentTasksets.clear();
-    std::vector<std::pair<mIApi const*, Taskset*>>().swap(permanentTasksets);
+    std::list<std::pair<mIApi const*, Taskset*>>().swap(permanentTasksets);
 }
 
 //-----------------------------------------------------------------------------
@@ -73,6 +77,23 @@ void mTasksetExecutor::confy_permanentTaskset(mIApi const& a_api,
                                               Taskset&     a_taskset)
 {
     permanentTasksets.push_back(std::make_pair(&a_api, &a_taskset));
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void mTasksetExecutor::remove_permanentTaskset(mIApi const& a_api,
+                                               Taskset&     a_taskset)
+{
+    auto itTasksetToRemove =
+        std::find(permanentTasksets.begin(), permanentTasksets.end(),
+                  std::make_pair(&a_api, &a_taskset));
+    mAssert(itTasksetToRemove != permanentTasksets.end());
+
+    unref_safe(itTasksetToRemove->second).clear();
+    (itTasksetToRemove->first)
+        ->destroy_renderTaskset(unref_safe(itTasksetToRemove->second));
+    permanentTasksets.erase(itTasksetToRemove);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -123,7 +144,7 @@ void init_swapchainWithWindow(mIApi const& a_api, mTasksetExecutor& a_executor,
     a_window.attach_toResize(
         windows::mIWindow::mOnResizeCallback(produceResizeTaskSet));
 
-    a_window.attach_toDestroy(mCallback<void>(
-        [&a_swapchain, &a_api]() { a_api.destroy_swapchain(a_swapchain); }));
+    a_window.attach_toDestroy(
+        mCallback<void>([&a_swapchain]() { a_swapchain.destroy(); }));
 }
 }  // namespace m::render

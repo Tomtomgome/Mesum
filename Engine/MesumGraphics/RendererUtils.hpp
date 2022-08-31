@@ -19,9 +19,10 @@ struct mTasksetExecutor
     void run();
     void confy_oneTimeTaskset(mIApi const& a_api, Taskset& a_taskset);
     void confy_permanentTaskset(mIApi const& a_api, Taskset& a_taskset);
+    void remove_permanentTaskset(mIApi const& a_api, Taskset& a_taskset);
 
     std::vector<std::pair<mIApi const*, Taskset*>> oneTimeTasksets;
-    std::vector<std::pair<mIApi const*, Taskset*>> permanentTasksets;
+    std::list<std::pair<mIApi const*, Taskset*>> permanentTasksets;
 };
 
 void init_swapchainWithWindow(mIApi const& a_api, mTasksetExecutor& a_executor,

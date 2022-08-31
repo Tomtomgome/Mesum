@@ -86,6 +86,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         m_pDx12Api = new m::dx12::mApiDX12();
         m_pDx12Api->init();
+        auto& dx12Api     = m::unref_safe(m_pDx12Api);
         m_iVulkanRenderer = new m::vulkan::VulkanRenderer();
         m_iVulkanRenderer->init();
 
@@ -94,6 +95,8 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         m_mainVulkanWindow =
             add_newWindow("Cube mover app", width, height, false);
+
+        m_tastsetExecutor.init();
 
         m::mUInt nbBackbuffer = 3;
 
@@ -112,8 +115,6 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
             m_mainVulkanWindow->link_renderer(m_iVulkanRenderer);
 
         m::dearImGui::init(*m_mainDx12Window);
-
-        m_tastsetExecutor.init();
 
         auto& dx12Taskset = m_pDx12Api->create_renderTaskset();
 
@@ -134,6 +135,10 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         m_tastsetExecutor.confy_permanentTaskset(m::unref_safe(m_pDx12Api),
                                                  dx12Taskset);
+        m_mainDx12Window->attach_toDestroy(m::mCallback<void>(
+            [this, &dx12Api, &dx12Taskset]() {
+                m_tastsetExecutor.remove_permanentTaskset(dx12Api, dx12Taskset);
+            }));
 
         m_mainDx12Window->link_inputManager(&m_inputManager);
 
@@ -185,7 +190,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         m_tastsetExecutor.destroy();
 
-        m_pDx12Swapchain->destroy();
+        //call to destroy of the swapchain is managed at window termination
         m_pDx12Api->destroy_swapchain(*m_pDx12Swapchain);
 
         m_pDx12Api->destroy();
