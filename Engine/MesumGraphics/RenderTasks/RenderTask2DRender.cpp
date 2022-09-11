@@ -345,7 +345,7 @@ void Dx12Task2dRender::prepare()
 //-----------------------------------------------------------------------------
 void Dx12Task2dRender::execute() const
 {
-    if (m_taskData.m_pRanges->size() == 0)
+    /*if (m_taskData.m_pRanges->size() == 0)
     {
         return;
     }
@@ -419,7 +419,7 @@ void Dx12Task2dRender::execute() const
     }
 
     dx12::DX12Context::gs_dx12Contexte->get_commandQueue().execute_commandList(
-        graphicCommandList.Get());
+        graphicCommandList.Get());*/
 }
 
 //-----------------------------------------------------------------------------

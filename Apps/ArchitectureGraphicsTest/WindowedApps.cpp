@@ -126,6 +126,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         m::render::TaskDataDrawDearImGui taskData_drawDearImGui;
         taskData_drawDearImGui.pOutputRT = task.pOutputRT;
+        taskData_drawDearImGui.nbFrames  = nbBackbuffer;
         taskData_drawDearImGui.add_toTaskSet(dx12Taskset);
 
         m::render::mTaskDataSwapchainPresent taskData_swapchainPresent{};
@@ -190,7 +191,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         m_tastsetExecutor.destroy();
 
-        //call to destroy of the swapchain is managed at window termination
+        // call to destroy of the swapchain is managed at window termination
         m_pDx12Api->destroy_swapchain(*m_pDx12Swapchain);
 
         m_pDx12Api->destroy_synchTool(*m_pDx12SynchTool);

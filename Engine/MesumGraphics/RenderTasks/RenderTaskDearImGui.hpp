@@ -20,6 +20,7 @@ namespace m::render
 struct TaskDataDrawDearImGui : public TaskData
 {
     mIRenderTarget* pOutputRT = nullptr;
+    mUInt           nbFrames  = 0;
 
     mIfDx12Enabled(Task* getNew_dx12Implementation(TaskData* a_data) override);
     mIfVulkanEnabled(Task* getNew_vulkanImplementation(TaskData* a_data)

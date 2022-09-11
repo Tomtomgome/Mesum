@@ -30,16 +30,16 @@ TaskDrawDearImGui::TaskDrawDearImGui(TaskDataDrawDearImGui* a_data)
 Dx12TaskDrawDearImGui::Dx12TaskDrawDearImGui(TaskDataDrawDearImGui* a_data)
     : TaskDrawDearImGui(a_data)
 {
+    mAssert(a_data->nbFrames != 0);
+    mAssert(a_data->pOutputRT != nullptr);
     m_SRVDescriptorHeap = dx12::create_descriptorHeap(
         dx12::DX12Context::gs_dx12Contexte->m_device,
-        D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV,
-        dx12::DX12Surface::scm_numFrames,
+        D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, a_data->nbFrames,
         D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE);
 
     ImGui_ImplDX12_Init(
-        dx12::DX12Context::gs_dx12Contexte->m_device.Get(),
-        dx12::DX12Surface::scm_numFrames, DXGI_FORMAT_B8G8R8A8_UNORM,
-        m_SRVDescriptorHeap.Get(),
+        dx12::DX12Context::gs_dx12Contexte->m_device.Get(), a_data->nbFrames,
+        DXGI_FORMAT_B8G8R8A8_UNORM, m_SRVDescriptorHeap.Get(),
         m_SRVDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
         m_SRVDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
 }
