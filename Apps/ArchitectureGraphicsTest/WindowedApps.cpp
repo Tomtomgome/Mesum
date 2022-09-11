@@ -84,7 +84,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
                         "Height not overridden, use default : ", height);
         }
 
-        m_pDx12Api = new m::dx12::mApiDX12();
+        m_pDx12Api = new m::dx12::mApi();
         m_pDx12Api->init();
         auto& dx12Api     = m::unref_safe(m_pDx12Api);
         m_iVulkanRenderer = new m::vulkan::VulkanRenderer();

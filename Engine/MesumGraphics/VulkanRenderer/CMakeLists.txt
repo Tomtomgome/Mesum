@@ -3,17 +3,18 @@ set(MODULE_NAME VulkanRenderer)
 project(${MODULE_NAME} VERSION 1.0.0 DESCRIPTION "Vulkan implementation")
 
 set(SOURCES VulkanContext.cpp
-            VulkanApiAbstraction.cpp
-            VulkanRendererCommon.cpp
-            RendererVulkanImpl.cpp
-            imgui_impl_vulkan.cpp)
+        VulkanApiAbstraction.cpp
+        VulkanRendererCommon.cpp
+        RendererVulkanImpl.cpp
+        SwapchainVulkanImpl.cpp
+        imgui_impl_vulkan.cpp)
 
 set(HEADERS VulkanContext.hpp
-            VulkanRendererCommon.hpp
-            imgui_impl_vulkan.h
-            RendererVulkanImpl.hpp
-            Includes.hpp
-            ../MesumGraphics/Common.hpp)
+        VulkanRendererCommon.hpp
+        imgui_impl_vulkan.h
+        RendererVulkanImpl.hpp
+        Includes.hpp
+        ../MesumGraphics/Common.hpp)
 
 add_library(${MODULE_NAME} OBJECT ${SOURCES} ${HEADERS} $<TARGET_OBJECTS:DearImguiBase>)
 
@@ -30,6 +31,6 @@ target_include_directories(${MODULE_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(${MODULE_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/..)
 target_include_directories(${MODULE_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../..)
 
-if(BM_DYNAMIC_LINK)
-target_compile_definitions(${MODULE_NAME} PRIVATE _M_GRAPHICS_EXPORT)
-endif()
+if (BM_DYNAMIC_LINK)
+    target_compile_definitions(${MODULE_NAME} PRIVATE _M_GRAPHICS_EXPORT)
+endif ()

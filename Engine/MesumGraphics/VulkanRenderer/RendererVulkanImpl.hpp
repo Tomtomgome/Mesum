@@ -1,5 +1,3 @@
-#ifndef M_RendererVulkanImpl
-#define M_RendererVulkanImpl
 #pragma once
 
 #include "MesumGraphics/Renderer.hpp"
@@ -111,6 +109,73 @@ class VulkanRenderer : public render::IRenderer
     render::IResource* getNew_texture() override;
 };
 
-}  // namespace m::vulkan
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+class mSynchTool : public render::mISynchTool
+{
+   public:
+    void init(Desc& a_desc) final;
+    void destroy() final;
 
-#endif  // M_RendererVulkanImpl
+   public:
+    mUInt             currentFenceIndex;
+    std::vector<mU64> fenceValues = {};
+};
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+class mRenderTarget : public render::mIRenderTarget
+{
+   public:
+};
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+class mSwapchain final : public render::mISwapchain
+{
+   public:
+    ~mSwapchain() final = default;
+
+    void init_win32(Desc const& a_desc, DescWin32 const& a_descWin32) final;
+    void init_x11(Desc const& a_config, Descx11 const& a_data) final;
+    void destroy() final;
+
+    void resize(mU32 a_width, mU32 a_height) final;
+
+   private:
+    // By default, enable V-Sync.
+    mBool m_vSync            = true;
+    mBool m_tearingSupported = false;
+};
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+class mApi final : public render::mIApi
+{
+   public:
+    static memory::mMemoryType      sm_memoryType;
+    static memory::mObjectAllocator sm_mal;
+
+   public:
+    ~mApi() final = default;
+
+    void init() final;
+    void destroy() final;
+
+    void start_dearImGuiNewFrameRenderer() const final;
+
+    [[nodiscard]] render::mISwapchain& create_swapchain() const final;
+    void destroy_swapchain(render::mISwapchain& a_swapchain) const final;
+
+    [[nodiscard]] render::Taskset& create_renderTaskset() const final;
+    void destroy_renderTaskset(render::Taskset& a_taskset) const final;
+
+    [[nodiscard]] render::mISynchTool& create_synchTool() const final;
+    void destroy_synchTool(render::mISynchTool& a_synchTool) const final;
+};
+
+}  // namespace m::vulkan

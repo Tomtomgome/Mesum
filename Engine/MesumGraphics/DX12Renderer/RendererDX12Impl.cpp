@@ -36,31 +36,28 @@ void DX12RenderTaskset::execute()
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-void mSynchToolDX12::init(Desc& a_desc)
+void mSynchTool::init(Desc& a_desc)
 {
     fenceValues.resize(a_desc.bufferCount);
 }
 
-void mSynchToolDX12::destroy()
-{
-
-}
+void mSynchTool::destroy() {}
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-memory::mMemoryType      mApiDX12::sm_memoryType = memory::g_defaultMemoryType;
-memory::mObjectAllocator mApiDX12::sm_mal;
+memory::mMemoryType      mApi::sm_memoryType = memory::g_defaultMemoryType;
+memory::mObjectAllocator mApi::sm_mal;
 
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void mApiDX12::init()
+void mApi::init()
 {
     // Two Dx12Api shouldn't be initialized
-    mAssert(mApiDX12::sm_memoryType == memory::g_defaultMemoryType);
-    mApiDX12::sm_memoryType = memory::create_newMemoryType("Dx12 rendering");
-    sm_mal.init(mApiDX12::sm_memoryType);
+    mAssert(mApi::sm_memoryType == memory::g_defaultMemoryType);
+    mApi::sm_memoryType = memory::create_newMemoryType("Dx12 rendering");
+    sm_mal.init(mApi::sm_memoryType);
 
     DX12Context::gs_dx12Contexte = sm_mal.construct<DX12Context>();
     DX12Context::gs_dx12Contexte->init();
@@ -69,7 +66,7 @@ void mApiDX12::init()
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void mApiDX12::destroy()
+void mApi::destroy()
 {
     DX12Context::gs_dx12Contexte->deinit();
     sm_mal.destroy(DX12Context::gs_dx12Contexte);
@@ -82,7 +79,7 @@ void mApiDX12::destroy()
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void mApiDX12::start_dearImGuiNewFrameRenderer() const
+void mApi::start_dearImGuiNewFrameRenderer() const
 {
     ImGui_ImplDX12_NewFrame();
 }
@@ -90,24 +87,24 @@ void mApiDX12::start_dearImGuiNewFrameRenderer() const
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-render::mISwapchain& mApiDX12::create_swapchain() const
+render::mISwapchain& mApi::create_swapchain() const
 {
-    return sm_mal.construct_ref<mSwapchainDX12>();
+    return sm_mal.construct_ref<mSwapchain>();
 }
 
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void mApiDX12::destroy_swapchain(render::mISwapchain& a_swapchain) const
+void mApi::destroy_swapchain(render::mISwapchain& a_swapchain) const
 {
-    auto& dx12Swapchain = dynamic_cast<mSwapchainDX12&>(a_swapchain);
+    auto& dx12Swapchain = dynamic_cast<mSwapchain&>(a_swapchain);
     sm_mal.destroy_ref(dx12Swapchain);
 }
 
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-render::Taskset& mApiDX12::create_renderTaskset() const
+render::Taskset& mApi::create_renderTaskset() const
 {
     return sm_mal.construct_ref<DX12RenderTaskset>();
 }
@@ -115,7 +112,7 @@ render::Taskset& mApiDX12::create_renderTaskset() const
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void mApiDX12::destroy_renderTaskset(render::Taskset& a_taskset) const
+void mApi::destroy_renderTaskset(render::Taskset& a_taskset) const
 {
     auto& dx12Taskset = dynamic_cast<DX12RenderTaskset&>(a_taskset);
     sm_mal.destroy_ref(dx12Taskset);
@@ -124,17 +121,17 @@ void mApiDX12::destroy_renderTaskset(render::Taskset& a_taskset) const
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-render::mISynchTool& mApiDX12::create_synchTool() const
+render::mISynchTool& mApi::create_synchTool() const
 {
-    return sm_mal.construct_ref<mSynchToolDX12>();
+    return sm_mal.construct_ref<mSynchTool>();
 }
 
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void mApiDX12::destroy_synchTool(render::mISynchTool& a_synchTool) const
+void mApi::destroy_synchTool(render::mISynchTool& a_synchTool) const
 {
-    auto& dx12SynchTool = dynamic_cast<mSynchToolDX12&>(a_synchTool);
+    auto& dx12SynchTool = dynamic_cast<mSynchTool&>(a_synchTool);
     sm_mal.destroy_ref(dx12SynchTool);
 }
 

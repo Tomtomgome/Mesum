@@ -63,7 +63,7 @@ mTaskSwapchainWaitForRTDx12::mTaskSwapchainWaitForRTDx12(
     mTaskDataSwapchainWaitForRT* a_data)
     : mTaskSwapchainWaitForRT(a_data)
 {
-    pOutputRT = dx12::mApiDX12::sm_mal.construct<dx12::mRenderTargetDX12>();
+    pOutputRT = dx12::mApi::sm_mal.construct<dx12::mRenderTarget>();
 }
 
 //-----------------------------------------------------------------------------
@@ -71,8 +71,8 @@ mTaskSwapchainWaitForRTDx12::mTaskSwapchainWaitForRTDx12(
 //-----------------------------------------------------------------------------
 mTaskSwapchainWaitForRTDx12::~mTaskSwapchainWaitForRTDx12()
 {
-    dx12::mApiDX12::sm_mal.destroy<dx12::mRenderTargetDX12>(
-        static_cast<dx12::mRenderTargetDX12*>(pOutputRT));
+    dx12::mApi::sm_mal.destroy<dx12::mRenderTarget>(
+        static_cast<dx12::mRenderTarget*>(pOutputRT));
 }
 
 //-----------------------------------------------------------------------------
@@ -80,10 +80,8 @@ mTaskSwapchainWaitForRTDx12::~mTaskSwapchainWaitForRTDx12()
 //-----------------------------------------------------------------------------
 void mTaskSwapchainWaitForRTDx12::execute() const
 {
-    auto& swapchain =
-        *(static_cast<dx12::mSwapchainDX12*>(taskData.pSwapchain));
-    auto& shynchTool =
-        *(static_cast<dx12::mSynchToolDX12*>(taskData.pSynchTool));
+    auto& swapchain  = *(static_cast<dx12::mSwapchain*>(taskData.pSwapchain));
+    auto& shynchTool = *(static_cast<dx12::mSynchTool*>(taskData.pSynchTool));
 
     mUInt waintIndex             = shynchTool.currentFenceIndex;
     shynchTool.currentFenceIndex = swapchain.get_currentBackBufferIndex();
@@ -111,8 +109,8 @@ void mTaskSwapchainWaitForRTDx12::execute() const
 
         mFloat clearColor[] = {0.4f, 0.6f, 0.9f, 0.0f};
 
-        dx12::mRenderTargetDX12& outputRT =
-            unref_safe(static_cast<dx12::mRenderTargetDX12*>(pOutputRT));
+        dx12::mRenderTarget& outputRT =
+            unref_safe(static_cast<dx12::mRenderTarget*>(pOutputRT));
         outputRT.rtv = CD3DX12_CPU_DESCRIPTOR_HANDLE(
             swapchain.get_rtv(shynchTool.currentFenceIndex));
 
@@ -187,10 +185,8 @@ mTaskSwapchainPresentDx12::mTaskSwapchainPresentDx12(
 //-----------------------------------------------------------------------------
 void mTaskSwapchainPresentDx12::execute() const
 {
-    auto& swapchain =
-        *(static_cast<dx12::mSwapchainDX12*>(taskData.pSwapchain));
-    auto& shynchTool =
-        *(static_cast<dx12::mSynchToolDX12*>(taskData.pSynchTool));
+    auto& swapchain  = *(static_cast<dx12::mSwapchain*>(taskData.pSwapchain));
+    auto& shynchTool = *(static_cast<dx12::mSynchTool*>(taskData.pSynchTool));
 
     dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
         dx12::DX12Context::gs_dx12Contexte->get_commandQueue()

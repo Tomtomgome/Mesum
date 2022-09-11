@@ -10,8 +10,7 @@ namespace m::dx12
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void mSwapchainDX12::init_win32(Desc const&      a_desc,
-                                DescWin32 const& a_descWin32)
+void mSwapchain::init_win32(Desc const& a_desc, DescWin32 const& a_descWin32)
 {
     m_tearingSupported = DX12Context::gs_dx12Contexte->get_tearingSupport();
 
@@ -76,7 +75,7 @@ void mSwapchainDX12::init_win32(Desc const&      a_desc,
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void mSwapchainDX12::init_x11(Desc const& a_config, Descx11 const& a_data)
+void mSwapchain::init_x11(Desc const& a_config, Descx11 const& a_data)
 {
     // X11 not supported with DX12
     mAssert(false);
@@ -85,12 +84,12 @@ void mSwapchainDX12::init_x11(Desc const& a_config, Descx11 const& a_data)
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void mSwapchainDX12::destroy()
+void mSwapchain::destroy()
 {
     for (auto& buffer : m_backbuffers) { buffer->Release(); }
-    
-    //m_pSwapChain->Release();
-    
+
+    // m_pSwapChain->Release();
+
     std::vector<ID3D12Resource*>().swap(m_backbuffers);
     m_pDescriptorHeap->Release();
 }
@@ -98,7 +97,7 @@ void mSwapchainDX12::destroy()
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void mSwapchainDX12::resize(mU32 a_width, mU32 a_height)
+void mSwapchain::resize(mU32 a_width, mU32 a_height)
 {
     // We assume synchronization is done externaly and the swapchain can be
     // safely resized
@@ -127,7 +126,7 @@ void mSwapchainDX12::resize(mU32 a_width, mU32 a_height)
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-IDXGISwapChain4* mSwapchainDX12::get_swapchain() const
+IDXGISwapChain4* mSwapchain::get_swapchain() const
 {
     return m_pSwapChain.Get();
 }
@@ -135,7 +134,7 @@ IDXGISwapChain4* mSwapchainDX12::get_swapchain() const
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-mUInt mSwapchainDX12::get_currentBackBufferIndex() const
+mUInt mSwapchain::get_currentBackBufferIndex() const
 {
     return m_pSwapChain->GetCurrentBackBufferIndex();
 }
@@ -143,7 +142,7 @@ mUInt mSwapchainDX12::get_currentBackBufferIndex() const
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-ID3D12Resource* mSwapchainDX12::get_backbuffer(mUInt a_backbufferIndex) const
+ID3D12Resource* mSwapchain::get_backbuffer(mUInt a_backbufferIndex) const
 {
     return m_backbuffers[a_backbufferIndex];
 }
@@ -151,8 +150,7 @@ ID3D12Resource* mSwapchainDX12::get_backbuffer(mUInt a_backbufferIndex) const
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-CD3DX12_CPU_DESCRIPTOR_HANDLE mSwapchainDX12::get_rtv(
-    mInt a_backbufferIndex) const
+CD3DX12_CPU_DESCRIPTOR_HANDLE mSwapchain::get_rtv(mInt a_backbufferIndex) const
 {
     return {m_pDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
             a_backbufferIndex, m_descriptorSize};
@@ -161,7 +159,7 @@ CD3DX12_CPU_DESCRIPTOR_HANDLE mSwapchainDX12::get_rtv(
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void mSwapchainDX12::update_renderTargetViews()
+void mSwapchain::update_renderTargetViews()
 {
     DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
     check_mhr(m_pSwapChain->GetDesc(&swapChainDesc));

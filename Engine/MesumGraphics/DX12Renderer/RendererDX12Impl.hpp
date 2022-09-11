@@ -1,5 +1,3 @@
-#ifndef M_RendererDX12Impl
-#define M_RendererDX12Impl
 #pragma once
 
 #include <MesumGraphics/DX12Renderer/DX12RendererCommon.hpp>
@@ -27,7 +25,7 @@ struct DX12RenderTaskset : public render::Taskset
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-class mSynchToolDX12 : public render::mISynchTool
+class mSynchTool : public render::mISynchTool
 {
    public:
     void init(Desc& a_desc) final;
@@ -41,7 +39,7 @@ class mSynchToolDX12 : public render::mISynchTool
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-class mRenderTargetDX12 : public render::mIRenderTarget
+class mRenderTarget : public render::mIRenderTarget
 {
    public:
     D3D12_CPU_DESCRIPTOR_HANDLE rtv;
@@ -50,10 +48,10 @@ class mRenderTargetDX12 : public render::mIRenderTarget
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-class mSwapchainDX12 final : public render::mISwapchain
+class mSwapchain final : public render::mISwapchain
 {
    public:
-    ~mSwapchainDX12() final = default;
+    ~mSwapchain() final = default;
 
     void init_win32(Desc const& a_desc, DescWin32 const& a_descWin32) final;
     void init_x11(Desc const& a_config, Descx11 const& a_data) final;
@@ -88,14 +86,14 @@ class mSwapchainDX12 final : public render::mISwapchain
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-class mApiDX12 final : public render::mIApi
+class mApi final : public render::mIApi
 {
    public:
     static memory::mMemoryType      sm_memoryType;
     static memory::mObjectAllocator sm_mal;
 
    public:
-    ~mApiDX12() final = default;
+    ~mApi() final = default;
 
     void init() final;
     void destroy() final;
@@ -113,5 +111,3 @@ class mApiDX12 final : public render::mIApi
 };
 
 }  // namespace m::dx12
-
-#endif  // M_RendererDX12Impl

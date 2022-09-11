@@ -62,7 +62,7 @@ void Dx12TaskDrawDearImGui::execute() const
             .get_commandList();
 
     auto pOutputRT =
-        static_cast<dx12::mRenderTargetDX12 const*>(m_taskData.pOutputRT);
+        static_cast<dx12::mRenderTarget const*>(m_taskData.pOutputRT);
 
     D3D12_CPU_DESCRIPTOR_HANDLE const rtv = pOutputRT->rtv;
     graphicCommandList->OMSetRenderTargets(1, &rtv, FALSE, nullptr);
