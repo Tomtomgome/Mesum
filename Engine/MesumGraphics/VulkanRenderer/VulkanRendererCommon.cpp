@@ -93,7 +93,7 @@ void create_instance(VkInstance& a_InstaceToCreate)
     appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
     appInfo.pEngineName        = "Mesum";
     appInfo.engineVersion      = VK_MAKE_VERSION(0, 1, 0);
-    appInfo.apiVersion         = VK_API_VERSION_1_2;
+    appInfo.apiVersion         = VK_API_VERSION_1_3;
 
     auto                 extensions    = get_requiedExtensions();
     VkInstanceCreateInfo createInfo    = {};
@@ -357,6 +357,13 @@ void create_logicalDevice(VkPhysicalDevice a_physicalDevice,
     queueCreateInfo.queueCount       = 1;
     queueCreateInfo.pQueuePriorities = &queuePriority;
 
+    // Dynamic rendering support
+    VkPhysicalDeviceDynamicRenderingFeatures dynamicRenderingFeature{
+        .sType =
+            VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DYNAMIC_RENDERING_FEATURES_KHR,
+        .dynamicRendering = VK_TRUE,
+    };
+
     // Bindless textures
     VkPhysicalDeviceDescriptorIndexingFeatures dstIndexingFeatures{
         VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DESCRIPTOR_INDEXING_FEATURES_EXT,
@@ -374,15 +381,15 @@ void create_logicalDevice(VkPhysicalDevice a_physicalDevice,
         VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2};
     vkGetPhysicalDeviceFeatures2(a_physicalDevice, &reqPhysicalFeatures);
 
-    //Tmp
+    // Tmp
     mExpect(bindless_supported);
 
-    if(bindless_supported)
+    reqPhysicalFeatures.pNext = &dynamicRenderingFeature;
+    if (bindless_supported)
     {
-        reqPhysicalFeatures.pNext = &dstIndexingFeatures;
+        dynamicRenderingFeature.pNext = &dstIndexingFeatures;
     }
-    //End of bindless feature request
-
+    // End of bindless feature request
 
     VkDeviceCreateInfo createInfo{};
     createInfo.sType                = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;

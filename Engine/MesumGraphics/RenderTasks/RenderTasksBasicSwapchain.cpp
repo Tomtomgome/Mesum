@@ -80,21 +80,21 @@ mTaskSwapchainWaitForRTDx12::~mTaskSwapchainWaitForRTDx12()
 //-----------------------------------------------------------------------------
 void mTaskSwapchainWaitForRTDx12::execute() const
 {
-    auto& swapchain  = *(static_cast<dx12::mSwapchain*>(taskData.pSwapchain));
-    auto& shynchTool = *(static_cast<dx12::mSynchTool*>(taskData.pSynchTool));
+    auto& swapchain = *(static_cast<dx12::mSwapchain*>(taskData.pSwapchain));
+    auto& synchTool = *(static_cast<dx12::mSynchTool*>(taskData.pSynchTool));
 
-    mUInt waintIndex             = shynchTool.currentFenceIndex;
-    shynchTool.currentFenceIndex = swapchain.get_currentBackBufferIndex();
+    mUInt waitIndex             = synchTool.currentFenceIndex;
+    synchTool.currentFenceIndex = swapchain.get_currentBackBufferIndex();
 
     if (!taskData.flush)
     {
-        waintIndex = shynchTool.currentFenceIndex;
+        waitIndex = synchTool.currentFenceIndex;
     }
 
     dx12::DX12Context::gs_dx12Contexte->get_commandQueue().wait_fenceValue(
-        shynchTool.fenceValues[shynchTool.currentFenceIndex]);
+        synchTool.fenceValues[synchTool.currentFenceIndex]);
 
-    auto backbuffer = swapchain.get_backbuffer(shynchTool.currentFenceIndex);
+    auto backbuffer = swapchain.get_backbuffer(synchTool.currentFenceIndex);
 
     dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
         dx12::DX12Context::gs_dx12Contexte->get_commandQueue()
@@ -112,7 +112,7 @@ void mTaskSwapchainWaitForRTDx12::execute() const
         dx12::mRenderTarget& outputRT =
             unref_safe(static_cast<dx12::mRenderTarget*>(pOutputRT));
         outputRT.rtv = CD3DX12_CPU_DESCRIPTOR_HANDLE(
-            swapchain.get_rtv(shynchTool.currentFenceIndex));
+            swapchain.get_rtv(synchTool.currentFenceIndex));
 
         graphicCommandList->ClearRenderTargetView(outputRT.rtv, clearColor, 0,
                                                   nullptr);
@@ -146,7 +146,37 @@ mTaskSwapchainWaitForRTVulkan::mTaskSwapchainWaitForRTVulkan(
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void mTaskSwapchainWaitForRTVulkan::execute() const {}
+void mTaskSwapchainWaitForRTVulkan::execute() const
+{
+    auto& swapchain = *(static_cast<vulkan::mSwapchain*>(taskData.pSwapchain));
+    auto& synchTool = *(static_cast<vulkan::mSynchTool*>(taskData.pSynchTool));
+
+    if (!taskData.flush)
+    {
+        synchTool.currentFenceIndex =
+            (synchTool.currentFenceIndex + 1) % synchTool.fenceValues.size();
+    }
+
+    mUInt waitIndex = synchTool.currentFenceIndex;
+
+    // Check oldRenderHasFinished for next frame
+    vulkan::VulkanContext::get_commandQueue().wait_onFenceValue(
+        synchTool.fenceValues[waitIndex]);
+
+    // Aquire next image
+    swapchain.acquire_image(synchTool.semaphoresImageAcquired[waitIndex]);
+
+    //    {
+    //        check_vkResult(vkResetCommandPool(
+    //            VulkanContext::get_logDevice(),
+    //            m_frameCommandPools[m_currentBackBufferIndex], 0));
+    //        VkCommandBufferBeginInfo info = {};
+    //        info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+    //        info.flags |= VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+    //        check_vkResult(vkBeginCommandBuffer(
+    //            m_frameMainCommandBuffers[m_currentBackBufferIndex], &info));
+    //    }
+}
 
 //-----------------------------------------------------------------------------
 //
@@ -185,14 +215,14 @@ mTaskSwapchainPresentDx12::mTaskSwapchainPresentDx12(
 //-----------------------------------------------------------------------------
 void mTaskSwapchainPresentDx12::execute() const
 {
-    auto& swapchain  = *(static_cast<dx12::mSwapchain*>(taskData.pSwapchain));
-    auto& shynchTool = *(static_cast<dx12::mSynchTool*>(taskData.pSynchTool));
+    auto& swapchain = *(static_cast<dx12::mSwapchain*>(taskData.pSwapchain));
+    auto& synchTool = *(static_cast<dx12::mSynchTool*>(taskData.pSynchTool));
 
     dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
         dx12::DX12Context::gs_dx12Contexte->get_commandQueue()
             .get_commandList();
 
-    auto backbuffer = swapchain.get_backbuffer(shynchTool.currentFenceIndex);
+    auto backbuffer = swapchain.get_backbuffer(synchTool.currentFenceIndex);
     CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
         backbuffer, D3D12_RESOURCE_STATE_RENDER_TARGET,
         D3D12_RESOURCE_STATE_PRESENT);
@@ -208,7 +238,7 @@ void mTaskSwapchainPresentDx12::execute() const
     // check_mhr(m_pSwapChain->Present(syncInterval, presentFlags));
     dx12::check_mhr(swapchain.get_swapchain()->Present(1, 0));
 
-    shynchTool.fenceValues[shynchTool.currentFenceIndex] =
+    synchTool.fenceValues[synchTool.currentFenceIndex] =
         dx12::DX12Context::gs_dx12Contexte->get_commandQueue().signal_fence();
 }
 
@@ -236,7 +266,19 @@ mTaskSwapchainPresentVulkan::mTaskSwapchainPresentVulkan(
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void mTaskSwapchainPresentVulkan::execute() const {}
+void mTaskSwapchainPresentVulkan::execute() const
+{
+    auto& swapchain = *(static_cast<vulkan::mSwapchain*>(taskData.pSwapchain));
+    auto& synchTool = *(static_cast<vulkan::mSynchTool*>(taskData.pSynchTool));
+
+    synchTool.fenceValues[synchTool.currentFenceIndex] =
+        vulkan::VulkanContext::get_commandQueue().signal_fence({synchTool.semaphoresImageAcquired[synchTool.currentFenceIndex]},
+            {synchTool.semaphoresRenderCompleted[synchTool.currentFenceIndex]});
+
+    // Presentation
+    swapchain.present(
+        synchTool.semaphoresRenderCompleted[synchTool.currentFenceIndex]);
+}
 
 //-----------------------------------------------------------------------------
 //

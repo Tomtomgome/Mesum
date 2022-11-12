@@ -86,9 +86,11 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         m_pDx12Api = new m::dx12::mApi();
         m_pDx12Api->init();
-        auto& dx12Api     = m::unref_safe(m_pDx12Api);
-        m_iVulkanRenderer = new m::vulkan::VulkanRenderer();
-        m_iVulkanRenderer->init();
+        auto& dx12Api = m::unref_safe(m_pDx12Api);
+
+        m_pVulkanApi = new m::vulkan::mApi();
+        m_pVulkanApi->init();
+        auto& vulkanApi = m::unref_safe(m_pVulkanApi);
 
         m_mainDx12Window =
             add_newWindow("Cube mover app", width, height, false);
@@ -100,10 +102,14 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         m::mUInt nbBackbuffer = 3;
 
-        auto& dx12SynchTool = m_pDx12Api->create_synchTool();
-        m_pDx12SynchTool    = &dx12SynchTool;
+        auto& dx12SynchTool   = m_pDx12Api->create_synchTool();
+        m_pDx12SynchTool      = &dx12SynchTool;
+        auto& vulkanSynchTool = m_pVulkanApi->create_synchTool();
+        m_pVulkanSynchTool    = &vulkanSynchTool;
+
         m::render::mISynchTool::Desc desc{nbBackbuffer};
         dx12SynchTool.init(desc);
+        vulkanSynchTool.init(desc);
 
         auto& dx12Swapchain = m_pDx12Api->create_swapchain();
         m_pDx12Swapchain    = &dx12Swapchain;
@@ -111,9 +117,13 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
                                             dx12Swapchain, dx12SynchTool,
                                             *m_mainDx12Window, nbBackbuffer);
 
-        m_hdlVulkanSurface =
-            m_mainVulkanWindow->link_renderer(m_iVulkanRenderer);
+        auto& vulkanSwapchain = m_pVulkanApi->create_swapchain();
+        m_pVulkanSwapchain    = &vulkanSwapchain;
+        m::render::init_swapchainWithWindow(*m_pVulkanApi, m_tastsetExecutor,
+                                            vulkanSwapchain, vulkanSynchTool,
+                                            *m_mainVulkanWindow, nbBackbuffer);
 
+        // Dx12 window task setup
         m::dearImGui::init(*m_mainDx12Window);
 
         auto& dx12Taskset = m_pDx12Api->create_renderTaskset();
@@ -121,11 +131,11 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m::render::mTaskDataSwapchainWaitForRT taskData_swapchainWaitForRT{};
         taskData_swapchainWaitForRT.pSwapchain = m_pDx12Swapchain;
         taskData_swapchainWaitForRT.pSynchTool = m_pDx12SynchTool;
-        auto& task = static_cast<m::render::mTaskSwapchainWaitForRT&>(
+        auto& dx12Task = static_cast<m::render::mTaskSwapchainWaitForRT&>(
             taskData_swapchainWaitForRT.add_toTaskSet(dx12Taskset));
 
         m::render::TaskDataDrawDearImGui taskData_drawDearImGui;
-        taskData_drawDearImGui.pOutputRT = task.pOutputRT;
+        taskData_drawDearImGui.pOutputRT = dx12Task.pOutputRT;
         taskData_drawDearImGui.nbFrames  = nbBackbuffer;
         taskData_drawDearImGui.add_toTaskSet(dx12Taskset);
 
@@ -141,6 +151,33 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
                 m_tastsetExecutor.remove_permanentTaskset(dx12Api, dx12Taskset);
             }));
 
+        // Vulkan window task setup
+        auto& vulkanTaskset = m_pVulkanApi->create_renderTaskset();
+
+        taskData_swapchainWaitForRT = {};
+        taskData_swapchainWaitForRT.pSwapchain = m_pVulkanSwapchain;
+        taskData_swapchainWaitForRT.pSynchTool = m_pVulkanSynchTool;
+        auto& vulkanTask = static_cast<m::render::mTaskSwapchainWaitForRT&>(
+            taskData_swapchainWaitForRT.add_toTaskSet(vulkanTaskset));
+
+//        taskData_drawDearImGui = {};
+//        taskData_drawDearImGui.pOutputRT = task.pOutputRT;
+//        taskData_drawDearImGui.nbFrames  = nbBackbuffer;
+//        taskData_drawDearImGui.add_toTaskSet(vulkanTaskset);
+
+        taskData_swapchainPresent = {};
+        taskData_swapchainPresent.pSwapchain = m_pVulkanSwapchain;
+        taskData_swapchainPresent.pSynchTool = m_pVulkanSynchTool;
+        taskData_swapchainPresent.add_toTaskSet(vulkanTaskset);
+
+        m_tastsetExecutor.confy_permanentTaskset(m::unref_safe(m_pVulkanApi),
+                                                 vulkanTaskset);
+        m_mainVulkanWindow->attach_toDestroy(m::mCallback<void>(
+            [this, &vulkanApi, &vulkanTaskset]() {
+                m_tastsetExecutor.remove_permanentTaskset(vulkanApi, vulkanTaskset);
+            }));
+
+        // Dx12 windo input setup
         m_mainDx12Window->link_inputManager(&m_inputManager);
 
         m_inputManager.attach_toKeyEvent(
@@ -199,8 +236,14 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m_pDx12Api->destroy();
         delete m_pDx12Api;
 
-        m_iVulkanRenderer->destroy();
-        delete m_iVulkanRenderer;
+        m_pVulkanSwapchain->destroy();
+        m_pVulkanApi->destroy_swapchain(*m_pVulkanSwapchain);
+
+        m_pVulkanSynchTool->destroy();
+        m_pVulkanApi->destroy_synchTool(*m_pVulkanSynchTool);
+
+        m_pVulkanApi->destroy();
+        delete m_pVulkanApi;
 
         m::dearImGui::destroy();
     }
@@ -231,11 +274,6 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
             m_tastsetExecutor.run();
         }
 
-        if (m_hdlVulkanSurface->isValid)
-        {
-            m_hdlVulkanSurface->surface->render();
-        }
-
         return true;
     }
 
@@ -248,8 +286,10 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
     m::render::mISwapchain* m_pDx12Swapchain;
     m::render::mISynchTool* m_pDx12SynchTool;
 
-    m::render::IRenderer*           m_iVulkanRenderer;
-    m::render::ISurface::HdlPtr     m_hdlVulkanSurface;
+    m::render::mIApi*       m_pVulkanApi;
+    m::render::mISwapchain* m_pVulkanSwapchain;
+    m::render::mISynchTool* m_pVulkanSynchTool;
+
     m::input::mCallbackInputManager m_inputManager;
     m::windows::mIWindow*           m_mainDx12Window;
     m::windows::mIWindow*           m_mainVulkanWindow;

@@ -7,7 +7,7 @@ namespace m::dx12
 {
 namespace DX12Surface
 {
-const mUInt scm_numFrames = 3; //TODO remove this
+const mUInt scm_numFrames = 3;  // TODO remove this
 };
 
 //-----------------------------------------------------------------------------

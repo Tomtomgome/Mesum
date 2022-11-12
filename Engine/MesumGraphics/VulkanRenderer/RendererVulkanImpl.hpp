@@ -121,6 +121,9 @@ class mSynchTool : public render::mISynchTool
    public:
     mUInt             currentFenceIndex;
     std::vector<mU64> fenceValues = {};
+
+    std::vector<VkSemaphore> semaphoresImageAcquired;
+    std::vector<VkSemaphore> semaphoresRenderCompleted;
 };
 
 //-----------------------------------------------------------------------------
@@ -145,7 +148,33 @@ class mSwapchain final : public render::mISwapchain
 
     void resize(mU32 a_width, mU32 a_height) final;
 
+    // ----
+    void acquire_image(VkSemaphore& a_semaphoreToWaitOn);
+    void present(VkSemaphore& a_semaphoreToWaitOn);
+
+    // ---
+    [[NODISCARD]] mU32 get_currentImageIndex() const
+    {
+        return m_currentImageIndex;
+    }
+
    private:
+    void _init(Desc const& a_desc);
+    void _init_swapChain();
+
+    void _destroy_swapChain();
+
+   private:
+    Desc m_currentDesc;
+
+    VkSurfaceKHR   m_surface   = VK_NULL_HANDLE;
+    VkSwapchainKHR m_swapChain = VK_NULL_HANDLE;
+
+    mU32 m_currentImageIndex = 0;
+
+    std::vector<VkImage>     m_swapChainImages;
+    std::vector<VkImageView> m_swapChainImageViews;
+
     // By default, enable V-Sync.
     mBool m_vSync            = true;
     mBool m_tearingSupported = false;

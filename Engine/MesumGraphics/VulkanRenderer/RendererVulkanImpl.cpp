@@ -89,54 +89,54 @@ render::Taskset* VulkanSurface::addNew_renderTaskset()
 //-----------------------------------------------------------------------------
 void VulkanSurface::render()
 {
-    m_currentBackBufferIndex = (m_currentBackBufferIndex + 1) % scm_numFrames;
-
-    // Check oldRenderHasFinished for next frame
-    VulkanContext::wait_onMainTimelineTstp(
-        m_tstpRenderFinish[m_currentBackBufferIndex]);
-
-    // Aquire next image
-    vkAcquireNextImageKHR(VulkanContext::get_logDevice(), m_swapChain,
-                          std::numeric_limits<mU64>::max(),
-                          m_semaphoresImageAcquired[m_currentBackBufferIndex],
-                          VK_NULL_HANDLE, &m_currentImageIndex);
-
-    {
-        check_vkResult(vkResetCommandPool(
-            VulkanContext::get_logDevice(),
-            m_frameCommandPools[m_currentBackBufferIndex], 0));
-        VkCommandBufferBeginInfo info = {};
-        info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-        info.flags |= VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
-        check_vkResult(vkBeginCommandBuffer(
-            m_frameMainCommandBuffers[m_currentBackBufferIndex], &info));
-    }
-
-    for (auto taskset : m_renderTasksets)
-    {
-        for (const auto task : taskset->m_set_tasks) { task->prepare(); }
-        for (const auto task : taskset->m_set_tasks) { task->execute(); }
-    }
-
-    check_vkResult(vkEndCommandBuffer(
-        m_frameMainCommandBuffers[m_currentBackBufferIndex]));
-
-    m_tstpRenderFinish[m_currentBackBufferIndex] =
-        VulkanContext::submit_onMainTimeline(
-            m_frameMainCommandBuffers[m_currentBackBufferIndex],
-            {m_semaphoresImageAcquired[m_currentBackBufferIndex]},
-            {m_semaphoresRenderCompleted[m_currentBackBufferIndex]});
-
-    // Presentation
-    VkPresentInfoKHR infoPresent   = {};
-    infoPresent.sType              = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
-    infoPresent.waitSemaphoreCount = 1;
-    infoPresent.pWaitSemaphores =
-        &m_semaphoresRenderCompleted[m_currentBackBufferIndex];
-    infoPresent.swapchainCount = 1;
-    infoPresent.pSwapchains    = &m_swapChain;
-    infoPresent.pImageIndices  = &m_currentImageIndex;
-    VulkanContext::present(infoPresent);
+//    m_currentBackBufferIndex = (m_currentBackBufferIndex + 1) % scm_numFrames;
+//
+//    // Check oldRenderHasFinished for next frame
+//    VulkanContext::wait_onMainTimelineTstp(
+//        m_tstpRenderFinish[m_currentBackBufferIndex]);
+//
+//    // Aquire next image
+//    vkAcquireNextImageKHR(VulkanContext::get_logDevice(), m_swapChain,
+//                          std::numeric_limits<mU64>::max(),
+//                          m_semaphoresImageAcquired[m_currentBackBufferIndex],
+//                          VK_NULL_HANDLE, &m_currentImageIndex);
+//
+//    {
+//        check_vkResult(vkResetCommandPool(
+//            VulkanContext::get_logDevice(),
+//            m_frameCommandPools[m_currentBackBufferIndex], 0));
+//        VkCommandBufferBeginInfo info = {};
+//        info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+//        info.flags |= VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+//        check_vkResult(vkBeginCommandBuffer(
+//            m_frameMainCommandBuffers[m_currentBackBufferIndex], &info));
+//    }
+//
+//    for (auto taskset : m_renderTasksets)
+//    {
+//        for (const auto task : taskset->m_set_tasks) { task->prepare(); }
+//        for (const auto task : taskset->m_set_tasks) { task->execute(); }
+//    }
+//
+//    check_vkResult(vkEndCommandBuffer(
+//        m_frameMainCommandBuffers[m_currentBackBufferIndex]));
+//
+//    m_tstpRenderFinish[m_currentBackBufferIndex] =
+//        VulkanContext::submit_onMainTimeline(
+//            m_frameMainCommandBuffers[m_currentBackBufferIndex],
+//            {m_semaphoresImageAcquired[m_currentBackBufferIndex]},
+//            {m_semaphoresRenderCompleted[m_currentBackBufferIndex]});
+//
+//    // Presentation
+//    VkPresentInfoKHR infoPresent   = {};
+//    infoPresent.sType              = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+//    infoPresent.waitSemaphoreCount = 1;
+//    infoPresent.pWaitSemaphores =
+//        &m_semaphoresRenderCompleted[m_currentBackBufferIndex];
+//    infoPresent.swapchainCount = 1;
+//    infoPresent.pSwapchains    = &m_swapChain;
+//    infoPresent.pImageIndices  = &m_currentImageIndex;
+//    VulkanContext::present(infoPresent);
 }
 
 //-----------------------------------------------------------------------------
@@ -144,16 +144,16 @@ void VulkanSurface::render()
 //-----------------------------------------------------------------------------
 void VulkanSurface::resize(mU32 a_width, mU32 a_height)
 {
-    if (m_clientWidth != a_width || m_clientHeight != a_height)
-    {
-        // Don't allow 0 size swap chain back buffers.
-        m_clientWidth  = std::max(1u, a_width);
-        m_clientHeight = std::max(1u, a_height);
-        VulkanContext::wait_onMainTimelineTstp(
-            m_tstpRenderFinish[m_currentBackBufferIndex]);
-        destroy_swapChain();
-        init_swapChain();
-    }
+//    if (m_clientWidth != a_width || m_clientHeight != a_height)
+//    {
+//        // Don't allow 0 size swap chain back buffers.
+//        m_clientWidth  = std::max(1u, a_width);
+//        m_clientHeight = std::max(1u, a_height);
+//        VulkanContext::wait_onMainTimelineTstp(
+//            m_tstpRenderFinish[m_currentBackBufferIndex]);
+//        destroy_swapChain();
+//        init_swapChain();
+//    }
 }
 
 //-----------------------------------------------------------------------------
@@ -161,35 +161,35 @@ void VulkanSurface::resize(mU32 a_width, mU32 a_height)
 //-----------------------------------------------------------------------------
 void VulkanSurface::destroy()
 {
-    VulkanContext::wait_onMainTimelineTstp(
-        m_tstpRenderFinish[m_currentBackBufferIndex]);
-
-    for (auto taskset : m_renderTasksets)
-    {
-        taskset->clear();
-        delete taskset;
-    }
-
-    for (auto& m_frameCommandPool : m_frameCommandPools)
-    {
-        vkDestroyCommandPool(VulkanContext::get_logDevice(), m_frameCommandPool,
-                             nullptr);
-    }
-
-    destroy_swapChain();
-
-    vkDestroyRenderPass(VulkanContext::get_logDevice(), m_mainRenderPass,
-                        nullptr);
-
-    for (size_t i = 0; i < scm_numFrames; i++)
-    {
-        vkDestroySemaphore(VulkanContext::get_logDevice(),
-                           m_semaphoresImageAcquired[i], nullptr);
-        vkDestroySemaphore(VulkanContext::get_logDevice(),
-                           m_semaphoresRenderCompleted[i], nullptr);
-    }
-
-    vkDestroySurfaceKHR(VulkanContext::get_instance(), m_surface, nullptr);
+//    VulkanContext::wait_onMainTimelineTstp(
+//        m_tstpRenderFinish[m_currentBackBufferIndex]);
+//
+//    for (auto taskset : m_renderTasksets)
+//    {
+//        taskset->clear();
+//        delete taskset;
+//    }
+//
+//    for (auto& m_frameCommandPool : m_frameCommandPools)
+//    {
+//        vkDestroyCommandPool(VulkanContext::get_logDevice(), m_frameCommandPool,
+//                             nullptr);
+//    }
+//
+//    destroy_swapChain();
+//
+//    vkDestroyRenderPass(VulkanContext::get_logDevice(), m_mainRenderPass,
+//                        nullptr);
+//
+//    for (size_t i = 0; i < scm_numFrames; i++)
+//    {
+//        vkDestroySemaphore(VulkanContext::get_logDevice(),
+//                           m_semaphoresImageAcquired[i], nullptr);
+//        vkDestroySemaphore(VulkanContext::get_logDevice(),
+//                           m_semaphoresRenderCompleted[i], nullptr);
+//    }
+//
+//    vkDestroySurfaceKHR(VulkanContext::get_instance(), m_surface, nullptr);
 }
 
 //*****************************************************************************
@@ -299,27 +299,27 @@ void VulkanSurface::init_internal()
 
     init_swapChain();
 
-    for (int i = 0; i < scm_numFrames; i++)
-    {
-        VkCommandPoolCreateInfo createCommandPool = {};
-        createCommandPool.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-        createCommandPool.queueFamilyIndex =
-            VulkanContext::get_graphicQueueFamilyIndex();
-
-        check_vkResult(vkCreateCommandPool(VulkanContext::get_logDevice(),
-                                           &createCommandPool, nullptr,
-                                           &m_frameCommandPools[i]));
-
-        VkCommandBufferAllocateInfo allocInfo{};
-        allocInfo.sType       = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-        allocInfo.level       = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-        allocInfo.commandPool = m_frameCommandPools[i];
-        allocInfo.commandBufferCount = 1;
-
-        check_vkResult(vkAllocateCommandBuffers(VulkanContext::get_logDevice(),
-                                                &allocInfo,
-                                                &m_frameMainCommandBuffers[i]));
-    }
+//    for (int i = 0; i < scm_numFrames; i++)
+//    {
+//        VkCommandPoolCreateInfo createCommandPool = {};
+//        createCommandPool.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+//        createCommandPool.queueFamilyIndex =
+//            VulkanContext::get_graphicQueueFamilyIndex();
+//
+//        check_vkResult(vkCreateCommandPool(VulkanContext::get_logDevice(),
+//                                           &createCommandPool, nullptr,
+//                                           &m_frameCommandPools[i]));
+//
+//        VkCommandBufferAllocateInfo allocInfo{};
+//        allocInfo.sType       = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+//        allocInfo.level       = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+//        allocInfo.commandPool = m_frameCommandPools[i];
+//        allocInfo.commandBufferCount = 1;
+//
+//        check_vkResult(vkAllocateCommandBuffers(VulkanContext::get_logDevice(),
+//                                                &allocInfo,
+//                                                &m_frameMainCommandBuffers[i]));
+//    }
 }
 
 //*****************************************************************************
@@ -502,10 +502,41 @@ render::IResource* VulkanRenderer::getNew_texture()
 ///////////////////////////////////////////////////////////////////////////////
 void mSynchTool::init(Desc& a_desc)
 {
-    fenceValues.resize(a_desc.bufferCount);
+    fenceValues.resize(a_desc.bufferCount, 0);
+
+    semaphoresImageAcquired.resize(a_desc.bufferCount);
+    semaphoresRenderCompleted.resize(a_desc.bufferCount);
+
+    VkSemaphoreCreateInfo createSemaphore = {};
+    createSemaphore.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+    createSemaphore.flags = 0;
+
+    for (size_t i = 0; i < a_desc.bufferCount; i++)
+    {
+        if (vkCreateSemaphore(VulkanContext::get_logDevice(), &createSemaphore,
+                              nullptr,
+                              &semaphoresImageAcquired[i]) != VK_SUCCESS ||
+            vkCreateSemaphore(VulkanContext::get_logDevice(), &createSemaphore,
+                              nullptr,
+                              &semaphoresRenderCompleted[i]) != VK_SUCCESS)
+        {
+            throw std::runtime_error(
+                "failed to create semaphores for a frame!");
+        }
+    }
 }
 
-void mSynchTool::destroy() {}
+void mSynchTool::destroy()
+{
+    mAssert(semaphoresImageAcquired.size() == semaphoresRenderCompleted.size());
+    for (size_t i = 0; i < semaphoresImageAcquired.size(); i++)
+    {
+        vkDestroySemaphore(VulkanContext::get_logDevice(),
+                           semaphoresImageAcquired[i], nullptr);
+        vkDestroySemaphore(VulkanContext::get_logDevice(),
+                           semaphoresRenderCompleted[i], nullptr);
+    }
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -522,12 +553,19 @@ void mApi::init()
     mAssert(mApi::sm_memoryType == memory::g_defaultMemoryType);
     mApi::sm_memoryType = memory::create_newMemoryType("Vulkan rendering");
     sm_mal.init(mApi::sm_memoryType);
+
+    VulkanContext::gs_VulkanContexte = sm_mal.construct<VulkanContext>();
+    VulkanContext::gs_VulkanContexte->init();
 }
 
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void mApi::destroy() {}
+void mApi::destroy()
+{
+    VulkanContext::gs_VulkanContexte->deinit();
+    sm_mal.destroy(VulkanContext::gs_VulkanContexte);
+}
 
 //-----------------------------------------------------------------------------
 //

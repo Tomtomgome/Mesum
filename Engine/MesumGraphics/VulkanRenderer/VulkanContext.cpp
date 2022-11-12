@@ -5,6 +5,112 @@ namespace m
 {
 namespace vulkan
 {
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void CommandQueue::init(mU32 const a_queueFamilyIndex, VkQueue a_queue)
+{
+    m_queueFamilyIndex = a_queueFamilyIndex;
+    m_queue            = a_queue;
+
+    VkSemaphoreCreateInfo createSemaphore = {};
+    createSemaphore.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+    createSemaphore.flags = 0;
+
+    VkSemaphoreTypeCreateInfo createSemaphoreType = {};
+    createSemaphoreType.sType = VK_STRUCTURE_TYPE_SEMAPHORE_TYPE_CREATE_INFO;
+    createSemaphoreType.semaphoreType = VK_SEMAPHORE_TYPE_TIMELINE;
+    createSemaphoreType.initialValue  = m_timeline;
+
+    createSemaphore.pNext = &createSemaphoreType;
+
+    if (vkCreateSemaphore(VulkanContext::get_logDevice(), &createSemaphore,
+                          nullptr, &m_timelineSemaphore) != VK_SUCCESS)
+    {
+        throw std::runtime_error("failed to create timeline semaphore");
+    }
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void CommandQueue::destroy()
+{
+    vkDestroySemaphore(VulkanContext::get_logDevice(), m_timelineSemaphore,
+                       nullptr);
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void CommandQueue::wait_onFenceValue(mU64 a_tstpToWaitOn, mU64 a_timeout)
+{
+    VkSemaphoreWaitInfo infoWaitSemaphore = {};
+    infoWaitSemaphore.sType          = VK_STRUCTURE_TYPE_SEMAPHORE_WAIT_INFO;
+    infoWaitSemaphore.semaphoreCount = 1;
+    infoWaitSemaphore.pSemaphores    = &m_timelineSemaphore;
+    infoWaitSemaphore.pValues        = &a_tstpToWaitOn;
+    if (vkWaitSemaphores(VulkanContext::get_logDevice(), &infoWaitSemaphore,
+                         a_timeout) != VK_SUCCESS)
+    {
+        throw std::runtime_error("Wait on semaphore failled");
+    }
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+mU64 CommandQueue::signal_fence(
+    std::vector<VkSemaphore> const& a_semaphoresToWait,
+    std::vector<VkSemaphore>        a_semaphoresToSignal)
+{
+    mU64& finishValueOnTimeline = ++m_timeline;
+
+    std::vector<mU64> signalValues;
+    signalValues.resize(a_semaphoresToSignal.size() + 1, 0);
+    signalValues[a_semaphoresToSignal.size()] = finishValueOnTimeline;
+
+    std::vector<mU64> dummyWaitValues;
+    dummyWaitValues.resize(a_semaphoresToWait.size(), 0);
+
+    VkTimelineSemaphoreSubmitInfo timelineInfo = {};
+    timelineInfo.sType = VK_STRUCTURE_TYPE_TIMELINE_SEMAPHORE_SUBMIT_INFO;
+    timelineInfo.waitSemaphoreValueCount =
+        static_cast<mU32>(dummyWaitValues.size());
+    timelineInfo.pWaitSemaphoreValues = dummyWaitValues.data();
+    timelineInfo.signalSemaphoreValueCount =
+        static_cast<mU32>(signalValues.size());
+    timelineInfo.pSignalSemaphoreValues = signalValues.data();
+
+    a_semaphoresToSignal.push_back(m_timelineSemaphore);
+
+    VkSubmitInfo infoSubmit = {};
+    infoSubmit.sType        = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+    infoSubmit.pNext        = &timelineInfo;
+    infoSubmit.waitSemaphoreCount =
+        static_cast<mU32>(a_semaphoresToWait.size());
+    infoSubmit.pWaitSemaphores        = a_semaphoresToWait.data();
+    VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT};
+    infoSubmit.pWaitDstStageMask      = waitStages;
+    infoSubmit.signalSemaphoreCount =
+        static_cast<mU32>(a_semaphoresToSignal.size());
+    infoSubmit.pSignalSemaphores  = a_semaphoresToSignal.data();
+    infoSubmit.commandBufferCount = 0;
+    infoSubmit.pCommandBuffers    = nullptr;
+    if (vkQueueSubmit(m_queue, 1, &infoSubmit, VK_NULL_HANDLE) != VK_SUCCESS)
+    {
+        throw std::runtime_error("failed to submit draw command buffer!");
+    }
+
+    return finishValueOnTimeline;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 VulkanContext* VulkanContext::gs_VulkanContexte;
 
 //-----------------------------------------------------------------------------
@@ -18,8 +124,11 @@ void VulkanContext::init()
 
     select_physicalDevice(m_instance, m_physicalDevice);
 
-    create_logicalDevice(m_physicalDevice, m_logicalDevice, m_queue,
-                         m_queueFamilyIndex);
+    mU32    queueFamilyIndex;
+    VkQueue queue = VK_NULL_HANDLE;
+    create_logicalDevice(m_physicalDevice, m_logicalDevice, queue,
+                         queueFamilyIndex);
+    m_queue.init(queueFamilyIndex, queue);
 
     VkSemaphoreCreateInfo createSemaphore = {};
     createSemaphore.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
@@ -38,7 +147,6 @@ void VulkanContext::init()
         throw std::runtime_error("failed to create timeline semaphore");
     }
 
-    mU32 queueFamilyIndex;
     find_graphicQueueFamilyIndex(m_physicalDevice, queueFamilyIndex);
 
     VkCommandPoolCreateInfo createCommandPool = {};
@@ -71,82 +179,85 @@ void VulkanContext::deinit()
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-void VulkanContext::wait_onMainTimelineTstp(mU64 a_tstpToWaitOn, mU64 a_timeout)
-{
-    VkSemaphoreWaitInfo infoWaitSemaphore = {};
-    infoWaitSemaphore.sType          = VK_STRUCTURE_TYPE_SEMAPHORE_WAIT_INFO;
-    infoWaitSemaphore.semaphoreCount = 1;
-    infoWaitSemaphore.pSemaphores    = &gs_VulkanContexte->m_timelineSemaphore;
-    infoWaitSemaphore.pValues        = &a_tstpToWaitOn;
-    if (vkWaitSemaphores(VulkanContext::gs_VulkanContexte->get_logDevice(),
-                         &infoWaitSemaphore, a_timeout) != VK_SUCCESS)
-    {
-        throw std::runtime_error("Wait on semaphore failled");
-    }
-}
+// void VulkanContext::wait_onMainTimelineTstp(mU64 a_tstpToWaitOn, mU64
+// a_timeout)
+//{
+//    VkSemaphoreWaitInfo infoWaitSemaphore = {};
+//    infoWaitSemaphore.sType          = VK_STRUCTURE_TYPE_SEMAPHORE_WAIT_INFO;
+//    infoWaitSemaphore.semaphoreCount = 1;
+//    infoWaitSemaphore.pSemaphores    =
+//    &gs_VulkanContexte->m_timelineSemaphore; infoWaitSemaphore.pValues =
+//    &a_tstpToWaitOn; if
+//    (vkWaitSemaphores(VulkanContext::gs_VulkanContexte->get_logDevice(),
+//                         &infoWaitSemaphore, a_timeout) != VK_SUCCESS)
+//    {
+//        throw std::runtime_error("Wait on semaphore failled");
+//    }
+//}
 
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-mU64 VulkanContext::submit_onMainTimeline(
-    VkCommandBuffer const&          a_commandBuffer,
-    std::vector<VkSemaphore> const& a_semaphoresToWait,
-    std::vector<VkSemaphore>        a_semaphoresToSignal)
-{
-    mU64& finishValueOnTimeline = ++gs_VulkanContexte->m_timeline;
-
-    std::vector<mU64> signalValues;
-    signalValues.resize(a_semaphoresToSignal.size() + 1, 0);
-    signalValues[a_semaphoresToSignal.size()] = finishValueOnTimeline;
-
-    std::vector<mU64> dummyWaitValues;
-    dummyWaitValues.resize(a_semaphoresToWait.size(), 0);
-
-    VkTimelineSemaphoreSubmitInfo timelineInfo = {};
-    timelineInfo.sType = VK_STRUCTURE_TYPE_TIMELINE_SEMAPHORE_SUBMIT_INFO;
-    timelineInfo.waitSemaphoreValueCount =
-        static_cast<mU32>(dummyWaitValues.size());
-    timelineInfo.pWaitSemaphoreValues = dummyWaitValues.data();
-    timelineInfo.signalSemaphoreValueCount =
-        static_cast<mU32>(signalValues.size());
-    timelineInfo.pSignalSemaphoreValues = signalValues.data();
-
-    a_semaphoresToSignal.push_back(gs_VulkanContexte->m_timelineSemaphore);
-
-    VkSubmitInfo infoSubmit       = {};
-    infoSubmit.sType              = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-    infoSubmit.pNext              = &timelineInfo;
-    infoSubmit.waitSemaphoreCount = static_cast<mU32>(a_semaphoresToWait.size());
-    infoSubmit.pWaitSemaphores    = a_semaphoresToWait.data();
-    VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT};
-    infoSubmit.pWaitDstStageMask      = waitStages;
-    infoSubmit.signalSemaphoreCount =
-        static_cast<mU32>(a_semaphoresToSignal.size());
-    infoSubmit.pSignalSemaphores  = a_semaphoresToSignal.data();
-    infoSubmit.commandBufferCount = 1;
-    infoSubmit.pCommandBuffers    = &a_commandBuffer;
-    if (vkQueueSubmit(VulkanContext::gs_VulkanContexte->get_graphicQueue(), 1,
-                      &infoSubmit, VK_NULL_HANDLE) != VK_SUCCESS)
-    {
-        throw std::runtime_error("failed to submit draw command buffer!");
-    }
-
-    return finishValueOnTimeline;
-}
+// mU64 VulkanContext::submit_onMainTimeline(
+//    VkCommandBuffer const&          a_commandBuffer,
+//    std::vector<VkSemaphore> const& a_semaphoresToWait,
+//    std::vector<VkSemaphore>        a_semaphoresToSignal)
+//{
+//    mU64& finishValueOnTimeline = ++gs_VulkanContexte->m_timeline;
+//
+//    std::vector<mU64> signalValues;
+//    signalValues.resize(a_semaphoresToSignal.size() + 1, 0);
+//    signalValues[a_semaphoresToSignal.size()] = finishValueOnTimeline;
+//
+//    std::vector<mU64> dummyWaitValues;
+//    dummyWaitValues.resize(a_semaphoresToWait.size(), 0);
+//
+//    VkTimelineSemaphoreSubmitInfo timelineInfo = {};
+//    timelineInfo.sType = VK_STRUCTURE_TYPE_TIMELINE_SEMAPHORE_SUBMIT_INFO;
+//    timelineInfo.waitSemaphoreValueCount =
+//        static_cast<mU32>(dummyWaitValues.size());
+//    timelineInfo.pWaitSemaphoreValues = dummyWaitValues.data();
+//    timelineInfo.signalSemaphoreValueCount =
+//        static_cast<mU32>(signalValues.size());
+//    timelineInfo.pSignalSemaphoreValues = signalValues.data();
+//
+//    a_semaphoresToSignal.push_back(gs_VulkanContexte->m_timelineSemaphore);
+//
+//    VkSubmitInfo infoSubmit = {};
+//    infoSubmit.sType        = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+//    infoSubmit.pNext        = &timelineInfo;
+//    infoSubmit.waitSemaphoreCount =
+//        static_cast<mU32>(a_semaphoresToWait.size());
+//    infoSubmit.pWaitSemaphores        = a_semaphoresToWait.data();
+//    VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT};
+//    infoSubmit.pWaitDstStageMask      = waitStages;
+//    infoSubmit.signalSemaphoreCount =
+//        static_cast<mU32>(a_semaphoresToSignal.size());
+//    infoSubmit.pSignalSemaphores  = a_semaphoresToSignal.data();
+//    infoSubmit.commandBufferCount = 1;
+//    infoSubmit.pCommandBuffers    = &a_commandBuffer;
+//    if (vkQueueSubmit(VulkanContext::gs_VulkanContexte->get_graphicQueue(), 1,
+//                      &infoSubmit, VK_NULL_HANDLE) != VK_SUCCESS)
+//    {
+//        throw std::runtime_error("failed to submit draw command buffer!");
+//    }
+//
+//    return finishValueOnTimeline;
+//}
 
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-void VulkanContext::present(VkPresentInfoKHR const& a_infoPresent)
-{
-    vkQueuePresentKHR(VulkanContext::get_presentationQueue(), &a_infoPresent);
-}
+// void VulkanContext::present(VkPresentInfoKHR const& a_infoPresent)
+//{
+//    vkQueuePresentKHR(VulkanContext::get_presentationQueue(), &a_infoPresent);
+//}
 
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 mU32 VulkanContext::get_memoryTypeIndex(mU32                  a_typeFilter,
-                                       VkMemoryPropertyFlags a_properties)
+                                        VkMemoryPropertyFlags a_properties)
 {
     VkPhysicalDeviceMemoryProperties memProperties;
     vkGetPhysicalDeviceMemoryProperties(gs_VulkanContexte->get_physDevice(),
@@ -226,8 +337,8 @@ void VulkanContext::submit_singleUseCommandBuffer(
     infoSubmit.commandBufferCount = 1;
     infoSubmit.pCommandBuffers    = &a_commandBuffer;
 
-    vkQueueSubmit(m_queue, 1, &infoSubmit, VK_NULL_HANDLE);
-    vkQueueWaitIdle(m_queue);
+    vkQueueSubmit(m_queue.get_queue(), 1, &infoSubmit, VK_NULL_HANDLE);
+    vkQueueWaitIdle(m_queue.get_queue());
 
     vkFreeCommandBuffers(m_logicalDevice, m_utilityCommandPool, 1,
                          &a_commandBuffer);
