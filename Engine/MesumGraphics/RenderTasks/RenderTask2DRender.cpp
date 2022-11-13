@@ -438,7 +438,7 @@ Task* TaskData2dRender::getNew_dx12Implementation(TaskData* a_data)
 VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
     : Task2dRender(a_data)
 {
-    for (auto& buffer : m_buffers) { init_buffer(buffer); }
+    /*for (auto& buffer : m_buffers) { init_buffer(buffer); }
 
     m_vertShaderModule =
         vulkan::VulkanContext::create_shaderModule("data/squareShader.vs.spv");
@@ -679,7 +679,7 @@ VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
                                             materialDescriptorWrite};
 
         vkUpdateDescriptorSets(device, 2, setWrites, 0, nullptr);
-    }
+    }*/
 }
 
 //-----------------------------------------------------------------------------
@@ -687,7 +687,7 @@ VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
 //-----------------------------------------------------------------------------
 VulkanTask2dRender::~VulkanTask2dRender()
 {
-    for (auto& buffer : m_buffers) { destroy_buffer(buffer); }
+    /*for (auto& buffer : m_buffers) { destroy_buffer(buffer); }
 
     VkDevice device = vulkan::VulkanContext::get_logDevice();
 
@@ -720,7 +720,7 @@ VulkanTask2dRender::~VulkanTask2dRender()
     }
 
     vkDestroyShaderModule(device, m_vertShaderModule, nullptr);
-    vkDestroyShaderModule(device, m_fragShaderModule, nullptr);
+    vkDestroyShaderModule(device, m_fragShaderModule, nullptr);*/
 }
 
 //-----------------------------------------------------------------------------
@@ -930,7 +930,7 @@ mBool VulkanTask2dRender::add_texture(resource::mRequestImage const& a_request)
 void VulkanTask2dRender::create_renderPassAndPipeline(mU32 a_width,
                                                       mU32 a_height)
 {
-    VkDevice device = vulkan::VulkanContext::get_logDevice();
+    /*VkDevice device = vulkan::VulkanContext::get_logDevice();
 
     VkPipelineShaderStageCreateInfo vertShaderStageInfo{};
     vertShaderStageInfo.sType =
@@ -1136,7 +1136,7 @@ void VulkanTask2dRender::create_renderPassAndPipeline(mU32 a_width,
                                   nullptr, &m_graphicsPipeline) != VK_SUCCESS)
     {
         throw std::runtime_error("failed to create graphics pipeline!");
-    }
+    }*/
 }
 
 //-----------------------------------------------------------------------------
@@ -1155,7 +1155,7 @@ void VulkanTask2dRender::prepare()
 //-----------------------------------------------------------------------------
 void VulkanTask2dRender::execute() const
 {
-    DataMeshBuffer meshBuffer = *m_taskData.m_pMeshBuffer;
+    /*DataMeshBuffer meshBuffer = *m_taskData.m_pMeshBuffer;
 
     auto currentSurface =
         static_cast<vulkan::VulkanSurface*>(m_taskData.m_hdlOutput->surface);
@@ -1247,7 +1247,7 @@ void VulkanTask2dRender::execute() const
     }
 
     // Submit command buffer
-    vkCmdEndRenderPass(commandBuffer);
+    vkCmdEndRenderPass(commandBuffer);*/
 }
 
 //-----------------------------------------------------------------------------

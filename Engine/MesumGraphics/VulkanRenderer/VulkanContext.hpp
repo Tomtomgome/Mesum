@@ -4,6 +4,8 @@
 #include <MesumCore/Kernel/Callbacks.hpp>
 #include <VulkanRendererCommon.hpp>
 
+#include <queue>
+
 namespace m
 {
 namespace vulkan
@@ -16,15 +18,22 @@ class CommandQueue
 
     void wait_onFenceValue(mU64 a_tstpToWaitOn,
                            mU64 a_timeout = std::numeric_limits<mU64>::max());
-    mU64 signal_fence(std::vector<VkSemaphore> const& a_semaphoresToWait,
-                      std::vector<VkSemaphore>        a_semaphoresToSignal);
+    void push_waitOnSemaphores(
+        std::vector<VkSemaphore> a_semaphoresToWait);
 
-    //    mU64 submit_onMainTimeline(
-    //        VkCommandBuffer const&          a_commandBuffer,
-    //        std::vector<VkSemaphore> const& a_semaphoresToWait,
-    //        std::vector<VkSemaphore>        a_semaphoresToSignal);
+    mU64 signal_fence();
+    void signal_semaphores(
+        std::vector<VkSemaphore> a_semaphoresToSignal);
+
+    VkCommandBuffer get_commandBuffer();
+    void            submit_commandBuffer(VkCommandBuffer a_commandBuffer);
 
     [[NODISCARD]] VkQueue get_queue() { return m_queue; }
+    mU32                  get_queueFamilyIndex() { return m_queueFamilyIndex; }
+
+   protected:
+    VkCommandPool   create_commandPool();
+    VkCommandBuffer create_commandBuffer(VkCommandPool a_pool);
 
    private:
     mU32    m_queueFamilyIndex = 0;
@@ -32,6 +41,21 @@ class CommandQueue
 
     VkSemaphore m_timelineSemaphore;
     mU64        m_timeline = 0;
+
+    // Keep track of command pools that are "in-flight"
+    using CommandBufferQueue = std::queue<VkCommandBuffer>;
+
+    struct CommandPoolEntry
+    {
+        mU64               fenceValue;
+        VkCommandPool      commandPool;
+        CommandBufferQueue availableCommandBuffers;
+        CommandBufferQueue usedCommandBuffers;
+    };
+
+    using CommandPoolQueue = std::queue<CommandPoolEntry>;
+    CommandPoolQueue m_inFlightCommandPools;
+    CommandPoolQueue m_freeCommandPools;
 };
 
 class VulkanContext
@@ -50,16 +74,6 @@ class VulkanContext
         return gs_VulkanContexte->m_queue;
     }
 
-    //    static void wait_onMainTimelineTstp(
-    //        mU64 a_tstpToWaitOn, mU64 a_timeout =
-    //        std::numeric_limits<mU64>::max());
-    //    static mU64 submit_onMainTimeline(
-    //        VkCommandBuffer const&          a_commandBuffer,
-    //        std::vector<VkSemaphore> const& a_semaphoresToWait,
-    //        std::vector<VkSemaphore>        a_semaphoresToSignal);
-
-    // static void present(VkPresentInfoKHR const& a_infoPresent);
-
     VkCommandBuffer get_singleUseCommandBuffer();
     void submit_singleUseCommandBuffer(VkCommandBuffer a_commandBuffer);
 
@@ -72,15 +86,6 @@ class VulkanContext
     {
         return gs_VulkanContexte->m_logicalDevice;
     }
-    //    static VkQueue get_presentationQueue()
-    //    {
-    //        return gs_VulkanContexte->m_queue;
-    //    }
-    //    static VkQueue get_graphicQueue() { return gs_VulkanContexte->m_queue;
-    //    } static mU32    get_graphicQueueFamilyIndex()
-    //    {
-    //        return gs_VulkanContexte->m_queueFamilyIndex;
-    //    }
 
     static mU32           get_memoryTypeIndex(mU32                  a_typeFilter,
                                               VkMemoryPropertyFlags a_properties);

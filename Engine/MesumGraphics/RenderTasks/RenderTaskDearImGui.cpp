@@ -93,58 +93,51 @@ Task* TaskDataDrawDearImGui::getNew_dx12Implementation(TaskData* a_data)
 VulkanTaskDrawDearImGui::VulkanTaskDrawDearImGui(TaskDataDrawDearImGui* a_data)
     : TaskDrawDearImGui(a_data)
 {
-    // TODO modify this to work with swapchain refacto
-    //    auto currentSurface =
-    //        static_cast<vulkan::VulkanSurface*>(m_taskData.m_hdlOutput->surface);
-    //
-    //    VkDescriptorPoolSize pool_sizes[] = {
-    //        {VK_DESCRIPTOR_TYPE_SAMPLER, 1000},
-    //        {VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1000},
-    //        {VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, 1000},
-    //        {VK_DESCRIPTOR_TYPE_STORAGE_IMAGE, 1000},
-    //        {VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER, 1000},
-    //        {VK_DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER, 1000},
-    //        {VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1000},
-    //        {VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 1000},
-    //        {VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, 1000},
-    //        {VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, 1000},
-    //        {VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT, 1000}};
-    //    VkDescriptorPoolCreateInfo pool_info = {};
-    //    pool_info.sType         =
-    //    VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO; pool_info.flags =
-    //    VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT; pool_info.maxSets
-    //    = 1000 * IM_ARRAYSIZE(pool_sizes); pool_info.poolSizeCount =
-    //    (uint32_t)IM_ARRAYSIZE(pool_sizes); pool_info.pPoolSizes    =
-    //    pool_sizes;
-    //    vkCreateDescriptorPool(vulkan::VulkanContext::get_logDevice(),
-    //    &pool_info,
-    //                           nullptr, &m_dearImGuiDescriptorPool);
-    //
-    //    ImGui_ImplVulkan_InitInfo init_info = {};
-    //    init_info.Instance                  =
-    //    vulkan::VulkanContext::get_instance(); init_info.PhysicalDevice =
-    //    vulkan::VulkanContext::get_physDevice(); init_info.Device         =
-    //    vulkan::VulkanContext::get_logDevice(); init_info.QueueFamily =
-    //        vulkan::VulkanContext::get_graphicQueueFamilyIndex();
-    //    init_info.Queue           = vulkan::VulkanContext::get_graphicQueue();
-    //    init_info.PipelineCache   = VK_NULL_HANDLE;
-    //    init_info.DescriptorPool  = m_dearImGuiDescriptorPool;
-    //    init_info.Allocator       = nullptr;
-    //    init_info.MinImageCount   = vulkan::VulkanSurface::scm_numFrames;
-    //    init_info.ImageCount      = vulkan::VulkanSurface::scm_numFrames;
-    //    init_info.CheckVkResultFn = vulkan::check_vkResult;
-    //    ImGui_ImplVulkan_Init(&init_info,
-    //    currentSurface->get_mainRenderPass());
-    //
-    //    VkCommandBuffer command_buffer =
-    //        vulkan::VulkanContext::gs_VulkanContexte->get_singleUseCommandBuffer();
-    //
-    //    ImGui_ImplVulkan_CreateFontsTexture(command_buffer);
-    //
-    //    vulkan::VulkanContext::gs_VulkanContexte->submit_singleUseCommandBuffer(
-    //        command_buffer);
-    //
-    //    ImGui_ImplVulkan_DestroyFontUploadObjects();
+    VkDescriptorPoolSize pool_sizes[] = {
+        {VK_DESCRIPTOR_TYPE_SAMPLER, 1000},
+        {VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1000},
+        {VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, 1000},
+        {VK_DESCRIPTOR_TYPE_STORAGE_IMAGE, 1000},
+        {VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER, 1000},
+        {VK_DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER, 1000},
+        {VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1000},
+        {VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 1000},
+        {VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, 1000},
+        {VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, 1000},
+        {VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT, 1000}};
+    VkDescriptorPoolCreateInfo pool_info = {};
+    pool_info.sType         = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+    pool_info.flags         = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
+    pool_info.maxSets       = 1000 * IM_ARRAYSIZE(pool_sizes);
+    pool_info.poolSizeCount = (uint32_t)IM_ARRAYSIZE(pool_sizes);
+    pool_info.pPoolSizes    = pool_sizes;
+    vkCreateDescriptorPool(vulkan::VulkanContext::get_logDevice(), &pool_info,
+                           nullptr, &m_dearImGuiDescriptorPool);
+
+    ImGui_ImplVulkan_InitInfo init_info = {};
+    init_info.Instance                  = vulkan::VulkanContext::get_instance();
+    init_info.PhysicalDevice = vulkan::VulkanContext::get_physDevice();
+    init_info.Device         = vulkan::VulkanContext::get_logDevice();
+    init_info.QueueFamily =
+        vulkan::VulkanContext::get_commandQueue().get_queueFamilyIndex();
+    init_info.Queue = vulkan::VulkanContext::get_commandQueue().get_queue();
+    init_info.PipelineCache   = VK_NULL_HANDLE;
+    init_info.DescriptorPool  = m_dearImGuiDescriptorPool;
+    init_info.Allocator       = nullptr;
+    init_info.MinImageCount   = a_data->nbFrames;
+    init_info.ImageCount      = a_data->nbFrames;
+    init_info.CheckVkResultFn = vulkan::check_vkResult;
+    ImGui_ImplVulkan_Init(&init_info, VK_FORMAT_B8G8R8A8_UNORM);
+
+    VkCommandBuffer command_buffer =
+        vulkan::VulkanContext::gs_VulkanContexte->get_singleUseCommandBuffer();
+
+    ImGui_ImplVulkan_CreateFontsTexture(command_buffer);
+
+    vulkan::VulkanContext::gs_VulkanContexte->submit_singleUseCommandBuffer(
+        command_buffer);
+
+    ImGui_ImplVulkan_DestroyFontUploadObjects();
 }
 
 //-----------------------------------------------------------------------------
@@ -163,31 +156,39 @@ VulkanTaskDrawDearImGui::~VulkanTaskDrawDearImGui()
 //-----------------------------------------------------------------------------
 void VulkanTaskDrawDearImGui::execute() const
 {
-    // TODO modify this to work with swapchain refacto
-    //    auto currentSurface =
-    //        static_cast<vulkan::VulkanSurface*>(m_taskData.m_hdlOutput->surface);
-    //    auto framebuffer   = currentSurface->get_currentFramebuffer();
-    //    auto commandBuffer = currentSurface->get_currentCommandBuffer();
-    //
-    //    {
-    //        VkRenderPassBeginInfo info   = {};
-    //        info.sType                   =
-    //        VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO; info.renderPass =
-    //        currentSurface->get_mainRenderPass(); info.framebuffer =
-    //        framebuffer; info.renderArea.extent.width =
-    //        currentSurface->get_width(); info.renderArea.extent.height =
-    //        currentSurface->get_height(); VkClearValue clearValues[1]   = {};
-    //        clearValues[0].color          = {0.4f, 0.6f, 0.9f, 1.0f};
-    //        info.clearValueCount          = 1;
-    //        info.pClearValues             = clearValues;
-    //        vkCmdBeginRenderPass(commandBuffer, &info,
-    //        VK_SUBPASS_CONTENTS_INLINE);
-    //    }
-    //
-    //    ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), commandBuffer);
-    //
-    //    // Submit command buffer
-    //    vkCmdEndRenderPass(commandBuffer);
+    auto commandBuffer =
+        vulkan::VulkanContext::get_commandQueue().get_commandBuffer();
+
+    auto pOutputRT =
+        static_cast<vulkan::mRenderTarget const*>(m_taskData.pOutputRT);
+
+    VkClearValue clearValue = {0.4f, 0.6f, 0.9f, 1.0f};
+
+    VkRenderingAttachmentInfo colorAttachmentInfo{};
+    colorAttachmentInfo.sType = VK_STRUCTURE_TYPE_RENDERING_ATTACHMENT_INFO_KHR;
+    colorAttachmentInfo.imageView   = pOutputRT->imageView;
+    colorAttachmentInfo.imageLayout = VK_IMAGE_LAYOUT_ATTACHMENT_OPTIMAL_KHR;
+    colorAttachmentInfo.loadOp      = VK_ATTACHMENT_LOAD_OP_CLEAR;
+    colorAttachmentInfo.storeOp     = VK_ATTACHMENT_STORE_OP_STORE;
+    colorAttachmentInfo.clearValue  = clearValue;
+
+    VkRenderingInfo renderInfo{};
+    renderInfo.sType                    = VK_STRUCTURE_TYPE_RENDERING_INFO_KHR;
+    renderInfo.renderArea.extent.width  = pOutputRT->width;
+    renderInfo.renderArea.extent.height = pOutputRT->height;
+    renderInfo.layerCount              = 1;
+    renderInfo.colorAttachmentCount     = 1;
+    renderInfo.pColorAttachments        = &colorAttachmentInfo;
+
+    vkCmdBeginRendering(commandBuffer, &renderInfo);
+
+    ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), commandBuffer);
+
+    // Submit command buffer
+    vkCmdEndRendering(commandBuffer);
+
+    vulkan::VulkanContext::get_commandQueue().submit_commandBuffer(
+        commandBuffer);
 }
 
 //-----------------------------------------------------------------------------

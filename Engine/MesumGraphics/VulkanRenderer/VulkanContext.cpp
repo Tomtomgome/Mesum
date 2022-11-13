@@ -58,34 +58,49 @@ void CommandQueue::wait_onFenceValue(mU64 a_tstpToWaitOn, mU64 a_timeout)
     {
         throw std::runtime_error("Wait on semaphore failled");
     }
+
+    // Free/Reset associatedCommandPool;
+    while (!m_inFlightCommandPools.empty() && m_inFlightCommandPools.front().fenceValue < a_tstpToWaitOn)
+    {
+        CommandPoolEntry entry = m_inFlightCommandPools.front();
+        check_vkResult(vkResetCommandPool(VulkanContext::get_logDevice(),
+                                          entry.commandPool, 0));
+        while (!entry.usedCommandBuffers.empty())
+        {
+            entry.availableCommandBuffers.push(
+                entry.usedCommandBuffers.front());
+            entry.usedCommandBuffers.pop();
+        }
+
+        m_freeCommandPools.push(m_inFlightCommandPools.front());
+        m_inFlightCommandPools.pop();
+    }
 }
 
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-mU64 CommandQueue::signal_fence(
-    std::vector<VkSemaphore> const& a_semaphoresToWait,
-    std::vector<VkSemaphore>        a_semaphoresToSignal)
+void CommandQueue::push_waitOnSemaphores(
+    std::vector<VkSemaphore> a_semaphoresToWait)
 {
-    mU64& finishValueOnTimeline = ++m_timeline;
-
-    std::vector<mU64> signalValues;
-    signalValues.resize(a_semaphoresToSignal.size() + 1, 0);
-    signalValues[a_semaphoresToSignal.size()] = finishValueOnTimeline;
+    uint64_t waitValue   = m_timeline;
+    uint64_t signalValue = ++m_timeline;
 
     std::vector<mU64> dummyWaitValues;
     dummyWaitValues.resize(a_semaphoresToWait.size(), 0);
+    dummyWaitValues.push_back(waitValue);
 
-    VkTimelineSemaphoreSubmitInfo timelineInfo = {};
+    VkTimelineSemaphoreSubmitInfo timelineInfo;
     timelineInfo.sType = VK_STRUCTURE_TYPE_TIMELINE_SEMAPHORE_SUBMIT_INFO;
+    timelineInfo.pNext = NULL;
     timelineInfo.waitSemaphoreValueCount =
         static_cast<mU32>(dummyWaitValues.size());
-    timelineInfo.pWaitSemaphoreValues = dummyWaitValues.data();
-    timelineInfo.signalSemaphoreValueCount =
-        static_cast<mU32>(signalValues.size());
-    timelineInfo.pSignalSemaphoreValues = signalValues.data();
+    ;
+    timelineInfo.pWaitSemaphoreValues      = dummyWaitValues.data();
+    timelineInfo.signalSemaphoreValueCount = 1;
+    timelineInfo.pSignalSemaphoreValues    = &signalValue;
 
-    a_semaphoresToSignal.push_back(m_timelineSemaphore);
+    a_semaphoresToWait.push_back(m_timelineSemaphore);
 
     VkSubmitInfo infoSubmit = {};
     infoSubmit.sType        = VK_STRUCTURE_TYPE_SUBMIT_INFO;
@@ -94,7 +109,88 @@ mU64 CommandQueue::signal_fence(
         static_cast<mU32>(a_semaphoresToWait.size());
     infoSubmit.pWaitSemaphores        = a_semaphoresToWait.data();
     VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT};
-    infoSubmit.pWaitDstStageMask      = waitStages;
+    infoSubmit.pWaitDstStageMask      = nullptr;//waitStages;
+    infoSubmit.signalSemaphoreCount   = 1;
+    infoSubmit.pSignalSemaphores      = &m_timelineSemaphore;
+    infoSubmit.commandBufferCount     = 0;
+    infoSubmit.pCommandBuffers        = nullptr;
+    if (vkQueueSubmit(m_queue, 1, &infoSubmit, VK_NULL_HANDLE) != VK_SUCCESS)
+    {
+        throw std::runtime_error("failed to submit draw command buffer!");
+    }
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+mU64 CommandQueue::signal_fence()
+{
+    uint64_t waitValue   = m_timeline;
+    uint64_t signalValue = ++m_timeline;
+
+    VkTimelineSemaphoreSubmitInfo timelineInfo = {};
+    timelineInfo.sType = VK_STRUCTURE_TYPE_TIMELINE_SEMAPHORE_SUBMIT_INFO;
+    timelineInfo.waitSemaphoreValueCount   = 1;
+    timelineInfo.pWaitSemaphoreValues      = &waitValue;
+    timelineInfo.signalSemaphoreValueCount = 1;
+    timelineInfo.pSignalSemaphoreValues    = &signalValue;
+
+    VkSubmitInfo infoSubmit           = {};
+    infoSubmit.sType                  = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+    infoSubmit.pNext                  = &timelineInfo;
+    infoSubmit.waitSemaphoreCount     = 1;
+    infoSubmit.pWaitSemaphores        = &m_timelineSemaphore;
+    infoSubmit.pWaitDstStageMask      = nullptr;
+    infoSubmit.signalSemaphoreCount   = 1;
+    infoSubmit.pSignalSemaphores      = &m_timelineSemaphore;
+    infoSubmit.commandBufferCount     = 0;
+    infoSubmit.pCommandBuffers        = nullptr;
+    if (vkQueueSubmit(m_queue, 1, &infoSubmit, VK_NULL_HANDLE) != VK_SUCCESS)
+    {
+        throw std::runtime_error("failed to submit draw command buffer!");
+    }
+
+    if (!m_freeCommandPools.empty())
+    {
+        m_freeCommandPools.front().fenceValue = signalValue;
+        m_inFlightCommandPools.push(m_freeCommandPools.front());
+        m_freeCommandPools.pop();
+    }
+
+    return signalValue;
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void CommandQueue::signal_semaphores(
+    std::vector<VkSemaphore> a_semaphoresToSignal)
+{
+    uint64_t waitValue   = m_timeline;
+    uint64_t signalValue = ++m_timeline;
+
+    std::vector<mU64> signalValues;
+    signalValues.resize(a_semaphoresToSignal.size() + 1, 0);
+    signalValues[a_semaphoresToSignal.size()] = signalValue;
+
+    VkTimelineSemaphoreSubmitInfo timelineInfo;
+    timelineInfo.sType = VK_STRUCTURE_TYPE_TIMELINE_SEMAPHORE_SUBMIT_INFO;
+    timelineInfo.pNext = NULL;
+    timelineInfo.waitSemaphoreValueCount = 1;
+    timelineInfo.pWaitSemaphoreValues    = &waitValue;
+    timelineInfo.signalSemaphoreValueCount =
+        static_cast<mU32>(signalValues.size());
+    ;
+    timelineInfo.pSignalSemaphoreValues = signalValues.data();
+
+    a_semaphoresToSignal.push_back(m_timelineSemaphore);
+
+    VkSubmitInfo infoSubmit           = {};
+    infoSubmit.sType                  = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+    infoSubmit.pNext                  = &timelineInfo;
+    infoSubmit.waitSemaphoreCount     = 1;
+    infoSubmit.pWaitSemaphores        = &m_timelineSemaphore;
+    infoSubmit.pWaitDstStageMask      = nullptr;
     infoSubmit.signalSemaphoreCount =
         static_cast<mU32>(a_semaphoresToSignal.size());
     infoSubmit.pSignalSemaphores  = a_semaphoresToSignal.data();
@@ -104,8 +200,113 @@ mU64 CommandQueue::signal_fence(
     {
         throw std::runtime_error("failed to submit draw command buffer!");
     }
+}
 
-    return finishValueOnTimeline;
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+VkCommandBuffer CommandQueue::get_commandBuffer()
+{
+    VkCommandPool    commandPool;
+    VkCommandBuffer  commandBuffer;
+    CommandPoolEntry commandPoolEntry;
+    if (!m_freeCommandPools.empty())
+    {
+        commandPoolEntry = m_freeCommandPools.front();
+    }
+    else
+    {
+        commandPoolEntry.commandPool = create_commandPool();
+        m_freeCommandPools.push(commandPoolEntry);
+    }
+
+    if (!commandPoolEntry.availableCommandBuffers.empty())
+    {
+        commandBuffer = commandPoolEntry.availableCommandBuffers.front();
+        commandPoolEntry.availableCommandBuffers.pop();
+    }
+    else
+    {
+        commandBuffer = create_commandBuffer(commandPoolEntry.commandPool);
+    }
+    commandPoolEntry.usedCommandBuffers.push(commandBuffer);
+
+    VkCommandBufferBeginInfo info = {};
+    info.sType                    = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+    info.flags |= VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+    check_vkResult(vkBeginCommandBuffer(commandBuffer, &info));
+
+    return commandBuffer;
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+void CommandQueue::submit_commandBuffer(VkCommandBuffer a_commandBuffer)
+{
+    check_vkResult(vkEndCommandBuffer(a_commandBuffer));
+
+    uint64_t waitValue   = m_timeline;
+    uint64_t signalValue = ++m_timeline;
+
+    VkTimelineSemaphoreSubmitInfo timelineInfo;
+    timelineInfo.sType = VK_STRUCTURE_TYPE_TIMELINE_SEMAPHORE_SUBMIT_INFO;
+    timelineInfo.pNext = NULL;
+    timelineInfo.waitSemaphoreValueCount   = 1;
+    timelineInfo.pWaitSemaphoreValues      = &waitValue;
+    timelineInfo.signalSemaphoreValueCount = 1;
+    timelineInfo.pSignalSemaphoreValues    = &signalValue;
+
+    VkSubmitInfo infoSubmit           = {};
+    infoSubmit.sType                  = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+    infoSubmit.pNext                  = &timelineInfo;
+    infoSubmit.waitSemaphoreCount     = 1;
+    infoSubmit.pWaitSemaphores        = &m_timelineSemaphore;
+    VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT};
+    infoSubmit.pWaitDstStageMask      = waitStages;
+    infoSubmit.signalSemaphoreCount   = 1;
+    infoSubmit.pSignalSemaphores      = &m_timelineSemaphore;
+    infoSubmit.commandBufferCount     = 1;
+    infoSubmit.pCommandBuffers        = &a_commandBuffer;
+    if (vkQueueSubmit(m_queue, 1, &infoSubmit, VK_NULL_HANDLE) != VK_SUCCESS)
+    {
+        throw std::runtime_error("failed to submit draw command buffer!");
+    }
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+VkCommandPool CommandQueue::create_commandPool()
+{
+    VkCommandPool           commandPool;
+    VkCommandPoolCreateInfo createCommandPoolInfo = {};
+    createCommandPoolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+    createCommandPoolInfo.queueFamilyIndex = m_queueFamilyIndex;
+
+    check_vkResult(vkCreateCommandPool(VulkanContext::get_logDevice(),
+                                       &createCommandPoolInfo, nullptr,
+                                       &commandPool));
+
+    return commandPool;
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+VkCommandBuffer CommandQueue::create_commandBuffer(VkCommandPool a_pool)
+{
+    VkCommandBuffer             commandBuffer;
+    VkCommandBufferAllocateInfo allocInfo{};
+    allocInfo.sType       = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+    allocInfo.level       = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+    allocInfo.commandPool = a_pool;
+    allocInfo.commandBufferCount = 1;
+
+    check_vkResult(vkAllocateCommandBuffers(VulkanContext::get_logDevice(),
+                                            &allocInfo, &commandBuffer));
+
+    return commandBuffer;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -175,83 +376,6 @@ void VulkanContext::deinit()
 
     vkDestroyInstance(m_instance, nullptr);
 }
-
-// sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-// sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-// sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-// void VulkanContext::wait_onMainTimelineTstp(mU64 a_tstpToWaitOn, mU64
-// a_timeout)
-//{
-//    VkSemaphoreWaitInfo infoWaitSemaphore = {};
-//    infoWaitSemaphore.sType          = VK_STRUCTURE_TYPE_SEMAPHORE_WAIT_INFO;
-//    infoWaitSemaphore.semaphoreCount = 1;
-//    infoWaitSemaphore.pSemaphores    =
-//    &gs_VulkanContexte->m_timelineSemaphore; infoWaitSemaphore.pValues =
-//    &a_tstpToWaitOn; if
-//    (vkWaitSemaphores(VulkanContext::gs_VulkanContexte->get_logDevice(),
-//                         &infoWaitSemaphore, a_timeout) != VK_SUCCESS)
-//    {
-//        throw std::runtime_error("Wait on semaphore failled");
-//    }
-//}
-
-// sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-// sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-// sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-// mU64 VulkanContext::submit_onMainTimeline(
-//    VkCommandBuffer const&          a_commandBuffer,
-//    std::vector<VkSemaphore> const& a_semaphoresToWait,
-//    std::vector<VkSemaphore>        a_semaphoresToSignal)
-//{
-//    mU64& finishValueOnTimeline = ++gs_VulkanContexte->m_timeline;
-//
-//    std::vector<mU64> signalValues;
-//    signalValues.resize(a_semaphoresToSignal.size() + 1, 0);
-//    signalValues[a_semaphoresToSignal.size()] = finishValueOnTimeline;
-//
-//    std::vector<mU64> dummyWaitValues;
-//    dummyWaitValues.resize(a_semaphoresToWait.size(), 0);
-//
-//    VkTimelineSemaphoreSubmitInfo timelineInfo = {};
-//    timelineInfo.sType = VK_STRUCTURE_TYPE_TIMELINE_SEMAPHORE_SUBMIT_INFO;
-//    timelineInfo.waitSemaphoreValueCount =
-//        static_cast<mU32>(dummyWaitValues.size());
-//    timelineInfo.pWaitSemaphoreValues = dummyWaitValues.data();
-//    timelineInfo.signalSemaphoreValueCount =
-//        static_cast<mU32>(signalValues.size());
-//    timelineInfo.pSignalSemaphoreValues = signalValues.data();
-//
-//    a_semaphoresToSignal.push_back(gs_VulkanContexte->m_timelineSemaphore);
-//
-//    VkSubmitInfo infoSubmit = {};
-//    infoSubmit.sType        = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-//    infoSubmit.pNext        = &timelineInfo;
-//    infoSubmit.waitSemaphoreCount =
-//        static_cast<mU32>(a_semaphoresToWait.size());
-//    infoSubmit.pWaitSemaphores        = a_semaphoresToWait.data();
-//    VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT};
-//    infoSubmit.pWaitDstStageMask      = waitStages;
-//    infoSubmit.signalSemaphoreCount =
-//        static_cast<mU32>(a_semaphoresToSignal.size());
-//    infoSubmit.pSignalSemaphores  = a_semaphoresToSignal.data();
-//    infoSubmit.commandBufferCount = 1;
-//    infoSubmit.pCommandBuffers    = &a_commandBuffer;
-//    if (vkQueueSubmit(VulkanContext::gs_VulkanContexte->get_graphicQueue(), 1,
-//                      &infoSubmit, VK_NULL_HANDLE) != VK_SUCCESS)
-//    {
-//        throw std::runtime_error("failed to submit draw command buffer!");
-//    }
-//
-//    return finishValueOnTimeline;
-//}
-
-// sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-// sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-// sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
-// void VulkanContext::present(VkPresentInfoKHR const& a_infoPresent)
-//{
-//    vkQueuePresentKHR(VulkanContext::get_presentationQueue(), &a_infoPresent);
-//}
 
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 // sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss

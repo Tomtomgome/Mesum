@@ -134,8 +134,9 @@ class mClassesCanInherit : public mIClassesMightBeInterfaces
    private:
     ///////////////////////////////////////////////////////////////////////////
     /// \brief This is a private function
+    /// It begins with _
     ///////////////////////////////////////////////////////////////////////////
-    void compute_somethingAmazing();
+    void _compute_somethingAmazing();
 
    private:
     mInt m_classDataMember;  //!< This is some data members

@@ -55,11 +55,11 @@ Dx12Task3dRender::Dx12Task3dRender(TaskData3dRender* a_data)
     pipelineDesc.IBStripCutValue = D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_0xFFFF;
 
     dx12::ComPtr<ID3DBlob> vs =
-        dx12::compile_shader("../../../Apps/WorldExplorer/data/cubeShader.hlsl",
-                             "vs_main", "vs_6_0");
+        dx12::compile_shader("data/cubeShader.hlsl",
+                             "vs_main", "vs_5_0");
     dx12::ComPtr<ID3DBlob> ps =
-        dx12::compile_shader("../../../Apps/WorldExplorer/data/cubeShader.hlsl",
-                             "ps_main", "ps_6_0");
+        dx12::compile_shader("data/cubeShader.hlsl",
+                             "ps_main", "ps_5_0");
 
     pipelineDesc.VS.BytecodeLength  = vs->GetBufferSize();
     pipelineDesc.VS.pShaderBytecode = vs->GetBufferPointer();
@@ -172,14 +172,14 @@ Dx12Task3dRender::Dx12Task3dRender(TaskData3dRender* a_data)
         }
     }
 
-    dx12::check_MicrosoftHRESULT(device->CreateRootSignature(
+    dx12::check_mhr(device->CreateRootSignature(
         0, rootBlob->GetBufferPointer(), rootBlob->GetBufferSize(),
         IID_PPV_ARGS(&m_rootSignature)));
 
     pipelineDesc.pRootSignature = m_rootSignature.Get();
 
-    dx12::check_MicrosoftHRESULT(device->CreateGraphicsPipelineState(
-        &pipelineDesc, IID_PPV_ARGS(&m_pso)));
+    dx12::check_mhr(device->CreateGraphicsPipelineState(&pipelineDesc,
+                                                        IID_PPV_ARGS(&m_pso)));
 }
 
 //-----------------------------------------------------------------------------
@@ -198,7 +198,7 @@ void Dx12Task3dRender::prepare()
 //-----------------------------------------------------------------------------
 void Dx12Task3dRender::execute() const
 {
-    dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
+    /*dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
         dx12::DX12Context::gs_dx12Contexte->get_commandQueue()
             .get_commandList();
 
@@ -245,7 +245,7 @@ void Dx12Task3dRender::execute() const
         m_taskData.m_pMeshBuffer->m_indices.size(), 1u, 0u, 0u, 0u);
 
     dx12::DX12Context::gs_dx12Contexte->get_commandQueue().execute_commandList(
-        graphicCommandList.Get());
+        graphicCommandList.Get());*/
 }
 
 #endif  // M_DX12_RENDERER

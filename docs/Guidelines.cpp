@@ -52,6 +52,6 @@ void mClassesCanInherit::set_randomProperty(
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void mClassesCanInherit::compute_somethingAmazing() {}
+void mClassesCanInherit::_compute_somethingAmazing() {}
 
 }  // namespace m::guidelines

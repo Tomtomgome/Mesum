@@ -12,7 +12,7 @@ void mSwapchain::init_win32(Desc const& a_desc, DescWin32 const& a_descWin32)
 {
 #ifndef M_WIN32
     // Wrong platform
-    mInterrupt
+    mInterrupt;
 #else
     VkWin32SurfaceCreateInfoKHR createInfo{};
     createInfo.sType     = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
@@ -26,7 +26,28 @@ void mSwapchain::init_win32(Desc const& a_desc, DescWin32 const& a_descWin32)
     }
 
 #endif
-        _init(a_desc);
+    _init(a_desc);
+
+    m_semaphoresImageAcquired.resize(a_desc.bufferCount);
+    m_semaphoresRenderCompleted.resize(a_desc.bufferCount);
+
+    VkSemaphoreCreateInfo createSemaphore = {};
+    createSemaphore.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+    createSemaphore.flags = 0;
+
+    for (size_t i = 0; i < a_desc.bufferCount; i++)
+    {
+        if (vkCreateSemaphore(VulkanContext::get_logDevice(), &createSemaphore,
+                              nullptr,
+                              &m_semaphoresImageAcquired[i]) != VK_SUCCESS ||
+            vkCreateSemaphore(VulkanContext::get_logDevice(), &createSemaphore,
+                              nullptr,
+                              &m_semaphoresRenderCompleted[i]) != VK_SUCCESS)
+        {
+            throw std::runtime_error(
+                "failed to create semaphores for a frame!");
+        }
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -43,6 +64,17 @@ void mSwapchain::init_x11(Desc const& a_config, Descx11 const& a_data)
 void mSwapchain::destroy()
 {
     _destroy_swapChain();
+
+    mAssert(m_semaphoresImageAcquired.size() ==
+            m_semaphoresRenderCompleted.size());
+    for (size_t i = 0; i < m_semaphoresImageAcquired.size(); i++)
+    {
+        vkDestroySemaphore(VulkanContext::get_logDevice(),
+                           m_semaphoresImageAcquired[i], nullptr);
+        vkDestroySemaphore(VulkanContext::get_logDevice(),
+                           m_semaphoresRenderCompleted[i], nullptr);
+    }
+
     vkDestroySurfaceKHR(VulkanContext::get_instance(), m_surface, nullptr);
 }
 
@@ -63,27 +95,40 @@ void mSwapchain::resize(mU32 a_width, mU32 a_height)
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void mSwapchain::acquire_image(VkSemaphore& a_semaphoreToWaitOn)
+void mSwapchain::acquire_image(mUInt a_waitIndex)
 {
     vkAcquireNextImageKHR(vulkan::VulkanContext::get_logDevice(), m_swapChain,
-                          std::numeric_limits<mU64>::max(), a_semaphoreToWaitOn,
+                          std::numeric_limits<mU64>::max(),
+                          m_semaphoresImageAcquired[a_waitIndex],
                           VK_NULL_HANDLE, &m_currentImageIndex);
 }
 
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void mSwapchain::present(VkSemaphore& a_semaphoreToWaitOn)
+void mSwapchain::present(mUInt a_presentIndex)
 {
     VkPresentInfoKHR infoPresent   = {};
     infoPresent.sType              = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
     infoPresent.waitSemaphoreCount = 1;
-    infoPresent.pWaitSemaphores    = &a_semaphoreToWaitOn;
-    infoPresent.swapchainCount     = 1;
-    infoPresent.pSwapchains        = &m_swapChain;
-    infoPresent.pImageIndices      = &m_currentImageIndex;
+    infoPresent.pWaitSemaphores = &m_semaphoresRenderCompleted[a_presentIndex];
+    infoPresent.swapchainCount  = 1;
+    infoPresent.pSwapchains     = &m_swapChain;
+    infoPresent.pImageIndices   = &m_currentImageIndex;
     vkQueuePresentKHR(vulkan::VulkanContext::get_commandQueue().get_queue(),
                       &infoPresent);
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+mRenderTarget mSwapchain::get_currentRenderTarget()
+{
+    mRenderTarget renderTarget{};
+    renderTarget.imageView = m_swapChainImageViews[m_currentImageIndex];
+    renderTarget.width = m_currentDesc.width;
+    renderTarget.height = m_currentDesc.height;
+    return renderTarget;
 }
 
 //-----------------------------------------------------------------------------

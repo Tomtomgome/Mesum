@@ -23,8 +23,6 @@ namespace renderApi
 {
 using namespace vulkan;
 
-using DefaultRenderer = VulkanRenderer;
-
 }  // namespace renderApi
 }  // namespace m
 
@@ -36,7 +34,6 @@ namespace renderApi
 {
 using namespace dx12;
 
-using DefaultRenderer = DX12Renderer;
 }  // namespace renderApi
 }  // namespace m
 

@@ -92,7 +92,7 @@ void mTaskSwapchainWaitForRTDx12::execute() const
     }
 
     dx12::DX12Context::gs_dx12Contexte->get_commandQueue().wait_fenceValue(
-        synchTool.fenceValues[synchTool.currentFenceIndex]);
+        synchTool.fenceValues[waitIndex]);
 
     auto backbuffer = swapchain.get_backbuffer(synchTool.currentFenceIndex);
 
@@ -141,6 +141,16 @@ mTaskSwapchainWaitForRTVulkan::mTaskSwapchainWaitForRTVulkan(
     mTaskDataSwapchainWaitForRT* a_data)
     : mTaskSwapchainWaitForRT(a_data)
 {
+    pOutputRT = vulkan::mApi::sm_mal.construct<vulkan::mRenderTarget>();
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
+mTaskSwapchainWaitForRTVulkan::~mTaskSwapchainWaitForRTVulkan()
+{
+    vulkan::mApi::sm_mal.destroy<vulkan::mRenderTarget>(
+        static_cast<vulkan::mRenderTarget*>(pOutputRT));
 }
 
 //-----------------------------------------------------------------------------
@@ -164,18 +174,43 @@ void mTaskSwapchainWaitForRTVulkan::execute() const
         synchTool.fenceValues[waitIndex]);
 
     // Aquire next image
-    swapchain.acquire_image(synchTool.semaphoresImageAcquired[waitIndex]);
+    swapchain.acquire_image(waitIndex);
 
-    //    {
-    //        check_vkResult(vkResetCommandPool(
-    //            VulkanContext::get_logDevice(),
-    //            m_frameCommandPools[m_currentBackBufferIndex], 0));
-    //        VkCommandBufferBeginInfo info = {};
-    //        info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-    //        info.flags |= VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
-    //        check_vkResult(vkBeginCommandBuffer(
-    //            m_frameMainCommandBuffers[m_currentBackBufferIndex], &info));
-    //    }
+    vulkan::VulkanContext::get_commandQueue().push_waitOnSemaphores(
+        {swapchain.get_acquiredImageSemaphore(synchTool.currentFenceIndex)});
+
+    vulkan::mRenderTarget& outputRT =
+        unref_safe(static_cast<vulkan::mRenderTarget*>(pOutputRT));
+    outputRT = swapchain.get_currentRenderTarget();
+
+    // Transitionning
+    auto commandBuffer =
+        vulkan::VulkanContext::get_commandQueue().get_commandBuffer();
+    VkImageMemoryBarrier imageMemoryBarrier{};
+    imageMemoryBarrier.sType         = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+    imageMemoryBarrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+    imageMemoryBarrier.oldLayout     = VK_IMAGE_LAYOUT_UNDEFINED;
+    imageMemoryBarrier.newLayout     = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+    imageMemoryBarrier.image         = swapchain.get_currentImage();
+    imageMemoryBarrier.subresourceRange = {
+        .aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT,
+        .baseMipLevel   = 0,
+        .levelCount     = 1,
+        .baseArrayLayer = 0,
+        .layerCount     = 1,
+    };
+
+    vkCmdPipelineBarrier(
+        commandBuffer,
+        VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT,              // srcStageMask
+        VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,  // dstStageMask
+        0, 0, nullptr, 0, nullptr,
+        1,                   // imageMemoryBarrierCount
+        &imageMemoryBarrier  // pImageMemoryBarriers
+    );
+
+    vulkan::VulkanContext::get_commandQueue().submit_commandBuffer(
+        commandBuffer);
 }
 
 //-----------------------------------------------------------------------------
@@ -271,13 +306,44 @@ void mTaskSwapchainPresentVulkan::execute() const
     auto& swapchain = *(static_cast<vulkan::mSwapchain*>(taskData.pSwapchain));
     auto& synchTool = *(static_cast<vulkan::mSynchTool*>(taskData.pSynchTool));
 
+    // Transition
+    auto commandBuffer =
+        vulkan::VulkanContext::get_commandQueue().get_commandBuffer();
+    VkImageMemoryBarrier imageMemoryBarrier = {};
+    imageMemoryBarrier.sType         = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+    imageMemoryBarrier.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+    imageMemoryBarrier.oldLayout     = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+    imageMemoryBarrier.newLayout     = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+    imageMemoryBarrier.image         = swapchain.get_currentImage();
+    imageMemoryBarrier.subresourceRange = {
+        .aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT,
+        .baseMipLevel   = 0,
+        .levelCount     = 1,
+        .baseArrayLayer = 0,
+        .layerCount     = 1,
+    };
+
+    vkCmdPipelineBarrier(
+        commandBuffer,
+        VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,  // srcStageMask
+        VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,           // dstStageMask
+        0, 0, nullptr, 0, nullptr,
+        1,                   // imageMemoryBarrierCount
+        &imageMemoryBarrier  // pImageMemoryBarriers
+    );
+
+    vulkan::VulkanContext::get_commandQueue().submit_commandBuffer(
+        commandBuffer);
+
+    // Signal
     synchTool.fenceValues[synchTool.currentFenceIndex] =
-        vulkan::VulkanContext::get_commandQueue().signal_fence({synchTool.semaphoresImageAcquired[synchTool.currentFenceIndex]},
-            {synchTool.semaphoresRenderCompleted[synchTool.currentFenceIndex]});
+        vulkan::VulkanContext::get_commandQueue().signal_fence();
+
+    vulkan::VulkanContext::get_commandQueue().signal_semaphores(
+        {swapchain.get_renderCompletedSemaphore(synchTool.currentFenceIndex)});
 
     // Presentation
-    swapchain.present(
-        synchTool.semaphoresRenderCompleted[synchTool.currentFenceIndex]);
+    swapchain.present(synchTool.currentFenceIndex);
 }
 
 //-----------------------------------------------------------------------------

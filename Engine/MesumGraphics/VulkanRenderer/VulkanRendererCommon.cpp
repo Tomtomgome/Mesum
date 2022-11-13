@@ -357,10 +357,17 @@ void create_logicalDevice(VkPhysicalDevice a_physicalDevice,
     queueCreateInfo.queueCount       = 1;
     queueCreateInfo.pQueuePriorities = &queuePriority;
 
+    // Timeline semaphores
+    VkPhysicalDeviceTimelineSemaphoreFeatures timelineSemaphoreFeature{
+        .sType =
+            VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_TIMELINE_SEMAPHORE_FEATURES,
+        .timelineSemaphore = VK_TRUE,
+    };
+
     // Dynamic rendering support
     VkPhysicalDeviceDynamicRenderingFeatures dynamicRenderingFeature{
         .sType =
-            VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DYNAMIC_RENDERING_FEATURES_KHR,
+            VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DYNAMIC_RENDERING_FEATURES,
         .dynamicRendering = VK_TRUE,
     };
 
@@ -384,7 +391,8 @@ void create_logicalDevice(VkPhysicalDevice a_physicalDevice,
     // Tmp
     mExpect(bindless_supported);
 
-    reqPhysicalFeatures.pNext = &dynamicRenderingFeature;
+    reqPhysicalFeatures.pNext = &timelineSemaphoreFeature;
+    timelineSemaphoreFeature.pNext = &dynamicRenderingFeature;
     if (bindless_supported)
     {
         dynamicRenderingFeature.pNext = &dstIndexingFeatures;

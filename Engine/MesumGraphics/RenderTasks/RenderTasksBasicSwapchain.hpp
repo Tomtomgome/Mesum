@@ -85,6 +85,7 @@ mIfDx12Enabled(struct mTaskSwapchainWaitForRTDx12 : public mTaskSwapchainWaitFor
 mIfVulkanEnabled(struct mTaskSwapchainWaitForRTVulkan : public mTaskSwapchainWaitForRT
 {
     explicit mTaskSwapchainWaitForRTVulkan(mTaskDataSwapchainWaitForRT* a_data);
+    ~mTaskSwapchainWaitForRTVulkan() override;
 
     void execute() const override;
 };)
