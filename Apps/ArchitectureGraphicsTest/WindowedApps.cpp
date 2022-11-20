@@ -247,7 +247,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m_pDx12Api->destroy();
         delete m_pDx12Api;
 
-        m_pVulkanSwapchain->destroy();
+        // call to destroy of the swapchain is managed at window termination
         m_pVulkanApi->destroy_swapchain(*m_pVulkanSwapchain);
 
         m_pVulkanSynchTool->destroy();

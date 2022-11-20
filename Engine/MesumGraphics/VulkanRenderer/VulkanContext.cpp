@@ -41,6 +41,24 @@ void CommandQueue::destroy()
 {
     vkDestroySemaphore(VulkanContext::get_logDevice(), m_timelineSemaphore,
                        nullptr);
+
+    mAssert(m_inFlightCommandPools.empty());
+    while (!m_freeCommandPools.empty())
+    {
+        CommandPoolEntry& entry = m_freeCommandPools.front();
+
+        mAssert(entry.usedCommandBuffers.empty());
+        while (!entry.availableCommandBuffers.empty())
+        {
+            vkFreeCommandBuffers(VulkanContext::get_logDevice(), entry.commandPool, 1,
+                                 &entry.availableCommandBuffers.front());
+            entry.availableCommandBuffers.pop();
+        }
+
+        vkDestroyCommandPool(VulkanContext::get_logDevice(),
+                                          entry.commandPool, nullptr);
+        m_freeCommandPools.pop();
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -60,9 +78,10 @@ void CommandQueue::wait_onFenceValue(mU64 a_tstpToWaitOn, mU64 a_timeout)
     }
 
     // Free/Reset associatedCommandPool;
-    while (!m_inFlightCommandPools.empty() && m_inFlightCommandPools.front().fenceValue < a_tstpToWaitOn)
+    while (!m_inFlightCommandPools.empty() &&
+           m_inFlightCommandPools.front().fenceValue <= a_tstpToWaitOn)
     {
-        CommandPoolEntry entry = m_inFlightCommandPools.front();
+        CommandPoolEntry& entry = m_inFlightCommandPools.front();
         check_vkResult(vkResetCommandPool(VulkanContext::get_logDevice(),
                                           entry.commandPool, 0));
         while (!entry.usedCommandBuffers.empty())
@@ -109,7 +128,7 @@ void CommandQueue::push_waitOnSemaphores(
         static_cast<mU32>(a_semaphoresToWait.size());
     infoSubmit.pWaitSemaphores        = a_semaphoresToWait.data();
     VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT};
-    infoSubmit.pWaitDstStageMask      = nullptr;//waitStages;
+    infoSubmit.pWaitDstStageMask      = nullptr;  // waitStages;
     infoSubmit.signalSemaphoreCount   = 1;
     infoSubmit.pSignalSemaphores      = &m_timelineSemaphore;
     infoSubmit.commandBufferCount     = 0;
@@ -135,16 +154,16 @@ mU64 CommandQueue::signal_fence()
     timelineInfo.signalSemaphoreValueCount = 1;
     timelineInfo.pSignalSemaphoreValues    = &signalValue;
 
-    VkSubmitInfo infoSubmit           = {};
-    infoSubmit.sType                  = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-    infoSubmit.pNext                  = &timelineInfo;
-    infoSubmit.waitSemaphoreCount     = 1;
-    infoSubmit.pWaitSemaphores        = &m_timelineSemaphore;
-    infoSubmit.pWaitDstStageMask      = nullptr;
-    infoSubmit.signalSemaphoreCount   = 1;
-    infoSubmit.pSignalSemaphores      = &m_timelineSemaphore;
-    infoSubmit.commandBufferCount     = 0;
-    infoSubmit.pCommandBuffers        = nullptr;
+    VkSubmitInfo infoSubmit         = {};
+    infoSubmit.sType                = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+    infoSubmit.pNext                = &timelineInfo;
+    infoSubmit.waitSemaphoreCount   = 1;
+    infoSubmit.pWaitSemaphores      = &m_timelineSemaphore;
+    infoSubmit.pWaitDstStageMask    = nullptr;
+    infoSubmit.signalSemaphoreCount = 1;
+    infoSubmit.pSignalSemaphores    = &m_timelineSemaphore;
+    infoSubmit.commandBufferCount   = 0;
+    infoSubmit.pCommandBuffers      = nullptr;
     if (vkQueueSubmit(m_queue, 1, &infoSubmit, VK_NULL_HANDLE) != VK_SUCCESS)
     {
         throw std::runtime_error("failed to submit draw command buffer!");
@@ -185,12 +204,12 @@ void CommandQueue::signal_semaphores(
 
     a_semaphoresToSignal.push_back(m_timelineSemaphore);
 
-    VkSubmitInfo infoSubmit           = {};
-    infoSubmit.sType                  = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-    infoSubmit.pNext                  = &timelineInfo;
-    infoSubmit.waitSemaphoreCount     = 1;
-    infoSubmit.pWaitSemaphores        = &m_timelineSemaphore;
-    infoSubmit.pWaitDstStageMask      = nullptr;
+    VkSubmitInfo infoSubmit       = {};
+    infoSubmit.sType              = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+    infoSubmit.pNext              = &timelineInfo;
+    infoSubmit.waitSemaphoreCount = 1;
+    infoSubmit.pWaitSemaphores    = &m_timelineSemaphore;
+    infoSubmit.pWaitDstStageMask  = nullptr;
     infoSubmit.signalSemaphoreCount =
         static_cast<mU32>(a_semaphoresToSignal.size());
     infoSubmit.pSignalSemaphores  = a_semaphoresToSignal.data();
@@ -205,20 +224,33 @@ void CommandQueue::signal_semaphores(
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
+void CommandQueue::flush()
+{
+    uint64_t fenceValueForSignal = signal_fence();
+    wait_onFenceValue(fenceValueForSignal);
+}
+
+//-----------------------------------------------------------------------------
+//
+//-----------------------------------------------------------------------------
 VkCommandBuffer CommandQueue::get_commandBuffer()
 {
-    VkCommandPool    commandPool;
-    VkCommandBuffer  commandBuffer;
-    CommandPoolEntry commandPoolEntry;
+    VkCommandPool     commandPool;
+    VkCommandBuffer   commandBuffer;
+    CommandPoolEntry* pCommandPoolEntry = nullptr;
     if (!m_freeCommandPools.empty())
     {
-        commandPoolEntry = m_freeCommandPools.front();
+        pCommandPoolEntry = &m_freeCommandPools.front();
     }
     else
     {
-        commandPoolEntry.commandPool = create_commandPool();
-        m_freeCommandPools.push(commandPoolEntry);
+        CommandPoolEntry createdCommandPull;
+        createdCommandPull.commandPool = create_commandPool();
+        m_freeCommandPools.push(createdCommandPull);
+        pCommandPoolEntry = &m_freeCommandPools.front();
     }
+
+    CommandPoolEntry& commandPoolEntry = *pCommandPoolEntry;
 
     if (!commandPoolEntry.availableCommandBuffers.empty())
     {
@@ -331,23 +363,6 @@ void VulkanContext::init()
                          queueFamilyIndex);
     m_queue.init(queueFamilyIndex, queue);
 
-    VkSemaphoreCreateInfo createSemaphore = {};
-    createSemaphore.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-    createSemaphore.flags = 0;
-
-    VkSemaphoreTypeCreateInfo createSemaphoreType = {};
-    createSemaphoreType.sType = VK_STRUCTURE_TYPE_SEMAPHORE_TYPE_CREATE_INFO;
-    createSemaphoreType.semaphoreType = VK_SEMAPHORE_TYPE_TIMELINE;
-    createSemaphoreType.initialValue  = m_timeline;
-
-    createSemaphore.pNext = &createSemaphoreType;
-
-    if (vkCreateSemaphore(m_logicalDevice, &createSemaphore, nullptr,
-                          &m_timelineSemaphore) != VK_SUCCESS)
-    {
-        throw std::runtime_error("failed to create timeline semaphore");
-    }
-
     find_graphicQueueFamilyIndex(m_physicalDevice, queueFamilyIndex);
 
     VkCommandPoolCreateInfo createCommandPool = {};
@@ -366,9 +381,9 @@ void VulkanContext::init()
 //-----------------------------------------------------------------------------
 void VulkanContext::deinit()
 {
-    vkDestroyCommandPool(m_logicalDevice, m_utilityCommandPool, nullptr);
+    m_queue.destroy();
 
-    vkDestroySemaphore(m_logicalDevice, m_timelineSemaphore, nullptr);
+    vkDestroyCommandPool(m_logicalDevice, m_utilityCommandPool, nullptr);
 
     vkDestroyDevice(m_logicalDevice, nullptr);
 

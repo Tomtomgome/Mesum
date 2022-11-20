@@ -65,6 +65,8 @@ void mSwapchain::destroy()
 {
     _destroy_swapChain();
 
+    VulkanContext::get_commandQueue().flush();
+
     mAssert(m_semaphoresImageAcquired.size() ==
             m_semaphoresRenderCompleted.size());
     for (size_t i = 0; i < m_semaphoresImageAcquired.size(); i++)

@@ -25,6 +25,8 @@ class CommandQueue
     void signal_semaphores(
         std::vector<VkSemaphore> a_semaphoresToSignal);
 
+    void flush();
+
     VkCommandBuffer get_commandBuffer();
     void            submit_commandBuffer(VkCommandBuffer a_commandBuffer);
 
@@ -104,10 +106,6 @@ class VulkanContext
 
     // Utility
     VkCommandPool m_utilityCommandPool;
-
-    // Synchronization tools
-    VkSemaphore m_timelineSemaphore;
-    mU64        m_timeline = 0;
 };
 
 };  // namespace vulkan

@@ -145,6 +145,8 @@ VulkanTaskDrawDearImGui::VulkanTaskDrawDearImGui(TaskDataDrawDearImGui* a_data)
 //-----------------------------------------------------------------------------
 VulkanTaskDrawDearImGui::~VulkanTaskDrawDearImGui()
 {
+    vulkan::VulkanContext::get_commandQueue().flush();
+    
     ImGui_ImplVulkan_Shutdown();
 
     vkDestroyDescriptorPool(vulkan::VulkanContext::get_logDevice(),
