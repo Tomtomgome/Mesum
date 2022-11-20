@@ -25,7 +25,7 @@ using uploadBuffers3D =
 struct TaskData3dRender : public TaskData
 {
     DataMeshBuffer<mBasicVertex, mU16>* m_pMeshBuffer;
-    ISurface::HdlPtr                    m_hdlOutput;
+    //ISurface::HdlPtr                    m_hdlOutput;
     math::mMat4x4*                      m_matrix;
 
     mIfDx12Enabled(Task* getNew_dx12Implementation(TaskData* a_data) override);

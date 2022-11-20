@@ -232,35 +232,6 @@ std::pair<mU32, mU32> IWindowImpl::get_size() const
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-render::ISurface::HdlPtr IWindowImpl::link_renderer(
-    render::IRenderer* a_renderer)
-{
-    mAssert(a_renderer != nullptr);
-    render::ISurface::HdlPtr surfaceHandle =
-        std::make_shared<render::ISurface::Handle>();
-    surfaceHandle->surface                   = a_renderer->getNew_surface();
-    render::Win32SurfaceInitData surfaceData = {m_hwnd, m_clientWidth,
-                                                m_clientHeight};
-    surfaceHandle->surface->init_win32(surfaceData);
-
-    m_signalResize.attach_toSignal(mCallback<void, mU32, mU32>(
-        surfaceHandle->surface, &render::ISurface::resize));
-
-    // TODO : Manage this from the renderer
-    m_signalWindowDestroyed.attach_toSignal(mCallback<void>(
-        [surfaceHandle]()
-        {
-            surfaceHandle->isValid = false;
-            surfaceHandle->surface->destroy();
-            delete surfaceHandle->surface;
-        }));
-
-    return surfaceHandle;
-}
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
 void IWindowImpl::set_asImGuiWindow()
 {
     ImGui_ImplWin32_Init(m_hwnd);

@@ -66,44 +66,6 @@ struct IResource
     };
 };
 
-class ISurface
-{
-   public:
-    virtual ~ISurface()                                   = default;
-    virtual void init_win32(Win32SurfaceInitData& a_data) = 0;
-    virtual void init_x11(X11SurfaceInitData& a_data)     = 0;
-
-    virtual render::Taskset* addNew_renderTaskset() = 0;
-
-    virtual void render()                            = 0;
-    virtual void resize(mU32 a_width, mU32 a_height) = 0;
-
-    virtual void destroy() = 0;
-
-    struct Handle
-    {
-        ISurface* surface = nullptr;
-        mBool     isValid = true;
-    };
-
-    using HdlPtr = std::shared_ptr<Handle>;
-};
-
-class IRenderer
-{
-   public:
-    virtual ~IRenderer() = default;
-
-    virtual void init()    = 0;
-    virtual void destroy() = 0;
-
-    virtual mBool get_supportDearImGuiMultiViewports()    = 0;
-    virtual void  start_dearImGuiNewFrameRenderer() const = 0;
-
-    virtual ISurface*  getNew_surface() = 0;
-    virtual IResource* getNew_texture() = 0;
-};
-
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -122,7 +84,7 @@ class mISynchTool
     virtual ~mISynchTool() = default;
 
     virtual void init(Desc& a_desc) = 0;
-    virtual void destroy() = 0;
+    virtual void destroy()          = 0;
 };
 
 class mIRenderTarget

@@ -16,8 +16,6 @@ class IWindowedApplicationImpl : public application::IWindowedApplicationBase
                                      mU32  a_height,
                                      mBool a_isTransparent) override;
 
-    void start_dearImGuiNewFrame(
-        render::IRenderer const* a_renderer) const override;
     void start_dearImGuiNewFrame(render::mIApi const& a_api) const override;
 
     void process_messages();

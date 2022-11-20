@@ -29,7 +29,8 @@ LRESULT CALLBACK WindowProc(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam,
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 windows::mIWindow* IWindowedApplicationImpl::add_newWindow(
-    std::string a_name, mU32 a_width, mU32 a_height, mBool a_isTransparent = false)
+    std::string a_name, mU32 a_width, mU32 a_height,
+    mBool a_isTransparent = false)
 {
     IWindowImpl* newWindow = new IWindowImpl();
     m_windows.insert(newWindow);
@@ -38,16 +39,6 @@ windows::mIWindow* IWindowedApplicationImpl::add_newWindow(
     newWindow->init({a_name, {a_width, a_height}, a_isTransparent});
 
     return newWindow;
-}
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-void IWindowedApplicationImpl::start_dearImGuiNewFrame(
-    render::IRenderer const* a_renderer) const
-{
-    a_renderer->start_dearImGuiNewFrameRenderer();
-    ImGui_ImplWin32_NewFrame();
 }
 
 //-----------------------------------------------------------------------------

@@ -7,7 +7,6 @@
 
 #include <string>
 
-
 namespace m
 {
 namespace input
@@ -35,9 +34,9 @@ class mIWindow
     ///////////////////////////////////////////////////////////////////////////
     struct mInitData
     {
-        std::string   name;  //!< The name of the window
-        math::mUIVec2 size;  //!< The initial size of the window
-        mBool isTransparent; //!< HACK
+        std::string   name;           //!< The name of the window
+        math::mUIVec2 size;           //!< The initial size of the window
+        mBool         isTransparent;  //!< HACK
     };
 
     ///////////////////////////////////////////////////////////////////////////
@@ -83,16 +82,6 @@ class mIWindow
     /// is valid and means the window doesn't notify anybody
     ///////////////////////////////////////////////////////////////////////////
     virtual void link_inputManager(input::mIInputManager* a_inputManager) = 0;
-
-    ///////////////////////////////////////////////////////////////////////////
-    /// \brief Link a renderer to the window
-    ///
-    /// \todo This logic need to be removed from the window
-    ///
-    /// \param a_renderer The renderer to link to the window
-    ///////////////////////////////////////////////////////////////////////////
-    virtual render::ISurface::HdlPtr link_renderer(
-        render::IRenderer* a_renderer) = 0;
 
     ///////////////////////////////////////////////////////////////////////////
     /// \brief Tells the window that it will be holding the dearImGui context

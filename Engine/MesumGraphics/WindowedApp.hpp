@@ -25,8 +25,6 @@ class IWindowedApplicationBase : public mITimedLoopApplication
                                              mU32  a_height,
                                              mBool a_isTransparent) = 0;
 
-    virtual void start_dearImGuiNewFrame(
-        render::IRenderer const* a_renderer) const                         = 0;
     virtual void start_dearImGuiNewFrame(render::mIApi const& a_api) const = 0;
 };
 }  // namespace application

@@ -25,8 +25,6 @@ class IWindowImpl : public windows::mIWindow
     {
         m_linkedInputManager = a_inputManager;
     };
-    render::ISurface::HdlPtr link_renderer(
-        render::IRenderer* a_renderer) final;
 
     void set_asImGuiWindow() final;
     void set_fullScreen(mBool a_fullscreen) final;
@@ -46,11 +44,11 @@ class IWindowImpl : public windows::mIWindow
         return m_flagToBeClosed;
     }
 
-    //Specific to win functions
+    // Specific to win functions
     void attach_toSpecialUpdate(
         mCallback<void, std::chrono::steady_clock::duration const&> const&
             a_onUpdateCallback);
-    HWND get_hwnd(){return m_hwnd;}
+    HWND get_hwnd() { return m_hwnd; }
     void call_update(std::chrono::steady_clock::duration const& a_deltaTime);
 
    private:

@@ -324,11 +324,13 @@ struct TaskData2dRender : public TaskData
         mUInt indexStartLocation = 0;
         mUInt indexCount         = 0;
     };
+    mIRenderTarget* pOutputRT = nullptr;
+    mUInt           nbFrames  = 0;
 
     DataMeshBuffer<BasicVertex, mU16>* m_pMeshBuffer = nullptr;
+
     math::mMat4x4*                     m_pMatrix     = nullptr;
     std::vector<mRange>*               m_pRanges     = nullptr;
-    ISurface::HdlPtr                   m_hdlOutput;
 
     mIfDx12Enabled(Task* getNew_dx12Implementation(TaskData* a_data) override);
     mIfVulkanEnabled(Task* getNew_vulkanImplementation(TaskData* a_data)
