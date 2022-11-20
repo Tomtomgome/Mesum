@@ -8,6 +8,8 @@
 #include <MesumGraphics/RenderTasks/RenderTask2DRender.hpp>
 #include <MesumGraphics/RenderTasks/RenderTaskDearImGui.hpp>
 #include <MesumGraphics/VulkanRenderer/VulkanContext.hpp>
+#include <MesumGraphics/RendererUtils.hpp>
+#include <RenderTasksBasicSwapchain.hpp>
 
 using namespace m;
 
@@ -165,12 +167,14 @@ class mTargetController
 
 class RendererTestApp : public m::crossPlatform::IWindowedApplication
 {
-    static const mBool dx12Windw = false;
+    static const mBool dx12Windw = true;
     static const mBool vkWindw   = true;
 
     void init(mCmdLine const& a_cmdLine, void* a_appData) override
     {
         crossPlatform::IWindowedApplication::init(a_cmdLine, a_appData);
+
+        m_tastsetExecutor.init();
 
         m_imageRequested.emplace_back();
         m_imageRequested.back().path = "data/textures/Test.png";
@@ -183,68 +187,133 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         taskData_2dRender.m_pMeshBuffer = &m_drawer2d.m_meshBuffer;
         taskData_2dRender.m_pRanges     = &m_ranges;
 
+        m::mUInt nbBackbuffer = 3;
+
         if (dx12Windw)
         {
-            m_iRendererDx12 = new dx12::DX12Renderer();
-            m_iRendererDx12->init();
-
             // SetupDx12 Window
             m_windowDx12 =
-                add_newWindow("Dx12 Window", screenWidth, screenHeight);
+                add_newWindow("Dx12 Window", screenWidth, screenHeight, false);
             m_windowDx12->link_inputManager(&m_inputManager);
-            m_hdlSurfaceDx12 = m_windowDx12->link_renderer(m_iRendererDx12);
+
+            m_pDx12Api = new m::dx12::mApi();
+            m_pDx12Api->init();
+            auto& dx12Api = m::unref_safe(m_pDx12Api);
+
+            m::render::mISynchTool::Desc desc{nbBackbuffer};
+            auto& dx12SynchTool = m_pDx12Api->create_synchTool();
+            m_pDx12SynchTool    = &dx12SynchTool;
+            dx12SynchTool.init(desc);
+
+            auto& dx12Swapchain = m_pDx12Api->create_swapchain();
+            m_pDx12Swapchain    = &dx12Swapchain;
+            m::render::init_swapchainWithWindow(*m_pDx12Api, m_tastsetExecutor,
+                                                dx12Swapchain, dx12SynchTool,
+                                                *m_windowDx12, nbBackbuffer);
 
             dearImGui::init(*m_windowDx12);
 
-            render::Taskset* taskset_renderPipelineDx12 =
-                m_hdlSurfaceDx12->surface->addNew_renderTaskset();
+            auto& dx12Taskset = m_pDx12Api->create_renderTaskset();
 
-            taskData_2dRender.m_hdlOutput = m_hdlSurfaceDx12;
-            taskData_2dRender.m_pMatrix   = &m_dx12Matrix;
-            m_pDx12TaskRender =
-                (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
-                    taskset_renderPipelineDx12));
+            m::render::mTaskDataSwapchainWaitForRT
+                taskData_swapchainWaitForRT{};
+            taskData_swapchainWaitForRT.pSwapchain = m_pDx12Swapchain;
+            taskData_swapchainWaitForRT.pSynchTool = m_pDx12SynchTool;
+            auto& dx12Task = static_cast<m::render::mTaskSwapchainWaitForRT&>(
+                taskData_swapchainWaitForRT.add_toTaskSet(dx12Taskset));
 
-            m_pDx12TaskRender->add_texture(m_imageRequested[0]);
-            m_pDx12TaskRender->add_texture(m_imageRequested[1]);
+            //            taskData_2dRender.m_hdlOutput = m_hdlSurfaceDx12;
+            //            taskData_2dRender.m_pMatrix   = &m_dx12Matrix;
+            //            m_pDx12TaskRender =
+            //                (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
+            //                    dx12Taskset));
+            //
+            //            m_pDx12TaskRender->add_texture(m_imageRequested[0]);
+            //            m_pDx12TaskRender->add_texture(m_imageRequested[1]);
 
-            render::TaskDataDrawDearImGui taskData_drawDearImGui;
-            taskData_drawDearImGui.m_hdlOutput = m_hdlSurfaceDx12;
-            taskData_drawDearImGui.add_toTaskSet(taskset_renderPipelineDx12);
+            m::render::TaskDataDrawDearImGui taskData_drawDearImGui;
+            taskData_drawDearImGui.pOutputRT = dx12Task.pOutputRT;
+            taskData_drawDearImGui.nbFrames  = nbBackbuffer;
+            taskData_drawDearImGui.add_toTaskSet(dx12Taskset);
 
-//            ((win32::IWindowImpl*)(m_windowDx12))
-//                ->attach_toSpecialUpdate(
-//                    mCallback(this, &RendererTestApp::render));
+            m::render::mTaskDataSwapchainPresent taskData_swapchainPresent{};
+            taskData_swapchainPresent.pSwapchain = m_pDx12Swapchain;
+            taskData_swapchainPresent.pSynchTool = m_pDx12SynchTool;
+            taskData_swapchainPresent.add_toTaskSet(dx12Taskset);
+
+            m_tastsetExecutor.confy_permanentTaskset(m::unref_safe(m_pDx12Api),
+                                                     dx12Taskset);
+            m_windowDx12->attach_toDestroy(m::mCallback<void>(
+                [this, &dx12Api, &dx12Taskset]()
+                {
+                    m_enabledGui = false;
+                    m_tastsetExecutor.remove_permanentTaskset(dx12Api,
+                                                              dx12Taskset);
+                }));
+
             ::GetWindowRect(((win32::IWindowImpl*)(m_windowDx12))->get_hwnd(),
                             &m_initialClientRect);
         }
 
         if (vkWindw)
         {
-            m_iRendererVulkan = new vulkan::VulkanRenderer();
-            m_iRendererVulkan->init();
             // Setup vulkan window
-            m_windowVulkan =
-                add_newWindow("Vulkan Window", screenWidth, screenHeight);
+            m_windowVulkan = add_newWindow("Vulkan Window", screenWidth,
+                                           screenHeight, false);
             m_windowVulkan->link_inputManager(&m_inputManager);
-            m_hdlSurfaceVulkan =
-                m_windowVulkan->link_renderer(m_iRendererVulkan);
 
-            render::Taskset* taskset_renderPipelineVulkan =
-                m_hdlSurfaceVulkan->surface->addNew_renderTaskset();
+            m_pVulkanApi = new m::vulkan::mApi();
+            m_pVulkanApi->init();
+            auto& vulkanApi = m::unref_safe(m_pVulkanApi);
 
-            taskData_2dRender.m_hdlOutput = m_hdlSurfaceVulkan;
-            taskData_2dRender.m_pMatrix   = &m_vkMatrix;
-            m_pVkTaskRender =
-                (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
-                    taskset_renderPipelineVulkan));
+            m::render::mISynchTool::Desc desc{nbBackbuffer};
+            auto& vulkanSynchTool = m_pVulkanApi->create_synchTool();
+            m_pVulkanSynchTool    = &vulkanSynchTool;
+            vulkanSynchTool.init(desc);
 
-            m_pVkTaskRender->add_texture(m_imageRequested[0]);
-            m_pVkTaskRender->add_texture(m_imageRequested[1]);
+            auto& vulkanSwapchain = m_pVulkanApi->create_swapchain();
+            m_pVulkanSwapchain    = &vulkanSwapchain;
+            m::render::init_swapchainWithWindow(
+                *m_pVulkanApi, m_tastsetExecutor, vulkanSwapchain,
+                vulkanSynchTool, *m_windowVulkan, nbBackbuffer);
+
+            auto& vulkanTaskset = m_pVulkanApi->create_renderTaskset();
+
+            m::render::mTaskDataSwapchainWaitForRT
+                taskData_swapchainWaitForRT{};
+            taskData_swapchainWaitForRT.pSwapchain = m_pVulkanSwapchain;
+            taskData_swapchainWaitForRT.pSynchTool = m_pVulkanSynchTool;
+            auto& vulkanTask = static_cast<m::render::mTaskSwapchainWaitForRT&>(
+                taskData_swapchainWaitForRT.add_toTaskSet(vulkanTaskset));
+
+            //            taskData_2dRender.m_hdlOutput = m_hdlSurfaceDx12;
+            //            taskData_2dRender.m_pMatrix   = &m_vkMatrix;
+            //            m_pVkTaskRender =
+            //                (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
+            //                    vulkanTaskset));
+            //
+            //            m_pVkTaskRender->add_texture(m_imageRequested[0]);
+            //            m_pVkTaskRender->add_texture(m_imageRequested[1]);
+
+            m::render::mTaskDataSwapchainPresent taskData_swapchainPresent{};
+            taskData_swapchainPresent.pSwapchain = m_pVulkanSwapchain;
+            taskData_swapchainPresent.pSynchTool = m_pVulkanSynchTool;
+            taskData_swapchainPresent.add_toTaskSet(vulkanTaskset);
+
+            m_tastsetExecutor.confy_permanentTaskset(
+                m::unref_safe(m_pVulkanApi), vulkanTaskset);
+            m_windowVulkan->attach_toDestroy(m::mCallback<void>(
+                [this, &vulkanApi, &vulkanTaskset]()
+                {
+                    m_enabledGui = false;
+                    m_tastsetExecutor.remove_permanentTaskset(vulkanApi,
+                                                              vulkanTaskset);
+                }));
 
             ((win32::IWindowImpl*)(m_windowVulkan))
                 ->attach_toSpecialUpdate(
                     mCallback(this, &RendererTestApp::render));
+
             ::GetWindowRect(((win32::IWindowImpl*)(m_windowVulkan))->get_hwnd(),
                             &m_initialClientRect);
         }
@@ -286,27 +355,42 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_start = std::chrono::high_resolution_clock::now();
     }
 
-
     void destroy() override
     {
         crossPlatform::IWindowedApplication::destroy();
+
+        m_tastsetExecutor.destroy();
+
         if (dx12Windw)
         {
-            m_iRendererDx12->destroy();
-            delete m_iRendererDx12;
+            // call to destroy of the swapchain is managed at window termination
+            m_pDx12Api->destroy_swapchain(*m_pDx12Swapchain);
+
+            m_pDx12Api->destroy_synchTool(*m_pDx12SynchTool);
+
+            m_pDx12Api->destroy();
+            delete m_pDx12Api;
+
+            dearImGui::destroy();
         }
+
         if (vkWindw)
         {
-            m_iRendererVulkan->destroy();
-            delete m_iRendererVulkan;
+            // call to destroy of the swapchain is managed at window termination
+            m_pVulkanApi->destroy_swapchain(*m_pVulkanSwapchain);
+
+            m_pVulkanSynchTool->destroy();
+            m_pVulkanApi->destroy_synchTool(*m_pVulkanSynchTool);
+
+            m_pVulkanApi->destroy();
+            delete m_pVulkanApi;
         }
-        dearImGui::destroy();
     }
 
     void render(std::chrono::steady_clock::duration const& a_deltaTime)
     {
-        m_end  = std::chrono::high_resolution_clock::now();
-        std::chrono::steady_clock::duration ddeltaTime = m_end-m_start;
+        m_end = std::chrono::high_resolution_clock::now();
+        std::chrono::steady_clock::duration ddeltaTime = m_end - m_start;
         m_start = std::chrono::high_resolution_clock::now();
 
         mDouble deltaTime = std::chrono::duration<mDouble>(ddeltaTime).count();
@@ -342,8 +426,8 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         RECT clientRect = {};
         ::GetWindowRect(((win32::IWindowImpl*)(m_windowVulkan))->get_hwnd(),
                         &clientRect);
-        float addPosx = m_initialClientRect.left - clientRect.left;
-        float addPosy = m_initialClientRect.top - clientRect.top;
+        float addPosx          = m_initialClientRect.left - clientRect.left;
+        float addPosy          = m_initialClientRect.top - clientRect.top;
         mUInt totalNbPositions = 0;
         for (mUInt j = 0; j < m_bunchOfSquares.m_squarePositions.size(); ++j)
         {
@@ -360,7 +444,8 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
                 totalNbPositions * indexPerQuad;
             for (mUInt i = 0; i < positions.size(); ++i)
             {
-                auto modifPos = positions[i] + math::mVec2{addPosx + addPos, -addPosy};
+                auto modifPos =
+                    positions[i] + math::mVec2{addPosx + addPos, -addPosy};
                 m_drawer2d.add_square(modifPos);
             }
             totalNbPositions += positions.size();
@@ -372,9 +457,10 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_vkMatrix = math::generate_projectionOrthoLH(
                          screenWidth, -screenHeight, 0.0f, 1.0f) *
                      m_targetController.m_worldToView;
-        if (dx12Windw)
+
+        if (dx12Windw && m_enabledGui)
         {
-            start_dearImGuiNewFrame(m_iRendererDx12);
+            start_dearImGuiNewFrame(*m_pDx12Api);
 
             ImGui::NewFrame();
 
@@ -431,14 +517,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             ImGui::Render();
         }
 
-        if (dx12Windw && m_hdlSurfaceDx12->isValid)
-        {
-            m_hdlSurfaceDx12->surface->render();
-        }
-        if (vkWindw && m_hdlSurfaceVulkan->isValid)
-        {
-            m_hdlSurfaceVulkan->surface->render();
-        }
+        m_tastsetExecutor.run();
     }
 
     mBool step(std::chrono::steady_clock::duration const& a_deltaTime) override
@@ -453,13 +532,19 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         return true;
     }
 
-    m::render::IRenderer*       m_iRendererDx12;
-    m::render::ISurface::HdlPtr m_hdlSurfaceDx12;
-    windows::mIWindow*          m_windowDx12 = nullptr;
+    bool m_enabledGui = true;
 
-    m::render::IRenderer*       m_iRendererVulkan;
-    m::render::ISurface::HdlPtr m_hdlSurfaceVulkan;
-    windows::mIWindow*          m_windowVulkan = nullptr;
+    m::render::mTasksetExecutor m_tastsetExecutor;
+
+    windows::mIWindow*      m_windowDx12 = nullptr;
+    m::render::mIApi*       m_pDx12Api;
+    m::render::mISwapchain* m_pDx12Swapchain;
+    m::render::mISynchTool* m_pDx12SynchTool;
+
+    windows::mIWindow*      m_windowVulkan = nullptr;
+    m::render::mIApi*       m_pVulkanApi;
+    m::render::mISwapchain* m_pVulkanSwapchain;
+    m::render::mISynchTool* m_pVulkanSynchTool;
 
     render::Task2dRender*                         m_pDx12TaskRender = nullptr;
     render::Task2dRender*                         m_pVkTaskRender   = nullptr;

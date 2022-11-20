@@ -151,8 +151,9 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m_tastsetExecutor.confy_permanentTaskset(m::unref_safe(m_pDx12Api),
                                                  dx12Taskset);
         m_mainDx12Window->attach_toDestroy(m::mCallback<void>(
-            [this, &dx12Api, &dx12Taskset]() {
-                if(imGuiDx12)
+            [this, &dx12Api, &dx12Taskset]()
+            {
+                if (imGuiDx12)
                 {
                     enabledGui = false;
                 }
@@ -187,15 +188,15 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
         m_tastsetExecutor.confy_permanentTaskset(m::unref_safe(m_pVulkanApi),
                                                  vulkanTaskset);
         m_mainVulkanWindow->attach_toDestroy(m::mCallback<void>(
-            [this, &vulkanApi, &vulkanTaskset]() {
-                if(!imGuiDx12)
+            [this, &vulkanApi, &vulkanTaskset]()
+            {
+                if (!imGuiDx12)
                 {
                     enabledGui = false;
                 }
                 m_tastsetExecutor.remove_permanentTaskset(vulkanApi,
                                                           vulkanTaskset);
             }));
-
 
         // Dx12 windo input setup
         m_mainDx12Window->link_inputManager(&m_inputManager);
@@ -280,7 +281,7 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
         m_mover.move(m_x, m_y);
 
-        if(enabledGui)
+        if (enabledGui)
         {
             if (imGuiDx12)
                 start_dearImGuiNewFrame(*m_pDx12Api);
@@ -304,8 +305,8 @@ class CubeMoverApp : public m::crossPlatform::IWindowedApplication
 
     m::render::mTasksetExecutor m_tastsetExecutor;
 
-    bool enabledGui = true;
-    const bool imGuiDx12 = false;
+    bool       enabledGui = true;
+    const bool imGuiDx12  = false;
 
     m::render::mIApi*       m_pDx12Api;
     m::render::mISwapchain* m_pDx12Swapchain;
