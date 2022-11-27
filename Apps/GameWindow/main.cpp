@@ -8,7 +8,9 @@
 #include <MesumGraphics/DearImgui/MesumDearImGui.hpp>
 #include <MesumGraphics/RenderTasks/RenderTask2DRender.hpp>
 #include <MesumGraphics/RenderTasks/RenderTaskDearImGui.hpp>
+#include <MesumGraphics/RenderTasks/RenderTasksBasicSwapchain.hpp>
 #include <MesumGraphics/VulkanRenderer/VulkanContext.hpp>
+#include <MesumGraphics/RendererUtils.hpp>
 
 #include "Scene.hpp"
 #include "GameActionDef.hpp"
@@ -203,31 +205,63 @@ struct PlayerHand
 
 class RendererTestApp : public m::crossPlatform::IWindowedApplication
 {
+    static const m::mUInt s_nbBackbuffer = 3;
+
     void init_game()
     {
-        m_iRendererVulkan = new vulkan::VulkanRenderer();
-        m_iRendererVulkan->init();
+        m_pGameApi = new m::vulkan::mApi();
+        m_pGameApi->init();
+        auto& gameApi = m::unref_safe(m_pGameApi);
+
+        auto& gameSynchTool = gameApi.create_synchTool();
+        m_pGameSynchTool    = &gameSynchTool;
+        m::render::mISynchTool::Desc desc{s_nbBackbuffer};
+        gameSynchTool.init(desc);
+
+        auto& gameSwapchain = gameApi.create_swapchain();
+        m_pGameSwapchain    = &gameSwapchain;
 
         // Setup game window
         m_windowGame = static_cast<win32::IWindowImpl*>(
             add_newWindow("Game", screenWidth, screenHeight, true));
         m_windowGame->link_inputManager(&m_inputManagerGame);
-        m_hdlSurfaceGame = m_windowGame->link_renderer(m_iRendererVulkan);
 
-        render::Taskset* taskset_renderPipelineGame =
-            m_hdlSurfaceGame->surface->addNew_renderTaskset();
+        render::init_swapchainWithWindow(gameApi, m_tastsetExecutor,
+                                         gameSwapchain, gameSynchTool,
+                                         *m_windowGame, s_nbBackbuffer);
+
+        auto& gameTaskset = gameApi.create_renderTaskset();
+
+        m::render::mTaskDataSwapchainWaitForRT taskData_swapchainWaitForRT{};
+        taskData_swapchainWaitForRT.pSwapchain = m_pGameSwapchain;
+        taskData_swapchainWaitForRT.pSynchTool = m_pGameSynchTool;
+        auto& imageAcquireTask =
+            static_cast<m::render::mTaskSwapchainWaitForRT&>(
+                taskData_swapchainWaitForRT.add_toTaskSet(gameTaskset));
 
         render::TaskData2dRender taskData_2dRender;
         taskData_2dRender.m_pMeshBuffer = &m_meshBuffer;
         taskData_2dRender.m_pRanges     = &m_ranges;
-        taskData_2dRender.m_hdlOutput   = m_hdlSurfaceGame;
+        taskData_2dRender.nbFrames      = s_nbBackbuffer;
+        taskData_2dRender.pOutputRT     = imageAcquireTask.pOutputRT;
         taskData_2dRender.m_pMatrix     = &m_matrixGame;
-        m_pTaskRenderGame =
-            (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
-                taskset_renderPipelineGame));
+        auto& taskRenderGame            = static_cast<render::Task2dRender&>(
+            taskData_2dRender.add_toTaskSet(gameTaskset));
+        m_pTaskRenderGame = &taskRenderGame;
 
-        m_pTaskRenderGame->add_texture(m_imageRequested[0]);
-        m_pTaskRenderGame->add_texture(m_imageRequested[1]);
+        taskRenderGame.add_texture(m_imageRequested[0]);
+        taskRenderGame.add_texture(m_imageRequested[1]);
+
+        m::render::mTaskDataSwapchainPresent taskData_swapchainPresent{};
+        taskData_swapchainPresent.pSwapchain = m_pGameSwapchain;
+        taskData_swapchainPresent.pSynchTool = m_pGameSynchTool;
+        taskData_swapchainPresent.add_toTaskSet(gameTaskset);
+
+        m_tastsetExecutor.confy_permanentTaskset(gameApi, gameTaskset);
+        m_windowGame->attach_toDestroy(m::mCallback<void>(
+            [this, &gameApi, &gameTaskset]() {
+                m_tastsetExecutor.remove_permanentTaskset(gameApi, gameTaskset);
+            }));
 
         ((win32::IWindowImpl*)(m_windowGame))
             ->attach_toSpecialUpdate(mCallback(this, &RendererTestApp::render));
@@ -280,40 +314,73 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_imageRequestedEditor.emplace_back();
         m_imageRequestedEditor.back().path = "data/textures/Editor/Overlay.png";
 
-        m_iRendererDx12 = new dx12::DX12Renderer();
-        m_iRendererDx12->init();
+        m_pEditorApi = new m::dx12::mApi();
+        m_pEditorApi->init();
+        auto& editorApi = m::unref_safe(m_pEditorApi);
+
+        auto& editorSynchTool = editorApi.create_synchTool();
+        m_pEditorSynchTool    = &editorSynchTool;
+        m::render::mISynchTool::Desc desc{s_nbBackbuffer};
+        editorSynchTool.init(desc);
+
+        auto& editorSwapchain = editorApi.create_swapchain();
+        m_pEditorSwapchain    = &editorSwapchain;
+
         // Setup editor window
         m_windowEditor = static_cast<win32::IWindowImpl*>(
             add_newWindow("Editor", 1280, 720, false));
         m_windowEditor->link_inputManager(&m_inputManagerEditor);
-        m_hdlSurfaceEditor = m_windowEditor->link_renderer(m_iRendererDx12);
+
+        m::render::init_swapchainWithWindow(editorApi, m_tastsetExecutor,
+                                            editorSwapchain, editorSynchTool,
+                                            *m_windowEditor, s_nbBackbuffer);
 
         dearImGui::init(*m_windowEditor);
 
-        render::Taskset* taskset_renderPipelineEditor =
-            m_hdlSurfaceEditor->surface->addNew_renderTaskset();
+        auto& editorTaskset = editorApi.create_renderTaskset();
+
+        m::render::mTaskDataSwapchainWaitForRT taskData_swapchainWaitForRT{};
+        taskData_swapchainWaitForRT.pSwapchain = m_pEditorSwapchain;
+        taskData_swapchainWaitForRT.pSynchTool = m_pEditorSynchTool;
+        auto& imageAcquireTask =
+            static_cast<m::render::mTaskSwapchainWaitForRT&>(
+                taskData_swapchainWaitForRT.add_toTaskSet(editorTaskset));
 
         render::TaskData2dRender taskData_2dRender;
         taskData_2dRender.m_pMeshBuffer = &m_meshBuffer;
         taskData_2dRender.m_pRanges     = &m_ranges;
-        taskData_2dRender.m_hdlOutput   = m_hdlSurfaceEditor;
+        taskData_2dRender.nbFrames      = s_nbBackbuffer;
+        taskData_2dRender.pOutputRT     = imageAcquireTask.pOutputRT;
         taskData_2dRender.m_pMatrix     = &m_matrixEditor;
-        m_pTaskRenderGameInEditor =
-            (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
-                taskset_renderPipelineEditor));
+        auto& taskRenderGameInEditor    = static_cast<render::Task2dRender&>(
+            taskData_2dRender.add_toTaskSet(editorTaskset));
+        m_pTaskRenderGameInEditor = &taskRenderGameInEditor;
         m_pTaskRenderGameInEditor->add_texture(m_imageRequested[0]);
         m_pTaskRenderGameInEditor->add_texture(m_imageRequested[1]);
 
         taskData_2dRender.m_pMeshBuffer = &m_meshBufferEditor;
         taskData_2dRender.m_pRanges     = &m_rangesEditor;
-        render::Task2dRender* pTaskRenderEditor =
-            (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
-                taskset_renderPipelineEditor));
-        pTaskRenderEditor->add_texture(m_imageRequestedEditor[0]);
+        auto& taskRenderEditor          = static_cast<render::Task2dRender&>(
+            taskData_2dRender.add_toTaskSet(editorTaskset));
+        taskRenderEditor.add_texture(m_imageRequestedEditor[0]);
 
-        render::TaskDataDrawDearImGui taskData_drawDearImGui;
-        taskData_drawDearImGui.m_hdlOutput = m_hdlSurfaceEditor;
-        taskData_drawDearImGui.add_toTaskSet(taskset_renderPipelineEditor);
+        m::render::TaskDataDrawDearImGui taskData_drawDearImGui;
+        taskData_drawDearImGui.pOutputRT = imageAcquireTask.pOutputRT;
+        taskData_drawDearImGui.nbFrames  = s_nbBackbuffer;
+        taskData_drawDearImGui.add_toTaskSet(editorTaskset);
+
+        m::render::mTaskDataSwapchainPresent taskData_swapchainPresent{};
+        taskData_swapchainPresent.pSwapchain = m_pEditorSwapchain;
+        taskData_swapchainPresent.pSynchTool = m_pEditorSynchTool;
+        taskData_swapchainPresent.add_toTaskSet(editorTaskset);
+
+        m_tastsetExecutor.confy_permanentTaskset(editorApi, editorTaskset);
+        m_windowEditor->attach_toDestroy(m::mCallback<void>(
+            [this, &editorApi, &editorTaskset]() {
+                editorWindowIsDead = true;
+                m_tastsetExecutor.remove_permanentTaskset(editorApi,
+                                                          editorTaskset);
+            }));
 
         m_inputManagerEditor.attach_toMouseEvent(
             input::mMouseAction::mousePressed(input::mMouseButton::middle),
@@ -347,6 +414,8 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         g_animationBank.load();
         g_modelBank.load();
 
+        m_tastsetExecutor.init();
+
         init_editor();
         init_game();
     }
@@ -361,12 +430,26 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_scene.reset();
         m_componentManager.reset();
 
-        m_iRendererVulkan->destroy();
-        delete m_iRendererVulkan;
+        m_tastsetExecutor.destroy();
+
+        // call to destroy of the swapchain is managed at window termination
+        m_pGameApi->destroy_swapchain(*m_pGameSwapchain);
+
+        m_pGameSynchTool->destroy();
+        m_pGameApi->destroy_synchTool(*m_pGameSynchTool);
+
+        m_pGameApi->destroy();
+        delete m_pGameApi;
 
 #ifdef ENABLE_EDITOR
-        m_iRendererDx12->destroy();
-        delete m_iRendererDx12;
+        // call to destroy of the swapchain is managed at window termination
+        m_pEditorApi->destroy_swapchain(*m_pEditorSwapchain);
+
+        m_pEditorSynchTool->destroy();
+        m_pEditorApi->destroy_synchTool(*m_pEditorSynchTool);
+
+        m_pEditorApi->destroy();
+        delete m_pEditorApi;
 #endif  // ENABLE_EDITOR
 
         dearImGui::destroy();
@@ -374,7 +457,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
 #ifdef ENABLE_EDITOR
     void render_editorGUI()
     {
-        start_dearImGuiNewFrame(m_iRendererDx12);
+        start_dearImGuiNewFrame(*m_pEditorApi);
 
         ImGui::NewFrame();
 
@@ -616,11 +699,6 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
                        math::generate_translationMatrix(targetPoint.x,
                                                         targetPoint.y, 0.0f);
 
-        if (m_hdlSurfaceGame->isValid)
-        {
-            m_hdlSurfaceGame->surface->render();
-        }
-
 #ifdef ENABLE_EDITOR
         m_rangesEditor.clear();
         m_meshBufferEditor.clear();
@@ -656,22 +734,19 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             m_rangesEditor.back().indexStartLocation = 5 * indexPerQuad;
         }
 
-        auto currentSurface =
-            static_cast<dx12::DX12Surface*>(m_hdlSurfaceEditor->surface);
-        mInt screenWidth  = currentSurface->get_width();
-        mInt screenHeight = currentSurface->get_height();
+        mInt screenWidth = m_pEditorSwapchain->get_desc().width;
+        ;
+        mInt screenHeight = m_pEditorSwapchain->get_desc().height;
+        ;
 
         m_matrixEditor = math::generate_projectionOrthoLH(
                              screenWidth, screenHeight, 0.0f, 1.0f) *
                          m_targetController.m_worldToView;
 
         render_editorGUI();
-
-        if (m_hdlSurfaceEditor->isValid)
-        {
-            m_hdlSurfaceEditor->surface->render();
-        }
 #endif  // ENABLE_EDITOR
+
+        m_tastsetExecutor.run();
     }
 
     mBool step(std::chrono::steady_clock::duration const& a_deltaTime) override
@@ -681,23 +756,26 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             return false;
         }
 
-        render(a_deltaTime);
-
 #ifdef ENABLE_EDITOR
-        if (!m_hdlSurfaceEditor->isValid)
+        if (editorWindowIsDead)
         {
             return false;
         }
 #endif  // ENABLE_EDITOR
 
+        render(a_deltaTime);
+
         return true;
     }
 
-    render::IRenderer*       m_iRendererVulkan;
-    win32::IWindowImpl*      m_windowGame = nullptr;
-    render::ISurface::HdlPtr m_hdlSurfaceGame;
-    render::Task2dRender*    m_pTaskRenderGame = nullptr;
-    math::mMat4x4            m_matrixGame{};
+    m::render::mTasksetExecutor m_tastsetExecutor;
+
+    win32::IWindowImpl*     m_windowGame      = nullptr;
+    m::render::mIApi*       m_pGameApi        = nullptr;
+    m::render::mISwapchain* m_pGameSwapchain  = nullptr;
+    m::render::mISynchTool* m_pGameSynchTool  = nullptr;
+    render::Task2dRender*   m_pTaskRenderGame = nullptr;
+    math::mMat4x4           m_matrixGame{};
 
     input::mCallbackInputManager m_inputManagerGame;
     PlayerHand                   m_playerHand;
@@ -725,11 +803,14 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
     mBool m_updateScene = true;
 
 #ifdef ENABLE_EDITOR
-    render::IRenderer*       m_iRendererDx12;
-    win32::IWindowImpl*      m_windowEditor = nullptr;
-    render::ISurface::HdlPtr m_hdlSurfaceEditor;
-    render::Task2dRender*    m_pTaskRenderGameInEditor = nullptr;
-    math::mMat4x4            m_matrixEditor{};
+    bool editorWindowIsDead = false;
+
+    win32::IWindowImpl*     m_windowEditor            = nullptr;
+    m::render::mIApi*       m_pEditorApi              = nullptr;
+    m::render::mISwapchain* m_pEditorSwapchain        = nullptr;
+    m::render::mISynchTool* m_pEditorSynchTool        = nullptr;
+    render::Task2dRender*   m_pTaskRenderGameInEditor = nullptr;
+    math::mMat4x4           m_matrixEditor{};
 
     input::mCallbackInputManager m_inputManagerEditor;
     mTargetController            m_targetController;

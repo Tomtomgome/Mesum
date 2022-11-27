@@ -21,6 +21,9 @@ Task2dRender::Task2dRender(TaskData2dRender* a_data)
 Dx12Task2dRender::Dx12Task2dRender(TaskData2dRender* a_data)
     : Task2dRender(a_data)
 {
+    mAssert(a_data->nbFrames != 0);
+    mAssert(a_data->pOutputRT != nullptr);
+
     D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
 
     dx12::ComPtr<ID3DBlob> vs =
@@ -285,9 +288,9 @@ mBool Dx12Task2dRender::add_texture(resource::mRequestImage const& a_request)
     size_t stNumBytes;
     size_t stRowBytes;
     size_t stNumRows;
-    dx12::get_dxgiSurfaceInfo(size_t(descTexture.Width), size_t(descTexture.Height),
-                        descTexture.Format, &stNumBytes, &stRowBytes,
-                        &stNumRows);
+    dx12::get_dxgiSurfaceInfo(size_t(descTexture.Width),
+                              size_t(descTexture.Height), descTexture.Format,
+                              &stNumBytes, &stRowBytes, &stNumRows);
     D3D12_SUBRESOURCE_DATA& oTextureData = vSubresources[0];
     oTextureData.pData                   = image.data.data();
     oTextureData.SlicePitch              = stNumBytes;
@@ -345,7 +348,7 @@ void Dx12Task2dRender::prepare()
 //-----------------------------------------------------------------------------
 void Dx12Task2dRender::execute() const
 {
-    /*if (m_taskData.m_pRanges->size() == 0)
+    if (m_taskData.m_pRanges->size() == 0)
     {
         return;
     }
@@ -358,19 +361,19 @@ void Dx12Task2dRender::execute() const
 
     graphicCommandList->SetDescriptorHeaps(2, aHeaps);
 
-    auto currentSurface =
-        static_cast<dx12::DX12Surface*>(m_taskData.m_hdlOutput->surface);
+    auto pOutputRT =
+        static_cast<dx12::mRenderTarget const*>(m_taskData.pOutputRT);
 
-    mInt screenWidth  = currentSurface->get_width();
-    mInt screenHeight = currentSurface->get_height();
+    mInt screenWidth  = pOutputRT->width;
+    mInt screenHeight = pOutputRT->height;
 
     D3D12_CPU_DESCRIPTOR_HANDLE rtv;
-    rtv = currentSurface->get_currentRtvDesc();
+    rtv = pOutputRT->rtv;
     graphicCommandList->OMSetRenderTargets(1, &rtv, FALSE, nullptr);
     D3D12_VIEWPORT viewport = {};
     viewport.MaxDepth       = 1.0f;
-    viewport.Width          = screenWidth;
-    viewport.Height         = screenHeight;
+    viewport.Width          = mFloat(screenWidth);
+    viewport.Height         = mFloat(screenHeight);
     D3D12_RECT scissorRect  = {};
     scissorRect.right       = screenWidth;
     scissorRect.bottom      = screenHeight;
@@ -419,7 +422,7 @@ void Dx12Task2dRender::execute() const
     }
 
     dx12::DX12Context::gs_dx12Contexte->get_commandQueue().execute_commandList(
-        graphicCommandList.Get());*/
+        graphicCommandList.Get());
 }
 
 //-----------------------------------------------------------------------------
@@ -438,7 +441,10 @@ Task* TaskData2dRender::getNew_dx12Implementation(TaskData* a_data)
 VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
     : Task2dRender(a_data)
 {
-    /*for (auto& buffer : m_buffers) { init_buffer(buffer); }
+    mAssert(a_data->nbFrames != 0);
+    mAssert(a_data->pOutputRT != nullptr);
+
+    for (auto& buffer : m_buffers) { init_buffer(buffer); }
 
     m_vertShaderModule =
         vulkan::VulkanContext::create_shaderModule("data/squareShader.vs.spv");
@@ -520,11 +526,7 @@ VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
                                     &m_bindlessTextureDescriptorLayout));
 
     // Create pipeline --------------------------------------------------------
-    vulkan::VulkanSurface* pSurface =
-        ((vulkan::VulkanSurface*)(a_data->m_hdlOutput->surface));
-    mU32 width  = pSurface->get_width();
-    mU32 height = pSurface->get_height();
-    create_renderPassAndPipeline(width, height);
+    create_renderPassAndPipeline();
 
     // Allocate Constant buffers ----------------------------------------------
     VkDeviceSize bufferSize = sizeof(math::mMat4x4);
@@ -679,7 +681,7 @@ VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
                                             materialDescriptorWrite};
 
         vkUpdateDescriptorSets(device, 2, setWrites, 0, nullptr);
-    }*/
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -687,7 +689,7 @@ VulkanTask2dRender::VulkanTask2dRender(TaskData2dRender* a_data)
 //-----------------------------------------------------------------------------
 VulkanTask2dRender::~VulkanTask2dRender()
 {
-    /*for (auto& buffer : m_buffers) { destroy_buffer(buffer); }
+    for (auto& buffer : m_buffers) { destroy_buffer(buffer); }
 
     VkDevice device = vulkan::VulkanContext::get_logDevice();
 
@@ -705,7 +707,6 @@ VulkanTask2dRender::~VulkanTask2dRender()
 
     vkDestroyPipeline(device, m_graphicsPipeline, nullptr);
     vkDestroyPipelineLayout(device, m_pipelineLayout, nullptr);
-    vkDestroyRenderPass(device, m_renderPass, nullptr);
 
     vkDestroyDescriptorSetLayout(device, m_cbDescriptorLayout, nullptr);
     vkDestroyDescriptorSetLayout(device, m_bindlessTextureDescriptorLayout,
@@ -720,7 +721,7 @@ VulkanTask2dRender::~VulkanTask2dRender()
     }
 
     vkDestroyShaderModule(device, m_vertShaderModule, nullptr);
-    vkDestroyShaderModule(device, m_fragShaderModule, nullptr);*/
+    vkDestroyShaderModule(device, m_fragShaderModule, nullptr);
 }
 
 //-----------------------------------------------------------------------------
@@ -927,10 +928,9 @@ mBool VulkanTask2dRender::add_texture(resource::mRequestImage const& a_request)
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void VulkanTask2dRender::create_renderPassAndPipeline(mU32 a_width,
-                                                      mU32 a_height)
+void VulkanTask2dRender::create_renderPassAndPipeline()
 {
-    /*VkDevice device = vulkan::VulkanContext::get_logDevice();
+    VkDevice device = vulkan::VulkanContext::get_logDevice();
 
     VkPipelineShaderStageCreateInfo vertShaderStageInfo{};
     vertShaderStageInfo.sType =
@@ -988,14 +988,14 @@ void VulkanTask2dRender::create_renderPassAndPipeline(mU32 a_width,
     VkViewport viewport{};
     viewport.x        = 0.0f;
     viewport.y        = 0.0f;
-    viewport.width    = mFloat(a_width);
-    viewport.height   = mFloat(a_height);
+    viewport.width    = mFloat(0);
+    viewport.height   = mFloat(0);
     viewport.minDepth = 0.0f;
     viewport.maxDepth = 1.0f;
 
     VkRect2D scissor{};
     scissor.offset = {0, 0};
-    scissor.extent = {a_width, a_height};
+    scissor.extent = {0, 0};
 
     VkPipelineViewportStateCreateInfo viewportState{};
     viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
@@ -1007,8 +1007,9 @@ void VulkanTask2dRender::create_renderPassAndPipeline(mU32 a_width,
     VkPipelineRasterizationStateCreateInfo rasterizer{};
     rasterizer.sType =
         VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
-    rasterizer.depthClampEnable        = VK_FALSE;
-    rasterizer.rasterizerDiscardEnable = VK_FALSE;
+    rasterizer.depthClampEnable = VK_FALSE;
+    rasterizer.rasterizerDiscardEnable =
+        VK_FALSE;  // TODO : Figure out why it crashes when this is VK_TRUE
     rasterizer.polygonMode             = VK_POLYGON_MODE_FILL;
     rasterizer.lineWidth               = 1.0f;
     rasterizer.cullMode                = D3D12_CULL_MODE_NONE;
@@ -1072,40 +1073,6 @@ void VulkanTask2dRender::create_renderPassAndPipeline(mU32 a_width,
         throw std::runtime_error("failed to create pipeline layout!");
     }
 
-    VkAttachmentDescription attachment = {};
-    attachment.format  = vulkan::VulkanSurface::scm_selectedSwapChainFormat;
-    attachment.samples = VK_SAMPLE_COUNT_1_BIT;
-    attachment.loadOp  = VK_ATTACHMENT_LOAD_OP_CLEAR;
-    attachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
-    attachment.stencilLoadOp  = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-    attachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-    attachment.initialLayout  = VK_IMAGE_LAYOUT_UNDEFINED;
-    attachment.finalLayout =
-        VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;  // COLOR_ATTACHMENT_OPTIMAL;
-    VkAttachmentReference color_attachment = {};
-    color_attachment.attachment            = 0;
-    color_attachment.layout        = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-    VkSubpassDescription subpass   = {};
-    subpass.pipelineBindPoint      = VK_PIPELINE_BIND_POINT_GRAPHICS;
-    subpass.colorAttachmentCount   = 1;
-    subpass.pColorAttachments      = &color_attachment;
-    VkSubpassDependency dependency = {};
-    dependency.srcSubpass          = VK_SUBPASS_EXTERNAL;
-    dependency.dstSubpass          = 0;
-    dependency.srcStageMask     = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-    dependency.dstStageMask     = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-    dependency.srcAccessMask    = 0;
-    dependency.dstAccessMask    = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-    VkRenderPassCreateInfo info = {};
-    info.sType                  = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
-    info.attachmentCount        = 1;
-    info.pAttachments           = &attachment;
-    info.subpassCount           = 1;
-    info.pSubpasses             = &subpass;
-    info.dependencyCount        = 1;
-    info.pDependencies          = &dependency;
-    vkCreateRenderPass(device, &info, nullptr, &m_renderPass);
-
     VkDynamicState dynamicStates[] = {VK_DYNAMIC_STATE_VIEWPORT,
                                       VK_DYNAMIC_STATE_SCISSOR};
 
@@ -1113,6 +1080,13 @@ void VulkanTask2dRender::create_renderPassAndPipeline(mU32 a_width,
     dynamicState.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
     dynamicState.dynamicStateCount = 2;
     dynamicState.pDynamicStates    = dynamicStates;
+
+    const VkFormat swapchainFormat = VK_FORMAT_B8G8R8A8_UNORM;
+    const VkPipelineRenderingCreateInfoKHR pipeline_rendering_create_info{
+        .sType = VK_STRUCTURE_TYPE_PIPELINE_RENDERING_CREATE_INFO_KHR,
+        .colorAttachmentCount    = 1,
+        .pColorAttachmentFormats = &swapchainFormat,
+    };
 
     VkGraphicsPipelineCreateInfo pipelineInfo{};
     pipelineInfo.sType      = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
@@ -1127,8 +1101,9 @@ void VulkanTask2dRender::create_renderPassAndPipeline(mU32 a_width,
     pipelineInfo.pColorBlendState    = &colorBlending;
     pipelineInfo.pDynamicState       = &dynamicState;  // Optional
     pipelineInfo.layout              = m_pipelineLayout;
-    pipelineInfo.renderPass          = m_renderPass;
+    pipelineInfo.renderPass          = nullptr;
     pipelineInfo.subpass             = 0;
+    pipelineInfo.pNext               = &pipeline_rendering_create_info;
     pipelineInfo.basePipelineHandle  = VK_NULL_HANDLE;  // Optional
     pipelineInfo.basePipelineIndex   = -1;              // Optional
 
@@ -1136,7 +1111,7 @@ void VulkanTask2dRender::create_renderPassAndPipeline(mU32 a_width,
                                   nullptr, &m_graphicsPipeline) != VK_SUCCESS)
     {
         throw std::runtime_error("failed to create graphics pipeline!");
-    }*/
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -1155,30 +1130,40 @@ void VulkanTask2dRender::prepare()
 //-----------------------------------------------------------------------------
 void VulkanTask2dRender::execute() const
 {
-    /*DataMeshBuffer meshBuffer = *m_taskData.m_pMeshBuffer;
+    auto pOutputRT =
+        static_cast<vulkan::mRenderTarget const*>(m_taskData.pOutputRT);
 
-    auto currentSurface =
-        static_cast<vulkan::VulkanSurface*>(m_taskData.m_hdlOutput->surface);
-    auto framebuffer   = currentSurface->get_currentFramebuffer();
-    auto commandBuffer = currentSurface->get_currentCommandBuffer();
+    auto commandBuffer =
+        vulkan::VulkanContext::get_commandQueue().get_commandBuffer();
 
-    mDouble width  = currentSurface->get_width();
-    mDouble height = currentSurface->get_height();
+    DataMeshBuffer meshBuffer = *m_taskData.m_pMeshBuffer;
+
+    mDouble width  = pOutputRT->width;
+    mDouble height = pOutputRT->height;
 
     mInt currentImage = (m_i) % vulkan::VulkanSurface::scm_numFrames;
 
+    VkClearValue clearValue = {0.0f, 0.0f, 0.0f, 0.0f};
     {
-        VkRenderPassBeginInfo info   = {};
-        info.sType                   = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-        info.renderPass              = m_renderPass;
-        info.framebuffer             = framebuffer;
-        info.renderArea.extent.width = width;
-        info.renderArea.extent.height = height;
-        VkClearValue clearValues[1]   = {};
-        clearValues[0].color          = {0.0f, 0.0f, 0.0f, 0.0f};
-        info.clearValueCount          = 1;
-        info.pClearValues             = clearValues;
-        vkCmdBeginRenderPass(commandBuffer, &info, VK_SUBPASS_CONTENTS_INLINE);
+        VkRenderingAttachmentInfo colorAttachmentInfo{};
+        colorAttachmentInfo.sType =
+            VK_STRUCTURE_TYPE_RENDERING_ATTACHMENT_INFO_KHR;
+        colorAttachmentInfo.imageView = pOutputRT->imageView;
+        colorAttachmentInfo.imageLayout =
+            VK_IMAGE_LAYOUT_ATTACHMENT_OPTIMAL_KHR;
+        colorAttachmentInfo.loadOp     = VK_ATTACHMENT_LOAD_OP_CLEAR;
+        colorAttachmentInfo.storeOp    = VK_ATTACHMENT_STORE_OP_STORE;
+        colorAttachmentInfo.clearValue = clearValue;
+
+        VkRenderingInfo renderInfo{};
+        renderInfo.sType = VK_STRUCTURE_TYPE_RENDERING_INFO_KHR;
+        renderInfo.renderArea.extent.width  = pOutputRT->width;
+        renderInfo.renderArea.extent.height = pOutputRT->height;
+        renderInfo.layerCount               = 1;
+        renderInfo.colorAttachmentCount     = 1;
+        renderInfo.pColorAttachments        = &colorAttachmentInfo;
+
+        vkCmdBeginRendering(commandBuffer, &renderInfo);
     }
 
     if (meshBuffer.m_indices.size() > 0)
@@ -1246,8 +1231,10 @@ void VulkanTask2dRender::execute() const
         }
     }
 
-    // Submit command buffer
-    vkCmdEndRenderPass(commandBuffer);*/
+    vkCmdEndRendering(commandBuffer);
+
+    vulkan::VulkanContext::get_commandQueue().submit_commandBuffer(
+        commandBuffer);
 }
 
 //-----------------------------------------------------------------------------

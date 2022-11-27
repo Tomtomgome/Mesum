@@ -402,7 +402,7 @@ mIfVulkanEnabled(struct VulkanTask2dRender : public Task2dRender
 
     mBool add_texture(resource::mRequestImage const& a_request) override;
 
-    void create_renderPassAndPipeline(mU32 a_width, mU32 a_height);
+    void create_renderPassAndPipeline();
 
     void prepare() override;
 
@@ -417,7 +417,6 @@ mIfVulkanEnabled(struct VulkanTask2dRender : public Task2dRender
     VkDescriptorSetLayout m_cbDescriptorLayout;
 
     VkPipelineLayout m_pipelineLayout;
-    VkRenderPass     m_renderPass;
     VkPipeline       m_graphicsPipeline;
 
     VkBuffer m_cbMatrices[vulkan::VulkanSurface::scm_numFrames];

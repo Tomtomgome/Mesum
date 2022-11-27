@@ -126,6 +126,8 @@ class mISwapchain
     virtual void destroy()                                             = 0;
 
     virtual void resize(mU32 a_width, mU32 a_height) = 0;
+
+    virtual Desc const& get_desc() = 0;
 };
 
 class mIApi

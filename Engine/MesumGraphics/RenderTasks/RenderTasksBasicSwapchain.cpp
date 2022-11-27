@@ -113,6 +113,8 @@ void mTaskSwapchainWaitForRTDx12::execute() const
             unref_safe(static_cast<dx12::mRenderTarget*>(pOutputRT));
         outputRT.rtv = CD3DX12_CPU_DESCRIPTOR_HANDLE(
             swapchain.get_rtv(synchTool.currentFenceIndex));
+        outputRT.width = backbuffer->GetDesc().Width;
+        outputRT.height = backbuffer->GetDesc().Height;
 
         graphicCommandList->ClearRenderTargetView(outputRT.rtv, clearColor, 0,
                                                   nullptr);

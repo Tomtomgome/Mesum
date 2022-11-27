@@ -43,6 +43,8 @@ class mRenderTarget : public render::mIRenderTarget
 {
    public:
     D3D12_CPU_DESCRIPTOR_HANDLE rtv;
+    mU32                        width;
+    mU32                        height;
 };
 
 //-----------------------------------------------------------------------------
@@ -59,6 +61,8 @@ class mSwapchain final : public render::mISwapchain
 
     void resize(mU32 a_width, mU32 a_height) final;
 
+    Desc const& get_desc() override { return m_currentDesc; }
+
    public:
     [[nodiscard]] IDXGISwapChain4* get_swapchain() const;
     [[nodiscard]] mUInt            get_currentBackBufferIndex() const;
@@ -70,6 +74,8 @@ class mSwapchain final : public render::mISwapchain
     void update_renderTargetViews();
 
    private:
+    Desc m_currentDesc;
+
     DXGI_SWAP_CHAIN_DESC1 m_descSwapChain;
 
     ComPtr<IDXGISwapChain4>      m_pSwapChain;

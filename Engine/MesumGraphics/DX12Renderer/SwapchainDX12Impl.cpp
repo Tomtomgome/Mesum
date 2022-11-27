@@ -12,6 +12,7 @@ namespace m::dx12
 //-----------------------------------------------------------------------------
 void mSwapchain::init_win32(Desc const& a_desc, DescWin32 const& a_descWin32)
 {
+    m_currentDesc = a_desc;
     m_tearingSupported = DX12Context::gs_dx12Contexte->get_tearingSupport();
 
     // Swapchain creation
@@ -103,8 +104,10 @@ void mSwapchain::resize(mU32 a_width, mU32 a_height)
     // safely resized
     DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
     check_mhr(m_pSwapChain->GetDesc1(&swapChainDesc));
-    if (swapChainDesc.Width != a_width || swapChainDesc.Height != a_height)
+    if (m_currentDesc.width != a_width || m_currentDesc.height != a_height)
     {
+        m_currentDesc.width  = a_width;
+        m_currentDesc.height = a_height;
         DX12Context::gs_dx12Contexte->get_commandQueue().flush();
 
         for (mInt i = 0; i < swapChainDesc.BufferCount; ++i)

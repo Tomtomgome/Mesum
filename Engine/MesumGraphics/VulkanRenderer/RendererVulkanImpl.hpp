@@ -62,6 +62,8 @@ class mSwapchain final : public render::mISwapchain
 
     void resize(mU32 a_width, mU32 a_height) final;
 
+    Desc const& get_desc() override {return m_currentDesc;}
+
     // ----
     void          acquire_image(mUInt a_waitIndex);
     void          present(mUInt a_presentIndex);

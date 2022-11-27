@@ -13,8 +13,8 @@
 
 using namespace m;
 
-static const mInt screenWidth  = 400;
-static const mInt screenHeight = 300;
+static const mInt screenWidth  = 1280;
+static const mInt screenHeight = 720;
 
 math::mXoRandomNumberGenerator g_randomGenerator(0);
 
@@ -167,7 +167,7 @@ class mTargetController
 
 class RendererTestApp : public m::crossPlatform::IWindowedApplication
 {
-    static const mBool dx12Windw = true;
+    static const mBool dx12Windw = false;
     static const mBool vkWindw   = true;
 
     void init(mCmdLine const& a_cmdLine, void* a_appData) override
@@ -183,11 +183,12 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
         m_imageRequested.emplace_back();
         m_imageRequested.back().path.resize(512);  // prep for imGui
 
+        m::mUInt nbBackbuffer = 3;
+
         render::TaskData2dRender taskData_2dRender;
         taskData_2dRender.m_pMeshBuffer = &m_drawer2d.m_meshBuffer;
         taskData_2dRender.m_pRanges     = &m_ranges;
-
-        m::mUInt nbBackbuffer = 3;
+        taskData_2dRender.nbFrames      = nbBackbuffer;
 
         if (dx12Windw)
         {
@@ -222,14 +223,14 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             auto& dx12Task = static_cast<m::render::mTaskSwapchainWaitForRT&>(
                 taskData_swapchainWaitForRT.add_toTaskSet(dx12Taskset));
 
-            //            taskData_2dRender.m_hdlOutput = m_hdlSurfaceDx12;
-            //            taskData_2dRender.m_pMatrix   = &m_dx12Matrix;
-            //            m_pDx12TaskRender =
-            //                (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
-            //                    dx12Taskset));
-            //
-            //            m_pDx12TaskRender->add_texture(m_imageRequested[0]);
-            //            m_pDx12TaskRender->add_texture(m_imageRequested[1]);
+            taskData_2dRender.pOutputRT = dx12Task.pOutputRT;
+            taskData_2dRender.m_pMatrix = &m_dx12Matrix;
+            auto& Dx12TaskRender        = static_cast<m::render::Task2dRender&>(
+                taskData_2dRender.add_toTaskSet(dx12Taskset));
+            m_pDx12TaskRender = &Dx12TaskRender;
+
+            m_pDx12TaskRender->add_texture(m_imageRequested[0]);
+            m_pDx12TaskRender->add_texture(m_imageRequested[1]);
 
             m::render::TaskDataDrawDearImGui taskData_drawDearImGui;
             taskData_drawDearImGui.pOutputRT = dx12Task.pOutputRT;
@@ -260,7 +261,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             // Setup vulkan window
             m_windowVulkan = add_newWindow("Vulkan Window", screenWidth,
                                            screenHeight, false);
-            m_windowVulkan->link_inputManager(&m_inputManager);
+            // m_windowVulkan->link_inputManager(&m_inputManager);
 
             m_pVulkanApi = new m::vulkan::mApi();
             m_pVulkanApi->init();
@@ -286,14 +287,14 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             auto& vulkanTask = static_cast<m::render::mTaskSwapchainWaitForRT&>(
                 taskData_swapchainWaitForRT.add_toTaskSet(vulkanTaskset));
 
-            //            taskData_2dRender.m_hdlOutput = m_hdlSurfaceDx12;
-            //            taskData_2dRender.m_pMatrix   = &m_vkMatrix;
-            //            m_pVkTaskRender =
-            //                (render::Task2dRender*)(taskData_2dRender.add_toTaskSet(
-            //                    vulkanTaskset));
-            //
-            //            m_pVkTaskRender->add_texture(m_imageRequested[0]);
-            //            m_pVkTaskRender->add_texture(m_imageRequested[1]);
+            taskData_2dRender.pOutputRT = vulkanTask.pOutputRT;
+            taskData_2dRender.m_pMatrix = &m_vkMatrix;
+            auto& vulkanTaskRender      = static_cast<m::render::Task2dRender&>(
+                taskData_2dRender.add_toTaskSet(vulkanTaskset));
+            m_pVkTaskRender = &vulkanTaskRender;
+
+            m_pVkTaskRender->add_texture(m_imageRequested[0]);
+            m_pVkTaskRender->add_texture(m_imageRequested[1]);
 
             m::render::mTaskDataSwapchainPresent taskData_swapchainPresent{};
             taskData_swapchainPresent.pSwapchain = m_pVulkanSwapchain;
@@ -305,7 +306,7 @@ class RendererTestApp : public m::crossPlatform::IWindowedApplication
             m_windowVulkan->attach_toDestroy(m::mCallback<void>(
                 [this, &vulkanApi, &vulkanTaskset]()
                 {
-                    m_enabledGui = false;
+                    // m_enabledGui = false;
                     m_tastsetExecutor.remove_permanentTaskset(vulkanApi,
                                                               vulkanTaskset);
                 }));

@@ -93,6 +93,8 @@ Task* TaskDataDrawDearImGui::getNew_dx12Implementation(TaskData* a_data)
 VulkanTaskDrawDearImGui::VulkanTaskDrawDearImGui(TaskDataDrawDearImGui* a_data)
     : TaskDrawDearImGui(a_data)
 {
+    mAssert(a_data->nbFrames != 0);
+    mAssert(a_data->pOutputRT != nullptr);
     VkDescriptorPoolSize pool_sizes[] = {
         {VK_DESCRIPTOR_TYPE_SAMPLER, 1000},
         {VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1000},
