@@ -282,7 +282,7 @@ void Dx12TaskFluidSimulation::execute() const
                                  DXGI_FORMAT_R32G32B32A32_FLOAT, &stNumBytes,
                                  &stRowBytes, &stNumRows);
     D3D12_SUBRESOURCE_DATA& oTextureData = vSubresources[0];
-    oTextureData.pData                   = m_taskData.m_pPixelData->data();
+    oTextureData.pData                   = m_taskData.pPixelData->data();
     oTextureData.SlicePitch              = stNumBytes;
     oTextureData.RowPitch                = stRowBytes;
 
@@ -299,14 +299,14 @@ void Dx12TaskFluidSimulation::execute() const
 
     graphicCommandList->SetDescriptorHeaps(2, aHeaps);
 
-    auto currentSurface =
-        static_cast<dx12::DX12Surface*>(m_taskData.m_hdlOutput->surface);
+    auto pOutputRT =
+        static_cast<dx12::mRenderTarget const*>(m_taskData.pOutputRT);
 
     mInt screenWidth  = 600;
     mInt screenHeight = 600;
 
     D3D12_CPU_DESCRIPTOR_HANDLE rtv;
-    rtv = currentSurface->get_currentRtvDesc();
+    rtv = pOutputRT->rtv;
     graphicCommandList->OMSetRenderTargets(1, &rtv, FALSE, nullptr);
     D3D12_VIEWPORT viewport = {};
     viewport.MaxDepth       = 1.0f;

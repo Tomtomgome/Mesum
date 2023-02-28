@@ -6,6 +6,8 @@
 #include <Kernel/Profile.hpp>
 
 #include "RenderTaskFluidSimulation.hpp"
+#include "RendererUtils.hpp"
+#include "RenderTasksBasicSwapchain.hpp"
 
 #include <iomanip>
 
@@ -174,7 +176,8 @@ Particle get_valueAt(Universe const& a_input, math::mDVec2 a_position)
 void compute_divergence(Universe const& a_input, GridVector& a_outDivergences,
                         mFloat a_deltaTime)
 {
-    mDouble globalFactor = 1.0;//(s_density * s_cellSize * s_cellSize) / a_deltaTime;
+    mDouble globalFactor =
+        1.0;  //(s_density * s_cellSize * s_cellSize) / a_deltaTime;
     for (mInt j = 0; j < s_nbRow; ++j)
     {
         for (mInt i = 0; i < s_nbCol; ++i)
@@ -214,7 +217,7 @@ bool is_outOfBound(mInt a_i, mInt a_j)
 
 bool is_solid(Universe const& a_input, mInt a_i, mInt a_j)
 {
-    return is_outOfBoundJ(a_j);//is_outOfBound(a_i, a_j);
+    return is_outOfBoundJ(a_j);  // is_outOfBound(a_i, a_j);
 }
 
 mInt get_numberOfSolidNeighbors(Universe const& a_input, mInt a_i, mInt a_j)
@@ -570,96 +573,102 @@ void Simulate(Universe const& a_input, Universe& a_output, mDouble a_deltaTime)
         GridVector divergences;
         compute_divergence(a_output, divergences, a_deltaTime);
         divergences *= -1;
-//        debugString.seekp(std::ios_base::beg);
-//        for (mInt row = s_nbRow - 1; row >= 0; --row)
-//        {
-//            for (mInt col = 0; col < s_nbCol; ++col)
-//            {
-//                mInt    index = row * s_nbCol + col;
-//                mDouble value = divergences[index];
-//                debugString << ((value < 0) ? "" : " ") << divergences[index]
-//                            << " ";
-//            }
-//            debugString << std::endl;
-//        }
-//        mLog_info("\n", debugString.str());
+        //        debugString.seekp(std::ios_base::beg);
+        //        for (mInt row = s_nbRow - 1; row >= 0; --row)
+        //        {
+        //            for (mInt col = 0; col < s_nbCol; ++col)
+        //            {
+        //                mInt    index = row * s_nbCol + col;
+        //                mDouble value = divergences[index];
+        //                debugString << ((value < 0) ? "" : " ") <<
+        //                divergences[index]
+        //                            << " ";
+        //            }
+        //            debugString << std::endl;
+        //        }
+        //        mLog_info("\n", debugString.str());
         // Set entries of A
         mLog_info("- Set A");
         GridVectorSP<EntryOfA> A;
         compute_entriesOfA(a_output, a_deltaTime, A);
 
-//        debugString.seekp(std::ios_base::beg);
-//        for (mInt row = s_nbRow - 1; row >= 0; --row)
-//        {
-//            for (mInt col = 0; col < s_nbCol; ++col)
-//            {
-//                mInt    index = row * s_nbCol + col;
-//                mDouble value = A[index].Adiag;
-//                debugString << ((value < 0) ? "" : " ") << value << " ";
-//            }
-//            debugString << std::endl;
-//        }
-//        mLog_info("\n", debugString.str());
-//        debugString.seekp(std::ios_base::beg);
-//        for (mInt row = s_nbRow - 1; row >= 0; --row)
-//        {
-//            for (mInt col = 0; col < s_nbCol; ++col)
-//            {
-//                mInt    index = row * s_nbCol + col;
-//                mDouble value = A[index].Aplusi;
-//                debugString << ((value < 0) ? "" : " ") << value << " ";
-//            }
-//            debugString << std::endl;
-//        }
-//        mLog_info("\n", debugString.str());
-//        debugString.seekp(std::ios_base::beg);
-//        for (mInt row = s_nbRow - 1; row >= 0; --row)
-//        {
-//            for (mInt col = 0; col < s_nbCol; ++col)
-//            {
-//                mInt    index = row * s_nbCol + col;
-//                mDouble value = A[index].Aplusj;
-//                debugString << ((value < 0) ? "" : " ") << value << " ";
-//            }
-//            debugString << std::endl;
-//        }
-//        mLog_info("\n", debugString.str());
+        //        debugString.seekp(std::ios_base::beg);
+        //        for (mInt row = s_nbRow - 1; row >= 0; --row)
+        //        {
+        //            for (mInt col = 0; col < s_nbCol; ++col)
+        //            {
+        //                mInt    index = row * s_nbCol + col;
+        //                mDouble value = A[index].Adiag;
+        //                debugString << ((value < 0) ? "" : " ") << value << "
+        //                ";
+        //            }
+        //            debugString << std::endl;
+        //        }
+        //        mLog_info("\n", debugString.str());
+        //        debugString.seekp(std::ios_base::beg);
+        //        for (mInt row = s_nbRow - 1; row >= 0; --row)
+        //        {
+        //            for (mInt col = 0; col < s_nbCol; ++col)
+        //            {
+        //                mInt    index = row * s_nbCol + col;
+        //                mDouble value = A[index].Aplusi;
+        //                debugString << ((value < 0) ? "" : " ") << value << "
+        //                ";
+        //            }
+        //            debugString << std::endl;
+        //        }
+        //        mLog_info("\n", debugString.str());
+        //        debugString.seekp(std::ios_base::beg);
+        //        for (mInt row = s_nbRow - 1; row >= 0; --row)
+        //        {
+        //            for (mInt col = 0; col < s_nbCol; ++col)
+        //            {
+        //                mInt    index = row * s_nbCol + col;
+        //                mDouble value = A[index].Aplusj;
+        //                debugString << ((value < 0) ? "" : " ") << value << "
+        //                ";
+        //            }
+        //            debugString << std::endl;
+        //        }
+        //        mLog_info("\n", debugString.str());
 
         // Construct MIC(0)
         mLog_info("- Construct MIC");
         GridVector MIC0;
         compute_MIC0Entries(A, MIC0);
 
-//        debugString.seekp(std::ios_base::beg);
-//        for (mInt row = s_nbRow - 1; row >= 0; --row)
-//        {
-//            for (mInt col = 0; col < s_nbCol; ++col)
-//            {
-//                mInt    index = row * s_nbCol + col;
-//                mDouble value = MIC0[index];
-//                debugString << ((value < 0) ? "" : " ") << value << " ";
-//            }
-//            debugString << std::endl;
-//        }
-//        mLog_info("\n", debugString.str());
+        //        debugString.seekp(std::ios_base::beg);
+        //        for (mInt row = s_nbRow - 1; row >= 0; --row)
+        //        {
+        //            for (mInt col = 0; col < s_nbCol; ++col)
+        //            {
+        //                mInt    index = row * s_nbCol + col;
+        //                mDouble value = MIC0[index];
+        //                debugString << ((value < 0) ? "" : " ") << value << "
+        //                ";
+        //            }
+        //            debugString << std::endl;
+        //        }
+        //        mLog_info("\n", debugString.str());
         // Solve Ap = d with MICCG(0)
         mLog_info("- Solve");
         GridVector pressures;
         compute_preconditionedConjugaiteGradient(MIC0, A, pressures,
                                                  divergences);
 
-//        debugString.seekp(std::ios_base::beg);
-//        for (mInt row = s_nbRow - 1; row >= 0; --row)
-//        {
-//            for (mInt col = 0; col < s_nbCol; ++col)
-//            {
-//                mInt    index = row * s_nbCol + col;
-//                mDouble value = pressures[index];
-//                debugString << ((value < 0) ? "" : " ") << value << " ";
-//            }
-//            debugString << std::endl;
-//        }
-//        mLog_info("\n", debugString.str());
+        //        debugString.seekp(std::ios_base::beg);
+        //        for (mInt row = s_nbRow - 1; row >= 0; --row)
+        //        {
+        //            for (mInt col = 0; col < s_nbCol; ++col)
+        //            {
+        //                mInt    index = row * s_nbCol + col;
+        //                mDouble value = pressures[index];
+        //                debugString << ((value < 0) ? "" : " ") << value << "
+        //                ";
+        //            }
+        //            debugString << std::endl;
+        //        }
+        //        mLog_info("\n", debugString.str());
         // Change velocities according to pressures
         mLog_info("- Update");
         update_velocities(pressures, a_output, a_deltaTime);
@@ -712,20 +721,20 @@ void Simulate(Universe const& a_input, Universe& a_output, mDouble a_deltaTime)
         mLog_info("\n", debugString.str());*/
 
         compute_divergence(a_output, divergences, a_deltaTime);
-//        debugString.seekp(std::ios_base::beg);
-//        for (mInt row = s_nbRow - 1; row >= 0; --row)
-//        {
-//            for (mInt col = 0; col < s_nbCol; ++col)
-//            {
-//                mInt    index = row * s_nbCol + col;
-//                mDouble value = divergences[index];
-//                debugString << ((value < 0) ? "" : " ") << divergences[index]
-//                            << " ";
-//            }
-//            debugString << std::endl;
-//        }
-//        mLog_info("Final divergence : \n", debugString.str());
-
+        //        debugString.seekp(std::ios_base::beg);
+        //        for (mInt row = s_nbRow - 1; row >= 0; --row)
+        //        {
+        //            for (mInt col = 0; col < s_nbCol; ++col)
+        //            {
+        //                mInt    index = row * s_nbCol + col;
+        //                mDouble value = divergences[index];
+        //                debugString << ((value < 0) ? "" : " ") <<
+        //                divergences[index]
+        //                            << " ";
+        //            }
+        //            debugString << std::endl;
+        //        }
+        //        mLog_info("Final divergence : \n", debugString.str());
     }
     mLog_info("--- Timing : ",
               g_ProjectionProfiler.get_average<mDouble, std::micro>());
@@ -741,25 +750,61 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
         m::mUInt           width   = 600;
         m::mUInt           height  = 600;
 
-        m_iRenderer = new m::dx12::DX12Renderer();
-        m_iRenderer->init();
+        m_pDx12Api = new m::dx12::mApi();
+        m_pDx12Api->init();
+        auto& rDx12Api = *m_pDx12Api;
 
         m_mainWindow = add_newWindow("Fluid Simulation", width, height, false);
 
-        m_hdlSurface = m_mainWindow->link_renderer(m_iRenderer);
+        m_tasksetExecutor.init();
+
+        static const mUInt           s_nbBackBuffer = 3;
+        m::render::mISynchTool::Desc desc{s_nbBackBuffer};
+
+        auto& dx12SynchTool = rDx12Api.create_synchTool();
+        m_pDx12SynchTool    = &dx12SynchTool;
+        dx12SynchTool.init(desc);
+
+        auto& dx12Swapchain = rDx12Api.create_swapchain();
+        m_pDx12Swapchain    = &dx12Swapchain;
+        m::render::init_swapchainWithWindow(*m_pDx12Api, m_tasksetExecutor,
+                                            dx12Swapchain, dx12SynchTool,
+                                            *m_mainWindow, s_nbBackBuffer);
+
         m::dearImGui::init(*m_mainWindow);
 
-        m::render::Taskset* taskset_renderPipeline =
-            m_hdlSurface->surface->addNew_renderTaskset();
+        m::render::Taskset& taskset_renderPipeline =
+            rDx12Api.create_renderTaskset();
+
+        m::render::mTaskDataSwapchainWaitForRT taskData_swapchainWaitForRT{};
+        taskData_swapchainWaitForRT.pSwapchain = m_pDx12Swapchain;
+        taskData_swapchainWaitForRT.pSynchTool = m_pDx12SynchTool;
+        auto& acquireTask = static_cast<m::render::mTaskSwapchainWaitForRT&>(
+            taskData_swapchainWaitForRT.add_toTaskSet(taskset_renderPipeline));
 
         TaskDataFluidSimulation taskdata_fluidSimulation;
-        taskdata_fluidSimulation.m_hdlOutput  = m_hdlSurface;
-        taskdata_fluidSimulation.m_pPixelData = &m_pixelData;
+        taskdata_fluidSimulation.pOutputRT  = acquireTask.pOutputRT;
+        taskdata_fluidSimulation.pPixelData = &m_pixelData;
         taskdata_fluidSimulation.add_toTaskSet(taskset_renderPipeline);
 
         m::render::TaskDataDrawDearImGui taskData_drawDearImGui;
-        taskData_drawDearImGui.m_hdlOutput = m_hdlSurface;
+        taskData_drawDearImGui.nbFrames  = s_nbBackBuffer;
+        taskData_drawDearImGui.pOutputRT = acquireTask.pOutputRT;
         taskData_drawDearImGui.add_toTaskSet(taskset_renderPipeline);
+
+        m::render::mTaskDataSwapchainPresent taskData_swapchainPresent{};
+        taskData_swapchainPresent.pSwapchain = m_pDx12Swapchain;
+        taskData_swapchainPresent.pSynchTool = m_pDx12SynchTool;
+        taskData_swapchainPresent.add_toTaskSet(taskset_renderPipeline);
+
+        m_tasksetExecutor.confy_permanentTaskset(m::unref_safe(m_pDx12Api),
+                                                 taskset_renderPipeline);
+        m_mainWindow->attach_toDestroy(m::mCallback<void>(
+            [this, &rDx12Api, &taskset_renderPipeline]()
+            {
+                m_tasksetExecutor.remove_permanentTaskset(
+                    rDx12Api, taskset_renderPipeline);
+            }));
 
         m_mainWindow->link_inputManager(&m_inputManager);
 
@@ -778,8 +823,14 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
     {
         m::crossPlatform::IWindowedApplication::destroy();
 
-        m_iRenderer->destroy();
-        delete m_iRenderer;
+        m_pDx12SynchTool->destroy();
+        m_pDx12Api->destroy_synchTool(*m_pDx12SynchTool);
+
+        m_pDx12Swapchain->destroy();
+        m_pDx12Api->destroy_swapchain(*m_pDx12Swapchain);
+
+        m_pDx12Api->destroy();
+        delete m_pDx12Api;
 
         m::dearImGui::destroy();
     }
@@ -796,8 +847,8 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
         static mInt   i               = 0;
         mInt          previous        = i;
 
-        static mBool displayTmp   = true;
-        static mBool displaySpeed = true;
+        static mBool displayTmp    = true;
+        static mBool displaySpeed  = true;
         static mBool runtimeUpdate = false;
 
         for (mInt pix = 0; pix < s_nbRow * s_nbCol; ++pix)
@@ -806,19 +857,19 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
                 displayTmp ? m_universes[previous].Q[pix].T / 10 : 0;
 
             m_pixelData[pix].g =
-                displaySpeed ? m_universes[previous].Q[pix].uh : 0;
+                displaySpeed ? m_universes[previous].Q[pix].uh * 0.5 + 0.5 : 0;
             m_pixelData[pix].b =
-                displaySpeed ? m_universes[previous].Q[pix].uv : 0;
+                displaySpeed ? m_universes[previous].Q[pix].uv * 0.5 + 0.5 : 0;
         }
 
-        if(runtimeUpdate)
+        if (runtimeUpdate)
         {
             i = (i + 1) % 2;
             Simulate(m_universes[previous], m_universes[i],
                      simulationSpeed * 0.016f);
         }
 
-        start_dearImGuiNewFrame(m_iRenderer);
+        start_dearImGuiNewFrame(*m_pDx12Api);
 
         ImGui::NewFrame();
 
@@ -847,16 +898,17 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
 
         ImGui::Render();
 
-        if (m_hdlSurface->isValid)
-        {
-            m_hdlSurface->surface->render();
-        }
+        m_tasksetExecutor.run();
 
         return true;
     }
 
-    m::render::IRenderer*           m_iRenderer;
-    m::render::ISurface::HdlPtr     m_hdlSurface;
+    m::render::mIApi*       m_pDx12Api;
+    m::render::mISwapchain* m_pDx12Swapchain;
+    m::render::mISynchTool* m_pDx12SynchTool;
+
+    m::render::mTasksetExecutor m_tasksetExecutor;
+
     m::input::mCallbackInputManager m_inputManager;
     m::windows::mIWindow*           m_mainWindow;
 

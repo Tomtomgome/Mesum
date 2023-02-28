@@ -20,8 +20,8 @@ static const int s_nbCol = 50;
 ///////////////////////////////////////////////////////////////////////////////
 struct TaskDataFluidSimulation : public m::render::TaskData
 {
-    m::render::ISurface::HdlPtr m_hdlOutput{};
-    std::vector<m::math::mVec4>*     m_pPixelData = nullptr;
+    m::render::mIRenderTarget*   pOutputRT    = nullptr;
+    std::vector<m::math::mVec4>* pPixelData   = nullptr;
 
     mIfDx12Enabled(m::render::Task* getNew_dx12Implementation(
         m::render::TaskData* a_data) override);
@@ -45,8 +45,7 @@ struct TaskFluidSimulation : public m::render::Task
 ///////////////////////////////////////////////////////////////////////////////
 mIfDx12Enabled(
     struct Dx12TaskFluidSimulation
-    : public TaskFluidSimulation
-    {
+    : public TaskFluidSimulation {
         explicit Dx12TaskFluidSimulation(TaskDataFluidSimulation * a_data);
         void prepare() override;
         void execute() const override;

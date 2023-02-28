@@ -42,8 +42,10 @@ struct VulkanBufferBase : public BufferBase<tt_Vertex, tt_Index>
 {
     VkBuffer       vertexBuffer             = VK_NULL_HANDLE;
     VkDeviceMemory vertexBufferDeviceMemory = VK_NULL_HANDLE;
+    VkDeviceSize   vertexAllocationSize     = 0;
     VkBuffer       indexBuffer              = VK_NULL_HANDLE;
     VkDeviceMemory indexBufferDeviceMemory  = VK_NULL_HANDLE;
+    VkDeviceSize   indexAllocationSize      = 0;
 };
 
 template <typename tt_Vertex, typename tt_Index>
@@ -123,6 +125,8 @@ void upload_data(VulkanBufferBase<tt_Vertex, tt_Index>& a_buffer,
                 "failed to allocate vertex buffer memory!");
         }
 
+        a_buffer.vertexAllocationSize = memRequirements.size;
+
         vkBindBufferMemory(device, a_buffer.vertexBuffer,
                            a_buffer.vertexBufferDeviceMemory, 0);
     }
@@ -165,6 +169,8 @@ void upload_data(VulkanBufferBase<tt_Vertex, tt_Index>& a_buffer,
             throw std::runtime_error("failed to allocate index buffer memory!");
         }
 
+        a_buffer.indexAllocationSize = memRequirements.size;
+
         vkBindBufferMemory(device, a_buffer.indexBuffer,
                            a_buffer.indexBufferDeviceMemory, 0);
     }
@@ -173,9 +179,9 @@ void upload_data(VulkanBufferBase<tt_Vertex, tt_Index>& a_buffer,
     void *pVtxResource, *pIdxResource;
 
     vkMapMemory(device, a_buffer.vertexBufferDeviceMemory, 0,
-                a_vertices.size() * a_buffer.vertexSize, 0, &pVtxResource);
+                a_buffer.vertexAllocationSize, 0, &pVtxResource);
     vkMapMemory(device, a_buffer.indexBufferDeviceMemory, 0,
-                a_indices.size() * a_buffer.indexSize, 0, &pIdxResource);
+                a_buffer.indexAllocationSize, 0, &pIdxResource);
 
     auto vtxDest = (tt_Vertex*)pVtxResource;
     auto idxDest = (tt_Index*)pIdxResource;
@@ -329,8 +335,8 @@ struct TaskData2dRender : public TaskData
 
     DataMeshBuffer<BasicVertex, mU16>* m_pMeshBuffer = nullptr;
 
-    math::mMat4x4*                     m_pMatrix     = nullptr;
-    std::vector<mRange>*               m_pRanges     = nullptr;
+    math::mMat4x4*       m_pMatrix = nullptr;
+    std::vector<mRange>* m_pRanges = nullptr;
 
     mIfDx12Enabled(Task* getNew_dx12Implementation(TaskData* a_data) override);
     mIfVulkanEnabled(Task* getNew_vulkanImplementation(TaskData* a_data)
