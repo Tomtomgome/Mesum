@@ -19,12 +19,14 @@ void DX12Context::init(mBool a_useWarp)
     m_device = create_device(dxgiAdapter4);
     mD3D12DebugNamed(m_device, "Main context device");
 
-    m_commandQueue.init(m_device, D3D12_COMMAND_LIST_TYPE_DIRECT);
+    m_graphicsCommandQueue.init(m_device, D3D12_COMMAND_LIST_TYPE_DIRECT);
+    m_computeCommandQueue.init(m_device, D3D12_COMMAND_LIST_TYPE_COMPUTE);
 }
 
 void DX12Context::deinit()
 {
-    m_commandQueue.destroy();
+    m_graphicsCommandQueue.destroy();
+    m_computeCommandQueue.destroy();
 }
 
 void openRenderModule()

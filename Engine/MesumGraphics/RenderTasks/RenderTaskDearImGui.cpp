@@ -58,7 +58,7 @@ Dx12TaskDrawDearImGui::~Dx12TaskDrawDearImGui()
 void Dx12TaskDrawDearImGui::execute() const
 {
     dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
-        dx12::DX12Context::gs_dx12Contexte->get_commandQueue()
+        dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
             .get_commandList();
 
     auto pOutputRT =
@@ -72,7 +72,7 @@ void Dx12TaskDrawDearImGui::execute() const
     ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(),
                                   graphicCommandList.Get());
 
-    dx12::DX12Context::gs_dx12Contexte->get_commandQueue().execute_commandList(
+    dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue().execute_commandList(
         graphicCommandList.Get());
 }
 

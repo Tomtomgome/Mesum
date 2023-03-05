@@ -91,13 +91,13 @@ void mTaskSwapchainWaitForRTDx12::execute() const
         waitIndex = synchTool.currentFenceIndex;
     }
 
-    dx12::DX12Context::gs_dx12Contexte->get_commandQueue().wait_fenceValue(
+    dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue().wait_fenceValue(
         synchTool.fenceValues[waitIndex]);
 
     auto backbuffer = swapchain.get_backbuffer(synchTool.currentFenceIndex);
 
     dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
-        dx12::DX12Context::gs_dx12Contexte->get_commandQueue()
+        dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
             .get_commandList();
     // Clear the render target.
     {
@@ -119,7 +119,7 @@ void mTaskSwapchainWaitForRTDx12::execute() const
         graphicCommandList->ClearRenderTargetView(outputRT.rtv, clearColor, 0,
                                                   nullptr);
 
-        dx12::DX12Context::gs_dx12Contexte->get_commandQueue()
+        dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
             .execute_commandList(graphicCommandList);
     }
 }
@@ -256,7 +256,7 @@ void mTaskSwapchainPresentDx12::execute() const
     auto& synchTool = *(static_cast<dx12::mSynchTool*>(taskData.pSynchTool));
 
     dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
-        dx12::DX12Context::gs_dx12Contexte->get_commandQueue()
+        dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
             .get_commandList();
 
     auto backbuffer = swapchain.get_backbuffer(synchTool.currentFenceIndex);
@@ -265,7 +265,7 @@ void mTaskSwapchainPresentDx12::execute() const
         D3D12_RESOURCE_STATE_PRESENT);
     graphicCommandList->ResourceBarrier(1, &barrier);
 
-    dx12::DX12Context::gs_dx12Contexte->get_commandQueue().execute_commandList(
+    dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue().execute_commandList(
         graphicCommandList);
 
     // UINT syncInterval = get_syncInterval();  // m_vSync ? 1 : 0;
@@ -276,7 +276,7 @@ void mTaskSwapchainPresentDx12::execute() const
     dx12::check_mhr(swapchain.get_swapchain()->Present(1, 0));
 
     synchTool.fenceValues[synchTool.currentFenceIndex] =
-        dx12::DX12Context::gs_dx12Contexte->get_commandQueue().signal_fence();
+        dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue().signal_fence();
 }
 
 //-----------------------------------------------------------------------------

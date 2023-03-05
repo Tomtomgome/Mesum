@@ -297,7 +297,7 @@ mBool Dx12Task2dRender::add_texture(resource::mRequestImage const& a_request)
     oTextureData.RowPitch                = stRowBytes;
 
     dx12::ComPtr<ID3D12GraphicsCommandList2> pUploadCommandList =
-        dx12::DX12Context::gs_dx12Contexte->get_commandQueue()
+        dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
             .get_commandList();
 
     UpdateSubresources(pUploadCommandList.Get(), pTextureResource,
@@ -310,7 +310,7 @@ mBool Dx12Task2dRender::add_texture(resource::mRequestImage const& a_request)
         pTextureResource, D3D12_RESOURCE_STATE_COPY_DEST, eAfterState);
     pUploadCommandList->ResourceBarrier(1, &oResourceBarrier);
 
-    dx12::DX12Context::gs_dx12Contexte->get_commandQueue().execute_commandList(
+    dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue().execute_commandList(
         pUploadCommandList.Get());
 
     D3D12_SHADER_RESOURCE_VIEW_DESC descShaderResourceView = {};
@@ -353,7 +353,7 @@ void Dx12Task2dRender::execute() const
         return;
     }
     dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
-        dx12::DX12Context::gs_dx12Contexte->get_commandQueue()
+        dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
             .get_commandList();
 
     ID3D12DescriptorHeap* const aHeaps[2] = {m_pSrvHeap.Get(),
@@ -421,7 +421,7 @@ void Dx12Task2dRender::execute() const
             range.indexCount, 1, range.indexStartLocation, 0, 0);
     }
 
-    dx12::DX12Context::gs_dx12Contexte->get_commandQueue().execute_commandList(
+    dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue().execute_commandList(
         graphicCommandList.Get());
 }
 

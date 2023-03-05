@@ -19,6 +19,9 @@
 #undef max
 #endif
 
+
+const m::logging::mChannelID m_FluidSimulation_ID = mLog_getId();
+
 using namespace m;
 
 static const mDouble s_cellSize = 1.0f;
@@ -523,9 +526,10 @@ profile::mProfilerMultiSampling<1> g_ProjectionProfiler;
 
 void Simulate(Universe const& a_input, Universe& a_output, mDouble a_deltaTime)
 {
-    mLog_info("SIMULATION STEP ---------------------");
+    mDisable_logChannels(m_FluidSimulation_ID);
+    mLog_infoTo(m_FluidSimulation_ID, "SIMULATION STEP ---------------------");
     //---- Advect
-    mLog_info("Advect");
+    mLog_infoTo(m_FluidSimulation_ID, "Advect");
     {
         profile::mRAIITiming timming(g_AdvectionProfiler);
         for (mInt row = 0; row < s_nbRow; ++row)
@@ -542,11 +546,11 @@ void Simulate(Universe const& a_input, Universe& a_output, mDouble a_deltaTime)
             }
         }
     }
-    mLog_info("--- Timing : ",
+    mLog_infoTo(m_FluidSimulation_ID, "--- Timing : ",
               g_AdvectionProfiler.get_average<mDouble, std::micro>());
 
     //---- Apply gravity
-    mLog_info("Apply gravity");
+    mLog_infoTo(m_FluidSimulation_ID, "Apply gravity");
     {
         profile::mRAIITiming timming(g_UpdateProfiler);
         for (mInt row = 0; row < s_nbRow; ++row)
@@ -559,17 +563,17 @@ void Simulate(Universe const& a_input, Universe& a_output, mDouble a_deltaTime)
             }
         }
     }
-    mLog_info("--- Timing : ",
+    mLog_infoTo(m_FluidSimulation_ID, "--- Timing : ",
               g_UpdateProfiler.get_average<mDouble, std::micro>());
 
     //---- Project
-    mLog_info("Project");
+    mLog_infoTo(m_FluidSimulation_ID, "Project");
     {
         std::stringstream debugString;
         debugString << std::setprecision(3) << std::fixed;
         profile::mRAIITiming timming(g_ProjectionProfiler);
         // Compute divergences
-        mLog_info("- Compute Divergences");
+        mLog_infoTo(m_FluidSimulation_ID, "- Compute Divergences");
         GridVector divergences;
         compute_divergence(a_output, divergences, a_deltaTime);
         divergences *= -1;
@@ -588,7 +592,7 @@ void Simulate(Universe const& a_input, Universe& a_output, mDouble a_deltaTime)
         //        }
         //        mLog_info("\n", debugString.str());
         // Set entries of A
-        mLog_info("- Set A");
+        mLog_infoTo(m_FluidSimulation_ID, "- Set A");
         GridVectorSP<EntryOfA> A;
         compute_entriesOfA(a_output, a_deltaTime, A);
 
@@ -633,7 +637,7 @@ void Simulate(Universe const& a_input, Universe& a_output, mDouble a_deltaTime)
         //        mLog_info("\n", debugString.str());
 
         // Construct MIC(0)
-        mLog_info("- Construct MIC");
+        mLog_infoTo(m_FluidSimulation_ID, "- Construct MIC");
         GridVector MIC0;
         compute_MIC0Entries(A, MIC0);
 
@@ -651,7 +655,7 @@ void Simulate(Universe const& a_input, Universe& a_output, mDouble a_deltaTime)
         //        }
         //        mLog_info("\n", debugString.str());
         // Solve Ap = d with MICCG(0)
-        mLog_info("- Solve");
+        mLog_infoTo(m_FluidSimulation_ID, "- Solve");
         GridVector pressures;
         compute_preconditionedConjugaiteGradient(MIC0, A, pressures,
                                                  divergences);
@@ -670,7 +674,7 @@ void Simulate(Universe const& a_input, Universe& a_output, mDouble a_deltaTime)
         //        }
         //        mLog_info("\n", debugString.str());
         // Change velocities according to pressures
-        mLog_info("- Update");
+        mLog_infoTo(m_FluidSimulation_ID, "- Update");
         update_velocities(pressures, a_output, a_deltaTime);
         /*
         debugString.seekp(std::ios_base::beg);
@@ -736,7 +740,7 @@ void Simulate(Universe const& a_input, Universe& a_output, mDouble a_deltaTime)
         //        }
         //        mLog_info("Final divergence : \n", debugString.str());
     }
-    mLog_info("--- Timing : ",
+    mLog_infoTo(m_FluidSimulation_ID, "--- Timing : ",
               g_ProjectionProfiler.get_average<mDouble, std::micro>());
 }
 
@@ -857,9 +861,9 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
                 displayTmp ? m_universes[previous].Q[pix].T / 10 : 0;
 
             m_pixelData[pix].g =
-                displaySpeed ? m_universes[previous].Q[pix].uh * 0.5 + 0.5 : 0;
+                displaySpeed ? m_universes[previous].Q[pix].uh : 0;
             m_pixelData[pix].b =
-                displaySpeed ? m_universes[previous].Q[pix].uv * 0.5 + 0.5 : 0;
+                displaySpeed ? m_universes[previous].Q[pix].uv : 0;
         }
 
         if (runtimeUpdate)
@@ -914,8 +918,6 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
 
     std::vector<m::math::mVec4> m_pixelData;
     Universe                    m_universes[2];
-
-    const m::logging::mChannelID m_FluidSimulation_ID = mLog_getId();
 };
 
 M_EXECUTE_WINDOWED_APP(FluidSimulationApp)

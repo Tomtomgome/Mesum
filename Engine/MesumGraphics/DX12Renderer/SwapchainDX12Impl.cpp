@@ -44,7 +44,7 @@ void mSwapchain::init_win32(Desc const& a_desc, DescWin32 const& a_descWin32)
     // Create a swap chain for the window.
     ComPtr<IDXGISwapChain1> swapChain1;
     check_mhr(dxgiFactory4->CreateSwapChainForHwnd(
-        DX12Context::gs_dx12Contexte->get_commandQueue()
+        DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
             .get_D3D12CommandQueue()
             .Get(),
         a_descWin32.hwd, &m_descSwapChain, nullptr, nullptr, &swapChain1));
@@ -108,7 +108,7 @@ void mSwapchain::resize(mU32 a_width, mU32 a_height)
     {
         m_currentDesc.width  = a_width;
         m_currentDesc.height = a_height;
-        DX12Context::gs_dx12Contexte->get_commandQueue().flush();
+        DX12Context::gs_dx12Contexte->get_graphicsCommandQueue().flush();
 
         for (mInt i = 0; i < swapChainDesc.BufferCount; ++i)
         {

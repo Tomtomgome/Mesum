@@ -26,6 +26,192 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
     TaskDataFluidSimulation* a_data)
     : TaskFluidSimulation(a_data)
 {
+    dx12::ComPtr<ID3D12Device> device =
+        dx12::DX12Context::gs_dx12Contexte->m_device;
+    HRESULT res;
+
+    // -------------------- Root Signatures
+    // ----------------- Field arrows rendering
+    std::vector<CD3DX12_ROOT_PARAMETER> vRootParameters;
+    vRootParameters.resize(2);
+
+    std::vector<CD3DX12_DESCRIPTOR_RANGE> vSamplerRanges;
+    vSamplerRanges.resize(1);
+    vSamplerRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER, 1, 0, 0);
+
+    std::vector<CD3DX12_DESCRIPTOR_RANGE> vTextureRanges;
+    vTextureRanges.resize(1);
+    vTextureRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 0);
+
+    vRootParameters[0].InitAsDescriptorTable(1, vSamplerRanges.data(),
+                                             D3D12_SHADER_VISIBILITY_PIXEL);
+    vRootParameters[1].InitAsDescriptorTable(1, vTextureRanges.data(),
+                                             D3D12_SHADER_VISIBILITY_PIXEL);
+
+    {
+        CD3DX12_ROOT_SIGNATURE_DESC descRootSignature;
+        descRootSignature.Init(vRootParameters.size(), vRootParameters.data(),
+                               0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_NONE);
+
+        dx12::ComPtr<ID3DBlob> rootBlob;
+        dx12::ComPtr<ID3DBlob> errorBlob;
+        res = D3D12SerializeRootSignature(&descRootSignature,
+                                          D3D_ROOT_SIGNATURE_VERSION_1,
+                                          &rootBlob, &errorBlob);
+        if (FAILED(res))
+        {
+            if (errorBlob != nullptr)
+            {
+                mLog_info((char*)errorBlob->GetBufferPointer());
+            }
+        }
+
+        dx12::check_mhr(device->CreateRootSignature(
+            0, rootBlob->GetBufferPointer(), rootBlob->GetBufferSize(),
+            IID_PPV_ARGS(&m_rootSignature)));
+    }
+
+    // ----------------- Field arrows rendering compute
+    vRootParameters.resize(3);
+
+    // vSamplerRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER, 1, 0,
+    //                        D3D12_DESCRIPTOR_RANGE_FLAG_DESCRIPTORS_VOLATILE);
+    // vTextureRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0,
+    //                        D3D12_DESCRIPTOR_RANGE_FLAG_DESCRIPTORS_VOLATILE);
+
+    std::vector<CD3DX12_DESCRIPTOR_RANGE> vOutputRanges;
+    vOutputRanges.resize(1);
+    vOutputRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, 1, 0, 0);
+
+    vRootParameters[0].InitAsDescriptorTable(1, vSamplerRanges.data());
+    vRootParameters[1].InitAsDescriptorTable(1, vTextureRanges.data());
+    vRootParameters[2].InitAsDescriptorTable(1, vOutputRanges.data());
+
+    {
+        CD3DX12_ROOT_SIGNATURE_DESC descRootSignature;
+        descRootSignature.Init(vRootParameters.size(), vRootParameters.data(),
+                               0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_NONE);
+
+        dx12::ComPtr<ID3DBlob> rootBlob;
+        dx12::ComPtr<ID3DBlob> errorBlob;
+        res = D3D12SerializeRootSignature(&descRootSignature,
+                                          D3D_ROOT_SIGNATURE_VERSION_1,
+                                          &rootBlob, &errorBlob);
+        if (FAILED(res))
+        {
+            if (errorBlob != nullptr)
+            {
+                mLog_info((char*)errorBlob->GetBufferPointer());
+            }
+        }
+
+        dx12::check_mhr(device->CreateRootSignature(
+            0, rootBlob->GetBufferPointer(), rootBlob->GetBufferSize(),
+            IID_PPV_ARGS(&m_fieldRootSignatureCompute)));
+    }
+
+    // ----------------- Field arrows rendering
+    {
+        CD3DX12_ROOT_SIGNATURE_DESC descRootSignature;
+        descRootSignature.Init(
+            0, nullptr, 0, nullptr,
+            D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+
+        dx12::ComPtr<ID3DBlob> rootBlob;
+        dx12::ComPtr<ID3DBlob> errorBlob;
+        res = D3D12SerializeRootSignature(&descRootSignature,
+                                          D3D_ROOT_SIGNATURE_VERSION_1,
+                                          &rootBlob, &errorBlob);
+        if (FAILED(res))
+        {
+            if (errorBlob != nullptr)
+            {
+                mLog_info((char*)errorBlob->GetBufferPointer());
+            }
+        }
+
+        dx12::check_mhr(device->CreateRootSignature(
+            0, rootBlob->GetBufferPointer(), rootBlob->GetBufferSize(),
+            IID_PPV_ARGS(&m_fieldRootSignature)));
+    }
+
+    // -------------------- Pipeline state descriptions
+    // ----------------- Field arrows rendering
+    D3D12_COMPUTE_PIPELINE_STATE_DESC fieldPipelineDescCompute{};
+
+    dx12::ComPtr<ID3DBlob> cs_field =
+        dx12::compile_shader("data/vectorField.hlsl", "cs_main", "cs_6_0");
+
+    fieldPipelineDescCompute.CS.BytecodeLength  = cs_field->GetBufferSize();
+    fieldPipelineDescCompute.CS.pShaderBytecode = cs_field->GetBufferPointer();
+    fieldPipelineDescCompute.pRootSignature = m_fieldRootSignatureCompute.Get();
+
+    dx12::check_mhr(device->CreateComputePipelineState(
+        &fieldPipelineDescCompute, IID_PPV_ARGS(&m_psoFieldCompute)));
+
+    D3D12_GRAPHICS_PIPELINE_STATE_DESC fieldPipelineDesc{};
+
+    dx12::ComPtr<ID3DBlob> vs_field =
+        dx12::compile_shader("data/vectorField.hlsl", "vs_main", "vs_6_0");
+    dx12::ComPtr<ID3DBlob> ps_field =
+        dx12::compile_shader("data/vectorField.hlsl", "ps_main", "ps_6_0");
+
+    const D3D12_INPUT_ELEMENT_DESC inputElements[] = {
+        {"POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0,
+         D3D12_APPEND_ALIGNED_ELEMENT,
+         D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
+        {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0,
+         D3D12_APPEND_ALIGNED_ELEMENT,
+         D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0}};
+
+    fieldPipelineDesc.InputLayout.pInputElementDescs = inputElements;
+    fieldPipelineDesc.InputLayout.NumElements        = std::size(inputElements);
+    fieldPipelineDesc.IBStripCutValue =
+        D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_0xFFFF;
+
+    fieldPipelineDesc.VS.BytecodeLength  = vs_field->GetBufferSize();
+    fieldPipelineDesc.VS.pShaderBytecode = vs_field->GetBufferPointer();
+    fieldPipelineDesc.PS.BytecodeLength  = ps_field->GetBufferSize();
+    fieldPipelineDesc.PS.pShaderBytecode = ps_field->GetBufferPointer();
+
+    fieldPipelineDesc.NumRenderTargets = 1;
+    fieldPipelineDesc.RTVFormats[0]    = DXGI_FORMAT_B8G8R8A8_UNORM;
+    fieldPipelineDesc.BlendState       = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+    fieldPipelineDesc.BlendState.RenderTarget[0].BlendEnable = 1;
+    fieldPipelineDesc.BlendState.RenderTarget[0].SrcBlend =
+        D3D12_BLEND_SRC_ALPHA;
+    fieldPipelineDesc.BlendState.RenderTarget[0].DestBlend =
+        D3D12_BLEND_INV_SRC_ALPHA;
+    fieldPipelineDesc.BlendState.RenderTarget[0].SrcBlendAlpha =
+        D3D12_BLEND_SRC_ALPHA;
+    fieldPipelineDesc.BlendState.RenderTarget[0].DestBlendAlpha =
+        D3D12_BLEND_INV_SRC_ALPHA;
+    fieldPipelineDesc.BlendState.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+    fieldPipelineDesc.BlendState.RenderTarget[0].BlendOpAlpha =
+        D3D12_BLEND_OP_ADD;
+
+    fieldPipelineDesc.SampleMask = 0xFFFFFFFF;
+
+    fieldPipelineDesc.RasterizerState.SlopeScaledDepthBias  = 0;
+    fieldPipelineDesc.RasterizerState.DepthClipEnable       = false;
+    fieldPipelineDesc.RasterizerState.MultisampleEnable     = false;
+    fieldPipelineDesc.RasterizerState.AntialiasedLineEnable = false;
+    fieldPipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
+    fieldPipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
+    fieldPipelineDesc.RasterizerState.FrontCounterClockwise = true;
+    fieldPipelineDesc.RasterizerState.DepthBias             = 0;
+    fieldPipelineDesc.RasterizerState.DepthBiasClamp        = 0.0;
+
+    fieldPipelineDesc.PrimitiveTopologyType =
+        D3D12_PRIMITIVE_TOPOLOGY_TYPE_LINE;
+    fieldPipelineDesc.SampleDesc.Count = 1;
+
+    fieldPipelineDesc.pRootSignature = m_fieldRootSignature.Get();
+    dx12::check_mhr(device->CreateGraphicsPipelineState(
+        &fieldPipelineDesc, IID_PPV_ARGS(&m_psoField)));
+
+    // ----------------- Original texture rendering
+
     D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
 
     dx12::ComPtr<ID3DBlob> vs =
@@ -71,47 +257,6 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
     pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
     pipelineDesc.SampleDesc.Count      = 1;
 
-    std::vector<CD3DX12_ROOT_PARAMETER> vRootParameters;
-    vRootParameters.resize(2);
-
-    std::vector<CD3DX12_DESCRIPTOR_RANGE> vSamplerRanges;
-    vSamplerRanges.resize(1);
-    vSamplerRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER, 1, 0, 0);
-    std::vector<CD3DX12_DESCRIPTOR_RANGE> vTextureRanges;
-    vTextureRanges.resize(1);
-    vTextureRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 0);
-
-    vRootParameters[0].InitAsDescriptorTable(1, vSamplerRanges.data(),
-                                             D3D12_SHADER_VISIBILITY_PIXEL);
-    vRootParameters[1].InitAsDescriptorTable(1, vTextureRanges.data(),
-                                             D3D12_SHADER_VISIBILITY_PIXEL);
-
-    CD3DX12_ROOT_SIGNATURE_DESC descRootSignature;
-    descRootSignature.Init(vRootParameters.size(), vRootParameters.data(), 0,
-                           nullptr, D3D12_ROOT_SIGNATURE_FLAG_NONE);
-
-    dx12::ComPtr<ID3DBlob> rootBlob;
-    dx12::ComPtr<ID3DBlob> errorBlob;
-    HRESULT                res;
-    res = D3D12SerializeRootSignature(&descRootSignature,
-                                      D3D_ROOT_SIGNATURE_VERSION_1, &rootBlob,
-                                      &errorBlob);
-
-    if (FAILED(res))
-    {
-        if (errorBlob != nullptr)
-        {
-            mLog_info((char*)errorBlob->GetBufferPointer());
-        }
-    }
-    dx12::ComPtr<ID3D12Device> device =
-        dx12::DX12Context::gs_dx12Contexte->m_device;
-    ID3D12Device2* pDevice = dx12::DX12Context::gs_dx12Contexte->m_device.Get();
-
-    dx12::check_mhr(device->CreateRootSignature(
-        0, rootBlob->GetBufferPointer(), rootBlob->GetBufferSize(),
-        IID_PPV_ARGS(&m_rootSignature)));
-
     pipelineDesc.pRootSignature = m_rootSignature.Get();
 
     dx12::check_mhr(device->CreateGraphicsPipelineState(&pipelineDesc,
@@ -142,20 +287,20 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
     descSampler.AddressW = eDx12AddressMode;
 
     // HEAPS ------------------------------------------------------------------
-    m_incrementSizeSrv = pDevice->GetDescriptorHandleIncrementSize(
+    m_incrementSizeSrv = device->GetDescriptorHandleIncrementSize(
         D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
     D3D12_DESCRIPTOR_HEAP_DESC sSrvHeapDesc = {};
-    sSrvHeapDesc.NumDescriptors             = sm_sizeSrvHeap;
+    sSrvHeapDesc.NumDescriptors             = sm_sizeSrvHeap + sm_sizeHeapOutBuffer;
     sSrvHeapDesc.Type     = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
     sSrvHeapDesc.NodeMask = 0;
     sSrvHeapDesc.Flags    = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 
-    HRESULT hr = pDevice->CreateDescriptorHeap(
+    HRESULT hr = device->CreateDescriptorHeap(
         &sSrvHeapDesc, IID_PPV_ARGS(m_pSrvHeap.GetAddressOf()));
     mAssert(hr == S_OK);
     m_pSrvHeap.Get()->SetName(L"Texture SRV Heap");
 
-    m_incrementSizeSampler = pDevice->GetDescriptorHandleIncrementSize(
+    m_incrementSizeSampler = device->GetDescriptorHandleIncrementSize(
         D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER);
     D3D12_DESCRIPTOR_HEAP_DESC sSamplerHeapDesc = {};
     sSamplerHeapDesc.NumDescriptors             = sm_sizeSamplerHeap;
@@ -163,25 +308,29 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
     sSamplerHeapDesc.NodeMask = 0;
     sSamplerHeapDesc.Flags    = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 
-    hr = pDevice->CreateDescriptorHeap(
+    hr = device->CreateDescriptorHeap(
         &sSamplerHeapDesc, IID_PPV_ARGS(m_pSamplerHeap.GetAddressOf()));
     mAssert(hr == S_OK);
     m_pSamplerHeap.Get()->SetName(L"Texture Sampler Heap");
 
     // Descriptors ------------------------------------------------------------
-
+    // Descriptors for the textures
     for (int i = 0; i < dx12::DX12Surface::scm_numFrames; ++i)
     {
         m_GPUDescHdlTexture[i] = CD3DX12_GPU_DESCRIPTOR_HANDLE(
             m_pSrvHeap->GetGPUDescriptorHandleForHeapStart(), i,
             m_incrementSizeSrv);
     }
-
+    // Descriptor for output buffer
+    m_GPUDescHdlOutBuffer = CD3DX12_GPU_DESCRIPTOR_HANDLE(
+        m_pSrvHeap->GetGPUDescriptorHandleForHeapStart(), dx12::DX12Surface::scm_numFrames,
+        m_incrementSizeSrv);
+    // Descriptor for sampler
     CD3DX12_CPU_DESCRIPTOR_HANDLE const hldCPUSampler(
         m_pSamplerHeap->GetCPUDescriptorHandleForHeapStart(), 0,
         m_incrementSizeSampler);
 
-    pDevice->CreateSampler(&descSampler, hldCPUSampler);
+    device->CreateSampler(&descSampler, hldCPUSampler);
 
     m_GPUDescHdlSampler = CD3DX12_GPU_DESCRIPTOR_HANDLE(
         m_pSamplerHeap->GetGPUDescriptorHandleForHeapStart(), 0,
@@ -204,7 +353,7 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
         m_pTextureResources.emplace_back();
 
         auto oHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
-        hr                   = pDevice->CreateCommittedResource(
+        hr                   = device->CreateCommittedResource(
                               &oHeapProperties, D3D12_HEAP_FLAG_NONE, &descTexture,
                               D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, nullptr,
                               IID_PPV_ARGS(m_pTextureResources.back().GetAddressOf()));
@@ -220,7 +369,7 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
 
         oHeapProperties    = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
         auto oResourceDesc = CD3DX12_RESOURCE_DESC::Buffer(uploadBufferSize);
-        hr                 = pDevice->CreateCommittedResource(
+        hr                 = device->CreateCommittedResource(
                             &oHeapProperties, D3D12_HEAP_FLAG_NONE, &oResourceDesc,
                             D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
                             IID_PPV_ARGS(m_pUploadResources.back().GetAddressOf()));
@@ -243,9 +392,143 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
             m_pSrvHeap->GetCPUDescriptorHandleForHeapStart(), i,
             m_incrementSizeSrv);
 
-        pDevice->CreateShaderResourceView(m_pTextureResources.back().Get(),
-                                          &descShaderResourceView, hdlCPUSrv);
+        device->CreateShaderResourceView(m_pTextureResources.back().Get(),
+                                         &descShaderResourceView, hdlCPUSrv);
     }
+
+    // ---------------- Arrows vertex and index buffer
+
+    {
+        D3D12_HEAP_PROPERTIES props;
+        memset(&props, 0, sizeof(D3D12_HEAP_PROPERTIES));
+        props.Type                 = D3D12_HEAP_TYPE_DEFAULT;
+        props.CPUPageProperty      = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
+        props.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
+        D3D12_RESOURCE_DESC desc;
+        memset(&desc, 0, sizeof(D3D12_RESOURCE_DESC));
+        desc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+        desc.Width =
+            s_nbRow * s_nbCol * sm_nbVertexPerArrows * sm_sizeVertexArrow;
+        desc.Height           = 1;
+        desc.DepthOrArraySize = 1;
+        desc.MipLevels        = 1;
+        desc.Format           = DXGI_FORMAT_UNKNOWN;
+        desc.SampleDesc.Count = 1;
+        desc.Layout           = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+        desc.Flags            = D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS;
+        if (device->CreateCommittedResource(
+                &props, D3D12_HEAP_FLAG_NONE, &desc,
+                D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, nullptr,
+                IID_PPV_ARGS(&m_pVertexBufferArrows)) < 0)
+            return;
+
+    D3D12_UNORDERED_ACCESS_VIEW_DESC descUAV = {};
+    descUAV.Format = DXGI_FORMAT_UNKNOWN;
+    descUAV.ViewDimension = D3D12_UAV_DIMENSION_BUFFER;
+    descUAV.Buffer.StructureByteStride = sm_sizeVertexArrow;
+    descUAV.Buffer.NumElements = sm_nbVertexPerArrows * s_nbCol * s_nbRow;
+
+    // CPU Descriptor for the output buffer
+    CD3DX12_CPU_DESCRIPTOR_HANDLE const hdlCPUSrv(
+        m_pSrvHeap->GetCPUDescriptorHandleForHeapStart(), dx12::DX12Surface::scm_numFrames,
+        m_incrementSizeSrv);
+
+    device->CreateUnorderedAccessView(m_pVertexBufferArrows.Get(), nullptr,
+                                     &descUAV, hdlCPUSrv);
+    }
+
+    {
+        D3D12_HEAP_PROPERTIES props;
+        memset(&props, 0, sizeof(D3D12_HEAP_PROPERTIES));
+        props.Type                 = D3D12_HEAP_TYPE_DEFAULT;
+        props.CPUPageProperty      = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
+        props.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
+        D3D12_RESOURCE_DESC desc;
+        memset(&desc, 0, sizeof(D3D12_RESOURCE_DESC));
+        desc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+        desc.Width =
+            s_nbRow * s_nbCol * sm_nbIndexPerArrows * sm_sizeIndexArrow;
+        desc.Height           = 1;
+        desc.DepthOrArraySize = 1;
+        desc.MipLevels        = 1;
+        desc.Format           = DXGI_FORMAT_UNKNOWN;
+        desc.SampleDesc.Count = 1;
+        desc.Layout           = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+        desc.Flags            = D3D12_RESOURCE_FLAG_NONE;
+        if (device->CreateCommittedResource(
+                &props, D3D12_HEAP_FLAG_NONE, &desc,
+                D3D12_RESOURCE_STATE_COPY_DEST, nullptr,
+                IID_PPV_ARGS(&m_pIndexBufferArrows)) < 0)
+            return;
+    }
+
+    // Upload generated indices
+    dx12::ComPtr<ID3D12Resource> pUploadTextureResource;
+    D3D12_HEAP_PROPERTIES        props;
+    memset(&props, 0, sizeof(D3D12_HEAP_PROPERTIES));
+    props.Type                 = D3D12_HEAP_TYPE_UPLOAD;
+    props.CPUPageProperty      = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
+    props.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
+    D3D12_RESOURCE_DESC desc;
+    memset(&desc, 0, sizeof(D3D12_RESOURCE_DESC));
+    desc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+    desc.Width  = s_nbRow * s_nbCol * sm_nbIndexPerArrows * sm_sizeIndexArrow;
+    desc.Height = 1;
+    desc.DepthOrArraySize = 1;
+    desc.MipLevels        = 1;
+    desc.Format           = DXGI_FORMAT_UNKNOWN;
+    desc.SampleDesc.Count = 1;
+    desc.Layout           = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+    desc.Flags            = D3D12_RESOURCE_FLAG_NONE;
+    if (device->CreateCommittedResource(
+            &props, D3D12_HEAP_FLAG_NONE, &desc,
+            D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+            IID_PPV_ARGS(&pUploadTextureResource)) < 0)
+        return;
+
+    // Upload vertex/index data into a single contiguous GPU buffer
+    void*       idxResource;
+    D3D12_RANGE range;
+    memset(&range, 0, sizeof(D3D12_RANGE));
+    if (pUploadTextureResource->Map(0, &range, &idxResource) != S_OK)
+    {
+        mLog_error("Could not map index buffer");
+        return;
+    }
+
+    auto idxDest = (mU16*)idxResource;
+
+    mU16 indices[s_nbRow * s_nbCol * sm_nbIndexPerArrows];
+    for (mUInt i = 0, vIdx = 0; i < s_nbRow * s_nbCol * sm_nbIndexPerArrows;
+         i += sm_nbIndexPerArrows, vIdx += sm_nbVertexPerArrows)
+    {
+        indices[i] = vIdx;
+        indices[i+1] = vIdx+1;
+        indices[i+2] = vIdx+2;
+        indices[i+3] = 0xFFFF;
+        indices[i+4] = vIdx+1;
+        indices[i+5] = vIdx+3;
+        indices[i+6] = 0xFFFF;
+    }
+
+    memcpy(idxDest, indices, s_nbRow * s_nbCol * sm_nbIndexPerArrows * sm_sizeIndexArrow);
+
+    pUploadTextureResource->Unmap(0, &range);
+
+    dx12::ComPtr<ID3D12GraphicsCommandList2> pUploadCommandList =
+        dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
+            .get_commandList();
+
+    pUploadCommandList->CopyResource(m_pIndexBufferArrows.Get(),
+                                     pUploadTextureResource.Get());
+
+    auto resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
+        m_pIndexBufferArrows.Get(), D3D12_RESOURCE_STATE_COPY_DEST,
+        D3D12_RESOURCE_STATE_INDEX_BUFFER);
+    pUploadCommandList->ResourceBarrier(1, &resourceBarrier);
+
+    dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
+        .execute_commandList(pUploadCommandList.Get());
 }
 
 //-----------------------------------------------------------------------------
@@ -262,9 +545,10 @@ void Dx12TaskFluidSimulation::prepare()
 void Dx12TaskFluidSimulation::execute() const
 {
     dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
-        dx12::DX12Context::gs_dx12Contexte->get_commandQueue()
+        dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
             .get_commandList();
 
+    // ---------------- Upload the simulated texture
     ID3D12Resource* pTextureResource = m_pTextureResources[m_i].Get();
     ID3D12Resource* pUploadResource  = m_pUploadResources[m_i].Get();
 
@@ -294,6 +578,7 @@ void Dx12TaskFluidSimulation::execute() const
         D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
     graphicCommandList->ResourceBarrier(1, &oResourceBarrier);
 
+    // ---------------- Renders the fluid
     ID3D12DescriptorHeap* const aHeaps[2] = {m_pSrvHeap.Get(),
                                              m_pSamplerHeap.Get()};
 
@@ -334,8 +619,79 @@ void Dx12TaskFluidSimulation::execute() const
 
     graphicCommandList->DrawInstanced(3, 1, 0, 0);
 
-    dx12::DX12Context::gs_dx12Contexte->get_commandQueue().execute_commandList(
-        graphicCommandList.Get());
+    dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
+        .execute_commandList(graphicCommandList.Get());
+
+    // ---------------- Field arrows display
+    // ---------------- Compute part
+    dx12::ComPtr<ID3D12GraphicsCommandList2> computeCommandList =
+        dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+            .get_commandList();
+
+    auto resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
+        m_pVertexBufferArrows.Get(), D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+    graphicCommandList->ResourceBarrier(1, &resourceBarrier);
+
+    graphicCommandList->SetDescriptorHeaps(2, aHeaps);
+
+    computeCommandList->SetPipelineState(m_psoFieldCompute.Get());
+    computeCommandList->SetComputeRootSignature(
+        m_fieldRootSignatureCompute.Get());
+
+    computeCommandList->SetComputeRootDescriptorTable(0, m_GPUDescHdlSampler);
+    computeCommandList->SetComputeRootDescriptorTable(1,
+                                                      m_GPUDescHdlTexture[m_i]);
+    computeCommandList->SetComputeRootDescriptorTable(2,
+                                                      m_GPUDescHdlOutBuffer);
+
+    computeCommandList->Dispatch(s_nbRow, s_nbCol, 1);
+
+    dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+        .execute_commandList(computeCommandList);
+
+    // ---------------- Render part
+
+    dx12::ComPtr<ID3D12GraphicsCommandList2> graphicsCommandListField =
+        dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
+            .get_commandList();
+
+    resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
+        m_pVertexBufferArrows.Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
+    graphicsCommandListField->ResourceBarrier(1, &resourceBarrier);
+
+    graphicsCommandListField->SetDescriptorHeaps(2, aHeaps);
+
+    graphicCommandList->OMSetRenderTargets(1, &rtv, FALSE, nullptr);
+    graphicCommandList->RSSetViewports(1, &viewport);
+    graphicCommandList->RSSetScissorRects(1, &scissorRect);
+
+    graphicsCommandListField->SetPipelineState(m_psoField.Get());
+    graphicsCommandListField->SetGraphicsRootSignature(
+        m_fieldRootSignature.Get());
+
+    graphicCommandList->IASetPrimitiveTopology(
+        D3D_PRIMITIVE_TOPOLOGY_LINESTRIP);
+
+    D3D12_VERTEX_BUFFER_VIEW vbv;
+    memset(&vbv, 0, sizeof(D3D12_VERTEX_BUFFER_VIEW));
+    vbv.BufferLocation = m_pVertexBufferArrows->GetGPUVirtualAddress();
+    vbv.SizeInBytes =
+        s_nbRow * s_nbCol * sm_nbVertexPerArrows * sm_sizeVertexArrow;
+    vbv.StrideInBytes = sm_sizeVertexArrow;
+    graphicsCommandListField->IASetVertexBuffers(0, 1, &vbv);
+    D3D12_INDEX_BUFFER_VIEW ibv;
+    memset(&ibv, 0, sizeof(D3D12_INDEX_BUFFER_VIEW));
+    ibv.BufferLocation = m_pIndexBufferArrows->GetGPUVirtualAddress();
+    ibv.SizeInBytes =
+        s_nbRow * s_nbCol * sm_nbIndexPerArrows * sm_sizeIndexArrow;
+    ibv.Format = DXGI_FORMAT_R16_UINT;
+    graphicsCommandListField->IASetIndexBuffer(&ibv);
+
+    graphicsCommandListField->DrawIndexedInstanced(
+        s_nbRow * s_nbCol * sm_nbIndexPerArrows, 1, 0, 0, 0);
+
+    dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
+        .execute_commandList(graphicsCommandListField);
 }
 
 //-----------------------------------------------------------------------------

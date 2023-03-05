@@ -244,7 +244,7 @@ void Dx12Task3dRender::execute() const
     graphicCommandList->DrawIndexedInstanced(
         m_taskData.m_pMeshBuffer->m_indices.size(), 1u, 0u, 0u, 0u);
 
-    dx12::DX12Context::gs_dx12Contexte->get_commandQueue().execute_commandList(
+    dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue().execute_commandList(
         graphicCommandList.Get());*/
 }
 
