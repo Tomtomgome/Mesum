@@ -19,7 +19,6 @@
 #undef max
 #endif
 
-
 const m::logging::mChannelID m_FluidSimulation_ID = mLog_getId();
 
 using namespace m;
@@ -547,7 +546,7 @@ void Simulate(Universe const& a_input, Universe& a_output, mDouble a_deltaTime)
         }
     }
     mLog_infoTo(m_FluidSimulation_ID, "--- Timing : ",
-              g_AdvectionProfiler.get_average<mDouble, std::micro>());
+                g_AdvectionProfiler.get_average<mDouble, std::micro>());
 
     //---- Apply gravity
     mLog_infoTo(m_FluidSimulation_ID, "Apply gravity");
@@ -564,7 +563,7 @@ void Simulate(Universe const& a_input, Universe& a_output, mDouble a_deltaTime)
         }
     }
     mLog_infoTo(m_FluidSimulation_ID, "--- Timing : ",
-              g_UpdateProfiler.get_average<mDouble, std::micro>());
+                g_UpdateProfiler.get_average<mDouble, std::micro>());
 
     //---- Project
     mLog_infoTo(m_FluidSimulation_ID, "Project");
@@ -741,7 +740,7 @@ void Simulate(Universe const& a_input, Universe& a_output, mDouble a_deltaTime)
         //        mLog_info("Final divergence : \n", debugString.str());
     }
     mLog_infoTo(m_FluidSimulation_ID, "--- Timing : ",
-              g_ProjectionProfiler.get_average<mDouble, std::micro>());
+                g_ProjectionProfiler.get_average<mDouble, std::micro>());
 }
 
 class FluidSimulationApp : public m::crossPlatform::IWindowedApplication

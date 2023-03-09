@@ -290,10 +290,10 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
     m_incrementSizeSrv = device->GetDescriptorHandleIncrementSize(
         D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
     D3D12_DESCRIPTOR_HEAP_DESC sSrvHeapDesc = {};
-    sSrvHeapDesc.NumDescriptors             = sm_sizeSrvHeap + sm_sizeHeapOutBuffer;
-    sSrvHeapDesc.Type     = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-    sSrvHeapDesc.NodeMask = 0;
-    sSrvHeapDesc.Flags    = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+    sSrvHeapDesc.NumDescriptors = sm_sizeSrvHeap + sm_sizeHeapOutBuffer;
+    sSrvHeapDesc.Type           = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+    sSrvHeapDesc.NodeMask       = 0;
+    sSrvHeapDesc.Flags          = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 
     HRESULT hr = device->CreateDescriptorHeap(
         &sSrvHeapDesc, IID_PPV_ARGS(m_pSrvHeap.GetAddressOf()));
@@ -323,8 +323,8 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
     }
     // Descriptor for output buffer
     m_GPUDescHdlOutBuffer = CD3DX12_GPU_DESCRIPTOR_HANDLE(
-        m_pSrvHeap->GetGPUDescriptorHandleForHeapStart(), dx12::DX12Surface::scm_numFrames,
-        m_incrementSizeSrv);
+        m_pSrvHeap->GetGPUDescriptorHandleForHeapStart(),
+        dx12::DX12Surface::scm_numFrames, m_incrementSizeSrv);
     // Descriptor for sampler
     CD3DX12_CPU_DESCRIPTOR_HANDLE const hldCPUSampler(
         m_pSamplerHeap->GetCPUDescriptorHandleForHeapStart(), 0,
@@ -422,19 +422,19 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
                 IID_PPV_ARGS(&m_pVertexBufferArrows)) < 0)
             return;
 
-    D3D12_UNORDERED_ACCESS_VIEW_DESC descUAV = {};
-    descUAV.Format = DXGI_FORMAT_UNKNOWN;
-    descUAV.ViewDimension = D3D12_UAV_DIMENSION_BUFFER;
-    descUAV.Buffer.StructureByteStride = sm_sizeVertexArrow;
-    descUAV.Buffer.NumElements = sm_nbVertexPerArrows * s_nbCol * s_nbRow;
+        D3D12_UNORDERED_ACCESS_VIEW_DESC descUAV = {};
+        descUAV.Format                           = DXGI_FORMAT_UNKNOWN;
+        descUAV.ViewDimension                    = D3D12_UAV_DIMENSION_BUFFER;
+        descUAV.Buffer.StructureByteStride       = sm_sizeVertexArrow;
+        descUAV.Buffer.NumElements = sm_nbVertexPerArrows * s_nbCol * s_nbRow;
 
-    // CPU Descriptor for the output buffer
-    CD3DX12_CPU_DESCRIPTOR_HANDLE const hdlCPUSrv(
-        m_pSrvHeap->GetCPUDescriptorHandleForHeapStart(), dx12::DX12Surface::scm_numFrames,
-        m_incrementSizeSrv);
+        // CPU Descriptor for the output buffer
+        CD3DX12_CPU_DESCRIPTOR_HANDLE const hdlCPUSrv(
+            m_pSrvHeap->GetCPUDescriptorHandleForHeapStart(),
+            dx12::DX12Surface::scm_numFrames, m_incrementSizeSrv);
 
-    device->CreateUnorderedAccessView(m_pVertexBufferArrows.Get(), nullptr,
-                                     &descUAV, hdlCPUSrv);
+        device->CreateUnorderedAccessView(m_pVertexBufferArrows.Get(), nullptr,
+                                          &descUAV, hdlCPUSrv);
     }
 
     {
@@ -502,16 +502,17 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
     for (mUInt i = 0, vIdx = 0; i < s_nbRow * s_nbCol * sm_nbIndexPerArrows;
          i += sm_nbIndexPerArrows, vIdx += sm_nbVertexPerArrows)
     {
-        indices[i] = vIdx;
-        indices[i+1] = vIdx+1;
-        indices[i+2] = vIdx+2;
-        indices[i+3] = 0xFFFF;
-        indices[i+4] = vIdx+1;
-        indices[i+5] = vIdx+3;
-        indices[i+6] = 0xFFFF;
+        indices[i]     = vIdx;
+        indices[i + 1] = vIdx + 1;
+        indices[i + 2] = vIdx + 2;
+        indices[i + 3] = 0xFFFF;
+        indices[i + 4] = vIdx + 1;
+        indices[i + 5] = vIdx + 3;
+        indices[i + 6] = 0xFFFF;
     }
 
-    memcpy(idxDest, indices, s_nbRow * s_nbCol * sm_nbIndexPerArrows * sm_sizeIndexArrow);
+    memcpy(idxDest, indices,
+           s_nbRow * s_nbCol * sm_nbIndexPerArrows * sm_sizeIndexArrow);
 
     pUploadTextureResource->Unmap(0, &range);
 
@@ -629,7 +630,9 @@ void Dx12TaskFluidSimulation::execute() const
             .get_commandList();
 
     auto resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
-        m_pVertexBufferArrows.Get(), D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+        m_pVertexBufferArrows.Get(),
+        D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER,
+        D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
     graphicCommandList->ResourceBarrier(1, &resourceBarrier);
 
     graphicCommandList->SetDescriptorHeaps(2, aHeaps);
@@ -641,8 +644,7 @@ void Dx12TaskFluidSimulation::execute() const
     computeCommandList->SetComputeRootDescriptorTable(0, m_GPUDescHdlSampler);
     computeCommandList->SetComputeRootDescriptorTable(1,
                                                       m_GPUDescHdlTexture[m_i]);
-    computeCommandList->SetComputeRootDescriptorTable(2,
-                                                      m_GPUDescHdlOutBuffer);
+    computeCommandList->SetComputeRootDescriptorTable(2, m_GPUDescHdlOutBuffer);
 
     computeCommandList->Dispatch(s_nbRow, s_nbCol, 1);
 
@@ -656,7 +658,8 @@ void Dx12TaskFluidSimulation::execute() const
             .get_commandList();
 
     resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
-        m_pVertexBufferArrows.Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
+        m_pVertexBufferArrows.Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
+        D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
     graphicsCommandListField->ResourceBarrier(1, &resourceBarrier);
 
     graphicsCommandListField->SetDescriptorHeaps(2, aHeaps);

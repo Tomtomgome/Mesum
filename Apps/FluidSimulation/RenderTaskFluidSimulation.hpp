@@ -85,5 +85,5 @@ mIfDx12Enabled(
         m::mUInt                              m_incrementSizeSampler = 0;
         static const m::mUInt                 sm_sizeSamplerHeap     = 1;
 
-        static const m::mUInt                 sm_sizeHeapOutBuffer     = 1;
+        static const m::mUInt sm_sizeHeapOutBuffer = 1;
     };)
