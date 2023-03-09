@@ -158,7 +158,7 @@ class mLogger
     ///////////////////////////////////////////////////////////////////////////
     /// \brief The current filter used to filter out specific channels
     ///////////////////////////////////////////////////////////////////////////
-    mChannelFilter m_filter        = g_allChannelsFilter;
+    mChannelFilter m_filter = g_allChannelsFilter;
     mChannelID     m_nextChannelID;  //!< The next channel id to attribute
 };
 
@@ -168,9 +168,9 @@ class mLogger
 template <typename t_LogPolicy>
 mLogger<t_LogPolicy>::mLogger(const std::string& a_name)
 {
-    m_filter        = -1;
-    m_lineNumber    = 0;
-    m_policy        = new t_LogPolicy;
+    m_filter     = -1;
+    m_lineNumber = 0;
+    m_policy     = new t_LogPolicy;
     if (!m_policy)
     {
         throw std::runtime_error(
@@ -199,7 +199,7 @@ template <typename t_LogPolicy>
 mChannelID mLogger<t_LogPolicy>::get_newChannelID()
 {
     // TODO : Fix this ID generation problem
-    if(m_nextChannelID == 0)
+    if (m_nextChannelID == 0)
     {
         m_nextChannelID = 1;
     }
@@ -310,7 +310,8 @@ template <typename t_LogPolicy>
 void mLogger<t_LogPolicy>::print_impl()
 {
     m_policy->write(get_loglineHeader() + m_logStream.str());
-    m_logStream.str("");
+    m_logStream.str("");  // This is not cleared before memory leak check, so it
+                          // apprears as a leak :(
 }
 
 //-----------------------------------------------------------------------------

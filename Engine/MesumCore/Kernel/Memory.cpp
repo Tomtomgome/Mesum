@@ -41,10 +41,16 @@ void terminate_memoryTracking()
     }
     g_memStats.typedMemoryStats.clear();
     std::vector<mMemoryStat>().swap(g_memStats.typedMemoryStats);
-    if (g_memStats.globalAllocationSizes != 0)
+
+    static const mSize s_expectedAllocatedSizeAtTermination =
+        17;  // This is because of the logger that is not deallocated yet
+
+    if (g_memStats.globalAllocationSizes !=
+        s_expectedAllocatedSizeAtTermination)
     {
         mLog_error("Global allocs remaining : ",
-                   g_memStats.globalAllocationSizes);
+                   g_memStats.globalAllocationSizes -
+                       s_expectedAllocatedSizeAtTermination);
         isLeak = true;
     }
     mAssert(!isLeak);
