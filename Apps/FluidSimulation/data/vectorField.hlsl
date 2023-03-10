@@ -35,7 +35,7 @@ void cs_main(uint3 DTid : SV_DispatchThreadID)
   const float g_arrowFinsScale = 0.01f;
   const float g_arrowScale = 0.03f;
 
-  const float4 g_defaultColor = float4(1.0f, 1.0f, 1.0f, 0.3f);
+  const float4 g_defaultColor = float4(0.5f, 0.2f, 0.3f, 0.5f);
 
   uint baseVextexID = g_nbVertexPerArrow * (DTid.x * dimY + DTid.y);
 

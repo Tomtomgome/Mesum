@@ -30,8 +30,13 @@ static const mInt    s_maxIteration       = 100;
 static const mDouble s_solutionTolerance  = 0.00000000000001;
 static const mDouble s_micTunningConstant = 0.97f;
 
-static const mDouble s_gravity = -9.8;
-static const mDouble s_wind    = -2.5;
+static const mDouble s_gravity  = -9.8;
+static const mDouble s_wind     = -2.5;
+static const mDouble s_ambientT = 270;
+
+// buyancy parameters
+static mDouble s_alpha = -2.5;
+static mDouble s_beta  = 5.2;
 
 static const mInt g_gridSize = s_nbRow * s_nbCol;
 using GridVector             = math::mVec<mDouble, g_gridSize>;
@@ -57,6 +62,7 @@ struct Particle
     mDouble uv;
     mDouble uh;
     mDouble T;
+    mDouble S;
 };
 
 Particle interpolate(Particle const& a_a, Particle const& a_b,
@@ -66,6 +72,7 @@ Particle interpolate(Particle const& a_a, Particle const& a_b,
     output.uv = (1.0f - a_alpha) * a_a.uv + a_b.uv * a_alpha;
     output.uh = (1.0f - a_alpha) * a_a.uh + a_b.uh * a_alpha;
     output.T  = (1.0f - a_alpha) * a_a.T + a_b.T * a_alpha;
+    output.S  = (1.0f - a_alpha) * a_a.S + a_b.S * a_alpha;
 
     return output;
 }
@@ -98,9 +105,10 @@ void init_universe(Universe& a_input)
         for (mInt col = 0; col < s_nbCol; ++col)
         {
             mInt index          = row * s_nbCol + col;
-            a_input.Q[index].T  = 0.0f;
-            a_input.Q[index].uv = 0.0f;
-            a_input.Q[index].uh = 0.0f;
+            a_input.Q[index].T  = s_ambientT;
+            a_input.Q[index].S  = 0.0;
+            a_input.Q[index].uv = 0.0;
+            a_input.Q[index].uh = 0.0;
 
             /*if (row != s_nbRow - 1 && row != 0)
             {
@@ -122,7 +130,8 @@ void init_universe(Universe& a_input)
         }
     }
 
-    a_input.Q[convert_toIndex(s_nbCol / 2, s_nbRow / 2)].T = 100;
+    a_input.Q[convert_toIndex(s_nbCol / 2, 1)].T = 350;
+    a_input.Q[convert_toIndex(s_nbCol / 2, 1)].S = 100;
 }
 
 math::mDVec2 get_speedAt(Universe const& a_input, math::mIVec2 a_position)
@@ -156,11 +165,14 @@ Particle get_valueAt(Universe const& a_input, math::mDVec2 a_position)
     a_flooredPosition.y =
         std::min(s_nbRow - 1, std::max(0, a_flooredPosition.y));
 
-    Particle tl =
-        a_input
-            .Q[convert_toIndex(a_flooredPosition.x, a_flooredPosition.y + 1)];
-    Particle tr = a_input.Q[convert_toIndex(a_flooredPosition.x + 1,
-                                            a_flooredPosition.y + 1)];
+    math::mIVec2 a_flooredPositionPlusOne{
+        std::min(s_nbCol - 1, a_flooredPosition.x + 1),
+        std::min(s_nbRow - 1, a_flooredPosition.y + 1)};
+
+    Particle tl = a_input.Q[convert_toIndex(a_flooredPosition.x,
+                                            a_flooredPositionPlusOne.y)];
+    Particle tr = a_input.Q[convert_toIndex(a_flooredPositionPlusOne.x,
+                                            a_flooredPositionPlusOne.y)];
     Particle br =
         a_input
             .Q[convert_toIndex(a_flooredPosition.x + 1, a_flooredPosition.y)];
@@ -219,7 +231,9 @@ bool is_outOfBound(mInt a_i, mInt a_j)
 
 bool is_solid(Universe const& a_input, mInt a_i, mInt a_j)
 {
-    return is_outOfBoundJ(a_j);  // is_outOfBound(a_i, a_j);
+    // return is_outOfBoundJ(a_j);
+    // return false;
+    return is_outOfBound(a_i, a_j);
 }
 
 mInt get_numberOfSolidNeighbors(Universe const& a_input, mInt a_i, mInt a_j)
@@ -525,7 +539,6 @@ profile::mProfilerMultiSampling<1> g_ProjectionProfiler;
 
 void Simulate(Universe const& a_input, Universe& a_output, mDouble a_deltaTime)
 {
-    mDisable_logChannels(m_FluidSimulation_ID);
     mLog_infoTo(m_FluidSimulation_ID, "SIMULATION STEP ---------------------");
     //---- Advect
     mLog_infoTo(m_FluidSimulation_ID, "Advect");
@@ -556,9 +569,18 @@ void Simulate(Universe const& a_input, Universe& a_output, mDouble a_deltaTime)
         {
             for (mInt col = 0; col < s_nbCol; ++col)
             {
-                mInt index = row * s_nbCol + col;
+                mInt index         = row * s_nbCol + col;
+                mInt indexYPlusOne = std::min(s_nbRow, row * s_nbCol + col + 1);
                 a_output.Q[index].uv += a_deltaTime * s_gravity;
                 a_output.Q[index].uh += a_deltaTime * s_wind;
+                // Boyancy test
+                mDouble saturation =
+                    (a_output.Q[index].S + a_output.Q[indexYPlusOne].S) / 2.0f;
+                mDouble temperature =
+                    (a_output.Q[index].T + a_output.Q[indexYPlusOne].T) / 2.0f;
+                a_output.Q[index].uv +=
+                    a_deltaTime * (s_alpha * saturation +
+                                   s_beta * (temperature - s_ambientT));
             }
         }
     }
@@ -741,6 +763,8 @@ void Simulate(Universe const& a_input, Universe& a_output, mDouble a_deltaTime)
     }
     mLog_infoTo(m_FluidSimulation_ID, "--- Timing : ",
                 g_ProjectionProfiler.get_average<mDouble, std::micro>());
+
+    mDisable_logChannels(m_FluidSimulation_ID);
 }
 
 class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
@@ -816,6 +840,13 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
             m::input::mKeyActionCallback(
                 m_mainWindow, &m::windows::mIWindow::toggle_fullScreen));
 
+        m_inputManager.attach_toKeyEvent(
+            m::input::mKeyAction::keyPressed(m::input::keyL),
+            m::input::mKeyActionCallback(
+                [] { mEnable_logChannels(m_FluidSimulation_ID); }));
+
+        mDisable_logChannels(m_FluidSimulation_ID);
+
         set_minimalStepDuration(std::chrono::milliseconds(16));
 
         m_pixelData.resize(s_nbRow * s_nbCol);
@@ -850,14 +881,22 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
         static mInt   i               = 0;
         mInt          previous        = i;
 
-        static mBool displayTmp    = true;
+        static mBool displayTmp    = false;
+        static mBool displaySmoke  = true;
         static mBool displaySpeed  = true;
         static mBool runtimeUpdate = false;
 
         for (mInt pix = 0; pix < s_nbRow * s_nbCol; ++pix)
         {
             m_pixelData[pix].r =
-                displayTmp ? m_universes[previous].Q[pix].T / 10 : 0;
+                displaySmoke ? m_universes[previous].Q[pix].S : 0;
+            if (displayTmp && !displaySmoke)
+            {
+                m_pixelData[pix].r =
+                    displayTmp
+                        ? (m_universes[previous].Q[pix].T - s_ambientT) / 10
+                        : 0;
+            }
 
             m_pixelData[pix].g =
                 displaySpeed ? m_universes[previous].Q[pix].uh : 0;
@@ -895,7 +934,11 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
 
         ImGui::Checkbox("Run Time Update", &runtimeUpdate);
 
-        ImGui::Checkbox("Display Tmp", &displayTmp);
+        ImGui::InputDouble("Buyancy alpha", &s_alpha);
+        ImGui::InputDouble("Buyancy beta", &s_beta);
+
+        ImGui::Checkbox("Display Smoke", &displaySmoke);
+        ImGui::Checkbox("Display Temp", &displayTmp);
         ImGui::Checkbox("Display Speed", &displaySpeed);
         ImGui::End();
 
