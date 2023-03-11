@@ -8,7 +8,6 @@
 #include "RenderTaskFluidSimulation.hpp"
 #include "RendererUtils.hpp"
 #include "RenderTasksBasicSwapchain.hpp"
-
 #include <iomanip>
 
 #ifdef min
@@ -23,20 +22,21 @@ const m::logging::mChannelID m_FluidSimulation_ID = mLog_getId();
 
 using namespace m;
 
-static const mDouble s_cellSize = 1.0f;
-static const mDouble s_density  = 1.0f;
+static const mDouble s_cellSize = 1.0;
+static const mDouble s_density  = 1.0;
 
 static const mInt    s_maxIteration       = 100;
 static const mDouble s_solutionTolerance  = 0.00000000000001;
-static const mDouble s_micTunningConstant = 0.97f;
+static const mDouble s_micTunningConstant = 0.97;
 
 static const mDouble s_gravity  = -9.8;
 static const mDouble s_wind     = -2.5;
 static const mDouble s_ambientT = 270;
 
 // buyancy parameters
-static mDouble s_alpha = -2.5;
-static mDouble s_beta  = 5.2;
+static mDouble s_alpha             = -2.5;
+static mDouble s_beta              = 8.2;
+static mDouble s_vorticityStrength = 0.4;
 
 static const mInt g_gridSize = s_nbRow * s_nbCol;
 using GridVector             = math::mVec<mDouble, g_gridSize>;
@@ -131,7 +131,7 @@ void init_universe(Universe& a_input)
     }
 
     a_input.Q[convert_toIndex(s_nbCol / 2, 1)].T = 350;
-    a_input.Q[convert_toIndex(s_nbCol / 2, 1)].S = 100;
+    a_input.Q[convert_toIndex(s_nbCol / 2, 1)].S = 200;
 }
 
 math::mDVec2 get_speedAt(Universe const& a_input, math::mIVec2 a_position)
@@ -210,6 +210,64 @@ void compute_divergence(Universe const& a_input, GridVector& a_outDivergences,
             a_outDivergences[index] =
                 globalFactor * ((uiplus12 - uiminus12) / s_cellSize +
                                 (viplus12 - viminus12) / s_cellSize);
+        }
+    }
+}
+
+void compute_vorticity(Universe const& a_input, GridVector& a_outVorticities)
+{
+    for (mInt j = 0; j < s_nbRow; ++j)
+    {
+        for (mInt i = 0; i < s_nbCol; ++i)
+        {
+            math::mDVec2 speed_dx =
+                get_speedAt(a_input, {std::min(s_nbCol - 1, i + 1), j}) -
+                get_speedAt(a_input, {std::max(0, i - 1), j});
+            mDouble      dv_dx = speed_dx.y / (2 * s_cellSize);
+            math::mDVec2 speed_dy =
+                get_speedAt(a_input, {i, std::min(s_nbRow - 1, j + 1)}) -
+                get_speedAt(a_input, {i, std::max(0, j - 1)});
+            mDouble du_dy = speed_dy.x / (2 * s_cellSize);
+
+            mInt index = convert_toIndex(i, j);
+
+            a_outVorticities[index] = dv_dx - du_dy;
+        }
+    }
+}
+
+void compute_vorticityForce(GridVector const&           a_input,
+                            GridVectorSP<math::mDVec2>& a_outGradient)
+{
+    for (mInt j = 0; j < s_nbRow; ++j)
+    {
+        for (mInt i = 0; i < s_nbCol; ++i)
+        {
+            mInt index = convert_toIndex(i, j);
+
+            mInt iplusone  = std::min(s_nbCol - 1, std::max(0, i + 1));
+            mInt iminusone = std::min(s_nbCol - 1, std::max(0, i - 1));
+            mInt jplusone  = std::min(s_nbRow - 1, std::max(0, j + 1));
+            mInt jminusone = std::min(s_nbRow - 1, std::max(0, j - 1));
+
+            mDouble input_iplusone =
+                std::abs(a_input[convert_toIndex(iplusone, j)]);
+            mDouble input_iminusone =
+                std::abs(a_input[convert_toIndex(iminusone, j)]);
+            mDouble input_jplusone =
+                std::abs(a_input[convert_toIndex(i, jplusone)]);
+            mDouble input_jminusone =
+                std::abs(a_input[convert_toIndex(i, jminusone)]);
+
+            a_outGradient[index].x =
+                (input_iplusone - input_iminusone) / (2 * s_cellSize);
+            a_outGradient[index].y =
+                (input_jplusone - input_jminusone) / (2 * s_cellSize);
+
+            a_outGradient[index] = math::normalized_safe(a_outGradient[index]);
+            a_outGradient[index] =
+                math::mDVec2{a_outGradient[index].y * a_input[index],
+                             a_outGradient[index].x * a_input[index]};
         }
     }
 }
@@ -561,19 +619,28 @@ void Simulate(Universe const& a_input, Universe& a_output, mDouble a_deltaTime)
     mLog_infoTo(m_FluidSimulation_ID, "--- Timing : ",
                 g_AdvectionProfiler.get_average<mDouble, std::micro>());
 
-    //---- Apply gravity
+    //---- Apply forces
     mLog_infoTo(m_FluidSimulation_ID, "Apply gravity");
     {
         profile::mRAIITiming timming(g_UpdateProfiler);
+
+        GridVector vorticities;
+        compute_vorticity(a_output, vorticities);
+        GridVectorSP<math::mDVec2> vorticityForces;
+        compute_vorticityForce(vorticities, vorticityForces);
+
         for (mInt row = 0; row < s_nbRow; ++row)
         {
             for (mInt col = 0; col < s_nbCol; ++col)
             {
-                mInt index         = row * s_nbCol + col;
-                mInt indexYPlusOne = std::min(s_nbRow, row * s_nbCol + col + 1);
+                mInt index = row * s_nbCol + col;
+                mInt indexXPlusOne =
+                    row * s_nbCol + std::min(s_nbCol - 1, (col + 1));
+                mInt indexYPlusOne =
+                    std::min(s_nbRow - 1, (row + 1)) * s_nbCol + col;
                 a_output.Q[index].uv += a_deltaTime * s_gravity;
-                a_output.Q[index].uh += a_deltaTime * s_wind;
-                // Boyancy test
+                // a_output.Q[index].uh += a_deltaTime * s_wind;
+                //  Boyancy test
                 mDouble saturation =
                     (a_output.Q[index].S + a_output.Q[indexYPlusOne].S) / 2.0f;
                 mDouble temperature =
@@ -581,6 +648,17 @@ void Simulate(Universe const& a_input, Universe& a_output, mDouble a_deltaTime)
                 a_output.Q[index].uv +=
                     a_deltaTime * (s_alpha * saturation +
                                    s_beta * (temperature - s_ambientT));
+                // Vorticity test
+                math::mDVec2 vorticityForceX =
+                    0.5 *
+                    (vorticityForces[index] + vorticityForces[indexXPlusOne]);
+                math::mDVec2 vorticityForceY =
+                    0.5 *
+                    (vorticityForces[index] + vorticityForces[indexYPlusOne]);
+                a_output.Q[index].uv += a_deltaTime * s_vorticityStrength *
+                                        s_cellSize * vorticityForceY.y;
+                a_output.Q[index].uh += a_deltaTime * s_vorticityStrength *
+                                        s_cellSize * vorticityForceX.x;
             }
         }
     }
@@ -886,6 +964,11 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
         static mBool displaySpeed  = true;
         static mBool runtimeUpdate = false;
 
+        //                GridVector vorticities;
+        //                compute_vorticity(m_universes[previous], vorticities);
+        //                GridVectorSP<math::mDVec2> vorticityForces;
+        //                compute_vorticityForce(vorticities, vorticityForces);
+
         for (mInt pix = 0; pix < s_nbRow * s_nbCol; ++pix)
         {
             m_pixelData[pix].r =
@@ -898,9 +981,9 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
                         : 0;
             }
 
-            m_pixelData[pix].g =
+            m_pixelData[pix].g =  // vorticityForces[pix].x;
                 displaySpeed ? m_universes[previous].Q[pix].uh : 0;
-            m_pixelData[pix].b =
+            m_pixelData[pix].b =  // vorticityForces[pix].y;
                 displaySpeed ? m_universes[previous].Q[pix].uv : 0;
         }
 
@@ -918,7 +1001,7 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
         m::mBool showDemo = true;
         ImGui::Begin("Simulation Parameters");
         ImGui::DragFloat("SimulationSpeed", &simulationSpeed, 0.01f, 0.01f,
-                         2.0f);
+                         4.0f);
         if (ImGui::Button("Reset"))
         {
             init_universe(m_universes[i]);
@@ -936,6 +1019,8 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
 
         ImGui::InputDouble("Buyancy alpha", &s_alpha);
         ImGui::InputDouble("Buyancy beta", &s_beta);
+
+        ImGui::InputDouble("Vorticity", &s_vorticityStrength);
 
         ImGui::Checkbox("Display Smoke", &displaySmoke);
         ImGui::Checkbox("Display Temp", &displayTmp);

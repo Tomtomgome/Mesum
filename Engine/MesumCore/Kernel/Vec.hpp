@@ -161,6 +161,8 @@ template <typename t_T, mUInt t_Size>
 [[nodiscard]] t_T sqlength(const mVec<t_T, t_Size>& a_v);
 template <typename t_T, mUInt t_Size>
 [[nodiscard]] mVec<t_T, t_Size> normalized(const mVec<t_T, t_Size>& a_v);
+template <typename t_T, mUInt t_Size>
+[[nodiscard]] mVec<t_T, t_Size> normalized_safe(const mVec<t_T, t_Size>& a_v);
 
 };  // namespace m::math
 
