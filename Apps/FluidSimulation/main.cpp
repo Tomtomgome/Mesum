@@ -65,6 +65,67 @@ struct Particle
     mDouble S;
 };
 
+Particle operator+(Particle const& a_a, Particle const& a_b)
+{
+    Particle output;
+    output.uv = a_a.uv + a_b.uv;
+    output.uh = a_a.uh + a_b.uh;
+    output.T  = a_a.T + a_b.T;
+    output.S  = a_a.S + a_b.S;
+
+    return output;
+}
+
+Particle operator-(Particle const& a_a, Particle const& a_b)
+{
+    Particle output;
+    output.uv = a_a.uv - a_b.uv;
+    output.uh = a_a.uh - a_b.uh;
+    output.T  = a_a.T - a_b.T;
+    output.S  = a_a.S - a_b.S;
+
+    return output;
+}
+
+Particle operator*(mFloat a_f, Particle const& a_a)
+{
+    Particle output;
+    output.uv = a_f * a_a.uv;
+    output.uh = a_f * a_a.uh;
+    output.T  = a_f * a_a.T;
+    output.S  = a_f * a_a.S;
+
+    return output;
+}
+
+void restrict(Particle& a_p, Particle const& a_delta)
+{
+    a_p.uv = (a_p.uv * a_delta.uv) > 0.0 ? a_p.uv : 0.0;
+    a_p.uh = (a_p.uh * a_delta.uh) > 0.0 ? a_p.uh : 0.0;
+    a_p.T  = (a_p.T * a_delta.T) > 0.0 ? a_p.T : 0.0;
+    a_p.S  = (a_p.S * a_delta.S) > 0.0 ? a_p.S : 0.0;
+}
+
+Particle interpolate_cubic(Particle const& a_iMinusOne, Particle const& a_i,
+                           Particle const& a_iPlusOne,
+                           Particle const& a_iPlusTwo, mDouble const a_alpha)
+{
+    Particle di        = 0.5 * (a_iPlusOne - a_iMinusOne);
+    Particle diPlusOne = 0.5 * (a_iPlusTwo - a_i);
+
+    Particle delta = (a_iPlusOne - a_i);
+
+    restrict(di, delta);
+    restrict(diPlusOne, delta);
+
+    Particle output =
+        a_i + a_alpha * di +
+        a_alpha * a_alpha * (3.0 * delta - 2.0 * di - diPlusOne) +
+        a_alpha * a_alpha * a_alpha * (-2.0 * delta + di + diPlusOne);
+
+    return output;
+}
+
 Particle interpolate(Particle const& a_a, Particle const& a_b,
                      mDouble const a_alpha)
 {
@@ -184,7 +245,66 @@ Particle get_valueAt(Universe const& a_input, math::mDVec2 a_position)
     Particle bottom =
         interpolate(bl, br, saturate(a_position.x - a_flooredPosition.x));
 
-    return interpolate(bottom, top, a_position.y - a_flooredPosition.y);
+    // return interpolate(bottom, top, a_position.y - a_flooredPosition.y);
+
+    // Cubic interpolation
+    math::mIVec2 a_flooredPositionPlusTwo{
+        std::min(s_nbCol - 1, a_flooredPosition.x + 2),
+        std::min(s_nbRow - 1, a_flooredPosition.y + 2)};
+    math::mIVec2 a_flooredPositionMinusOne{
+        std::max(0, a_flooredPosition.x - 1),
+        std::max(0, a_flooredPosition.y - 1)};
+
+    Particle im1jm1 = a_input.Q[convert_toIndex(a_flooredPositionMinusOne.x,
+                                                a_flooredPositionMinusOne.y)];
+    Particle ijm1   = a_input.Q[convert_toIndex(a_flooredPosition.x,
+                                                a_flooredPositionMinusOne.y)];
+    Particle ip1jm1 = a_input.Q[convert_toIndex(a_flooredPositionPlusOne.x,
+                                                a_flooredPositionMinusOne.y)];
+    Particle ip2jm1 = a_input.Q[convert_toIndex(a_flooredPositionPlusTwo.x,
+                                                a_flooredPositionMinusOne.y)];
+
+    Particle im1j = a_input.Q[convert_toIndex(a_flooredPositionMinusOne.x,
+                                              a_flooredPosition.y)];
+    Particle ij =
+        a_input.Q[convert_toIndex(a_flooredPosition.x, a_flooredPosition.y)];
+    Particle ip1j = a_input.Q[convert_toIndex(a_flooredPositionPlusOne.x,
+                                              a_flooredPosition.y)];
+    Particle ip2j = a_input.Q[convert_toIndex(a_flooredPositionPlusTwo.x,
+                                              a_flooredPosition.y)];
+
+    Particle im1jp1 = a_input.Q[convert_toIndex(a_flooredPositionMinusOne.x,
+                                                a_flooredPositionPlusOne.y)];
+    Particle ijp1   = a_input.Q[convert_toIndex(a_flooredPosition.x,
+                                                a_flooredPositionPlusOne.y)];
+    Particle ip1jp1 = a_input.Q[convert_toIndex(a_flooredPositionPlusOne.x,
+                                                a_flooredPositionPlusOne.y)];
+    Particle ip2jp1 = a_input.Q[convert_toIndex(a_flooredPositionPlusTwo.x,
+                                                a_flooredPositionPlusOne.y)];
+
+    Particle im1jp2 = a_input.Q[convert_toIndex(a_flooredPositionMinusOne.x,
+                                                a_flooredPositionPlusTwo.y)];
+    Particle ijp2   = a_input.Q[convert_toIndex(a_flooredPosition.x,
+                                                a_flooredPositionPlusTwo.y)];
+    Particle ip1jp2 = a_input.Q[convert_toIndex(a_flooredPositionPlusOne.x,
+                                                a_flooredPositionPlusTwo.y)];
+    Particle ip2jp2 = a_input.Q[convert_toIndex(a_flooredPositionPlusTwo.x,
+                                                a_flooredPositionPlusTwo.y)];
+
+    Particle jm1 =
+        interpolate_cubic(im1jm1, ijm1, ip1jm1, ip2jm1,
+                          saturate(a_position.x - a_flooredPosition.x));
+    Particle j = interpolate_cubic(
+        im1j, ij, ip1j, ip2j, saturate(a_position.x - a_flooredPosition.x));
+    Particle jp1 =
+        interpolate_cubic(im1jp1, ijp1, ip1jp1, ip2jp1,
+                          saturate(a_position.x - a_flooredPosition.x));
+    Particle jp2 =
+        interpolate_cubic(im1jp2, ijp2, ip1jp2, ip2jp2,
+                          saturate(a_position.x - a_flooredPosition.x));
+
+    return interpolate_cubic(jm1, j, jp1, jp2,
+                             saturate(a_position.y - a_flooredPosition.y));
 }
 
 void compute_divergence(Universe const& a_input, GridVector& a_outDivergences,
@@ -964,14 +1084,14 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
         static mBool displaySpeed  = true;
         static mBool runtimeUpdate = false;
 
-        //                GridVector vorticities;
-        //                compute_vorticity(m_universes[previous], vorticities);
-        //                GridVectorSP<math::mDVec2> vorticityForces;
-        //                compute_vorticityForce(vorticities, vorticityForces);
+        GridVector vorticities;
+        compute_vorticity(m_universes[previous], vorticities);
+        GridVectorSP<math::mDVec2> vorticityForces;
+        compute_vorticityForce(vorticities, vorticityForces);
 
         for (mInt pix = 0; pix < s_nbRow * s_nbCol; ++pix)
         {
-            m_pixelData[pix].r =
+            m_pixelData[pix].r =  // std::abs(vorticities[pix]);
                 displaySmoke ? m_universes[previous].Q[pix].S : 0;
             if (displayTmp && !displaySmoke)
             {
