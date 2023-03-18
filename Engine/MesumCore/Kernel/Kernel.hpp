@@ -19,6 +19,7 @@ namespace m
 ///////////////////////////////////////////////////////////////////////////////
 using mErrorCode = mU64;
 static const mErrorCode ecSuccess = 0; //!< default success code
+static const mErrorCode ecFailure = -1; //!< default error code
 
 #define mNotSuccess(ec) ec != 0 //!< alias a not success condition
 #define mIsSuccess(ec) ec == 0 //!< alias a success condition

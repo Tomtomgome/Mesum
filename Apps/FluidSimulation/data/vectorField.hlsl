@@ -47,7 +47,7 @@ void cs_main(uint3 DTid : SV_DispatchThreadID)
   float2 baseCoord = float2(-1.0f + halfUnitX, -1.0f + halfUnitY);
 
   float2 arrowOrigin    = baseCoord + float2(DTid.x * unitX, DTid.y * unitY);
-  float2 arrowTop = color.yz * g_arrowScale;
+  float2 arrowTop = color.xy * g_arrowScale;
   float2 arrowDirection = -normalize(arrowTop.xy);
   float arrowAngle = atan2(arrowDirection.y, arrowDirection.x);
 

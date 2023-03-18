@@ -25,7 +25,7 @@ using namespace m;
 static const mDouble s_cellSize = 1.0;
 static const mDouble s_density  = 1.0;
 
-static const mInt    s_maxIteration       = 100;
+static const mInt    s_maxIteration       = 10000;
 static const mDouble s_solutionTolerance  = 0.00000000000001;
 static const mDouble s_micTunningConstant = 0.97;
 
@@ -193,6 +193,24 @@ void init_universe(Universe& a_input)
 
     a_input.Q[convert_toIndex(s_nbCol / 2, 1)].T = 350;
     a_input.Q[convert_toIndex(s_nbCol / 2, 1)].S = 200;
+}
+
+void init_initialData(m::resource::mTypedImage<m::math::mVec4>& a_image)
+{
+    for (mInt row = 0; row < s_nbRow; ++row)
+    {
+        for (mInt col = 0; col < s_nbCol; ++col)
+        {
+            mInt index            = row * s_nbCol + col;
+            a_image.data[index].x = 0.0f;        // uv
+            a_image.data[index].y = 0.0f;        // uh
+            a_image.data[index].z = s_ambientT;  // t
+            a_image.data[index].a = 0.0f;        // S
+        }
+    }
+
+    a_image.data[convert_toIndex(s_nbCol / 2, 1)].z = 350.0;
+    a_image.data[convert_toIndex(s_nbCol / 2, 1)].a = 200.0;
 }
 
 math::mDVec2 get_speedAt(Universe const& a_input, math::mIVec2 a_position)
@@ -971,6 +989,17 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
     {
         m::crossPlatform::IWindowedApplication::init(a_cmdLine, a_appData);
 
+        // Simulation setup
+        m_initialData.height = s_nbRow;
+        m_initialData.width  = s_nbCol;
+        m_initialData.data.resize(s_nbCol * s_nbRow);
+        init_initialData(m_initialData);
+
+
+        m_pixelData.resize(s_nbRow * s_nbCol);
+        init_universe(m_universes[0]);
+
+        // Window setup
         m::mCmdLine const& cmdLine = a_cmdLine;
         m::mUInt           width   = 600;
         m::mUInt           height  = 600;
@@ -998,6 +1027,7 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
 
         m::dearImGui::init(*m_mainWindow);
 
+        // Render Taskset setup
         m::render::Taskset& taskset_renderPipeline =
             rDx12Api.create_renderTaskset();
 
@@ -1010,6 +1040,7 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
         TaskDataFluidSimulation taskdata_fluidSimulation;
         taskdata_fluidSimulation.pOutputRT  = acquireTask.pOutputRT;
         taskdata_fluidSimulation.pPixelData = &m_pixelData;
+        taskdata_fluidSimulation.pInitialData = &m_initialData;
         taskdata_fluidSimulation.add_toTaskSet(taskset_renderPipeline);
 
         m::render::TaskDataDrawDearImGui taskData_drawDearImGui;
@@ -1046,9 +1077,6 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
         mDisable_logChannels(m_FluidSimulation_ID);
 
         set_minimalStepDuration(std::chrono::milliseconds(16));
-
-        m_pixelData.resize(s_nbRow * s_nbCol);
-        init_universe(m_universes[0]);
     }
 
     void destroy() override
@@ -1162,6 +1190,8 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
 
     m::input::mCallbackInputManager m_inputManager;
     m::windows::mIWindow*           m_mainWindow;
+
+    m::resource::mTypedImage<m::math::mVec4> m_initialData;
 
     std::vector<m::math::mVec4> m_pixelData;
     Universe                    m_universes[2];

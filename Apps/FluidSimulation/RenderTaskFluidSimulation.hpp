@@ -3,6 +3,7 @@
 #include <MesumGraphics/RenderTask.hpp>
 #include <MesumGraphics/Renderer.hpp>
 #include <MesumCore/Kernel/Math.hpp>
+#include <MesumCore/Kernel/Image.hpp>
 
 #ifdef M_DX12_RENDERER
 #include <MesumGraphics/DX12Renderer/DX12Context.hpp>
@@ -20,8 +21,9 @@ static const int s_nbCol = 50;
 ///////////////////////////////////////////////////////////////////////////////
 struct TaskDataFluidSimulation : public m::render::TaskData
 {
-    m::render::mIRenderTarget*   pOutputRT  = nullptr;
-    std::vector<m::math::mVec4>* pPixelData = nullptr;
+    m::render::mIRenderTarget*                pOutputRT    = nullptr;
+    std::vector<m::math::mVec4>*              pPixelData   = nullptr;
+    m::resource::mTypedImage<m::math::mVec4>* pInitialData = nullptr;
 
     mIfDx12Enabled(m::render::Task* getNew_dx12Implementation(
         m::render::TaskData* a_data) override);
@@ -52,18 +54,17 @@ mIfDx12Enabled(
         void execute() const override;
 
        private:
+        void setup_advectionPass();
+        void setup_arrowGenerationPass();
+        void setup_fluidRenderingPass();
+        void setup_arrowRenderingPass();
+
+       private:
         m::mUInt m_i = 0;
 
-        m::dx12::ComPtr<ID3D12RootSignature> m_rootSignature = nullptr;
-        m::dx12::ComPtr<ID3D12RootSignature> m_fieldRootSignatureCompute =
-            nullptr;
-        m::dx12::ComPtr<ID3D12RootSignature> m_fieldRootSignature = nullptr;
-        m::dx12::ComPtr<ID3D12PipelineState> m_pso                = nullptr;
-        m::dx12::ComPtr<ID3D12PipelineState> m_psoFieldCompute    = nullptr;
-        m::dx12::ComPtr<ID3D12PipelineState> m_psoField           = nullptr;
-
-        std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pTextureResources{};
-        std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pUploadResources{};
+        // Arrow generation
+        m::dx12::ComPtr<ID3D12RootSignature> m_rsArrowGeneration  = nullptr;
+        m::dx12::ComPtr<ID3D12PipelineState> m_psoArrowGeneration = nullptr;
 
         static const m::mUInt sm_nbVertexPerArrows = 4;
         static const m::mSize sm_sizeVertexArrow   = 2 * 4 * sizeof(float);
@@ -71,6 +72,17 @@ mIfDx12Enabled(
         static const m::mSize sm_sizeIndexArrow    = sizeof(m::mU16);
         m::dx12::ComPtr<ID3D12Resource> m_pVertexBufferArrows = nullptr;
         m::dx12::ComPtr<ID3D12Resource> m_pIndexBufferArrows  = nullptr;
+
+        // Fluid rendering
+        m::dx12::ComPtr<ID3D12RootSignature> m_rsFluidRendering  = nullptr;
+        m::dx12::ComPtr<ID3D12PipelineState> m_psoFluidRendering = nullptr;
+
+        // Arrow rendering
+        m::dx12::ComPtr<ID3D12RootSignature> m_rsArrowRendering  = nullptr;
+        m::dx12::ComPtr<ID3D12PipelineState> m_psoArrowRendering = nullptr;
+
+        std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pTextureResources{};
+        std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pUploadResources{};
 
         D3D12_GPU_DESCRIPTOR_HANDLE
         m_GPUDescHdlTexture[m::dx12::DX12Surface::scm_numFrames]{};

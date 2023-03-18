@@ -30,9 +30,9 @@ Pixel ps_main(VertexShaderOutput a_in)
   Pixel output;
   
   float4 data = textures.Sample(basicSampler, float2(a_in.uv.x, 1.0 - a_in.uv.y));
-  output.color.r = data.r;
-  output.color.g = data.r;
-  output.color.b = data.r;
+  output.color.r = data.a;
+  output.color.g = data.a;
+  output.color.b = data.a;
   output.color.a = 0.9;
   return output;
 }

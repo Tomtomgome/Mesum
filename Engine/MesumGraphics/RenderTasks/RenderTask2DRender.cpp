@@ -262,6 +262,7 @@ mBool Dx12Task2dRender::add_texture(resource::mRequestImage const& a_request)
 
     pTextureResource->SetName(L"defaultName");
 
+    // TODO This resource isn't freed
     ID3D12Resource* pUploadTextureResource;
     const UINT      subresourceCount =
         descTexture.DepthOrArraySize * descTexture.MipLevels;
