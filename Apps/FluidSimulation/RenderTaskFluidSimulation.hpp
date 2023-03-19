@@ -60,7 +60,12 @@ mIfDx12Enabled(
         void setup_arrowRenderingPass();
 
        private:
-        m::mUInt m_i = 0;
+        m::mUInt m_iComputed  = 0;
+        m::mUInt m_iDisplayed = 1;
+
+        // Advection
+        m::dx12::ComPtr<ID3D12RootSignature> m_rsAdvection  = nullptr;
+        m::dx12::ComPtr<ID3D12PipelineState> m_psoAdvection = nullptr;
 
         // Arrow generation
         m::dx12::ComPtr<ID3D12RootSignature> m_rsArrowGeneration  = nullptr;
@@ -85,7 +90,9 @@ mIfDx12Enabled(
         std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pUploadResources{};
 
         D3D12_GPU_DESCRIPTOR_HANDLE
-        m_GPUDescHdlTexture[m::dx12::DX12Surface::scm_numFrames]{};
+        m_GPUDescHdlTextureCompute[m::dx12::DX12Surface::scm_numFrames]{};
+        D3D12_GPU_DESCRIPTOR_HANDLE
+        m_GPUDescHdlTextureDisplay[m::dx12::DX12Surface::scm_numFrames]{};
         D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlSampler{};
         D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlOutBuffer{};
 

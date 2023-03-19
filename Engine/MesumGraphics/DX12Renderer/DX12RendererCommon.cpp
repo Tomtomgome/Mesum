@@ -297,7 +297,6 @@ void get_dxgiSurfaceInfo(_In_ size_t a_stWidth, _In_ size_t a_stHeight,
     }
 }
 
-
 void set_dxgiDebugName(ComPtr<IDXGIObject> a_dxgiObject, std::string a_sName,
                        const mInt a_lineNumber, const mChar* a_file)
 {
@@ -333,9 +332,8 @@ ComPtr<ID3DBlob> compile_shader(std::string const& a_shaderPath,
     std::wstring lFilePath   = convert_string(a_shaderPath);
     std::wstring lTarget     = convert_string(a_target);
     std::wstring lentryPoint = convert_string(a_entryPoint);
-    std::wstring pdbBase = lFilePath;
+    std::wstring pdbBase     = lFilePath;
     std::wstring pdbFilePath = pdbBase + L"." + lentryPoint + L".pdb";
-
 
     LPCWSTR pszArgs[] = {
         lFilePath.c_str(),  // Optional shader source file name for error
@@ -382,19 +380,22 @@ ComPtr<ID3DBlob> compile_shader(std::string const& a_shaderPath,
     // present. IDxcCompiler3::Compile will always return an error buffer, but
     // its length will be zero if there are no warnings or errors.
     if (pErrors != nullptr && pErrors->GetStringLength() != 0)
-        mLog_warningTo(DX_RENDERER_ID, "Shader ", a_shaderPath,
-                     " : warnings and errors : ", pErrors->GetStringPointer());
+        mLog_warningTo(
+            DX_RENDERER_ID, "Shader ", a_shaderPath,
+            " : warnings and errors : ", pErrors->GetStringPointer());
 
     //
     // Save pdb.
     //
-    ComPtr<IDxcBlob> pPDB = nullptr;
+    ComPtr<IDxcBlob>      pPDB     = nullptr;
     ComPtr<IDxcBlobUtf16> pPDBName = nullptr;
     pResults->GetOutput(DXC_OUT_PDB, IID_PPV_ARGS(&pPDB), &pPDBName);
     {
         FILE* fp = NULL;
 
-        // Note that if you don't specify -Fd, a pdb name will be automatically generated. Use this file name to save the pdb so that PIX can find it quickly.
+        // Note that if you don't specify -Fd, a pdb name will be automatically
+        // generated. Use this file name to save the pdb so that PIX can find it
+        // quickly.
         _wfopen_s(&fp, pPDBName->GetStringPointer(), L"wb");
         fwrite(pPDB->GetBufferPointer(), pPDB->GetBufferSize(), 1, fp);
         fclose(fp);
@@ -405,7 +406,7 @@ ComPtr<ID3DBlob> compile_shader(std::string const& a_shaderPath,
     if (FAILED(hrStatus))
     {
         mLog_errorTo(DX_RENDERER_ID, "Shader ", a_shaderPath,
-                    " : Compilation faled");
+                     " : Compilation faled");
         return nullptr;
     }
 
@@ -419,6 +420,10 @@ void enable_debugLayer()
     ComPtr<ID3D12Debug> debugInterface;
     check_mhr(D3D12GetDebugInterface(IID_PPV_ARGS(&debugInterface)));
     debugInterface->EnableDebugLayer();
+
+    ComPtr<ID3D12Debug1> debugInterface1;
+    check_mhr(debugInterface->QueryInterface(IID_PPV_ARGS(&debugInterface1)));
+    debugInterface1->SetEnableGPUBasedValidation(true);
 }
 
 void report_liveObjects()
@@ -482,7 +487,7 @@ ComPtr<IDXGIAdapter4> get_adapter(mBool a_useWarp)
     {
         mU64 size_maxDedicatedVideoMemory = 0;
         for (mUInt i = 0; dxgiFactory->EnumAdapters1(i, &dxgiAdapter1) !=
-                         DXGI_ERROR_NOT_FOUND;
+                          DXGI_ERROR_NOT_FOUND;
              ++i)
         {
             DXGI_ADAPTER_DESC1 dxgiAdapterDesc1;
@@ -594,7 +599,7 @@ ComPtr<IDXGISwapChain4> create_swapChain(
         CreateDXGIFactory2(flags_createFactory, IID_PPV_ARGS(&dxgiFactory4)));
     mDXGIDebugNamed(dxgiFactory4, "SwapChain Factory");
 
-	// Create a descriptor for the swap chain.
+    // Create a descriptor for the swap chain.
     DXGI_SWAP_CHAIN_DESC1 desc_SwapChain = {};
     desc_SwapChain.Width                 = a_width;
     desc_SwapChain.Height                = a_height;
@@ -609,7 +614,7 @@ ComPtr<IDXGISwapChain4> create_swapChain(
     desc_SwapChain.Flags =
         check_tearingSupport() ? DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING : 0u;
 
-	// Create a swap chain for the window.
+    // Create a swap chain for the window.
     ComPtr<IDXGISwapChain1> swapChain1;
     check_mhr(dxgiFactory4->CreateSwapChainForHwnd(a_commandQueue.Get(), a_hWnd,
                                                    &desc_SwapChain, nullptr,
@@ -693,7 +698,7 @@ HANDLE create_eventHandle()
 }
 
 mU64 signal_fence(ComPtr<ID3D12CommandQueue> a_commandQueue,
-                 ComPtr<ID3D12Fence> a_fence, mU64& a_fenceValue)
+                  ComPtr<ID3D12Fence> a_fence, mU64& a_fenceValue)
 {
     mU64 fenceValueForSignal = ++a_fenceValue;
     check_mhr(a_commandQueue->Signal(a_fence.Get(), fenceValueForSignal));

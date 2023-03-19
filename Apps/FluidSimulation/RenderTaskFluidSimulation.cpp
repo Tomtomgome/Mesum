@@ -17,7 +17,7 @@ mOutput<void*> upload_toGPU(
     descTexture.MipLevels          = 1;
     descTexture.Width              = a_image.width;
     descTexture.Height             = a_image.height;
-    descTexture.Flags              = D3D12_RESOURCE_FLAG_NONE;
+    descTexture.Flags              = D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS;
     descTexture.DepthOrArraySize   = 1;
     descTexture.SampleDesc.Count   = 1;
     descTexture.SampleDesc.Quality = 0;
@@ -43,8 +43,8 @@ mOutput<void*> upload_toGPU(
         descTexture.DepthOrArraySize * descTexture.MipLevels;
 
     // CREATE UPLOAD (CPU SIDE) RESOURCE
-    const UINT64 uploadBufferSize =
-        GetRequiredIntermediateSize(a_pTextureResource.Get(), 0, subresourceCount);
+    const UINT64 uploadBufferSize = GetRequiredIntermediateSize(
+        a_pTextureResource.Get(), 0, subresourceCount);
 
     oHeapProperties    = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
     auto oResourceDesc = CD3DX12_RESOURCE_DESC::Buffer(uploadBufferSize);
@@ -146,7 +146,7 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
     m_incrementSizeSrv = device->GetDescriptorHandleIncrementSize(
         D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
     D3D12_DESCRIPTOR_HEAP_DESC sSrvHeapDesc = {};
-    sSrvHeapDesc.NumDescriptors = sm_sizeSrvHeap + sm_sizeHeapOutBuffer;
+    sSrvHeapDesc.NumDescriptors = 2 * sm_sizeSrvHeap + sm_sizeHeapOutBuffer;
     sSrvHeapDesc.Type           = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
     sSrvHeapDesc.NodeMask       = 0;
     sSrvHeapDesc.Flags          = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
@@ -173,14 +173,18 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
     // Descriptors for the textures
     for (int i = 0; i < dx12::DX12Surface::scm_numFrames; ++i)
     {
-        m_GPUDescHdlTexture[i] = CD3DX12_GPU_DESCRIPTOR_HANDLE(
-            m_pSrvHeap->GetGPUDescriptorHandleForHeapStart(), i,
+        m_GPUDescHdlTextureDisplay[i] = CD3DX12_GPU_DESCRIPTOR_HANDLE(
+            m_pSrvHeap->GetGPUDescriptorHandleForHeapStart(), 2 * i,
+            m_incrementSizeSrv);
+        m_GPUDescHdlTextureCompute[i] = CD3DX12_GPU_DESCRIPTOR_HANDLE(
+            m_pSrvHeap->GetGPUDescriptorHandleForHeapStart(), 2 * i + 1,
             m_incrementSizeSrv);
     }
     // Descriptor for output buffer
     m_GPUDescHdlOutBuffer = CD3DX12_GPU_DESCRIPTOR_HANDLE(
         m_pSrvHeap->GetGPUDescriptorHandleForHeapStart(),
-        dx12::DX12Surface::scm_numFrames, m_incrementSizeSrv);
+        2 * dx12::DX12Surface::scm_numFrames, m_incrementSizeSrv);
+
     // Descriptor for sampler
     CD3DX12_CPU_DESCRIPTOR_HANDLE const hldCPUSampler(
         m_pSamplerHeap->GetCPUDescriptorHandleForHeapStart(), 0,
@@ -199,10 +203,9 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
         m_pTextureResources.emplace_back();
         m_pUploadResources.emplace_back();
 
-        auto [result, _] = upload_toGPU(unref_safe(m_taskData.pInitialData),
-                                        m_pTextureResources.back(),
-                                        m_pUploadResources.back(),
-                                        simulationTextureFormat);
+        auto [result, _] = upload_toGPU(
+            unref_safe(m_taskData.pInitialData), m_pTextureResources.back(),
+            m_pUploadResources.back(), simulationTextureFormat);
         mAssert(mIsSuccess(result));
 
         D3D12_SHADER_RESOURCE_VIEW_DESC descShaderResourceView = {};
@@ -213,16 +216,27 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
         descShaderResourceView.Texture2D.MipLevels = 1;
         descShaderResourceView.Texture2D.MostDetailedMip     = 0;
         descShaderResourceView.Texture2D.ResourceMinLODClamp = 0.0f;
-
-        CD3DX12_CPU_DESCRIPTOR_HANDLE const hdlCPUSrv(
-            m_pSrvHeap->GetCPUDescriptorHandleForHeapStart(), i,
+        CD3DX12_CPU_DESCRIPTOR_HANDLE const hdlCPUSrvDisplay(
+            m_pSrvHeap->GetCPUDescriptorHandleForHeapStart(), 2 * i,
             m_incrementSizeSrv);
-
         device->CreateShaderResourceView(m_pTextureResources.back().Get(),
-                                         &descShaderResourceView, hdlCPUSrv);
+                                         &descShaderResourceView,
+                                         hdlCPUSrvDisplay);
+
+        D3D12_UNORDERED_ACCESS_VIEW_DESC descUav = {};
+        descUav.Format        = DXGI_FORMAT_R32G32B32A32_FLOAT;
+        descUav.ViewDimension = D3D12_UAV_DIMENSION_TEXTURE2D;
+
+        CD3DX12_CPU_DESCRIPTOR_HANDLE const hdlCPUSrvCompute(
+            m_pSrvHeap->GetCPUDescriptorHandleForHeapStart(), 2 * i + 1,
+            m_incrementSizeSrv);
+        device->CreateUnorderedAccessView(m_pTextureResources.back().Get(),
+                                          nullptr, &descUav, hdlCPUSrvCompute);
     }
 
     // -------------------- Root Signatures
+    setup_advectionPass();
+
     // ----------------- Field arrows rendering
     setup_fluidRenderingPass();
 
@@ -238,7 +252,8 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
 //-----------------------------------------------------------------------------
 void Dx12TaskFluidSimulation::prepare()
 {
-    m_i = (m_i + 1) % dx12::DX12Surface::scm_numFrames;
+    m_iComputed  = (m_iComputed + 1) % dx12::DX12Surface::scm_numFrames;
+    m_iDisplayed = (m_iDisplayed + 1) % dx12::DX12Surface::scm_numFrames;
 }
 
 //-----------------------------------------------------------------------------
@@ -246,45 +261,10 @@ void Dx12TaskFluidSimulation::prepare()
 //-----------------------------------------------------------------------------
 void Dx12TaskFluidSimulation::execute() const
 {
-    dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
-        dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
-            .get_commandList();
-
-    // ---------------- Upload the simulated texture
-//    ID3D12Resource* pTextureResource = m_pTextureResources[m_i].Get();
-//    ID3D12Resource* pUploadResource  = m_pUploadResources[m_i].Get();
-//
-//    auto oResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
-//        pTextureResource, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
-//        D3D12_RESOURCE_STATE_COPY_DEST);
-//    graphicCommandList->ResourceBarrier(1, &oResourceBarrier);
-//
-//    std::vector<D3D12_SUBRESOURCE_DATA> vSubresources(1);
-//    // mip level 0
-//    size_t stNumBytes;
-//    size_t stRowBytes;
-//    size_t stNumRows;
-//    m::dx12::get_dxgiSurfaceInfo(size_t(s_nbCol), size_t(s_nbRow),
-//                                 DXGI_FORMAT_R32G32B32A32_FLOAT, &stNumBytes,
-//                                 &stRowBytes, &stNumRows);
-//    D3D12_SUBRESOURCE_DATA& oTextureData = vSubresources[0];
-//    oTextureData.pData                   = m_taskData.pPixelData->data();
-//    oTextureData.SlicePitch              = stNumBytes;
-//    oTextureData.RowPitch                = stRowBytes;
-//
-//    UpdateSubresources(graphicCommandList.Get(), pTextureResource,
-//                       pUploadResource, 0, 0, 1, vSubresources.data());
-//
-//    oResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
-//        pTextureResource, D3D12_RESOURCE_STATE_COPY_DEST,
-//        D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
-//    graphicCommandList->ResourceBarrier(1, &oResourceBarrier);
-
-    // ---------------- Renders the fluid
-    ID3D12DescriptorHeap* const aHeaps[2] = {m_pSrvHeap.Get(),
-                                             m_pSamplerHeap.Get()};
-
-    graphicCommandList->SetDescriptorHeaps(2, aHeaps);
+    ID3D12Resource* pTextureResourceComputed =
+        m_pTextureResources[m_iComputed].Get();
+    ID3D12Resource* pTextureResourceDisplayed =
+        m_pTextureResources[m_iDisplayed].Get();
 
     auto pOutputRT =
         static_cast<dx12::mRenderTarget const*>(m_taskData.pOutputRT);
@@ -293,8 +273,7 @@ void Dx12TaskFluidSimulation::execute() const
     mInt screenHeight = 600;
 
     D3D12_CPU_DESCRIPTOR_HANDLE rtv;
-    rtv = pOutputRT->rtv;
-    graphicCommandList->OMSetRenderTargets(1, &rtv, FALSE, nullptr);
+    rtv                     = pOutputRT->rtv;
     D3D12_VIEWPORT viewport = {};
     viewport.MaxDepth       = 1.0f;
     viewport.Width          = screenWidth;
@@ -303,114 +282,294 @@ void Dx12TaskFluidSimulation::execute() const
     scissorRect.right       = screenWidth;
     scissorRect.bottom      = screenHeight;
 
-    graphicCommandList->RSSetViewports(1, &viewport);
-    graphicCommandList->RSSetScissorRects(1, &scissorRect);
+    // ---------------- Upload the simulated texture
+    //    ID3D12Resource* pTextureResource = m_pTextureResources[m_i].Get();
+    //    ID3D12Resource* pUploadResource  = m_pUploadResources[m_i].Get();
+    //
+    //    auto oResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
+    //        pTextureResource, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+    //        D3D12_RESOURCE_STATE_COPY_DEST);
+    //    graphicCommandList->ResourceBarrier(1, &oResourceBarrier);
+    //
+    //    std::vector<D3D12_SUBRESOURCE_DATA> vSubresources(1);
+    //    // mip level 0
+    //    size_t stNumBytes;
+    //    size_t stRowBytes;
+    //    size_t stNumRows;
+    //    m::dx12::get_dxgiSurfaceInfo(size_t(s_nbCol), size_t(s_nbRow),
+    //                                 DXGI_FORMAT_R32G32B32A32_FLOAT,
+    //                                 &stNumBytes, &stRowBytes, &stNumRows);
+    //    D3D12_SUBRESOURCE_DATA& oTextureData = vSubresources[0];
+    //    oTextureData.pData                   = m_taskData.pPixelData->data();
+    //    oTextureData.SlicePitch              = stNumBytes;
+    //    oTextureData.RowPitch                = stRowBytes;
+    //
+    //    UpdateSubresources(graphicCommandList.Get(), pTextureResource,
+    //                       pUploadResource, 0, 0, 1, vSubresources.data());
+    //
+    //    oResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
+    //        pTextureResource, D3D12_RESOURCE_STATE_COPY_DEST,
+    //        D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+    //    graphicCommandList->ResourceBarrier(1, &oResourceBarrier);
 
-    graphicCommandList->SetPipelineState(m_psoFluidRendering.Get());
-    graphicCommandList->SetGraphicsRootSignature(m_rsFluidRendering.Get());
+    ID3D12DescriptorHeap* const aHeaps[2] = {m_pSrvHeap.Get(),
+                                             m_pSamplerHeap.Get()};
+    // ---------------- Advection
+    {
+        dx12::ComPtr<ID3D12GraphicsCommandList2> computeCommandList =
+            dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+                .get_commandList();
 
-    dx12::ComPtr<ID3D12Device> device =
-        dx12::DX12Context::gs_dx12Contexte->m_device;
+        D3D12_RESOURCE_BARRIER resourceBarrier[] = {
+            CD3DX12_RESOURCE_BARRIER::Transition(
+                pTextureResourceComputed,
+                D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+                D3D12_RESOURCE_STATE_UNORDERED_ACCESS),
+            CD3DX12_RESOURCE_BARRIER::Transition(
+                pTextureResourceDisplayed,
+                D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE)};
+        computeCommandList->ResourceBarrier(2, resourceBarrier);
 
-    graphicCommandList->IASetPrimitiveTopology(
-        D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+        computeCommandList->SetDescriptorHeaps(2, aHeaps);
 
-    graphicCommandList->SetGraphicsRootDescriptorTable(0, m_GPUDescHdlSampler);
-    graphicCommandList->SetGraphicsRootDescriptorTable(
-        1, m_GPUDescHdlTexture[m_i]);
+        computeCommandList->SetPipelineState(m_psoAdvection.Get());
+        computeCommandList->SetComputeRootSignature(m_rsAdvection.Get());
 
-    graphicCommandList->DrawInstanced(3, 1, 0, 0);
+        computeCommandList->SetComputeRootDescriptorTable(
+            0, m_GPUDescHdlTextureDisplay[m_iDisplayed]);
+        computeCommandList->SetComputeRootDescriptorTable(
+            1, m_GPUDescHdlTextureCompute[m_iComputed]);
 
-    dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
-        .execute_commandList(graphicCommandList.Get());
+        computeCommandList->Dispatch(s_nbRow, s_nbCol, 1);
+
+        resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
+            pTextureResourceComputed, D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
+            D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+        resourceBarrier[1] = CD3DX12_RESOURCE_BARRIER::Transition(
+            pTextureResourceDisplayed,
+            D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
+            D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+        computeCommandList->ResourceBarrier(2, resourceBarrier);
+
+        dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+            .execute_commandList(computeCommandList);
+    }
+
+    // ---------------- Renders the fluid
+    {
+        dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
+            dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
+                .get_commandList();
+
+        graphicCommandList->SetDescriptorHeaps(2, aHeaps);
+
+        graphicCommandList->OMSetRenderTargets(1, &rtv, FALSE, nullptr);
+        graphicCommandList->RSSetViewports(1, &viewport);
+        graphicCommandList->RSSetScissorRects(1, &scissorRect);
+
+        graphicCommandList->SetPipelineState(m_psoFluidRendering.Get());
+        graphicCommandList->SetGraphicsRootSignature(m_rsFluidRendering.Get());
+
+        dx12::ComPtr<ID3D12Device> device =
+            dx12::DX12Context::gs_dx12Contexte->m_device;
+
+        graphicCommandList->IASetPrimitiveTopology(
+            D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+        graphicCommandList->SetGraphicsRootDescriptorTable(0,
+                                                           m_GPUDescHdlSampler);
+        graphicCommandList->SetGraphicsRootDescriptorTable(
+            1, m_GPUDescHdlTextureDisplay[m_iDisplayed]);
+
+        graphicCommandList->DrawInstanced(3, 1, 0, 0);
+
+        dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
+            .execute_commandList(graphicCommandList.Get());
+    }
 
     // ---------------- Field arrows display
     // ---------------- Compute part
-    dx12::ComPtr<ID3D12GraphicsCommandList2> computeCommandList =
+    {
+        dx12::ComPtr<ID3D12GraphicsCommandList2> computeCommandList =
+            dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+                .get_commandList();
+
+        D3D12_RESOURCE_BARRIER resourceBarrier[] = {
+            CD3DX12_RESOURCE_BARRIER::Transition(
+                m_pVertexBufferArrows.Get(),
+                D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER,
+                D3D12_RESOURCE_STATE_UNORDERED_ACCESS),
+            CD3DX12_RESOURCE_BARRIER::Transition(
+                pTextureResourceDisplayed,
+                D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE)};
+        computeCommandList->ResourceBarrier(2, resourceBarrier);
+
+        computeCommandList->SetDescriptorHeaps(2, aHeaps);
+
+        computeCommandList->SetPipelineState(m_psoArrowGeneration.Get());
+        computeCommandList->SetComputeRootSignature(m_rsArrowGeneration.Get());
+
+        computeCommandList->SetComputeRootDescriptorTable(0,
+                                                          m_GPUDescHdlSampler);
+        computeCommandList->SetComputeRootDescriptorTable(
+            1, m_GPUDescHdlTextureDisplay[m_iDisplayed]);
+        computeCommandList->SetComputeRootDescriptorTable(
+            2, m_GPUDescHdlOutBuffer);
+
+        computeCommandList->Dispatch(s_nbRow, s_nbCol, 1);
+
+        resourceBarrier[1] = CD3DX12_RESOURCE_BARRIER::Transition(
+            pTextureResourceDisplayed,
+            D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
+            D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+        computeCommandList->ResourceBarrier(1, &resourceBarrier[1]);
+
         dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
-            .get_commandList();
-
-    auto resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
-        m_pVertexBufferArrows.Get(),
-        D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER,
-        D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
-    graphicCommandList->ResourceBarrier(1, &resourceBarrier);
-
-    graphicCommandList->SetDescriptorHeaps(2, aHeaps);
-
-    computeCommandList->SetPipelineState(m_psoArrowGeneration.Get());
-    computeCommandList->SetComputeRootSignature(m_rsArrowGeneration.Get());
-
-    computeCommandList->SetComputeRootDescriptorTable(0, m_GPUDescHdlSampler);
-    computeCommandList->SetComputeRootDescriptorTable(1,
-                                                      m_GPUDescHdlTexture[m_i]);
-    computeCommandList->SetComputeRootDescriptorTable(2, m_GPUDescHdlOutBuffer);
-
-    computeCommandList->Dispatch(s_nbRow, s_nbCol, 1);
-
-    dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
-        .execute_commandList(computeCommandList);
-
+            .execute_commandList(computeCommandList);
+    }
     // ---------------- Render part
+    {
+        dx12::ComPtr<ID3D12GraphicsCommandList2> graphicsCommandListField =
+            dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
+                .get_commandList();
 
-    dx12::ComPtr<ID3D12GraphicsCommandList2> graphicsCommandListField =
+        auto resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
+            m_pVertexBufferArrows.Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
+            D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
+        graphicsCommandListField->ResourceBarrier(1, &resourceBarrier);
+
+        graphicsCommandListField->SetDescriptorHeaps(2, aHeaps);
+
+        graphicsCommandListField->OMSetRenderTargets(1, &rtv, FALSE, nullptr);
+        graphicsCommandListField->RSSetViewports(1, &viewport);
+        graphicsCommandListField->RSSetScissorRects(1, &scissorRect);
+
+        graphicsCommandListField->SetPipelineState(m_psoArrowRendering.Get());
+        graphicsCommandListField->SetGraphicsRootSignature(
+            m_rsArrowRendering.Get());
+
+        graphicsCommandListField->IASetPrimitiveTopology(
+            D3D_PRIMITIVE_TOPOLOGY_LINESTRIP);
+
+        D3D12_VERTEX_BUFFER_VIEW vbv;
+        memset(&vbv, 0, sizeof(D3D12_VERTEX_BUFFER_VIEW));
+        vbv.BufferLocation = m_pVertexBufferArrows->GetGPUVirtualAddress();
+        vbv.SizeInBytes =
+            s_nbRow * s_nbCol * sm_nbVertexPerArrows * sm_sizeVertexArrow;
+        vbv.StrideInBytes = sm_sizeVertexArrow;
+        graphicsCommandListField->IASetVertexBuffers(0, 1, &vbv);
+        D3D12_INDEX_BUFFER_VIEW ibv;
+        memset(&ibv, 0, sizeof(D3D12_INDEX_BUFFER_VIEW));
+        ibv.BufferLocation = m_pIndexBufferArrows->GetGPUVirtualAddress();
+        ibv.SizeInBytes =
+            s_nbRow * s_nbCol * sm_nbIndexPerArrows * sm_sizeIndexArrow;
+        ibv.Format = DXGI_FORMAT_R16_UINT;
+        graphicsCommandListField->IASetIndexBuffer(&ibv);
+
+        graphicsCommandListField->DrawIndexedInstanced(
+            s_nbRow * s_nbCol * sm_nbIndexPerArrows, 1, 0, 0, 0);
+
         dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
-            .get_commandList();
-
-    resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
-        m_pVertexBufferArrows.Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
-        D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
-    graphicsCommandListField->ResourceBarrier(1, &resourceBarrier);
-
-    graphicsCommandListField->SetDescriptorHeaps(2, aHeaps);
-
-    graphicCommandList->OMSetRenderTargets(1, &rtv, FALSE, nullptr);
-    graphicCommandList->RSSetViewports(1, &viewport);
-    graphicCommandList->RSSetScissorRects(1, &scissorRect);
-
-    graphicsCommandListField->SetPipelineState(m_psoArrowRendering.Get());
-    graphicsCommandListField->SetGraphicsRootSignature(
-        m_rsArrowRendering.Get());
-
-    graphicCommandList->IASetPrimitiveTopology(
-        D3D_PRIMITIVE_TOPOLOGY_LINESTRIP);
-
-    D3D12_VERTEX_BUFFER_VIEW vbv;
-    memset(&vbv, 0, sizeof(D3D12_VERTEX_BUFFER_VIEW));
-    vbv.BufferLocation = m_pVertexBufferArrows->GetGPUVirtualAddress();
-    vbv.SizeInBytes =
-        s_nbRow * s_nbCol * sm_nbVertexPerArrows * sm_sizeVertexArrow;
-    vbv.StrideInBytes = sm_sizeVertexArrow;
-    graphicsCommandListField->IASetVertexBuffers(0, 1, &vbv);
-    D3D12_INDEX_BUFFER_VIEW ibv;
-    memset(&ibv, 0, sizeof(D3D12_INDEX_BUFFER_VIEW));
-    ibv.BufferLocation = m_pIndexBufferArrows->GetGPUVirtualAddress();
-    ibv.SizeInBytes =
-        s_nbRow * s_nbCol * sm_nbIndexPerArrows * sm_sizeIndexArrow;
-    ibv.Format = DXGI_FORMAT_R16_UINT;
-    graphicsCommandListField->IASetIndexBuffer(&ibv);
-
-    graphicsCommandListField->DrawIndexedInstanced(
-        s_nbRow * s_nbCol * sm_nbIndexPerArrows, 1, 0, 0, 0);
-
-    dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
-        .execute_commandList(graphicsCommandListField);
+            .execute_commandList(graphicsCommandListField);
+    }
 }
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void Dx12TaskFluidSimulation::setup_advectionPass() {}
+void Dx12TaskFluidSimulation::setup_advectionPass()
+{
+    dx12::ComPtr<ID3D12Device> device =
+        dx12::DX12Context::gs_dx12Contexte->m_device;
+    HRESULT res;
+    // ----------------- Root signature and pipeline state
+    std::vector<CD3DX12_ROOT_PARAMETER> vRootParameters;
+    vRootParameters.resize(2);
+
+    std::vector<CD3DX12_DESCRIPTOR_RANGE> vTextureRanges;
+    vTextureRanges.resize(1);
+    vTextureRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 0);
+
+    std::vector<CD3DX12_DESCRIPTOR_RANGE> vOutputRanges;
+    vOutputRanges.resize(1);
+    vOutputRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, 1, 0, 0);
+
+    vRootParameters[0].InitAsDescriptorTable(1, vTextureRanges.data());
+    vRootParameters[1].InitAsDescriptorTable(1, vOutputRanges.data());
+
+    D3D12_STATIC_SAMPLER_DESC descStaticSampler = {};
+    descStaticSampler.Filter         = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
+    descStaticSampler.MinLOD         = 0;
+    descStaticSampler.MaxLOD         = 0;
+    descStaticSampler.MipLODBias     = 0.0f;
+    descStaticSampler.MaxAnisotropy  = 1;
+    descStaticSampler.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
+
+    D3D12_FILTER_TYPE           eDx12FilterMinMag = D3D12_FILTER_TYPE_LINEAR;
+    D3D12_FILTER_TYPE           eDx12FilterMip    = D3D12_FILTER_TYPE_LINEAR;
+    D3D12_FILTER_REDUCTION_TYPE eDx12FilterReduction =
+        D3D12_FILTER_REDUCTION_TYPE_STANDARD;
+    descStaticSampler.Filter =
+        D3D12_ENCODE_BASIC_FILTER(eDx12FilterMinMag, eDx12FilterMinMag,
+                                  eDx12FilterMip, eDx12FilterReduction);
+
+    D3D12_TEXTURE_ADDRESS_MODE eDx12AddressMode =
+        D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
+    descStaticSampler.AddressU = eDx12AddressMode;
+    descStaticSampler.AddressV = eDx12AddressMode;
+    descStaticSampler.AddressW = eDx12AddressMode;
+
+    descStaticSampler.ShaderRegister = 0;
+    descStaticSampler.RegisterSpace  = 0;
+
+    {
+        CD3DX12_ROOT_SIGNATURE_DESC descRootSignature;
+        descRootSignature.Init(vRootParameters.size(), vRootParameters.data(),
+                               1, &descStaticSampler,
+                               D3D12_ROOT_SIGNATURE_FLAG_NONE);
+
+        dx12::ComPtr<ID3DBlob> rootBlob;
+        dx12::ComPtr<ID3DBlob> errorBlob;
+        res = D3D12SerializeRootSignature(&descRootSignature,
+                                          D3D_ROOT_SIGNATURE_VERSION_1,
+                                          &rootBlob, &errorBlob);
+        if (FAILED(res))
+        {
+            if (errorBlob != nullptr)
+            {
+                mLog_info((char*)errorBlob->GetBufferPointer());
+            }
+        }
+
+        dx12::check_mhr(device->CreateRootSignature(
+            0, rootBlob->GetBufferPointer(), rootBlob->GetBufferSize(),
+            IID_PPV_ARGS(&m_rsAdvection)));
+    }
+
+    D3D12_COMPUTE_PIPELINE_STATE_DESC fieldPipelineDescCompute{};
+
+    dx12::ComPtr<ID3DBlob> cs_field = dx12::compile_shader(
+        "data/fluidSimulation.hlsl", "cs_advect", "cs_6_0");
+
+    fieldPipelineDescCompute.CS.BytecodeLength  = cs_field->GetBufferSize();
+    fieldPipelineDescCompute.CS.pShaderBytecode = cs_field->GetBufferPointer();
+    fieldPipelineDescCompute.pRootSignature     = m_rsAdvection.Get();
+
+    dx12::check_mhr(device->CreateComputePipelineState(
+        &fieldPipelineDescCompute, IID_PPV_ARGS(&m_psoAdvection)));
+}
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 void Dx12TaskFluidSimulation::setup_arrowGenerationPass()
 {
-    // ----------------- Root signature and pipeline state
     dx12::ComPtr<ID3D12Device> device =
         dx12::DX12Context::gs_dx12Contexte->m_device;
     HRESULT res;
+    // ----------------- Root signature and pipeline state
 
     std::vector<CD3DX12_ROOT_PARAMETER> vRootParameters;
     vRootParameters.resize(3);
@@ -500,7 +659,7 @@ void Dx12TaskFluidSimulation::setup_arrowGenerationPass()
         // CPU Descriptor for the output buffer
         CD3DX12_CPU_DESCRIPTOR_HANDLE const hdlCPUSrv(
             m_pSrvHeap->GetCPUDescriptorHandleForHeapStart(),
-            dx12::DX12Surface::scm_numFrames, m_incrementSizeSrv);
+            2 * dx12::DX12Surface::scm_numFrames, m_incrementSizeSrv);
 
         device->CreateUnorderedAccessView(m_pVertexBufferArrows.Get(), nullptr,
                                           &descUAV, hdlCPUSrv);
@@ -533,8 +692,8 @@ void Dx12TaskFluidSimulation::setup_arrowGenerationPass()
 
     // ----------------- Generate arrow indicies
     // Upload generated indices
-    ID3D12Resource* pUploadIndexResource;
-    D3D12_HEAP_PROPERTIES        props;
+    ID3D12Resource*       pUploadIndexResource;
+    D3D12_HEAP_PROPERTIES props;
     memset(&props, 0, sizeof(D3D12_HEAP_PROPERTIES));
     props.Type                 = D3D12_HEAP_TYPE_UPLOAD;
     props.CPUPageProperty      = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
@@ -602,7 +761,7 @@ void Dx12TaskFluidSimulation::setup_arrowGenerationPass()
         .execute_commandList(pUploadCommandList.Get());
 
     // TODO : Why doesn't this work on with clion ??
-    //pUploadIndexResource->Release();
+    // pUploadIndexResource->Release();
 }
 
 //-----------------------------------------------------------------------------
