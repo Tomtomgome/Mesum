@@ -94,18 +94,19 @@ mIfDx12Enabled(
         std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pTextureResources{};
         std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pUploadResources{};
 
+        static const m::mUInt scm_maxTextures = 5;
+
         D3D12_GPU_DESCRIPTOR_HANDLE
-        m_GPUDescHdlTextureCompute[m::dx12::DX12Surface::scm_numFrames]{};
+        m_GPUDescHdlTextureCompute[scm_maxTextures]{};
         D3D12_GPU_DESCRIPTOR_HANDLE
-        m_GPUDescHdlTextureDisplay[m::dx12::DX12Surface::scm_numFrames]{};
+        m_GPUDescHdlTextureDisplay[scm_maxTextures]{};
         D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlSampler{};
         D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlOutBuffer{};
 
         m::dx12::ComPtr<ID3D12DescriptorHeap> m_pSrvHeap         = nullptr;
         m::mUInt                              m_incrementSizeSrv = 0;
-        static const m::mUInt                 sm_sizeSrvHeap =
-            m::dx12::DX12Surface::scm_numFrames;
-        m::dx12::ComPtr<ID3D12DescriptorHeap> m_pSamplerHeap         = nullptr;
+        static const m::mUInt                 sm_sizeSrvHeap = scm_maxTextures;
+        m::dx12::ComPtr<ID3D12DescriptorHeap> m_pSamplerHeap = nullptr;
         m::mUInt                              m_incrementSizeSampler = 0;
         static const m::mUInt                 sm_sizeSamplerHeap     = 1;
 

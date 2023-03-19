@@ -171,7 +171,7 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
 
     // Descriptors ------------------------------------------------------------
     // Descriptors for the textures
-    for (int i = 0; i < dx12::DX12Surface::scm_numFrames; ++i)
+    for (int i = 0; i < scm_maxTextures; ++i)
     {
         m_GPUDescHdlTextureDisplay[i] = CD3DX12_GPU_DESCRIPTOR_HANDLE(
             m_pSrvHeap->GetGPUDescriptorHandleForHeapStart(), 2 * i,
@@ -183,7 +183,7 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
     // Descriptor for output buffer
     m_GPUDescHdlOutBuffer = CD3DX12_GPU_DESCRIPTOR_HANDLE(
         m_pSrvHeap->GetGPUDescriptorHandleForHeapStart(),
-        2 * dx12::DX12Surface::scm_numFrames, m_incrementSizeSrv);
+        2 * scm_maxTextures, m_incrementSizeSrv);
 
     // Descriptor for sampler
     CD3DX12_CPU_DESCRIPTOR_HANDLE const hldCPUSampler(
@@ -198,7 +198,7 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
 
     DXGI_FORMAT simulationTextureFormat = DXGI_FORMAT_R32G32B32A32_FLOAT;
     // Initialize Textures ----------------------------------------------------
-    for (int i = 0; i < dx12::DX12Surface::scm_numFrames; ++i)
+    for (int i = 0; i < scm_maxTextures; ++i)
     {
         m_pTextureResources.emplace_back();
         m_pUploadResources.emplace_back();
@@ -737,7 +737,7 @@ void Dx12TaskFluidSimulation::setup_arrowGenerationPass()
         // CPU Descriptor for the output buffer
         CD3DX12_CPU_DESCRIPTOR_HANDLE const hdlCPUSrv(
             m_pSrvHeap->GetCPUDescriptorHandleForHeapStart(),
-            2 * dx12::DX12Surface::scm_numFrames, m_incrementSizeSrv);
+            2 * scm_maxTextures, m_incrementSizeSrv);
 
         device->CreateUnorderedAccessView(m_pVertexBufferArrows.Get(), nullptr,
                                           &descUAV, hdlCPUSrv);
