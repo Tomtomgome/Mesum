@@ -55,17 +55,22 @@ mIfDx12Enabled(
 
        private:
         void setup_advectionPass();
+        void setup_simulationPass();
         void setup_arrowGenerationPass();
         void setup_fluidRenderingPass();
         void setup_arrowRenderingPass();
 
        private:
-        m::mUInt m_iComputed  = 0;
-        m::mUInt m_iDisplayed = 1;
+        m::mUInt m_iOriginal = 0;
+        m::mUInt m_iComputed = 1;
 
         // Advection
         m::dx12::ComPtr<ID3D12RootSignature> m_rsAdvection  = nullptr;
         m::dx12::ComPtr<ID3D12PipelineState> m_psoAdvection = nullptr;
+
+        // Simulation
+        m::dx12::ComPtr<ID3D12RootSignature> m_rsSimulation  = nullptr;
+        m::dx12::ComPtr<ID3D12PipelineState> m_psoSimulation = nullptr;
 
         // Arrow generation
         m::dx12::ComPtr<ID3D12RootSignature> m_rsArrowGeneration  = nullptr;
