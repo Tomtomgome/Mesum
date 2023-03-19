@@ -205,7 +205,8 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
 
         auto [result, _] = upload_toGPU(
             unref_safe(m_taskData.pInitialData), m_pTextureResources.back(),
-            m_pUploadResources.back(), simulationTextureFormat);
+            m_pUploadResources.back(), simulationTextureFormat,
+            std::wstring(L"Texture_" + std::to_wstring(i)).c_str());
         mAssert(mIsSuccess(result));
 
         D3D12_SHADER_RESOURCE_VIEW_DESC descShaderResourceView = {};
@@ -251,8 +252,6 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
 //-----------------------------------------------------------------------------
 void Dx12TaskFluidSimulation::prepare()
 {
-    m_iOriginal = (m_iOriginal + 1) % dx12::DX12Surface::scm_numFrames;
-    m_iComputed = (m_iComputed + 1) % dx12::DX12Surface::scm_numFrames;
 }
 
 //-----------------------------------------------------------------------------

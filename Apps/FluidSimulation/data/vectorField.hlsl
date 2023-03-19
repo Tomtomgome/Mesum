@@ -27,8 +27,9 @@ void cs_main(uint3 DTid : SV_DispatchThreadID)
 {
   uint dimX, dimY;
   texture.GetDimensions(dimX, dimY);
-  float2 invDim = float2(1.0f/(dimX-1), 1.0f/(dimY-1));
-  float2 uv = float2(invDim.x * DTid.x, invDim.y * DTid.y);
+  float2 invDim = float2(1.0f/dimX, 1.0f/dimY);
+  float2 halfPixel = 0.5f*invDim;
+  float2 uv = halfPixel + float2(invDim.x * DTid.x, invDim.y * DTid.y);
   float4 color = texture.SampleLevel(basicSampler, uv, 0);
 
   const uint g_nbVertexPerArrow = 4;

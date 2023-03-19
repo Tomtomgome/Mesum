@@ -12,16 +12,16 @@ void cs_advect(uint3 DTid : SV_DispatchThreadID)
   // IMPROVE compute index 
   uint dimX, dimY;
   inputData.GetDimensions(dimX, dimY);
-  float2 invDim = float2(1.0f/(dimX-1), 1.0f/(dimY-1));
-  float2 uv = float2(invDim.x * DTid.x, invDim.y * DTid.y);
+  float2 invDim = float2(1.0f/dimX, 1.0f/dimY);
   float2 halfPixel = 0.5f*invDim;
+  float2 uv = halfPixel + float2(invDim.x * DTid.x, invDim.y * DTid.y);
 
   // Need to separate center cell quantities advection from staggered quantities advections
   float2 velocity;
-  velocity.x = inputData.SampleLevel(basicSampler, uv - float2(halfPixel.x, 0.0), 0).r;
-  velocity.y = inputData.SampleLevel(basicSampler, uv - float2(0.0, halfPixel.y), 0).g;
+  velocity.x = inputData.SampleLevel(basicSampler, uv - float2(halfPixel.x, 0.0), 0).x;
+  velocity.y = inputData.SampleLevel(basicSampler, uv - float2(0.0, halfPixel.y), 0).y;
   
-  float2 startingPoint = uv - g_time * velocity;
+  float2 startingPoint = uv - (g_time * velocity) * invDim;
 
   //Improve with cubic interpolation
   outputData[uint2(DTid.x, DTid.y)] = inputData.SampleLevel(basicSampler, startingPoint, 0);
@@ -41,10 +41,13 @@ void cs_simulation(uint3 DTid : SV_DispatchThreadID)
   // IMPROVE compute index 
   uint dimX, dimY;
   inputData.GetDimensions(dimX, dimY);
-  float2 invDim = float2(1.0f/(dimX-1), 1.0f/(dimY-1));
-  float2 uv = float2(invDim.x * DTid.x, invDim.y * DTid.y);
+  float2 invDim = float2(1.0f/dimX, 1.0f/dimY);
   float2 halfPixel = 0.5f*invDim;
+  float2 uv = halfPixel + float2(invDim.x * DTid.x, invDim.y * DTid.y);
 
+  // base copy
+  outputData[uint2(DTid.x, DTid.y)] = inputData.SampleLevel(basicSampler, uv, 0);
+  
   // gravity
   outputData[uint2(DTid.x, DTid.y)].y += g_time * g_gravity;
 
