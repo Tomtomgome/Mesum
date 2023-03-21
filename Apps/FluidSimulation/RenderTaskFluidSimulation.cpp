@@ -118,56 +118,108 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
         dx12::DX12Context::gs_dx12Contexte->m_device;
     HRESULT res;
 
+    resource::mTypedImage<math::mVec4> const& rImage =
+        unref_safe(m_taskData.pInitialData);
+
     // Sampler
-    D3D12_SAMPLER_DESC descSampler{};
-    descSampler.Filter         = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
-    descSampler.MinLOD         = 0;
-    descSampler.MaxLOD         = 0;
-    descSampler.MipLODBias     = 0.0f;
-    descSampler.MaxAnisotropy  = 1;
-    descSampler.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
+    {
+        D3D12_SAMPLER_DESC descSampler{};
+        descSampler.Filter         = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
+        descSampler.MinLOD         = 0;
+        descSampler.MaxLOD         = 0;
+        descSampler.MipLODBias     = 0.0f;
+        descSampler.MaxAnisotropy  = 1;
+        descSampler.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
 
-    D3D12_FILTER_TYPE eDx12FilterMinMag = D3D12_FILTER_TYPE_POINT;
-    D3D12_FILTER_TYPE eDx12FilterMip    = D3D12_FILTER_TYPE_POINT;
+        D3D12_FILTER_TYPE eDx12FilterMinMag = D3D12_FILTER_TYPE_POINT;
+        D3D12_FILTER_TYPE eDx12FilterMip    = D3D12_FILTER_TYPE_POINT;
 
-    D3D12_FILTER_REDUCTION_TYPE eDx12FilterReduction =
-        D3D12_FILTER_REDUCTION_TYPE_STANDARD;
-    D3D12_TEXTURE_ADDRESS_MODE eDx12AddressMode =
-        D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
+        D3D12_FILTER_REDUCTION_TYPE eDx12FilterReduction =
+            D3D12_FILTER_REDUCTION_TYPE_STANDARD;
+        D3D12_TEXTURE_ADDRESS_MODE eDx12AddressMode =
+            D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
 
-    descSampler.Filter =
-        D3D12_ENCODE_BASIC_FILTER(eDx12FilterMinMag, eDx12FilterMinMag,
-                                  eDx12FilterMip, eDx12FilterReduction);
-    descSampler.AddressU = eDx12AddressMode;
-    descSampler.AddressV = eDx12AddressMode;
-    descSampler.AddressW = eDx12AddressMode;
+        descSampler.Filter =
+            D3D12_ENCODE_BASIC_FILTER(eDx12FilterMinMag, eDx12FilterMinMag,
+                                      eDx12FilterMip, eDx12FilterReduction);
+        descSampler.AddressU = eDx12AddressMode;
+        descSampler.AddressV = eDx12AddressMode;
+        descSampler.AddressW = eDx12AddressMode;
+    }
 
+    // -- static samplers
+    {
+        D3D12_STATIC_SAMPLER_DESC descStaticSampler = {};
+        descStaticSampler.Filter         = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
+        descStaticSampler.MinLOD         = 0;
+        descStaticSampler.MaxLOD         = 0;
+        descStaticSampler.MipLODBias     = 0.0f;
+        descStaticSampler.MaxAnisotropy  = 1;
+        descStaticSampler.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
+
+        D3D12_FILTER_TYPE eDx12FilterMinMag = D3D12_FILTER_TYPE_LINEAR;
+        D3D12_FILTER_TYPE eDx12FilterMip    = D3D12_FILTER_TYPE_LINEAR;
+        D3D12_FILTER_REDUCTION_TYPE eDx12FilterReduction =
+            D3D12_FILTER_REDUCTION_TYPE_STANDARD;
+        descStaticSampler.Filter =
+            D3D12_ENCODE_BASIC_FILTER(eDx12FilterMinMag, eDx12FilterMinMag,
+                                      eDx12FilterMip, eDx12FilterReduction);
+
+        D3D12_TEXTURE_ADDRESS_MODE eDx12AddressMode =
+            D3D12_TEXTURE_ADDRESS_MODE_BORDER;
+        descStaticSampler.AddressU    = eDx12AddressMode;
+        descStaticSampler.AddressV    = eDx12AddressMode;
+        descStaticSampler.AddressW    = eDx12AddressMode;
+        descStaticSampler.BorderColor = D3D12_STATIC_BORDER_COLOR_OPAQUE_BLACK;
+
+        descStaticSampler.ShaderRegister = 0;
+        descStaticSampler.RegisterSpace  = 0;
+        m_linearSamplerID                = m_samplersDescs.size();
+        m_samplersDescs.push_back(descStaticSampler);
+    }
+    {
+        D3D12_STATIC_SAMPLER_DESC descStaticSampler = {};
+        descStaticSampler.Filter         = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
+        descStaticSampler.MinLOD         = 0;
+        descStaticSampler.MaxLOD         = 0;
+        descStaticSampler.MipLODBias     = 0.0f;
+        descStaticSampler.MaxAnisotropy  = 1;
+        descStaticSampler.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
+
+        D3D12_FILTER_TYPE           eDx12FilterMinMag = D3D12_FILTER_TYPE_POINT;
+        D3D12_FILTER_TYPE           eDx12FilterMip    = D3D12_FILTER_TYPE_POINT;
+        D3D12_FILTER_REDUCTION_TYPE eDx12FilterReduction =
+            D3D12_FILTER_REDUCTION_TYPE_STANDARD;
+        descStaticSampler.Filter =
+            D3D12_ENCODE_BASIC_FILTER(eDx12FilterMinMag, eDx12FilterMinMag,
+                                      eDx12FilterMip, eDx12FilterReduction);
+
+        D3D12_TEXTURE_ADDRESS_MODE eDx12AddressMode =
+            D3D12_TEXTURE_ADDRESS_MODE_BORDER;
+        descStaticSampler.AddressU    = eDx12AddressMode;
+        descStaticSampler.AddressV    = eDx12AddressMode;
+        descStaticSampler.AddressW    = eDx12AddressMode;
+        descStaticSampler.BorderColor = D3D12_STATIC_BORDER_COLOR_OPAQUE_BLACK;
+
+        descStaticSampler.ShaderRegister = 1;
+        descStaticSampler.RegisterSpace  = 0;
+        m_pointSamplerID                 = m_samplersDescs.size();
+        m_samplersDescs.push_back(descStaticSampler);
+    }
     // HEAPS ------------------------------------------------------------------
     m_incrementSizeSrv = device->GetDescriptorHandleIncrementSize(
         D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
     D3D12_DESCRIPTOR_HEAP_DESC sSrvHeapDesc = {};
-    sSrvHeapDesc.NumDescriptors = 2 * sm_sizeSrvHeap + sm_sizeHeapOutBuffer;
-    sSrvHeapDesc.Type           = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-    sSrvHeapDesc.NodeMask       = 0;
-    sSrvHeapDesc.Flags          = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+    sSrvHeapDesc.NumDescriptors =
+        2 * sm_sizeSrvHeap + sm_sizeHeapOutBuffer + 2 * scm_nbJacobiTexture;
+    sSrvHeapDesc.Type     = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+    sSrvHeapDesc.NodeMask = 0;
+    sSrvHeapDesc.Flags    = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 
     HRESULT hr = device->CreateDescriptorHeap(
         &sSrvHeapDesc, IID_PPV_ARGS(m_pSrvHeap.GetAddressOf()));
     mAssert(hr == S_OK);
     m_pSrvHeap.Get()->SetName(L"Texture SRV Heap");
-
-    m_incrementSizeSampler = device->GetDescriptorHandleIncrementSize(
-        D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER);
-    D3D12_DESCRIPTOR_HEAP_DESC sSamplerHeapDesc = {};
-    sSamplerHeapDesc.NumDescriptors             = sm_sizeSamplerHeap;
-    sSamplerHeapDesc.Type     = D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER;
-    sSamplerHeapDesc.NodeMask = 0;
-    sSamplerHeapDesc.Flags    = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-
-    hr = device->CreateDescriptorHeap(
-        &sSamplerHeapDesc, IID_PPV_ARGS(m_pSamplerHeap.GetAddressOf()));
-    mAssert(hr == S_OK);
-    m_pSamplerHeap.Get()->SetName(L"Texture Sampler Heap");
 
     // Descriptors ------------------------------------------------------------
     // Descriptors for the textures
@@ -182,21 +234,34 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
     }
     // Descriptor for output buffer
     m_GPUDescHdlOutBuffer = CD3DX12_GPU_DESCRIPTOR_HANDLE(
-        m_pSrvHeap->GetGPUDescriptorHandleForHeapStart(),
-        2 * scm_maxTextures, m_incrementSizeSrv);
+        m_pSrvHeap->GetGPUDescriptorHandleForHeapStart(), 2 * scm_maxTextures,
+        m_incrementSizeSrv);
 
-    // Descriptor for sampler
-    CD3DX12_CPU_DESCRIPTOR_HANDLE const hldCPUSampler(
-        m_pSamplerHeap->GetCPUDescriptorHandleForHeapStart(), 0,
-        m_incrementSizeSampler);
-
-    device->CreateSampler(&descSampler, hldCPUSampler);
-
-    m_GPUDescHdlSampler = CD3DX12_GPU_DESCRIPTOR_HANDLE(
-        m_pSamplerHeap->GetGPUDescriptorHandleForHeapStart(), 0,
-        m_incrementSizeSampler);
+    // Descriptor for jacobi textures
+    for (int i = 0; i < scm_nbJacobiTexture; ++i)
+    {
+        m_GPUDescHdlJacobiInput[i] = CD3DX12_GPU_DESCRIPTOR_HANDLE(
+            m_pSrvHeap->GetGPUDescriptorHandleForHeapStart(),
+            2 * scm_maxTextures + 1 + 2 * i, m_incrementSizeSrv);
+        m_GPUDescHdlJacobiOutput[i] = CD3DX12_GPU_DESCRIPTOR_HANDLE(
+            m_pSrvHeap->GetGPUDescriptorHandleForHeapStart(),
+            2 * scm_maxTextures + 1 + 2 * i + 1, m_incrementSizeSrv);
+    }
 
     DXGI_FORMAT simulationTextureFormat = DXGI_FORMAT_R32G32B32A32_FLOAT;
+
+    D3D12_SHADER_RESOURCE_VIEW_DESC descShaderResourceView = {};
+    descShaderResourceView.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+    descShaderResourceView.Shader4ComponentMapping =
+        D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+    descShaderResourceView.Format                    = simulationTextureFormat;
+    descShaderResourceView.Texture2D.MipLevels       = 1;
+    descShaderResourceView.Texture2D.MostDetailedMip = 0;
+    descShaderResourceView.Texture2D.ResourceMinLODClamp = 0.0f;
+
+    D3D12_UNORDERED_ACCESS_VIEW_DESC descUav = {};
+    descUav.Format                           = simulationTextureFormat;
+    descUav.ViewDimension                    = D3D12_UAV_DIMENSION_TEXTURE2D;
     // Initialize Textures ----------------------------------------------------
     for (int i = 0; i < scm_maxTextures; ++i)
     {
@@ -204,29 +269,17 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
         m_pUploadResources.emplace_back();
 
         auto [result, _] = upload_toGPU(
-            unref_safe(m_taskData.pInitialData), m_pTextureResources.back(),
-            m_pUploadResources.back(), simulationTextureFormat,
+            rImage, m_pTextureResources.back(), m_pUploadResources.back(),
+            simulationTextureFormat,
             std::wstring(L"Texture_" + std::to_wstring(i)).c_str());
         mAssert(mIsSuccess(result));
 
-        D3D12_SHADER_RESOURCE_VIEW_DESC descShaderResourceView = {};
-        descShaderResourceView.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
-        descShaderResourceView.Shader4ComponentMapping =
-            D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-        descShaderResourceView.Format              = simulationTextureFormat;
-        descShaderResourceView.Texture2D.MipLevels = 1;
-        descShaderResourceView.Texture2D.MostDetailedMip     = 0;
-        descShaderResourceView.Texture2D.ResourceMinLODClamp = 0.0f;
         CD3DX12_CPU_DESCRIPTOR_HANDLE const hdlCPUSrvDisplay(
             m_pSrvHeap->GetCPUDescriptorHandleForHeapStart(), 2 * i,
             m_incrementSizeSrv);
         device->CreateShaderResourceView(m_pTextureResources.back().Get(),
                                          &descShaderResourceView,
                                          hdlCPUSrvDisplay);
-
-        D3D12_UNORDERED_ACCESS_VIEW_DESC descUav = {};
-        descUav.Format        = DXGI_FORMAT_R32G32B32A32_FLOAT;
-        descUav.ViewDimension = D3D12_UAV_DIMENSION_TEXTURE2D;
 
         CD3DX12_CPU_DESCRIPTOR_HANDLE const hdlCPUSrvCompute(
             m_pSrvHeap->GetCPUDescriptorHandleForHeapStart(), 2 * i + 1,
@@ -240,6 +293,10 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
 
     setup_advectionPass();
 
+    setup_jacobiPass(rImage.width, rImage.height);
+
+    setup_projectionPass();
+
     setup_fluidRenderingPass();
 
     setup_arrowGenerationPass();
@@ -250,9 +307,7 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void Dx12TaskFluidSimulation::prepare()
-{
-}
+void Dx12TaskFluidSimulation::prepare() {}
 
 //-----------------------------------------------------------------------------
 //
@@ -279,8 +334,7 @@ void Dx12TaskFluidSimulation::execute() const
     scissorRect.right       = screenWidth;
     scissorRect.bottom      = screenHeight;
 
-    ID3D12DescriptorHeap* const aHeaps[2] = {m_pSrvHeap.Get(),
-                                             m_pSamplerHeap.Get()};
+    ID3D12DescriptorHeap* const aHeaps[1] = {m_pSrvHeap.Get()};
 
     D3D12_RESOURCE_BARRIER resourceBarrier[] = {
         CD3DX12_RESOURCE_BARRIER::Transition(
@@ -299,7 +353,7 @@ void Dx12TaskFluidSimulation::execute() const
 
         computeCommandList->ResourceBarrier(2, resourceBarrier);
 
-        computeCommandList->SetDescriptorHeaps(2, aHeaps);
+        computeCommandList->SetDescriptorHeaps(1, aHeaps);
 
         computeCommandList->SetPipelineState(m_psoAdvection.Get());
         computeCommandList->SetComputeRootSignature(m_rsAdvection.Get());
@@ -330,13 +384,83 @@ void Dx12TaskFluidSimulation::execute() const
             dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
                 .get_commandList();
 
-        computeCommandList->SetDescriptorHeaps(2, aHeaps);
+        computeCommandList->SetDescriptorHeaps(1, aHeaps);
 
         computeCommandList->SetPipelineState(m_psoSimulation.Get());
         computeCommandList->SetComputeRootSignature(m_rsSimulation.Get());
 
         computeCommandList->SetComputeRootDescriptorTable(
             0, m_GPUDescHdlTextureDisplay[m_iComputed]);
+        computeCommandList->SetComputeRootDescriptorTable(
+            1, m_GPUDescHdlTextureCompute[m_iOriginal]);
+
+        computeCommandList->Dispatch(s_nbRow, s_nbCol, 1);
+
+        dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+            .execute_commandList(computeCommandList);
+    }
+
+    // ---------------- Projection
+    // ------- Jacobi
+    {
+        dx12::ComPtr<ID3D12GraphicsCommandList2> computeCommandList =
+            dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+                .get_commandList();
+
+        computeCommandList->SetDescriptorHeaps(1, aHeaps);
+
+        computeCommandList->SetPipelineState(m_psoJacobi.Get());
+        computeCommandList->SetComputeRootSignature(m_rsJacobi.Get());
+
+        resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
+            pTextureResourceOriginal, D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
+            D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
+        computeCommandList->ResourceBarrier(1, resourceBarrier);
+
+        computeCommandList->SetComputeRootDescriptorTable(
+            0, m_GPUDescHdlTextureDisplay[m_iOriginal]);
+        for (int i = 0; i < scm_nbJacobiIteration; ++i)
+        {
+            computeCommandList->SetComputeRootDescriptorTable(
+                1, m_GPUDescHdlJacobiInput[i % 2]);
+            computeCommandList->SetComputeRootDescriptorTable(
+                2, m_GPUDescHdlJacobiOutput[(i + 1) % 2]);
+
+            computeCommandList->Dispatch(s_nbRow, s_nbCol, 1);
+
+            resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
+                m_pTextureResourceJacobi[i % 2].Get(),
+                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
+                D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+            resourceBarrier[1] = CD3DX12_RESOURCE_BARRIER::Transition(
+                m_pTextureResourceJacobi[(i + 1) % 2].Get(),
+                D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
+                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
+            computeCommandList->ResourceBarrier(2, resourceBarrier);
+        }
+
+        dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+            .execute_commandList(computeCommandList);
+    }
+    // ------- Pressure application
+    {
+        dx12::ComPtr<ID3D12GraphicsCommandList2> computeCommandList =
+            dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+                .get_commandList();
+
+        computeCommandList->SetDescriptorHeaps(1, aHeaps);
+
+        computeCommandList->SetPipelineState(m_psoProject.Get());
+        computeCommandList->SetComputeRootSignature(m_rsProject.Get());
+
+        resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
+            pTextureResourceOriginal,
+            D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
+            D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+        computeCommandList->ResourceBarrier(1, resourceBarrier);
+
+        computeCommandList->SetComputeRootDescriptorTable(
+            0, m_GPUDescHdlJacobiInput[0]);
         computeCommandList->SetComputeRootDescriptorTable(
             1, m_GPUDescHdlTextureCompute[m_iOriginal]);
 
@@ -366,17 +490,15 @@ void Dx12TaskFluidSimulation::execute() const
             D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
         computeCommandList->ResourceBarrier(1, resourceBarrier);
 
-        computeCommandList->SetDescriptorHeaps(2, aHeaps);
+        computeCommandList->SetDescriptorHeaps(1, aHeaps);
 
         computeCommandList->SetPipelineState(m_psoArrowGeneration.Get());
         computeCommandList->SetComputeRootSignature(m_rsArrowGeneration.Get());
 
-        computeCommandList->SetComputeRootDescriptorTable(0,
-                                                          m_GPUDescHdlSampler);
         computeCommandList->SetComputeRootDescriptorTable(
-            1, m_GPUDescHdlTextureDisplay[m_iOriginal]);
+            0, m_GPUDescHdlTextureDisplay[m_iOriginal]);
         computeCommandList->SetComputeRootDescriptorTable(
-            2, m_GPUDescHdlOutBuffer);
+            1, m_GPUDescHdlOutBuffer);
 
         computeCommandList->Dispatch(s_nbRow, s_nbCol, 1);
 
@@ -396,7 +518,7 @@ void Dx12TaskFluidSimulation::execute() const
             dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
                 .get_commandList();
 
-        graphicCommandList->SetDescriptorHeaps(2, aHeaps);
+        graphicCommandList->SetDescriptorHeaps(1, aHeaps);
 
         graphicCommandList->OMSetRenderTargets(1, &rtv, FALSE, nullptr);
         graphicCommandList->RSSetViewports(1, &viewport);
@@ -411,10 +533,8 @@ void Dx12TaskFluidSimulation::execute() const
         graphicCommandList->IASetPrimitiveTopology(
             D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-        graphicCommandList->SetGraphicsRootDescriptorTable(0,
-                                                           m_GPUDescHdlSampler);
         graphicCommandList->SetGraphicsRootDescriptorTable(
-            1, m_GPUDescHdlTextureDisplay[m_iOriginal]);
+            0, m_GPUDescHdlTextureDisplay[m_iOriginal]);
 
         graphicCommandList->DrawInstanced(3, 1, 0, 0);
 
@@ -433,7 +553,7 @@ void Dx12TaskFluidSimulation::execute() const
             D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
         graphicsCommandListField->ResourceBarrier(1, resourceBarrier);
 
-        graphicsCommandListField->SetDescriptorHeaps(2, aHeaps);
+        graphicsCommandListField->SetDescriptorHeaps(1, aHeaps);
 
         graphicsCommandListField->OMSetRenderTargets(1, &rtv, FALSE, nullptr);
         graphicsCommandListField->RSSetViewports(1, &viewport);
@@ -492,35 +612,10 @@ void Dx12TaskFluidSimulation::setup_advectionPass()
     vRootParameters[0].InitAsDescriptorTable(1, vTextureRanges.data());
     vRootParameters[1].InitAsDescriptorTable(1, vOutputRanges.data());
 
-    D3D12_STATIC_SAMPLER_DESC descStaticSampler = {};
-    descStaticSampler.Filter         = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
-    descStaticSampler.MinLOD         = 0;
-    descStaticSampler.MaxLOD         = 0;
-    descStaticSampler.MipLODBias     = 0.0f;
-    descStaticSampler.MaxAnisotropy  = 1;
-    descStaticSampler.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
-
-    D3D12_FILTER_TYPE           eDx12FilterMinMag = D3D12_FILTER_TYPE_LINEAR;
-    D3D12_FILTER_TYPE           eDx12FilterMip    = D3D12_FILTER_TYPE_LINEAR;
-    D3D12_FILTER_REDUCTION_TYPE eDx12FilterReduction =
-        D3D12_FILTER_REDUCTION_TYPE_STANDARD;
-    descStaticSampler.Filter =
-        D3D12_ENCODE_BASIC_FILTER(eDx12FilterMinMag, eDx12FilterMinMag,
-                                  eDx12FilterMip, eDx12FilterReduction);
-
-    D3D12_TEXTURE_ADDRESS_MODE eDx12AddressMode =
-        D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
-    descStaticSampler.AddressU = eDx12AddressMode;
-    descStaticSampler.AddressV = eDx12AddressMode;
-    descStaticSampler.AddressW = eDx12AddressMode;
-
-    descStaticSampler.ShaderRegister = 0;
-    descStaticSampler.RegisterSpace  = 0;
-
     {
         CD3DX12_ROOT_SIGNATURE_DESC descRootSignature;
         descRootSignature.Init(vRootParameters.size(), vRootParameters.data(),
-                               1, &descStaticSampler,
+                               m_samplersDescs.size(), m_samplersDescs.data(),
                                D3D12_ROOT_SIGNATURE_FLAG_NONE);
 
         dx12::ComPtr<ID3DBlob> rootBlob;
@@ -577,35 +672,10 @@ void Dx12TaskFluidSimulation::setup_simulationPass()
     vRootParameters[0].InitAsDescriptorTable(1, vTextureRanges.data());
     vRootParameters[1].InitAsDescriptorTable(1, vOutputRanges.data());
 
-    D3D12_STATIC_SAMPLER_DESC descStaticSampler = {};
-    descStaticSampler.Filter         = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
-    descStaticSampler.MinLOD         = 0;
-    descStaticSampler.MaxLOD         = 0;
-    descStaticSampler.MipLODBias     = 0.0f;
-    descStaticSampler.MaxAnisotropy  = 1;
-    descStaticSampler.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
-
-    D3D12_FILTER_TYPE           eDx12FilterMinMag = D3D12_FILTER_TYPE_LINEAR;
-    D3D12_FILTER_TYPE           eDx12FilterMip    = D3D12_FILTER_TYPE_LINEAR;
-    D3D12_FILTER_REDUCTION_TYPE eDx12FilterReduction =
-        D3D12_FILTER_REDUCTION_TYPE_STANDARD;
-    descStaticSampler.Filter =
-        D3D12_ENCODE_BASIC_FILTER(eDx12FilterMinMag, eDx12FilterMinMag,
-                                  eDx12FilterMip, eDx12FilterReduction);
-
-    D3D12_TEXTURE_ADDRESS_MODE eDx12AddressMode =
-        D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
-    descStaticSampler.AddressU = eDx12AddressMode;
-    descStaticSampler.AddressV = eDx12AddressMode;
-    descStaticSampler.AddressW = eDx12AddressMode;
-
-    descStaticSampler.ShaderRegister = 0;
-    descStaticSampler.RegisterSpace  = 0;
-
     {
         CD3DX12_ROOT_SIGNATURE_DESC descRootSignature;
         descRootSignature.Init(vRootParameters.size(), vRootParameters.data(),
-                               1, &descStaticSampler,
+                               m_samplersDescs.size(), m_samplersDescs.data(),
                                D3D12_ROOT_SIGNATURE_FLAG_NONE);
 
         dx12::ComPtr<ID3DBlob> rootBlob;
@@ -642,19 +712,153 @@ void Dx12TaskFluidSimulation::setup_simulationPass()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void Dx12TaskFluidSimulation::setup_arrowGenerationPass()
+void Dx12TaskFluidSimulation::setup_jacobiPass(mInt a_width, mInt a_height)
 {
     dx12::ComPtr<ID3D12Device> device =
         dx12::DX12Context::gs_dx12Contexte->m_device;
     HRESULT res;
     // ----------------- Root signature and pipeline state
+    {
+        std::vector<CD3DX12_ROOT_PARAMETER> vRootParameters;
+        vRootParameters.resize(3);
 
+        std::vector<CD3DX12_DESCRIPTOR_RANGE> vDataTextureRanges;
+        vDataTextureRanges.resize(1);
+        vDataTextureRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 0);
+
+        std::vector<CD3DX12_DESCRIPTOR_RANGE> vPressureTextureRanges;
+        vPressureTextureRanges.resize(1);
+        vPressureTextureRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1,
+                                       0);
+
+        std::vector<CD3DX12_DESCRIPTOR_RANGE> vOutputRanges;
+        vOutputRanges.resize(1);
+        vOutputRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, 1, 0, 0);
+
+        vRootParameters[0].InitAsDescriptorTable(1, vDataTextureRanges.data());
+        vRootParameters[1].InitAsDescriptorTable(1,
+                                                 vPressureTextureRanges.data());
+        vRootParameters[2].InitAsDescriptorTable(1, vOutputRanges.data());
+
+        {
+            CD3DX12_ROOT_SIGNATURE_DESC descRootSignature;
+            descRootSignature.Init(
+                vRootParameters.size(), vRootParameters.data(),
+                m_samplersDescs.size(), m_samplersDescs.data(),
+                D3D12_ROOT_SIGNATURE_FLAG_NONE);
+
+            dx12::ComPtr<ID3DBlob> rootBlob;
+            dx12::ComPtr<ID3DBlob> errorBlob;
+            res = D3D12SerializeRootSignature(&descRootSignature,
+                                              D3D_ROOT_SIGNATURE_VERSION_1,
+                                              &rootBlob, &errorBlob);
+            if (FAILED(res))
+            {
+                if (errorBlob != nullptr)
+                {
+                    mLog_info((char*)errorBlob->GetBufferPointer());
+                }
+            }
+
+            dx12::check_mhr(device->CreateRootSignature(
+                0, rootBlob->GetBufferPointer(), rootBlob->GetBufferSize(),
+                IID_PPV_ARGS(&m_rsJacobi)));
+        }
+
+        D3D12_COMPUTE_PIPELINE_STATE_DESC fieldPipelineDescCompute{};
+
+        dx12::ComPtr<ID3DBlob> cs_field = dx12::compile_shader(
+            "data/jacobi.hlsl", "cs_iterateJacobi", "cs_6_0");
+
+        fieldPipelineDescCompute.CS.BytecodeLength = cs_field->GetBufferSize();
+        fieldPipelineDescCompute.CS.pShaderBytecode =
+            cs_field->GetBufferPointer();
+        fieldPipelineDescCompute.pRootSignature = m_rsJacobi.Get();
+
+        dx12::check_mhr(device->CreateComputePipelineState(
+            &fieldPipelineDescCompute, IID_PPV_ARGS(&m_psoJacobi)));
+    }
+
+    // ----------------- Textures
+    mAssert(scm_nbJacobiIteration % 2 == 0);
+    m_pTextureResourceJacobi.resize(scm_nbJacobiTexture);
+
+    D3D12_RESOURCE_DESC descTexture{};
+    descTexture.MipLevels          = 1;
+    descTexture.Width              = a_width;
+    descTexture.Height             = a_height;
+    descTexture.Flags              = D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS;
+    descTexture.DepthOrArraySize   = 1;
+    descTexture.SampleDesc.Count   = 1;
+    descTexture.SampleDesc.Quality = 0;
+    descTexture.Dimension          = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+    descTexture.Format             = DXGI_FORMAT_R32_FLOAT;
+
+    auto    oHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+    HRESULT hr              = device->CreateCommittedResource(
+                     &oHeapProperties, D3D12_HEAP_FLAG_NONE, &descTexture,
+                     D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE, nullptr,
+                     IID_PPV_ARGS(m_pTextureResourceJacobi[0].GetAddressOf()));
+    if (hr != S_OK)
+    {
+        mLog_error("Fail to create resource for texture");
+    }
+
+    m_pTextureResourceJacobi[0]->SetName(L"Jacobi texture 0");
+
+    hr = device->CreateCommittedResource(
+        &oHeapProperties, D3D12_HEAP_FLAG_NONE, &descTexture,
+        D3D12_RESOURCE_STATE_UNORDERED_ACCESS, nullptr,
+        IID_PPV_ARGS(m_pTextureResourceJacobi[1].GetAddressOf()));
+    if (hr != S_OK)
+    {
+        mLog_error("Fail to create resource for texture");
+    }
+
+    m_pTextureResourceJacobi[0]->SetName(L"Jacobi texture 1");
+
+    // views
+    D3D12_SHADER_RESOURCE_VIEW_DESC descShaderResourceView = {};
+    descShaderResourceView.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+    descShaderResourceView.Shader4ComponentMapping =
+        D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+    descShaderResourceView.Format                    = DXGI_FORMAT_R32_FLOAT;
+    descShaderResourceView.Texture2D.MipLevels       = 1;
+    descShaderResourceView.Texture2D.MostDetailedMip = 0;
+    descShaderResourceView.Texture2D.ResourceMinLODClamp = 0.0f;
+
+    D3D12_UNORDERED_ACCESS_VIEW_DESC descUav = {};
+    descUav.Format                           = DXGI_FORMAT_R32_FLOAT;
+    descUav.ViewDimension                    = D3D12_UAV_DIMENSION_TEXTURE2D;
+
+    for (mInt i = 0; i < scm_nbJacobiTexture; ++i)
+    {
+        CD3DX12_CPU_DESCRIPTOR_HANDLE const hdlCPUSrvInput(
+            m_pSrvHeap->GetCPUDescriptorHandleForHeapStart(),
+            2 * scm_maxTextures + 1 + 2 * i, m_incrementSizeSrv);
+        device->CreateShaderResourceView(m_pTextureResourceJacobi[i].Get(),
+                                         &descShaderResourceView,
+                                         hdlCPUSrvInput);
+
+        CD3DX12_CPU_DESCRIPTOR_HANDLE const hdlCPUSrvOutput(
+            m_pSrvHeap->GetCPUDescriptorHandleForHeapStart(),
+            2 * scm_maxTextures + 1 + 2 * i + 1, m_incrementSizeSrv);
+        device->CreateUnorderedAccessView(m_pTextureResourceJacobi[i].Get(),
+                                          nullptr, &descUav, hdlCPUSrvOutput);
+    }
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void Dx12TaskFluidSimulation::setup_projectionPass()
+{
+    dx12::ComPtr<ID3D12Device> device =
+        dx12::DX12Context::gs_dx12Contexte->m_device;
+    HRESULT res;
+    // ----------------- Root signature and pipeline state
     std::vector<CD3DX12_ROOT_PARAMETER> vRootParameters;
-    vRootParameters.resize(3);
-
-    std::vector<CD3DX12_DESCRIPTOR_RANGE> vSamplerRanges;
-    vSamplerRanges.resize(1);
-    vSamplerRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER, 1, 0, 0);
+    vRootParameters.resize(2);
 
     std::vector<CD3DX12_DESCRIPTOR_RANGE> vTextureRanges;
     vTextureRanges.resize(1);
@@ -664,14 +868,75 @@ void Dx12TaskFluidSimulation::setup_arrowGenerationPass()
     vOutputRanges.resize(1);
     vOutputRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, 1, 0, 0);
 
-    vRootParameters[0].InitAsDescriptorTable(1, vSamplerRanges.data());
-    vRootParameters[1].InitAsDescriptorTable(1, vTextureRanges.data());
-    vRootParameters[2].InitAsDescriptorTable(1, vOutputRanges.data());
+    vRootParameters[0].InitAsDescriptorTable(1, vTextureRanges.data());
+    vRootParameters[1].InitAsDescriptorTable(1, vOutputRanges.data());
 
     {
         CD3DX12_ROOT_SIGNATURE_DESC descRootSignature;
         descRootSignature.Init(vRootParameters.size(), vRootParameters.data(),
-                               0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_NONE);
+                               m_samplersDescs.size(), m_samplersDescs.data(),
+                               D3D12_ROOT_SIGNATURE_FLAG_NONE);
+
+        dx12::ComPtr<ID3DBlob> rootBlob;
+        dx12::ComPtr<ID3DBlob> errorBlob;
+        res = D3D12SerializeRootSignature(&descRootSignature,
+                                          D3D_ROOT_SIGNATURE_VERSION_1,
+                                          &rootBlob, &errorBlob);
+        if (FAILED(res))
+        {
+            if (errorBlob != nullptr)
+            {
+                mLog_info((char*)errorBlob->GetBufferPointer());
+            }
+        }
+
+        dx12::check_mhr(device->CreateRootSignature(
+            0, rootBlob->GetBufferPointer(), rootBlob->GetBufferSize(),
+            IID_PPV_ARGS(&m_rsProject)));
+    }
+
+    D3D12_COMPUTE_PIPELINE_STATE_DESC fieldPipelineDescCompute{};
+
+    dx12::ComPtr<ID3DBlob> cs_field =
+        dx12::compile_shader("data/project.hlsl", "cs_project", "cs_6_0");
+
+    fieldPipelineDescCompute.CS.BytecodeLength  = cs_field->GetBufferSize();
+    fieldPipelineDescCompute.CS.pShaderBytecode = cs_field->GetBufferPointer();
+    fieldPipelineDescCompute.pRootSignature     = m_rsProject.Get();
+
+    dx12::check_mhr(device->CreateComputePipelineState(
+        &fieldPipelineDescCompute, IID_PPV_ARGS(&m_psoProject)));
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void Dx12TaskFluidSimulation::setup_arrowGenerationPass()
+{
+    dx12::ComPtr<ID3D12Device> device =
+        dx12::DX12Context::gs_dx12Contexte->m_device;
+    HRESULT res;
+    // ----------------- Root signature and pipeline state
+
+    std::vector<CD3DX12_ROOT_PARAMETER> vRootParameters;
+    vRootParameters.resize(2);
+
+    std::vector<CD3DX12_DESCRIPTOR_RANGE> vTextureRanges;
+    vTextureRanges.resize(1);
+    vTextureRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 0);
+
+    std::vector<CD3DX12_DESCRIPTOR_RANGE> vOutputRanges;
+    vOutputRanges.resize(1);
+    vOutputRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, 1, 0, 0);
+
+    vRootParameters[0].InitAsDescriptorTable(1, vTextureRanges.data());
+    vRootParameters[1].InitAsDescriptorTable(1, vOutputRanges.data());
+
+    {
+        CD3DX12_ROOT_SIGNATURE_DESC descRootSignature;
+        descRootSignature.Init(vRootParameters.size(), vRootParameters.data(),
+                               m_samplersDescs.size(), m_samplersDescs.data(),
+                               D3D12_ROOT_SIGNATURE_FLAG_NONE);
 
         dx12::ComPtr<ID3DBlob> rootBlob;
         dx12::ComPtr<ID3DBlob> errorBlob;
@@ -852,25 +1117,20 @@ void Dx12TaskFluidSimulation::setup_fluidRenderingPass()
     HRESULT res;
 
     std::vector<CD3DX12_ROOT_PARAMETER> vRootParameters;
-    vRootParameters.resize(2);
-
-    std::vector<CD3DX12_DESCRIPTOR_RANGE> vSamplerRanges;
-    vSamplerRanges.resize(1);
-    vSamplerRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER, 1, 0, 0);
+    vRootParameters.resize(1);
 
     std::vector<CD3DX12_DESCRIPTOR_RANGE> vTextureRanges;
     vTextureRanges.resize(1);
     vTextureRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 0);
 
-    vRootParameters[0].InitAsDescriptorTable(1, vSamplerRanges.data(),
-                                             D3D12_SHADER_VISIBILITY_PIXEL);
-    vRootParameters[1].InitAsDescriptorTable(1, vTextureRanges.data(),
+    vRootParameters[0].InitAsDescriptorTable(1, vTextureRanges.data(),
                                              D3D12_SHADER_VISIBILITY_PIXEL);
 
     {
         CD3DX12_ROOT_SIGNATURE_DESC descRootSignature;
         descRootSignature.Init(vRootParameters.size(), vRootParameters.data(),
-                               0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_NONE);
+                               m_samplersDescs.size(), m_samplersDescs.data(),
+                               D3D12_ROOT_SIGNATURE_FLAG_NONE);
 
         dx12::ComPtr<ID3DBlob> rootBlob;
         dx12::ComPtr<ID3DBlob> errorBlob;
