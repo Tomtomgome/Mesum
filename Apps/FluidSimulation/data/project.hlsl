@@ -3,12 +3,6 @@
 Texture2D<float> pressure : register(t0);
 RWTexture2D<float4> outputData : register(u0);
 
-static const float g_time = 0.016;
-
-static const float g_cellSize = 1.0f;
-
-static const float g_density = 1.0f;
-
 struct CoordData
 {
   float2 uv;
@@ -56,10 +50,8 @@ void cs_project(uint3 DTid : SV_DispatchThreadID)
   float pij = pressure.SampleLevel(samplerPoint, uv.uv, 0);
   float piPlus1j = pressure.SampleLevel(samplerPoint, uv_plus(uv, 1, 0).uv, 0);
   float pijPlus1 = pressure.SampleLevel(samplerPoint, uv_plus(uv, 0, 1).uv, 0);
-  
-  outputData[uint2(DTid.x, DTid.y)].x = outputData[uint2(DTid.x, DTid.y)].x
-    - g_time * (piPlus1j - pij) / (g_density * g_cellSize);
-  outputData[uint2(DTid.x, DTid.y)].y = outputData[uint2(DTid.x, DTid.y)].y
-    - g_time * (pijPlus1 - pij) / (g_density * g_cellSize);
+
+  outputData[uint2(DTid.x, DTid.y)].x = outputData[uint2(DTid.x, DTid.y)].x - (piPlus1j - pij) / (g_density * g_cellSize);
+  outputData[uint2(DTid.x, DTid.y)].y = outputData[uint2(DTid.x, DTid.y)].y - (pijPlus1 - pij) / (g_density * g_cellSize);
 }
 

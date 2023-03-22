@@ -4,12 +4,6 @@ Texture2D<float4> inputData : register(t0);
 Texture2D<float> pressure : register(t1);
 RWTexture2D<float> nextPressure : register(u0);
 
-static const float g_time = 0.016;
-
-static const float g_cellSize = 1.0f;
-
-static const float g_density = 1.0f;
-
 struct CoordData
 {
   float2 uv;
@@ -59,10 +53,12 @@ static const float g_globalFactor = 1.0;
 
 float compute_divergence(CoordData a_uv)
 {
-  float2 iplus12 = inputData.SampleLevel(samplerPoint, a_uv.uv, 0).xy;
+  float2 iplus12 = inputData.SampleLevel(samplerPointBlackBorder, a_uv.uv, 0).xy;
   float2 iminus12;
-  iminus12.x = inputData.SampleLevel(samplerPoint, uv_plus(a_uv, -1, 0).uv, 0).x;
-  iminus12.y = inputData.SampleLevel(samplerPoint, uv_plus(a_uv, 0, -1).uv, 0).y;
+  iminus12.x = inputData.SampleLevel(samplerPointBlackBorder, uv_plus(a_uv, -1, 0).uv, 0).x;
+  iminus12.y = inputData.SampleLevel(samplerPointBlackBorder, uv_plus(a_uv, 0, -1).uv, 0).y;
+
+  
 
   return g_globalFactor * ((iplus12.x - iminus12.x) / g_cellSize +
                                 (iplus12.y - iminus12.y) / g_cellSize);

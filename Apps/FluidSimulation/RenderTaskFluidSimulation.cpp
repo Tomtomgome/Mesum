@@ -121,32 +121,6 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
     resource::mTypedImage<math::mVec4> const& rImage =
         unref_safe(m_taskData.pInitialData);
 
-    // Sampler
-    {
-        D3D12_SAMPLER_DESC descSampler{};
-        descSampler.Filter         = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
-        descSampler.MinLOD         = 0;
-        descSampler.MaxLOD         = 0;
-        descSampler.MipLODBias     = 0.0f;
-        descSampler.MaxAnisotropy  = 1;
-        descSampler.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
-
-        D3D12_FILTER_TYPE eDx12FilterMinMag = D3D12_FILTER_TYPE_POINT;
-        D3D12_FILTER_TYPE eDx12FilterMip    = D3D12_FILTER_TYPE_POINT;
-
-        D3D12_FILTER_REDUCTION_TYPE eDx12FilterReduction =
-            D3D12_FILTER_REDUCTION_TYPE_STANDARD;
-        D3D12_TEXTURE_ADDRESS_MODE eDx12AddressMode =
-            D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
-
-        descSampler.Filter =
-            D3D12_ENCODE_BASIC_FILTER(eDx12FilterMinMag, eDx12FilterMinMag,
-                                      eDx12FilterMip, eDx12FilterReduction);
-        descSampler.AddressU = eDx12AddressMode;
-        descSampler.AddressV = eDx12AddressMode;
-        descSampler.AddressW = eDx12AddressMode;
-    }
-
     // -- static samplers
     {
         D3D12_STATIC_SAMPLER_DESC descStaticSampler = {};
@@ -166,15 +140,44 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
                                       eDx12FilterMip, eDx12FilterReduction);
 
         D3D12_TEXTURE_ADDRESS_MODE eDx12AddressMode =
-            D3D12_TEXTURE_ADDRESS_MODE_BORDER;
-        descStaticSampler.AddressU    = eDx12AddressMode;
-        descStaticSampler.AddressV    = eDx12AddressMode;
-        descStaticSampler.AddressW    = eDx12AddressMode;
-        descStaticSampler.BorderColor = D3D12_STATIC_BORDER_COLOR_OPAQUE_BLACK;
+            D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
+        descStaticSampler.AddressU = eDx12AddressMode;
+        descStaticSampler.AddressV = eDx12AddressMode;
+        descStaticSampler.AddressW = eDx12AddressMode;
+        descStaticSampler.BorderColor =
+            D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK;
 
         descStaticSampler.ShaderRegister = 0;
         descStaticSampler.RegisterSpace  = 0;
-        m_linearSamplerID                = m_samplersDescs.size();
+        m_samplersDescs.push_back(descStaticSampler);
+    }
+    {
+        D3D12_STATIC_SAMPLER_DESC descStaticSampler = {};
+        descStaticSampler.Filter         = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
+        descStaticSampler.MinLOD         = 0;
+        descStaticSampler.MaxLOD         = 0;
+        descStaticSampler.MipLODBias     = 0.0f;
+        descStaticSampler.MaxAnisotropy  = 1;
+        descStaticSampler.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
+
+        D3D12_FILTER_TYPE           eDx12FilterMinMag = D3D12_FILTER_TYPE_POINT;
+        D3D12_FILTER_TYPE           eDx12FilterMip    = D3D12_FILTER_TYPE_POINT;
+        D3D12_FILTER_REDUCTION_TYPE eDx12FilterReduction =
+            D3D12_FILTER_REDUCTION_TYPE_STANDARD;
+        descStaticSampler.Filter =
+            D3D12_ENCODE_BASIC_FILTER(eDx12FilterMinMag, eDx12FilterMinMag,
+                                      eDx12FilterMip, eDx12FilterReduction);
+
+        D3D12_TEXTURE_ADDRESS_MODE eDx12AddressMode =
+            D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
+        descStaticSampler.AddressU = eDx12AddressMode;
+        descStaticSampler.AddressV = eDx12AddressMode;
+        descStaticSampler.AddressW = eDx12AddressMode;
+        descStaticSampler.BorderColor =
+            D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK;
+
+        descStaticSampler.ShaderRegister = 1;
+        descStaticSampler.RegisterSpace  = 0;
         m_samplersDescs.push_back(descStaticSampler);
     }
     {
@@ -196,14 +199,14 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
 
         D3D12_TEXTURE_ADDRESS_MODE eDx12AddressMode =
             D3D12_TEXTURE_ADDRESS_MODE_BORDER;
-        descStaticSampler.AddressU    = eDx12AddressMode;
-        descStaticSampler.AddressV    = eDx12AddressMode;
-        descStaticSampler.AddressW    = eDx12AddressMode;
-        descStaticSampler.BorderColor = D3D12_STATIC_BORDER_COLOR_OPAQUE_BLACK;
+        descStaticSampler.AddressU = eDx12AddressMode;
+        descStaticSampler.AddressV = eDx12AddressMode;
+        descStaticSampler.AddressW = eDx12AddressMode;
+        descStaticSampler.BorderColor =
+            D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK;
 
-        descStaticSampler.ShaderRegister = 1;
+        descStaticSampler.ShaderRegister = 2;
         descStaticSampler.RegisterSpace  = 0;
-        m_pointSamplerID                 = m_samplersDescs.size();
         m_samplersDescs.push_back(descStaticSampler);
     }
     // HEAPS ------------------------------------------------------------------
@@ -321,6 +324,8 @@ void Dx12TaskFluidSimulation::execute() const
     auto pOutputRT =
         static_cast<dx12::mRenderTarget const*>(m_taskData.pOutputRT);
 
+    auto parameters =
+        static_cast<TaskDataFluidSimulation::ControlParameters const&>(unref_safe(m_taskData.pParameters));
     mInt screenWidth  = 600;
     mInt screenHeight = 600;
 
@@ -345,173 +350,211 @@ void Dx12TaskFluidSimulation::execute() const
             D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
             D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE)};
 
-    // ---------------- Advection
+    mUInt nbComputeRow = s_nbRow;
+    mUInt nbComputeCol = s_nbCol;
+
+    if(parameters.isRunning)
     {
-        dx12::ComPtr<ID3D12GraphicsCommandList2> computeCommandList =
-            dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
-                .get_commandList();
-
-        computeCommandList->ResourceBarrier(2, resourceBarrier);
-
-        computeCommandList->SetDescriptorHeaps(1, aHeaps);
-
-        computeCommandList->SetPipelineState(m_psoAdvection.Get());
-        computeCommandList->SetComputeRootSignature(m_rsAdvection.Get());
-
-        computeCommandList->SetComputeRootDescriptorTable(
-            0, m_GPUDescHdlTextureDisplay[m_iOriginal]);
-        computeCommandList->SetComputeRootDescriptorTable(
-            1, m_GPUDescHdlTextureCompute[m_iComputed]);
-
-        computeCommandList->Dispatch(s_nbRow, s_nbCol, 1);
-
-        resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
-            pTextureResource, D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
-            D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
-        resourceBarrier[1] = CD3DX12_RESOURCE_BARRIER::Transition(
-            pTextureResourceOriginal,
-            D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
-            D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
-        computeCommandList->ResourceBarrier(2, resourceBarrier);
-
-        dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
-            .execute_commandList(computeCommandList);
-    }
-
-    // ---------------- Simulate forces
-    {
-        dx12::ComPtr<ID3D12GraphicsCommandList2> computeCommandList =
-            dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
-                .get_commandList();
-
-        computeCommandList->SetDescriptorHeaps(1, aHeaps);
-
-        computeCommandList->SetPipelineState(m_psoSimulation.Get());
-        computeCommandList->SetComputeRootSignature(m_rsSimulation.Get());
-
-        computeCommandList->SetComputeRootDescriptorTable(
-            0, m_GPUDescHdlTextureDisplay[m_iComputed]);
-        computeCommandList->SetComputeRootDescriptorTable(
-            1, m_GPUDescHdlTextureCompute[m_iOriginal]);
-
-        computeCommandList->Dispatch(s_nbRow, s_nbCol, 1);
-
-        dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
-            .execute_commandList(computeCommandList);
-    }
-
-    // ---------------- Projection
-    // ------- Jacobi
-    {
-        dx12::ComPtr<ID3D12GraphicsCommandList2> computeCommandList =
-            dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
-                .get_commandList();
-
-        computeCommandList->SetDescriptorHeaps(1, aHeaps);
-
-        computeCommandList->SetPipelineState(m_psoJacobi.Get());
-        computeCommandList->SetComputeRootSignature(m_rsJacobi.Get());
-
-        resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
-            pTextureResourceOriginal, D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
-            D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
-        computeCommandList->ResourceBarrier(1, resourceBarrier);
-
-        computeCommandList->SetComputeRootDescriptorTable(
-            0, m_GPUDescHdlTextureDisplay[m_iOriginal]);
-        for (int i = 0; i < scm_nbJacobiIteration; ++i)
+        // ---------------- Advection
         {
+            dx12::ComPtr<ID3D12GraphicsCommandList2> computeCommandList =
+                dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+                    .get_commandList();
+
+            computeCommandList->ResourceBarrier(2, resourceBarrier);
+
+            computeCommandList->SetDescriptorHeaps(1, aHeaps);
+
+            computeCommandList->SetPipelineState(m_psoAdvection.Get());
+            computeCommandList->SetComputeRootSignature(m_rsAdvection.Get());
+
             computeCommandList->SetComputeRootDescriptorTable(
-                1, m_GPUDescHdlJacobiInput[i % 2]);
+                0, m_GPUDescHdlTextureDisplay[m_iOriginal]);
             computeCommandList->SetComputeRootDescriptorTable(
-                2, m_GPUDescHdlJacobiOutput[(i + 1) % 2]);
+                1, m_GPUDescHdlTextureCompute[m_iComputed]);
+
+            computeCommandList->Dispatch(nbComputeRow, nbComputeCol, 1);
+
+            resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
+                pTextureResource, D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
+                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
+            resourceBarrier[1] = CD3DX12_RESOURCE_BARRIER::Transition(
+                pTextureResourceOriginal,
+                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
+                D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+            computeCommandList->ResourceBarrier(2, resourceBarrier);
+
+            dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+                .execute_commandList(computeCommandList);
+        }
+        //*
+        // ---------------- Simulate forces
+        {
+            dx12::ComPtr<ID3D12GraphicsCommandList2> computeCommandList =
+                dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+                    .get_commandList();
+
+            computeCommandList->SetDescriptorHeaps(1, aHeaps);
+
+            computeCommandList->SetPipelineState(m_psoSimulation.Get());
+            computeCommandList->SetComputeRootSignature(m_rsSimulation.Get());
+
+            computeCommandList->SetComputeRootDescriptorTable(
+                0, m_GPUDescHdlTextureDisplay[m_iComputed]);
+            computeCommandList->SetComputeRootDescriptorTable(
+                1, m_GPUDescHdlTextureCompute[m_iOriginal]);
+
+            computeCommandList->Dispatch(nbComputeRow, nbComputeCol, 1);
+
+            dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+                .execute_commandList(computeCommandList);
+        }
+        //*
+        // ---------------- Projection
+        // ------- Jacobi
+        {
+            dx12::ComPtr<ID3D12GraphicsCommandList2> computeCommandList =
+                dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+                    .get_commandList();
+
+            computeCommandList->SetDescriptorHeaps(1, aHeaps);
+
+            computeCommandList->SetPipelineState(m_psoJacobi.Get());
+            computeCommandList->SetComputeRootSignature(m_rsJacobi.Get());
+
+            resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
+                pTextureResourceOriginal, D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
+                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
+            computeCommandList->ResourceBarrier(1, resourceBarrier);
+
+            computeCommandList->SetComputeRootDescriptorTable(
+                0, m_GPUDescHdlTextureDisplay[m_iOriginal]);
+
+            for (int i = 0; i < scm_nbJacobiIteration; ++i)
+            {
+                computeCommandList->SetComputeRootDescriptorTable(
+                    1, m_GPUDescHdlJacobiInput[i % 2]);
+                computeCommandList->SetComputeRootDescriptorTable(
+                    2, m_GPUDescHdlJacobiOutput[(i + 1) % 2]);
+
+                computeCommandList->Dispatch(nbComputeRow, nbComputeCol, 1);
+
+                resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
+                    m_pTextureResourceJacobi[i % 2].Get(),
+                    D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
+                    D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+                resourceBarrier[1] = CD3DX12_RESOURCE_BARRIER::Transition(
+                    m_pTextureResourceJacobi[(i + 1) % 2].Get(),
+                    D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
+                    D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
+                computeCommandList->ResourceBarrier(2, resourceBarrier);
+            }
+
+            dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+                .execute_commandList(computeCommandList);
+
+            //            computeCommandList =
+            //                dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+            //                    .get_commandList();
+            //
+            //            computeCommandList->SetDescriptorHeaps(1, aHeaps);
+            //
+            //            computeCommandList->SetPipelineState(m_psoProject.Get());
+            //            computeCommandList->SetComputeRootSignature(m_rsProject.Get());
+            //
+            //            resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
+            //                pTextureResourceOriginal,
+            //                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
+            //                D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+            //            computeCommandList->ResourceBarrier(1, resourceBarrier);
+            //
+            //            computeCommandList->SetComputeRootDescriptorTable(
+            //                0, m_GPUDescHdlJacobiInput[(i + 1) % 2]);
+            //            computeCommandList->SetComputeRootDescriptorTable(
+            //                1, m_GPUDescHdlTextureCompute[m_iOriginal]);
+            //
+            //            computeCommandList->Dispatch(nbComputeRow, nbComputeCol, 1);
+            //
+            //            dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+            //                .execute_commandList(computeCommandList);
+        }
+        //*
+        // ------- Pressure application
+        {
+            dx12::ComPtr<ID3D12GraphicsCommandList2> computeCommandList =
+                dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+                    .get_commandList();
+
+            computeCommandList->SetDescriptorHeaps(1, aHeaps);
+
+            computeCommandList->SetPipelineState(m_psoProject.Get());
+            computeCommandList->SetComputeRootSignature(m_rsProject.Get());
+
+            resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
+                pTextureResourceOriginal,
+                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
+                D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+            computeCommandList->ResourceBarrier(1, resourceBarrier);
+
+            computeCommandList->SetComputeRootDescriptorTable(
+                0, m_GPUDescHdlJacobiInput[0]);
+            computeCommandList->SetComputeRootDescriptorTable(
+                1, m_GPUDescHdlTextureCompute[m_iOriginal]);
+
+            computeCommandList->Dispatch(nbComputeRow, nbComputeCol, 1);
+
+            dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+                .execute_commandList(computeCommandList);
+        }
+        //*/
+        // ---------------- Generate arrows part
+        {
+            dx12::ComPtr<ID3D12GraphicsCommandList2> computeCommandList =
+                dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+                    .get_commandList();
+
+            resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
+                pTextureResourceOriginal, D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
+                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
+            resourceBarrier[1] = CD3DX12_RESOURCE_BARRIER::Transition(
+                pTextureResource,
+                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
+                D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+            computeCommandList->ResourceBarrier(2, resourceBarrier);
+
+            resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
+                m_pVertexBufferArrows.Get(),
+                D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER,
+                D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+            computeCommandList->ResourceBarrier(1, resourceBarrier);
+
+            computeCommandList->SetDescriptorHeaps(1, aHeaps);
+
+            computeCommandList->SetPipelineState(m_psoArrowGeneration.Get());
+            computeCommandList->SetComputeRootSignature(
+                m_rsArrowGeneration.Get());
+
+            computeCommandList->SetComputeRootDescriptorTable(
+                0, m_GPUDescHdlTextureDisplay[m_iOriginal]);
+            computeCommandList->SetComputeRootDescriptorTable(
+                1, m_GPUDescHdlOutBuffer);
 
             computeCommandList->Dispatch(s_nbRow, s_nbCol, 1);
 
             resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
-                m_pTextureResourceJacobi[i % 2].Get(),
+                pTextureResourceOriginal,
                 D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
-                D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+                D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
             resourceBarrier[1] = CD3DX12_RESOURCE_BARRIER::Transition(
-                m_pTextureResourceJacobi[(i + 1) % 2].Get(),
+                m_pVertexBufferArrows.Get(),
                 D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
-                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
+                D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
             computeCommandList->ResourceBarrier(2, resourceBarrier);
+
+            dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+                .execute_commandList(computeCommandList);
         }
-
-        dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
-            .execute_commandList(computeCommandList);
     }
-    // ------- Pressure application
-    {
-        dx12::ComPtr<ID3D12GraphicsCommandList2> computeCommandList =
-            dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
-                .get_commandList();
-
-        computeCommandList->SetDescriptorHeaps(1, aHeaps);
-
-        computeCommandList->SetPipelineState(m_psoProject.Get());
-        computeCommandList->SetComputeRootSignature(m_rsProject.Get());
-
-        resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
-            pTextureResourceOriginal,
-            D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
-            D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
-        computeCommandList->ResourceBarrier(1, resourceBarrier);
-
-        computeCommandList->SetComputeRootDescriptorTable(
-            0, m_GPUDescHdlJacobiInput[0]);
-        computeCommandList->SetComputeRootDescriptorTable(
-            1, m_GPUDescHdlTextureCompute[m_iOriginal]);
-
-        computeCommandList->Dispatch(s_nbRow, s_nbCol, 1);
-
-        resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
-            pTextureResourceOriginal, D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
-            D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
-        resourceBarrier[1] = CD3DX12_RESOURCE_BARRIER::Transition(
-            pTextureResource, D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
-            D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
-        computeCommandList->ResourceBarrier(2, resourceBarrier);
-
-        dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
-            .execute_commandList(computeCommandList);
-    }
-
-    // ---------------- Generate arrows part
-    {
-        dx12::ComPtr<ID3D12GraphicsCommandList2> computeCommandList =
-            dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
-                .get_commandList();
-
-        resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
-            m_pVertexBufferArrows.Get(),
-            D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER,
-            D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
-        computeCommandList->ResourceBarrier(1, resourceBarrier);
-
-        computeCommandList->SetDescriptorHeaps(1, aHeaps);
-
-        computeCommandList->SetPipelineState(m_psoArrowGeneration.Get());
-        computeCommandList->SetComputeRootSignature(m_rsArrowGeneration.Get());
-
-        computeCommandList->SetComputeRootDescriptorTable(
-            0, m_GPUDescHdlTextureDisplay[m_iOriginal]);
-        computeCommandList->SetComputeRootDescriptorTable(
-            1, m_GPUDescHdlOutBuffer);
-
-        computeCommandList->Dispatch(s_nbRow, s_nbCol, 1);
-
-        resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
-            pTextureResourceOriginal,
-            D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
-            D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
-        computeCommandList->ResourceBarrier(1, resourceBarrier);
-
-        dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
-            .execute_commandList(computeCommandList);
-    }
-
     // ---------------- Renders the fluid
     {
         dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
@@ -543,15 +586,11 @@ void Dx12TaskFluidSimulation::execute() const
     }
 
     // ---------------- Render Arrow
+    if(parameters.displaySpeed)
     {
         dx12::ComPtr<ID3D12GraphicsCommandList2> graphicsCommandListField =
             dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
                 .get_commandList();
-
-        resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
-            m_pVertexBufferArrows.Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
-            D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
-        graphicsCommandListField->ResourceBarrier(1, resourceBarrier);
 
         graphicsCommandListField->SetDescriptorHeaps(1, aHeaps);
 
@@ -1070,7 +1109,8 @@ void Dx12TaskFluidSimulation::setup_arrowGenerationPass()
 
     auto idxDest = (mU16*)idxResource;
 
-    mU16 indices[s_nbRow * s_nbCol * sm_nbIndexPerArrows];
+    //mU16 indices[s_nbRow * s_nbCol * sm_nbIndexPerArrows];
+    mU16* indices = new mU16[s_nbRow * s_nbCol * sm_nbIndexPerArrows];
     for (mUInt i = 0, vIdx = 0; i < s_nbRow * s_nbCol * sm_nbIndexPerArrows;
          i += sm_nbIndexPerArrows, vIdx += sm_nbVertexPerArrows)
     {
@@ -1105,6 +1145,7 @@ void Dx12TaskFluidSimulation::setup_arrowGenerationPass()
 
     // TODO : Why doesn't this work on with clion ??
     // pUploadIndexResource->Release();
+    delete[] indices;
 }
 
 //-----------------------------------------------------------------------------

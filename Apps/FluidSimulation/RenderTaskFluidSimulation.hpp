@@ -13,17 +13,24 @@
 #include <MesumGraphics/VulkanRenderer/VulkanContext.hpp>
 #endif  // M_VULKAN_RENDERER
 
-static const int s_nbRow = 50;
-static const int s_nbCol = 50;
+static const int s_nbRow = 300;
+static const int s_nbCol = 300;
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 struct TaskDataFluidSimulation : public m::render::TaskData
 {
+    struct ControlParameters
+    {
+        m::mBool isRunning    = false;
+        m::mBool displaySpeed = false;
+    };
+
     m::render::mIRenderTarget*                pOutputRT    = nullptr;
-    std::vector<m::math::mVec4>*              pPixelData   = nullptr;
     m::resource::mTypedImage<m::math::mVec4>* pInitialData = nullptr;
+
+    ControlParameters* pParameters = nullptr;
 
     mIfDx12Enabled(m::render::Task* getNew_dx12Implementation(
         m::render::TaskData* a_data) override);
@@ -77,11 +84,11 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     m::dx12::ComPtr<ID3D12RootSignature> m_rsJacobi  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoJacobi = nullptr;
 
-    static const m::mUInt scm_nbJacobiTexture = 2;
-    static const m::mUInt scm_nbJacobiIteration = 30;  // Must be pair svp
+    static const m::mUInt scm_nbJacobiTexture   = 2;
+    static const m::mUInt scm_nbJacobiIteration = 60;  // Must be pair svp
     std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pTextureResourceJacobi{};
-    D3D12_GPU_DESCRIPTOR_HANDLE                  m_GPUDescHdlJacobiInput[scm_nbJacobiTexture]{};
-    D3D12_GPU_DESCRIPTOR_HANDLE                  m_GPUDescHdlJacobiOutput[scm_nbJacobiTexture]{};
+    D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlJacobiInput[scm_nbJacobiTexture]{};
+    D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlJacobiOutput[scm_nbJacobiTexture]{};
 
     // Project
     m::dx12::ComPtr<ID3D12RootSignature> m_rsProject  = nullptr;
@@ -109,7 +116,7 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pTextureResources{};
     std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pUploadResources{};
 
-    static const m::mUInt scm_maxTextures       = 2;
+    static const m::mUInt scm_maxTextures = 2;
 
     D3D12_GPU_DESCRIPTOR_HANDLE
     m_GPUDescHdlTextureCompute[scm_maxTextures]{};
@@ -125,7 +132,5 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     static const m::mUInt sm_sizeHeapOutBuffer = 1;
 
     std::vector<D3D12_STATIC_SAMPLER_DESC> m_samplersDescs{};
-    m::mUInt m_linearSamplerID{};
-    m::mUInt m_pointSamplerID{};
 };
 #endif  // M_DX12_RENDERER

@@ -23,13 +23,14 @@ struct Pixel
 };
 
 Texture2D<float4> textures : register(t0);
-SamplerState basicSampler : register(s0);
+SamplerState linearSampler : register(s0);
+SamplerState pointSampler : register(s1);
 
 Pixel ps_main(VertexShaderOutput a_in)
 {
   Pixel output;
   
-  float4 data = textures.Sample(basicSampler, float2(a_in.uv.x, 1.0 - a_in.uv.y));
+  float4 data = textures.Sample(linearSampler, float2(a_in.uv.x, 1.0 - a_in.uv.y));
   output.color.r = data.a;
   output.color.g = data.a;
   output.color.b = data.a;

@@ -211,6 +211,24 @@ void init_initialData(m::resource::mTypedImage<m::math::mVec4>& a_image)
 
     a_image.data[convert_toIndex(s_nbCol / 2, 1)].z = 350.0;
     a_image.data[convert_toIndex(s_nbCol / 2, 1)].a = 200.0;
+    a_image.data[convert_toIndex(s_nbCol / 2 + 1, 1)].z = 350.0;
+    a_image.data[convert_toIndex(s_nbCol / 2 + 1, 1)].a = 200.0;
+    a_image.data[convert_toIndex(s_nbCol / 2 - 1, 1)].z = 350.0;
+    a_image.data[convert_toIndex(s_nbCol / 2 - 1, 1)].a = 200.0;
+
+    a_image.data[convert_toIndex(s_nbCol / 2, 2)].z = 350.0;
+    a_image.data[convert_toIndex(s_nbCol / 2, 2)].a = 200.0;
+    a_image.data[convert_toIndex(s_nbCol / 2 + 1, 2)].z = 350.0;
+    a_image.data[convert_toIndex(s_nbCol / 2 + 1, 2)].a = 200.0;
+    a_image.data[convert_toIndex(s_nbCol / 2 - 1, 2)].z = 350.0;
+    a_image.data[convert_toIndex(s_nbCol / 2 - 1, 2)].a = 200.0;
+
+
+    a_image.data[convert_toIndex(s_nbCol / 4, 1)].z = 350.0;
+    a_image.data[convert_toIndex(s_nbCol / 4, 1)].a = 200.0;
+
+    a_image.data[convert_toIndex(3*s_nbCol / 4, 1)].z = 350.0;
+    a_image.data[convert_toIndex(3*s_nbCol / 4, 1)].a = 200.0;
 }
 
 math::mDVec2 get_speedAt(Universe const& a_input, math::mIVec2 a_position)
@@ -995,10 +1013,6 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
         m_initialData.data.resize(s_nbCol * s_nbRow);
         init_initialData(m_initialData);
 
-
-        m_pixelData.resize(s_nbRow * s_nbCol);
-        init_universe(m_universes[0]);
-
         // Window setup
         m::mCmdLine const& cmdLine = a_cmdLine;
         m::mUInt           width   = 600;
@@ -1038,8 +1052,8 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
             taskData_swapchainWaitForRT.add_toTaskSet(taskset_renderPipeline));
 
         TaskDataFluidSimulation taskdata_fluidSimulation;
-        taskdata_fluidSimulation.pOutputRT  = acquireTask.pOutputRT;
-        taskdata_fluidSimulation.pPixelData = &m_pixelData;
+        taskdata_fluidSimulation.pOutputRT    = acquireTask.pOutputRT;
+        taskdata_fluidSimulation.pParameters  = &m_simulationParameters;
         taskdata_fluidSimulation.pInitialData = &m_initialData;
         taskdata_fluidSimulation.add_toTaskSet(taskset_renderPipeline);
 
@@ -1112,42 +1126,45 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
         static mBool displaySpeed  = true;
         static mBool runtimeUpdate = false;
 
-        GridVector vorticities;
-        compute_vorticity(m_universes[previous], vorticities);
-        GridVectorSP<math::mDVec2> vorticityForces;
-        compute_vorticityForce(vorticities, vorticityForces);
-
-        for (mInt pix = 0; pix < s_nbRow * s_nbCol; ++pix)
-        {
-            m_pixelData[pix].r =  // std::abs(vorticities[pix]);
-                displaySmoke ? m_universes[previous].Q[pix].S : 0;
-            if (displayTmp && !displaySmoke)
-            {
-                m_pixelData[pix].r =
-                    displayTmp
-                        ? (m_universes[previous].Q[pix].T - s_ambientT) / 10
-                        : 0;
-            }
-
-            m_pixelData[pix].g =  // vorticityForces[pix].x;
-                displaySpeed ? m_universes[previous].Q[pix].uh : 0;
-            m_pixelData[pix].b =  // vorticityForces[pix].y;
-                displaySpeed ? m_universes[previous].Q[pix].uv : 0;
-        }
-
-        if (runtimeUpdate)
-        {
-            i = (i + 1) % 2;
-            Simulate(m_universes[previous], m_universes[i],
-                     simulationSpeed * 0.016f);
-        }
+//        GridVector vorticities;
+//        compute_vorticity(m_universes[previous], vorticities);
+//        GridVectorSP<math::mDVec2> vorticityForces;
+//        compute_vorticityForce(vorticities, vorticityForces);
+//
+//        for (mInt pix = 0; pix < s_nbRow * s_nbCol; ++pix)
+//        {
+//            m_pixelData[pix].r =  // std::abs(vorticities[pix]);
+//                displaySmoke ? m_universes[previous].Q[pix].S : 0;
+//            if (displayTmp && !displaySmoke)
+//            {
+//                m_pixelData[pix].r =
+//                    displayTmp
+//                        ? (m_universes[previous].Q[pix].T - s_ambientT) / 10
+//                        : 0;
+//            }
+//
+//            m_pixelData[pix].g =  // vorticityForces[pix].x;
+//                displaySpeed ? m_universes[previous].Q[pix].uh : 0;
+//            m_pixelData[pix].b =  // vorticityForces[pix].y;
+//                displaySpeed ? m_universes[previous].Q[pix].uv : 0;
+//        }
+//
+//        if (runtimeUpdate)
+//        {
+//            i = (i + 1) % 2;
+//            Simulate(m_universes[previous], m_universes[i],
+//                     simulationSpeed * 0.016f);
+//        }
 
         start_dearImGuiNewFrame(*m_pDx12Api);
 
         ImGui::NewFrame();
 
-        m::mBool showDemo = true;
         ImGui::Begin("Simulation Parameters");
+
+        ImGui::Checkbox("Run Time Update", &m_simulationParameters.isRunning);
+        ImGui::Checkbox("Display speeds", &m_simulationParameters.displaySpeed);
+        /*
         ImGui::DragFloat("SimulationSpeed", &simulationSpeed, 0.01f, 0.01f,
                          4.0f);
         if (ImGui::Button("Reset"))
@@ -1163,7 +1180,6 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
             // std::chrono::duration<mDouble>(a_deltaTime).count());
         }
 
-        ImGui::Checkbox("Run Time Update", &runtimeUpdate);
 
         ImGui::InputDouble("Buyancy alpha", &s_alpha);
         ImGui::InputDouble("Buyancy beta", &s_beta);
@@ -1172,7 +1188,7 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
 
         ImGui::Checkbox("Display Smoke", &displaySmoke);
         ImGui::Checkbox("Display Temp", &displayTmp);
-        ImGui::Checkbox("Display Speed", &displaySpeed);
+        ImGui::Checkbox("Display Speed", &displaySpeed);*/
         ImGui::End();
 
         ImGui::Render();
@@ -1191,10 +1207,8 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
     m::input::mCallbackInputManager m_inputManager;
     m::windows::mIWindow*           m_mainWindow;
 
-    m::resource::mTypedImage<m::math::mVec4> m_initialData;
-
-    std::vector<m::math::mVec4> m_pixelData;
-    Universe                    m_universes[2];
+    m::resource::mTypedImage<m::math::mVec4>   m_initialData;
+    TaskDataFluidSimulation::ControlParameters m_simulationParameters;
 };
 
 M_EXECUTE_WINDOWED_APP(FluidSimulationApp)
