@@ -80,7 +80,8 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
    private:
     void init_samplers();
     void init_velocityTextures();
-    void init_dataTextures(m::resource::mTypedImage<m::math::mVec4> const& a_rImage);
+    void init_dataTextures(
+        m::resource::mTypedImage<m::math::mVec4> const& a_rImage);
 
     void setup_advectionPass();
     void setup_simulationPass();
@@ -129,6 +130,7 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     static const m::mUInt           sm_nbIndexPerArrows = 7;
     static const m::mSize           sm_sizeIndexArrow   = sizeof(m::mU16);
     m::dx12::ComPtr<ID3D12Resource> m_pVertexBufferArrows = nullptr;
+    D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlOutBuffer{};
     m::dx12::ComPtr<ID3D12Resource> m_pIndexBufferArrows  = nullptr;
 
     // Fluid rendering
@@ -139,24 +141,22 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     m::dx12::ComPtr<ID3D12RootSignature> m_rsArrowRendering  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoArrowRendering = nullptr;
 
-    std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pTextureResources{};
-    std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pUploadResources{};
-
-    static const m::mUInt scm_maxTextures = 2;
-
-    D3D12_GPU_DESCRIPTOR_HANDLE
-    m_GPUDescHdlTextureCompute[scm_maxTextures]{};
-    D3D12_GPU_DESCRIPTOR_HANDLE
-    m_GPUDescHdlTextureDisplay[scm_maxTextures]{};
-    D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlSampler{};
-    D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlOutBuffer{};
-
+    // ---------- Global rendering data
     std::vector<D3D12_STATIC_SAMPLER_DESC> m_samplersDescs{};
 
     DescriptorHeapFluidSimulation m_descriptorHeap;
 
-    // ---------- General Data
+    // ---------- Simulation data
     std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pUploadResourcesToDelete{};
+    // Data
+    static const m::mUInt    scm_nbDataTextures = 2;
+    static const DXGI_FORMAT scm_formatDataTexture =
+        DXGI_FORMAT_R32G32B32A32_FLOAT;
+    std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pTextureResources{};
+    D3D12_GPU_DESCRIPTOR_HANDLE
+    m_GPUDescHdlTextureCompute[scm_nbDataTextures]{};
+    D3D12_GPU_DESCRIPTOR_HANDLE
+    m_GPUDescHdlTextureDisplay[scm_nbDataTextures]{};
 
     // Velocities
     static const m::mUInt    scm_nbVelocityTexture = 2;

@@ -670,28 +670,26 @@ void Dx12TaskFluidSimulation::init_velocityTextures()
 void Dx12TaskFluidSimulation::init_dataTextures(
     m::resource::mTypedImage<m::math::mVec4> const& a_rImage)
 {
-    DXGI_FORMAT simulationTextureFormat = DXGI_FORMAT_R32G32B32A32_FLOAT;
-
     D3D12_SHADER_RESOURCE_VIEW_DESC descShaderResourceView = {};
     descShaderResourceView.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
     descShaderResourceView.Shader4ComponentMapping =
         D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-    descShaderResourceView.Format                    = simulationTextureFormat;
+    descShaderResourceView.Format                    = scm_formatDataTexture;
     descShaderResourceView.Texture2D.MipLevels       = 1;
     descShaderResourceView.Texture2D.MostDetailedMip = 0;
     descShaderResourceView.Texture2D.ResourceMinLODClamp = 0.0f;
 
     D3D12_UNORDERED_ACCESS_VIEW_DESC descUav = {};
-    descUav.Format                           = simulationTextureFormat;
+    descUav.Format                           = scm_formatDataTexture;
     descUav.ViewDimension                    = D3D12_UAV_DIMENSION_TEXTURE2D;
-    for (int i = 0; i < scm_maxTextures; ++i)
+    for (int i = 0; i < scm_nbDataTextures; ++i)
     {
         m_pTextureResources.emplace_back();
-        m_pUploadResources.emplace_back();
+        m_pUploadResourcesToDelete.emplace_back();
 
         auto [result, _] = upload_toGPU(
-            a_rImage, m_pTextureResources.back(), m_pUploadResources.back(),
-            simulationTextureFormat,
+            a_rImage, m_pTextureResources.back(),
+            m_pUploadResourcesToDelete.back(), scm_formatDataTexture,
             std::wstring(L"Texture_" + std::to_wstring(i)).c_str());
         mAssert(mIsSuccess(result));
 
@@ -1127,7 +1125,8 @@ void Dx12TaskFluidSimulation::setup_arrowGenerationPass()
 
     // ----------------- Generate arrow indicies
     // Upload generated indices
-    ID3D12Resource*       pUploadIndexResource;
+    m_pUploadResourcesToDelete.emplace_back();
+
     D3D12_HEAP_PROPERTIES props;
     memset(&props, 0, sizeof(D3D12_HEAP_PROPERTIES));
     props.Type                 = D3D12_HEAP_TYPE_UPLOAD;
@@ -1148,14 +1147,14 @@ void Dx12TaskFluidSimulation::setup_arrowGenerationPass()
     if (device->CreateCommittedResource(
             &props, D3D12_HEAP_FLAG_NONE, &desc,
             D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
-            IID_PPV_ARGS(&pUploadIndexResource)) < 0)
+            IID_PPV_ARGS(m_pUploadResourcesToDelete.back().GetAddressOf())) < 0)
         return;
 
     // Upload vertex/index data into a single contiguous GPU buffer
     void*       idxResource;
     D3D12_RANGE range;
     memset(&range, 0, sizeof(D3D12_RANGE));
-    if (pUploadIndexResource->Map(0, &range, &idxResource) != S_OK)
+    if (m_pUploadResourcesToDelete.back()->Map(0, &range, &idxResource) != S_OK)
     {
         mLog_error("Could not map index buffer");
         return;
@@ -1183,14 +1182,14 @@ void Dx12TaskFluidSimulation::setup_arrowGenerationPass()
            m_simulationWidth * m_simulationHeight * sm_nbIndexPerArrows *
                sm_sizeIndexArrow);
 
-    pUploadIndexResource->Unmap(0, &range);
+    m_pUploadResourcesToDelete.back()->Unmap(0, &range);
 
     dx12::ComPtr<ID3D12GraphicsCommandList2> pUploadCommandList =
         dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
             .get_commandList();
 
     pUploadCommandList->CopyResource(m_pIndexBufferArrows.Get(),
-                                     pUploadIndexResource);
+                                     m_pUploadResourcesToDelete.back().Get());
 
     auto resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
         m_pIndexBufferArrows.Get(), D3D12_RESOURCE_STATE_COPY_DEST,
