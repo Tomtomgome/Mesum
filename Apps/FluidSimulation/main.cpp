@@ -22,6 +22,9 @@ const m::logging::mChannelID m_FluidSimulation_ID = mLog_getId();
 
 using namespace m;
 
+static const int s_nbRow = 300;
+static const int s_nbCol = 300;
+
 static const mDouble s_cellSize = 1.0;
 static const mDouble s_density  = 1.0;
 

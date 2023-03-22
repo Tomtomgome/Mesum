@@ -13,8 +13,26 @@
 #include <MesumGraphics/VulkanRenderer/VulkanContext.hpp>
 #endif  // M_VULKAN_RENDERER
 
-static const int s_nbRow = 300;
-static const int s_nbCol = 300;
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+struct DescriptorHeapFluidSimulation
+{
+    void                        init();
+    D3D12_GPU_DESCRIPTOR_HANDLE create_srvAndGetHandle(
+        m::dx12::ComPtr<ID3D12Resource>& a_pResource,
+        D3D12_SHADER_RESOURCE_VIEW_DESC& a_descSrv);
+    D3D12_GPU_DESCRIPTOR_HANDLE create_uavAndGetHandle(
+        m::dx12::ComPtr<ID3D12Resource>&  a_pResource,
+        D3D12_UNORDERED_ACCESS_VIEW_DESC& a_descUav);
+
+    m::mUInt m_currentHandle = 0;
+
+    m::dx12::ComPtr<ID3D12DescriptorHeap> m_pHeap            = nullptr;
+    m::mUInt                              m_incrementSizeSrv = 0;
+
+    static const m::mUInt scm_maxSizeDescriptorHeap = 30;
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -60,15 +78,22 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     void execute() const override;
 
    private:
+    void init_samplers();
+    void init_velocityTextures();
+    void init_dataTextures(m::resource::mTypedImage<m::math::mVec4> const& a_rImage);
+
     void setup_advectionPass();
     void setup_simulationPass();
-    void setup_jacobiPass(m::mInt a_width, m::mInt a_height);
+    void setup_jacobiPass();
     void setup_projectionPass();
     void setup_arrowGenerationPass();
     void setup_fluidRenderingPass();
     void setup_arrowRenderingPass();
 
    private:
+    m::mUInt m_simulationWidth{};
+    m::mUInt m_simulationHeight{};
+
     m::mUInt m_iOriginal = 0;
     m::mUInt m_iComputed = 1;
 
@@ -84,8 +109,9 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     m::dx12::ComPtr<ID3D12RootSignature> m_rsJacobi  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoJacobi = nullptr;
 
-    static const m::mUInt scm_nbJacobiTexture   = 2;
-    static const m::mUInt scm_nbJacobiIteration = 60;  // Must be pair svp
+    static const m::mUInt    scm_nbJacobiTexture   = 2;
+    static const m::mUInt    scm_nbJacobiIteration = 60;  // Must be pair svp
+    static const DXGI_FORMAT scm_formatPressure    = DXGI_FORMAT_R32_FLOAT;
     std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pTextureResourceJacobi{};
     D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlJacobiInput[scm_nbJacobiTexture]{};
     D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlJacobiOutput[scm_nbJacobiTexture]{};
@@ -125,12 +151,21 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlSampler{};
     D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlOutBuffer{};
 
-    m::dx12::ComPtr<ID3D12DescriptorHeap> m_pSrvHeap         = nullptr;
-    m::mUInt                              m_incrementSizeSrv = 0;
-    static const m::mUInt                 sm_sizeSrvHeap     = scm_maxTextures;
-
-    static const m::mUInt sm_sizeHeapOutBuffer = 1;
-
     std::vector<D3D12_STATIC_SAMPLER_DESC> m_samplersDescs{};
+
+    DescriptorHeapFluidSimulation m_descriptorHeap;
+
+    // ---------- General Data
+    std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pUploadResourcesToDelete{};
+
+    // Velocities
+    static const m::mUInt    scm_nbVelocityTexture = 2;
+    static const DXGI_FORMAT scm_formatVelocityTexture =
+        DXGI_FORMAT_R32G32_FLOAT;
+    std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pTextureResourceVelocity{};
+    D3D12_GPU_DESCRIPTOR_HANDLE
+    m_GPUDescHdlVelocityInput[scm_nbVelocityTexture]{};
+    D3D12_GPU_DESCRIPTOR_HANDLE
+    m_GPUDescHdlVelocityOutput[scm_nbVelocityTexture]{};
 };
 #endif  // M_DX12_RENDERER
