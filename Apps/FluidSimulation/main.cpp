@@ -212,26 +212,25 @@ void init_initialData(m::resource::mTypedImage<m::math::mVec4>& a_image)
         }
     }
 
-    a_image.data[convert_toIndex(s_nbCol / 2, 1)].z = 350.0;
-    a_image.data[convert_toIndex(s_nbCol / 2, 1)].a = 200.0;
+    a_image.data[convert_toIndex(s_nbCol / 2, 1)].z     = 350.0;
+    a_image.data[convert_toIndex(s_nbCol / 2, 1)].a     = 200.0;
     a_image.data[convert_toIndex(s_nbCol / 2 + 1, 1)].z = 350.0;
     a_image.data[convert_toIndex(s_nbCol / 2 + 1, 1)].a = 200.0;
     a_image.data[convert_toIndex(s_nbCol / 2 - 1, 1)].z = 350.0;
     a_image.data[convert_toIndex(s_nbCol / 2 - 1, 1)].a = 200.0;
 
-    a_image.data[convert_toIndex(s_nbCol / 2, 2)].z = 350.0;
-    a_image.data[convert_toIndex(s_nbCol / 2, 2)].a = 200.0;
+    a_image.data[convert_toIndex(s_nbCol / 2, 2)].z     = 350.0;
+    a_image.data[convert_toIndex(s_nbCol / 2, 2)].a     = 200.0;
     a_image.data[convert_toIndex(s_nbCol / 2 + 1, 2)].z = 350.0;
     a_image.data[convert_toIndex(s_nbCol / 2 + 1, 2)].a = 200.0;
     a_image.data[convert_toIndex(s_nbCol / 2 - 1, 2)].z = 350.0;
     a_image.data[convert_toIndex(s_nbCol / 2 - 1, 2)].a = 200.0;
 
-
     a_image.data[convert_toIndex(s_nbCol / 4, 1)].z = 350.0;
     a_image.data[convert_toIndex(s_nbCol / 4, 1)].a = 200.0;
 
-    a_image.data[convert_toIndex(3*s_nbCol / 4, 1)].z = 350.0;
-    a_image.data[convert_toIndex(3*s_nbCol / 4, 1)].a = 200.0;
+    a_image.data[convert_toIndex(3 * s_nbCol / 4, 1)].z = 350.0;
+    a_image.data[convert_toIndex(3 * s_nbCol / 4, 1)].a = 200.0;
 }
 
 math::mDVec2 get_speedAt(Universe const& a_input, math::mIVec2 a_position)
@@ -1129,35 +1128,35 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
         static mBool displaySpeed  = true;
         static mBool runtimeUpdate = false;
 
-//        GridVector vorticities;
-//        compute_vorticity(m_universes[previous], vorticities);
-//        GridVectorSP<math::mDVec2> vorticityForces;
-//        compute_vorticityForce(vorticities, vorticityForces);
-//
-//        for (mInt pix = 0; pix < s_nbRow * s_nbCol; ++pix)
-//        {
-//            m_pixelData[pix].r =  // std::abs(vorticities[pix]);
-//                displaySmoke ? m_universes[previous].Q[pix].S : 0;
-//            if (displayTmp && !displaySmoke)
-//            {
-//                m_pixelData[pix].r =
-//                    displayTmp
-//                        ? (m_universes[previous].Q[pix].T - s_ambientT) / 10
-//                        : 0;
-//            }
-//
-//            m_pixelData[pix].g =  // vorticityForces[pix].x;
-//                displaySpeed ? m_universes[previous].Q[pix].uh : 0;
-//            m_pixelData[pix].b =  // vorticityForces[pix].y;
-//                displaySpeed ? m_universes[previous].Q[pix].uv : 0;
-//        }
-//
-//        if (runtimeUpdate)
-//        {
-//            i = (i + 1) % 2;
-//            Simulate(m_universes[previous], m_universes[i],
-//                     simulationSpeed * 0.016f);
-//        }
+        //        GridVector vorticities;
+        //        compute_vorticity(m_universes[previous], vorticities);
+        //        GridVectorSP<math::mDVec2> vorticityForces;
+        //        compute_vorticityForce(vorticities, vorticityForces);
+        //
+        //        for (mInt pix = 0; pix < s_nbRow * s_nbCol; ++pix)
+        //        {
+        //            m_pixelData[pix].r =  // std::abs(vorticities[pix]);
+        //                displaySmoke ? m_universes[previous].Q[pix].S : 0;
+        //            if (displayTmp && !displaySmoke)
+        //            {
+        //                m_pixelData[pix].r =
+        //                    displayTmp
+        //                        ? (m_universes[previous].Q[pix].T -
+        //                        s_ambientT) / 10 : 0;
+        //            }
+        //
+        //            m_pixelData[pix].g =  // vorticityForces[pix].x;
+        //                displaySpeed ? m_universes[previous].Q[pix].uh : 0;
+        //            m_pixelData[pix].b =  // vorticityForces[pix].y;
+        //                displaySpeed ? m_universes[previous].Q[pix].uv : 0;
+        //        }
+        //
+        //        if (runtimeUpdate)
+        //        {
+        //            i = (i + 1) % 2;
+        //            Simulate(m_universes[previous], m_universes[i],
+        //                     simulationSpeed * 0.016f);
+        //        }
 
         start_dearImGuiNewFrame(*m_pDx12Api);
 

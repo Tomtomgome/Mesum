@@ -18,7 +18,7 @@ struct Pixel
 //---------------
 //---------------
 
-Texture2D<float4> texture : register(t0);
+Texture2D<float2> velocity : register(t0);
 SamplerState basicSampler : register(s0);
 
 RWStructuredBuffer<VertexInput> BufferOut : register(u0);
@@ -26,11 +26,11 @@ RWStructuredBuffer<VertexInput> BufferOut : register(u0);
 void cs_main(uint3 DTid : SV_DispatchThreadID)
 {
   uint dimX, dimY;
-  texture.GetDimensions(dimX, dimY);
+  velocity.GetDimensions(dimX, dimY);
   float2 invDim = float2(1.0f/dimX, 1.0f/dimY);
   float2 halfPixel = 0.5f*invDim;
   float2 uv = halfPixel + float2(invDim.x * DTid.x, invDim.y * DTid.y);
-  float4 color = texture.SampleLevel(basicSampler, uv, 0);
+  float2 color = velocity.SampleLevel(basicSampler, uv, 0);
 
   const uint g_nbVertexPerArrow = 4;
   const float g_arrowFinsScale = 0.01f;

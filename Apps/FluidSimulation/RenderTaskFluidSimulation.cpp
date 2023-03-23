@@ -279,7 +279,7 @@ void Dx12TaskFluidSimulation::execute() const
             computeCommandList->SetName(L"Velocity advection command list");
 
             computeCommandList->SetDescriptorHeaps(1, aHeaps);
-            computeCommandList->SetComputeRootSignature(m_rsAdvection.Get());
+            computeCommandList->SetComputeRootSignature(m_rsVelocityAdvection.Get());
 
             computeCommandList->SetPipelineState(m_psoVelocityAdvection.Get());
 
@@ -291,11 +291,11 @@ void Dx12TaskFluidSimulation::execute() const
             computeCommandList->Dispatch(nbComputeCol, nbComputeRow, 1);
 
             resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
-                m_pTextureResourceVelocity[0].Get(),
+                m_pTextureResourceVelocity[m_iOriginal].Get(),
                 D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
                 D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
             resourceBarrier[1] = CD3DX12_RESOURCE_BARRIER::Transition(
-                m_pTextureResourceVelocity[1].Get(),
+                m_pTextureResourceVelocity[m_iComputed].Get(),
                 D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
                 D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
             computeCommandList->ResourceBarrier(2, resourceBarrier);
@@ -310,11 +310,11 @@ void Dx12TaskFluidSimulation::execute() const
             computeCommandList->Dispatch(nbComputeCol, nbComputeRow, 1);
 
             resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
-                m_pTextureResourceVelocity[1].Get(),
+                m_pTextureResourceVelocity[m_iComputed].Get(),
                 D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
                 D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
             resourceBarrier[1] = CD3DX12_RESOURCE_BARRIER::Transition(
-                m_pTextureResourceVelocity[0].Get(),
+                m_pTextureResourceVelocity[m_iOriginal].Get(),
                 D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
                 D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
             computeCommandList->ResourceBarrier(2, resourceBarrier);
@@ -322,46 +322,7 @@ void Dx12TaskFluidSimulation::execute() const
             dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
                 .execute_commandList(computeCommandList);
         }
-        // ---------------- Advection
-        {
-            dx12::ComPtr<ID3D12GraphicsCommandList2> computeCommandList =
-                dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
-                    .get_commandList();
 
-            resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
-                pTextureResource, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
-                D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
-            resourceBarrier[1] = CD3DX12_RESOURCE_BARRIER::Transition(
-                pTextureResourceOriginal,
-                D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
-                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
-
-            computeCommandList->ResourceBarrier(2, resourceBarrier);
-
-            computeCommandList->SetDescriptorHeaps(1, aHeaps);
-
-            computeCommandList->SetPipelineState(m_psoAdvection.Get());
-            computeCommandList->SetComputeRootSignature(m_rsAdvection.Get());
-
-            computeCommandList->SetComputeRootDescriptorTable(
-                0, m_GPUDescHdlTextureDisplay[m_iOriginal]);
-            computeCommandList->SetComputeRootDescriptorTable(
-                1, m_GPUDescHdlTextureCompute[m_iComputed]);
-
-            computeCommandList->Dispatch(nbComputeCol, nbComputeRow, 1);
-
-            resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
-                pTextureResource, D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
-                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
-            resourceBarrier[1] = CD3DX12_RESOURCE_BARRIER::Transition(
-                pTextureResourceOriginal,
-                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
-                D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
-            computeCommandList->ResourceBarrier(2, resourceBarrier);
-
-            dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
-                .execute_commandList(computeCommandList);
-        }
         //*
         // ---------------- Simulate forces
         {
@@ -369,15 +330,23 @@ void Dx12TaskFluidSimulation::execute() const
                 dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
                     .get_commandList();
 
+            resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
+                pTextureResourceOriginal,
+                D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
+            computeCommandList->ResourceBarrier(1, resourceBarrier);
+
             computeCommandList->SetDescriptorHeaps(1, aHeaps);
 
             computeCommandList->SetPipelineState(m_psoSimulation.Get());
             computeCommandList->SetComputeRootSignature(m_rsSimulation.Get());
 
             computeCommandList->SetComputeRootDescriptorTable(
-                0, m_GPUDescHdlTextureDisplay[m_iComputed]);
+                0, m_GPUDescHdlTextureDisplay[m_iOriginal]);
             computeCommandList->SetComputeRootDescriptorTable(
-                1, m_GPUDescHdlTextureCompute[m_iOriginal]);
+                1, m_GPUDescHdlVelocityInput[m_iOriginal]);
+            computeCommandList->SetComputeRootDescriptorTable(
+                2, m_GPUDescHdlVelocityOutput[m_iComputed]);
 
             computeCommandList->Dispatch(nbComputeCol, nbComputeRow, 1);
 
@@ -398,12 +367,13 @@ void Dx12TaskFluidSimulation::execute() const
             computeCommandList->SetComputeRootSignature(m_rsJacobi.Get());
 
             resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
-                pTextureResourceOriginal, D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
+                m_pTextureResourceVelocity[m_iComputed].Get(),
+                D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
                 D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
             computeCommandList->ResourceBarrier(1, resourceBarrier);
 
             computeCommandList->SetComputeRootDescriptorTable(
-                0, m_GPUDescHdlTextureDisplay[m_iOriginal]);
+                0, m_GPUDescHdlVelocityInput[m_iComputed]);
 
             for (int i = 0; i < scm_nbJacobiIteration; ++i)
             {
@@ -441,7 +411,7 @@ void Dx12TaskFluidSimulation::execute() const
             computeCommandList->SetComputeRootSignature(m_rsProject.Get());
 
             resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
-                pTextureResourceOriginal,
+                m_pTextureResourceVelocity[m_iComputed].Get(),
                 D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
                 D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
             computeCommandList->ResourceBarrier(1, resourceBarrier);
@@ -449,7 +419,7 @@ void Dx12TaskFluidSimulation::execute() const
             computeCommandList->SetComputeRootDescriptorTable(
                 0, m_GPUDescHdlJacobiInput[0]);
             computeCommandList->SetComputeRootDescriptorTable(
-                1, m_GPUDescHdlTextureCompute[m_iOriginal]);
+                1, m_GPUDescHdlVelocityOutput[m_iComputed]);
 
             computeCommandList->Dispatch(nbComputeCol, nbComputeRow, 1);
 
@@ -464,19 +434,14 @@ void Dx12TaskFluidSimulation::execute() const
                     .get_commandList();
 
             resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
-                pTextureResourceOriginal, D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
+                m_pTextureResourceVelocity[m_iComputed].Get(),
+                D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
                 D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
             resourceBarrier[1] = CD3DX12_RESOURCE_BARRIER::Transition(
-                pTextureResource,
-                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
-                D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
-            computeCommandList->ResourceBarrier(2, resourceBarrier);
-
-            resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
                 m_pVertexBufferArrows.Get(),
                 D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER,
                 D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
-            computeCommandList->ResourceBarrier(1, resourceBarrier);
+            computeCommandList->ResourceBarrier(2, resourceBarrier);
 
             computeCommandList->SetDescriptorHeaps(1, aHeaps);
 
@@ -485,7 +450,7 @@ void Dx12TaskFluidSimulation::execute() const
                 m_rsArrowGeneration.Get());
 
             computeCommandList->SetComputeRootDescriptorTable(
-                0, m_GPUDescHdlTextureDisplay[m_iOriginal]);
+                0, m_GPUDescHdlVelocityInput[m_iComputed]);
             computeCommandList->SetComputeRootDescriptorTable(
                 1, m_GPUDescHdlOutBuffer);
 
@@ -493,13 +458,91 @@ void Dx12TaskFluidSimulation::execute() const
                                          1);
 
             resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
-                pTextureResourceOriginal,
-                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
-                D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
-            resourceBarrier[1] = CD3DX12_RESOURCE_BARRIER::Transition(
                 m_pVertexBufferArrows.Get(),
                 D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
                 D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
+            computeCommandList->ResourceBarrier(1, resourceBarrier);
+
+            dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+                .execute_commandList(computeCommandList);
+        }
+        // ---------------- Advection
+        {
+            dx12::ComPtr<ID3D12GraphicsCommandList2> computeCommandList =
+                dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+                    .get_commandList();
+
+            resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
+                pTextureResource, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+                D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+            computeCommandList->ResourceBarrier(1, resourceBarrier);
+
+            computeCommandList->SetDescriptorHeaps(1, aHeaps);
+
+            computeCommandList->SetPipelineState(m_psoAdvection.Get());
+            computeCommandList->SetComputeRootSignature(m_rsAdvection.Get());
+
+            computeCommandList->SetComputeRootDescriptorTable(
+                0, m_GPUDescHdlTextureDisplay[m_iOriginal]);
+            computeCommandList->SetComputeRootDescriptorTable(
+                1, m_GPUDescHdlVelocityInput[m_iComputed]);
+            computeCommandList->SetComputeRootDescriptorTable(
+                2, m_GPUDescHdlTextureCompute[m_iComputed]);
+
+            computeCommandList->Dispatch(nbComputeCol, nbComputeRow, 1);
+
+            dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+                .execute_commandList(computeCommandList);
+        }
+
+        // Copies to original textures
+        {
+            dx12::ComPtr<ID3D12GraphicsCommandList2> computeCommandList =
+                dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+                    .get_commandList();
+
+            resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
+                pTextureResource, D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
+                D3D12_RESOURCE_STATE_COPY_SOURCE);
+            resourceBarrier[1] = CD3DX12_RESOURCE_BARRIER::Transition(
+                pTextureResourceOriginal,
+                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
+                D3D12_RESOURCE_STATE_COPY_DEST);
+            computeCommandList->ResourceBarrier(2, resourceBarrier);
+
+            computeCommandList->CopyResource(
+                pTextureResourceOriginal, pTextureResource);
+
+            resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
+                pTextureResource, D3D12_RESOURCE_STATE_COPY_SOURCE,
+                D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+            resourceBarrier[1] = CD3DX12_RESOURCE_BARRIER::Transition(
+                pTextureResourceOriginal, D3D12_RESOURCE_STATE_COPY_DEST,
+                D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+            computeCommandList->ResourceBarrier(2, resourceBarrier);
+
+            resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
+                m_pTextureResourceVelocity[m_iComputed].Get(),
+                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
+                D3D12_RESOURCE_STATE_COPY_SOURCE);
+            resourceBarrier[1] = CD3DX12_RESOURCE_BARRIER::Transition(
+                m_pTextureResourceVelocity[m_iOriginal].Get(),
+                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
+                D3D12_RESOURCE_STATE_COPY_DEST);
+            computeCommandList->ResourceBarrier(2, resourceBarrier);
+
+            computeCommandList->CopyResource(
+                m_pTextureResourceVelocity[m_iOriginal].Get(),
+                m_pTextureResourceVelocity[m_iComputed].Get());
+
+            resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
+                m_pTextureResourceVelocity[m_iComputed].Get(),
+                D3D12_RESOURCE_STATE_COPY_SOURCE,
+                D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+            resourceBarrier[1] = CD3DX12_RESOURCE_BARRIER::Transition(
+                m_pTextureResourceVelocity[m_iOriginal].Get(),
+                D3D12_RESOURCE_STATE_COPY_DEST,
+                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
             computeCommandList->ResourceBarrier(2, resourceBarrier);
 
             dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
@@ -703,9 +746,9 @@ void Dx12TaskFluidSimulation::init_velocityTextures()
     mAssert(hr == S_OK);
     m_pTextureResourceVelocity[0]->SetName(L"Velocity Texture 0");
     m_GPUDescHdlVelocityInput[0] = m_descriptorHeap.create_srvAndGetHandle(
-        m_pTextureResourceVelocity[1], descSrv);
+        m_pTextureResourceVelocity[0], descSrv);
     m_GPUDescHdlVelocityOutput[0] = m_descriptorHeap.create_uavAndGetHandle(
-        m_pTextureResourceVelocity[1], descUav);
+        m_pTextureResourceVelocity[0], descUav);
 
     hr = pDevice->CreateCommittedResource(
         &oHeapProperties, D3D12_HEAP_FLAG_NONE, &descTexture,
@@ -837,18 +880,23 @@ void Dx12TaskFluidSimulation::setup_advectionPass()
     HRESULT res;
     // ----------------- Root signature and pipeline state
     std::vector<CD3DX12_ROOT_PARAMETER> vRootParameters;
-    vRootParameters.resize(2);
+    vRootParameters.resize(3);
 
     std::vector<CD3DX12_DESCRIPTOR_RANGE> vTextureRanges;
     vTextureRanges.resize(1);
     vTextureRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 0);
+
+    std::vector<CD3DX12_DESCRIPTOR_RANGE> vTextureRangesVelocity;
+    vTextureRangesVelocity.resize(1);
+    vTextureRangesVelocity[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1, 0);
 
     std::vector<CD3DX12_DESCRIPTOR_RANGE> vOutputRanges;
     vOutputRanges.resize(1);
     vOutputRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, 1, 0, 0);
 
     vRootParameters[0].InitAsDescriptorTable(1, vTextureRanges.data());
-    vRootParameters[1].InitAsDescriptorTable(1, vOutputRanges.data());
+    vRootParameters[1].InitAsDescriptorTable(1, vTextureRangesVelocity.data());
+    vRootParameters[2].InitAsDescriptorTable(1, vOutputRanges.data());
 
     {
         CD3DX12_ROOT_SIGNATURE_DESC descRootSignature;
@@ -877,7 +925,7 @@ void Dx12TaskFluidSimulation::setup_advectionPass()
     D3D12_COMPUTE_PIPELINE_STATE_DESC fieldPipelineDescCompute{};
 
     dx12::ComPtr<ID3DBlob> cs_field = dx12::compile_shader(
-        "data/fluidSimulation.hlsl", "cs_advect", "cs_6_0");
+        "data/dataAdvection.hlsl", "cs_advect", "cs_6_0");
 
     fieldPipelineDescCompute.CS.BytecodeLength  = cs_field->GetBufferSize();
     fieldPipelineDescCompute.CS.pShaderBytecode = cs_field->GetBufferPointer();
@@ -897,18 +945,23 @@ void Dx12TaskFluidSimulation::setup_simulationPass()
     HRESULT res;
     // ----------------- Root signature and pipeline state
     std::vector<CD3DX12_ROOT_PARAMETER> vRootParameters;
-    vRootParameters.resize(2);
+    vRootParameters.resize(3);
 
     std::vector<CD3DX12_DESCRIPTOR_RANGE> vTextureRanges;
     vTextureRanges.resize(1);
     vTextureRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 0);
+
+    std::vector<CD3DX12_DESCRIPTOR_RANGE> vTextureRangesVelocity;
+    vTextureRangesVelocity.resize(1);
+    vTextureRangesVelocity[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1, 0);
 
     std::vector<CD3DX12_DESCRIPTOR_RANGE> vOutputRanges;
     vOutputRanges.resize(1);
     vOutputRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, 1, 0, 0);
 
     vRootParameters[0].InitAsDescriptorTable(1, vTextureRanges.data());
-    vRootParameters[1].InitAsDescriptorTable(1, vOutputRanges.data());
+    vRootParameters[1].InitAsDescriptorTable(1, vTextureRangesVelocity.data());
+    vRootParameters[2].InitAsDescriptorTable(1, vOutputRanges.data());
 
     {
         CD3DX12_ROOT_SIGNATURE_DESC descRootSignature;

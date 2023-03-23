@@ -1,7 +1,7 @@
 #include "commonInclude.hlsl"
 
 Texture2D<float> pressure : register(t0);
-RWTexture2D<float4> outputData : register(u0);
+RWTexture2D<float2> outputVelocity : register(u0);
 
 CoordData compute_uv(uint3 a_DTid)
 {
@@ -30,7 +30,7 @@ void cs_project(uint3 DTid : SV_DispatchThreadID)
   float piPlus1j = pressure.SampleLevel(samplerPoint, uv_plus(uv, 1, 0).uv, 0);
   float pijPlus1 = pressure.SampleLevel(samplerPoint, uv_plus(uv, 0, 1).uv, 0);
 
-  outputData[uint2(DTid.x, DTid.y)].x = outputData[uint2(DTid.x, DTid.y)].x - (piPlus1j - pij) / (g_density * g_cellSize);
-  outputData[uint2(DTid.x, DTid.y)].y = outputData[uint2(DTid.x, DTid.y)].y - (pijPlus1 - pij) / (g_density * g_cellSize);
+  outputVelocity[uint2(DTid.x, DTid.y)].x = outputVelocity[uint2(DTid.x, DTid.y)].x - (piPlus1j - pij) / (g_density * g_cellSize);
+  outputVelocity[uint2(DTid.x, DTid.y)].y = outputVelocity[uint2(DTid.x, DTid.y)].y - (pijPlus1 - pij) / (g_density * g_cellSize);
 }
 

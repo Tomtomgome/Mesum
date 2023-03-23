@@ -1,7 +1,8 @@
 #include "commonInclude.hlsl"
 
 Texture2D<float4> inputData : register(t0);
-RWTexture2D<float4> outputData : register(u0);
+Texture2D<float2> inputVelocity : register(t1);
+RWTexture2D<float2> outputVelocity : register(u0);
 
 
 CoordData compute_uv(uint3 a_DTid)
@@ -18,26 +19,9 @@ CoordData compute_uv(uint3 a_DTid)
 float2 sample_velocity(CoordData a_uv)
 {
   float2 velocity;
-  velocity.x = inputData.SampleLevel(samplerLinear, uv_plusHalf(a_uv, -1, 0).uv, 0).x;
-  velocity.y = inputData.SampleLevel(samplerLinear, uv_plusHalf(a_uv, 0, -1).uv, 0).y;
+  velocity.x = inputVelocity.SampleLevel(samplerLinear, uv_plusHalf(a_uv, -1, 0).uv, 0).x;
+  velocity.y = inputVelocity.SampleLevel(samplerLinear, uv_plusHalf(a_uv, 0, -1).uv, 0).y;
   return velocity;
-}
-
-// ---------- Advection
-[numthreads( 1, 1, 1 )]
-void cs_advect(uint3 DTid : SV_DispatchThreadID)
-{
-  // IMPROVE compute index 
-  CoordData uv = compute_uv(DTid);
-
-  // Need to separate center cell quantities advection from staggered quantities advections
-  float2 velocity = sample_velocity(uv);
-
-  float2 startingPoint = uv.uv - (g_time * velocity) * uv.pixel;
-  uv.uv = startingPoint;
-
-  //Improve with cubic interpolation
-  outputData[uint2(DTid.x, DTid.y)] = sample_cubic_f4(inputData, samplerLinear, uv);// inputData.SampleLevel(samplerLinear, startingPoint, 0);
 }
 
 // ---------- applyForces
@@ -90,14 +74,14 @@ void cs_simulation(uint3 DTid : SV_DispatchThreadID)
   CoordData uv = compute_uv(DTid);
 
   // base copy
-  outputData[uint2(DTid.x, DTid.y)] = inputData.SampleLevel(samplerPoint, uv.uv, 0);
+  outputVelocity[uint2(DTid.x, DTid.y)] = inputVelocity.SampleLevel(samplerPoint, uv.uv, 0);
   
   // gravity
   //outputData[uint2(DTid.x, DTid.y)].y += g_time * g_gravity;
 
   // Boyancy
   float2 data = inputData.SampleLevel(samplerLinear, uv_plusHalf(uv, 0, 1).uv, 0).zw;
-  outputData[uint2(DTid.x, DTid.y)].y += g_time * (g_alpha * data.y + g_beta * (data.x - g_ambientT));
+  outputVelocity[uint2(DTid.x, DTid.y)].y += g_time * (g_alpha * data.y + g_beta * (data.x - g_ambientT));
 
   // Vorticity Confinment
   float2 vorticityForceX =
@@ -109,7 +93,7 @@ void cs_simulation(uint3 DTid : SV_DispatchThreadID)
                     (compute_vorticityForce(uv) + 
                     compute_vorticityForce(uv_plus(uv, 0, 1)));
 
-  outputData[uint2(DTid.x, DTid.y)].x += g_time * g_vorticityStrength * g_cellSize * vorticityForceX.x;
-  outputData[uint2(DTid.x, DTid.y)].y += g_time * g_vorticityStrength * g_cellSize * vorticityForceY.y;
+  outputVelocity[uint2(DTid.x, DTid.y)].x += g_time * g_vorticityStrength * g_cellSize * vorticityForceX.x;
+  outputVelocity[uint2(DTid.x, DTid.y)].y += g_time * g_vorticityStrength * g_cellSize * vorticityForceY.y;
 }
 
