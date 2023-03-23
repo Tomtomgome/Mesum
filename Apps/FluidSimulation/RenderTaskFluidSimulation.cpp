@@ -211,6 +211,8 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
     init_dataTextures(rImage);
 
     // -------------------- Root Signatures
+    setup_velocityAdvectionPass();
+
     setup_simulationPass();
 
     setup_advectionPass();
@@ -261,25 +263,78 @@ void Dx12TaskFluidSimulation::execute() const
 
     ID3D12DescriptorHeap* const aHeaps[1] = {m_descriptorHeap.m_pHeap.Get()};
 
-    D3D12_RESOURCE_BARRIER resourceBarrier[] = {
-        CD3DX12_RESOURCE_BARRIER::Transition(
-            pTextureResource, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
-            D3D12_RESOURCE_STATE_UNORDERED_ACCESS),
-        CD3DX12_RESOURCE_BARRIER::Transition(
-            pTextureResourceOriginal,
-            D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
-            D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE)};
+    D3D12_RESOURCE_BARRIER resourceBarrier[2];
 
     mUInt nbComputeRow = m_simulationHeight;
     mUInt nbComputeCol = m_simulationWidth;
 
     if (parameters.isRunning)
     {
+        // ---------------- Velocity advection
+        {
+            dx12::ComPtr<ID3D12GraphicsCommandList2> computeCommandList =
+                dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+                    .get_commandList();
+
+            computeCommandList->SetName(L"Velocity advection command list");
+
+            computeCommandList->SetDescriptorHeaps(1, aHeaps);
+            computeCommandList->SetComputeRootSignature(m_rsAdvection.Get());
+
+            computeCommandList->SetPipelineState(m_psoVelocityAdvection.Get());
+
+            computeCommandList->SetComputeRootDescriptorTable(
+                0, m_GPUDescHdlVelocityInput[m_iOriginal]);
+            computeCommandList->SetComputeRootDescriptorTable(
+                1, m_GPUDescHdlVelocityOutput[m_iComputed]);
+
+            computeCommandList->Dispatch(nbComputeCol, nbComputeRow, 1);
+
+            resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
+                m_pTextureResourceVelocity[0].Get(),
+                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
+                D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+            resourceBarrier[1] = CD3DX12_RESOURCE_BARRIER::Transition(
+                m_pTextureResourceVelocity[1].Get(),
+                D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
+                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
+            computeCommandList->ResourceBarrier(2, resourceBarrier);
+
+            computeCommandList->SetPipelineState(m_psoVelocityStaggering.Get());
+
+            computeCommandList->SetComputeRootDescriptorTable(
+                0, m_GPUDescHdlVelocityInput[m_iComputed]);
+            computeCommandList->SetComputeRootDescriptorTable(
+                1, m_GPUDescHdlVelocityOutput[m_iOriginal]);
+
+            computeCommandList->Dispatch(nbComputeCol, nbComputeRow, 1);
+
+            resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
+                m_pTextureResourceVelocity[1].Get(),
+                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
+                D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+            resourceBarrier[1] = CD3DX12_RESOURCE_BARRIER::Transition(
+                m_pTextureResourceVelocity[0].Get(),
+                D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
+                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
+            computeCommandList->ResourceBarrier(2, resourceBarrier);
+
+            dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
+                .execute_commandList(computeCommandList);
+        }
         // ---------------- Advection
         {
             dx12::ComPtr<ID3D12GraphicsCommandList2> computeCommandList =
                 dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
                     .get_commandList();
+
+            resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
+                pTextureResource, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+                D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+            resourceBarrier[1] = CD3DX12_RESOURCE_BARRIER::Transition(
+                pTextureResourceOriginal,
+                D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
 
             computeCommandList->ResourceBarrier(2, resourceBarrier);
 
@@ -698,6 +753,78 @@ void Dx12TaskFluidSimulation::init_dataTextures(
         m_GPUDescHdlTextureCompute[i] = m_descriptorHeap.create_uavAndGetHandle(
             m_pTextureResources.back(), descUav);
     }
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void Dx12TaskFluidSimulation::setup_velocityAdvectionPass()
+{
+    dx12::ComPtr<ID3D12Device> device =
+        dx12::DX12Context::gs_dx12Contexte->m_device;
+    HRESULT res;
+    // ----------------- Root signature and pipeline state
+    std::vector<CD3DX12_ROOT_PARAMETER> vRootParameters;
+    vRootParameters.resize(2);
+
+    std::vector<CD3DX12_DESCRIPTOR_RANGE> vTextureRanges;
+    vTextureRanges.resize(1);
+    vTextureRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 0);
+
+    std::vector<CD3DX12_DESCRIPTOR_RANGE> vOutputRanges;
+    vOutputRanges.resize(1);
+    vOutputRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, 1, 0, 0);
+
+    vRootParameters[0].InitAsDescriptorTable(1, vTextureRanges.data());
+    vRootParameters[1].InitAsDescriptorTable(1, vOutputRanges.data());
+
+    {
+        CD3DX12_ROOT_SIGNATURE_DESC descRootSignature;
+        descRootSignature.Init(vRootParameters.size(), vRootParameters.data(),
+                               m_samplersDescs.size(), m_samplersDescs.data(),
+                               D3D12_ROOT_SIGNATURE_FLAG_NONE);
+
+        dx12::ComPtr<ID3DBlob> rootBlob;
+        dx12::ComPtr<ID3DBlob> errorBlob;
+        res = D3D12SerializeRootSignature(&descRootSignature,
+                                          D3D_ROOT_SIGNATURE_VERSION_1,
+                                          &rootBlob, &errorBlob);
+        if (FAILED(res))
+        {
+            if (errorBlob != nullptr)
+            {
+                mLog_info((char*)errorBlob->GetBufferPointer());
+            }
+        }
+
+        dx12::check_mhr(device->CreateRootSignature(
+            0, rootBlob->GetBufferPointer(), rootBlob->GetBufferSize(),
+            IID_PPV_ARGS(&m_rsVelocityAdvection)));
+    }
+
+    D3D12_COMPUTE_PIPELINE_STATE_DESC fieldPipelineDescCompute{};
+
+    dx12::ComPtr<ID3DBlob> shaderProgram = dx12::compile_shader(
+        "data/velocityAdvection.hlsl", "cs_advectVelocityCellCenter", "cs_6_0");
+
+    fieldPipelineDescCompute.CS.BytecodeLength = shaderProgram->GetBufferSize();
+    fieldPipelineDescCompute.CS.pShaderBytecode =
+        shaderProgram->GetBufferPointer();
+    fieldPipelineDescCompute.pRootSignature = m_rsVelocityAdvection.Get();
+
+    dx12::check_mhr(device->CreateComputePipelineState(
+        &fieldPipelineDescCompute, IID_PPV_ARGS(&m_psoVelocityAdvection)));
+
+    shaderProgram = dx12::compile_shader("data/velocityAdvection.hlsl",
+                                         "cs_staggerVelocities", "cs_6_0");
+
+    fieldPipelineDescCompute.CS.BytecodeLength = shaderProgram->GetBufferSize();
+    fieldPipelineDescCompute.CS.pShaderBytecode =
+        shaderProgram->GetBufferPointer();
+    fieldPipelineDescCompute.pRootSignature = m_rsVelocityAdvection.Get();
+
+    dx12::check_mhr(device->CreateComputePipelineState(
+        &fieldPipelineDescCompute, IID_PPV_ARGS(&m_psoVelocityStaggering)));
 }
 
 //-----------------------------------------------------------------------------

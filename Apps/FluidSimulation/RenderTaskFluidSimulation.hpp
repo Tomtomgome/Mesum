@@ -83,6 +83,7 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     void init_dataTextures(
         m::resource::mTypedImage<m::math::mVec4> const& a_rImage);
 
+    void setup_velocityAdvectionPass();
     void setup_advectionPass();
     void setup_simulationPass();
     void setup_jacobiPass();
@@ -97,6 +98,11 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
 
     m::mUInt m_iOriginal = 0;
     m::mUInt m_iComputed = 1;
+
+    // Velocity advection
+    m::dx12::ComPtr<ID3D12PipelineState> m_psoVelocityAdvection = nullptr;
+    m::dx12::ComPtr<ID3D12PipelineState> m_psoVelocityStaggering = nullptr;
+    m::dx12::ComPtr<ID3D12RootSignature> m_rsVelocityAdvection  = nullptr;
 
     // Advection
     m::dx12::ComPtr<ID3D12RootSignature> m_rsAdvection  = nullptr;
@@ -130,8 +136,8 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     static const m::mUInt           sm_nbIndexPerArrows = 7;
     static const m::mSize           sm_sizeIndexArrow   = sizeof(m::mU16);
     m::dx12::ComPtr<ID3D12Resource> m_pVertexBufferArrows = nullptr;
-    D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlOutBuffer{};
-    m::dx12::ComPtr<ID3D12Resource> m_pIndexBufferArrows  = nullptr;
+    D3D12_GPU_DESCRIPTOR_HANDLE     m_GPUDescHdlOutBuffer{};
+    m::dx12::ComPtr<ID3D12Resource> m_pIndexBufferArrows = nullptr;
 
     // Fluid rendering
     m::dx12::ComPtr<ID3D12RootSignature> m_rsFluidRendering  = nullptr;
