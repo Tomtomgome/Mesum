@@ -4,6 +4,7 @@ SamplerState samplerPoint : register(s1);
 SamplerState samplerPointBlackBorder : register(s2);
 SamplerState samplerLinearBlackBorder : register(s3);
 
+#define COMPUTE_GROUPE_SIZE 16
 
 static const float g_time = 0.016;
 
