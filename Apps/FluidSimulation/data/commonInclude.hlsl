@@ -4,7 +4,13 @@ SamplerState samplerPoint : register(s1);
 SamplerState samplerPointBlackBorder : register(s2);
 SamplerState samplerLinearBlackBorder : register(s3);
 
-#define COMPUTE_GROUPE_SIZE 16
+struct Data
+{
+  uint2 resolution;
+};
+ConstantBuffer<Data> data : register(b0);
+
+#define COMPUTE_GROUP_SIZE 16
 
 static const float g_time = 0.016;
 
@@ -18,6 +24,19 @@ struct CoordData
   float2 pixel;
   float2 halfPixel;
 };
+
+CoordData compute_uv(uint3 a_DTid)
+{
+  CoordData uv;
+  
+  uint dimX = data.resolution.x;
+  uint dimY = data.resolution.y;
+
+  uv.pixel = float2(1.0f/dimX, 1.0f/dimY);
+  uv.halfPixel = 0.5f*uv.pixel;
+  uv.uv = uv.halfPixel + float2(uv.pixel.x * a_DTid.x, uv.pixel.y * a_DTid.y);
+  return uv;
+}
 
 CoordData uv_plusHalf(CoordData a_uv, int a_nbHalfX, int a_nbHalfY)
 {

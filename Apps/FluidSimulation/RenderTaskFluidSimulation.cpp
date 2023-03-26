@@ -309,7 +309,6 @@ void Dx12TaskFluidSimulation::execute() const
                 0, m_GPUDescHdlVelocityInput[m_iOriginal]);
             computeCommandList->SetComputeRootDescriptorTable(
                 1, m_GPUDescHdlVelocityOutput[m_iComputed]);
-
             computeCommandList->SetComputeRootConstantBufferView(
                 2, m_pConstantBuffers->GetGPUVirtualAddress() +
                        offsetResolutionBaseImage);
@@ -377,8 +376,13 @@ void Dx12TaskFluidSimulation::execute() const
                 1, m_GPUDescHdlVelocityInput[m_iOriginal]);
             computeCommandList->SetComputeRootDescriptorTable(
                 2, m_GPUDescHdlVelocityOutput[m_iComputed]);
+            computeCommandList->SetComputeRootConstantBufferView(
+                3, m_pConstantBuffers->GetGPUVirtualAddress() +
+                       offsetResolutionBaseImage);
 
-            computeCommandList->Dispatch(nbComputeCol, nbComputeRow, 1);
+            computeCommandList->Dispatch(
+                round_up<mUInt>(nbComputeCol, m_sizeComputeGroup),
+                round_up<mUInt>(nbComputeRow, m_sizeComputeGroup), 1);
 
             dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
                 .execute_commandList(computeCommandList);
@@ -404,6 +408,9 @@ void Dx12TaskFluidSimulation::execute() const
 
             computeCommandList->SetComputeRootDescriptorTable(
                 0, m_GPUDescHdlVelocityInput[m_iComputed]);
+            computeCommandList->SetComputeRootConstantBufferView(
+                3, m_pConstantBuffers->GetGPUVirtualAddress() +
+                       offsetResolutionBaseImage);
 
             for (int i = 0; i < scm_nbJacobiIteration; ++i)
             {
@@ -412,7 +419,9 @@ void Dx12TaskFluidSimulation::execute() const
                 computeCommandList->SetComputeRootDescriptorTable(
                     2, m_GPUDescHdlJacobiOutput[(i + 1) % 2]);
 
-                computeCommandList->Dispatch(nbComputeRow, nbComputeCol, 1);
+                computeCommandList->Dispatch(
+                    round_up<mUInt>(nbComputeCol, m_sizeComputeGroup),
+                    round_up<mUInt>(nbComputeRow, m_sizeComputeGroup), 1);
 
                 resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
                     m_pTextureResourceJacobi[i % 2].Get(),
@@ -450,8 +459,13 @@ void Dx12TaskFluidSimulation::execute() const
                 0, m_GPUDescHdlJacobiInput[0]);
             computeCommandList->SetComputeRootDescriptorTable(
                 1, m_GPUDescHdlVelocityOutput[m_iComputed]);
+            computeCommandList->SetComputeRootConstantBufferView(
+                2, m_pConstantBuffers->GetGPUVirtualAddress() +
+                       offsetResolutionBaseImage);
 
-            computeCommandList->Dispatch(nbComputeCol, nbComputeRow, 1);
+            computeCommandList->Dispatch(
+                round_up<mUInt>(nbComputeCol, m_sizeComputeGroup),
+                round_up<mUInt>(nbComputeRow, m_sizeComputeGroup), 1);
 
             dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
                 .execute_commandList(computeCommandList);
@@ -483,7 +497,6 @@ void Dx12TaskFluidSimulation::execute() const
                 0, m_GPUDescHdlVelocityInput[m_iComputed]);
             computeCommandList->SetComputeRootDescriptorTable(
                 1, m_GPUDescHdlOutBuffer);
-
             computeCommandList->SetComputeRootConstantBufferView(
                 2, m_pConstantBuffers->GetGPUVirtualAddress() +
                        offsetResolutionArrows);
@@ -526,8 +539,13 @@ void Dx12TaskFluidSimulation::execute() const
                 1, m_GPUDescHdlVelocityInput[m_iComputed]);
             computeCommandList->SetComputeRootDescriptorTable(
                 2, m_GPUDescHdlTextureCompute[m_iComputed]);
+            computeCommandList->SetComputeRootConstantBufferView(
+                3, m_pConstantBuffers->GetGPUVirtualAddress() +
+                       offsetResolutionBaseImage);
 
-            computeCommandList->Dispatch(nbComputeCol, nbComputeRow, 1);
+            computeCommandList->Dispatch(
+                round_up<mUInt>(nbComputeCol, m_sizeComputeGroup),
+                round_up<mUInt>(nbComputeRow, m_sizeComputeGroup), 1);
 
             dx12::DX12Context::gs_dx12Contexte->get_computeCommandQueue()
                 .execute_commandList(computeCommandList);
@@ -970,7 +988,7 @@ void Dx12TaskFluidSimulation::setup_advectionPass()
     HRESULT res;
     // ----------------- Root signature and pipeline state
     std::vector<CD3DX12_ROOT_PARAMETER> vRootParameters;
-    vRootParameters.resize(3);
+    vRootParameters.resize(4);
 
     std::vector<CD3DX12_DESCRIPTOR_RANGE> vTextureRanges;
     vTextureRanges.resize(1);
@@ -987,6 +1005,7 @@ void Dx12TaskFluidSimulation::setup_advectionPass()
     vRootParameters[0].InitAsDescriptorTable(1, vTextureRanges.data());
     vRootParameters[1].InitAsDescriptorTable(1, vTextureRangesVelocity.data());
     vRootParameters[2].InitAsDescriptorTable(1, vOutputRanges.data());
+    vRootParameters[3].InitAsConstantBufferView(0);
 
     {
         CD3DX12_ROOT_SIGNATURE_DESC descRootSignature;
@@ -1035,7 +1054,7 @@ void Dx12TaskFluidSimulation::setup_simulationPass()
     HRESULT res;
     // ----------------- Root signature and pipeline state
     std::vector<CD3DX12_ROOT_PARAMETER> vRootParameters;
-    vRootParameters.resize(3);
+    vRootParameters.resize(4);
 
     std::vector<CD3DX12_DESCRIPTOR_RANGE> vTextureRanges;
     vTextureRanges.resize(1);
@@ -1052,6 +1071,7 @@ void Dx12TaskFluidSimulation::setup_simulationPass()
     vRootParameters[0].InitAsDescriptorTable(1, vTextureRanges.data());
     vRootParameters[1].InitAsDescriptorTable(1, vTextureRangesVelocity.data());
     vRootParameters[2].InitAsDescriptorTable(1, vOutputRanges.data());
+    vRootParameters[3].InitAsConstantBufferView(0);
 
     {
         CD3DX12_ROOT_SIGNATURE_DESC descRootSignature;
@@ -1101,7 +1121,7 @@ void Dx12TaskFluidSimulation::setup_jacobiPass()
     // ----------------- Root signature and pipeline state
     {
         std::vector<CD3DX12_ROOT_PARAMETER> vRootParameters;
-        vRootParameters.resize(3);
+        vRootParameters.resize(4);
 
         std::vector<CD3DX12_DESCRIPTOR_RANGE> vDataTextureRanges;
         vDataTextureRanges.resize(1);
@@ -1120,6 +1140,7 @@ void Dx12TaskFluidSimulation::setup_jacobiPass()
         vRootParameters[1].InitAsDescriptorTable(1,
                                                  vPressureTextureRanges.data());
         vRootParameters[2].InitAsDescriptorTable(1, vOutputRanges.data());
+        vRootParameters[3].InitAsConstantBufferView(0);
 
         {
             CD3DX12_ROOT_SIGNATURE_DESC descRootSignature;
@@ -1222,7 +1243,7 @@ void Dx12TaskFluidSimulation::setup_projectionPass()
     HRESULT res;
     // ----------------- Root signature and pipeline state
     std::vector<CD3DX12_ROOT_PARAMETER> vRootParameters;
-    vRootParameters.resize(2);
+    vRootParameters.resize(3);
 
     std::vector<CD3DX12_DESCRIPTOR_RANGE> vTextureRanges;
     vTextureRanges.resize(1);
@@ -1234,6 +1255,7 @@ void Dx12TaskFluidSimulation::setup_projectionPass()
 
     vRootParameters[0].InitAsDescriptorTable(1, vTextureRanges.data());
     vRootParameters[1].InitAsDescriptorTable(1, vOutputRanges.data());
+    vRootParameters[2].InitAsConstantBufferView(0);
 
     {
         CD3DX12_ROOT_SIGNATURE_DESC descRootSignature;

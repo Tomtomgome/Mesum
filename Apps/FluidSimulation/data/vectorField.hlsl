@@ -1,4 +1,4 @@
-﻿#define COMPUTE_GROUPE_SIZE 16
+﻿#define COMPUTE_GROUP_SIZE 16
 
 struct VertexInput
 {
@@ -30,7 +30,7 @@ struct Data
 ConstantBuffer<Data> data : register(b0);
 
 RWStructuredBuffer<VertexInput> BufferOut : register(u0);
-[numthreads( COMPUTE_GROUPE_SIZE, COMPUTE_GROUPE_SIZE, 1 )]
+[numthreads( COMPUTE_GROUP_SIZE, COMPUTE_GROUP_SIZE, 1 )]
 void cs_main(uint3 DTid : SV_DispatchThreadID)
 {
   uint dimX = data.resolution.x;
