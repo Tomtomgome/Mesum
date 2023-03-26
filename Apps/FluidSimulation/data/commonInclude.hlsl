@@ -2,6 +2,7 @@ SamplerState samplerLinear : register(s0);
 SamplerState samplerPoint : register(s1);
 
 SamplerState samplerPointBlackBorder : register(s2);
+SamplerState samplerLinearBlackBorder : register(s3);
 
 
 static const float g_time = 0.016;

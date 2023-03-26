@@ -22,8 +22,10 @@ const m::logging::mChannelID m_FluidSimulation_ID = mLog_getId();
 
 using namespace m;
 
-static const int s_nbRow = 300;
-static const int s_nbCol = 300;
+static const int s_nbRow = 20*16;
+static const int s_nbCol = 20*16;
+
+static const int s_windowZoom = 2;
 
 static const mDouble s_cellSize = 1.0;
 static const mDouble s_density  = 1.0;
@@ -214,6 +216,7 @@ void init_initialData(m::resource::mTypedImage<m::math::mVec4>& a_image)
 
     a_image.data[convert_toIndex(s_nbCol / 2, 1)].z     = 350.0;
     a_image.data[convert_toIndex(s_nbCol / 2, 1)].a     = 200.0;
+    //*
     a_image.data[convert_toIndex(s_nbCol / 2 + 1, 1)].z = 350.0;
     a_image.data[convert_toIndex(s_nbCol / 2 + 1, 1)].a = 200.0;
     a_image.data[convert_toIndex(s_nbCol / 2 - 1, 1)].z = 350.0;
@@ -231,6 +234,7 @@ void init_initialData(m::resource::mTypedImage<m::math::mVec4>& a_image)
 
     a_image.data[convert_toIndex(3 * s_nbCol / 4, 1)].z = 350.0;
     a_image.data[convert_toIndex(3 * s_nbCol / 4, 1)].a = 200.0;
+     //*/
 }
 
 math::mDVec2 get_speedAt(Universe const& a_input, math::mIVec2 a_position)
@@ -1017,8 +1021,8 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
 
         // Window setup
         m::mCmdLine const& cmdLine = a_cmdLine;
-        m::mUInt           width   = 600;
-        m::mUInt           height  = 600;
+        m::mUInt           width   = s_windowZoom*s_nbCol;
+        m::mUInt           height  = s_windowZoom*s_nbRow;
 
         m_pDx12Api = new m::dx12::mApi();
         m_pDx12Api->init();
@@ -1166,6 +1170,7 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
 
         ImGui::Checkbox("Run Time Update", &m_simulationParameters.isRunning);
         ImGui::Checkbox("Display speeds", &m_simulationParameters.displaySpeed);
+        ImGui::DragInt2("Arrows resolution", m_simulationParameters.vectorRepresentationResolution.data, 1, 16, 20*16);
         /*
         ImGui::DragFloat("SimulationSpeed", &simulationSpeed, 0.01f, 0.01f,
                          4.0f);

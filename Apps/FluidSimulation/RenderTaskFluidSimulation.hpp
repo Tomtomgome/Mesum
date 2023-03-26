@@ -41,8 +41,9 @@ struct TaskDataFluidSimulation : public m::render::TaskData
 {
     struct ControlParameters
     {
-        m::mBool isRunning    = false;
-        m::mBool displaySpeed = false;
+        m::mBool        isRunning                      = false;
+        m::mBool        displaySpeed                   = false;
+        m::math::mIVec2 vectorRepresentationResolution = {80, 80};
     };
 
     m::render::mIRenderTarget*                pOutputRT    = nullptr;
@@ -67,6 +68,12 @@ struct TaskFluidSimulation : public m::render::Task
     TaskDataFluidSimulation m_taskData;
 };
 
+template <typename t_Type>
+inline t_Type round_up(t_Type a_value, t_Type a_divider)
+{
+    return (a_value + a_divider - 1) / a_divider;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -82,6 +89,7 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     void init_velocityTextures();
     void init_dataTextures(
         m::resource::mTypedImage<m::math::mVec4> const& a_rImage);
+    void init_constantBuffer();
 
     void setup_velocityAdvectionPass();
     void setup_advectionPass();
@@ -93,6 +101,8 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     void setup_arrowRenderingPass();
 
    private:
+    m::mUInt m_sizeComputeGroup = 16;
+
     m::mUInt m_simulationWidth{};
     m::mUInt m_simulationHeight{};
 
@@ -100,9 +110,9 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     m::mUInt m_iComputed = 1;
 
     // Velocity advection
-    m::dx12::ComPtr<ID3D12PipelineState> m_psoVelocityAdvection = nullptr;
+    m::dx12::ComPtr<ID3D12PipelineState> m_psoVelocityAdvection  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoVelocityStaggering = nullptr;
-    m::dx12::ComPtr<ID3D12RootSignature> m_rsVelocityAdvection  = nullptr;
+    m::dx12::ComPtr<ID3D12RootSignature> m_rsVelocityAdvection   = nullptr;
 
     // Advection
     m::dx12::ComPtr<ID3D12RootSignature> m_rsAdvection  = nullptr;
@@ -131,10 +141,12 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     m::dx12::ComPtr<ID3D12RootSignature> m_rsArrowGeneration  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoArrowGeneration = nullptr;
 
-    static const m::mUInt           sm_nbVertexPerArrows = 4;
+    static const m::mUInt           scm_arrowFieldMaxResolutionX = 320;
+    static const m::mUInt           scm_arrowFieldMaxResolutionY = 320;
+    static const m::mUInt           sm_nbVertexPerArrows         = 4;
     static const m::mSize           sm_sizeVertexArrow  = 2 * 4 * sizeof(float);
     static const m::mUInt           sm_nbIndexPerArrows = 7;
-    static const m::mSize           sm_sizeIndexArrow   = sizeof(m::mU16);
+    static const m::mSize           sm_sizeIndexArrow   = sizeof(m::mU32);
     m::dx12::ComPtr<ID3D12Resource> m_pVertexBufferArrows = nullptr;
     D3D12_GPU_DESCRIPTOR_HANDLE     m_GPUDescHdlOutBuffer{};
     m::dx12::ComPtr<ID3D12Resource> m_pIndexBufferArrows = nullptr;
@@ -151,6 +163,11 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     std::vector<D3D12_STATIC_SAMPLER_DESC> m_samplersDescs{};
 
     DescriptorHeapFluidSimulation m_descriptorHeap;
+
+    static const m::mU64 scm_minimalStructSize     = 256;
+    static const m::mUInt scm_maxSizeConstantBuffer = 2 * scm_minimalStructSize;
+    m::dx12::ComPtr<ID3D12Resource> m_pConstantBuffers     = nullptr;
+    void*                           m_pConstantBuffersData = nullptr;
 
     // ---------- Simulation data
     std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pUploadResourcesToDelete{};

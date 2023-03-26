@@ -1,4 +1,6 @@
-﻿struct VertexInput
+﻿#define COMPUTE_GROUPE_SIZE 16
+
+struct VertexInput
 {
     float4 positionCS : POSITION0;
     float4 color : COLOR0;
@@ -21,12 +23,24 @@ struct Pixel
 Texture2D<float2> velocity : register(t0);
 SamplerState basicSampler : register(s0);
 
+struct Data
+{
+  uint2 resolution;
+};
+ConstantBuffer<Data> data : register(b0);
+
 RWStructuredBuffer<VertexInput> BufferOut : register(u0);
-[numthreads( 1, 1, 1 )]
+[numthreads( COMPUTE_GROUPE_SIZE, COMPUTE_GROUPE_SIZE, 1 )]
 void cs_main(uint3 DTid : SV_DispatchThreadID)
 {
-  uint dimX, dimY;
-  velocity.GetDimensions(dimX, dimY);
+  uint dimX = data.resolution.x;
+  uint dimY = data.resolution.y;
+
+  if(DTid.x >= data.resolution.x || DTid.y >= data.resolution.y)
+  {
+    return;
+  }
+
   float2 invDim = float2(1.0f/dimX, 1.0f/dimY);
   float2 halfPixel = 0.5f*invDim;
   float2 uv = halfPixel + float2(invDim.x * DTid.x, invDim.y * DTid.y);
@@ -35,7 +49,6 @@ void cs_main(uint3 DTid : SV_DispatchThreadID)
   const uint g_nbVertexPerArrow = 4;
   const float g_arrowFinsScale = 0.01f;
   const float g_arrowScale = 0.03f;
-
   const float4 g_defaultColor = float4(0.5f, 0.2f, 0.3f, 0.5f);
 
   uint baseVextexID = g_nbVertexPerArrow * (DTid.x * dimY + DTid.y);
