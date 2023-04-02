@@ -13,6 +13,47 @@
 #include <MesumGraphics/VulkanRenderer/VulkanContext.hpp>
 #endif  // M_VULKAN_RENDERER
 
+using QueryID = m::mUInt;
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+class RAIIGPUTiming
+{
+   public:
+    RAIIGPUTiming() = delete;
+    RAIIGPUTiming(m::dx12::ComPtr<ID3D12GraphicsCommandList2>& a_commandList,
+                  m::dx12::ComPtr<ID3D12QueryHeap> const&      a_queryHeap,
+                  QueryID                                      a_idQuery)
+        : m_commandList(a_commandList),
+          m_queryHeap(a_queryHeap),
+          m_idQuery(a_idQuery)
+    {
+        m_commandList->EndQuery(m_queryHeap.Get(), D3D12_QUERY_TYPE_TIMESTAMP,
+                                2 * m_idQuery);
+    }
+    ~RAIIGPUTiming()
+    {
+        m_commandList->EndQuery(m_queryHeap.Get(), D3D12_QUERY_TYPE_TIMESTAMP,
+                                2 * m_idQuery + 1);
+    }
+
+   private:
+    m::dx12::ComPtr<ID3D12GraphicsCommandList2> m_commandList{};
+    m::dx12::ComPtr<ID3D12QueryHeap> const      m_queryHeap{};
+    m::mUInt                                    m_idQuery{};
+};
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+struct TimerTree
+{
+    std::string             name{};
+    m::mDouble              duration{};
+    std::vector<TimerTree*> children{};
+};
+
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -66,6 +107,7 @@ struct TaskFluidSimulation : public m::render::Task
     void prepare() override {}
 
     TaskDataFluidSimulation m_taskData;
+    std::vector<TimerTree>           m_timers{};
 };
 
 template <typename t_Type>
@@ -100,7 +142,13 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     void setup_fluidRenderingPass();
     void setup_arrowRenderingPass();
 
+    QueryID get_queryID();
+    void    begin_gpuTimmer(QueryID a_idQuery) const;
+    void    end_gpuTimmer(QueryID a_idQuery) const;
+
    private:
+    m::mUInt m_currentFrame = 0;
+
     m::mUInt m_sizeComputeGroup = 16;
 
     m::mUInt m_simulationWidth{};
@@ -109,25 +157,33 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     m::mUInt m_iOriginal = 0;
     m::mUInt m_iComputed = 1;
 
+    QueryID m_idFullFrameQuery{};
+    QueryID m_idFullSimulationQuery{};
+    QueryID m_idFullRenderingQuery{};
+
     // Velocity advection
     m::dx12::ComPtr<ID3D12PipelineState> m_psoVelocityAdvection  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoVelocityStaggering = nullptr;
     m::dx12::ComPtr<ID3D12RootSignature> m_rsVelocityAdvection   = nullptr;
+    QueryID                              m_idVelocityAdvectionQuery{};
 
     // Advection
     m::dx12::ComPtr<ID3D12RootSignature> m_rsAdvection  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoAdvection = nullptr;
+    QueryID                              m_idAdvectionQuery{};
 
     // Simulation
     m::dx12::ComPtr<ID3D12RootSignature> m_rsSimulation  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoSimulation = nullptr;
+    QueryID                              m_idSimulationQuery{};
 
     // Solver
     m::dx12::ComPtr<ID3D12RootSignature> m_rsJacobi  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoJacobi = nullptr;
+    QueryID                              m_idSolverQuery{};
 
     static const m::mUInt    scm_nbJacobiTexture   = 2;
-    static const m::mUInt    scm_nbJacobiIteration = 60;  // Must be pair svp
+    static const m::mUInt    scm_nbJacobiIteration = 300;  // Must be pair svp
     static const DXGI_FORMAT scm_formatPressure    = DXGI_FORMAT_R32_FLOAT;
     std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pTextureResourceJacobi{};
     D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlJacobiInput[scm_nbJacobiTexture]{};
@@ -136,10 +192,12 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     // Project
     m::dx12::ComPtr<ID3D12RootSignature> m_rsProject  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoProject = nullptr;
+    QueryID                              m_idProjectionQuery{};
 
     // Arrow generation
     m::dx12::ComPtr<ID3D12RootSignature> m_rsArrowGeneration  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoArrowGeneration = nullptr;
+    QueryID                              m_idArrowGenerationQuery{};
 
     static const m::mUInt           scm_arrowFieldMaxResolutionX = 320;
     static const m::mUInt           scm_arrowFieldMaxResolutionY = 320;
@@ -154,20 +212,35 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     // Fluid rendering
     m::dx12::ComPtr<ID3D12RootSignature> m_rsFluidRendering  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoFluidRendering = nullptr;
+    QueryID                              m_idFluidRenderingQuery{};
 
     // Arrow rendering
     m::dx12::ComPtr<ID3D12RootSignature> m_rsArrowRendering  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoArrowRendering = nullptr;
+    QueryID                              m_idArrowRenderingQuery{};
 
     // ---------- Global rendering data
+    static const m::mUInt msc_numFrames = 2;
+    // Queries
+    static const m::mUInt            msc_maxQueries   = 50;
+    static constexpr m::mDouble      scm_ratioAverage = 0.0625;
+    m::mDouble                       m_ratioGPUTimestampToMs{};
+    m::dx12::ComPtr<ID3D12QueryHeap> m_heapQuery = nullptr;
+    m::dx12::ComPtr<ID3D12Resource>  m_pQueryResultsBuffers[msc_numFrames]{};
+    void*                            m_pQueryResultData{};
+    QueryID                          m_idCurrentQuery{0};
+
+    // Samplers
     std::vector<D3D12_STATIC_SAMPLER_DESC> m_samplersDescs{};
 
+    // Descriptor heap
     DescriptorHeapFluidSimulation m_descriptorHeap;
 
-    static const m::mU64 scm_minimalStructSize     = 256;
+    // Constant buffer
+    static const m::mU64  scm_minimalStructSize     = 256;
     static const m::mUInt scm_maxSizeConstantBuffer = 2 * scm_minimalStructSize;
-    m::dx12::ComPtr<ID3D12Resource> m_pConstantBuffers     = nullptr;
-    void*                           m_pConstantBuffersData = nullptr;
+    m::dx12::ComPtr<ID3D12Resource> m_pConstantBuffers[msc_numFrames]{};
+    void*                           m_pConstantBuffersData[msc_numFrames]{};
 
     // ---------- Simulation data
     std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pUploadResourcesToDelete{};
