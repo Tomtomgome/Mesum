@@ -147,6 +147,7 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     void    end_gpuTimmer(QueryID a_idQuery) const;
 
    private:
+    m::mUInt m_frameCount = 0;
     m::mUInt m_currentFrame = 0;
 
     m::mUInt m_sizeComputeGroup = 16;
@@ -229,6 +230,7 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     m::dx12::ComPtr<ID3D12Resource>  m_pQueryResultsBuffers[msc_numFrames]{};
     void*                            m_pQueryResultData{};
     QueryID                          m_idCurrentQuery{0};
+    std::vector<TimerTree>           m_currentTimers{};
 
     // Samplers
     std::vector<D3D12_STATIC_SAMPLER_DESC> m_samplersDescs{};

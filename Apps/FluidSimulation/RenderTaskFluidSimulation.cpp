@@ -295,6 +295,8 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
         &m_timers[m_idFullSimulationQuery]);
     m_timers[m_idFullFrameQuery].children.push_back(
         &m_timers[m_idFullRenderingQuery]);
+
+    m_currentTimers = m_timers;
 }
 
 //-----------------------------------------------------------------------------
@@ -302,7 +304,8 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
 //-----------------------------------------------------------------------------
 void Dx12TaskFluidSimulation::prepare()
 {
-    m_currentFrame = (m_currentFrame + 1) % msc_numFrames;
+    m_frameCount++;
+    m_currentFrame = m_frameCount % msc_numFrames;
 
     CD3DX12_RANGE readRange(0, 0);
     dx12::check_mhr(m_pQueryResultsBuffers[m_currentFrame]->Map(
@@ -312,10 +315,15 @@ void Dx12TaskFluidSimulation::prepare()
 
     for (QueryID id = 0; id < m_idCurrentQuery; ++id)
     {
-        m_timers[id].duration = (m_timers[id].duration +
+        m_currentTimers[id].duration = (m_currentTimers[id].duration +
                                  ((timmings[2 * id + 1] - timmings[2 * id]) *
                                   m_ratioGPUTimestampToMs)) *
                                 scm_ratioAverage;
+    }
+
+    if(m_frameCount % 30 == 0)
+    {
+        m_timers = m_currentTimers;
     }
 }
 

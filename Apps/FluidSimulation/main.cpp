@@ -73,9 +73,10 @@ void init_initialData(m::resource::mTypedImage<m::math::mVec4>& a_image)
 
 void display_timerTree(TimerTree& a_timerTree)
 {
-    ImGui::Text("- %s : %f", a_timerTree.name.c_str(), a_timerTree.duration);
+    ImGui::Text("- %s : %.3fms", a_timerTree.name.c_str(),
+                a_timerTree.duration);
     ImGui::Indent(15.f);
-    for(auto& child : a_timerTree.children)
+    for (auto& child : a_timerTree.children)
     {
         display_timerTree(unref_safe(child));
     }
@@ -172,7 +173,7 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
 
         mDisable_logChannels(m_FluidSimulation_ID);
 
-        set_minimalStepDuration(std::chrono::milliseconds(16));
+        //set_minimalStepDuration(std::chrono::milliseconds(16));
     }
 
     void destroy() override
@@ -213,7 +214,11 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
         ImGui::NewFrame();
 
         ImGui::Begin("Simulation Parameters");
-
+        ImGui::Text(
+            "FPS: %f",
+            1000000.0 / std::chrono::duration_cast<std::chrono::microseconds>(
+                            a_deltaTime)
+                            .count());
         ImGui::Checkbox("Run Time Update", &m_simulationParameters.isRunning);
         ImGui::Checkbox("Display speeds", &m_simulationParameters.displaySpeed);
         ImGui::DragInt2(
@@ -222,7 +227,7 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
             20 * 16);
 
         ImGui::Begin("GPU Timmings");
-            display_timerTree(m_pFluidSimulationTask->m_timers[0]);
+        display_timerTree(m_pFluidSimulationTask->m_timers[0]);
         ImGui::End();
 
         ImGui::End();
