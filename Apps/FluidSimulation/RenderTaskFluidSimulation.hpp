@@ -85,6 +85,7 @@ struct TaskDataFluidSimulation : public m::render::TaskData
         m::mBool        isRunning                      = false;
         m::mBool        displaySpeed                   = false;
         m::math::mIVec2 vectorRepresentationResolution = {80, 80};
+        m::mInt        nbJacobiIterations             = {150};
     };
 
     m::render::mIRenderTarget*                pOutputRT    = nullptr;
@@ -107,7 +108,7 @@ struct TaskFluidSimulation : public m::render::Task
     void prepare() override {}
 
     TaskDataFluidSimulation m_taskData;
-    std::vector<TimerTree>           m_timers{};
+    std::vector<TimerTree>  m_timers{};
 };
 
 template <typename t_Type>
@@ -136,6 +137,7 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     void setup_velocityAdvectionPass();
     void setup_advectionPass();
     void setup_simulationPass();
+    void setup_divergencePass();
     void setup_jacobiPass();
     void setup_projectionPass();
     void setup_arrowGenerationPass();
@@ -147,7 +149,7 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     void    end_gpuTimmer(QueryID a_idQuery) const;
 
    private:
-    m::mUInt m_frameCount = 0;
+    m::mUInt m_frameCount   = 0;
     m::mUInt m_currentFrame = 0;
 
     m::mUInt m_sizeComputeGroup = 16;
@@ -162,40 +164,50 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     QueryID m_idFullSimulationQuery{};
     QueryID m_idFullRenderingQuery{};
 
-    // Velocity advection
+    // --Velocity advection
     m::dx12::ComPtr<ID3D12PipelineState> m_psoVelocityAdvection  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoVelocityStaggering = nullptr;
     m::dx12::ComPtr<ID3D12RootSignature> m_rsVelocityAdvection   = nullptr;
     QueryID                              m_idVelocityAdvectionQuery{};
 
-    // Advection
+    // --Advection
     m::dx12::ComPtr<ID3D12RootSignature> m_rsAdvection  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoAdvection = nullptr;
     QueryID                              m_idAdvectionQuery{};
 
-    // Simulation
+    // --Simulation
     m::dx12::ComPtr<ID3D12RootSignature> m_rsSimulation  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoSimulation = nullptr;
     QueryID                              m_idSimulationQuery{};
 
-    // Solver
+    // --Solver
+    // Divergecne
+    m::dx12::ComPtr<ID3D12RootSignature> m_rsDivergence  = nullptr;
+    m::dx12::ComPtr<ID3D12PipelineState> m_psoDivergence = nullptr;
+    QueryID                              m_idDivergenceQuery{};
+
+    static const DXGI_FORMAT scm_formatDivergence    = DXGI_FORMAT_R32_FLOAT;
+    m::dx12::ComPtr<ID3D12Resource> m_pTextureResourceDivergence{};
+    D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlDivergenceInput{};
+    D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlDivergenceOutput{};
+
+    // Jacobi
     m::dx12::ComPtr<ID3D12RootSignature> m_rsJacobi  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoJacobi = nullptr;
     QueryID                              m_idSolverQuery{};
 
     static const m::mUInt    scm_nbJacobiTexture   = 2;
-    static const m::mUInt    scm_nbJacobiIteration = 300;  // Must be pair svp
     static const DXGI_FORMAT scm_formatPressure    = DXGI_FORMAT_R32_FLOAT;
     std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pTextureResourceJacobi{};
     D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlJacobiInput[scm_nbJacobiTexture]{};
     D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlJacobiOutput[scm_nbJacobiTexture]{};
 
-    // Project
+    // --Project
     m::dx12::ComPtr<ID3D12RootSignature> m_rsProject  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoProject = nullptr;
     QueryID                              m_idProjectionQuery{};
 
-    // Arrow generation
+    // --Arrow generation
     m::dx12::ComPtr<ID3D12RootSignature> m_rsArrowGeneration  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoArrowGeneration = nullptr;
     QueryID                              m_idArrowGenerationQuery{};
@@ -210,12 +222,12 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     D3D12_GPU_DESCRIPTOR_HANDLE     m_GPUDescHdlOutBuffer{};
     m::dx12::ComPtr<ID3D12Resource> m_pIndexBufferArrows = nullptr;
 
-    // Fluid rendering
+    // --Fluid rendering
     m::dx12::ComPtr<ID3D12RootSignature> m_rsFluidRendering  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoFluidRendering = nullptr;
     QueryID                              m_idFluidRenderingQuery{};
 
-    // Arrow rendering
+    // --Arrow rendering
     m::dx12::ComPtr<ID3D12RootSignature> m_rsArrowRendering  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoArrowRendering = nullptr;
     QueryID                              m_idArrowRenderingQuery{};

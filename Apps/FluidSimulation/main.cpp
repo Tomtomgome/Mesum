@@ -220,6 +220,10 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
                             a_deltaTime)
                             .count());
         ImGui::Checkbox("Run Time Update", &m_simulationParameters.isRunning);
+        ImGui::DragInt(
+            "Jacobi Iterations",
+            &m_simulationParameters.nbJacobiIterations, 1, 1,
+            500);
         ImGui::Checkbox("Display speeds", &m_simulationParameters.displaySpeed);
         ImGui::DragInt2(
             "Arrows resolution",

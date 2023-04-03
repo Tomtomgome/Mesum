@@ -225,6 +225,8 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
 
     setup_advectionPass();
 
+    setup_divergencePass();
+
     setup_jacobiPass();
 
     setup_projectionPass();
@@ -264,6 +266,7 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
 
     m_timers[m_idVelocityAdvectionQuery].name = "Velocity Advection";
     m_timers[m_idSimulationQuery].name        = "Simulation";
+    m_timers[m_idDivergenceQuery].name        = "Divergence";
     m_timers[m_idSolverQuery].name            = "Jacobi Iterations";
     m_timers[m_idProjectionQuery].name        = "Project";
     m_timers[m_idAdvectionQuery].name         = "Advection";
@@ -273,6 +276,8 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
         &m_timers[m_idVelocityAdvectionQuery]);
     m_timers[m_idFullSimulationQuery].children.push_back(
         &m_timers[m_idSimulationQuery]);
+    m_timers[m_idFullSimulationQuery].children.push_back(
+        &m_timers[m_idDivergenceQuery]);
     m_timers[m_idFullSimulationQuery].children.push_back(
         &m_timers[m_idSolverQuery]);
     m_timers[m_idFullSimulationQuery].children.push_back(
@@ -315,13 +320,14 @@ void Dx12TaskFluidSimulation::prepare()
 
     for (QueryID id = 0; id < m_idCurrentQuery; ++id)
     {
-        m_currentTimers[id].duration = (m_currentTimers[id].duration +
-                                 ((timmings[2 * id + 1] - timmings[2 * id]) *
-                                  m_ratioGPUTimestampToMs)) *
-                                scm_ratioAverage;
+        m_currentTimers[id].duration =
+            (m_currentTimers[id].duration +
+             ((timmings[2 * id + 1] - timmings[2 * id]) *
+              m_ratioGPUTimestampToMs)) *
+            scm_ratioAverage;
     }
 
-    if(m_frameCount % 30 == 0)
+    if (m_frameCount % 30 == 0)
     {
         m_timers = m_currentTimers;
     }
@@ -469,7 +475,7 @@ void Dx12TaskFluidSimulation::execute() const
             computeCommandList->ResourceBarrier(1, resourceBarrier);
             {
                 RAIIGPUTiming timming(computeCommandList, m_heapQuery,
-                              m_idSimulationQuery);
+                                      m_idSimulationQuery);
                 computeCommandList->SetDescriptorHeaps(1, aHeaps);
 
                 computeCommandList->SetPipelineState(m_psoSimulation.Get());
@@ -496,7 +502,7 @@ void Dx12TaskFluidSimulation::execute() const
         }
         //*
         // ---------------- Projection
-        // ------- Jacobi
+        // ------- Compute divergence
         {
             dx12::ComPtr<ID3D12GraphicsCommandList2> computeCommandList =
                 dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
@@ -506,10 +512,54 @@ void Dx12TaskFluidSimulation::execute() const
                 m_pTextureResourceVelocity[m_iComputed].Get(),
                 D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
                 D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
-            computeCommandList->ResourceBarrier(1, resourceBarrier);
+            resourceBarrier[1] = CD3DX12_RESOURCE_BARRIER::Transition(
+                m_pTextureResourceDivergence.Get(),
+                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
+                D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+            computeCommandList->ResourceBarrier(2, resourceBarrier);
 
             {
-                RAIIGPUTiming timming(computeCommandList, m_heapQuery, m_idSolverQuery);
+                RAIIGPUTiming timming(computeCommandList, m_heapQuery,
+                                      m_idDivergenceQuery);
+
+                computeCommandList->SetDescriptorHeaps(1, aHeaps);
+
+                computeCommandList->SetPipelineState(m_psoDivergence.Get());
+                computeCommandList->SetComputeRootSignature(
+                    m_rsDivergence.Get());
+
+                computeCommandList->SetComputeRootDescriptorTable(
+                    0, m_GPUDescHdlVelocityInput[m_iComputed]);
+                computeCommandList->SetComputeRootDescriptorTable(
+                    1, m_GPUDescHdlDivergenceOutput);
+                computeCommandList->SetComputeRootConstantBufferView(
+                    2,
+                    m_pConstantBuffers[m_currentFrame]->GetGPUVirtualAddress() +
+                        offsetResolutionBaseImage);
+
+                computeCommandList->Dispatch(
+                    round_up<mUInt>(nbComputeCol, m_sizeComputeGroup),
+                    round_up<mUInt>(nbComputeRow, m_sizeComputeGroup), 1);
+            }
+
+            resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
+                m_pTextureResourceDivergence.Get(),
+                D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
+                D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE);
+            computeCommandList->ResourceBarrier(1, resourceBarrier);
+
+            dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
+                .execute_commandList(computeCommandList);
+        }
+        // ------- Jacobi
+        {
+            dx12::ComPtr<ID3D12GraphicsCommandList2> computeCommandList =
+                dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
+                    .get_commandList();
+
+            {
+                RAIIGPUTiming timming(computeCommandList, m_heapQuery,
+                                      m_idSolverQuery);
 
                 computeCommandList->SetDescriptorHeaps(1, aHeaps);
 
@@ -517,13 +567,13 @@ void Dx12TaskFluidSimulation::execute() const
                 computeCommandList->SetComputeRootSignature(m_rsJacobi.Get());
 
                 computeCommandList->SetComputeRootDescriptorTable(
-                    0, m_GPUDescHdlVelocityInput[m_iComputed]);
+                    0, m_GPUDescHdlDivergenceInput);
                 computeCommandList->SetComputeRootConstantBufferView(
                     3,
                     m_pConstantBuffers[m_currentFrame]->GetGPUVirtualAddress() +
                         offsetResolutionBaseImage);
 
-                for (int i = 0; i < scm_nbJacobiIteration; ++i)
+                for (int i = 0; i < 2 * parameters.nbJacobiIterations; ++i)
                 {
                     computeCommandList->SetComputeRootDescriptorTable(
                         1, m_GPUDescHdlJacobiInput[i % 2]);
@@ -564,7 +614,7 @@ void Dx12TaskFluidSimulation::execute() const
 
             {
                 RAIIGPUTiming timming(computeCommandList, m_heapQuery,
-                              m_idProjectionQuery);
+                                      m_idProjectionQuery);
                 computeCommandList->SetDescriptorHeaps(1, aHeaps);
 
                 computeCommandList->SetPipelineState(m_psoProject.Get());
@@ -606,7 +656,7 @@ void Dx12TaskFluidSimulation::execute() const
 
             {
                 RAIIGPUTiming timming(computeCommandList, m_heapQuery,
-                              m_idArrowGenerationQuery);
+                                      m_idArrowGenerationQuery);
                 computeCommandList->SetDescriptorHeaps(1, aHeaps);
 
                 computeCommandList->SetPipelineState(
@@ -652,7 +702,7 @@ void Dx12TaskFluidSimulation::execute() const
 
             {
                 RAIIGPUTiming timming(computeCommandList, m_heapQuery,
-                              m_idAdvectionQuery);
+                                      m_idAdvectionQuery);
                 computeCommandList->SetDescriptorHeaps(1, aHeaps);
 
                 computeCommandList->SetPipelineState(m_psoAdvection.Get());
@@ -744,7 +794,7 @@ void Dx12TaskFluidSimulation::execute() const
                 .get_commandList();
         {
             RAIIGPUTiming timming(graphicCommandList, m_heapQuery,
-                          m_idFluidRenderingQuery);
+                                  m_idFluidRenderingQuery);
 
             graphicCommandList->SetDescriptorHeaps(1, aHeaps);
 
@@ -780,7 +830,7 @@ void Dx12TaskFluidSimulation::execute() const
 
         {
             RAIIGPUTiming timming(graphicsCommandListField, m_heapQuery,
-                          m_idArrowRenderingQuery);
+                                  m_idArrowRenderingQuery);
 
             graphicsCommandListField->SetDescriptorHeaps(1, aHeaps);
 
@@ -835,8 +885,9 @@ void Dx12TaskFluidSimulation::execute() const
                 .get_commandList();
 
         commandList->ResolveQueryData(
-            m_heapQuery.Get(), D3D12_QUERY_TYPE_TIMESTAMP, 0, 2* m_idCurrentQuery,
-            m_pQueryResultsBuffers[m_currentFrame].Get(), 0);
+            m_heapQuery.Get(), D3D12_QUERY_TYPE_TIMESTAMP, 0,
+            2 * m_idCurrentQuery, m_pQueryResultsBuffers[m_currentFrame].Get(),
+            0);
 
         dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
             .execute_commandList(commandList);
@@ -1283,6 +1334,115 @@ void Dx12TaskFluidSimulation::setup_simulationPass()
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
+void Dx12TaskFluidSimulation::setup_divergencePass()
+{
+    dx12::ComPtr<ID3D12Device> device =
+        dx12::DX12Context::gs_dx12Contexte->m_device;
+    HRESULT res;
+    // ----------------- Root signature and pipeline state
+    {
+        std::vector<CD3DX12_ROOT_PARAMETER> vRootParameters;
+        vRootParameters.resize(3);
+
+        std::vector<CD3DX12_DESCRIPTOR_RANGE> vDataTextureRanges;
+        vDataTextureRanges.resize(1);
+        vDataTextureRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0, 0);
+
+        std::vector<CD3DX12_DESCRIPTOR_RANGE> vOutputRanges;
+        vOutputRanges.resize(1);
+        vOutputRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, 1, 0, 0);
+
+        vRootParameters[0].InitAsDescriptorTable(1, vDataTextureRanges.data());
+        vRootParameters[1].InitAsDescriptorTable(1, vOutputRanges.data());
+        vRootParameters[2].InitAsConstantBufferView(0);
+
+        {
+            CD3DX12_ROOT_SIGNATURE_DESC descRootSignature;
+            descRootSignature.Init(
+                vRootParameters.size(), vRootParameters.data(),
+                m_samplersDescs.size(), m_samplersDescs.data(),
+                D3D12_ROOT_SIGNATURE_FLAG_NONE);
+
+            dx12::ComPtr<ID3DBlob> rootBlob;
+            dx12::ComPtr<ID3DBlob> errorBlob;
+            res = D3D12SerializeRootSignature(&descRootSignature,
+                                              D3D_ROOT_SIGNATURE_VERSION_1,
+                                              &rootBlob, &errorBlob);
+            if (FAILED(res))
+            {
+                if (errorBlob != nullptr)
+                {
+                    mLog_info((char*)errorBlob->GetBufferPointer());
+                }
+            }
+
+            dx12::check_mhr(device->CreateRootSignature(
+                0, rootBlob->GetBufferPointer(), rootBlob->GetBufferSize(),
+                IID_PPV_ARGS(&m_rsDivergence)));
+        }
+
+        D3D12_COMPUTE_PIPELINE_STATE_DESC fieldPipelineDescCompute{};
+
+        dx12::ComPtr<ID3DBlob> cs_field = dx12::compile_shader(
+            "data/divergence.hlsl", "cs_divergence", "cs_6_0");
+
+        fieldPipelineDescCompute.CS.BytecodeLength = cs_field->GetBufferSize();
+        fieldPipelineDescCompute.CS.pShaderBytecode =
+            cs_field->GetBufferPointer();
+        fieldPipelineDescCompute.pRootSignature = m_rsDivergence.Get();
+
+        dx12::check_mhr(device->CreateComputePipelineState(
+            &fieldPipelineDescCompute, IID_PPV_ARGS(&m_psoDivergence)));
+    }
+
+    // ----------------- Textures
+    D3D12_RESOURCE_DESC descTexture{};
+    descTexture.MipLevels          = 1;
+    descTexture.Width              = m_simulationWidth;
+    descTexture.Height             = m_simulationHeight;
+    descTexture.Flags              = D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS;
+    descTexture.DepthOrArraySize   = 1;
+    descTexture.SampleDesc.Count   = 1;
+    descTexture.SampleDesc.Quality = 0;
+    descTexture.Dimension          = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+    descTexture.Format             = scm_formatDivergence;
+
+    auto    oHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+    HRESULT hr              = device->CreateCommittedResource(
+                     &oHeapProperties, D3D12_HEAP_FLAG_NONE, &descTexture,
+                     D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE, nullptr,
+                     IID_PPV_ARGS(m_pTextureResourceDivergence.GetAddressOf()));
+    mAssert(hr == S_OK);
+    m_pTextureResourceDivergence->SetName(L"Jacobi texture 0");
+
+    // views
+    D3D12_SHADER_RESOURCE_VIEW_DESC descSrv = {};
+    descSrv.ViewDimension                   = D3D12_SRV_DIMENSION_TEXTURE2D;
+    descSrv.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+    descSrv.Format                  = scm_formatDivergence;
+    descSrv.Texture2D.MipLevels     = 1;
+    descSrv.Texture2D.MostDetailedMip     = 0;
+    descSrv.Texture2D.ResourceMinLODClamp = 0.0f;
+
+    D3D12_UNORDERED_ACCESS_VIEW_DESC descUav = {};
+    descUav.Format                           = scm_formatDivergence;
+    descUav.ViewDimension                    = D3D12_UAV_DIMENSION_TEXTURE2D;
+
+    for (mInt i = 0; i < scm_nbJacobiTexture; ++i)
+    {
+        m_GPUDescHdlDivergenceInput = m_descriptorHeap.create_srvAndGetHandle(
+            m_pTextureResourceDivergence, descSrv);
+        m_GPUDescHdlDivergenceOutput = m_descriptorHeap.create_uavAndGetHandle(
+            m_pTextureResourceDivergence, descUav);
+    }
+
+    // Timmer ID
+    m_idDivergenceQuery = get_queryID();
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 void Dx12TaskFluidSimulation::setup_jacobiPass()
 {
     dx12::ComPtr<ID3D12Device> device =
@@ -1352,7 +1512,6 @@ void Dx12TaskFluidSimulation::setup_jacobiPass()
     }
 
     // ----------------- Textures
-    mAssert(scm_nbJacobiIteration % 2 == 0);
     m_pTextureResourceJacobi.resize(scm_nbJacobiTexture);
 
     D3D12_RESOURCE_DESC descTexture{};
