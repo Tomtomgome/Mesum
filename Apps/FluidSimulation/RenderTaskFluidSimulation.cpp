@@ -348,8 +348,8 @@ void Dx12TaskFluidSimulation::execute() const
     auto parameters =
         static_cast<TaskDataFluidSimulation::ControlParameters const&>(
             unref_safe(m_taskData.pParameters));
-    mInt screenWidth  = 640;
-    mInt screenHeight = 640;
+    mInt screenWidth  = parameters.screenSize.x;
+    mInt screenHeight = parameters.screenSize.y;
 
     D3D12_CPU_DESCRIPTOR_HANDLE rtv;
     rtv                     = pOutputRT->rtv;

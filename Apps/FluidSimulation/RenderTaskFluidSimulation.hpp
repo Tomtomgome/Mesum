@@ -83,9 +83,10 @@ struct TaskDataFluidSimulation : public m::render::TaskData
     struct ControlParameters
     {
         m::mBool        isRunning                      = false;
+        m::math::mIVec2 screenSize                     = {640, 640};
         m::mBool        displaySpeed                   = false;
         m::math::mIVec2 vectorRepresentationResolution = {80, 80};
-        m::mInt        nbJacobiIterations             = {150};
+        m::mInt         nbJacobiIterations             = {150};
     };
 
     m::render::mIRenderTarget*                pOutputRT    = nullptr;
@@ -186,18 +187,18 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     m::dx12::ComPtr<ID3D12PipelineState> m_psoDivergence = nullptr;
     QueryID                              m_idDivergenceQuery{};
 
-    static const DXGI_FORMAT scm_formatDivergence    = DXGI_FORMAT_R32_FLOAT;
+    static const DXGI_FORMAT scm_formatDivergence = DXGI_FORMAT_R32_FLOAT;
     m::dx12::ComPtr<ID3D12Resource> m_pTextureResourceDivergence{};
-    D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlDivergenceInput{};
-    D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlDivergenceOutput{};
+    D3D12_GPU_DESCRIPTOR_HANDLE     m_GPUDescHdlDivergenceInput{};
+    D3D12_GPU_DESCRIPTOR_HANDLE     m_GPUDescHdlDivergenceOutput{};
 
     // Jacobi
     m::dx12::ComPtr<ID3D12RootSignature> m_rsJacobi  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoJacobi = nullptr;
     QueryID                              m_idSolverQuery{};
 
-    static const m::mUInt    scm_nbJacobiTexture   = 2;
-    static const DXGI_FORMAT scm_formatPressure    = DXGI_FORMAT_R32_FLOAT;
+    static const m::mUInt    scm_nbJacobiTexture = 2;
+    static const DXGI_FORMAT scm_formatPressure  = DXGI_FORMAT_R32_FLOAT;
     std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pTextureResourceJacobi{};
     D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlJacobiInput[scm_nbJacobiTexture]{};
     D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlJacobiOutput[scm_nbJacobiTexture]{};

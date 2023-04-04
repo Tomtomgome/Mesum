@@ -99,6 +99,8 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
         m::mCmdLine const& cmdLine = a_cmdLine;
         m::mUInt           width   = s_windowZoom * s_nbCol;
         m::mUInt           height  = s_windowZoom * s_nbRow;
+        m_simulationParameters.screenSize.x = width;
+        m_simulationParameters.screenSize.y = height;
 
         m_pDx12Api = new m::dx12::mApi();
         m_pDx12Api->init();
@@ -171,9 +173,16 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
             m::input::mKeyActionCallback(
                 [] { mEnable_logChannels(m_FluidSimulation_ID); }));
 
+        m_mainWindow->attach_toResize(m::windows::mIWindow::mOnResizeCallback(
+            [this](mU32 a_width, mU32 a_height)
+            {
+                this->m_simulationParameters.screenSize.x = a_width;
+                this->m_simulationParameters.screenSize.y = a_height;
+            }));
+
         mDisable_logChannels(m_FluidSimulation_ID);
 
-        //set_minimalStepDuration(std::chrono::milliseconds(16));
+        // set_minimalStepDuration(std::chrono::milliseconds(16));
     }
 
     void destroy() override
@@ -220,10 +229,8 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
                             a_deltaTime)
                             .count());
         ImGui::Checkbox("Run Time Update", &m_simulationParameters.isRunning);
-        ImGui::DragInt(
-            "Jacobi Iterations",
-            &m_simulationParameters.nbJacobiIterations, 1, 1,
-            500);
+        ImGui::DragInt("Jacobi Iterations",
+                       &m_simulationParameters.nbJacobiIterations, 1, 1, 500);
         ImGui::Checkbox("Display speeds", &m_simulationParameters.displaySpeed);
         ImGui::DragInt2(
             "Arrows resolution",
