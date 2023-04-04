@@ -1,8 +1,8 @@
 #include "commonInclude.hlsl"
 
 Texture2D<float> inputDivergence : register(t0);
-Texture2D<float> pressure : register(t1);
-RWTexture2D<float> nextPressure : register(u0);
+RWTexture2D<float> pressure : register(u0);
+RWTexture2D<float> nextPressure : register(u1);
 
 // ---------- projection
 
@@ -18,10 +18,10 @@ void cs_iterateJacobi(uint3 DTid : SV_DispatchThreadID)
     return;
   }
 
-  float pLeft = pressure.SampleLevel(samplerPoint, uv_plus(uv, -1, 0).uv, 0);
-  float pRight = pressure.SampleLevel(samplerPoint, uv_plus(uv, 1, 0).uv, 0);
-  float pTop = pressure.SampleLevel(samplerPoint, uv_plus(uv, 0, 1).uv, 0);
-  float pBottom = pressure.SampleLevel(samplerPoint, uv_plus(uv, 0, -1).uv, 0);
+  float pLeft = pressure[uint2(max(DTid.x - 1, 0), DTid.y)];// pressure.SampleLevel(samplerPoint, uv_plus(uv, -1, 0).uv, 0);
+  float pRight = pressure[uint2(min(DTid.x + 1, data.resolution.x), DTid.y)];// pressure.SampleLevel(samplerPoint, uv_plus(uv, 1, 0).uv, 0);
+  float pTop = pressure[uint2(DTid.x, min(DTid.y + 1, data.resolution.y))];// pressure.SampleLevel(samplerPoint, uv_plus(uv, 0, 1).uv, 0);
+  float pBottom = pressure[uint2(DTid.x, max(DTid.y - 1, 0))];// pressure.SampleLevel(samplerPoint, uv_plus(uv, 0, -1).uv, 0);
 
   float divergence = inputDivergence.SampleLevel(samplerPoint, uv.uv, 0).x;
 
