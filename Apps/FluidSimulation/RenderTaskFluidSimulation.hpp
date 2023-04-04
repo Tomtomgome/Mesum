@@ -82,11 +82,22 @@ struct TaskDataFluidSimulation : public m::render::TaskData
 {
     struct ControlParameters
     {
+        enum DebugDisplays
+        {
+            none = 0,
+            pressure,
+            divergence,
+
+            _count
+        };
+
         m::mBool        isRunning                      = false;
         m::math::mIVec2 screenSize                     = {640, 640};
         m::mBool        displaySpeed                   = false;
+        m::mBool        displayFluid                   = true;
         m::math::mIVec2 vectorRepresentationResolution = {80, 80};
         m::mInt         nbJacobiIterations             = {150};
+        DebugDisplays   debugDisplay                   = DebugDisplays::none;
     };
 
     m::render::mIRenderTarget*                pOutputRT    = nullptr;
@@ -143,6 +154,7 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     void setup_projectionPass();
     void setup_arrowGenerationPass();
     void setup_fluidRenderingPass();
+    void setup_debugDataRenderingPass();
     void setup_arrowRenderingPass();
 
     QueryID get_queryID();
@@ -227,6 +239,7 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     m::dx12::ComPtr<ID3D12RootSignature> m_rsFluidRendering  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoFluidRendering = nullptr;
     QueryID                              m_idFluidRenderingQuery{};
+    m::dx12::ComPtr<ID3D12PipelineState> m_psoDataRendering = nullptr;
 
     // --Arrow rendering
     m::dx12::ComPtr<ID3D12RootSignature> m_rsArrowRendering  = nullptr;

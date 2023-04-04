@@ -96,9 +96,9 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
         init_initialData(m_initialData);
 
         // Window setup
-        m::mCmdLine const& cmdLine = a_cmdLine;
-        m::mUInt           width   = s_windowZoom * s_nbCol;
-        m::mUInt           height  = s_windowZoom * s_nbRow;
+        m::mCmdLine const& cmdLine          = a_cmdLine;
+        m::mUInt           width            = s_windowZoom * s_nbCol;
+        m::mUInt           height           = s_windowZoom * s_nbRow;
         m_simulationParameters.screenSize.x = width;
         m_simulationParameters.screenSize.y = height;
 
@@ -228,15 +228,50 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
             1000000.0 / std::chrono::duration_cast<std::chrono::microseconds>(
                             a_deltaTime)
                             .count());
+
+        // --- Simulation parameters
         ImGui::Checkbox("Run Time Update", &m_simulationParameters.isRunning);
         ImGui::DragInt("Jacobi Iterations",
                        &m_simulationParameters.nbJacobiIterations, 1, 1, 500);
-        ImGui::Checkbox("Display speeds", &m_simulationParameters.displaySpeed);
+
+        // --- Displays
+        ImGui::Checkbox("Displays fluid", &m_simulationParameters.displayFluid);
+        ImGui::Checkbox("Displays speeds",
+                        &m_simulationParameters.displaySpeed);
         ImGui::DragInt2(
             "Arrows resolution",
             m_simulationParameters.vectorRepresentationResolution.data, 1, 16,
             20 * 16);
 
+        const char* debugDisplayNames[3] = {
+            "None",
+            "Pressure",
+            "Divergence",
+        };
+        const char* preview =
+            debugDisplayNames[m_simulationParameters.debugDisplay];
+
+        if (ImGui::BeginCombo("Debug Display", preview))
+        {
+            for (m::mInt i = 0;
+                 i < m::mInt(TaskDataFluidSimulation::ControlParameters::
+                                 DebugDisplays::_count);
+                 ++i)
+            {
+                auto iType = static_cast<
+                    TaskDataFluidSimulation::ControlParameters::DebugDisplays>(
+                    i);
+                if (ImGui::Selectable(
+                        debugDisplayNames[i],
+                        iType == m_simulationParameters.debugDisplay))
+                {
+                    m_simulationParameters.debugDisplay = iType;
+                }
+            }
+            ImGui::EndCombo();
+        }
+
+        // --- Timmings
         ImGui::Begin("GPU Timmings");
         display_timerTree(m_pFluidSimulationTask->m_timers[0]);
         ImGui::End();

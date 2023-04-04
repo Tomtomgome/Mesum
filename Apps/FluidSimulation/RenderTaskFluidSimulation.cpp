@@ -232,6 +232,7 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
     setup_projectionPass();
 
     setup_fluidRenderingPass();
+    setup_debugDataRenderingPass();
 
     setup_arrowGenerationPass();
 
@@ -557,7 +558,6 @@ void Dx12TaskFluidSimulation::execute() const
                 dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
                     .get_commandList();
 
-
             resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
                 m_pTextureResourceJacobi[0].Get(),
                 D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE,
@@ -791,6 +791,7 @@ void Dx12TaskFluidSimulation::execute() const
 
     begin_gpuTimmer(m_idFullRenderingQuery);
     // ---------------- Renders the fluid
+    if (parameters.displayFluid)
     {
         dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
             dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
@@ -817,6 +818,54 @@ void Dx12TaskFluidSimulation::execute() const
 
             graphicCommandList->SetGraphicsRootDescriptorTable(
                 0, m_GPUDescHdlTextureDisplay[m_iOriginal]);
+
+            graphicCommandList->DrawInstanced(3, 1, 0, 0);
+        }
+        dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
+            .execute_commandList(graphicCommandList.Get());
+    }
+
+    // ---------------- Renders debug data
+    if (m::mInt(parameters.debugDisplay) !=
+        m::mInt(TaskDataFluidSimulation::ControlParameters::DebugDisplays::none))
+    {
+        dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
+            dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
+                .get_commandList();
+        {
+            graphicCommandList->SetDescriptorHeaps(1, aHeaps);
+
+            graphicCommandList->OMSetRenderTargets(1, &rtv, FALSE, nullptr);
+            graphicCommandList->RSSetViewports(1, &viewport);
+            graphicCommandList->RSSetScissorRects(1, &scissorRect);
+
+            graphicCommandList->SetPipelineState(m_psoDataRendering.Get());
+            graphicCommandList->SetGraphicsRootSignature(
+                m_rsFluidRendering.Get());
+
+            dx12::ComPtr<ID3D12Device> device =
+                dx12::DX12Context::gs_dx12Contexte->m_device;
+
+            graphicCommandList->IASetPrimitiveTopology(
+                D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+            switch (parameters.debugDisplay)
+            {
+                case TaskDataFluidSimulation::ControlParameters::DebugDisplays::
+                    none:
+                    mAssert(false);  // Should not end up here ?
+                    break;
+                case TaskDataFluidSimulation::ControlParameters::DebugDisplays::
+                    pressure:
+                    graphicCommandList->SetGraphicsRootDescriptorTable(
+                        0, m_GPUDescHdlJacobiInput[0]);
+                    break;
+                case TaskDataFluidSimulation::ControlParameters::DebugDisplays::
+                    divergence:
+                    graphicCommandList->SetGraphicsRootDescriptorTable(
+                        0, m_GPUDescHdlDivergenceInput);
+                    break;
+            }
 
             graphicCommandList->DrawInstanced(3, 1, 0, 0);
         }
@@ -1941,6 +1990,66 @@ void Dx12TaskFluidSimulation::setup_fluidRenderingPass()
 
     // Timmer ID
     m_idFluidRenderingQuery = get_queryID();
+}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void Dx12TaskFluidSimulation::setup_debugDataRenderingPass()
+{
+    dx12::ComPtr<ID3D12Device> device =
+        dx12::DX12Context::gs_dx12Contexte->m_device;
+    HRESULT res;
+
+    D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
+
+    dx12::ComPtr<ID3DBlob> vs =
+        dx12::compile_shader("data/displayData.hlsl", "vs_main", "vs_6_0");
+    dx12::ComPtr<ID3DBlob> ps =
+        dx12::compile_shader("data/displayData.hlsl", "ps_main", "ps_6_0");
+
+    pipelineDesc.InputLayout.pInputElementDescs = nullptr;
+    pipelineDesc.InputLayout.NumElements        = 0;
+    pipelineDesc.IBStripCutValue = D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_DISABLED;
+
+    pipelineDesc.VS.BytecodeLength  = vs->GetBufferSize();
+    pipelineDesc.VS.pShaderBytecode = vs->GetBufferPointer();
+    pipelineDesc.PS.BytecodeLength  = ps->GetBufferSize();
+    pipelineDesc.PS.pShaderBytecode = ps->GetBufferPointer();
+
+    pipelineDesc.NumRenderTargets = 1;
+    pipelineDesc.RTVFormats[0]    = DXGI_FORMAT_B8G8R8A8_UNORM;
+    pipelineDesc.BlendState       = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+    pipelineDesc.BlendState.RenderTarget[0].BlendEnable = 1;
+    pipelineDesc.BlendState.RenderTarget[0].SrcBlend    = D3D12_BLEND_SRC_ALPHA;
+    pipelineDesc.BlendState.RenderTarget[0].DestBlend =
+        D3D12_BLEND_ONE;
+    pipelineDesc.BlendState.RenderTarget[0].SrcBlendAlpha =
+        D3D12_BLEND_SRC_ALPHA;
+    pipelineDesc.BlendState.RenderTarget[0].DestBlendAlpha =
+        D3D12_BLEND_ONE;
+    pipelineDesc.BlendState.RenderTarget[0].BlendOp      = D3D12_BLEND_OP_ADD;
+    pipelineDesc.BlendState.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
+
+    pipelineDesc.SampleMask = 0xFFFFFFFF;
+
+    pipelineDesc.RasterizerState.SlopeScaledDepthBias  = 0;
+    pipelineDesc.RasterizerState.DepthClipEnable       = false;
+    pipelineDesc.RasterizerState.MultisampleEnable     = false;
+    pipelineDesc.RasterizerState.AntialiasedLineEnable = false;
+    pipelineDesc.RasterizerState.FillMode              = D3D12_FILL_MODE_SOLID;
+    pipelineDesc.RasterizerState.CullMode              = D3D12_CULL_MODE_NONE;
+    pipelineDesc.RasterizerState.FrontCounterClockwise = true;
+    pipelineDesc.RasterizerState.DepthBias             = 0;
+    pipelineDesc.RasterizerState.DepthBiasClamp        = 0.0;
+
+    pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+    pipelineDesc.SampleDesc.Count      = 1;
+
+    pipelineDesc.pRootSignature = m_rsFluidRendering.Get();
+
+    dx12::check_mhr(device->CreateGraphicsPipelineState(
+        &pipelineDesc, IID_PPV_ARGS(&m_psoDataRendering)));
 }
 
 //-----------------------------------------------------------------------------

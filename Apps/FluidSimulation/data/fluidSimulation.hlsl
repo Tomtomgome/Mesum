@@ -70,7 +70,7 @@ void cs_simulation(uint3 DTid : SV_DispatchThreadID)
   outputVelocity[uint2(DTid.x, DTid.y)] = inputVelocity.SampleLevel(samplerPoint, uv.uv, 0);
   
   // gravity
-  //outputData[uint2(DTid.x, DTid.y)].y += g_time * g_gravity;
+  //outputVelocity[uint2(DTid.x, DTid.y)].y += g_time * g_gravity;
 
   // Boyancy
   float2 data = inputData.SampleLevel(samplerLinear, uv_plusHalf(uv, 0, 1).uv, 0).zw;
