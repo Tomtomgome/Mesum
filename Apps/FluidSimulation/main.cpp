@@ -231,8 +231,57 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
 
         // --- Simulation parameters
         ImGui::Checkbox("Run Time Update", &m_simulationParameters.isRunning);
-        ImGui::DragInt("Jacobi Iterations",
-                       &m_simulationParameters.nbJacobiIterations, 1, 1, 500);
+
+        const char* solverNames[static_cast<mInt>(
+            TaskDataFluidSimulation::ControlParameters::Solver::_count)] = {
+            "Jacobi", "Multi Grid V"};
+        const char* solverPreview =
+            solverNames[static_cast<mInt>(m_simulationParameters.solver)];
+
+        if (ImGui::BeginCombo("Solver", solverPreview))
+        {
+            for (mInt i = 0;
+                 i < static_cast<mInt>(TaskDataFluidSimulation::
+                                           ControlParameters::Solver::_count);
+                 ++i)
+            {
+                auto iType = static_cast<
+                    TaskDataFluidSimulation::ControlParameters::Solver>(i);
+                if (ImGui::Selectable(solverNames[i],
+                                      iType == m_simulationParameters.solver))
+                {
+                    m_simulationParameters.solver = iType;
+                }
+            }
+            ImGui::EndCombo();
+        }
+
+        if (ImGui::TreeNode("Solver Parameters"))
+        {
+            switch (m_simulationParameters.solver)
+            {
+                default:
+                case TaskDataFluidSimulation::ControlParameters::Solver::jacobi:
+                {
+                    ImGui::DragInt("Jacobi Iterations",
+                                   &m_simulationParameters.nbJacobiIterations,
+                                   1, 1, 500);
+                }
+                break;
+                case TaskDataFluidSimulation::ControlParameters::Solver::
+                    multiGridV:
+                {
+                    ImGui::DragInt("MG Jacobi Iterations",
+                                   &m_simulationParameters.nbMGJacobiIterations,
+                                   1, 1, 100);
+                    ImGui::DragInt("MG depth",
+                                   &m_simulationParameters.maxMGDepth, 1, 1, 4);
+                }
+                break;
+            }
+
+            ImGui::TreePop();
+        }
 
         // --- Displays
         ImGui::Checkbox("Displays fluid", &m_simulationParameters.displayFluid);
@@ -243,18 +292,18 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
             m_simulationParameters.vectorRepresentationResolution.data, 1, 16,
             20 * 16);
 
-        const char*
-            debugDisplayNames[TaskDataFluidSimulation::ControlParameters::
-                                  DebugDisplays::_count] = {
-                "None", "Pressure", "Divergence", "Residual"};
-        const char* preview =
-            debugDisplayNames[m_simulationParameters.debugDisplay];
+        const char* debugDisplayNames[static_cast<mInt>(
+            TaskDataFluidSimulation::ControlParameters::DebugDisplays::
+                _count)]    = {"None", "Pressure", "Divergence", "Residual"};
+        const char* preview = debugDisplayNames[static_cast<mInt>(
+            m_simulationParameters.debugDisplay)];
 
         if (ImGui::BeginCombo("Debug Display", preview))
         {
-            for (m::mInt i = 0;
-                 i < m::mInt(TaskDataFluidSimulation::ControlParameters::
-                                 DebugDisplays::_count);
+            for (mInt i = 0;
+                 i <
+                 static_cast<mInt>(TaskDataFluidSimulation::ControlParameters::
+                                       DebugDisplays::_count);
                  ++i)
             {
                 auto iType = static_cast<

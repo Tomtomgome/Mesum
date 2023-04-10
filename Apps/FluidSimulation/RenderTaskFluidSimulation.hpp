@@ -82,7 +82,7 @@ struct TaskDataFluidSimulation : public m::render::TaskData
 {
     struct ControlParameters
     {
-        enum DebugDisplays
+        enum class DebugDisplays : m::mInt
         {
             none = 0,
             pressure,
@@ -92,13 +92,24 @@ struct TaskDataFluidSimulation : public m::render::TaskData
             _count
         };
 
+        enum class Solver : m::mInt
+        {
+            jacobi = 0,
+            multiGridV,
+
+            _count
+        };
+
         m::mBool        isRunning                      = false;
         m::math::mIVec2 screenSize                     = {640, 640};
         m::mBool        displaySpeed                   = false;
         m::mBool        displayFluid                   = true;
         m::math::mIVec2 vectorRepresentationResolution = {80, 80};
-        m::mInt         nbJacobiIterations             = {150};
         DebugDisplays   debugDisplay                   = DebugDisplays::none;
+        Solver          solver                         = Solver::jacobi;
+        m::mInt         nbJacobiIterations             = {50};
+        m::mInt         nbMGJacobiIterations           = {3};
+        m::mInt         maxMGDepth                     = {4};
     };
 
     m::render::mIRenderTarget*                pOutputRT    = nullptr;
@@ -206,16 +217,52 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     D3D12_GPU_DESCRIPTOR_HANDLE     m_GPUDescHdlDivergenceInput{};
     D3D12_GPU_DESCRIPTOR_HANDLE     m_GPUDescHdlDivergenceOutput{};
 
-    // Jacobi
+    // Jacobi ---
     m::dx12::ComPtr<ID3D12RootSignature> m_rsJacobi  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoJacobi = nullptr;
     QueryID                              m_idSolverQuery{};
 
     static const m::mUInt    scm_nbJacobiTexture = 2;
     static const DXGI_FORMAT scm_formatPressure  = DXGI_FORMAT_R32_FLOAT;
-    std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pTextureResourceJacobi{};
+    m::dx12::ComPtr<ID3D12Resource> m_pTextureResourceJacobi[scm_nbJacobiTexture]{};
     D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlJacobiInput[scm_nbJacobiTexture]{};
     D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlJacobiOutput[scm_nbJacobiTexture]{};
+
+    void execute_jacobi(
+        m::mUInt const a_nbIterations, m::math::mUIVec2 const a_size,
+        D3D12_GPU_DESCRIPTOR_HANDLE const& a_target,
+        D3D12_GPU_DESCRIPTOR_HANDLE const (
+            &a_jacobiInputs)[scm_nbJacobiTexture],
+        D3D12_GPU_DESCRIPTOR_HANDLE const (
+            &a_jacobiOutputs)[scm_nbJacobiTexture],
+        m::dx12::ComPtr<ID3D12Resource> const (
+            &a_textureResourceJacobi)[scm_nbJacobiTexture]) const;
+
+    // MultiGrid ---
+    static const m::mUInt                scm_maxVCycleDepth = 4;
+    m::dx12::ComPtr<ID3D12RootSignature> m_rsCopy           = nullptr;
+    m::dx12::ComPtr<ID3D12PipelineState> m_psoRestrict      = nullptr;
+    m::dx12::ComPtr<ID3D12PipelineState> m_psoInterpolate   = nullptr;
+
+    m::dx12::ComPtr<ID3D12Resource>
+        m_pTextureResourceMGDivergence[scm_maxVCycleDepth];
+    D3D12_GPU_DESCRIPTOR_HANDLE
+    m_GPUDescHdlInputMGDivergence[scm_maxVCycleDepth];
+    D3D12_GPU_DESCRIPTOR_HANDLE
+    m_GPUDescHdlOutputMGDivergence[scm_maxVCycleDepth];
+
+    m::dx12::ComPtr<ID3D12Resource>
+        m_pTextureResourceMGPressure[scm_maxVCycleDepth][scm_nbJacobiTexture];
+    D3D12_GPU_DESCRIPTOR_HANDLE
+    m_GPUDescHdlInputMGPressure[scm_maxVCycleDepth][scm_nbJacobiTexture]{};
+    D3D12_GPU_DESCRIPTOR_HANDLE
+    m_GPUDescHdlOutputMGPressure[scm_maxVCycleDepth][scm_nbJacobiTexture]{};
+
+    m::dx12::ComPtr<ID3D12Resource>
+        m_pTextureResourceMGResidual[scm_maxVCycleDepth];
+    D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlInputMGResidual[scm_maxVCycleDepth];
+    D3D12_GPU_DESCRIPTOR_HANDLE
+    m_GPUDescHdlOutputMGResidual[scm_maxVCycleDepth];
 
     // Residual
     m::dx12::ComPtr<ID3D12RootSignature> m_rsResidual  = nullptr;
@@ -281,6 +328,9 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     static const m::mUInt scm_maxSizeConstantBuffer = 2 * scm_minimalStructSize;
     m::dx12::ComPtr<ID3D12Resource> m_pConstantBuffers[msc_numFrames]{};
     void*                           m_pConstantBuffersData[msc_numFrames]{};
+
+    m::mUInt m_offsetResolutionArrows{};
+    m::mUInt m_offsetResolutionBaseImage{};
 
     // ---------- Simulation data
     std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pUploadResourcesToDelete{};
