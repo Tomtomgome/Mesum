@@ -30,6 +30,5 @@ void cs_advect(uint3 DTid : SV_DispatchThreadID)
   float2 startingPoint = uv.uv - (g_time * velocity) * uv.pixel;
   uv.uv = startingPoint;
 
-  //Improve with cubic interpolation
   outputData[uint2(DTid.x, DTid.y)] = sample_cubic_f4(inputData, samplerLinear, uv);
 }

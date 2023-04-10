@@ -87,6 +87,7 @@ struct TaskDataFluidSimulation : public m::render::TaskData
             none = 0,
             pressure,
             divergence,
+            residual,
 
             _count
         };
@@ -151,6 +152,7 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     void setup_simulationPass();
     void setup_divergencePass();
     void setup_jacobiPass();
+    void setup_residualPass();
     void setup_projectionPass();
     void setup_arrowGenerationPass();
     void setup_fluidRenderingPass();
@@ -214,6 +216,16 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pTextureResourceJacobi{};
     D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlJacobiInput[scm_nbJacobiTexture]{};
     D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlJacobiOutput[scm_nbJacobiTexture]{};
+
+    // Residual
+    m::dx12::ComPtr<ID3D12RootSignature> m_rsResidual  = nullptr;
+    m::dx12::ComPtr<ID3D12PipelineState> m_psoResidual = nullptr;
+    QueryID                              m_idResidualQuery{};
+
+    static const DXGI_FORMAT        scm_formatResidual = DXGI_FORMAT_R32_FLOAT;
+    m::dx12::ComPtr<ID3D12Resource> m_pTextureResourceResidual{};
+    D3D12_GPU_DESCRIPTOR_HANDLE     m_GPUDescHdlResidualInput{};
+    D3D12_GPU_DESCRIPTOR_HANDLE     m_GPUDescHdlResidualOutput{};
 
     // --Project
     m::dx12::ComPtr<ID3D12RootSignature> m_rsProject  = nullptr;

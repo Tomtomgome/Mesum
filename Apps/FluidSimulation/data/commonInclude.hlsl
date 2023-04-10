@@ -52,6 +52,14 @@ CoordData uv_plus(CoordData a_uv, int a_nbX, int a_nbY)
   return result;
 }
 
+CoordData uv_plus_res(CoordData a_uv, int a_nbX, int a_nbY)
+{
+  CoordData result = a_uv;
+  result.uv += float2(a_nbX * a_uv.pixel.x, a_nbY * a_uv.pixel.y);
+  result.uv = min(float2(1.0f, 1.0f) - a_uv.halfPixel, max(a_uv.halfPixel, result.uv));
+  return result;
+}
+
 // Cubic Interpolation
 void restrict_f4(inout float4 a_p, in float4 a_delta)
 {

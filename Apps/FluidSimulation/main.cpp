@@ -243,11 +243,10 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
             m_simulationParameters.vectorRepresentationResolution.data, 1, 16,
             20 * 16);
 
-        const char* debugDisplayNames[3] = {
-            "None",
-            "Pressure",
-            "Divergence",
-        };
+        const char*
+            debugDisplayNames[TaskDataFluidSimulation::ControlParameters::
+                                  DebugDisplays::_count] = {
+                "None", "Pressure", "Divergence", "Residual"};
         const char* preview =
             debugDisplayNames[m_simulationParameters.debugDisplay];
 

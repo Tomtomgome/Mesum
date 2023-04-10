@@ -16,19 +16,19 @@ float2 sample_velocity(CoordData a_uv)
 static const float g_gravity           = -9.8;
 static const float g_alpha             = -2;
 static const float g_beta              = 6.5;
-static const float g_vorticityStrength = 0.8;
+static const float g_vorticityStrength = 0.3;
 
 static const float g_ambientT = 270;
 
 float compute_vorticity(CoordData a_uv)
 {
   float2 speed_dx = 
-    sample_velocity(uv_plus(a_uv, 1, 0)) - 
-    sample_velocity(uv_plus(a_uv, -1, 0));
+    sample_velocity(uv_plus_res(a_uv, 1, 0)) -
+    sample_velocity(uv_plus_res(a_uv, -1, 0));
   float dv_dx = speed_dx.y / (2 * g_cellSize);
   float2 speed_dy =
-    sample_velocity(uv_plus(a_uv, 0, 1)) - 
-    sample_velocity(uv_plus(a_uv, 0, -1));
+    sample_velocity(uv_plus_res(a_uv, 0, 1)) -
+    sample_velocity(uv_plus_res(a_uv, 0, -1));
   float du_dy = speed_dy.x / (2 * g_cellSize);
 
   return dv_dx - du_dy;
@@ -36,10 +36,10 @@ float compute_vorticity(CoordData a_uv)
 
 float2 compute_vorticityForce(CoordData a_uv)
 {
-  float input_iplusone = abs(compute_vorticity(uv_plus(a_uv, 1, 0)));
-  float input_iminusone = abs(compute_vorticity(uv_plus(a_uv, -1, 0)));
-  float input_jplusone = abs(compute_vorticity(uv_plus(a_uv, 0, 1)));
-  float input_jminusone = abs(compute_vorticity(uv_plus(a_uv, 0, -1)));
+  float input_iplusone = abs(compute_vorticity(uv_plus_res(a_uv, 1, 0)));
+  float input_iminusone = abs(compute_vorticity(uv_plus_res(a_uv, -1, 0)));
+  float input_jplusone = abs(compute_vorticity(uv_plus_res(a_uv, 0, 1)));
+  float input_jminusone = abs(compute_vorticity(uv_plus_res(a_uv, 0, -1)));
 
   float input_ij = compute_vorticity(a_uv);
 
@@ -70,7 +70,7 @@ void cs_simulation(uint3 DTid : SV_DispatchThreadID)
   outputVelocity[uint2(DTid.x, DTid.y)] = inputVelocity.SampleLevel(samplerPoint, uv.uv, 0);
   
   // gravity
-  //outputVelocity[uint2(DTid.x, DTid.y)].y += g_time * g_gravity;
+  outputVelocity[uint2(DTid.x, DTid.y)].y += g_time * g_gravity;
 
   // Boyancy
   float2 data = inputData.SampleLevel(samplerLinear, uv_plusHalf(uv, 0, 1).uv, 0).zw;
@@ -80,11 +80,11 @@ void cs_simulation(uint3 DTid : SV_DispatchThreadID)
   float2 vorticityForceX =
                     0.5 * 
                     (compute_vorticityForce(uv) + 
-                    compute_vorticityForce(uv_plus(uv, 1, 0)));
+                    compute_vorticityForce(uv_plus_res(uv, 1, 0)));
   float2 vorticityForceY =
                     0.5 *
                     (compute_vorticityForce(uv) + 
-                    compute_vorticityForce(uv_plus(uv, 0, 1)));
+                    compute_vorticityForce(uv_plus_res(uv, 0, 1)));
 
   outputVelocity[uint2(DTid.x, DTid.y)].x += g_time * g_vorticityStrength * g_cellSize * vorticityForceX.x;
   outputVelocity[uint2(DTid.x, DTid.y)].y += g_time * g_vorticityStrength * g_cellSize * vorticityForceY.y;

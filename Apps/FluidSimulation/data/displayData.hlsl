@@ -23,7 +23,8 @@ struct Pixel
 };
 
 Texture2D<float> texture : register(t0);
-SamplerState pointSampler : register(s0);
+SamplerState linearSampler : register(s0);
+SamplerState pointSampler : register(s1);
 
 Pixel ps_main(VertexShaderOutput a_in)
 {
