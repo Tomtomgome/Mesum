@@ -72,7 +72,7 @@ struct DescriptorHeapFluidSimulation
     m::dx12::ComPtr<ID3D12DescriptorHeap> m_pHeap            = nullptr;
     m::mUInt                              m_incrementSizeSrv = 0;
 
-    static const m::mUInt scm_maxSizeDescriptorHeap = 30;
+    static const m::mUInt scm_maxSizeDescriptorHeap = 100;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -156,6 +156,7 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     void init_velocityTextures();
     void init_dataTextures(
         m::resource::mTypedImage<m::math::mVec4> const& a_rImage);
+    void init_solverResources();
     void init_constantBuffer();
 
     void setup_velocityAdvectionPass();
@@ -207,15 +208,11 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     QueryID                              m_idSimulationQuery{};
 
     // --Solver
+    static const DXGI_FORMAT        scm_format1fData = DXGI_FORMAT_R32_FLOAT;
     // Divergecne
     m::dx12::ComPtr<ID3D12RootSignature> m_rsDivergence  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoDivergence = nullptr;
     QueryID                              m_idDivergenceQuery{};
-
-    static const DXGI_FORMAT scm_formatDivergence = DXGI_FORMAT_R32_FLOAT;
-    m::dx12::ComPtr<ID3D12Resource> m_pTextureResourceDivergence{};
-    D3D12_GPU_DESCRIPTOR_HANDLE     m_GPUDescHdlDivergenceInput{};
-    D3D12_GPU_DESCRIPTOR_HANDLE     m_GPUDescHdlDivergenceOutput{};
 
     // Jacobi ---
     m::dx12::ComPtr<ID3D12RootSignature> m_rsJacobi  = nullptr;
@@ -223,10 +220,6 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     QueryID                              m_idSolverQuery{};
 
     static const m::mUInt    scm_nbJacobiTexture = 2;
-    static const DXGI_FORMAT scm_formatPressure  = DXGI_FORMAT_R32_FLOAT;
-    m::dx12::ComPtr<ID3D12Resource> m_pTextureResourceJacobi[scm_nbJacobiTexture]{};
-    D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlJacobiInput[scm_nbJacobiTexture]{};
-    D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlJacobiOutput[scm_nbJacobiTexture]{};
 
     void execute_jacobi(
         m::mUInt const a_nbIterations, m::math::mUIVec2 const a_size,
@@ -245,34 +238,29 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     m::dx12::ComPtr<ID3D12PipelineState> m_psoInterpolate   = nullptr;
 
     m::dx12::ComPtr<ID3D12Resource>
-        m_pTextureResourceMGDivergence[scm_maxVCycleDepth];
+        m_pTextureResourceDivergences[scm_maxVCycleDepth];
     D3D12_GPU_DESCRIPTOR_HANDLE
-    m_GPUDescHdlInputMGDivergence[scm_maxVCycleDepth];
+    m_GPUDescHdlInputDivergences[scm_maxVCycleDepth];
     D3D12_GPU_DESCRIPTOR_HANDLE
-    m_GPUDescHdlOutputMGDivergence[scm_maxVCycleDepth];
+    m_GPUDescHdlOutputDivergences[scm_maxVCycleDepth];
 
     m::dx12::ComPtr<ID3D12Resource>
-        m_pTextureResourceMGPressure[scm_maxVCycleDepth][scm_nbJacobiTexture];
+        m_pTextureResourcePressures[scm_maxVCycleDepth][scm_nbJacobiTexture];
     D3D12_GPU_DESCRIPTOR_HANDLE
-    m_GPUDescHdlInputMGPressure[scm_maxVCycleDepth][scm_nbJacobiTexture]{};
+    m_GPUDescHdlInputPressures[scm_maxVCycleDepth][scm_nbJacobiTexture]{};
     D3D12_GPU_DESCRIPTOR_HANDLE
-    m_GPUDescHdlOutputMGPressure[scm_maxVCycleDepth][scm_nbJacobiTexture]{};
+    m_GPUDescHdlOutputPressures[scm_maxVCycleDepth][scm_nbJacobiTexture]{};
 
     m::dx12::ComPtr<ID3D12Resource>
-        m_pTextureResourceMGResidual[scm_maxVCycleDepth];
-    D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlInputMGResidual[scm_maxVCycleDepth];
+        m_pTextureResourceResiduals[scm_maxVCycleDepth];
+    D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlInputResiduals[scm_maxVCycleDepth];
     D3D12_GPU_DESCRIPTOR_HANDLE
-    m_GPUDescHdlOutputMGResidual[scm_maxVCycleDepth];
+    m_GPUDescHdlOutputResiduals[scm_maxVCycleDepth];
 
     // Residual
     m::dx12::ComPtr<ID3D12RootSignature> m_rsResidual  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoResidual = nullptr;
     QueryID                              m_idResidualQuery{};
-
-    static const DXGI_FORMAT        scm_formatResidual = DXGI_FORMAT_R32_FLOAT;
-    m::dx12::ComPtr<ID3D12Resource> m_pTextureResourceResidual{};
-    D3D12_GPU_DESCRIPTOR_HANDLE     m_GPUDescHdlResidualInput{};
-    D3D12_GPU_DESCRIPTOR_HANDLE     m_GPUDescHdlResidualOutput{};
 
     // --Project
     m::dx12::ComPtr<ID3D12RootSignature> m_rsProject  = nullptr;
