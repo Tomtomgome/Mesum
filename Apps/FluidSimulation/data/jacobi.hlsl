@@ -6,8 +6,6 @@ RWTexture2D<float> nextPressure : register(u0);
 
 // ---------- projection
 
-static const float g_alphaJacob = -(g_cellSize*g_cellSize);
-
 [numthreads( COMPUTE_GROUP_SIZE, COMPUTE_GROUP_SIZE, 1 )]
 void cs_iterateJacobi(uint3 DTid : SV_DispatchThreadID)
 {  
@@ -16,6 +14,8 @@ void cs_iterateJacobi(uint3 DTid : SV_DispatchThreadID)
   {
     return;
   }
+
+  float dxSqr = (data.cellSize * data.cellSize) * g_density;
 
   float pLeft = pressure.SampleLevel(samplerPointBlackBorder, uv_plus(uv, -1, 0).uv, 0);
   float pRight = pressure.SampleLevel(samplerPointBlackBorder, uv_plus(uv, 1, 0).uv, 0);
@@ -32,7 +32,7 @@ void cs_iterateJacobi(uint3 DTid : SV_DispatchThreadID)
 
   float betaJacobi = 1.0/solidWallNumber; // Solid wall number should not be zero.
 
-  nextPressure[uint2(DTid.x, DTid.y)] = (pLeft + pRight + pTop + pBottom + g_alphaJacob * divergence) * betaJacobi;
+  nextPressure[uint2(DTid.x, DTid.y)] = (pLeft + pRight + pTop + pBottom + dxSqr * divergence) * betaJacobi;
 }
 
 

@@ -7,6 +7,7 @@ SamplerState samplerLinearBlackBorder : register(s3);
 struct Data
 {
   uint2 resolution;
+  float cellSize;
 };
 ConstantBuffer<Data> data : register(b0);
 

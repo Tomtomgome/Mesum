@@ -57,19 +57,26 @@ struct TimerTree
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+struct ResourceDescriptor
+{
+    D3D12_GPU_DESCRIPTOR_HANDLE hdlGPU;
+    D3D12_CPU_DESCRIPTOR_HANDLE hdlCPU;
+};
+
 struct DescriptorHeapFluidSimulation
 {
-    void                        init();
-    D3D12_GPU_DESCRIPTOR_HANDLE create_srvAndGetHandle(
+    void               init();
+    ResourceDescriptor create_srvAndGetHandle(
         m::dx12::ComPtr<ID3D12Resource>& a_pResource,
         D3D12_SHADER_RESOURCE_VIEW_DESC& a_descSrv);
-    D3D12_GPU_DESCRIPTOR_HANDLE create_uavAndGetHandle(
+    ResourceDescriptor create_uavAndGetHandle(
         m::dx12::ComPtr<ID3D12Resource>&  a_pResource,
         D3D12_UNORDERED_ACCESS_VIEW_DESC& a_descUav);
 
     m::mUInt m_currentHandle = 0;
 
     m::dx12::ComPtr<ID3D12DescriptorHeap> m_pHeap            = nullptr;
+    m::dx12::ComPtr<ID3D12DescriptorHeap> m_pHeapCPU         = nullptr;
     m::mUInt                              m_incrementSizeSrv = 0;
 
     static const m::mUInt scm_maxSizeDescriptorHeap = 100;
@@ -107,9 +114,10 @@ struct TaskDataFluidSimulation : public m::render::TaskData
         m::math::mIVec2 vectorRepresentationResolution = {80, 80};
         DebugDisplays   debugDisplay                   = DebugDisplays::none;
         Solver          solver                         = Solver::jacobi;
-        m::mInt         nbJacobiIterations             = {50};
-        m::mInt         nbMGJacobiIterations           = {3};
-        m::mInt         maxMGDepth                     = {4};
+        m::mInt         nbJacobiIterations             = {100};
+        m::mInt         nbMGIterations                 = {1};
+        m::mInt         nbMGJacobiIterations           = {5};
+        m::mInt         maxMGDepth                     = {6};
     };
 
     m::render::mIRenderTarget*                pOutputRT    = nullptr;
@@ -165,6 +173,7 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     void setup_divergencePass();
     void setup_jacobiPass();
     void setup_residualPass();
+    void setup_mgPasses();
     void setup_projectionPass();
     void setup_arrowGenerationPass();
     void setup_fluidRenderingPass();
@@ -208,59 +217,72 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     QueryID                              m_idSimulationQuery{};
 
     // --Solver
-    static const DXGI_FORMAT        scm_format1fData = DXGI_FORMAT_R32_FLOAT;
+    static const DXGI_FORMAT scm_format1fData = DXGI_FORMAT_R32_FLOAT;
     // Divergecne
     m::dx12::ComPtr<ID3D12RootSignature> m_rsDivergence  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoDivergence = nullptr;
     QueryID                              m_idDivergenceQuery{};
 
     // Jacobi ---
-    m::dx12::ComPtr<ID3D12RootSignature> m_rsJacobi  = nullptr;
-    m::dx12::ComPtr<ID3D12PipelineState> m_psoJacobi = nullptr;
+    static const m::mUInt                scm_nbJacobiTexture = 2;
+    m::dx12::ComPtr<ID3D12RootSignature> m_rsJacobi          = nullptr;
+    m::dx12::ComPtr<ID3D12PipelineState> m_psoJacobi         = nullptr;
     QueryID                              m_idSolverQuery{};
-
-    static const m::mUInt    scm_nbJacobiTexture = 2;
 
     void execute_jacobi(
         m::mUInt const a_nbIterations, m::math::mUIVec2 const a_size,
-        D3D12_GPU_DESCRIPTOR_HANDLE const& a_target,
-        D3D12_GPU_DESCRIPTOR_HANDLE const (
-            &a_jacobiInputs)[scm_nbJacobiTexture],
-        D3D12_GPU_DESCRIPTOR_HANDLE const (
-            &a_jacobiOutputs)[scm_nbJacobiTexture],
+        D3D12_GPU_VIRTUAL_ADDRESS const& a_resolutionConstantBuffer,
+        ResourceDescriptor const&        a_target,
+        ResourceDescriptor const (&a_jacobiInputs)[scm_nbJacobiTexture],
+        ResourceDescriptor const (&a_jacobiOutputs)[scm_nbJacobiTexture],
         m::dx12::ComPtr<ID3D12Resource> const (
-            &a_textureResourceJacobi)[scm_nbJacobiTexture]) const;
+            &a_textureResourceJacobi)[scm_nbJacobiTexture],
+        m::mBool a_clear = false) const;
 
     // MultiGrid ---
-    static const m::mUInt                scm_maxVCycleDepth = 4;
-    m::dx12::ComPtr<ID3D12RootSignature> m_rsCopy           = nullptr;
+    static const m::mUInt                scm_maxVCycleDepth = 6;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoRestrict      = nullptr;
-    m::dx12::ComPtr<ID3D12PipelineState> m_psoInterpolate   = nullptr;
+    m::dx12::ComPtr<ID3D12PipelineState> m_psoProlongate    = nullptr;
 
-    m::dx12::ComPtr<ID3D12Resource>
-        m_pTextureResourceDivergences[scm_maxVCycleDepth];
-    D3D12_GPU_DESCRIPTOR_HANDLE
-    m_GPUDescHdlInputDivergences[scm_maxVCycleDepth];
-    D3D12_GPU_DESCRIPTOR_HANDLE
-    m_GPUDescHdlOutputDivergences[scm_maxVCycleDepth];
+    void execute_mgvITeration(m::mUInt const a_itNumber) const;
 
-    m::dx12::ComPtr<ID3D12Resource>
-        m_pTextureResourcePressures[scm_maxVCycleDepth][scm_nbJacobiTexture];
-    D3D12_GPU_DESCRIPTOR_HANDLE
-    m_GPUDescHdlInputPressures[scm_maxVCycleDepth][scm_nbJacobiTexture]{};
-    D3D12_GPU_DESCRIPTOR_HANDLE
-    m_GPUDescHdlOutputPressures[scm_maxVCycleDepth][scm_nbJacobiTexture]{};
-
-    m::dx12::ComPtr<ID3D12Resource>
-        m_pTextureResourceResiduals[scm_maxVCycleDepth];
-    D3D12_GPU_DESCRIPTOR_HANDLE m_GPUDescHdlInputResiduals[scm_maxVCycleDepth];
-    D3D12_GPU_DESCRIPTOR_HANDLE
-    m_GPUDescHdlOutputResiduals[scm_maxVCycleDepth];
+    void execute_computeShader(
+        m::math::mUIVec2 const                      a_size,
+        D3D12_GPU_VIRTUAL_ADDRESS const&            a_resolutionConstantBuffer,
+        m::dx12::ComPtr<ID3D12PipelineState> const& a_pso,
+        ResourceDescriptor const& a_input, ResourceDescriptor const& a_output,
+        m::dx12::ComPtr<ID3D12Resource> const& a_pTextureResourceOutput) const;
 
     // Residual
     m::dx12::ComPtr<ID3D12RootSignature> m_rsResidual  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoResidual = nullptr;
     QueryID                              m_idResidualQuery{};
+
+    void execute_residualComputation(
+        m::math::mUIVec2 const                 a_size,
+        D3D12_GPU_VIRTUAL_ADDRESS const&       a_resolutionConstantBuffer,
+        ResourceDescriptor const&              a_target,
+        ResourceDescriptor const&              a_solution,
+        ResourceDescriptor const&              a_residual,
+        m::dx12::ComPtr<ID3D12Resource> const& a_textureResourceResidual) const;
+
+    // Resources
+    m::dx12::ComPtr<ID3D12Resource>
+                       m_pTextureResourceDivergences[scm_maxVCycleDepth];
+    ResourceDescriptor m_hdlDescInputDivergences[scm_maxVCycleDepth];
+    ResourceDescriptor m_hdlDescOutputDivergences[scm_maxVCycleDepth];
+
+    m::dx12::ComPtr<ID3D12Resource>
+        m_pTextureResourcePressures[scm_maxVCycleDepth][scm_nbJacobiTexture];
+    ResourceDescriptor m_hdlDescInputPressures[scm_maxVCycleDepth]
+                                              [scm_nbJacobiTexture]{};
+    ResourceDescriptor m_hdlDescOutputPressures[scm_maxVCycleDepth]
+                                               [scm_nbJacobiTexture]{};
+
+    m::dx12::ComPtr<ID3D12Resource>
+                       m_pTextureResourceResiduals[scm_maxVCycleDepth];
+    ResourceDescriptor m_hdlDescInputResiduals[scm_maxVCycleDepth];
+    ResourceDescriptor m_hdlDescOutputResiduals[scm_maxVCycleDepth];
 
     // --Project
     m::dx12::ComPtr<ID3D12RootSignature> m_rsProject  = nullptr;
@@ -279,7 +301,7 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     static const m::mUInt           sm_nbIndexPerArrows = 7;
     static const m::mSize           sm_sizeIndexArrow   = sizeof(m::mU32);
     m::dx12::ComPtr<ID3D12Resource> m_pVertexBufferArrows = nullptr;
-    D3D12_GPU_DESCRIPTOR_HANDLE     m_GPUDescHdlOutBuffer{};
+    ResourceDescriptor              m_hdlDescOutBuffer{};
     m::dx12::ComPtr<ID3D12Resource> m_pIndexBufferArrows = nullptr;
 
     // --Fluid rendering
@@ -312,13 +334,14 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     DescriptorHeapFluidSimulation m_descriptorHeap;
 
     // Constant buffer
-    static const m::mU64  scm_minimalStructSize     = 256;
-    static const m::mUInt scm_maxSizeConstantBuffer = 2 * scm_minimalStructSize;
+    static const m::mU64  scm_minimalStructSize = 256;
+    static const m::mUInt scm_maxSizeConstantBuffer =
+        50 * scm_minimalStructSize;
     m::dx12::ComPtr<ID3D12Resource> m_pConstantBuffers[msc_numFrames]{};
     void*                           m_pConstantBuffersData[msc_numFrames]{};
 
     m::mUInt m_offsetResolutionArrows{};
-    m::mUInt m_offsetResolutionBaseImage{};
+    m::mUInt m_offsetResolutionBaseImage[scm_maxVCycleDepth];
 
     // ---------- Simulation data
     std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pUploadResourcesToDelete{};
@@ -327,19 +350,15 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     static const DXGI_FORMAT scm_formatDataTexture =
         DXGI_FORMAT_R32G32B32A32_FLOAT;
     std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pTextureResources{};
-    D3D12_GPU_DESCRIPTOR_HANDLE
-    m_GPUDescHdlTextureCompute[scm_nbDataTextures]{};
-    D3D12_GPU_DESCRIPTOR_HANDLE
-    m_GPUDescHdlTextureDisplay[scm_nbDataTextures]{};
+    ResourceDescriptor m_hdlDescTextureCompute[scm_nbDataTextures]{};
+    ResourceDescriptor m_hdlDescTextureDisplay[scm_nbDataTextures]{};
 
     // Velocities
     static const m::mUInt    scm_nbVelocityTexture = 2;
     static const DXGI_FORMAT scm_formatVelocityTexture =
         DXGI_FORMAT_R32G32_FLOAT;
     std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pTextureResourceVelocity{};
-    D3D12_GPU_DESCRIPTOR_HANDLE
-    m_GPUDescHdlVelocityInput[scm_nbVelocityTexture]{};
-    D3D12_GPU_DESCRIPTOR_HANDLE
-    m_GPUDescHdlVelocityOutput[scm_nbVelocityTexture]{};
+    ResourceDescriptor m_hdlDescVelocityInput[scm_nbVelocityTexture]{};
+    ResourceDescriptor m_hdlDescVelocityOutput[scm_nbVelocityTexture]{};
 };
 #endif  // M_DX12_RENDERER

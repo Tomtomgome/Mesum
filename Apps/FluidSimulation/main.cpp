@@ -265,17 +265,20 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
                 {
                     ImGui::DragInt("Jacobi Iterations",
                                    &m_simulationParameters.nbJacobiIterations,
-                                   1, 1, 500);
+                                   1, 1, 5000);
                 }
                 break;
                 case TaskDataFluidSimulation::ControlParameters::Solver::
                     multiGridV:
                 {
+                    ImGui::DragInt("MG Iterations",
+                                   &m_simulationParameters.nbMGIterations,
+                                   1, 1, 10);
                     ImGui::DragInt("MG Jacobi Iterations",
                                    &m_simulationParameters.nbMGJacobiIterations,
-                                   1, 1, 100);
+                                   1, 1, 1000);
                     ImGui::DragInt("MG depth",
-                                   &m_simulationParameters.maxMGDepth, 1, 1, 4);
+                                   &m_simulationParameters.maxMGDepth, 1, 1, 6);
                 }
                 break;
             }

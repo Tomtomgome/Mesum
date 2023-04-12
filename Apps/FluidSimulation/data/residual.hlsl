@@ -19,6 +19,8 @@ void cs_residual(uint3 DTid : SV_DispatchThreadID)
         return;
     }
 
+    float invDxSqr = 1.0/(data.cellSize * data.cellSize);
+
     float p_i_j = inputPressure.SampleLevel(samplerPointBlackBorder, uv.uv, 0);
     float p_ip1_j = inputPressure.SampleLevel(samplerPointBlackBorder, uv_plus(uv, 1, 0).uv, 0);
     float p_im1_j = inputPressure.SampleLevel(samplerPointBlackBorder, uv_plus(uv, -1, 0).uv, 0);
@@ -32,9 +34,9 @@ void cs_residual(uint3 DTid : SV_DispatchThreadID)
     solidWallNumber += DTid.x == data.resolution.x-1 ? 1 : 0;
     solidWallNumber += DTid.y == data.resolution.y-1 ? 1 : 0;
 
-    float ap = g_invDensity*((4-solidWallNumber)*p_i_j - (p_ip1_j + p_im1_j + p_i_jp1 + p_i_jm1))*g_invDxSqr;
+    float ap = g_invDensity*((4-solidWallNumber)*p_i_j - (p_ip1_j + p_im1_j + p_i_jp1 + p_i_jm1))*invDxSqr;
 
     float d = inputDivergence.SampleLevel(samplerPoint, uv.uv, 0);
 
-    outputResidual[uint2(DTid.x, DTid.y)] = (ap + d);
+    outputResidual[uint2(DTid.x, DTid.y)] = d - ap;
 }
