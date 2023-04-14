@@ -370,6 +370,15 @@ void Dx12TaskFluidSimulation::prepare()
     {
         m_timers = m_currentTimers;
     }
+
+    // Pre-warm for stabilization with jacobi
+    auto& parameters =
+        static_cast<TaskDataFluidSimulation::ControlParameters&>(
+            unref_safe(m_taskData.pParameters));
+    if(parameters.isRunning && parameters.nbJacobiIterations >= 20 && m_frameCount % 20 == 0)
+    {
+        parameters.nbJacobiIterations /= 2;
+    }
 }
 
 //-----------------------------------------------------------------------------

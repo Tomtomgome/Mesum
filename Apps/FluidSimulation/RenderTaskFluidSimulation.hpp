@@ -114,7 +114,7 @@ struct TaskDataFluidSimulation : public m::render::TaskData
         m::math::mIVec2 vectorRepresentationResolution = {80, 80};
         DebugDisplays   debugDisplay                   = DebugDisplays::none;
         Solver          solver                         = Solver::jacobi;
-        m::mInt         nbJacobiIterations             = {100};
+        m::mInt         nbJacobiIterations             = {5120};
         m::mInt         nbMGIterations                 = {1};
         m::mInt         nbMGJacobiIterations           = {5};
         m::mInt         maxMGDepth                     = {6};
