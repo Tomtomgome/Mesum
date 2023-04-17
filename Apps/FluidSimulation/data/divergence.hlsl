@@ -14,11 +14,27 @@ void cs_divergence(uint3 DTid : SV_DispatchThreadID)
         return;
     }
   
-    float2 iplus12 = inputVelocity.SampleLevel(samplerPointBlackBorder, uv.uv, 0).xy;
-    float2 iminus12;
-    iminus12.x = inputVelocity.SampleLevel(samplerPointBlackBorder, uv_plus(uv, -1, 0).uv, 0).x;
-    iminus12.y = inputVelocity.SampleLevel(samplerPointBlackBorder, uv_plus(uv, 0, -1).uv, 0).y;
+    float2 iplus12 = inputVelocity.SampleLevel(samplerPoint, uv.uv, 0).xy;
 
-    divergence[uint2(DTid.x, DTid.y)] = g_globalFactor * ((iplus12.x - iminus12.x) / data.cellSize +
-                                (iplus12.y - iminus12.y) / data.cellSize);
+    float2 iminus12;
+    if(data.wallAtLeft)
+    {
+        iminus12.x = inputVelocity.SampleLevel(samplerPointBlackBorder, uv_plus(uv, -1, 0).uv, 0).x;
+    }
+    else
+    {
+        iminus12.x = inputVelocity.SampleLevel(samplerPoint, uv_plus(uv, -1, 0).uv, 0).x;
+    }
+
+    if(data.wallAtBottom)
+    {
+        iminus12.y = inputVelocity.SampleLevel(samplerPointBlackBorder, uv_plus(uv, 0, -1).uv, 0).y;
+    }
+    else
+    {
+        iminus12.y = inputVelocity.SampleLevel(samplerPoint, uv_plus(uv, 0, -1).uv, 0).y;
+    }
+
+    divergence[uint2(DTid.x, DTid.y)] = g_globalFactor * ((iplus12.x - iminus12.x) / data.cellSize.x +
+                                (iplus12.y - iminus12.y) / data.cellSize.y);
 }

@@ -232,55 +232,76 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
         // --- Simulation parameters
         ImGui::Checkbox("Run Time Update", &m_simulationParameters.isRunning);
 
-        const char* solverNames[static_cast<mInt>(
-            TaskDataFluidSimulation::ControlParameters::Solver::_count)] = {
-            "Jacobi", "Multi Grid V"};
-        const char* solverPreview =
-            solverNames[static_cast<mInt>(m_simulationParameters.solver)];
-
-        if (ImGui::BeginCombo("Solver", solverPreview))
+        if (ImGui::TreeNode("Bounds"))
         {
-            for (mInt i = 0;
-                 i < static_cast<mInt>(TaskDataFluidSimulation::
-                                           ControlParameters::Solver::_count);
-                 ++i)
-            {
-                auto iType = static_cast<
-                    TaskDataFluidSimulation::ControlParameters::Solver>(i);
-                if (ImGui::Selectable(solverNames[i],
-                                      iType == m_simulationParameters.solver))
-                {
-                    m_simulationParameters.solver = iType;
-                }
-            }
-            ImGui::EndCombo();
+            ImGui::Checkbox("Left", &m_simulationParameters.leftBoundIsWall);
+            ImGui::Checkbox("Right", &m_simulationParameters.rightBoundIsWall);
+            ImGui::Checkbox("Top", &m_simulationParameters.topBoundIsWall);
+            ImGui::Checkbox("Bottom",
+                            &m_simulationParameters.bottomBoundIsWall);
+
+            ImGui::TreePop();
         }
 
-        if (ImGui::TreeNode("Solver Parameters"))
+        if (ImGui::TreeNode("Solver"))
         {
-            switch (m_simulationParameters.solver)
+            const char* solverNames[static_cast<mInt>(
+                TaskDataFluidSimulation::ControlParameters::Solver::_count)] = {
+                "Jacobi", "Multi Grid V"};
+            const char* solverPreview =
+                solverNames[static_cast<mInt>(m_simulationParameters.solver)];
+
+            if (ImGui::BeginCombo("Solver", solverPreview))
             {
-                default:
-                case TaskDataFluidSimulation::ControlParameters::Solver::jacobi:
+                for (mInt i = 0; i < static_cast<mInt>(
+                                         TaskDataFluidSimulation::
+                                             ControlParameters::Solver::_count);
+                     ++i)
                 {
-                    ImGui::DragInt("Jacobi Iterations",
-                                   &m_simulationParameters.nbJacobiIterations,
-                                   1, 1, 5000);
+                    auto iType = static_cast<
+                        TaskDataFluidSimulation::ControlParameters::Solver>(i);
+                    if (ImGui::Selectable(
+                            solverNames[i],
+                            iType == m_simulationParameters.solver))
+                    {
+                        m_simulationParameters.solver = iType;
+                    }
                 }
-                break;
-                case TaskDataFluidSimulation::ControlParameters::Solver::
-                    multiGridV:
+                ImGui::EndCombo();
+            }
+
+            if (ImGui::TreeNode("Parameters"))
+            {
+                switch (m_simulationParameters.solver)
                 {
-                    ImGui::DragInt("MG Iterations",
-                                   &m_simulationParameters.nbMGIterations,
-                                   1, 1, 10);
-                    ImGui::DragInt("MG Jacobi Iterations",
-                                   &m_simulationParameters.nbMGJacobiIterations,
-                                   1, 1, 1000);
-                    ImGui::DragInt("MG depth",
-                                   &m_simulationParameters.maxMGDepth, 1, 1, 6);
+                    default:
+                    case TaskDataFluidSimulation::ControlParameters::Solver::
+                        jacobi:
+                    {
+                        ImGui::DragInt(
+                            "Jacobi Iterations",
+                            &m_simulationParameters.nbJacobiIterations, 1, 1,
+                            5000);
+                    }
+                    break;
+                    case TaskDataFluidSimulation::ControlParameters::Solver::
+                        multiGridV:
+                    {
+                        ImGui::DragInt("MG Iterations",
+                                       &m_simulationParameters.nbMGIterations,
+                                       1, 1, 10);
+                        ImGui::DragInt(
+                            "MG Jacobi Iterations",
+                            &m_simulationParameters.nbMGJacobiIterations, 1, 1,
+                            1000);
+                        ImGui::DragInt("MG depth",
+                                       &m_simulationParameters.maxMGDepth, 1, 1,
+                                       6);
+                    }
+                    break;
                 }
-                break;
+
+                ImGui::TreePop();
             }
 
             ImGui::TreePop();

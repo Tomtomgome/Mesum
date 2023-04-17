@@ -7,15 +7,17 @@ SamplerState samplerLinearBlackBorder : register(s3);
 struct Data
 {
   uint2 resolution;
-  float cellSize;
+  float2 cellSize;
+  uint wallAtTop;
+  uint wallAtRight;
+  uint wallAtBottom;
+  uint wallAtLeft;
 };
 ConstantBuffer<Data> data : register(b0);
 
 #define COMPUTE_GROUP_SIZE 16
 
-static const float g_time = 0.016;
-
-static const float g_cellSize = 1.0f;
+static const float g_time = 0.016f;
 
 static const float g_density = 1.0f;
 
@@ -57,7 +59,24 @@ CoordData uv_plus_res(CoordData a_uv, int a_nbX, int a_nbY)
 {
   CoordData result = a_uv;
   result.uv += float2(a_nbX * a_uv.pixel.x, a_nbY * a_uv.pixel.y);
-  result.uv = min(float2(1.0f, 1.0f) - a_uv.halfPixel, max(a_uv.halfPixel, result.uv));
+
+  // This isn't very optimal :( maybe use a define instead, not dymanic but more performant
+  if(data.wallAtRight)
+  {
+    result.uv.x = min(1.0f - a_uv.halfPixel.x, result.uv.x);
+  }
+  if(data.wallAtLeft)
+  {
+    result.uv.x = max(a_uv.halfPixel.x, result.uv.x);
+  }
+  if(data.wallAtTop)
+  {
+    result.uv.y = min(1.0f - a_uv.halfPixel.y, result.uv.y);
+  }
+  if(data.wallAtRight)
+  {
+    result.uv.y = max(a_uv.halfPixel.y, result.uv.y);
+  }
   return result;
 }
 

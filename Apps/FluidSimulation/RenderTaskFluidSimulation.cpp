@@ -268,8 +268,7 @@ Dx12TaskFluidSimulation::Dx12TaskFluidSimulation(
     m_offsetResolutionArrows = offset;
     for (mUInt i = 0; i < scm_maxVCycleDepth; ++i)
     {
-        offset += round_up(sizeof(math::mUIVec2), scm_minimalStructSize) *
-                  scm_minimalStructSize;
+        offset += scm_minimalStructSize;
         m_offsetResolutionBaseImage[i] = offset;
     }
 
@@ -372,10 +371,10 @@ void Dx12TaskFluidSimulation::prepare()
     }
 
     // Pre-warm for stabilization with jacobi
-    auto& parameters =
-        static_cast<TaskDataFluidSimulation::ControlParameters&>(
-            unref_safe(m_taskData.pParameters));
-    if(parameters.isRunning && parameters.nbJacobiIterations >= 20 && m_frameCount % 20 == 0)
+    auto& parameters = static_cast<TaskDataFluidSimulation::ControlParameters&>(
+        unref_safe(m_taskData.pParameters));
+    if (parameters.isRunning && parameters.nbJacobiIterations >= 40 &&
+        m_frameCount % 20 == 0)
     {
         parameters.nbJacobiIterations /= 2;
     }
@@ -430,13 +429,16 @@ void Dx12TaskFluidSimulation::execute() const
     {
         mU8* pData = m_pBufferData + m_offsetResolutionBaseImage[i];
 
-        math::mUIVec2& resolutionBaseImage = *((math::mUIVec2*)(pData));
-        resolutionBaseImage =
+        CommonConstantBuffer& constantBuffer =
+            *((CommonConstantBuffer*)(pData));
+        constantBuffer.resolution =
             math::mUIVec2{m_simulationWidth / mUInt(std::pow(2U, i)),
                           m_simulationHeight / mUInt(std::pow(2U, i))};
-        pData += sizeof(math::mUIVec2);
-        mFloat& cellSize = *((mFloat*)(pData));
-        cellSize         = std::pow(2.0f, 0);
+        constantBuffer.cellSize     = math::mVec2{1.0f, 1.0f};
+        constantBuffer.wallAtBottom = parameters.bottomBoundIsWall;
+        constantBuffer.wallAtLeft   = parameters.leftBoundIsWall;
+        constantBuffer.wallAtRight  = parameters.rightBoundIsWall;
+        constantBuffer.wallAtTop    = parameters.topBoundIsWall;
     }
 
     D3D12_GPU_VIRTUAL_ADDRESS resolutionArrowsBuffer =
@@ -1049,6 +1051,7 @@ void Dx12TaskFluidSimulation::init_samplers()
     descStaticSampler.MaxAnisotropy  = 1;
     descStaticSampler.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
 
+    // Linear
     {
         D3D12_FILTER_TYPE eDx12FilterMinMag = D3D12_FILTER_TYPE_LINEAR;
         D3D12_FILTER_TYPE eDx12FilterMip    = D3D12_FILTER_TYPE_LINEAR;
@@ -1071,6 +1074,7 @@ void Dx12TaskFluidSimulation::init_samplers()
         m_samplersDescs.push_back(descStaticSampler);
     }
 
+    // Point
     {
         D3D12_FILTER_TYPE           eDx12FilterMinMag = D3D12_FILTER_TYPE_POINT;
         D3D12_FILTER_TYPE           eDx12FilterMip    = D3D12_FILTER_TYPE_POINT;
@@ -1093,6 +1097,7 @@ void Dx12TaskFluidSimulation::init_samplers()
         m_samplersDescs.push_back(descStaticSampler);
     }
 
+    // Point with border
     {
         D3D12_FILTER_TYPE           eDx12FilterMinMag = D3D12_FILTER_TYPE_POINT;
         D3D12_FILTER_TYPE           eDx12FilterMip    = D3D12_FILTER_TYPE_POINT;
@@ -1115,6 +1120,7 @@ void Dx12TaskFluidSimulation::init_samplers()
         m_samplersDescs.push_back(descStaticSampler);
     }
 
+    // Linear with border
     {
         D3D12_FILTER_TYPE eDx12FilterMinMag = D3D12_FILTER_TYPE_LINEAR;
         D3D12_FILTER_TYPE eDx12FilterMip    = D3D12_FILTER_TYPE_LINEAR;

@@ -107,17 +107,25 @@ struct TaskDataFluidSimulation : public m::render::TaskData
             _count
         };
 
-        m::mBool        isRunning                      = false;
+        // Simulation
+        m::mBool isRunning = false;
+
+        m::mBool leftBoundIsWall   = false;
+        m::mBool rightBoundIsWall  = false;
+        m::mBool topBoundIsWall    = false;
+        m::mBool bottomBoundIsWall = true;
+        // Display
         m::math::mIVec2 screenSize                     = {640, 640};
         m::mBool        displaySpeed                   = false;
         m::mBool        displayFluid                   = true;
         m::math::mIVec2 vectorRepresentationResolution = {80, 80};
         DebugDisplays   debugDisplay                   = DebugDisplays::none;
-        Solver          solver                         = Solver::jacobi;
-        m::mInt         nbJacobiIterations             = {5120};
-        m::mInt         nbMGIterations                 = {1};
-        m::mInt         nbMGJacobiIterations           = {5};
-        m::mInt         maxMGDepth                     = {6};
+        // Solver
+        Solver  solver               = Solver::jacobi;
+        m::mInt nbJacobiIterations   = {5120};
+        m::mInt nbMGIterations       = {3};
+        m::mInt nbMGJacobiIterations = {50};
+        m::mInt maxMGDepth           = {6};
     };
 
     m::render::mIRenderTarget*                pOutputRT    = nullptr;
@@ -334,7 +342,17 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     DescriptorHeapFluidSimulation m_descriptorHeap;
 
     // Constant buffer
-    static const m::mU64  scm_minimalStructSize = 256;
+    struct CommonConstantBuffer
+    {
+        m::math::mUIVec2 resolution;
+        m::math::mVec2   cellSize;
+        m::mUInt         wallAtTop;
+        m::mUInt         wallAtRight;
+        m::mUInt         wallAtBottom;
+        m::mUInt         wallAtLeft;
+    };
+    static constexpr m::mU64 scm_minimalStructSize =
+        256 * ((sizeof(CommonConstantBuffer) + 255) / 256);
     static const m::mUInt scm_maxSizeConstantBuffer =
         50 * scm_minimalStructSize;
     m::dx12::ComPtr<ID3D12Resource> m_pConstantBuffers[msc_numFrames]{};
