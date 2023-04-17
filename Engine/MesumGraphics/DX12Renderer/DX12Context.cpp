@@ -25,6 +25,10 @@ void DX12Context::init(mBool a_useWarp)
 
 void DX12Context::deinit()
 {
+#ifdef M_DEBUG
+    disable_messageCallback(m_device);
+#endif  // M_DEBUG
+
     m_graphicsCommandQueue.destroy();
     m_computeCommandQueue.destroy();
 }

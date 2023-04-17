@@ -41,74 +41,62 @@ void DX12CommandQueue::destroy()
 Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList2>
 DX12CommandQueue::get_commandList()
 {
-    Microsoft::WRL::ComPtr<ID3D12CommandAllocator>     commandAllocator;
-    Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList2> commandList;
-    if (!m_commandAllocatorQueue.empty() &&
-        is_fenceComplete(m_commandAllocatorQueue.front().m_fenceValue))
-    {
-        commandAllocator = m_commandAllocatorQueue.front().m_commandAllocator;
-        m_commandAllocatorQueue.pop();
+    ComPtr<ID3D12GraphicsCommandList2> commandList;
+    CommandAllocatorEntry*             pCommandAllocatorEntry = nullptr;
 
-        check_mhr(commandAllocator->Reset());
+    if (m_freeCommandAllocators.empty())
+    {
+        CommandAllocatorEntry createdCommandAllocator;
+        createdCommandAllocator.commandAllocator = create_commandAllocator();
+        m_freeCommandAllocators.push(createdCommandAllocator);
+    }
+
+    pCommandAllocatorEntry = &m_freeCommandAllocators.front();
+    CommandAllocatorEntry& commandAllocatorEntry = *pCommandAllocatorEntry;
+
+    if (!commandAllocatorEntry.availableCommandLists.empty())
+    {
+        commandList = commandAllocatorEntry.availableCommandLists.front();
+        commandAllocatorEntry.availableCommandLists.pop();
     }
     else
     {
-        commandAllocator = create_commandAllocator();
-        mD3D12DebugNamed(commandAllocator, "Queued command allocator");
+        commandList =
+            create_commandList(commandAllocatorEntry.commandAllocator);
     }
+    commandAllocatorEntry.usedCommandLists.push(commandList);
 
-    if (!m_commandListQueue.empty())
-    {
-        commandList = m_commandListQueue.front();
-        m_commandListQueue.pop();
-    }
-    else
-    {
-        commandList = create_commandList(commandAllocator);
-        mD3D12DebugNamed(commandList, "Queued command list");
-    }
+    check_mhr(commandList->Reset(commandAllocatorEntry.commandAllocator.Get(),
+                                  nullptr));
 
-    check_mhr(commandList->Reset(commandAllocator.Get(), nullptr));
-
-    // Associate the command allocator with the command list so that it can be
-    // retrieved when the command list is executed.
-    check_mhr(commandList->SetPrivateDataInterface(
-        __uuidof(ID3D12CommandAllocator), commandAllocator.Get()));
     return commandList;
 }
 
 // Execute a command list.
 // Returns the fence value to wait for for this command list.
-mU64 DX12CommandQueue::execute_commandList(
+void DX12CommandQueue::execute_commandList(
     Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList2> a_commandList)
 {
     check_mhr(a_commandList->Close());
 
-    ID3D12CommandAllocator* commandAllocator;
-    UINT                    dataSize = sizeof(commandAllocator);
-    check_mhr(a_commandList->GetPrivateData(__uuidof(ID3D12CommandAllocator),
-                                            &dataSize, &commandAllocator));
-
     ID3D12CommandList* const ppCommandLists[] = {a_commandList.Get()};
 
     m_d3d12CommandQueue->ExecuteCommandLists(1, ppCommandLists);
-    uint64_t fenceValue = signal_fence();
-
-    m_commandAllocatorQueue.emplace(
-        CommandAllocatorEntry{fenceValue, commandAllocator});
-    m_commandListQueue.push(a_commandList);
-
-    // The ownership of the command allocator has been transferred to the ComPtr
-    // in the command allocator queue. It is safe to release the reference
-    // in this temporary COM pointer here.
-    commandAllocator->Release();
-
-    return fenceValue;
 }
 
 mU64 DX12CommandQueue::signal_fence()
 {
-    return dx12::signal_fence(m_d3d12CommandQueue, m_d3d12Fence, m_fenceValue);
+    uint64_t signalValue =
+        dx12::signal_fence(m_d3d12CommandQueue, m_d3d12Fence, m_fenceValue);
+
+    if (!m_freeCommandAllocators.empty())
+    {
+        m_freeCommandAllocators.front().fenceValue = signalValue;
+        m_inFlightCommandAllocators.push(m_freeCommandAllocators.front());
+        m_freeCommandAllocators.pop();
+    }
+
+    return signalValue;
 }
 
 mBool DX12CommandQueue::is_fenceComplete(mU64 a_fenceValue)
@@ -118,11 +106,29 @@ mBool DX12CommandQueue::is_fenceComplete(mU64 a_fenceValue)
 void DX12CommandQueue::wait_fenceValue(mU64 a_fenceValue)
 {
     dx12::wait_fenceValue(m_d3d12Fence, a_fenceValue, m_fenceEvent);
+
+    // Free/Reset associatedCommandPool;
+    while (!m_inFlightCommandAllocators.empty() &&
+           m_inFlightCommandAllocators.front().fenceValue <= a_fenceValue)
+    {
+        CommandAllocatorEntry& entry = m_inFlightCommandAllocators.front();
+        check_mhr(entry.commandAllocator->Reset());
+
+        while (!entry.usedCommandLists.empty())
+        {
+            entry.availableCommandLists.push(entry.usedCommandLists.front());
+            entry.usedCommandLists.pop();
+        }
+
+        m_freeCommandAllocators.push(m_inFlightCommandAllocators.front());
+        m_inFlightCommandAllocators.pop();
+    }
 }
 
 void DX12CommandQueue::flush()
 {
-    dx12::flush(m_d3d12CommandQueue, m_d3d12Fence, m_fenceValue, m_fenceEvent);
+    uint64_t fenceValueForSignal = signal_fence();
+    wait_fenceValue(fenceValueForSignal);
 }
 
 Microsoft::WRL::ComPtr<ID3D12CommandQueue>

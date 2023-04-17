@@ -235,7 +235,6 @@ void CommandQueue::flush()
 //-----------------------------------------------------------------------------
 VkCommandBuffer CommandQueue::get_commandBuffer()
 {
-    VkCommandPool     commandPool;
     VkCommandBuffer   commandBuffer;
     CommandPoolEntry* pCommandPoolEntry = nullptr;
     if (!m_freeCommandPools.empty())

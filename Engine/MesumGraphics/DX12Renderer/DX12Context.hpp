@@ -21,8 +21,14 @@ class DX12Context
 
     mBool get_tearingSupport() const { return m_tearingSupported; }
 
-    DX12CommandQueue& get_graphicsCommandQueue() { return m_graphicsCommandQueue; }
-    DX12CommandQueue& get_computeCommandQueue() { return m_graphicsCommandQueue; }
+    DX12CommandQueue& get_graphicsCommandQueue()
+    {
+        return m_graphicsCommandQueue;
+    }
+    DX12CommandQueue& get_computeCommandQueue()
+    {
+        return m_computeCommandQueue;
+    }
 
     // DirectX 12 Objects
     ComPtr<ID3D12Device2> m_device;

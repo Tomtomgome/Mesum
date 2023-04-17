@@ -68,7 +68,10 @@ ComPtr<ID3DBlob> compile_shader(std::string const& a_shaderPath,
                                 std::string const& a_entryPoint,
                                 std::string const& a_target);
 
+#ifdef M_DEBUG
 void enable_debugLayer();
+void disable_messageCallback(ComPtr<ID3D12Device2> a_device);
+#endif
 void report_liveObjects();
 bool check_tearingSupport();
 

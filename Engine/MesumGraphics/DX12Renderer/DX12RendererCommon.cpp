@@ -423,7 +423,7 @@ void enable_debugLayer()
 
     ComPtr<ID3D12Debug1> debugInterface1;
     check_mhr(debugInterface->QueryInterface(IID_PPV_ARGS(&debugInterface1)));
-    debugInterface1->SetEnableGPUBasedValidation(true);
+    debugInterface1->SetEnableGPUBasedValidation(false);
 }
 
 void report_liveObjects()
@@ -438,6 +438,9 @@ void report_liveObjects()
     }
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 mBool check_tearingSupport()
 {
     mBool allowTearing = false;
@@ -464,6 +467,9 @@ mBool check_tearingSupport()
     return allowTearing;
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 ComPtr<IDXGIAdapter4> get_adapter(mBool a_useWarp)
 {
     ComPtr<IDXGIFactory4> dxgiFactory;
@@ -509,10 +515,41 @@ ComPtr<IDXGIAdapter4> get_adapter(mBool a_useWarp)
     return dxgiAdapter4;
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void callback_logDebugMessage(D3D12_MESSAGE_CATEGORY a_category,
+                              D3D12_MESSAGE_SEVERITY a_severity,
+                              D3D12_MESSAGE_ID ID, LPCSTR pDescription,
+                              void* pContext)
+{
+    switch (a_severity)
+    {
+        case D3D12_MESSAGE_SEVERITY_MESSAGE:
+        case D3D12_MESSAGE_SEVERITY_INFO:
+            mLog_infoTo(DX_RENDERER_ID, "Validation layer : ", pDescription);
+            break;
+        case D3D12_MESSAGE_SEVERITY_WARNING:
+            mLog_warningTo(DX_RENDERER_ID, "Validation layer : ", pDescription);
+            break;
+        case D3D12_MESSAGE_SEVERITY_ERROR:
+        case D3D12_MESSAGE_SEVERITY_CORRUPTION:
+            mLog_errorTo(DX_RENDERER_ID, "Validation layer : ", pDescription);
+            break;
+        default: mInterrupt;
+    }
+}
+
+#ifdef M_DEBUG
+//static DWORD g_callbackCookie;
+#endif
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 ComPtr<ID3D12Device2> create_device(ComPtr<IDXGIAdapter4> a_adapter)
 {
     ComPtr<ID3D12Device2> d3d12Device2;
-    check_mhr(D3D12CreateDevice(a_adapter.Get(), D3D_FEATURE_LEVEL_11_0,
+    check_mhr(D3D12CreateDevice(a_adapter.Get(), D3D_FEATURE_LEVEL_12_0,
                                 IID_PPV_ARGS(&d3d12Device2)));
     mD3D12DebugNamed(d3d12Device2, "Suplied device");
 
@@ -561,11 +598,37 @@ ComPtr<ID3D12Device2> create_device(ComPtr<IDXGIAdapter4> a_adapter)
 
         check_mhr(infoQueue->PushStorageFilter(&filter));
     }
+
+// Maybe some day...
+//    ComPtr<ID3D12InfoQueue1> infoQueue1;
+//    if (SUCCEEDED(infoQueue.As(&infoQueue1)))
+//    {
+//        infoQueue1->RegisterMessageCallback(callback_logDebugMessage,
+//                                            D3D12_MESSAGE_CALLBACK_FLAG_NONE,
+//                                            nullptr, &g_callbackCookie);
+//    }
 #endif
 
     return d3d12Device2;
 }
 
+#ifdef M_DEBUG
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+void disable_messageCallback(ComPtr<ID3D12Device2> a_device)
+{
+//    ComPtr<ID3D12InfoQueue1> infoQueue1;
+//    if (SUCCEEDED(a_device.As(&infoQueue1)))
+//    {
+//        infoQueue1->UnregisterMessageCallback(g_callbackCookie);
+//    }
+}
+#endif
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 ComPtr<ID3D12CommandQueue> create_commandQueue(ComPtr<ID3D12Device2>   a_device,
                                                D3D12_COMMAND_LIST_TYPE a_type)
 {
@@ -584,6 +647,9 @@ ComPtr<ID3D12CommandQueue> create_commandQueue(ComPtr<ID3D12Device2>   a_device,
     return d3d12CommandQueue;
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 ComPtr<IDXGISwapChain4> create_swapChain(
     HWND a_hWnd, ComPtr<ID3D12CommandQueue> a_commandQueue, mU32 a_width,
     mU32 a_height, mU32 a_bufferCount)
