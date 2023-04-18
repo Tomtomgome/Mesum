@@ -22,7 +22,7 @@ struct Pixel
   float4 color : SV_TARGET0;
 };
 
-Texture2D<float4> textures : register(t0);
+Texture2D<float4> texture : register(t0);
 SamplerState linearSampler : register(s0);
 SamplerState pointSampler : register(s1);
 
@@ -30,10 +30,10 @@ Pixel ps_main(VertexShaderOutput a_in)
 {
   Pixel output;
   
-  float4 data = textures.Sample(linearSampler, float2(a_in.uv.x, 1.0 - a_in.uv.y));
+  float4 data = texture.Sample(pointSampler, float2(a_in.uv.x, 1.0 - a_in.uv.y));
   output.color.r = data.r;
   output.color.g = data.g;
   output.color.b = data.b;
-  output.color.a = 0.9;
+  output.color.a = 1.0;
   return output;
 }

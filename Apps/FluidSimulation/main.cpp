@@ -41,16 +41,22 @@ void init_initialData(m::resource::mTypedImage<m::math::mVec4>& a_image)
         for (mInt col = 0; col < s_nbCol; ++col)
         {
             mInt index            = row * s_nbCol + col;
-            a_image.data[index].x = 0.0f;        // uv
-            a_image.data[index].y = 0.0f;        // uh
-            a_image.data[index].z = s_ambientT;  // t
-            a_image.data[index].a = 0.0f;        // S
+            a_image.data[index].x = 0.0f;        // qv
+            a_image.data[index].y = 0.0f;        // qc
+            a_image.data[index].z = 0.0f;        // qr
+            a_image.data[index].a = s_ambientT;  // T
         }
     }
 
-    a_image.data[convert_toIndex(s_nbCol / 2, 1)].z = 350.0;
-    a_image.data[convert_toIndex(s_nbCol / 2, 1)].a = 200.0;
-    //*
+    for(mInt col = 0; col < s_nbCol; ++col)
+    {
+        a_image.data[convert_toIndex(col, 0)].x = 0.5;
+        a_image.data[convert_toIndex(col, 1)].x = 0.5;
+    }
+
+    //a_image.data[convert_toIndex(s_nbCol / 2, 1)].y = 200.0;
+    //a_image.data[convert_toIndex(s_nbCol / 2, 1)].a = 350.0;
+    /*
     a_image.data[convert_toIndex(s_nbCol / 2 + 1, 1)].z = 350.0;
     a_image.data[convert_toIndex(s_nbCol / 2 + 1, 1)].a = 200.0;
     a_image.data[convert_toIndex(s_nbCol / 2 - 1, 1)].z = 350.0;
@@ -311,6 +317,8 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
         ImGui::Checkbox("Displays fluid", &m_simulationParameters.displayFluid);
         ImGui::Checkbox("Displays speeds",
                         &m_simulationParameters.displaySpeed);
+        ImGui::Checkbox("Displays simulation debug",
+                        &m_simulationParameters.displaySimulationDebug);
         ImGui::DragInt2(
             "Arrows resolution",
             m_simulationParameters.vectorRepresentationResolution.data, 1, 16,

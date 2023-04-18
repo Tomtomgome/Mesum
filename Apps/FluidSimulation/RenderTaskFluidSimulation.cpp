@@ -434,7 +434,7 @@ void Dx12TaskFluidSimulation::execute() const
         constantBuffer.resolution =
             math::mUIVec2{m_simulationWidth / mUInt(std::pow(2U, i)),
                           m_simulationHeight / mUInt(std::pow(2U, i))};
-        constantBuffer.cellSize     = math::mVec2{1.0f, 1.0f};
+        constantBuffer.cellSize     = math::mVec2{30.0f, 30.0f};
         constantBuffer.wallAtBottom = parameters.bottomBoundIsWall;
         constantBuffer.wallAtLeft   = parameters.leftBoundIsWall;
         constantBuffer.wallAtRight  = parameters.rightBoundIsWall;
@@ -535,7 +535,9 @@ void Dx12TaskFluidSimulation::execute() const
                                       m_idSimulationQuery);
                 computeCommandList->SetDescriptorHeaps(1, aHeaps);
 
-                computeCommandList->SetPipelineState(m_psoSimulation.Get());
+                // TODO : Enable dynamic switching between simulations
+                computeCommandList->SetPipelineState(
+                    m_psoCloudSimulation.Get());
                 computeCommandList->SetComputeRootSignature(
                     m_rsSimulation.Get());
 
@@ -547,6 +549,8 @@ void Dx12TaskFluidSimulation::execute() const
                     2, m_hdlDescVelocityOutput[m_iComputed].hdlGPU);
                 computeCommandList->SetComputeRootConstantBufferView(
                     3, resolutionBaseImageBuffer);
+                computeCommandList->SetComputeRootDescriptorTable(
+                    4, m_hdlDescOutputDebug.hdlGPU);
 
                 computeCommandList->Dispatch(
                     round_up<mUInt>(nbComputeCol, m_sizeComputeGroup),
@@ -861,6 +865,48 @@ void Dx12TaskFluidSimulation::execute() const
     }
 
     // ---------------- Renders debug data
+    if (parameters.displaySimulationDebug)
+    {
+        dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
+            dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
+                .get_commandList();
+        {
+            graphicCommandList->SetDescriptorHeaps(1, aHeaps);
+
+            graphicCommandList->OMSetRenderTargets(1, &rtv, FALSE, nullptr);
+            graphicCommandList->RSSetViewports(1, &viewport);
+            graphicCommandList->RSSetScissorRects(1, &scissorRect);
+
+            graphicCommandList->SetPipelineState(m_psoDataRendering4f.Get());
+            graphicCommandList->SetGraphicsRootSignature(
+                m_rsFluidRendering.Get());
+
+            dx12::ComPtr<ID3D12Device> device =
+                dx12::DX12Context::gs_dx12Contexte->m_device;
+
+            graphicCommandList->IASetPrimitiveTopology(
+                D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+            resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
+                m_pTextureDebug.Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS,
+                D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+            graphicCommandList->ResourceBarrier(1, resourceBarrier);
+
+            graphicCommandList->SetGraphicsRootDescriptorTable(
+                0, m_hdlDescInputDebug.hdlGPU);
+
+            graphicCommandList->DrawInstanced(3, 1, 0, 0);
+
+            resourceBarrier[0] = CD3DX12_RESOURCE_BARRIER::Transition(
+                m_pTextureDebug.Get(),
+                D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+                D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+            graphicCommandList->ResourceBarrier(1, resourceBarrier);
+        }
+        dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
+            .execute_commandList(graphicCommandList.Get());
+    }
+
     if (m::mInt(parameters.debugDisplay) !=
         m::mInt(
             TaskDataFluidSimulation::ControlParameters::DebugDisplays::none))
@@ -875,7 +921,7 @@ void Dx12TaskFluidSimulation::execute() const
             graphicCommandList->RSSetViewports(1, &viewport);
             graphicCommandList->RSSetScissorRects(1, &scissorRect);
 
-            graphicCommandList->SetPipelineState(m_psoDataRendering.Get());
+            graphicCommandList->SetPipelineState(m_psoDataRendering1f.Get());
             graphicCommandList->SetGraphicsRootSignature(
                 m_rsFluidRendering.Get());
 
@@ -1512,7 +1558,7 @@ void Dx12TaskFluidSimulation::setup_simulationPass()
     HRESULT res;
     // ----------------- Root signature and pipeline state
     std::vector<CD3DX12_ROOT_PARAMETER> vRootParameters;
-    vRootParameters.resize(4);
+    vRootParameters.resize(5);
 
     std::vector<CD3DX12_DESCRIPTOR_RANGE> vTextureRanges;
     vTextureRanges.resize(1);
@@ -1526,10 +1572,15 @@ void Dx12TaskFluidSimulation::setup_simulationPass()
     vOutputRanges.resize(1);
     vOutputRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, 1, 0, 0);
 
+    std::vector<CD3DX12_DESCRIPTOR_RANGE> vOutputDebugRanges;
+    vOutputDebugRanges.resize(1);
+    vOutputDebugRanges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_UAV, 1, 1, 0);
+
     vRootParameters[0].InitAsDescriptorTable(1, vTextureRanges.data());
     vRootParameters[1].InitAsDescriptorTable(1, vTextureRangesVelocity.data());
     vRootParameters[2].InitAsDescriptorTable(1, vOutputRanges.data());
     vRootParameters[3].InitAsConstantBufferView(0);
+    vRootParameters[4].InitAsDescriptorTable(1, vOutputDebugRanges.data());
 
     {
         CD3DX12_ROOT_SIGNATURE_DESC descRootSignature;
@@ -1557,15 +1608,23 @@ void Dx12TaskFluidSimulation::setup_simulationPass()
 
     D3D12_COMPUTE_PIPELINE_STATE_DESC fieldPipelineDescCompute{};
 
-    dx12::ComPtr<ID3DBlob> cs_field = dx12::compile_shader(
+    dx12::ComPtr<ID3DBlob> cs_fluid = dx12::compile_shader(
         "data/fluidSimulation.hlsl", "cs_simulation", "cs_6_0");
 
-    fieldPipelineDescCompute.CS.BytecodeLength  = cs_field->GetBufferSize();
-    fieldPipelineDescCompute.CS.pShaderBytecode = cs_field->GetBufferPointer();
+    fieldPipelineDescCompute.CS.BytecodeLength  = cs_fluid->GetBufferSize();
+    fieldPipelineDescCompute.CS.pShaderBytecode = cs_fluid->GetBufferPointer();
     fieldPipelineDescCompute.pRootSignature     = m_rsSimulation.Get();
 
     dx12::check_mhr(device->CreateComputePipelineState(
-        &fieldPipelineDescCompute, IID_PPV_ARGS(&m_psoSimulation)));
+        &fieldPipelineDescCompute, IID_PPV_ARGS(&m_psoFluidSimulation)));
+
+    dx12::ComPtr<ID3DBlob> cs_cloud = dx12::compile_shader(
+        "data/cloudSimulation.hlsl", "cs_simulation", "cs_6_0");
+
+    fieldPipelineDescCompute.CS.BytecodeLength  = cs_cloud->GetBufferSize();
+    fieldPipelineDescCompute.CS.pShaderBytecode = cs_cloud->GetBufferPointer();
+    dx12::check_mhr(device->CreateComputePipelineState(
+        &fieldPipelineDescCompute, IID_PPV_ARGS(&m_psoCloudSimulation)));
 
     // Timmer ID
     m_idSimulationQuery = get_queryID();
@@ -2212,9 +2271,9 @@ void Dx12TaskFluidSimulation::setup_debugDataRenderingPass()
     D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
 
     dx12::ComPtr<ID3DBlob> vs =
-        dx12::compile_shader("data/displayData.hlsl", "vs_main", "vs_6_0");
+        dx12::compile_shader("data/displayData1f.hlsl", "vs_main", "vs_6_0");
     dx12::ComPtr<ID3DBlob> ps =
-        dx12::compile_shader("data/displayData.hlsl", "ps_main", "ps_6_0");
+        dx12::compile_shader("data/displayData1f.hlsl", "ps_main", "ps_6_0");
 
     pipelineDesc.InputLayout.pInputElementDescs = nullptr;
     pipelineDesc.InputLayout.NumElements        = 0;
@@ -2255,7 +2314,58 @@ void Dx12TaskFluidSimulation::setup_debugDataRenderingPass()
     pipelineDesc.pRootSignature = m_rsFluidRendering.Get();
 
     dx12::check_mhr(device->CreateGraphicsPipelineState(
-        &pipelineDesc, IID_PPV_ARGS(&m_psoDataRendering)));
+        &pipelineDesc, IID_PPV_ARGS(&m_psoDataRendering1f)));
+
+    dx12::ComPtr<ID3DBlob> vs4f =
+        dx12::compile_shader("data/displayData4f.hlsl", "vs_main", "vs_6_0");
+    dx12::ComPtr<ID3DBlob> ps4f =
+        dx12::compile_shader("data/displayData4f.hlsl", "ps_main", "ps_6_0");
+
+    pipelineDesc.VS.BytecodeLength  = vs4f->GetBufferSize();
+    pipelineDesc.VS.pShaderBytecode = vs4f->GetBufferPointer();
+    pipelineDesc.PS.BytecodeLength  = ps4f->GetBufferSize();
+    pipelineDesc.PS.pShaderBytecode = ps4f->GetBufferPointer();
+
+    dx12::check_mhr(device->CreateGraphicsPipelineState(
+        &pipelineDesc, IID_PPV_ARGS(&m_psoDataRendering4f)));
+
+    // Simulation Debug textures
+    D3D12_RESOURCE_DESC descTexture{};
+    descTexture.MipLevels          = 1;
+    descTexture.Width              = m_simulationWidth;
+    descTexture.Height             = m_simulationHeight;
+    descTexture.Flags              = D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS;
+    descTexture.DepthOrArraySize   = 1;
+    descTexture.SampleDesc.Count   = 1;
+    descTexture.SampleDesc.Quality = 0;
+    descTexture.Dimension          = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+    descTexture.Format             = scm_formatDataTexture;
+
+    D3D12_SHADER_RESOURCE_VIEW_DESC descShaderResourceView = {};
+    descShaderResourceView.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+    descShaderResourceView.Shader4ComponentMapping =
+        D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+    descShaderResourceView.Format                    = scm_formatDataTexture;
+    descShaderResourceView.Texture2D.MipLevels       = 1;
+    descShaderResourceView.Texture2D.MostDetailedMip = 0;
+    descShaderResourceView.Texture2D.ResourceMinLODClamp = 0.0f;
+
+    D3D12_UNORDERED_ACCESS_VIEW_DESC descUav = {};
+    descUav.Format                           = scm_formatDataTexture;
+    descUav.ViewDimension                    = D3D12_UAV_DIMENSION_TEXTURE2D;
+
+    auto oHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+
+    HRESULT hr = device->CreateCommittedResource(
+        &oHeapProperties, D3D12_HEAP_FLAG_NONE, &descTexture,
+        D3D12_RESOURCE_STATE_UNORDERED_ACCESS, nullptr,
+        IID_PPV_ARGS(m_pTextureDebug.GetAddressOf()));
+    mAssert(hr == S_OK);
+    m_pTextureDebug->SetName(L"Debug Texture");
+    m_hdlDescInputDebug = m_descriptorHeap.create_srvAndGetHandle(
+        m_pTextureDebug, descShaderResourceView);
+    m_hdlDescOutputDebug =
+        m_descriptorHeap.create_uavAndGetHandle(m_pTextureDebug, descUav);
 }
 
 //-----------------------------------------------------------------------------

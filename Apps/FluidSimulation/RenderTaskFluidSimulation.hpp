@@ -118,6 +118,7 @@ struct TaskDataFluidSimulation : public m::render::TaskData
         m::math::mIVec2 screenSize                     = {640, 640};
         m::mBool        displaySpeed                   = false;
         m::mBool        displayFluid                   = true;
+        m::mBool        displaySimulationDebug         = false;
         m::math::mIVec2 vectorRepresentationResolution = {80, 80};
         DebugDisplays   debugDisplay                   = DebugDisplays::none;
         // Solver
@@ -221,7 +222,8 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
 
     // --Simulation
     m::dx12::ComPtr<ID3D12RootSignature> m_rsSimulation  = nullptr;
-    m::dx12::ComPtr<ID3D12PipelineState> m_psoSimulation = nullptr;
+    m::dx12::ComPtr<ID3D12PipelineState> m_psoFluidSimulation = nullptr;
+    m::dx12::ComPtr<ID3D12PipelineState> m_psoCloudSimulation = nullptr;
     QueryID                              m_idSimulationQuery{};
 
     // --Solver
@@ -316,7 +318,8 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     m::dx12::ComPtr<ID3D12RootSignature> m_rsFluidRendering  = nullptr;
     m::dx12::ComPtr<ID3D12PipelineState> m_psoFluidRendering = nullptr;
     QueryID                              m_idFluidRenderingQuery{};
-    m::dx12::ComPtr<ID3D12PipelineState> m_psoDataRendering = nullptr;
+    m::dx12::ComPtr<ID3D12PipelineState> m_psoDataRendering1f = nullptr;
+    m::dx12::ComPtr<ID3D12PipelineState> m_psoDataRendering4f = nullptr;
 
     // --Arrow rendering
     m::dx12::ComPtr<ID3D12RootSignature> m_rsArrowRendering  = nullptr;
@@ -378,5 +381,10 @@ struct Dx12TaskFluidSimulation : public TaskFluidSimulation
     std::vector<m::dx12::ComPtr<ID3D12Resource>> m_pTextureResourceVelocity{};
     ResourceDescriptor m_hdlDescVelocityInput[scm_nbVelocityTexture]{};
     ResourceDescriptor m_hdlDescVelocityOutput[scm_nbVelocityTexture]{};
+
+    // Debug
+    m::dx12::ComPtr<ID3D12Resource> m_pTextureDebug{};
+    ResourceDescriptor m_hdlDescInputDebug{};
+    ResourceDescriptor m_hdlDescOutputDebug{};
 };
 #endif  // M_DX12_RENDERER
