@@ -27,7 +27,7 @@ void cs_advect(uint3 DTid : SV_DispatchThreadID)
   // Need to separate center cell quantities advection from staggered quantities advections
   float2 velocity = sample_velocity(uv);
 
-  float2 startingPoint = uv.uv - (g_time * velocity) * uv.pixel;
+  float2 startingPoint = uv.uv - (g_time * velocity / data.cellSize) * uv.pixel;
   uv.uv = startingPoint;
 
   outputData[uint2(DTid.x, DTid.y)] = sample_cubic_f4(inputData, samplerLinear, uv);

@@ -17,7 +17,7 @@ ConstantBuffer<Data> data : register(b0);
 
 #define COMPUTE_GROUP_SIZE 16
 
-static const float g_time = 0.016f;
+static const float g_time = 0.1f;
 
 static const float g_density = 1.0f;
 

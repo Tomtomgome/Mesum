@@ -48,7 +48,7 @@ void cs_main(uint3 DTid : SV_DispatchThreadID)
 
   const uint g_nbVertexPerArrow = 4;
   const float g_arrowFinsScale = 0.01f;
-  const float g_arrowScale = 0.03f;
+  const float g_arrowScale = 0.03f * 1.0f/10.0f; // Adapt to simulation
   const float4 g_defaultColor = float4(0.5f, 0.2f, 0.3f, 0.5f);
 
   uint baseVextexID = g_nbVertexPerArrow * (DTid.x * dimY + DTid.y);
@@ -60,6 +60,8 @@ void cs_main(uint3 DTid : SV_DispatchThreadID)
   float halfUnitY = unitY * 0.5f;
   float2 baseCoord = float2(-1.0f + halfUnitX, -1.0f + halfUnitY);
 
+  float arrowFinsScale = g_arrowFinsScale * min(1.0, length(color.xy));
+
   float2 arrowOrigin    = baseCoord + float2(DTid.x * unitX, DTid.y * unitY);
   float2 arrowTop = color.xy * g_arrowScale;
   float2 arrowDirection = -normalize(arrowTop.xy);
@@ -69,9 +71,9 @@ void cs_main(uint3 DTid : SV_DispatchThreadID)
   BufferOut[baseVextexID].color = g_defaultColor;
   BufferOut[baseVextexID + 1].positionCS = float4(arrowOrigin + arrowTop, 0.0, 1.0);
   BufferOut[baseVextexID + 1].color = g_defaultColor;
-  BufferOut[baseVextexID + 2].positionCS = float4(arrowOrigin + arrowTop + float2(cos(arrowAngle - 0.75), sin(arrowAngle - 0.75)) * g_arrowFinsScale, 0.0, 1.0);
+  BufferOut[baseVextexID + 2].positionCS = float4(arrowOrigin + arrowTop + float2(cos(arrowAngle - 0.75), sin(arrowAngle - 0.75)) * arrowFinsScale, 0.0, 1.0);
   BufferOut[baseVextexID + 2].color = g_defaultColor;
-  BufferOut[baseVextexID + 3].positionCS = float4(arrowOrigin + arrowTop + float2(cos(arrowAngle + 0.75), sin(arrowAngle + 0.75)) * g_arrowFinsScale, 0.0, 1.0);
+  BufferOut[baseVextexID + 3].positionCS = float4(arrowOrigin + arrowTop + float2(cos(arrowAngle + 0.75), sin(arrowAngle + 0.75)) * arrowFinsScale, 0.0, 1.0);
   BufferOut[baseVextexID + 3].color = g_defaultColor;
 }
 

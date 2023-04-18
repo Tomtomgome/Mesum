@@ -48,12 +48,13 @@ void init_initialData(m::resource::mTypedImage<m::math::mVec4>& a_image)
         }
     }
 
-    for(mInt col = 0; col < s_nbCol; ++col)
+    for(mInt col = 10; col < s_nbCol-10; ++col)
     {
-        a_image.data[convert_toIndex(col, 0)].x = 0.5;
-        a_image.data[convert_toIndex(col, 1)].x = 0.5;
+        for (mInt row = 1; row < 10; ++row)
+        {
+            a_image.data[convert_toIndex(col, row)].x = 0.5;
+        }
     }
-
     //a_image.data[convert_toIndex(s_nbCol / 2, 1)].y = 200.0;
     //a_image.data[convert_toIndex(s_nbCol / 2, 1)].a = 350.0;
     /*

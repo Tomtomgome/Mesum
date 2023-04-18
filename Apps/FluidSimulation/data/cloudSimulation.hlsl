@@ -59,11 +59,11 @@ float2 compute_vorticityForce(CoordData a_uv)
 void cs_simulation(uint3 DTid : SV_DispatchThreadID)
 {
     // Constants
-    static const float gravity           = -9.81; // m/s^2
+    static const float gravity           = 9.81; // m/s^2
 
     static const float transitionHeight = 8000; // m
     static const float temperatureGround = 300; // K
-    static const float lapseRate = -0.0065f   ; // K/m
+    static const float lapseRate = 0.0065f   ; // K/m
 
     static const float isentropicAir = 1.4f;//
     static const float isentropicWater = 1.33;
@@ -97,20 +97,20 @@ void cs_simulation(uint3 DTid : SV_DispatchThreadID)
     float massFractionWater = moleFractionWater*molarMassWater/molarMassThermal;
 
     // Altitude
-    float altitude = 0.5f * data.cellSize.y + DTid.y * data.cellSize.y; // m
+    float altitude = data.cellSize.y + DTid.y * data.cellSize.y; // m
 
     // Pressure
-    float pressure = pressureGround * pow((1 + lapseRate*altitude/temperatureGround), 5.2561);
+    float pressure = pressureGround * pow((1 - lapseRate*altitude/temperatureGround), 9.81/(lapseRate*287.41));
 
     // Temperature
     float temperatureAir;
     if(altitude <= transitionHeight)
     {
-        temperatureAir = temperatureGround + altitude * lapseRate;
+        temperatureAir = temperatureGround - altitude * lapseRate;
     }
     else
     {
-        temperatureAir = temperatureGround + transitionHeight * lapseRate - (altitude - transitionHeight) * lapseRate;
+        temperatureAir = temperatureGround - transitionHeight * lapseRate + (altitude - transitionHeight) * lapseRate;
     }
 
     float isentropicThermal = massFractionWater*isentropicWater + (1-massFractionWater)*isentropicAir;
@@ -120,11 +120,11 @@ void cs_simulation(uint3 DTid : SV_DispatchThreadID)
     outputVelocity[uint2(DTid.x, DTid.y)] = inputVelocity.SampleLevel(samplerPoint, uv.uv, 0);
   
     // gravity
-    //outputVelocity[uint2(DTid.x, DTid.y)].y += g_time * g_gravity;
+    //outputVelocity[uint2(DTid.x, DTid.y)].y -= g_time * gravity;
 
     // Boyancy
-    float boyancy = gravity*((molarMassAir/molarMassThermal)*(temperatureThermal/temperatureAir)-1);
-    //outputDebug[uint2(DTid.x, DTid.y)].x = boyancy;
+    float boyancy = true ? gravity*((molarMassAir/molarMassThermal)*(temperatureThermal/temperatureAir)-1) : 0.0f;
+    outputDebug[uint2(DTid.x, DTid.y)].x = boyancy;
     //outputDebug[uint2(DTid.x, DTid.y)].y = (molarMassAir/molarMassThermal);
     //outputDebug[uint2(DTid.x, DTid.y)].z = ((molarMassAir/molarMassThermal)*100) % 1.0;
 
