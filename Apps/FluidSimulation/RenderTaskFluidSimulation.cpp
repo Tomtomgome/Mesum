@@ -1109,7 +1109,7 @@ void Dx12TaskFluidSimulation::init_samplers()
 
         D3D12_TEXTURE_ADDRESS_MODE eDx12AddressMode =
             D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
-        descStaticSampler.AddressU = eDx12AddressMode;
+        descStaticSampler.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
         descStaticSampler.AddressV = eDx12AddressMode;
         descStaticSampler.AddressW = eDx12AddressMode;
         descStaticSampler.BorderColor =

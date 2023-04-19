@@ -16,7 +16,7 @@ float2 sample_velocity(CoordData a_uv)
 // ---------- applyForces
 static const float g_alpha             = -2;
 static const float g_beta              = 6.5;
-static const float g_vorticityStrength = 0.3;
+static const float g_vorticityStrength = 0.006;
 
 static const float g_ambientT = 270;
 
@@ -62,18 +62,8 @@ void cs_simulation(uint3 DTid : SV_DispatchThreadID)
     static const float gravity           = 9.81; // m/s^2
 
     static const float transitionHeight = 8000; // m
-    static const float temperatureGround = 300; // K
-    static const float lapseRate = 0.0065f   ; // K/m
 
-    static const float isentropicAir = 1.4f;//
-    static const float isentropicWater = 1.33;
-
-    static const float pressureGround = 1.0f; // bar
-
-    static const float molarMassAir = 28.96f; // g/mol
-    static const float molarMassWater = 18.02f; // g/mol
-
-    static const float densityDryAir = 1.2754f; // kg/m^3
+    float lapseRate = g_lapseRate;
 
     // IMPROVE compute index
     CoordData uv = compute_uv(DTid);
@@ -84,8 +74,9 @@ void cs_simulation(uint3 DTid : SV_DispatchThreadID)
 
     float4 modelData = inputData.SampleLevel(samplerLinear, uv_plusHalf(uv, 0, 1).uv, 0);
     float massVapor        = modelData.x;
-    float massCondensed    = modelData.y;
+    float massCloud    = modelData.y;
     float massRain         = modelData.z;
+    float potentialTemp = modelData.a;
 
     // Water fraction
     //float massDryAir = densityDryAir * data.cellSize.x * data.cellSize.y * 1.0f;
@@ -93,28 +84,28 @@ void cs_simulation(uint3 DTid : SV_DispatchThreadID)
     //float moleFractionWater = massRatioVapor/(massRatioVapor+1.0f); // Either this or a ratio
 
     float moleFractionWater = massVapor/(massVapor+1.0f); // Either this or a ratio
-    float molarMassThermal = moleFractionWater*molarMassWater + (1-moleFractionWater)*molarMassAir; // g/mol
-    float massFractionWater = moleFractionWater*molarMassWater/molarMassThermal;
+    float molarMassThermal = moleFractionWater*g_molarMassWater + (1-moleFractionWater)*g_molarMassAir; // g/mol
+    float massFractionWater = moleFractionWater*g_molarMassWater/molarMassThermal;
 
     // Altitude
     float altitude = data.cellSize.y + DTid.y * data.cellSize.y; // m
 
     // Pressure
-    float pressure = pressureGround * pow((1 - lapseRate*altitude/temperatureGround), 9.81/(lapseRate*287.41));
+    float pressure = g_pressureGround * pow((1 - lapseRate*altitude/g_temperatureGround), 9.81/(lapseRate*287.41));
 
     // Temperature
     float temperatureAir;
     if(altitude <= transitionHeight)
     {
-        temperatureAir = temperatureGround - altitude * lapseRate;
+        temperatureAir = g_temperatureGround - altitude * lapseRate;
     }
     else
     {
-        temperatureAir = temperatureGround - transitionHeight * lapseRate + (altitude - transitionHeight) * lapseRate;
+        temperatureAir = g_temperatureGround - transitionHeight * lapseRate + (altitude - transitionHeight) * lapseRate;
     }
 
-    float isentropicThermal = massFractionWater*isentropicWater + (1-massFractionWater)*isentropicAir;
-    float temperatureThermal = temperatureGround * pow((pressure/pressureGround), (isentropicThermal-1.0f/isentropicThermal));
+    float isentropicThermal = massFractionWater*g_isentropicWater + (1-massFractionWater)*g_isentropicAir;
+    float temperatureThermal = g_temperatureGround * pow((pressure/g_pressureGround), (isentropicThermal-1.0f/isentropicThermal));
 
     // base copy
     outputVelocity[uint2(DTid.x, DTid.y)] = inputVelocity.SampleLevel(samplerPoint, uv.uv, 0);
@@ -123,12 +114,14 @@ void cs_simulation(uint3 DTid : SV_DispatchThreadID)
     //outputVelocity[uint2(DTid.x, DTid.y)].y -= g_time * gravity;
 
     // Boyancy
-    float boyancy = true ? gravity*((molarMassAir/molarMassThermal)*(temperatureThermal/temperatureAir)-1) : 0.0f;
-    outputDebug[uint2(DTid.x, DTid.y)].x = boyancy;
-    //outputDebug[uint2(DTid.x, DTid.y)].y = (molarMassAir/molarMassThermal);
-    //outputDebug[uint2(DTid.x, DTid.y)].z = ((molarMassAir/molarMassThermal)*100) % 1.0;
+    float buoyancy = massVapor != 0 ? gravity*((g_molarMassAir/molarMassThermal)*(temperatureThermal/temperatureAir)-1) : 0.0f;
+    outputVelocity[uint2(DTid.x, DTid.y)].y += g_time * buoyancy;
 
-    outputVelocity[uint2(DTid.x, DTid.y)].y += g_time * boyancy;
+    outputDebug[uint2(DTid.x, DTid.y)].y = buoyancy*1000;
+    float potentialTempCelcius = temperatureAir - 273.15;
+    float saturationMixingRatio = (0.03801664/pressure)*exp(17.67*potentialTempCelcius/(potentialTempCelcius+243.50));
+    outputDebug[uint2(DTid.x, DTid.y)].x = massVapor*100;
+
 
     // Vorticity Confinment
     float2 vorticityForceX =
@@ -141,7 +134,7 @@ void cs_simulation(uint3 DTid : SV_DispatchThreadID)
                     compute_vorticityForce(uv_plus_res(uv, 0, 1)));
 
     float2 vorticityMultiplier = g_time * g_vorticityStrength * data.cellSize;
-    //outputVelocity[uint2(DTid.x, DTid.y)].x += vorticityMultiplier.x * vorticityForceX.x;
-    //outputVelocity[uint2(DTid.x, DTid.y)].y += vorticityMultiplier.y * vorticityForceY.y;
+    outputVelocity[uint2(DTid.x, DTid.y)].x += vorticityMultiplier.x * vorticityForceX.x;
+    outputVelocity[uint2(DTid.x, DTid.y)].y += vorticityMultiplier.y * vorticityForceY.y;
 }
 

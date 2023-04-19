@@ -34,29 +34,49 @@ mInt convert_toIndex(mInt a_col, mInt a_row)
     return a_row * s_nbCol + a_col;
 }
 
+mFloat get_ambientTemperature(mFloat a_altitude)
+{
+    static const mFloat temperatureGround = 265.0f;
+    static const mFloat transitionHeight  = 8000.0f;
+    static const mFloat lapseRate         = 0.0065f;
+
+    float temperatureAir;
+    if (a_altitude <= transitionHeight)
+    {
+        temperatureAir = temperatureGround - a_altitude * lapseRate;
+    }
+    else
+    {
+        temperatureAir = temperatureGround - transitionHeight * lapseRate +
+                         (a_altitude - transitionHeight) * lapseRate;
+    }
+    return temperatureAir;
+}
+
 void init_initialData(m::resource::mTypedImage<m::math::mVec4>& a_image)
 {
     for (mInt row = 0; row < s_nbRow; ++row)
     {
         for (mInt col = 0; col < s_nbCol; ++col)
         {
-            mInt index            = row * s_nbCol + col;
-            a_image.data[index].x = 0.0f;        // qv
-            a_image.data[index].y = 0.0f;        // qc
-            a_image.data[index].z = 0.0f;        // qr
-            a_image.data[index].a = s_ambientT;  // T
+            mFloat altitude       = 0.5 * 30.0f + row * 30.0f;
+            mInt   index          = row * s_nbCol + col;
+            a_image.data[index].x = 0.0f;  // qv
+            a_image.data[index].y = 0.0f;  // qc
+            a_image.data[index].z = 0.0f;  // qr
+            a_image.data[index].a = get_ambientTemperature(altitude);    // T
         }
     }
 
-    for(mInt col = 10; col < s_nbCol-10; ++col)
+    for (mInt row = 0; row < 10; ++row)
     {
-        for (mInt row = 1; row < 10; ++row)
+        for (mInt col = 10; col < s_nbCol-10; ++col)
         {
-            a_image.data[convert_toIndex(col, row)].x = 0.5;
+            a_image.data[convert_toIndex(col, row)].x = 0.01;
         }
     }
-    //a_image.data[convert_toIndex(s_nbCol / 2, 1)].y = 200.0;
-    //a_image.data[convert_toIndex(s_nbCol / 2, 1)].a = 350.0;
+    // a_image.data[convert_toIndex(s_nbCol / 2, 1)].y = 200.0;
+    // a_image.data[convert_toIndex(s_nbCol / 2, 1)].a = 350.0;
     /*
     a_image.data[convert_toIndex(s_nbCol / 2 + 1, 1)].z = 350.0;
     a_image.data[convert_toIndex(s_nbCol / 2 + 1, 1)].a = 200.0;

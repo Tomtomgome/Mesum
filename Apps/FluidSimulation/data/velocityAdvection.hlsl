@@ -54,7 +54,7 @@ void cs_advectVelocityCellCenter(uint3 DTid : SV_DispatchThreadID)
 
   //float2 startingPointY = uv.uv - (g_time * velocityY) * uv.pixel;
   //uv.uv = startingPointY;
-  velocityOutput[uint2(DTid.x, DTid.y)].y = sample_cubic_f2(velocityInput, samplerLinearBlackBorder, uv_plusHalf(uv, 0, 1)).y;
+  velocityOutput[uint2(DTid.x, DTid.y)].y = sample_cubic_f2(velocityInput, samplerLinear, uv_plusHalf(uv, 0, 1)).y;
 }
 
 [numthreads( COMPUTE_GROUP_SIZE, COMPUTE_GROUP_SIZE, 1 )]

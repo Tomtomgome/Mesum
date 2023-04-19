@@ -17,9 +17,22 @@ ConstantBuffer<Data> data : register(b0);
 
 #define COMPUTE_GROUP_SIZE 16
 
-static const float g_time = 0.1f;
+static const float g_time = 1.0f; // s
 
 static const float g_density = 1.0f;
+
+static const float g_molarMassAir = 28.96f; // g/mol
+static const float g_molarMassWater = 18.02f; // g/mol
+
+static const float g_temperatureGround = 265; // K
+static const float g_lapseRate = 0.0065f   ; // K/m
+
+static const float g_isentropicAir = 1.4f;//
+static const float g_isentropicWater = 1.33;
+
+static const float g_gasConstant = 8314.0f; // J/g.mol
+
+static const float g_pressureGround = 1.0f; // bar
 
 struct CoordData
 {
