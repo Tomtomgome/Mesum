@@ -4,6 +4,8 @@ SamplerState samplerPoint : register(s1);
 SamplerState samplerPointBlackBorder : register(s2);
 SamplerState samplerLinearBlackBorder : register(s3);
 
+SamplerState samplerLinearWrap : register(s4);
+
 struct Data
 {
   uint2 resolution;

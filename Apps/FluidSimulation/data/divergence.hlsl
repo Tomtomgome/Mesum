@@ -9,7 +9,8 @@ static const float g_globalFactor = -1.0;
 void cs_divergence(uint3 DTid : SV_DispatchThreadID)
 {  
     CoordData uv = compute_uv(DTid);
-    if(DTid.x >= data.resolution.x || DTid.y >= data.resolution.y)
+    //if(DTid.x >= data.resolution.x || DTid.y >= data.resolution.y)
+    if(DTid.x == 0 || DTid.y == 0 || DTid.x >= data.resolution.x -1 || DTid.y >= data.resolution.y - 1)
     {
         return;
     }

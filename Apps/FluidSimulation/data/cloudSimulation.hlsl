@@ -67,7 +67,8 @@ void cs_simulation(uint3 DTid : SV_DispatchThreadID)
 
     // IMPROVE compute index
     CoordData uv = compute_uv(DTid);
-    if(DTid.x >= data.resolution.x || DTid.y >= data.resolution.y)
+    if(DTid.x == 0 || DTid.y == 0 || DTid.x >= data.resolution.x -1 || DTid.y >= data.resolution.y - 1)
+    //if(DTid.x >= data.resolution.x || DTid.y >= data.resolution.y)
     {
       return;
     }
@@ -117,10 +118,12 @@ void cs_simulation(uint3 DTid : SV_DispatchThreadID)
     float buoyancy = massVapor != 0 ? gravity*((g_molarMassAir/molarMassThermal)*(temperatureThermal/temperatureAir)-1) : 0.0f;
     outputVelocity[uint2(DTid.x, DTid.y)].y += g_time * buoyancy;
 
-    outputDebug[uint2(DTid.x, DTid.y)].y = buoyancy*1000;
+    //outputDebug[uint2(DTid.x, DTid.y)].y = buoyancy*1000;
     float potentialTempCelcius = temperatureAir - 273.15;
     float saturationMixingRatio = (0.03801664/pressure)*exp(17.67*potentialTempCelcius/(potentialTempCelcius+243.50));
-    outputDebug[uint2(DTid.x, DTid.y)].x = massVapor*100;
+    outputDebug[uint2(DTid.x, DTid.y)].y = massVapor*100;
+    outputDebug[uint2(DTid.x, DTid.y)].x = (potentialTemp-temperatureAir)%1.0;
+
 
 
     // Vorticity Confinment

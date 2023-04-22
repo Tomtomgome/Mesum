@@ -7,8 +7,8 @@ RWTexture2D<float4> outputData : register(u0);
 float2 sample_velocity(CoordData a_uv)
 {
     float2 velocity;
-    velocity.x = inputVelocity.SampleLevel(samplerLinear, uv_plusHalf(a_uv, -1, 0).uv, 0).x;
-    velocity.y = inputVelocity.SampleLevel(samplerLinear, uv_plusHalf(a_uv, 0, -1).uv, 0).y;
+    velocity.x = inputVelocity.SampleLevel(samplerLinearBlackBorder, uv_plusHalf(a_uv, -1, 0).uv, 0).x;
+    velocity.y = inputVelocity.SampleLevel(samplerLinearBlackBorder, uv_plusHalf(a_uv, 0, -1).uv, 0).y;
     return velocity;
 }
 
@@ -18,8 +18,9 @@ void cs_advect(uint3 DTid : SV_DispatchThreadID)
 {
     // IMPROVE compute index
     CoordData uv = compute_uv(DTid);
-  
-    if(DTid.x >= data.resolution.x || DTid.y >= data.resolution.y)
+
+    if(DTid.x == 0 || DTid.y == 0 || DTid.x >= data.resolution.x -1 || DTid.y >= data.resolution.y - 1)
+    //if(DTid.x >= data.resolution.x || DTid.y >= data.resolution.y)
     {
         return;
     }
@@ -30,7 +31,7 @@ void cs_advect(uint3 DTid : SV_DispatchThreadID)
     float2 startingPoint = uv.uv - (g_time * velocity / data.cellSize) * uv.pixel;
     uv.uv = startingPoint;
 
-    outputData[uint2(DTid.x, DTid.y)] = sample_cubic_f4(inputData, samplerLinear, uv);
+    outputData[uint2(DTid.x, DTid.y)] = sample_cubic_f4(inputData, samplerLinearWrap, uv);
 
     // ---------
     float ratioVapor        = outputData[uint2(DTid.x, DTid.y)].x;

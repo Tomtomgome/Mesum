@@ -14,7 +14,8 @@ void cs_residual(uint3 DTid : SV_DispatchThreadID)
     // IMPROVE compute index
     CoordData uv = compute_uv(DTid);
   
-    if(DTid.x >= data.resolution.x || DTid.y >= data.resolution.y)
+    if(DTid.x == 0 || DTid.y == 0 || DTid.x >= data.resolution.x -1 || DTid.y >= data.resolution.y - 1)
+    //if(DTid.x >= data.resolution.x || DTid.y >= data.resolution.y)
     {
         return;
     }
@@ -22,53 +23,82 @@ void cs_residual(uint3 DTid : SV_DispatchThreadID)
     float invDxSqr = 1.0/(data.cellSize.x * data.cellSize.y);
 
     float p_i_j = inputPressure.SampleLevel(samplerPoint, uv.uv, 0);
-    float p_ip1_j;
-    if(data.wallAtRight)
+
+    float pBottom;
+    if(DTid.y == 1)
     {
-        p_ip1_j = inputPressure.SampleLevel(samplerPointBlackBorder, uv_plus(uv, 1, 0).uv, 0);
+        if(data.wallAtBottom)
+        {
+            pBottom = 0;
+        }
+        else
+        {
+            pBottom = inputPressure.SampleLevel(samplerPoint, uv_plus(uv, 0, 0).uv, 0);
+        }
     }
     else
     {
-        p_ip1_j = inputPressure.SampleLevel(samplerPoint, uv_plus(uv, 1, 0).uv, 0);
+            pBottom = inputPressure.SampleLevel(samplerPoint, uv_plus(uv, 0, -1).uv, 0);
     }
 
-    float p_im1_j;
-    if(data.wallAtLeft)
+    float pLeft;
+    if(DTid.x == 1)
     {
-        p_im1_j = inputPressure.SampleLevel(samplerPointBlackBorder, uv_plus(uv, -1, 0).uv, 0);
+        if(data.wallAtLeft)
+        {
+            pLeft = 0;
+        }
+        else
+        {
+            pLeft = inputPressure.SampleLevel(samplerPoint, uv_plus(uv, 0, 0).uv, 0);
+        }
     }
     else
     {
-        p_im1_j = inputPressure.SampleLevel(samplerPoint, uv_plus(uv, -1, 0).uv, 0);
+            pLeft = inputPressure.SampleLevel(samplerPoint, uv_plus(uv, -1, 0).uv, 0);
     }
 
-    float p_i_jp1;
-    if(data.wallAtTop)
+    float pRight;
+    if(DTid.x == data.resolution.x-2)
     {
-        p_i_jp1 = inputPressure.SampleLevel(samplerPointBlackBorder, uv_plus(uv, 0, 1).uv, 0);
+        if(data.wallAtRight)
+        {
+            pRight = 0;
+        }
+        else
+        {
+            pRight = inputPressure.SampleLevel(samplerPoint, uv_plus(uv, 0, 0).uv, 0);
+        }
     }
     else
     {
-        p_i_jp1 = inputPressure.SampleLevel(samplerPoint, uv_plus(uv, 0, 1).uv, 0);
+            pRight = inputPressure.SampleLevel(samplerPoint, uv_plus(uv, 1, 0).uv, 0);
     }
 
-    float p_i_jm1;
-    if(data.wallAtBottom)
+    float pTop;
+    if(DTid.y == data.resolution.y -2)
     {
-        p_i_jm1 = inputPressure.SampleLevel(samplerPointBlackBorder, uv_plus(uv, 0, -1).uv, 0);
+        if(data.wallAtTop)
+        {
+            pTop = 0;
+        }
+        else
+        {
+            pTop = inputPressure.SampleLevel(samplerPoint, uv_plus(uv, 0, 0).uv, 0);
+        }
     }
     else
     {
-        p_i_jm1 = inputPressure.SampleLevel(samplerPoint, uv_plus(uv, 0, -1).uv, 0);
+            pTop = inputPressure.SampleLevel(samplerPoint, uv_plus(uv, 0, 1).uv, 0);
     }
 
     float noWallNumber = 4;
-    noWallNumber -= (data.wallAtLeft && DTid.x == 0) ? 1 : 0;
-    noWallNumber -= (data.wallAtBottom && DTid.y == 0) ? 1 : 0;
-    noWallNumber -= (data.wallAtRight && DTid.x == data.resolution.x-1) ? 1 : 0;
-    noWallNumber -= (data.wallAtTop && DTid.y == data.resolution.y-1) ? 1 : 0;
+    noWallNumber -= (data.wallAtLeft && DTid.x == 1) ? 1 : 0;
+    noWallNumber -= (data.wallAtBottom && DTid.y == 1) ? 1 : 0;
+    noWallNumber -= (data.wallAtRight && DTid.x == data.resolution.x-2) ? 1 : 0;
+    noWallNumber -= (data.wallAtTop && DTid.y == data.resolution.y-2) ? 1 : 0;
 
-    float ap = g_invDensity*(noWallNumber*p_i_j - (p_ip1_j + p_im1_j + p_i_jp1 + p_i_jm1))*invDxSqr;
+    float ap = g_invDensity*(noWallNumber*p_i_j - (pRight + pLeft + pTop + pBottom))*invDxSqr;
 
     float d = inputDivergence.SampleLevel(samplerPoint, uv.uv, 0);
 

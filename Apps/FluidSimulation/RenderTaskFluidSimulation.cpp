@@ -373,7 +373,7 @@ void Dx12TaskFluidSimulation::prepare()
     // Pre-warm for stabilization with jacobi
     auto& parameters = static_cast<TaskDataFluidSimulation::ControlParameters&>(
         unref_safe(m_taskData.pParameters));
-    if (parameters.isRunning && parameters.nbJacobiIterations >= 40 &&
+    if (parameters.isRunning && parameters.nbJacobiIterations >= 80 &&
         m_frameCount % 20 == 0)
     {
         parameters.nbJacobiIterations /= 2;
@@ -1109,7 +1109,7 @@ void Dx12TaskFluidSimulation::init_samplers()
 
         D3D12_TEXTURE_ADDRESS_MODE eDx12AddressMode =
             D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
-        descStaticSampler.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+        descStaticSampler.AddressU = eDx12AddressMode;
         descStaticSampler.AddressV = eDx12AddressMode;
         descStaticSampler.AddressW = eDx12AddressMode;
         descStaticSampler.BorderColor =
@@ -1178,6 +1178,29 @@ void Dx12TaskFluidSimulation::init_samplers()
 
         D3D12_TEXTURE_ADDRESS_MODE eDx12AddressMode =
             D3D12_TEXTURE_ADDRESS_MODE_BORDER;
+        descStaticSampler.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+        descStaticSampler.AddressV = eDx12AddressMode;
+        descStaticSampler.AddressW = eDx12AddressMode;
+        descStaticSampler.BorderColor =
+            D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK;
+
+        descStaticSampler.ShaderRegister = registerID++;
+        descStaticSampler.RegisterSpace  = 0;
+        m_samplersDescs.push_back(descStaticSampler);
+    }
+
+    // Linear wrap
+    {
+        D3D12_FILTER_TYPE eDx12FilterMinMag = D3D12_FILTER_TYPE_LINEAR;
+        D3D12_FILTER_TYPE eDx12FilterMip    = D3D12_FILTER_TYPE_LINEAR;
+        D3D12_FILTER_REDUCTION_TYPE eDx12FilterReduction =
+            D3D12_FILTER_REDUCTION_TYPE_STANDARD;
+        descStaticSampler.Filter =
+            D3D12_ENCODE_BASIC_FILTER(eDx12FilterMinMag, eDx12FilterMinMag,
+                                      eDx12FilterMip, eDx12FilterReduction);
+
+        D3D12_TEXTURE_ADDRESS_MODE eDx12AddressMode =
+            D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
         descStaticSampler.AddressU = eDx12AddressMode;
         descStaticSampler.AddressV = eDx12AddressMode;
         descStaticSampler.AddressW = eDx12AddressMode;

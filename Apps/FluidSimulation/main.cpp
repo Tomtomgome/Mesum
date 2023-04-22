@@ -53,6 +53,33 @@ mFloat get_ambientTemperature(mFloat a_altitude)
     return temperatureAir;
 }
 
+mFloat get_thermalTemperature(mFloat a_altitude, mFloat a_vaporRatio)
+{
+    static const mFloat temperatureGround = 265.0f;
+    static const mFloat lapseRate         = 0.0065f;
+
+    static const float isentropicAir = 1.4f;//
+    static const float isentropicWater = 1.33;
+
+    static const float molarMassAir = 28.96f; // g/mol
+    static const float molarMassWater = 18.02f; // g/mol
+
+    float pressure =
+        pow((1 - lapseRate * a_altitude / temperatureGround), 5.2561);
+
+    float moleFractionVapor = a_vaporRatio/(a_vaporRatio + 1);
+    float molarMassThermal = moleFractionVapor*molarMassWater + (1-moleFractionVapor)*molarMassAir; // g/mol
+    float massFractionVapor = moleFractionVapor*molarMassWater/molarMassThermal;
+    float isentropicThermal = massFractionVapor*isentropicWater + (1-massFractionVapor)*isentropicAir;
+
+    float temperatureThermal =
+        temperatureGround *
+        pow((pressure),
+            (isentropicThermal - 1.0f / isentropicThermal));
+
+    return temperatureThermal;
+}
+
 void init_initialData(m::resource::mTypedImage<m::math::mVec4>& a_image)
 {
     for (mInt row = 0; row < s_nbRow; ++row)
@@ -61,18 +88,26 @@ void init_initialData(m::resource::mTypedImage<m::math::mVec4>& a_image)
         {
             mFloat altitude       = 0.5 * 30.0f + row * 30.0f;
             mInt   index          = row * s_nbCol + col;
-            a_image.data[index].x = 0.0f;  // qv
-            a_image.data[index].y = 0.0f;  // qc
-            a_image.data[index].z = 0.0f;  // qr
-            a_image.data[index].a = get_ambientTemperature(altitude);    // T
+            a_image.data[index].x = 0.0f;                              // qv
+            a_image.data[index].y = 0.0f;                              // qc
+            a_image.data[index].z = 0.0f;                              // qr
+            a_image.data[index].a = get_ambientTemperature(altitude);  // T
         }
     }
 
     for (mInt row = 0; row < 10; ++row)
     {
-        for (mInt col = 10; col < s_nbCol-10; ++col)
+        for (mInt col = 2; col < s_nbCol-2; ++col)
         {
-            a_image.data[convert_toIndex(col, row)].x = 0.01;
+            float x = 0.07*(s_nbCol - col - 1);
+            float vaporHeight = 5 + 4 * (sin(2 * x) + sin(3.1415 * x));
+            if(row < vaporHeight)
+            {
+                mFloat altitude = 0.5 * 30.0f + row * 30.0f;
+                a_image.data[convert_toIndex(col, row)].x = 0.01;
+                a_image.data[convert_toIndex(col, row)].a =
+                    get_thermalTemperature(altitude, 0.01);  // T
+            }
         }
     }
     // a_image.data[convert_toIndex(s_nbCol / 2, 1)].y = 200.0;
@@ -209,7 +244,7 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
 
         mDisable_logChannels(m_FluidSimulation_ID);
 
-        // set_minimalStepDuration(std::chrono::milliseconds(16));
+        set_minimalStepDuration(std::chrono::milliseconds(16));
     }
 
     void destroy() override
@@ -255,6 +290,9 @@ class FluidSimulationApp : public m::crossPlatform::IWindowedApplication
             1000000.0 / std::chrono::duration_cast<std::chrono::microseconds>(
                             a_deltaTime)
                             .count());
+        static mInt minMs = 16;
+        ImGui::DragInt("Min Ms", &minMs, 1.0f, 1, 16);
+        set_minimalStepDuration(std::chrono::milliseconds(minMs));
 
         // --- Simulation parameters
         ImGui::Checkbox("Run Time Update", &m_simulationParameters.isRunning);
