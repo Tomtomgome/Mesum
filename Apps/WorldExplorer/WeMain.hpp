@@ -3,6 +3,7 @@
 
 #include <MesumGraphics/CrossPlatform.hpp>
 #include <MesumGraphics/WindowedApp.hpp>
+#include <MesumGraphics/RendererUtils.hpp>
 #include <memory>
 
 #include "Camera.hpp"
@@ -20,9 +21,15 @@ class WorldExplorerApp : public m::crossPlatform::IWindowedApplication
     void  destroy() override;
     mBool step(std::chrono::steady_clock::duration const& a_deltaTime) override;
 
-    std::unique_ptr<m::render::IRenderer> m_iRenderer;
+    //std::unique_ptr<m::render::IRenderer> m_iRenderer;
+
+    m::render::mIApi*       m_pApi;
+    m::render::mISwapchain* m_pSwapchain;
+    m::render::mISynchTool* m_pSynchTool;
+
+    m::render::mTasksetExecutor m_tasksetExecutor;
+
     m::windows::mIWindow*                 m_pWindow;  // gére les inpts
-    m::render::ISurface::HdlPtr m_hdlSurface;  // le truc qui sert au rendu
 
     const m::logging::mChannelID m_WE_LOG_ID = mLog_getId();
 

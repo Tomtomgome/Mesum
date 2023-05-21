@@ -25,8 +25,10 @@ Task3dRender::Task3dRender(TaskData3dRender* a_data)
 
 using namespace DirectX;
 
-ID3D12Resource* depthStencilBuffer; // This is the memory for our depth/stencil buffer
-ID3D12DescriptorHeap* dsDescriptorHeap; // This is a heap for our depth/stencil buffer descriptor
+ID3D12Resource*
+    depthStencilBuffer;  // This is the memory for our depth/stencil buffer
+ID3D12DescriptorHeap*
+    dsDescriptorHeap;  // This is a heap for our depth/stencil buffer descriptor
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -55,11 +57,9 @@ Dx12Task3dRender::Dx12Task3dRender(TaskData3dRender* a_data)
     pipelineDesc.IBStripCutValue = D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_0xFFFF;
 
     dx12::ComPtr<ID3DBlob> vs =
-        dx12::compile_shader("data/cubeShader.hlsl",
-                             "vs_main", "vs_5_0");
+        dx12::compile_shader("data/cubeShader.hlsl", "vs_main", "vs_5_0");
     dx12::ComPtr<ID3DBlob> ps =
-        dx12::compile_shader("data/cubeShader.hlsl",
-                             "ps_main", "ps_5_0");
+        dx12::compile_shader("data/cubeShader.hlsl", "ps_main", "ps_5_0");
 
     pipelineDesc.VS.BytecodeLength  = vs->GetBufferSize();
     pipelineDesc.VS.pShaderBytecode = vs->GetBufferPointer();
@@ -99,51 +99,56 @@ Dx12Task3dRender::Dx12Task3dRender(TaskData3dRender* a_data)
     dx12::ComPtr<ID3D12Device> device =
         dx12::DX12Context::gs_dx12Contexte->m_device;
 
-    HRESULT                res;
+    HRESULT res;
 
     /* -------------------- Depth / Stencil ---------------- */
 
-    pipelineDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT); // a default depth stencil state
+    pipelineDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(
+        D3D12_DEFAULT);  // a default depth stencil state
 
-    // create a depth stencil descriptor heap so we can get a pointer to the depth stencil buffer
+    // create a depth stencil descriptor heap so we can get a pointer to the
+    // depth stencil buffer
     D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc = {};
-    dsvHeapDesc.NumDescriptors = 1;
-    dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
-    dsvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
-    res = device->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsDescriptorHeap));
+    dsvHeapDesc.NumDescriptors             = 1;
+    dsvHeapDesc.Type                       = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+    dsvHeapDesc.Flags                      = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+    res = device->CreateDescriptorHeap(&dsvHeapDesc,
+                                       IID_PPV_ARGS(&dsDescriptorHeap));
     if (FAILED(res))
     {
         return;
     }
 
     D3D12_DEPTH_STENCIL_VIEW_DESC depthStencilDesc = {};
-    depthStencilDesc.Format = DXGI_FORMAT_D32_FLOAT;
+    depthStencilDesc.Format                        = DXGI_FORMAT_D32_FLOAT;
     depthStencilDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
-    depthStencilDesc.Flags = D3D12_DSV_FLAG_NONE;
+    depthStencilDesc.Flags         = D3D12_DSV_FLAG_NONE;
 
-    D3D12_CLEAR_VALUE depthOptimizedClearValue = {};
-    depthOptimizedClearValue.Format = DXGI_FORMAT_D32_FLOAT;
-    depthOptimizedClearValue.DepthStencil.Depth = 1.0f;
+    D3D12_CLEAR_VALUE depthOptimizedClearValue    = {};
+    depthOptimizedClearValue.Format               = DXGI_FORMAT_D32_FLOAT;
+    depthOptimizedClearValue.DepthStencil.Depth   = 1.0f;
     depthOptimizedClearValue.DepthStencil.Stencil = 0;
 
     {
         auto heapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
-        auto resourceDesc           = CD3DX12_RESOURCE_DESC::Tex2D(
-            DXGI_FORMAT_D32_FLOAT, 1280 /* rt width */, 720 /* rt height */, 1,
-            0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL);
+        auto resourceDesc   = CD3DX12_RESOURCE_DESC::Tex2D(
+              DXGI_FORMAT_D32_FLOAT, 1280 /* rt width */, 720 /* rt height */, 1,
+              0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL);
 
-        device->CreateCommittedResource(&heapProperties, D3D12_HEAP_FLAG_NONE,
-                                        &resourceDesc, D3D12_RESOURCE_STATE_DEPTH_WRITE,
-                                        &depthOptimizedClearValue,
-                                        IID_PPV_ARGS(&depthStencilBuffer));
+        device->CreateCommittedResource(
+            &heapProperties, D3D12_HEAP_FLAG_NONE, &resourceDesc,
+            D3D12_RESOURCE_STATE_DEPTH_WRITE, &depthOptimizedClearValue,
+            IID_PPV_ARGS(&depthStencilBuffer));
         dsDescriptorHeap->SetName(L"Depth/Stencil Resource Heap");
     }
 
-    device->CreateDepthStencilView(depthStencilBuffer, &depthStencilDesc, dsDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+    device->CreateDepthStencilView(
+        depthStencilBuffer, &depthStencilDesc,
+        dsDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
 
     // destroy
-    //SAFE_RELEASE(depthStencilBuffer);
-    //SAFE_RELEASE(dsDescriptorHeap);
+    // SAFE_RELEASE(depthStencilBuffer);
+    // SAFE_RELEASE(dsDescriptorHeap);
 
     /* -------------------- Depth / Stencil ---------------- */
 
@@ -198,23 +203,26 @@ void Dx12Task3dRender::prepare()
 //-----------------------------------------------------------------------------
 void Dx12Task3dRender::execute() const
 {
-    /*dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
-        dx12::DX12Context::gs_dx12Contexte->get_commandQueue()
+    dx12::ComPtr<ID3D12GraphicsCommandList2> graphicCommandList =
+        dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
             .get_commandList();
 
-    auto currentSurface =
-        dynamic_cast<dx12::DX12Surface*>(m_taskData.m_hdlOutput->surface);
+    auto pOutputRT =
+        static_cast<dx12::mRenderTarget const*>(m_taskData.pOutputRT);
 
     // get a handle to the depth/stencil buffer
-    CD3DX12_CPU_DESCRIPTOR_HANDLE dsvHandle(dsDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+    CD3DX12_CPU_DESCRIPTOR_HANDLE dsvHandle(
+        dsDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
 
     D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle;
-    rtvHandle = currentSurface->get_currentRtvDesc();
+    rtvHandle = pOutputRT->rtv;
 
-    // set the render target for the output merger stage (the output of the pipeline)
+    // set the render target for the output merger stage (the output of the
+    // pipeline)
     graphicCommandList->OMSetRenderTargets(1, &rtvHandle, FALSE, &dsvHandle);
 
-    graphicCommandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+    graphicCommandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH,
+                                              1.0f, 0, 0, nullptr);
 
     D3D12_VIEWPORT viewport = {};
     viewport.MaxDepth       = 1.0f;
@@ -244,8 +252,8 @@ void Dx12Task3dRender::execute() const
     graphicCommandList->DrawIndexedInstanced(
         m_taskData.m_pMeshBuffer->m_indices.size(), 1u, 0u, 0u, 0u);
 
-    dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue().execute_commandList(
-        graphicCommandList.Get());*/
+    dx12::DX12Context::gs_dx12Contexte->get_graphicsCommandQueue()
+        .execute_commandList(graphicCommandList.Get());
 }
 
 #endif  // M_DX12_RENDERER

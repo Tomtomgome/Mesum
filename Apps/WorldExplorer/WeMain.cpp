@@ -4,6 +4,7 @@
 
 #include <MesumGraphics/DearImgui/imgui.h>
 #include <RenderTasks/RenderTask3dRender.hpp>
+#include <MesumGraphics/RenderTasks/RenderTasksBasicSwapchain.hpp>
 
 #include <MesumCore/Kernel/Math.hpp>
 #include <MesumDearImGui.hpp>
@@ -66,17 +67,37 @@ void WorldExplorerApp::init(mCmdLine const& a_cmdLine, void* a_appData)
 
     // m_cameraOrbitController.m_pivot = terrain.m_vertices[0].position;
 
-    m_iRenderer = std::make_unique<m::dx12::DX12Renderer>();
-    m_iRenderer->init();
+    m_pApi = new m::dx12::mApi();
+    m_pApi->init();
 
     m_pWindow = add_newWindow("WorldExplorer app", 1280, 720, false);
     m_pWindow->link_inputManager(&m_inputManager);
-    m_hdlSurface = m_pWindow->link_renderer(m_iRenderer.get());
+
+    m_tasksetExecutor.init();
+
+    static const m::mUInt        nbBackbuffer = 3;
+    m::render::mISynchTool::Desc desc{nbBackbuffer};
+
+    auto& synchTool = m_pApi->create_synchTool();
+    m_pSynchTool    = &synchTool;
+    synchTool.init(desc);
+
+    auto& swapchain = m_pApi->create_swapchain();
+    m_pSwapchain    = &swapchain;
+    m::render::init_swapchainWithWindow(m::unref_safe(m_pApi),
+                                        m_tasksetExecutor, swapchain, synchTool,
+                                        m::unref_safe(m_pWindow), nbBackbuffer);
 
     m::dearImGui::init(*m_pWindow);
 
     /* ------- Taskset */
-    render::Taskset* pTaskset = m_hdlSurface->surface->addNew_renderTaskset();
+    auto& taskset = m_pApi->create_renderTaskset();
+
+    m::render::mTaskDataSwapchainWaitForRT taskData_swapchainWaitForRT{};
+    taskData_swapchainWaitForRT.pSwapchain = m_pSwapchain;
+    taskData_swapchainWaitForRT.pSynchTool = m_pSynchTool;
+    auto& waitTask = static_cast<m::render::mTaskSwapchainWaitForRT&>(
+        taskData_swapchainWaitForRT.add_toTaskSet(taskset));
 
     m::render::mMesh& meshToDraw = terrain;
 
@@ -89,15 +110,29 @@ void WorldExplorerApp::init(mCmdLine const& a_cmdLine, void* a_appData)
                                   std::end(meshToDraw.triangles));
 
     render::TaskData3dRender taskData_3dRender;
-    taskData_3dRender.m_hdlOutput   = m_hdlSurface;
+    taskData_3dRender.pOutputRT   = waitTask.pOutputRT;
     taskData_3dRender.m_pMeshBuffer = &g_meshBuffer;
     taskData_3dRender.m_matrix      = &mvpMatrix;
-    taskData_3dRender.add_toTaskSet(pTaskset);
+    taskData_3dRender.add_toTaskSet(taskset);
 
     // DearImGui task
-    render::TaskDataDrawDearImGui taskData_drawDearImGui;
-    taskData_drawDearImGui.m_hdlOutput = m_hdlSurface;
-    taskData_drawDearImGui.add_toTaskSet(pTaskset);
+    m::render::TaskDataDrawDearImGui taskData_drawDearImGui;
+    taskData_drawDearImGui.pOutputRT = waitTask.pOutputRT;
+    taskData_drawDearImGui.nbFrames  = nbBackbuffer;
+    taskData_drawDearImGui.add_toTaskSet(taskset);
+
+    m::render::mTaskDataSwapchainPresent taskData_swapchainPresent{};
+    taskData_swapchainPresent.pSwapchain = m_pSwapchain;
+    taskData_swapchainPresent.pSynchTool = m_pSynchTool;
+    taskData_swapchainPresent.add_toTaskSet(taskset);
+
+    m_tasksetExecutor.confy_permanentTaskset(m::unref_safe(m_pApi), taskset);
+    m_pWindow->attach_toDestroy(m::mCallback<void>(
+        [this, &taskset]()
+        {
+            m_tasksetExecutor.remove_permanentTaskset(m::unref_safe(m_pApi),
+                                                      taskset);
+        }));
 }
 
 //*****************************************************************************
@@ -105,11 +140,19 @@ void WorldExplorerApp::init(mCmdLine const& a_cmdLine, void* a_appData)
 //*****************************************************************************
 void WorldExplorerApp::destroy()
 {
-    m::dearImGui::destroy();
-
-    m_iRenderer->destroy();
-
     m::crossPlatform::IWindowedApplication::destroy();
+
+    m_tasksetExecutor.destroy();
+
+    // call to destroy of the swapchain is managed at window termination
+    m_pApi->destroy_swapchain(*m_pSwapchain);
+
+    m_pApi->destroy_synchTool(*m_pSynchTool);
+
+    m_pApi->destroy();
+    delete m_pApi;
+
+    m::dearImGui::destroy();
 }
 
 //*****************************************************************************
@@ -125,7 +168,7 @@ mBool WorldExplorerApp::step(
 
     mDouble deltaTime = std::chrono::duration<mDouble>(a_deltaTime).count();
 
-    start_dearImGuiNewFrame(m_iRenderer.get());
+    start_dearImGuiNewFrame(m::unref_safe(m_pApi));
 
     ImGui::NewFrame();
     ImGui::Begin("Engine");
@@ -148,7 +191,7 @@ mBool WorldExplorerApp::step(
     mvpMatrix =
         m_camera.get_viewMatrix() * m_camera.get_projectionMatrix(aspectRatio);
 
-    m_hdlSurface->surface->render();
+    m_tasksetExecutor.run();
 
     // mLog_infoTo(m_WE_LOG_ID, "dt = ", deltaTime, "ms");
 

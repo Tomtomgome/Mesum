@@ -25,7 +25,7 @@ using uploadBuffers3D =
 struct TaskData3dRender : public TaskData
 {
     DataMeshBuffer<mBasicVertex, mU16>* m_pMeshBuffer;
-    //ISurface::HdlPtr                    m_hdlOutput;
+    mIRenderTarget*                     pOutputRT = nullptr;
     math::mMat4x4*                      m_matrix;
 
     mIfDx12Enabled(Task* getNew_dx12Implementation(TaskData* a_data) override);
@@ -45,7 +45,8 @@ struct Task3dRender : public Task
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 mIfDx12Enabled(struct Dx12Task3dRender
-               : public Task3dRender {
+               : public Task3dRender
+               {
                    explicit Dx12Task3dRender(TaskData3dRender * a_data);
 
                    void prepare() override;
@@ -53,7 +54,7 @@ mIfDx12Enabled(struct Dx12Task3dRender
                    void execute() const override;
 
                   private:
-                   mUInt         m_i = 0;
+                   mUInt           m_i = 0;
                    uploadBuffers3D m_buffers;
 
                    dx12::ComPtr<ID3D12RootSignature> m_rootSignature = nullptr;
