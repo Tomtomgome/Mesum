@@ -1,4 +1,4 @@
-set(APP_NAME FluidSimulation)
+set(APP_NAME FluidSimulationBeta)
 
 project(${APP_NAME} VERSION 1.0.0 DESCRIPTION "Small test for Cmake and mesum graphics")
 
