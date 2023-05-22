@@ -9,7 +9,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
 
 set(ENGINE_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Src)
-set(EXTERNALS_SRC_DIR ${CMAKE_SOURCE_DIR}/Externals)
+set(EXTERNALS_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Externals)
 
 if (UNIX)
     add_compile_definitions(_M_UNIX)
@@ -79,6 +79,6 @@ if(BM_DYNAMIC_LINK)
     add_compile_definitions(_M_DLL_DYNAMIC_LINK)
 endif()
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/Engine)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Engine)
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/Apps)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Apps)
