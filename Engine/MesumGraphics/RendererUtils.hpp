@@ -8,6 +8,7 @@ class mIWindow;
 namespace m::render
 {
 class mISwapchain;
+class mISynchTool;
 class mIApi;
 struct Taskset;
 
