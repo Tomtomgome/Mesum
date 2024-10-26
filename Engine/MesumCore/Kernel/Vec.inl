@@ -147,7 +147,7 @@ mVec<t_T, t_Size> mVec<t_T, t_Size>::operator-() const
 {
     mVec<t_T, t_Size> res;
     INTERNAL_VEC_FOR_EACH_MEMBER
-    res.Data[i] = -mVecData<t_T, t_Size>::data[i];
+    res.data[i] = -mVecData<t_T, t_Size>::data[i];
     return res;
 }
 
