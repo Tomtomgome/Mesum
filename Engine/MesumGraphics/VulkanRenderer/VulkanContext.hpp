@@ -18,10 +18,12 @@ class CommandQueue
 
     void wait_onFenceValue(mU64 a_tstpToWaitOn,
                            mU64 a_timeout = std::numeric_limits<mU64>::max());
-    void push_waitOnSemaphores(std::vector<VkSemaphore> a_semaphoresToWait);
+    void push_waitOnSemaphores(
+        std::vector<VkSemaphore> a_semaphoresToWait);
 
     mU64 signal_fence();
-    void signal_semaphores(std::vector<VkSemaphore> a_semaphoresToSignal);
+    void signal_semaphores(
+        std::vector<VkSemaphore> a_semaphoresToSignal);
 
     void flush();
 
@@ -86,10 +88,6 @@ class VulkanContext
     {
         return gs_VulkanContexte->m_logicalDevice;
     }
-    static VmaAllocator get_allocator()
-    {
-        return gs_VulkanContexte->m_allocator;
-    }
 
     static mU32           get_memoryTypeIndex(mU32                  a_typeFilter,
                                               VkMemoryPropertyFlags a_properties);
@@ -108,8 +106,6 @@ class VulkanContext
 
     // Utility
     VkCommandPool m_utilityCommandPool;
-
-    VmaAllocator m_allocator;
 };
 
 };  // namespace vulkan

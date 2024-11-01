@@ -1,8 +1,4 @@
 #include <VulkanRendererCommon.hpp>
-
-#define VMA_IMPLEMENTATION
-#include "vk_mem_alloc.h"
-
 #include <cstring>
 #include <optional>
 #include <set>
@@ -20,13 +16,12 @@ const mBool g_enableValidationLayers = true;
 const mBool g_enableValidationLayers = false;
 #endif
 
-const mU32 c_vulkanVersion = VK_API_VERSION_1_3;
-
 const std::vector<const mChar*> validationLayers = {
     "VK_LAYER_KHRONOS_validation"};
 
 const std::vector<const mChar*> deviceExtensions = {
-    VK_KHR_SWAPCHAIN_EXTENSION_NAME, VK_KHR_DYNAMIC_RENDERING_EXTENSION_NAME};
+    VK_KHR_SWAPCHAIN_EXTENSION_NAME,
+    VK_KHR_DYNAMIC_RENDERING_EXTENSION_NAME};
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -365,13 +360,15 @@ void create_logicalDevice(VkPhysicalDevice a_physicalDevice,
 
     // Timeline semaphores
     VkPhysicalDeviceTimelineSemaphoreFeatures timelineSemaphoreFeature{
-        .sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_TIMELINE_SEMAPHORE_FEATURES,
+        .sType =
+            VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_TIMELINE_SEMAPHORE_FEATURES,
         .timelineSemaphore = VK_TRUE,
     };
 
     // Dynamic rendering support
     VkPhysicalDeviceDynamicRenderingFeatures dynamicRenderingFeature{
-        .sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DYNAMIC_RENDERING_FEATURES,
+        .sType =
+            VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DYNAMIC_RENDERING_FEATURES,
         .dynamicRendering = VK_TRUE,
     };
 
@@ -395,7 +392,7 @@ void create_logicalDevice(VkPhysicalDevice a_physicalDevice,
     // Tmp
     mExpect(bindless_supported);
 
-    reqPhysicalFeatures.pNext      = &timelineSemaphoreFeature;
+    reqPhysicalFeatures.pNext = &timelineSemaphoreFeature;
     timelineSemaphoreFeature.pNext = &dynamicRenderingFeature;
     if (bindless_supported)
     {
@@ -419,23 +416,6 @@ void create_logicalDevice(VkPhysicalDevice a_physicalDevice,
     }
 
     vkGetDeviceQueue(a_logicalDevice, a_queueFamilyIndex, 0, &a_queue);
-}
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-void create_vmaAllocator(VkInstance       a_instance,
-                         VkPhysicalDevice a_physicalDevice, VkDevice a_device,
-                         VmaAllocator& a_vmaAllocator)
-{
-    VmaAllocatorCreateInfo createInfo_vmaAllocator = {};
-    createInfo_vmaAllocator.instance               = a_instance;
-    createInfo_vmaAllocator.physicalDevice         = a_physicalDevice;
-    createInfo_vmaAllocator.device                 = a_device;
-    createInfo_vmaAllocator.vulkanApiVersion       = c_vulkanVersion;
-
-    check_vkResult(
-        vmaCreateAllocator(&createInfo_vmaAllocator, &a_vmaAllocator));
 }
 
 }  // namespace vulkan
