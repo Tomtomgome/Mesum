@@ -50,13 +50,14 @@ void CommandQueue::destroy()
         mAssert(entry.usedCommandBuffers.empty());
         while (!entry.availableCommandBuffers.empty())
         {
-            vkFreeCommandBuffers(VulkanContext::get_logDevice(), entry.commandPool, 1,
+            vkFreeCommandBuffers(VulkanContext::get_logDevice(),
+                                 entry.commandPool, 1,
                                  &entry.availableCommandBuffers.front());
             entry.availableCommandBuffers.pop();
         }
 
-        vkDestroyCommandPool(VulkanContext::get_logDevice(),
-                                          entry.commandPool, nullptr);
+        vkDestroyCommandPool(VulkanContext::get_logDevice(), entry.commandPool,
+                             nullptr);
         m_freeCommandPools.pop();
     }
 }
@@ -361,6 +362,9 @@ void VulkanContext::init()
     create_logicalDevice(m_physicalDevice, m_logicalDevice, queue,
                          queueFamilyIndex);
     m_queue.init(queueFamilyIndex, queue);
+
+    create_vmaAllocator(m_instance, m_physicalDevice, m_logicalDevice,
+                        m_allocator);
 
     find_graphicQueueFamilyIndex(m_physicalDevice, queueFamilyIndex);
 

@@ -10,6 +10,8 @@
 #elif defined M_UNIX
 #define VK_USE_PLATFORM_XCB_KHR
 #endif
+
+#include "vk_mem_alloc.h"
 #include <vulkan/vulkan.h>
 
 namespace m
@@ -43,10 +45,14 @@ void select_physicalDevice(VkInstance        a_instance,
                            VkPhysicalDevice& a_physicalDevice);
 
 mBool find_graphicQueueFamilyIndex(VkPhysicalDevice a_physicalDevice,
-                                  mU32&             a_queueFamilyIndex);
-void create_logicalDevice(VkPhysicalDevice a_physicalDevice,
-                          VkDevice& a_logicalDevice, VkQueue& a_queue,
-                          mU32& a_queueFamilyIndex);
+                                   mU32&            a_queueFamilyIndex);
+void  create_logicalDevice(VkPhysicalDevice a_physicalDevice,
+                           VkDevice& a_logicalDevice, VkQueue& a_queue,
+                           mU32& a_queueFamilyIndex);
+
+void create_vmaAllocator(VkInstance       a_instance,
+                         VkPhysicalDevice a_physicalDevice, VkDevice a_device,
+                         VmaAllocator& a_vmaAllocator);
 
 };  // namespace vulkan
 };  // namespace m
