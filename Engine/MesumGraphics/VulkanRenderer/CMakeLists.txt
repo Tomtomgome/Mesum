@@ -9,7 +9,8 @@ set(SOURCES VulkanContext.cpp
         SwapchainVulkanImpl.cpp
         imgui_impl_vulkan.cpp)
 
-set(HEADERS VulkanContext.hpp
+set(HEADERS vk_mem_alloc.h
+        VulkanContext.hpp
         VulkanRendererCommon.hpp
         imgui_impl_vulkan.h
         RendererVulkanImpl.hpp
